@@ -94,6 +94,41 @@ describe('Account Settings Page', () => {
           cy.findByText('123f••••••••').should('be.visible');
         });
       });
+      describe('Delete token flow: ', () => {
+        beforeEach(() => {
+          cy.stubRequest({
+            url: 'api/v1/api-keys?grant=scim/manage',
+            fixture: 'api-keys/200.get.scim-token.json',
+            requestAlias: 'scimTokenGet',
+          });
+          cy.visit(PAGE_URL);
+        });
+        it('Delete Token flow for scim token', () => {
+          cy.findByText('old1••••••••').should('be.visible');
+          cy.findByText('Delete Token').click();
+          cy.withinModal(() => {
+            cy.findAllByText('Delete SCIM Token').should('be.visible');
+            cy.stubRequest({
+              url: 'api/v1/api-keys/oldid',
+              method: 'DELETE',
+              fixture: 'api-keys/200.get.scim-token-notoken.json',
+              requestAlias: 'scimTokenDelete',
+            });
+            cy.stubRequest({
+              url: 'api/v1/api-keys?grant=scim/manage',
+              fixture: 'api-keys/200.get.scim-token-notoken.json',
+              requestAlias: 'scimTokenGet',
+            });
+            cy.get('button')
+              .contains('Delete SCIM Token')
+              .click();
+            cy.wait('@scimTokenDelete');
+            cy.wait('@scimTokenGet');
+          });
+          cy.findByText('No token generated').should('be.visible');
+          cy.findByText('Delete token').should('not.be.visible');
+        });
+      });
     });
   });
 });

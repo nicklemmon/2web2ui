@@ -3,14 +3,17 @@ import { Button, Modal, Panel, Stack, Text } from 'src/components/matchbox';
 import { ButtonWrapper, CopyField, LabelledValue, ShortKeyCode } from 'src/components';
 import useModal from 'src/hooks/useModal';
 import Heading from 'src/components/text/Heading';
+import { showAlert } from 'src/actions/globalAlert';
 export default function SCIMTokenSection(props) {
-  const { scimTokenList, newScimToken, generateScimToken, listScimToken } = props;
+  const { scimTokenList, newScimToken, generateScimToken, listScimToken, deleteScimToken } = props;
   const getActions =
     scimTokenList.length > 0
       ? [
           {
             content: 'Delete Token',
-            onClick: () => {},
+            onClick: () => {
+              openModal({ name: 'Delete Token' });
+            },
             color: 'orange',
           },
           {
@@ -35,6 +38,13 @@ export default function SCIMTokenSection(props) {
     generateScimToken().then(() => {
       openModal({ name: 'Generate SCIM Token' });
       listScimToken();
+    });
+  };
+  const handleDeleteToken = () => {
+    deleteScimToken({ id: scimTokenList[0].id }).then(() => {
+      listScimToken();
+      closeModal();
+      showAlert({ type: 'success', message: 'SCIM token deleted' });
     });
   };
   const renderModalByName = name => {
@@ -67,6 +77,35 @@ export default function SCIMTokenSection(props) {
                   }}
                 >
                   Generate New Token
+                </Button>
+                <Button variant="secondary" onClick={() => closeModal()}>
+                  Cancel
+                </Button>
+              </ButtonWrapper>
+            </Panel.Section>
+          </Panel>
+        );
+      case 'Delete Token':
+        return (
+          <Panel title="Delete SCIM Token">
+            <Panel.Section>
+              <Stack>
+                <p>
+                  <Text as="span">
+                    The token will be immediately and permanently removed. This cannot be undone.
+                  </Text>
+                </p>
+              </Stack>
+            </Panel.Section>
+            <Panel.Section>
+              <ButtonWrapper>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    handleDeleteToken();
+                  }}
+                >
+                  Delete SCIM Token
                 </Button>
                 <Button variant="secondary" onClick={() => closeModal()}>
                   Cancel

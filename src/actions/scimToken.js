@@ -1,4 +1,5 @@
 import sparkpostApiRequest from './helpers/sparkpostApiRequest';
+import setSubaccountHeader from './helpers/setSubaccountHeader';
 
 export function generateScimToken() {
   return sparkpostApiRequest({
@@ -25,6 +26,18 @@ export function listScimToken() {
         grant: 'scim/manage',
       },
       showErrorAlert: false,
+    },
+  });
+}
+
+export function deleteScimToken({ id, subaccount = null }) {
+  const headers = setSubaccountHeader(subaccount);
+  return sparkpostApiRequest({
+    type: 'DELETE_API_KEY',
+    meta: {
+      method: 'DELETE',
+      url: `/v1/api-keys/${id}`,
+      headers,
     },
   });
 }

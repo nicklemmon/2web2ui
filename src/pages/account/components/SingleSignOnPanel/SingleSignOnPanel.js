@@ -13,7 +13,7 @@ import StatusSection from './StatusSection';
 import SCIMTokenSection from './SCIMTokenSection';
 import { PANEL_LOADING_HEIGHT } from 'src/pages/account/constants';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import { generateScimToken, listScimToken } from 'src/actions/scimToken';
+import { generateScimToken, listScimToken, deleteScimToken } from 'src/actions/scimToken';
 
 export function SingleSignOnPanel(props) {
   const {
@@ -24,6 +24,7 @@ export function SingleSignOnPanel(props) {
     loading,
     listScimToken,
     generateScimToken,
+    deleteScimToken,
     scimTokenList,
     newScimToken,
   } = props;
@@ -53,6 +54,7 @@ export function SingleSignOnPanel(props) {
             newScimToken={newScimToken}
             generateScimToken={generateScimToken}
             listScimToken={listScimToken}
+            deleteScimToken={deleteScimToken}
           />
         )}
       </React.Fragment>
@@ -85,6 +87,7 @@ const mapDispatchToProps = {
   updateAccountSingleSignOn,
   listScimToken,
   generateScimToken,
+  deleteScimToken,
 };
 
 const mapStateToProps = state => ({
