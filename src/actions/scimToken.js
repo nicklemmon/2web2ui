@@ -33,7 +33,7 @@ export function listScimToken() {
 export function deleteScimToken({ id, subaccount = null }) {
   const headers = setSubaccountHeader(subaccount);
   return sparkpostApiRequest({
-    type: 'DELETE_API_KEY',
+    type: 'DELETE_SCIM_TOKEN',
     meta: {
       method: 'DELETE',
       url: `/v1/api-keys/${id}`,

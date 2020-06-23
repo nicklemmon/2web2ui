@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Modal, Panel, Stack, Text } from 'src/components/matchbox';
 import { ButtonWrapper, CopyField, LabelledValue, ShortKeyCode } from 'src/components';
 import useModal from 'src/hooks/useModal';
 import Heading from 'src/components/text/Heading';
-import { showAlert } from 'src/actions/globalAlert';
+
 export default function SCIMTokenSection(props) {
-  const { scimTokenList, newScimToken, generateScimToken, listScimToken, deleteScimToken } = props;
+  const {
+    scimTokenList,
+    newScimToken,
+    generateScimToken,
+    listScimToken,
+    deleteScimToken,
+    error,
+    showAlert,
+  } = props;
   const getActions =
     scimTokenList.length > 0
       ? [
@@ -47,6 +55,11 @@ export default function SCIMTokenSection(props) {
       showAlert({ type: 'success', message: 'SCIM token deleted' });
     });
   };
+  useEffect(() => {
+    if (error) {
+      closeModal();
+    }
+  }, [error, closeModal]);
   const renderModalByName = name => {
     switch (name) {
       case 'Override Token':

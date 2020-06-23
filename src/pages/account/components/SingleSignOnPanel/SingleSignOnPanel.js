@@ -14,6 +14,7 @@ import SCIMTokenSection from './SCIMTokenSection';
 import { PANEL_LOADING_HEIGHT } from 'src/pages/account/constants';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { generateScimToken, listScimToken, deleteScimToken } from 'src/actions/scimToken';
+import { showAlert } from 'src/actions/globalAlert';
 
 export function SingleSignOnPanel(props) {
   const {
@@ -27,6 +28,9 @@ export function SingleSignOnPanel(props) {
     deleteScimToken,
     scimTokenList,
     newScimToken,
+    deleteScimTokenError,
+    generateScimTokenError,
+    showAlert,
   } = props;
   useEffect(() => {
     getAccountSingleSignOnDetails();
@@ -50,11 +54,13 @@ export function SingleSignOnPanel(props) {
         <StatusSection readOnly={tfaRequired} {...props} />
         {isSsoScimUiEnabled && provider && (
           <SCIMTokenSection
+            showAlert={showAlert}
             scimTokenList={scimTokenList}
             newScimToken={newScimToken}
             generateScimToken={generateScimToken}
             listScimToken={listScimToken}
             deleteScimToken={deleteScimToken}
+            error={deleteScimTokenError || generateScimTokenError}
           />
         )}
       </React.Fragment>
@@ -88,6 +94,7 @@ const mapDispatchToProps = {
   listScimToken,
   generateScimToken,
   deleteScimToken,
+  showAlert,
 };
 
 const mapStateToProps = state => ({
@@ -96,6 +103,8 @@ const mapStateToProps = state => ({
   isSsoScimUiEnabled: isAccountUiOptionSet('sso_scim_section')(state),
   scimTokenList: state.scimToken.scimTokenList,
   newScimToken: state.scimToken.newScimToken,
+  deleteScimTokenError: state.scimToken.deleteScimTokenError,
+  generateScimTokenError: state.scimToken.generateScimTokenError,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleSignOnPanel);

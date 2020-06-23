@@ -125,6 +125,7 @@ describe('Account Settings Page', () => {
             cy.wait('@scimTokenDelete');
             cy.wait('@scimTokenGet');
           });
+          cy.findByText('SCIM token deleted').should('be.visible');
           cy.findByText('No token generated').should('be.visible');
           cy.findByText('Delete token').should('not.be.visible');
         });
