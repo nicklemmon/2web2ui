@@ -71,10 +71,16 @@ $logo-width: 150px;
   font-size: font-size(300);
   padding: spacing(200) spacing(400);
   border-radius: border-radius(pill);
-  outline-offset: -3px; // helps ensure focus outline is visible
+  outline-offset: -8px; // helps ensure focus outline is visible
   text-decoration: none;
   transition: color motion-duration(fast) motion-ease(in-out),
     background-color motion-duration(fast) motion-ease(in-out);
+
+  &:focus {
+    outline-offset: -2px;
+    outline-width: 2px;
+    outline-style: solid;
+  }
 
   &.primary.primary {
     color: color(gray, 800);
@@ -84,6 +90,7 @@ $logo-width: 150px;
     &.isActive {
       color: color(gray, 800);
       background-color: color(gray, 300);
+      outline-color: color(blue, 800);
     }
   }
 
@@ -95,6 +102,7 @@ $logo-width: 150px;
     &.isActive {
       color: color(white);
       background-color: color(gray, 700);
+      outline-color: color(white);
     }
   }
 }
