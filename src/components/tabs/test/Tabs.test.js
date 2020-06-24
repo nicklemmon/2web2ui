@@ -16,6 +16,7 @@ describe('Tabs Component: ', () => {
     return render(
       <Tabs {...defaults} {...props}>
         <Tabs.Item>First Content</Tabs.Item>
+        {false && <Tabs.Item>Not Shown Content</Tabs.Item>}
         <Tabs.Item>Second Content</Tabs.Item>
       </Tabs>,
     );
@@ -33,6 +34,7 @@ describe('Tabs Component: ', () => {
     const { queryByText } = subject();
     expect(queryByText('Second Content')).not.toBeInTheDocument();
     userEvent.click(queryByText('Tab 2'));
+    expect(queryByText('Not Shown Content')).not.toBeInTheDocument();
     expect(queryByText('First Content')).not.toBeVisible();
     expect(queryByText('Second Content')).toBeVisible();
   });
