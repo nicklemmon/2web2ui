@@ -104,6 +104,7 @@ export function getEnricherOrDieTryin(store, currentWindow) {
     const chunkFailure = isChunkFailure(data);
     const request = filterRequest(data.request);
     const userAgent = _.get(currentWindow, 'navigator.userAgent');
+    const isHibanaEnabled = _.get(currentUser, 'options.ui.isHibanaEnabled');
 
     /*global SUPPORTED_BROWSERS*/
     // refer to docs/browser-support-sentry-issue.md for more info
@@ -125,6 +126,7 @@ export function getEnricherOrDieTryin(store, currentWindow) {
         // all tags can be easily searched and sent in Slack notifications
         ...data.tags,
         customer: _.get(user, 'customer'),
+        isHibanaEnabled: Boolean(isHibanaEnabled), // Default to `false` when no flag is present
         // This <html> property should be set by us and updated when page is translated
         documentLanguage: _.get(currentWindow, 'document.documentElement.lang', 'unknown'),
         navigatorLanguage: _.get(currentWindow, 'navigator.language', 'unknown'),

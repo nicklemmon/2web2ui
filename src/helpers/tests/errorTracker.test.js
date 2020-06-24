@@ -51,6 +51,11 @@ cases(
           access_level: 'admin',
           customer: 123,
           username: 'test-user',
+          options: {
+            ui: {
+              isHibanaEnabled: true,
+            },
+          },
         },
       },
     },
