@@ -13,7 +13,7 @@ import MetricsDrawer from './MetricsDrawer';
 import { Legend } from './index';
 import _ from 'lodash';
 import AddFiltersSection from './AddFiltersSection';
-import DateTimeSection from './DateTimeSection';
+import DateTimeSection from './DateTimeSection/';
 import useRouter from 'src/hooks/useRouter';
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
