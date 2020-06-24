@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { ArrowDropDown, ChevronRight } from '@sparkpost/matchbox-icons';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Field, change, formValueSelector } from 'redux-form';
-
-import { ArrowDropDown } from '@sparkpost/matchbox-icons';
-import { ActionList, Popover, TextField } from 'src/components/matchbox';
-
+import { useHibana } from 'src/context/HibanaContext';
+import { ActionList, Box, Popover, TextField } from 'src/components/matchbox';
 import styles from './FilterDropdown.module.scss';
 
 export class FilterDropdown extends Component {
@@ -74,7 +74,7 @@ export class FilterDropdown extends Component {
         <Popover
           as="div"
           id={`filter-dropdown-popover-${id}`}
-          className={popoverClassName}
+          className={classNames(styles.Popover, popoverClassName)}
           trigger={
             <>
               <label className={styles.hidden} htmlFor={`filter-dropdown-${id}`}>
@@ -86,7 +86,7 @@ export class FilterDropdown extends Component {
                 prefix={prefix}
                 value={displayValue}
                 readOnly
-                suffix={<ArrowDropDown />}
+                suffix={<FieldSuffix />}
               />
             </>
           }
@@ -98,6 +98,20 @@ export class FilterDropdown extends Component {
       </div>
     );
   }
+}
+
+function FieldSuffix() {
+  const [{ isHibanaEnabled }] = useHibana();
+
+  if (isHibanaEnabled) {
+    return (
+      <Box as="span" color="blue.700">
+        <ChevronRight size={24} style={{ transform: 'rotate(90deg)' }} />
+      </Box>
+    );
+  }
+
+  return <ArrowDropDown />;
 }
 
 FilterDropdown.propTypes = {
@@ -119,5 +133,6 @@ const mapStateToProps = (state, { formName, namespace }) => {
   const selector = formValueSelector(formName);
   return { values: selector(state, namespace) };
 };
+
 const mapDispatchToProps = { change };
 export default connect(mapStateToProps, mapDispatchToProps)(FilterDropdown);

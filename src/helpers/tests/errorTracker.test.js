@@ -13,7 +13,7 @@ jest.mock('raven-js');
 jest.mock('bowser');
 
 describe('.breadcrumbCallback', () => {
-  it('returns false with blacklisted breadcrumb', () => {
+  it('returns false with breadcrumb for ignored action', () => {
     expect(breadcrumbCallback({ message: '@@redux-form/CHANGE' })).toBeFalsy();
   });
 
@@ -51,6 +51,11 @@ cases(
           access_level: 'admin',
           customer: 123,
           username: 'test-user',
+          options: {
+            ui: {
+              isHibanaEnabled: true,
+            },
+          },
         },
       },
     },

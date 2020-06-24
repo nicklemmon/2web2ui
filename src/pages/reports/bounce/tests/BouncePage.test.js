@@ -4,38 +4,43 @@ import { shallow } from 'enzyme';
 import MetricsSummary from '../../components/MetricsSummary';
 
 describe('BouncePage: ', () => {
-
   const props = {
     loading: false,
     aggregates: {
       countBounce: 1,
       countSent: 10,
-      countAdminBounce: 5
+      countAdminBounce: 5,
     },
     reportOptions: {
-      relativeRange: 'hour'
+      relativeRange: 'hour',
     },
     addFilters: jest.fn(),
     refreshBounceReport: jest.fn(),
-    reasons: [ {
-      bounce_category_name: 'Block',
-      bounce_class_description: 'The message was blocked by the receiver as coming from a known spam source',
-      bounce_class_name: 'Spam Block',
-      classification_id: 51,
-      count_bounce: 5,
-      domain: 'yahoo.com',
-      reason: '554 - 5.7.1 Blacklisted by \'twoomail.com\'(twoo.com.multi.surbl.org) Contact the postmaster of this domain for resolution. This attempt has been logged.'
-    } ],
-    adminReasons: [ {
-      bounce_class_name: 'Admin Failure',
-      bounce_class_description: 'The message was failed by eceleritys configured policies',
-      bounce_category_name: 'Admin',
-      classification_id: 25,
-      count_admin_bounce: 2,
-      domain: 'yahoo.com',
-      reason: '550 - Administrative prohibition #51'
-    } ],
-    bounceSearchOptions: {}
+    reasons: [
+      {
+        bounce_category_name: 'Block',
+        bounce_class_description:
+          'The message was blocked by the receiver as coming from a known spam source',
+        bounce_class_name: 'Spam Block',
+        classification_id: 51,
+        count_bounce: 5,
+        domain: 'yahoo.com',
+        reason:
+          "554 - 5.7.1 Blocklisted by 'twoomail.com'(twoo.com.multi.surbl.org) Contact the postmaster of this domain for resolution. This attempt has been logged.",
+      },
+    ],
+    adminReasons: [
+      {
+        bounce_class_name: 'Admin Failure',
+        bounce_class_description: 'The message was failed by eceleritys configured policies',
+        bounce_category_name: 'Admin',
+        classification_id: 25,
+        count_admin_bounce: 2,
+        domain: 'yahoo.com',
+        reason: '550 - Administrative prohibition #51',
+      },
+    ],
+    bounceSearchOptions: {},
   };
 
   let wrapper;
@@ -57,7 +62,7 @@ describe('BouncePage: ', () => {
   });
 
   it('should render correctly with no bounces', () => {
-    wrapper.setProps({ aggregates: {}});
+    wrapper.setProps({ aggregates: {} });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -72,16 +77,18 @@ describe('BouncePage: ', () => {
   });
 
   it('should not display top level metrics admin bounce message with no admin bounces', () => {
-    wrapper.setProps({ aggregates: {
-      countBounce: 1,
-      countSent: 10,
-      countAdminBounce: 0
-    }});
+    wrapper.setProps({
+      aggregates: {
+        countBounce: 1,
+        countSent: 10,
+        countAdminBounce: 0,
+      },
+    });
     expect(wrapper.find(MetricsSummary).props().secondaryMessage).toBe(null);
   });
 
   it('should not display top level metrics when there are no aggregates', () => {
-    wrapper.setProps({ aggregates: {}});
+    wrapper.setProps({ aggregates: {} });
     expect(wrapper.find(MetricsSummary)).toHaveLength(0);
   });
 
@@ -89,15 +96,18 @@ describe('BouncePage: ', () => {
     wrapper.setState({ tab: 0 });
     wrapper.setProps({
       reasons: [],
-      adminReasons: [ {
-        bounce_class_name: 'Admin Failure',
-        bounce_class_description: 'The message was failed by eceleritys configured policies',
-        bounce_category_name: 'Admin',
-        classification_id: 25,
-        count_admin_bounce: 2,
-        domain: 'yahoo.com',
-        reason: '550 - Administrative prohibition #51'
-      } ]});
+      adminReasons: [
+        {
+          bounce_class_name: 'Admin Failure',
+          bounce_class_description: 'The message was failed by eceleritys configured policies',
+          bounce_category_name: 'Admin',
+          classification_id: 25,
+          count_admin_bounce: 2,
+          domain: 'yahoo.com',
+          reason: '550 - Administrative prohibition #51',
+        },
+      ],
+    });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -105,15 +115,20 @@ describe('BouncePage: ', () => {
     wrapper.setState({ tab: 1 });
     wrapper.setProps({
       adminReasons: [],
-      reasons: [ {
-        bounce_category_name: 'Block',
-        bounce_class_description: 'The message was blocked by the receiver as coming from a known spam source',
-        bounce_class_name: 'Spam Block',
-        classification_id: 51,
-        count_bounce: 5,
-        domain: 'yahoo.com',
-        reason: '554 - 5.7.1 Blacklisted by \'twoomail.com\'(twoo.com.multi.surbl.org) Contact the postmaster of this domain for resolution. This attempt has been logged.'
-      } ]});
+      reasons: [
+        {
+          bounce_category_name: 'Block',
+          bounce_class_description:
+            'The message was blocked by the receiver as coming from a known spam source',
+          bounce_class_name: 'Spam Block',
+          classification_id: 51,
+          count_bounce: 5,
+          domain: 'yahoo.com',
+          reason:
+            "554 - 5.7.1 Blocklisted by 'twoomail.com'(twoo.com.multi.surbl.org) Contact the postmaster of this domain for resolution. This attempt has been logged.",
+        },
+      ],
+    });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -122,7 +137,7 @@ describe('BouncePage: ', () => {
       reason: 'u y bounce?',
       domain: 'gmail',
       bounce_category_name: 'bouncy',
-      count_bounce: 10
+      count_bounce: 10,
     });
 
     expect(rows).toMatchSnapshot();
@@ -133,7 +148,7 @@ describe('BouncePage: ', () => {
       reason: 'bouncy boi',
       domain: 'gmail',
       bounce_category_name: 'Admin',
-      count_admin_bounce: 5
+      count_admin_bounce: 5,
     });
 
     expect(rows).toMatchSnapshot();

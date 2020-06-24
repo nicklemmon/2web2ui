@@ -117,11 +117,11 @@ const alerts = {
   icon: NotificationsActive,
 };
 
-const blacklist = {
-  label: 'Blacklist',
+const blocklist = {
+  label: 'Blocklist',
   icon: GridOff,
   tag: 'preview',
-  to: '/blacklist/incidents',
+  to: '/blocklist/incidents',
 };
 
 const webhooks = {
@@ -208,7 +208,7 @@ export const navItems = [
   recipients,
   alerts,
   inboxPlacementNavItems,
-  blacklist,
+  blocklist,
   OGConfiguration,
 ];
 
@@ -218,6 +218,6 @@ export const hibanaNavItems = [
   content,
   recipients,
   inboxPlacementNavItems,
-  blacklist,
+  blocklist,
   hibanaConfiguration,
 ];

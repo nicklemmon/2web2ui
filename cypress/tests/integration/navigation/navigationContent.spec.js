@@ -493,26 +493,26 @@ if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
   describe('Feature-flagged navigation items', () => {
     beforeEach(() => beforeSteps());
 
-    it('renders the "Blacklist" feature when the user\'s account has the feature enabled', () => {
+    it('renders the "Blocklist" feature when the user\'s account has the feature enabled', () => {
       cy.stubRequest({
         url: '/api/v1/account*',
-        fixture: 'account/200.get.has-blacklist-feature.json',
+        fixture: 'account/200.get.has-blocklist-feature.json',
       });
 
       cy.visit(PAGE_URL);
 
-      cy.findByText('Blacklist').should('be.visible');
+      cy.findByText('Blocklist').should('be.visible');
     });
 
-    it('does not render the "Blacklist" feature when the user\'s account has the feature disabled', () => {
+    it('does not render the "Blocklist" feature when the user\'s account has the feature disabled', () => {
       cy.stubRequest({
         url: '/api/v1/account*',
-        fixture: 'account/200.get.does-not-have-blacklist-feature.json',
+        fixture: 'account/200.get.does-not-have-blocklist-feature.json',
       });
 
       cy.visit(PAGE_URL);
 
-      cy.findByText('Blacklist').should('not.be.visible');
+      cy.findByText('Blocklist').should('not.be.visible');
     });
 
     it('renders the "Inbox Placement" feature when the user\'s account has the feature enabled', () => {

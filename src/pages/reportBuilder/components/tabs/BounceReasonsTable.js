@@ -22,6 +22,7 @@ const filterBoxConfig = {
   itemToStringKeys: ['bounce_category_name', 'bounce_class_name', 'domain', 'reason'],
   exampleModifiers: ['domain', 'category', 'classification'],
   matchThreshold: 5,
+  label: 'Filter',
   wrapper: FilterBoxWrapper,
 };
 

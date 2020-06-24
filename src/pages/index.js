@@ -6,7 +6,7 @@ export { default as TfaPage } from './auth/TfaPage';
 export { default as EnableTfaPage } from './auth/EnableTfaPage';
 export { default as SsoAuthPage } from './auth/SsoAuthPage';
 export { default as billing } from './billing';
-export { default as blacklist } from './blacklist';
+export { default as blocklist } from './blocklist';
 export { default as DashboardPage } from './dashboard';
 export { default as ProfilePage } from './profile/ProfilePage';
 export { default as abTesting } from './abTesting';

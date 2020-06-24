@@ -9,9 +9,12 @@ function Tabs(props) {
   return (
     <>
       {tabs.length > 1 && <TabsComponent tabs={tabs} selected={selectedTabIndex} {...rest} />}
-      {React.Children.map(children, (child, index) => {
-        return React.cloneElement(child, { forceRender, selected: selectedTabIndex === index });
-      })}
+      {React.Children.toArray(children)
+        //first removes all null react nodes in the case of conditional rendering
+        .filter(Boolean)
+        .map((child, index) => {
+          return React.cloneElement(child, { forceRender, selected: selectedTabIndex === index });
+        })}
     </>
   );
 }

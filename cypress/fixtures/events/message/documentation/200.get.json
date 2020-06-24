@@ -97,11 +97,11 @@
       },
       "raw_reason": {
         "description": "Unmodified, exact response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in block list"
       },
       "reason": {
         "description": "Canonicalized text of the response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in block list"
       },
       "recipient_domain": {
         "description": "Domain part of the recipient address used on this message's SMTP envelope",
@@ -555,7 +555,7 @@
       },
       "reason": {
         "description": "Canonicalized text of the response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in block list"
       },
       "routing_domain": {
         "description": "Domain receiving this message",
@@ -567,7 +567,7 @@
       },
       "raw_reason": {
         "description": "Unmodified, exact response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in block list"
       },
       "sending_ip": {
         "description": "IP address through which this message was sent",
@@ -840,7 +840,7 @@
       },
       "raw_reason": {
         "description": "Unmodified, exact response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in block list"
       },
       "rcpt_meta": {
         "description": "Metadata describing the message recipient",
@@ -860,7 +860,7 @@
       },
       "reason": {
         "description": "Canonicalized text of the response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in block list"
       },
       "recipient_domain": {
         "description": "Domain part of the recipient address used on this message's SMTP envelope",
@@ -988,11 +988,11 @@
       },
       "raw_reason": {
         "description": "Unmodified, exact response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in block list"
       },
       "reason": {
         "description": "Canonicalized text of the response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in block list"
       },
       "recipient_domain": {
         "description": "Domain part of the recipient address used on this message's SMTP envelope",
@@ -1157,11 +1157,11 @@
       },
       "raw_reason": {
         "description": "Unmodified, exact response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in block list"
       },
       "reason": {
         "description": "Canonicalized text of the response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in block list"
       },
       "recipient_domain": {
         "description": "Domain part of the recipient address used on this message's SMTP envelope",
@@ -2290,11 +2290,11 @@
       },
       "raw_reason": {
         "description": "Unmodified, exact response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in block list"
       },
       "reason": {
         "description": "Canonicalized text of the response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in block list"
       },
       "recipient_domain": {
         "description": "Domain part of the recipient address used on this message's SMTP envelope",
@@ -2406,11 +2406,11 @@
       },
       "raw_reason": {
         "description": "Unmodified, exact response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (17.99.99.99) is in block list"
       },
       "reason": {
         "description": "Canonicalized text of the response returned by the remote server due to a failed delivery attempt",
-        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in black list"
+        "sampleValue": "MAIL REFUSED - IP (a.b.c.d) is in block list"
       },
       "recipient_domain": {
         "description": "Domain part of the recipient address used on this message's SMTP envelope",

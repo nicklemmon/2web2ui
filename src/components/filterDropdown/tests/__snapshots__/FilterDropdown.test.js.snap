@@ -4,6 +4,7 @@ exports[`Component: FilterDropdown renders correctly 1`] = `
 <div>
   <Popover
     as="div"
+    className="Popover"
     id="filter-dropdown-popover-my-filter-dropdown"
     onClose={[Function]}
     trigger={
@@ -18,7 +19,7 @@ exports[`Component: FilterDropdown renders correctly 1`] = `
           id="filter-dropdown-my-filter-dropdown"
           prefix={null}
           readOnly={true}
-          suffix={<ArrowDropDown />}
+          suffix={<FieldSuffix />}
           value="Status"
         />
       </React.Fragment>
@@ -83,6 +84,7 @@ exports[`Component: FilterDropdown renders selected correctly 1`] = `
 <div>
   <Popover
     as="div"
+    className="Popover"
     id="filter-dropdown-popover-my-filter-dropdown"
     onClose={[Function]}
     trigger={
@@ -97,7 +99,7 @@ exports[`Component: FilterDropdown renders selected correctly 1`] = `
           id="filter-dropdown-my-filter-dropdown"
           prefix="(1)"
           readOnly={true}
-          suffix={<ArrowDropDown />}
+          suffix={<FieldSuffix />}
           value="Status"
         />
       </React.Fragment>

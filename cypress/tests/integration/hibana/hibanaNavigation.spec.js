@@ -49,7 +49,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.verifyLink({ content: 'Content', href: '/templates' });
           cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-          cy.verifyLink({ content: 'Blacklist', href: '/blacklist/incidents' });
+          cy.verifyLink({ content: 'Blocklist', href: '/blocklist/incidents' });
         });
       });
 
@@ -162,14 +162,14 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         cy.get(secondaryNavSelector).should('not.be.visible');
       });
 
-      it('does not render the subnav when "Blacklist" is active', () => {
+      it('does not render the subnav when "Blocklist" is active', () => {
         commonBeforeSteps();
 
         cy.get(desktopNavSelector).within(() => {
-          cy.findByText('Blacklist').click();
+          cy.findByText('Blocklist').click();
         });
 
-        cy.url().should('include', '/blacklist/incidents');
+        cy.url().should('include', '/blocklist/incidents');
 
         cy.get(secondaryNavSelector).should('not.be.visible');
       });
@@ -274,7 +274,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByText('Recipients').click();
 
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-          cy.verifyLink({ content: 'Blacklist', href: '/blacklist/incidents' });
+          cy.verifyLink({ content: 'Blocklist', href: '/blocklist/incidents' });
 
           cy.findByText('Configuration').click();
           cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });

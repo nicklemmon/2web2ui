@@ -5,8 +5,8 @@ import * as alertFormHelper from '../../../helpers/alertForm';
 
 describe('Filter Fields Component', () => {
   const props = {
-    blacklists: [],
-    blacklistMonitors: [],
+    blocklists: [],
+    blocklistMonitors: [],
     metric: 'health_score',
     disabled: false,
     single_filter: { filter_type: 'none', filter_values: [] },
@@ -15,7 +15,7 @@ describe('Filter Fields Component', () => {
     sendingDomains: [{ domain: 'my@domain' }],
     sendingDomainsLoading: false,
     sendingIps: [{ external_ip: '192.168.1.1' }],
-    listBlacklists: jest.fn(),
+    listBlocklists: jest.fn(),
     listMonitors: jest.fn(),
     listPools: jest.fn(),
     listSendingDomains: jest.fn(),
@@ -28,7 +28,7 @@ describe('Filter Fields Component', () => {
 
   it('gets filter options when mounted', () => {
     subject();
-    expect(props.listBlacklists).toHaveBeenCalled();
+    expect(props.listBlocklists).toHaveBeenCalled();
     expect(props.listMonitors).toHaveBeenCalled();
     expect(props.listPools).toHaveBeenCalled();
     expect(props.listSendingDomains).toHaveBeenCalled();
@@ -87,13 +87,13 @@ describe('Filter Fields Component', () => {
     expect(props.change).toHaveBeenCalled();
   });
 
-  describe('for blacklists', () => {
-    const blackListFilters = (props = {}) =>
+  describe('for blocklists', () => {
+    const blockListFilters = (props = {}) =>
       subject({
         ...props,
         metric: 'blacklist',
-        blacklists: [{ code: 'abuseat.org' }, { code: 'spamhaus.org' }],
-        blacklistMonitors: [
+        blocklists: [{ code: 'abuseat.org' }, { code: 'spamhaus.org' }],
+        blocklistMonitors: [
           { resource: '0.0.0.0' },
           { resource: '1.2.3.4' },
           { resource: 'example.com' },
@@ -101,16 +101,16 @@ describe('Filter Fields Component', () => {
         ],
       });
 
-    it('displays only blacklist codes', () => {
-      const wrapper = blackListFilters();
+    it('displays only blocklist codes', () => {
+      const wrapper = blockListFilters();
       expect(wrapper.find({ name: 'blacklist_provider' })).toHaveProp('results', [
         'abuseat.org',
         'spamhaus.org',
       ]);
     });
 
-    it('displays only blacklist resources', () => {
-      const wrapper = blackListFilters();
+    it('displays only blocklist resources', () => {
+      const wrapper = blockListFilters();
       expect(wrapper.find({ name: 'blacklist_resource' })).toHaveProp('results', [
         '0.0.0.0',
         '1.2.3.4',
@@ -120,12 +120,12 @@ describe('Filter Fields Component', () => {
     });
 
     it('disables provider field when loading options', () => {
-      const wrapper = blackListFilters({ blacklistsPending: true });
+      const wrapper = blockListFilters({ blocklistsPending: true });
       expect(wrapper.find({ name: 'blacklist_provider' })).toHaveProp('disabled', true);
     });
 
     it('disables resource field when loading options', () => {
-      const wrapper = blackListFilters({ blacklistMonitorsPending: true });
+      const wrapper = blockListFilters({ blocklistMonitorsPending: true });
       expect(wrapper.find({ name: 'blacklist_resource' })).toHaveProp('disabled', true);
     });
   });

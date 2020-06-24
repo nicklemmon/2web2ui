@@ -1,36 +1,36 @@
-const PAGE_URL = '/blacklist/incidents/7';
-const BLACKLIST_BASE_API_URL = '/api/v1/blacklist-monitors';
+const PAGE_URL = '/blocklist/incidents/7';
+const BLOCKLIST_BASE_API_URL = '/api/v1/blacklist-monitors';
 
-describe('Blacklist Incident Details Page', () => {
+describe('Blocklist Incident Details Page', () => {
   beforeEach(() => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
 
     cy.stubRequest({
-      url: `${BLACKLIST_BASE_API_URL}/incidents/7`,
-      fixture: 'blacklists/single/200.get.json',
+      url: `${BLOCKLIST_BASE_API_URL}/incidents/7`,
+      fixture: 'blocklists/single/200.get.json',
       requestAlias: 'singleIncident',
     });
 
     cy.stubRequest({
-      url: `${BLACKLIST_BASE_API_URL}/incidents?**`,
-      fixture: 'blacklists/200.get.other-recent.json',
+      url: `${BLOCKLIST_BASE_API_URL}/incidents?**`,
+      fixture: 'blocklists/200.get.other-recent.json',
       requestAlias: 'otherIncidents',
     });
 
     cy.stubRequest({
-      url: `${BLACKLIST_BASE_API_URL}/sparkpost.io/incidents**`,
-      fixture: 'blacklists/200.get.historical-incidents.json',
+      url: `${BLOCKLIST_BASE_API_URL}/sparkpost.io/incidents**`,
+      fixture: 'blocklists/200.get.historical-incidents.json',
       requestAlias: 'historicalIncidents',
     });
   });
 
   it('has a relevant page title', () => {
     cy.visit(PAGE_URL);
-    cy.title().should('include', 'Incident Details | Blacklist');
+    cy.title().should('include', 'Incident Details | Blocklist');
   });
 
-  it('loads and renders the blacklist incident correctly', () => {
+  it('loads and renders the blocklist incident correctly', () => {
     const timestamp = 1580392800000; //01/30/2020 @ 2:00pm (UTC)
     cy.clock(timestamp);
     cy.visit(PAGE_URL);
@@ -38,7 +38,7 @@ describe('Blacklist Incident Details Page', () => {
     cy.wait('@singleIncident');
     cy.wait(['@otherIncidents', '@otherIncidents', '@historicalIncidents']);
 
-    cy.findByText('Blacklist Incident | sparkpost.io | abuseat.org (CBL)').should('be.visible');
+    cy.findByText('Blocklist Incident | sparkpost.io | abuseat.org (CBL)').should('be.visible');
 
     cy.get('[data-id=incident-details]').within(() => {
       cy.findByText('Dec 25 2019').should('be.visible');
@@ -49,7 +49,7 @@ describe('Blacklist Incident Details Page', () => {
       ).should('be.visible');
     });
 
-    cy.get('[data-id=related-incidents-blacklist]').within(() => {
+    cy.get('[data-id=related-incidents-blocklist]').within(() => {
       cy.findByText('127.0.0.2').should('be.visible');
       cy.findByText(/Listed Nov 2[012] 2019, \d*:14[ap]m/).should('be.visible');
       cy.findByText('Active').should('be.visible');
@@ -67,15 +67,15 @@ describe('Blacklist Incident Details Page', () => {
   it('shows error component when there is an error', () => {
     cy.stubRequest({
       statusCode: 400,
-      url: `${BLACKLIST_BASE_API_URL}/incidents/**`,
-      fixture: 'blacklists/400.get.json',
+      url: `${BLOCKLIST_BASE_API_URL}/incidents/**`,
+      fixture: 'blocklists/400.get.json',
       requestAlias: 'incidentError',
     });
 
     cy.visit(PAGE_URL);
     cy.findByText('An error occurred').should('be.visible');
     cy.findByText(
-      'Sorry, we seem to have had some trouble loading your blacklist incidents.',
+      'Sorry, we seem to have had some trouble loading your blocklist incidents.',
     ).should('be.visible');
     cy.findByText('Show Error Details').click();
     cy.findByText('Hey look, an error').should('be.visible');
@@ -84,7 +84,7 @@ describe('Blacklist Incident Details Page', () => {
   describe('Incident Details', () => {
     it('displays alternative text when there are no historical incidents', () => {
       cy.stubRequest({
-        url: `${BLACKLIST_BASE_API_URL}/sparkpost.io/incidents**`,
+        url: `${BLOCKLIST_BASE_API_URL}/sparkpost.io/incidents**`,
         fixture: '/200.get.no-results.json',
         requestAlias: 'historicalIncidentsEmpty',
       });
@@ -103,10 +103,10 @@ describe('Blacklist Incident Details Page', () => {
     });
   });
 
-  describe('Related Incidents (blacklist)', () => {
+  describe('Related Incidents (blocklist)', () => {
     it('displays alternative text when there are no other recent incidents', () => {
       cy.stubRequest({
-        url: `${BLACKLIST_BASE_API_URL}/incidents?blacklists=**`,
+        url: `${BLOCKLIST_BASE_API_URL}/incidents?blacklists=**`,
         fixture: '/200.get.no-results.json',
         requestAlias: 'recentOtherIncidentsEmpty',
       });
@@ -118,19 +118,19 @@ describe('Blacklist Incident Details Page', () => {
     it("redirects to that incident's detail page when clicking another incident", () => {
       cy.visit(PAGE_URL);
 
-      cy.get('[data-id=related-incidents-blacklist]').within(() => {
+      cy.get('[data-id=related-incidents-blocklist]').within(() => {
         cy.get('a')
           .contains('127.0.0.2')
           .click();
       });
-      cy.url().should('include', '/blacklist/incidents/9');
+      cy.url().should('include', '/blocklist/incidents/9');
     });
   });
 
   describe('Related Incidents (resource)', () => {
     it('displays alternative text when there are no other recent incidents', () => {
       cy.stubRequest({
-        url: `${BLACKLIST_BASE_API_URL}/incidents?resources=**`,
+        url: `${BLOCKLIST_BASE_API_URL}/incidents?resources=**`,
         fixture: '/200.get.no-results.json',
         requestAlias: 'recentOtherIncidentsEmpty',
       });
@@ -147,7 +147,7 @@ describe('Blacklist Incident Details Page', () => {
           .contains('new.spam.dnsbl.sorbs.net')
           .click();
       });
-      cy.url().should('include', '/blacklist/incidents/8');
+      cy.url().should('include', '/blocklist/incidents/8');
     });
   });
 });

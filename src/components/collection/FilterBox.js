@@ -9,7 +9,15 @@ function CollectionFilterBox(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
-  const { initialValue, placeholder, wrapper, onChange, onBlur = () => {}, maxWidth } = props;
+  const {
+    initialValue,
+    placeholder,
+    wrapper,
+    onChange,
+    onBlur = () => {},
+    maxWidth,
+    label,
+  } = props;
   const placeholderText = placeholder || `Filter results e.g. ${getRandomExampleSearch(props)}`;
 
   const text = (
@@ -21,8 +29,8 @@ function CollectionFilterBox(props) {
       )}
 
       <TextField
-        labelHidden
-        label={isHibanaEnabled ? 'Filter By' : undefined}
+        labelHidden={!Boolean(label)}
+        label={isHibanaEnabled ? label || 'Filter By' : undefined}
         id="collection-filter-box"
         name="collection-filter-box"
         suffix={<Search />}

@@ -10,7 +10,7 @@ import { Box, Grid, Stack } from 'src/components/matchbox';
 import { getIpPools } from 'src/selectors/ipPools';
 import { selectVerifiedDomains } from 'src/selectors/sendingDomains';
 import { FORM_NAME } from '../../constants/formConstants';
-import { listBlacklists, listMonitors } from 'src/actions/blacklist';
+import { listBlocklists, listMonitors } from 'src/actions/blocklist';
 import { listPools } from 'src/actions/ipPools';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { list as listSendingIps } from 'src/actions/sendingIps';
@@ -19,7 +19,7 @@ const mbItemToString = item => MAILBOX_PROVIDERS[item] || '';
 
 export class FilterFields extends Component {
   componentDidMount() {
-    this.props.listBlacklists();
+    this.props.listBlocklists();
     this.props.listMonitors();
     this.props.listPools();
     this.props.listSendingDomains();
@@ -32,10 +32,10 @@ export class FilterFields extends Component {
 
   render() {
     const {
-      blacklistMonitors,
-      blacklistMonitorsPending,
-      blacklists,
-      blacklistsPending,
+      blocklistMonitors,
+      blocklistMonitorsPending,
+      blocklists,
+      blocklistsPending,
       metric,
       single_filter,
       ipPools,
@@ -53,8 +53,8 @@ export class FilterFields extends Component {
       mailbox_provider: Object.keys(MAILBOX_PROVIDERS),
       sending_domain: sendingDomains.map(({ domain }) => domain),
       sending_ip: sendingIps.map(({ external_ip }) => external_ip),
-      blacklist_provider: blacklists.map(({ code }) => code),
-      blacklist_resource: blacklistMonitors.map(({ resource }) => resource),
+      blacklist_provider: blocklists.map(({ code }) => code),
+      blacklist_resource: blocklistMonitors.map(({ resource }) => resource),
     };
 
     const extraProps = {
@@ -94,11 +94,11 @@ export class FilterFields extends Component {
         placeholder: 'Type To Search',
       },
       blacklist_provider: {
-        disabled: disabled || blacklistsPending,
+        disabled: disabled || blocklistsPending,
         placeholder: 'Type To Search',
       },
       blacklist_resource: {
-        disabled: disabled || blacklistMonitorsPending || blacklistMonitors.length === 0,
+        disabled: disabled || blocklistMonitorsPending || blocklistMonitors.length === 0,
         placeholder: 'Type To Search',
       },
     };
@@ -170,10 +170,10 @@ const mapStateToProps = state => {
   const selector = formValueSelector(FORM_NAME);
 
   return {
-    blacklists: state.blacklist.blacklists,
-    blacklistsPending: state.blacklist.blacklistsPending,
-    blacklistMonitors: state.blacklist.monitors,
-    blacklistMonitorsPending: state.blacklist.monitorsPending,
+    blocklists: state.blocklist.blocklists,
+    blocklistsPending: state.blocklist.blocklistsPending,
+    blocklistMonitors: state.blocklist.monitors,
+    blocklistMonitorsPending: state.blocklist.monitorsPending,
     single_filter: selector(state, 'single_filter') || {},
     metric: selector(state, 'metric'),
     ipPools: getIpPools(state) || [],
@@ -185,7 +185,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  listBlacklists,
+  listBlocklists,
   listMonitors,
   listPools,
   listSendingDomains,

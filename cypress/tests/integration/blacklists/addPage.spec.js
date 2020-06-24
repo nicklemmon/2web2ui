@@ -1,4 +1,4 @@
-describe('Blacklist - Add to Watchlist Page', () => {
+describe('Blocklist - Add to Watchlist Page', () => {
   beforeEach(() => {
     cy.stubAuth();
     cy.login({ isStubbed: true });
@@ -6,15 +6,15 @@ describe('Blacklist - Add to Watchlist Page', () => {
     cy.stubRequest({
       method: 'POST',
       url: '/api/v1/blacklist-monitors',
-      fixture: 'blacklists/200.post.json',
+      fixture: 'blocklists/200.post.json',
       requestAlias: 'addNewResource',
     });
 
-    cy.visit('/blacklist/watchlist/add');
+    cy.visit('/blocklist/watchlist/add');
   });
 
   it('has a relevant page title', () => {
-    cy.title().should('include', 'Add to Watch List | Blacklist');
+    cy.title().should('include', 'Add to Watch List | Blocklist');
   });
 
   it('successfully adds a single resource and redirects to watchlist page', () => {
@@ -27,7 +27,7 @@ describe('Blacklist - Add to Watchlist Page', () => {
         resource: 'sparkpost.io',
       });
     });
-    cy.url().should('include', '/blacklist/watchlist');
+    cy.url().should('include', '/blocklist/watchlist');
     cy.url().should('not.include', '/add');
     cy.findByText('Added sparkpost.io to Watchlist').should('be.visible');
   });
@@ -40,7 +40,7 @@ describe('Blacklist - Add to Watchlist Page', () => {
         resource: 'sparkpost.io',
       });
     });
-    cy.url().should('include', '/blacklist/watchlist/add');
+    cy.url().should('include', '/blocklist/watchlist/add');
     cy.findByText('Added sparkpost.io to Watchlist').should('be.visible');
 
     cy.findByLabelText('IP or Sending Domain').type('123.123');

@@ -70,7 +70,6 @@ exports[`SuppressionSearch renders correctly 1`] = `
           },
         ]
       }
-      popoverClassName="suppressionPopver"
     />
   </Grid.Column>
   <Grid.Column
@@ -112,7 +111,6 @@ exports[`SuppressionSearch renders correctly 1`] = `
           },
         ]
       }
-      popoverClassName="fatPopover"
     />
   </Grid.Column>
 </Grid>

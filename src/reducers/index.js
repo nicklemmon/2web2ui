@@ -12,7 +12,7 @@ import apiKeys from './api-keys';
 import auth from './auth';
 import billing from './billing';
 import bounceReport from './bounceReport';
-import blacklist from './blacklist';
+import blocklist from './blocklist';
 import cookieConsent from './cookieConsent';
 import delayReport from './delayReport';
 import dataPrivacy from './dataPrivacy';
@@ -61,7 +61,7 @@ const appReducer = combineReducers({
   apiKeys,
   auth,
   billing,
-  blacklist,
+  blocklist,
   bounceReport,
   cookieConsent,
   currentUser,

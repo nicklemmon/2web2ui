@@ -4,9 +4,12 @@
   @include visually-hidden;
 }
 
-.filter-dropdown{
-  .Matchbox-ActionList{
+.filter-dropdown {
+  .Matchbox-ActionList {
     overflow: auto;
   }
 }
 
+.Popover {
+  width: 100%;
+}

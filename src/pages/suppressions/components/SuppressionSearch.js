@@ -7,7 +7,6 @@ import { FilterDropdown } from 'src/components';
 import * as suppressionActions from 'src/actions/suppressions';
 import DatePicker from 'src/components/datePicker/DatePicker';
 import { selectSearchInitialValues } from 'src/selectors/suppressions';
-import styles from './SuppressionSearch.module.scss';
 import { TYPES, SOURCES, RELATIVE_DATE_OPTIONS } from '../constants';
 
 export class SuppressionSearch extends Component {
@@ -54,7 +53,6 @@ export class SuppressionSearch extends Component {
           <FilterDropdown
             label="Type"
             id="types-filter-dropdown"
-            popoverClassName={styles.suppressionPopver}
             formName="filterForm"
             options={TYPES}
             namespace="types"
@@ -71,7 +69,6 @@ export class SuppressionSearch extends Component {
             options={SOURCES}
             namespace="sources"
             displayValue="Sources"
-            popoverClassName={styles.fatPopover}
             onClose={this.handleSourcesSelection}
           />
         </Grid.Column>

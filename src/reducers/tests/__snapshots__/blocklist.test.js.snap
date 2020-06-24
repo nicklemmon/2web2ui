@@ -1,0 +1,519 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlockList Reducer add watchlist fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+  "watchlistAddError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "watchlistAddPending": false,
+}
+`;
+
+exports[`BlockList Reducer add watchlist pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+  "watchlistAddError": null,
+  "watchlistAddPending": true,
+}
+`;
+
+exports[`BlockList Reducer add watchlist success 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+  "watchlistAddError": null,
+  "watchlistAddPending": false,
+}
+`;
+
+exports[`BlockList Reducer delete monitor fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer delete monitor pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": true,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer get incident fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidentError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "incidentPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer get incident pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidentError": null,
+  "incidentPending": true,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer get incident success 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incident": Object {
+    "fakeData": true,
+  },
+  "incidentError": null,
+  "incidentPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list blocklists fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list blocklists pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": true,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list blocklists success 1`] = `
+Object {
+  "blocklists": Object {
+    "fakeData": true,
+  },
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list historical incidents fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "historicalIncidentsError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "historicalIncidentsPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list historical incidents pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "historicalIncidentsError": null,
+  "historicalIncidentsPending": true,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list historical incidents success 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "historicalIncidents": Object {
+    "fakeData": true,
+  },
+  "historicalIncidentsError": null,
+  "historicalIncidentsPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents for blocklist fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsForBlocklistError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "incidentsForBlocklistPending": false,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents for blocklist pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsForBlocklistError": null,
+  "incidentsForBlocklistPending": true,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents for blocklist success 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsForBlocklist": Object {
+    "fakeData": true,
+  },
+  "incidentsForBlocklistError": null,
+  "incidentsForBlocklistPending": false,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents for resource fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsForResourceError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "incidentsForResourcePending": false,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents for resource pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsForResourceError": null,
+  "incidentsForResourcePending": true,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents for resource success 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsForResource": Object {
+    "fakeData": true,
+  },
+  "incidentsForResourceError": null,
+  "incidentsForResourcePending": false,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": true,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list incidents success 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Object {
+    "fakeData": true,
+  },
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list monitors fail 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": Object {
+    "errors": Array [
+      Object {
+        "message": "Some error occurred",
+      },
+    ],
+  },
+  "monitorsPending": false,
+}
+`;
+
+exports[`BlockList Reducer list monitors pending 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Array [],
+  "monitorsError": null,
+  "monitorsPending": true,
+}
+`;
+
+exports[`BlockList Reducer list monitors success 1`] = `
+Object {
+  "blocklists": Array [],
+  "blocklistsError": null,
+  "blocklistsPending": false,
+  "deleteMonitorError": null,
+  "deleteMonitorPending": false,
+  "incidents": Array [],
+  "incidentsError": null,
+  "incidentsPending": false,
+  "monitors": Object {
+    "fakeData": true,
+  },
+  "monitorsError": null,
+  "monitorsPending": false,
+}
+`;
