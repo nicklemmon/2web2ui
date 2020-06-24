@@ -71,7 +71,7 @@ export const MonitorsCollection = props => {
       columns={columns}
       selectOptions={selectOptions}
       filterBoxConfig={filterBoxConfig}
-      defaultSortColumn={'date_listed'}
+      defaultSortColumn="date_listed"
       rows={monitors}
       getRowData={getRowData}
       saveCsv={false}

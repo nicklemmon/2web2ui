@@ -31,9 +31,7 @@ export const WatchlistPage = props => {
       return (
         <div data-id="error-banner">
           <ApiErrorBanner
-            message={
-              'Sorry, we seem to have had some trouble loading your watched IPs and domains.'
-            }
+            message="Sorry, we seem to have had some trouble loading your watched IPs and domains."
             errorDetails={error.message}
             reload={() => {
               listMonitors();

@@ -19,7 +19,7 @@ import {
   selectSummaryChartSearchOptions,
   selectSummaryMetricsProcessed,
 } from 'src/selectors/reportSearchOptions';
-import { BounceReasonsTable, RejectionReasonsTable } from './components/tabs';
+import { BounceReasonsTable, DelayReasonsTable, RejectionReasonsTable } from './components/tabs';
 import styles from './ReportBuilder.module.scss';
 import moment from 'moment';
 
@@ -104,12 +104,12 @@ export function ReportBuilder({
           <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
             <Tabs.Item>
               <Panel.Section className={styles.ChartSection}>
-                <Charts {...chart} metrics={processedMetrics} to={to} yScale={'linear'} />
+                <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
               </Panel.Section>
               <Box padding="400" backgroundColor={tokens.color_gray_1000}>
                 <Grid>
                   <Grid.Column sm={3}>
-                    <Box id={'date'}>{renderAggregateMetric(dateLabelValue)}</Box>
+                    <Box id="date">{renderAggregateMetric(dateLabelValue)}</Box>
                   </Grid.Column>
                   <Grid.Column sm={9}>
                     <Inline space="600">
@@ -136,7 +136,11 @@ export function ReportBuilder({
                 <RejectionReasonsTable />
               </Tabs.Item>
             )}
-            {hasDelayTab && <Tabs.Item></Tabs.Item>}
+            {hasDelayTab && (
+              <Tabs.Item>
+                <DelayReasonsTable />
+              </Tabs.Item>
+            )}
             {hasLinksTab && <Tabs.Item></Tabs.Item>}
           </Tabs>
         </div>

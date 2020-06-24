@@ -24,7 +24,7 @@ export const TableCollectionBody = ({ heading, filterBox, collection, pagination
 export const EmptyWrapper = ({ message }) => <Empty message={message} hasPanel={false} />;
 
 export const LoadingWrapper = () => (
-  <Box position={'relative'}>
+  <Box position="relative">
     <Loading />
   </Box>
 );
