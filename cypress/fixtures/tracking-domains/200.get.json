@@ -1,0 +1,11 @@
+{
+  "results": [
+    {
+      "domain": "another.newdomain.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": false, "cname_status": "unverified", "compliance_status": "valid" }
+    }
+  ]
+}
