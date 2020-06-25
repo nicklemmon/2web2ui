@@ -129,7 +129,7 @@ export default function SCIMTokenSection(props) {
                 >
                   Delete SCIM Token
                 </Button>
-                <Button variant="secondary" onClick={() => closeModal()}>
+                <Button variant="monochrome-secondary" onClick={() => closeModal()}>
                   Cancel
                 </Button>
               </ButtonWrapper>
