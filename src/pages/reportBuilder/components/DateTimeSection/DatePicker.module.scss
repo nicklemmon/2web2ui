@@ -1,5 +1,9 @@
 @import '~@sparkpost/design-tokens-hibana/tokens';
 
+.Popover {
+  width: max-content;
+}
+
 .Error {
   display: inline-block;
   vertical-align: middle;
@@ -8,7 +12,9 @@
 }
 
 .ActionList {
-  width: 100px;
-  margin-right: spacing(200);
-  border-right: 1px solid color(gray, 200);
+  width: 150px;
+}
+
+.DateSelectorWrapper {
+  max-width: 38.5rem; //Same as date picker. No corresponding token value.
 }
