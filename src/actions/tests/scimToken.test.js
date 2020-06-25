@@ -12,4 +12,9 @@ describe('Action Creator: scimToken', () => {
     const thunk = scimTokenRequests.listScimToken();
     expect(thunk).toMatchSnapshot();
   });
+
+  it('deleteScimToken should make the appropriate request', () => {
+    const thunk = scimTokenRequests.deleteScimToken({ id: 'fake-id' });
+    expect(thunk).toMatchSnapshot();
+  });
 });
