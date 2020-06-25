@@ -211,11 +211,11 @@ export class DatePicker extends Component {
   render() {
     const {
       selected: { from, to },
-      showDatePicker,
       validationError,
       selectedPrecision,
     } = this.state;
-    const selectedRange = showDatePicker ? 'custom' : this.props.relativeRange;
+    const selectedRange =
+      from === this.props.from && to === this.props.to ? this.props.relativeRange : 'custom';
 
     // allow for prop-level override of "now" (DI, etc.)
     const {
