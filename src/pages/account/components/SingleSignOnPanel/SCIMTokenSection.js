@@ -43,10 +43,19 @@ export default function SCIMTokenSection(props) {
         ];
   const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
   const handleGenerateToken = () => {
-    generateScimToken().then(() => {
-      openModal({ name: 'Generate SCIM Token' });
-      listScimToken();
-    });
+    if (scimTokenList.length > 0) {
+      deleteScimToken({ id: scimTokenList[0].id }).then(() => {
+        generateScimToken().then(() => {
+          openModal({ name: 'Generate SCIM Token' });
+          listScimToken();
+        });
+      });
+    } else {
+      generateScimToken().then(() => {
+        openModal({ name: 'Generate SCIM Token' });
+        listScimToken();
+      });
+    }
   };
   const handleDeleteToken = () => {
     deleteScimToken({ id: scimTokenList[0].id }).then(() => {
