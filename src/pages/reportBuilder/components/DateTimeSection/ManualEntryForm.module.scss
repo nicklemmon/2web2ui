@@ -1,0 +1,14 @@
+@import '~@sparkpost/design-tokens-hibana/tokens';
+
+.DateFields {
+  margin: spacing(300) 0;
+  position: relative;
+}
+
+.PrecisionLabel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 1.4rem;
+  font-style: italic;
+}

@@ -1,0 +1,14 @@
+@import '~@sparkpost/design-tokens-hibana/tokens';
+
+.Error {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: spacing(200);
+  line-height: line-height(200);
+}
+
+.ActionList {
+  width: 100px;
+  margin-right: spacing(200);
+  border-right: 1px solid color(gray, 200);
+}
