@@ -2,29 +2,30 @@
 
 exports[`ApiKeysTab empty 1`] = `
 <Fragment>
-  <Panel.Section
-    style={
-      Object {
-        "textAlign": "center",
+  <Panel>
+    <Panel.Section
+      style={
+        Object {
+          "textAlign": "center",
+        }
       }
-    }
-  >
-    <Stack>
-      <p>
-        This subaccount has no API Keys assigned to it. You can assign an existing one, or create a new one.
-      </p>
-      <div>
-        <PageLink
-          as={[Function]}
-          color="orange"
-          plain={true}
-          to="/account/api-keys"
-        >
-          Manage API Keys
-        </PageLink>
-      </div>
-    </Stack>
-  </Panel.Section>
+    >
+      <Stack>
+        <p>
+          This subaccount has no API Keys assigned to it. You can assign an existing one, or create a new one.
+        </p>
+        <div>
+          <PageLink
+            as={[Function]}
+            to="/account/api-keys"
+            variant="secondary"
+          >
+            Manage API Keys
+          </PageLink>
+        </div>
+      </Stack>
+    </Panel.Section>
+  </Panel>
 </Fragment>
 `;
 
@@ -36,61 +37,50 @@ exports[`ApiKeysTab loading 1`] = `
 
 exports[`ApiKeysTab normal props 1`] = `
 <Fragment>
-  <div>
-    <Panel.Section>
-      <p>
-        API Keys assigned to this subaccount.
-      </p>
-    </Panel.Section>
-    <Box
-      as={[Function]}
-    >
-      <TableCollection
-        columns={
-          Array [
-            Object {
-              "label": "Name",
-              "sortKey": "label",
-              "width": "40%",
-            },
-            Object {
-              "label": "Key",
-              "width": "20%",
-            },
-          ]
-        }
-        defaultSortColumn={null}
-        defaultSortDirection="asc"
-        filterBox={
-          Object {
-            "exampleModifiers": Array [
-              "key",
-              "name",
-              "id",
-            ],
-            "itemToStringKeys": Array [
-              "label",
-              "short_key",
-              "id",
-            ],
-            "keyMap": Object {
-              "key": "short_key",
-              "name": "label",
-              "owner": "username",
-            },
-            "show": true,
-          }
-        }
-        getRowData={[Function]}
-        pagination={true}
-        rows={
-          Array [
-            "an array of keys",
-          ]
-        }
-      />
-    </Box>
-  </div>
+  <TableCollection
+    columns={
+      Array [
+        Object {
+          "label": "Name",
+          "sortKey": "label",
+          "width": "40%",
+        },
+        Object {
+          "label": "Key",
+          "width": "20%",
+        },
+      ]
+    }
+    defaultSortColumn={null}
+    defaultSortDirection="asc"
+    filterBox={
+      Object {
+        "exampleModifiers": Array [
+          "key",
+          "name",
+          "id",
+        ],
+        "itemToStringKeys": Array [
+          "label",
+          "short_key",
+          "id",
+        ],
+        "keyMap": Object {
+          "key": "short_key",
+          "name": "label",
+          "owner": "username",
+        },
+        "show": true,
+      }
+    }
+    getRowData={[Function]}
+    pagination={true}
+    rows={
+      Array [
+        "an array of keys",
+      ]
+    }
+  />
 </Fragment>
 `;
 

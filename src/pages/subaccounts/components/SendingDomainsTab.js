@@ -40,20 +40,22 @@ export class SendingDomainsTab extends Component {
 
   renderEmpty() {
     return (
-      <Panel.Section style={{ textAlign: 'center' }}>
-        <Stack>
-          <p>
-            This subaccount has no sending domains assigned to it. You can assign an existing one,
-            or create a new one.
-          </p>
+      <Panel>
+        <Panel.Section style={{ textAlign: 'center' }}>
+          <Stack>
+            <p>
+              This subaccount has no sending domains assigned to it. You can assign an existing one,
+              or create a new one.
+            </p>
 
-          <div>
-            <PageLink as={Button} plain color="orange" to="/account/sending-domains">
-              Manage Sending Domains
-            </PageLink>
-          </div>
-        </Stack>
-      </Panel.Section>
+            <div>
+              <PageLink as={Button} variant="secondary" to="/account/sending-domains">
+                Manage Sending Domains
+              </PageLink>
+            </div>
+          </Stack>
+        </Panel.Section>
+      </Panel>
     );
   }
 

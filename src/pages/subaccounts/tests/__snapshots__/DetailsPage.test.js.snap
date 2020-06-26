@@ -23,49 +23,51 @@ exports[`DetailsPage should render api keys tab 1`] = `
   }
   title="Bob Evans, the restaurant. (123)"
 >
-  <Panel>
-    <TabsWrapper>
-      <Tabs
-        selected={1}
-        tabs={
-          Array [
-            Object {
-              "Component": [Function],
-              "content": "Details",
-              "to": "/account/subaccounts/123",
-            },
-            Object {
-              "Component": [Function],
-              "content": "API Keys",
-              "to": "/account/subaccounts/123/api-keys",
-            },
-            Object {
-              "Component": [Function],
-              "content": "Sending Domains",
-              "to": "/account/subaccounts/123/sending-domains",
-            },
-          ]
-        }
-      />
-    </TabsWrapper>
-    <Switch>
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/api-keys"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/sending-domains"
-        render={[Function]}
-      />
-    </Switch>
-  </Panel>
+  <Box
+    border="400"
+    borderBottom="0"
+  >
+    <Tabs
+      borderBottom="0"
+      selected={1}
+      tabs={
+        Array [
+          Object {
+            "Component": [Function],
+            "content": "Details",
+            "to": "/account/subaccounts/123",
+          },
+          Object {
+            "Component": [Function],
+            "content": "API Keys",
+            "to": "/account/subaccounts/123/api-keys",
+          },
+          Object {
+            "Component": [Function],
+            "content": "Sending Domains",
+            "to": "/account/subaccounts/123/sending-domains",
+          },
+        ]
+      }
+    />
+  </Box>
+  <Switch>
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/api-keys"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/sending-domains"
+      render={[Function]}
+    />
+  </Switch>
 </Page>
 `;
 
@@ -80,49 +82,51 @@ exports[`DetailsPage should render edit tab 1`] = `
   }
   title="Bob Evans, the restaurant. (123)"
 >
-  <Panel>
-    <TabsWrapper>
-      <Tabs
-        selected={0}
-        tabs={
-          Array [
-            Object {
-              "Component": [Function],
-              "content": "Details",
-              "to": "/account/subaccounts/123",
-            },
-            Object {
-              "Component": [Function],
-              "content": "API Keys",
-              "to": "/account/subaccounts/123/api-keys",
-            },
-            Object {
-              "Component": [Function],
-              "content": "Sending Domains",
-              "to": "/account/subaccounts/123/sending-domains",
-            },
-          ]
-        }
-      />
-    </TabsWrapper>
-    <Switch>
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/api-keys"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/sending-domains"
-        render={[Function]}
-      />
-    </Switch>
-  </Panel>
+  <Box
+    border="400"
+    borderBottom="0"
+  >
+    <Tabs
+      borderBottom="0"
+      selected={0}
+      tabs={
+        Array [
+          Object {
+            "Component": [Function],
+            "content": "Details",
+            "to": "/account/subaccounts/123",
+          },
+          Object {
+            "Component": [Function],
+            "content": "API Keys",
+            "to": "/account/subaccounts/123/api-keys",
+          },
+          Object {
+            "Component": [Function],
+            "content": "Sending Domains",
+            "to": "/account/subaccounts/123/sending-domains",
+          },
+        ]
+      }
+    />
+  </Box>
+  <Switch>
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/api-keys"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/sending-domains"
+      render={[Function]}
+    />
+  </Switch>
 </Page>
 `;
 
@@ -139,49 +143,51 @@ exports[`DetailsPage should select sending domains tab 1`] = `
   }
   title="Bob Evans, the restaurant. (123)"
 >
-  <Panel>
-    <TabsWrapper>
-      <Tabs
-        selected={2}
-        tabs={
-          Array [
-            Object {
-              "Component": [Function],
-              "content": "Details",
-              "to": "/account/subaccounts/123",
-            },
-            Object {
-              "Component": [Function],
-              "content": "API Keys",
-              "to": "/account/subaccounts/123/api-keys",
-            },
-            Object {
-              "Component": [Function],
-              "content": "Sending Domains",
-              "to": "/account/subaccounts/123/sending-domains",
-            },
-          ]
-        }
-      />
-    </TabsWrapper>
-    <Switch>
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/api-keys"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/sending-domains"
-        render={[Function]}
-      />
-    </Switch>
-  </Panel>
+  <Box
+    border="400"
+    borderBottom="0"
+  >
+    <Tabs
+      borderBottom="0"
+      selected={2}
+      tabs={
+        Array [
+          Object {
+            "Component": [Function],
+            "content": "Details",
+            "to": "/account/subaccounts/123",
+          },
+          Object {
+            "Component": [Function],
+            "content": "API Keys",
+            "to": "/account/subaccounts/123/api-keys",
+          },
+          Object {
+            "Component": [Function],
+            "content": "Sending Domains",
+            "to": "/account/subaccounts/123/sending-domains",
+          },
+        ]
+      }
+    />
+  </Box>
+  <Switch>
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/api-keys"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/sending-domains"
+      render={[Function]}
+    />
+  </Switch>
 </Page>
 `;
 
@@ -200,48 +206,50 @@ exports[`DetailsPage should show api key banner with new api key 1`] = `
     mb="400"
     title="Don't Forget Your API Key"
   />
-  <Panel>
-    <TabsWrapper>
-      <Tabs
-        selected={0}
-        tabs={
-          Array [
-            Object {
-              "Component": [Function],
-              "content": "Details",
-              "to": "/account/subaccounts/123",
-            },
-            Object {
-              "Component": [Function],
-              "content": "API Keys",
-              "to": "/account/subaccounts/123/api-keys",
-            },
-            Object {
-              "Component": [Function],
-              "content": "Sending Domains",
-              "to": "/account/subaccounts/123/sending-domains",
-            },
-          ]
-        }
-      />
-    </TabsWrapper>
-    <Switch>
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/api-keys"
-        render={[Function]}
-      />
-      <Route
-        exact={true}
-        path="/account/subaccounts/:id/sending-domains"
-        render={[Function]}
-      />
-    </Switch>
-  </Panel>
+  <Box
+    border="400"
+    borderBottom="0"
+  >
+    <Tabs
+      borderBottom="0"
+      selected={0}
+      tabs={
+        Array [
+          Object {
+            "Component": [Function],
+            "content": "Details",
+            "to": "/account/subaccounts/123",
+          },
+          Object {
+            "Component": [Function],
+            "content": "API Keys",
+            "to": "/account/subaccounts/123/api-keys",
+          },
+          Object {
+            "Component": [Function],
+            "content": "Sending Domains",
+            "to": "/account/subaccounts/123/sending-domains",
+          },
+        ]
+      }
+    />
+  </Box>
+  <Switch>
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/api-keys"
+      render={[Function]}
+    />
+    <Route
+      exact={true}
+      path="/account/subaccounts/:id/sending-domains"
+      render={[Function]}
+    />
+  </Switch>
 </Page>
 `;
