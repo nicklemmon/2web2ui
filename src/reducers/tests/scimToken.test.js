@@ -52,5 +52,8 @@ cases(
     'when delete scim token fails': {
       type: 'DELETE_SCIM_TOKEN_FAIL',
     },
+    'when scim token error are reset': {
+      type: 'SCIM_TOKEN_ERROR_RESET',
+    },
   },
 );

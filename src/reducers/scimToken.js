@@ -63,6 +63,14 @@ export default (state = initialState, { type, payload }) => {
         deleteScimTokenPending: false,
       };
     }
+    case 'SCIM_TOKEN_ERROR_RESET': {
+      return {
+        ...state,
+        deleteScimTokenSuccess: null,
+        deleteScimTokenError: null,
+        deleteScimTokenPending: null,
+      };
+    }
     default:
       return state;
   }

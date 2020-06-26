@@ -90,6 +90,21 @@ Object {
 }
 `;
 
+exports[`Reducer: ScimToken when scim token error are reset 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
 exports[`Reducer: ScimToken when scim token list failed to load 1`] = `
 Object {
   "deleteScimTokenError": null,

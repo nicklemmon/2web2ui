@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Modal, Panel, Stack, Text } from 'src/components/matchbox';
 import { ButtonWrapper, CopyField, LabelledValue, ShortKeyCode } from 'src/components';
 import useModal from 'src/hooks/useModal';
@@ -13,13 +13,16 @@ export default function SCIMTokenSection(props) {
     deleteScimToken,
     error,
     showAlert,
+    resetScimTokenErrors,
   } = props;
+  const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
   const getActions =
     scimTokenList.length > 0
       ? [
           {
             content: 'Delete Token',
             onClick: () => {
+              resetScimTokenErrors();
               openModal({ name: 'Delete Token' });
             },
             color: 'orange',
@@ -27,6 +30,7 @@ export default function SCIMTokenSection(props) {
           {
             content: 'Generate SCIM Token',
             onClick: () => {
+              resetScimTokenErrors();
               openModal({ name: 'Override Token' });
             },
             color: 'orange',
@@ -36,12 +40,12 @@ export default function SCIMTokenSection(props) {
           {
             content: 'Generate SCIM Token',
             onClick: () => {
+              resetScimTokenErrors();
               handleGenerateToken();
             },
             color: 'orange',
           },
         ];
-  const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
   const handleGenerateToken = () => {
     if (scimTokenList.length > 0) {
       deleteScimToken({ id: scimTokenList[0].id }).then(() => {
@@ -64,11 +68,7 @@ export default function SCIMTokenSection(props) {
       showAlert({ type: 'success', message: 'SCIM token deleted' });
     });
   };
-  useEffect(() => {
-    if (error) {
-      closeModal();
-    }
-  }, [error, closeModal]);
+
   const renderModalByName = name => {
     switch (name) {
       case 'Override Token':
@@ -173,9 +173,11 @@ export default function SCIMTokenSection(props) {
           )}
         </Heading>
       </LabelledValue>
-      <Modal open={isModalOpen} onClose={() => closeModal()} showCloseButton>
-        {isModalOpen && renderModalByName(name)}
-      </Modal>
+      {!error && (
+        <Modal open={isModalOpen} onClose={() => closeModal()} showCloseButton>
+          {isModalOpen && renderModalByName(name)}
+        </Modal>
+      )}
     </Panel.Section>
   );
 }

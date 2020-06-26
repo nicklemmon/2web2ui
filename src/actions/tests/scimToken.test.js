@@ -17,4 +17,9 @@ describe('Action Creator: scimToken', () => {
     const thunk = scimTokenRequests.deleteScimToken({ id: 'fake-id' });
     expect(thunk).toMatchSnapshot();
   });
+
+  it('resetScimTokenError should make the appropriate request', () => {
+    const thunk = scimTokenRequests.resetScimTokenErrors();
+    expect(thunk).toMatchSnapshot();
+  });
 });

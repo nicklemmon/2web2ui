@@ -41,3 +41,7 @@ export function deleteScimToken({ id, subaccount = null }) {
     },
   });
 }
+
+export function resetScimTokenErrors() {
+  return { type: 'SCIM_TOKEN_ERROR_RESET' };
+}

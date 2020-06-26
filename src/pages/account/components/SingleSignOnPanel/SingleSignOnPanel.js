@@ -13,7 +13,12 @@ import StatusSection from './StatusSection';
 import SCIMTokenSection from './SCIMTokenSection';
 import { PANEL_LOADING_HEIGHT } from 'src/pages/account/constants';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import { generateScimToken, listScimToken, deleteScimToken } from 'src/actions/scimToken';
+import {
+  generateScimToken,
+  listScimToken,
+  deleteScimToken,
+  resetScimTokenErrors,
+} from 'src/actions/scimToken';
 import { showAlert } from 'src/actions/globalAlert';
 
 export function SingleSignOnPanel(props) {
@@ -30,6 +35,7 @@ export function SingleSignOnPanel(props) {
     newScimToken,
     deleteScimTokenError,
     generateScimTokenError,
+    resetScimTokenErrors,
     showAlert,
   } = props;
   useEffect(() => {
@@ -60,6 +66,7 @@ export function SingleSignOnPanel(props) {
             generateScimToken={generateScimToken}
             listScimToken={listScimToken}
             deleteScimToken={deleteScimToken}
+            resetScimTokenErrors={resetScimTokenErrors}
             error={deleteScimTokenError || generateScimTokenError}
           />
         )}
@@ -94,6 +101,7 @@ const mapDispatchToProps = {
   listScimToken,
   generateScimToken,
   deleteScimToken,
+  resetScimTokenErrors,
   showAlert,
 };
 

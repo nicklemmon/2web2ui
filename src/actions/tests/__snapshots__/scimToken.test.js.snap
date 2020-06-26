@@ -41,3 +41,9 @@ Object {
   "type": "LIST_SCIM_TOKEN",
 }
 `;
+
+exports[`Action Creator: scimToken resetScimTokenError should make the appropriate request 1`] = `
+Object {
+  "type": "SCIM_TOKEN_ERROR_RESET",
+}
+`;
