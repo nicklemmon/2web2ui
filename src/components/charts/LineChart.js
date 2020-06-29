@@ -1,10 +1,37 @@
 // This component is for use in the Hibana theme only!
 
 import React from 'react';
+import { tokens } from '@sparkpost/design-tokens-hibana';
+import { ComposedChart, Rectangle, ResponsiveContainer } from 'recharts';
 import { Box, Text } from 'src/components/matchbox';
+import styles from './LineChart.module.scss';
 
-function LineChart() {
-  return <></>;
+function LineChart({ children }) {
+  return <div className={styles.ChartWrapper}>{children}</div>;
+}
+
+function Container({ children, data, height, syncId }) {
+  return (
+    <ResponsiveContainer width="99%" height={height}>
+      <ComposedChart syncId={syncId} barCategoryGap="3%" data={data}>
+        {children}
+      </ComposedChart>
+    </ResponsiveContainer>
+  );
+}
+
+function YAxisLabel({ children }) {
+  return <span className="sp-linechart-yLabel">{children}</span>;
+}
+
+function Cursor({ data, height, points: [{ x, y }], width: chartWidth }) {
+  const sectionWidth = chartWidth / data.length;
+  const gap = sectionWidth * 0.03;
+  const width = sectionWidth - gap * 2;
+
+  return (
+    <Rectangle x={x - width / 2} y={y} height={height} width={width} fill={tokens.color_gray_400} />
+  );
 }
 
 function CustomTooltip({ showTooltip, payload, label, labelFormatter, formatter }) {
@@ -44,7 +71,22 @@ function CustomTooltip({ showTooltip, payload, label, labelFormatter, formatter 
   );
 }
 
+export const lineChartConfig = {
+  barsBackground: {
+    fill: tokens.color_gray_200,
+  },
+  tooltipStyles: {
+    zIndex: tokens.zIndex_overlay,
+  },
+};
+
 CustomTooltip.displayName = 'LineChart.CustomTooltip';
+YAxisLabel.displayName = 'LineChart.YAxisLabel';
+Container.displayName = 'LineChart.Container';
+Cursor.displayName = 'LineChart.Cursor';
 LineChart.CustomTooltip = CustomTooltip;
+LineChart.YAxisLabel = YAxisLabel;
+LineChart.Container = Container;
+LineChart.Cursor = Cursor;
 
 export default LineChart;

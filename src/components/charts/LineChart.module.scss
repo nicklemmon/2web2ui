@@ -1,0 +1,5 @@
+@import 'src/styles/hibana/charts';
+
+.ChartWrapper {
+  @include line-chart();
+}

@@ -4,36 +4,15 @@
 */
 
 import React from 'react';
-import {
-  Bar,
-  ComposedChart,
-  Line,
-  Rectangle,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
-import { tokens } from '@sparkpost/design-tokens-hibana';
-import { LineChart } from 'src/components/charts';
+import { Bar, Line, Tooltip, XAxis, YAxis } from 'recharts';
+import { LineChart, lineChartConfig } from 'src/components/charts';
 import moment from 'moment';
-import styles from './LineChart.module.scss';
 
 const identity = a => a;
 
 function orderDesc(a, b) {
   return b.value - a.value;
 }
-
-const Cursor = ({ data, height, points: [{ x, y }], width: chartWidth }) => {
-  const sectionWidth = chartWidth / data.length;
-  const gap = sectionWidth * 0.03;
-  const width = sectionWidth - gap * 2;
-
-  return (
-    <Rectangle x={x - width / 2} y={y} height={height} width={width} fill={tokens.color_gray_400} />
-  );
-};
 
 export default function SpLineChart(props) {
   const renderLines = () => {
@@ -104,44 +83,47 @@ export default function SpLineChart(props) {
   } = props;
 
   return (
-    <div className={styles.ChartWrapper}>
-      <ResponsiveContainer width="99%" height={height}>
-        <ComposedChart syncId={syncId} barCategoryGap="3%" data={data}>
-          <Bar key="noKey" dataKey="noKey" background={{ fill: tokens.color_gray_200 }} />
-          <XAxis
-            axisLine={false}
-            dataKey="ts"
-            height={30}
-            hide={!showXAxis}
-            interval="preserveStartEnd"
-            scale="auto"
-            tickFormatter={xTickFormatter}
-            tickLine={false}
-            ticks={getXTicks()}
-          />
-          <YAxis
-            axisLine={false}
-            domain={['dataMin', 'dataMax']}
-            interval="preserveStartEnd"
-            padding={{ top: 8, bottom: 8 }}
-            scale={yScale}
-            tickFormatter={yTickFormatter}
-            tickLine={false}
-            width={60}
-          />
-          <Tooltip
-            cursor={<Cursor data={data} />}
-            content={<LineChart.CustomTooltip showTooltip={showTooltip} />}
-            wrapperStyle={{ zIndex: tokens.zIndex_overlay }}
-            isAnimationActive={false}
-            itemSorter={orderDesc}
-            labelFormatter={tooltipLabelFormatter}
-            formatter={tooltipValueFormatter}
-          />
-          {renderLines()}
-        </ComposedChart>
-      </ResponsiveContainer>
-      <span className="sp-linechart-yLabel">{yLabel}</span>
-    </div>
+    <LineChart>
+      <LineChart.Container syncId={syncId} height={height} data={data}>
+        <Bar key="noKey" dataKey="noKey" background={lineChartConfig.barsBackground} />
+
+        <XAxis
+          axisLine={false}
+          dataKey="ts"
+          height={30}
+          hide={!showXAxis}
+          interval="preserveStartEnd"
+          scale="auto"
+          tickFormatter={xTickFormatter}
+          tickLine={false}
+          ticks={getXTicks()}
+        />
+
+        <YAxis
+          axisLine={false}
+          domain={['dataMin', 'dataMax']}
+          interval="preserveStartEnd"
+          padding={{ top: 8, bottom: 8 }}
+          scale={yScale}
+          tickFormatter={yTickFormatter}
+          tickLine={false}
+          width={60}
+        />
+
+        <Tooltip
+          cursor={<LineChart.Cursor data={data} />}
+          content={<LineChart.CustomTooltip showTooltip={showTooltip} />}
+          wrapperStyle={lineChartConfig.tooltipStyles}
+          isAnimationActive={false}
+          itemSorter={orderDesc}
+          labelFormatter={tooltipLabelFormatter}
+          formatter={tooltipValueFormatter}
+        />
+
+        {renderLines()}
+      </LineChart.Container>
+
+      <LineChart.YAxisLabel>{yLabel}</LineChart.YAxisLabel>
+    </LineChart>
   );
 }
