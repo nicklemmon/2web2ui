@@ -184,13 +184,14 @@ export function prepareCardInfo({ expCombined, ...cardInfo }) {
 export const isProductOnSubscription = (productName = 'recipient_validation') => state => {
   return _.find(_.get(state, 'billing.subscription.products') || {}, { product: productName });
 };
-
+const currentFreePlans = ['free500-1018', 'free15K-1018', 'free500-0419', 'free500-SPCEU-0419'];
 export const formatToMatchAccountPlan = currentPlan => {
   if (_.isEmpty(currentPlan)) return {};
   return {
     billingId: currentPlan.billing_id,
     code: currentPlan.plan,
     includesIp: currentPlan.status === 'deprecated' ? false : true,
+    isFree: currentFreePlans.includes(currentPlan.plan),
     ...currentPlan,
   };
 };

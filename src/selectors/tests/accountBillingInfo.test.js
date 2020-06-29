@@ -71,13 +71,70 @@ describe('Selector: can update billing info', () => {
 
   beforeEach(() => {
     state = {
-      account: { subscription: { code: 'paid' }, billing: {} },
+      account: { subscription: { code: '5M-0817' }, billing: {} },
+
       billing: {
-        plans: [
-          { status: 'public', code: '123' },
-          { status: 'public', code: 'paid', isFree: false },
-          { status: 'public', code: 'free', isFree: true },
-          { status: 'public', code: 'ccfree1', isFree: true },
+        bundlePlans: [
+          {
+            plan: 'free500-0419',
+            product: 'messaging',
+            price: 0,
+            volume: 500,
+          },
+          {
+            billing_id: 'id1',
+            plan: '5M-0817',
+            product: 'messaging',
+            price: 123,
+            overage: 0.3,
+            volume: 5000000,
+          },
+          {
+            billing_id: 'id2',
+            plan: '2.5M-0817',
+            product: 'messaging',
+            price: 1234,
+            overage: 0.4,
+            volume: 2500000,
+          },
+        ],
+        bundles: [
+          {
+            bundle: 'free500-0419',
+            status: 'public',
+            tier: 'test',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: 'free500-0419',
+              },
+            ],
+          },
+          {
+            bundle: '5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '5M-0817',
+              },
+            ],
+          },
+          {
+            bundle: '2.5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '2.5M-0817',
+              },
+            ],
+          },
         ],
       },
     };
@@ -93,7 +150,7 @@ describe('Selector: can update billing info', () => {
   });
 
   it('should return false if on free plan', () => {
-    state.account.subscription.code = 'free';
+    state.account.subscription.code = 'free500-0419';
     expect(billingInfo.canUpdateBillingInfoSelector(state)).toEqual(false);
   });
 });
@@ -170,14 +227,56 @@ describe('canPurchaseIps', () => {
   let state;
   beforeEach(() => {
     state = {
-      account: {
-        subscription: { code: 'paid1' },
-        billing: {},
-      },
+      account: { subscription: { code: '5M-0817' }, billing: {} },
+
       billing: {
-        plans: [
-          { status: 'public', code: '123', isFree: true },
-          { status: 'public', code: 'paid1', isFree: false, canPurchaseIps: true },
+        bundlePlans: [
+          {
+            billing_id: 'id1',
+            plan: '5M-0817',
+            product: 'messaging',
+            price: 123,
+            overage: 0.3,
+            volume: 5000000,
+          },
+          {
+            billing_id: 'id2',
+            plan: '2.5M-0817',
+            product: 'messaging',
+            price: 1234,
+            overage: 0.4,
+            volume: 2500000,
+          },
+        ],
+        bundles: [
+          {
+            bundle: '5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'dedicated_ip',
+                plan: 'ip-0519',
+              },
+              {
+                product: 'messaging',
+                plan: '5M-0817',
+              },
+            ],
+          },
+          {
+            bundle: '2.5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '2.5M-0817',
+              },
+            ],
+          },
         ],
       },
     };
@@ -315,41 +414,65 @@ describe('getBundleTierByPlanCode', () => {
 
   beforeEach(() => {
     state = {
-      account: {
-        subscription: { code: 'pub' },
-        billing: {},
-      },
+      account: { subscription: { code: '5M-0817' }, billing: {} },
+
       billing: {
-        plans: [
-          { code: 'pub', status: 'public', tier: 'test' },
-          { code: 'pub-free', status: 'public', tier: 'test', isFree: true },
-          { code: 'pub-aws', status: 'public', awsMarketplace: true, tier: 'test' },
+        bundlePlans: [
           {
-            code: 'pub-aws-free',
-            status: 'public',
-            awsMarketplace: true,
-            isFree: true,
-            tier: 'test',
+            billing_id: 'id1',
+            plan: '5M-0817',
+            product: 'messaging',
+            price: 123,
+            overage: 0.3,
+            volume: 5000000,
           },
-          { code: 'sec', status: 'secret', tier: 'test' },
-          { code: 'sec-aws', status: 'secret', awsMarketplace: true, tier: 'starter' },
-          { code: 'starter', status: 'public', tier: 'starter' },
-          { code: 'premier', status: 'public', tier: 'premier' },
-          { code: 'free500-0419', status: 'public', isFree: true },
+          {
+            billing_id: 'id2',
+            plan: '2.5M-0817',
+            product: 'messaging',
+            price: 1234,
+            overage: 0.4,
+            volume: 2500000,
+          },
+        ],
+        bundles: [
+          {
+            bundle: '5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '5M-0817',
+              },
+            ],
+          },
+          {
+            bundle: '2.5M-0817',
+            status: 'secret',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '2.5M-0817',
+              },
+            ],
+          },
         ],
       },
     };
   });
 
   it('returns the tier of current plan based on the plancode', () => {
-    expect(billingInfo.getBundleTierByPlanCode(state)).toEqual('test');
+    expect(billingInfo.getBundleTierByPlanCode(state)).toEqual('unlimited');
   });
 
   it("returns a '' when current plan doesn't have a tier", () => {
     state = {
       ...state,
       account: {
-        subscription: { code: 'free500-0419' },
+        subscription: { code: '2.5M-0817' },
         billing: {},
       },
     };

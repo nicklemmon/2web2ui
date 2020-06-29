@@ -7,6 +7,7 @@ Object {
   "bundle": "5M-0817",
   "code": "5M-0817",
   "includesIp": true,
+  "isFree": false,
   "overage": 0.3,
   "plan": "5M-0817",
   "price": 123,
@@ -26,9 +27,47 @@ Object {
 
 exports[`plan selector selectAvailablePlans should return active AWS plans 1`] = `Array []`;
 
-exports[`plan selector selectAvailablePlans should return active paid plans 1`] = `Array []`;
+exports[`plan selector selectAvailablePlans should return active paid plans 1`] = `
+Array [
+  Object {
+    "billing_id": "id1",
+    "overage": 0.3,
+    "plan": "5M-0817",
+    "price": 123,
+    "product": "messaging",
+    "volume": 5000000,
+  },
+  Object {
+    "billing_id": "id2",
+    "overage": 0.4,
+    "plan": "2.5M-0817",
+    "price": 1234,
+    "product": "messaging",
+    "volume": 2500000,
+  },
+]
+`;
 
-exports[`plan selector selectAvailablePlans should return active plans 1`] = `Array []`;
+exports[`plan selector selectAvailablePlans should return active plans 1`] = `
+Array [
+  Object {
+    "billing_id": "id1",
+    "overage": 0.3,
+    "plan": "5M-0817",
+    "price": 123,
+    "product": "messaging",
+    "volume": 5000000,
+  },
+  Object {
+    "billing_id": "id2",
+    "overage": 0.4,
+    "plan": "2.5M-0817",
+    "price": 1234,
+    "product": "messaging",
+    "volume": 2500000,
+  },
+]
+`;
 
 exports[`plan selector selectVisiblePlans should return public AWS plans 1`] = `Array []`;
 
