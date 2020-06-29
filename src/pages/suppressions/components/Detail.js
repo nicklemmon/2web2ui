@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Box, Panel, Modal } from 'src/components/matchbox';
-import { LabelledValue, CopyField, LongTextContainer } from 'src/components';
+import { LabelledValue, CopyField } from 'src/components';
 import { formatDateTime } from 'src/helpers/date';
 import { formatSubaccountDisplay } from '../helpers';
 
@@ -36,11 +36,7 @@ export default class Detail extends Component {
             label="Created"
             value={formatDateTime(suppression.created)}
           />
-          <LabelledValue
-            key="description"
-            label="Description"
-            value={<LongTextContainer text={suppression.description} />}
-          />
+          <LabelledValue key="description" label="Description" value={suppression.description} />
           <LabelledValue
             key="raw json"
             label="Raw JSON"

@@ -1,0 +1,4 @@
+// Ideally, Matchbox would expose `border` styled-system props on the <Panel/> component to handle this
+.FilterPanel > div {
+  border-bottom: 0;
+}

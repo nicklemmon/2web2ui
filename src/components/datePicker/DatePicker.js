@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { tokens } from '@sparkpost/design-tokens-hibana';
 import { subMonths, format } from 'date-fns';
 import {
   getStartOfDay,
@@ -23,6 +24,7 @@ import {
 import ButtonWrapper from 'src/components/buttonWrapper';
 import DateSelector from 'src/components/dateSelector/DateSelector';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
+import { useHibana } from 'src/context/HibanaContext';
 import ManualEntryForm from './ManualEntryForm';
 import { FORMATS } from 'src/constants';
 import OGStyles from './DatePicker.module.scss';
@@ -239,6 +241,7 @@ export class DatePickerClassComponent extends Component {
       selectPrecision,
       id,
       styles,
+      isHibanaEnabled,
     } = this.props;
 
     const dateFormat = dateFieldFormat || this.DATE_FORMAT;
@@ -249,6 +252,7 @@ export class DatePickerClassComponent extends Component {
         </label>
 
         <Select
+          style={{ minWidth: isHibanaEnabled ? tokens.sizing_900 : '100%' }}
           id={`range-select-${id}`}
           options={getRelativeDateOptions(relativeDateOptions)}
           onChange={this.handleSelectRange}
@@ -346,9 +350,10 @@ export class DatePickerClassComponent extends Component {
 }
 
 export default function DatePicker(props) {
+  const [{ isHibanaEnabled }] = useHibana();
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
 
-  return <DatePickerClassComponent styles={styles} {...props} />;
+  return <DatePickerClassComponent isHibanaEnabled={isHibanaEnabled} styles={styles} {...props} />;
 }
 
 DatePicker.propTypes = {

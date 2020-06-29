@@ -41,11 +41,7 @@ exports[`Detail renders data correctly 1`] = `
         <LabelledValue
           key="description"
           label="Description"
-          value={
-            <LongTextContainer
-              text=""
-            />
-          }
+          value=""
         />
         <LabelledValue
           key="raw json"

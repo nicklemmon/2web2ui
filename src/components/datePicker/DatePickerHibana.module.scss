@@ -1,5 +1,9 @@
 @import '~@sparkpost/design-tokens-hibana/tokens';
 
+.Select {
+  min-width: sizing(900);
+}
+
 .Popover {
   width: 640px;
   padding: spacing(400);

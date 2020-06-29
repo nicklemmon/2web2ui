@@ -28,6 +28,11 @@ exports[`Component: DatePicker handleFormDates should use a date field format if
               3,
             ]
           }
+          style={
+            Object {
+              "minWidth": "100%",
+            }
+          }
           value="day"
         />
       </React.Fragment>
@@ -95,6 +100,11 @@ exports[`Component: DatePicker should render ok by default 1`] = `
                   2,
                   3,
                 ]
+              }
+              style={
+                Object {
+                  "minWidth": "100%",
+                }
               }
               value="day"
             />
