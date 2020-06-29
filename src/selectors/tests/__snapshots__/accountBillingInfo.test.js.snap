@@ -2,190 +2,36 @@
 
 exports[`Selector: current plan should get current plan from billing 1`] = `
 Object {
-  "code": "qwe",
-  "status": "private",
+  "billingId": "id1",
+  "billing_id": "id1",
+  "bundle": "5M-0817",
+  "code": "5M-0817",
+  "includesIp": true,
+  "overage": 0.3,
+  "plan": "5M-0817",
+  "price": 123,
+  "product": "messaging",
+  "products": Array [
+    Object {
+      "plan": "5M-0817",
+      "product": "messaging",
+    },
+  ],
+  "status": "secret",
+  "tier": "unlimited",
+  "type": "messaging",
+  "volume": 5000000,
 }
 `;
 
-exports[`plan selector selectAvailablePlans should return active AWS plans 1`] = `
-Array [
-  Object {
-    "awsMarketplace": true,
-    "code": "pub-aws",
-    "status": "public",
-  },
-  Object {
-    "awsMarketplace": true,
-    "code": "pub-aws-free",
-    "isFree": true,
-    "status": "public",
-  },
-  Object {
-    "awsMarketplace": true,
-    "code": "sec-aws",
-    "status": "secret",
-  },
-]
-`;
+exports[`plan selector selectAvailablePlans should return active AWS plans 1`] = `Array []`;
 
-exports[`plan selector selectAvailablePlans should return active paid plans 1`] = `
-Array [
-  Object {
-    "code": "pub",
-    "status": "public",
-  },
-  Object {
-    "code": "sec",
-    "status": "secret",
-  },
-  Object {
-    "code": "starter",
-    "status": "public",
-    "tier": "starter",
-  },
-  Object {
-    "code": "premier",
-    "status": "public",
-    "tier": "premier",
-  },
-]
-`;
+exports[`plan selector selectAvailablePlans should return active paid plans 1`] = `Array []`;
 
-exports[`plan selector selectAvailablePlans should return active plans 1`] = `
-Array [
-  Object {
-    "code": "pub",
-    "status": "public",
-  },
-  Object {
-    "code": "pub-free",
-    "isFree": true,
-    "status": "public",
-    "tier": "test",
-  },
-  Object {
-    "code": "sec",
-    "status": "secret",
-  },
-  Object {
-    "code": "starter",
-    "status": "public",
-    "tier": "starter",
-  },
-  Object {
-    "code": "premier",
-    "status": "public",
-    "tier": "premier",
-  },
-  Object {
-    "code": "free500-0419",
-    "isFree": true,
-    "status": "public",
-  },
-]
-`;
+exports[`plan selector selectAvailablePlans should return active plans 1`] = `Array []`;
 
-exports[`plan selector selectVisiblePlans should return public AWS plans 1`] = `
-Array [
-  Object {
-    "awsMarketplace": true,
-    "code": "pub-aws",
-    "status": "public",
-  },
-  Object {
-    "awsMarketplace": true,
-    "code": "pub-aws-free",
-    "isFree": true,
-    "status": "public",
-  },
-]
-`;
+exports[`plan selector selectVisiblePlans should return public AWS plans 1`] = `Array []`;
 
-exports[`plan selector selectVisiblePlans should return public paid plans 1`] = `
-Array [
-  Object {
-    "code": "pub",
-    "status": "public",
-  },
-  Object {
-    "code": "starter",
-    "status": "public",
-    "tier": "starter",
-  },
-  Object {
-    "code": "premier",
-    "status": "public",
-    "tier": "premier",
-  },
-]
-`;
+exports[`plan selector selectVisiblePlans should return public paid plans 1`] = `Array []`;
 
-exports[`plan selector selectVisiblePlans should return public plans 1`] = `
-Array [
-  Object {
-    "code": "pub",
-    "status": "public",
-  },
-  Object {
-    "code": "pub-free",
-    "isFree": true,
-    "status": "public",
-    "tier": "test",
-  },
-  Object {
-    "code": "starter",
-    "status": "public",
-    "tier": "starter",
-  },
-  Object {
-    "code": "premier",
-    "status": "public",
-    "tier": "premier",
-  },
-  Object {
-    "code": "free500-0419",
-    "isFree": true,
-    "status": "public",
-  },
-]
-`;
-
-exports[`plan selector selectedTieredVisiblePlans should separate plans into tiers 1`] = `
-Object {
-  "default": Array [
-    Object {
-      "code": "pub",
-      "status": "public",
-      "tier": "default",
-    },
-  ],
-  "premier": Array [
-    Object {
-      "code": "premier",
-      "status": "public",
-      "tier": "premier",
-    },
-  ],
-  "starter": Array [
-    Object {
-      "code": "starter",
-      "status": "public",
-      "tier": "starter",
-    },
-  ],
-  "test": Array [
-    Object {
-      "code": "pub-free",
-      "isFree": true,
-      "status": "public",
-      "tier": "test",
-    },
-    Object {
-      "code": "free500-0419",
-      "isFree": true,
-      "status": "public",
-      "tier": "test",
-    },
-  ],
-}
-`;
+exports[`plan selector selectVisiblePlans should return public plans 1`] = `Array []`;

@@ -76,22 +76,13 @@ describe('Billing Helpers', () => {
   });
 
   describe('getPlanPrice', () => {
-    const monthly = {
-      monthly: 50,
+    const plan = {
       volume: 500,
-    };
-
-    const hourly = {
-      hourly: 0.25,
-      volume: 600,
+      price: 50,
     };
 
     it('returns price info correctly for monthly plan', () => {
-      expect(getPlanPrice(monthly)).toMatchSnapshot();
-    });
-
-    it('returns price info correctly for hourly plan', () => {
-      expect(getPlanPrice(hourly)).toMatchSnapshot();
+      expect(getPlanPrice(plan)).toMatchSnapshot();
     });
   });
 

@@ -1,25 +1,36 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash';
+import { formatToMatchAccountPlan } from 'src/helpers/billing';
 
 const getAccount = state => state.account;
 const getUser = state => state.currentUser;
-const getPlans = state => _.get(state, 'billing.plans', []);
+const getBundles = state => _.get(state, 'billing.bundles', []);
+const getBundlePlans = state => _.get(state, 'billing.bundlePlans', []);
 const getACReady = state => state.accessControlReady;
 
 export const getCurrentAccountPlan = createSelector(
-  [getAccount, getPlans],
-  (account, plans) => plans.find(plan => plan.code === account.subscription.code) || {},
+  [getAccount, getBundlePlans, getBundles],
+  (account, bundlePlans, bundles) => {
+    return (
+      {
+        ...bundlePlans.find(plan => plan.plan === account.subscription.code),
+        ...bundles.find(bundle => bundle.bundle === account.subscription.code),
+      } || {}
+    );
+  },
 );
 
 const selectAccessConditionState = createSelector(
-  [getAccount, getUser, getPlans, getCurrentAccountPlan, getACReady],
-  (account, currentUser, plans, accountPlan, ready) => ({
-    account,
-    currentUser,
-    plans,
-    accountPlan,
-    ready,
-  }),
+  [getAccount, getUser, getBundlePlans, getCurrentAccountPlan, getACReady],
+  (account, currentUser, plans, accountPlan, ready) => {
+    return {
+      account,
+      currentUser,
+      plans,
+      accountPlan: formatToMatchAccountPlan(accountPlan),
+      ready,
+    };
+  },
 );
 
 export default selectAccessConditionState;

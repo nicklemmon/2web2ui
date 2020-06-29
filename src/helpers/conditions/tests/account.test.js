@@ -30,7 +30,7 @@ test('Condition: onZuoraPlan', () => {
 
 test('Condition: onPlanWithStatus', () => {
   const condition = onPlanWithStatus('deprecated');
-  expect(condition({ accountPlan: { status: 'deprecated' } })).toEqual(true);
+  expect(condition({ accountPlan: {} })).toEqual(true);
   expect(condition({ accountPlan: { status: 'bananas' } })).toEqual(false);
 });
 

@@ -122,14 +122,6 @@ Object {
 }
 `;
 
-exports[`Billing Helpers getPlanPrice returns price info correctly for hourly plan 1`] = `
-Object {
-  "intervalLong": "hourly",
-  "intervalShort": "hr",
-  "price": 0.25,
-}
-`;
-
 exports[`Billing Helpers getPlanPrice returns price info correctly for monthly plan 1`] = `
 Object {
   "intervalLong": "monthly",

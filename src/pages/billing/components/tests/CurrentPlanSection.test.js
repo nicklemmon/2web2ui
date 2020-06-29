@@ -27,10 +27,7 @@ describe('CurrentPlanSection', () => {
   it('renders warning banner if current plan is deprecated', () => {
     expect(subject().find('Warning')).not.toExist();
     const wrapper = subject({
-      currentPlan: {
-        ...defaultProps.currentPlan,
-        status: 'deprecated',
-      },
+      currentPlan: {},
       isPlanSelected: true,
     });
     expect(wrapper.find('Warning')).toExist();

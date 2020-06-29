@@ -5,11 +5,52 @@ describe('Selector: current plan', () => {
 
   beforeEach(() => {
     state = {
-      account: { subscription: { code: 'qwe' } },
+      account: { subscription: { code: '5M-0817' } },
+
       billing: {
-        plans: [
-          { status: 'public', code: '123' },
-          { status: 'private', code: 'qwe' },
+        bundlePlans: [
+          {
+            billing_id: 'id1',
+            plan: '5M-0817',
+            product: 'messaging',
+            price: 123,
+            overage: 0.3,
+            volume: 5000000,
+          },
+          {
+            billing_id: 'id2',
+            plan: '2.5M-0817',
+            product: 'messaging',
+            price: 1234,
+            overage: 0.4,
+            volume: 2500000,
+          },
+        ],
+        bundles: [
+          {
+            bundle: '5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '5M-0817',
+              },
+            ],
+          },
+          {
+            bundle: '2.5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '2.5M-0817',
+              },
+            ],
+          },
         ],
       },
     };
@@ -163,21 +204,52 @@ describe('plan selector', () => {
 
   beforeEach(() => {
     state = {
-      account: {
-        subscription: { self_serve: true },
-        billing: {},
-      },
+      account: { subscription: { code: '5M-0817' } },
+
       billing: {
-        plans: [
-          { code: 'pub', status: 'public' },
-          { code: 'pub-free', status: 'public', tier: 'test', isFree: true },
-          { code: 'pub-aws', status: 'public', awsMarketplace: true },
-          { code: 'pub-aws-free', status: 'public', awsMarketplace: true, isFree: true },
-          { code: 'sec', status: 'secret' },
-          { code: 'sec-aws', status: 'secret', awsMarketplace: true },
-          { code: 'starter', status: 'public', tier: 'starter' },
-          { code: 'premier', status: 'public', tier: 'premier' },
-          { code: 'free500-0419', status: 'public', isFree: true },
+        bundlePlans: [
+          {
+            billing_id: 'id1',
+            plan: '5M-0817',
+            product: 'messaging',
+            price: 123,
+            overage: 0.3,
+            volume: 5000000,
+          },
+          {
+            billing_id: 'id2',
+            plan: '2.5M-0817',
+            product: 'messaging',
+            price: 1234,
+            overage: 0.4,
+            volume: 2500000,
+          },
+        ],
+        bundles: [
+          {
+            bundle: '5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '5M-0817',
+              },
+            ],
+          },
+          {
+            bundle: '2.5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '2.5M-0817',
+              },
+            ],
+          },
         ],
       },
     };
@@ -215,12 +287,6 @@ describe('plan selector', () => {
     });
   });
 
-  describe('selectedTieredVisiblePlans', () => {
-    it('should separate plans into tiers', () => {
-      expect(billingInfo.selectTieredVisiblePlans(state)).toMatchSnapshot();
-    });
-  });
-
   describe('selectMonthlyRecipientValidationUsage', () => {
     it('returns zero when uage is undefined', () => {
       expect(billingInfo.selectMonthlyRecipientValidationUsage({})).toEqual(0);
@@ -244,7 +310,7 @@ describe('plan selector', () => {
   });
 });
 
-describe('getPlanTierByPlanCode', () => {
+describe('getBundleTierByPlanCode', () => {
   let state;
 
   beforeEach(() => {
@@ -276,7 +342,7 @@ describe('getPlanTierByPlanCode', () => {
   });
 
   it('returns the tier of current plan based on the plancode', () => {
-    expect(billingInfo.getPlanTierByPlanCode(state)).toEqual('test');
+    expect(billingInfo.getBundleTierByPlanCode(state)).toEqual('test');
   });
 
   it("returns a '' when current plan doesn't have a tier", () => {
@@ -287,6 +353,6 @@ describe('getPlanTierByPlanCode', () => {
         billing: {},
       },
     };
-    expect(billingInfo.getPlanTierByPlanCode(state)).toEqual('');
+    expect(billingInfo.getBundleTierByPlanCode(state)).toEqual('');
   });
 });

@@ -163,12 +163,10 @@ export function formatCardTypes(cards) {
 }
 
 export function getPlanPrice(plan) {
-  const pricingInterval = _.has(plan, 'hourly') ? 'hourly' : 'monthly';
-  const intervalShortName = pricingInterval === 'hourly' ? 'hr' : 'mo';
   return {
-    intervalShort: intervalShortName,
-    intervalLong: pricingInterval,
-    price: plan.price || plan[pricingInterval],
+    intervalShort: 'mo',
+    intervalLong: 'monthly',
+    price: plan.price,
   };
 }
 
@@ -185,4 +183,14 @@ export function prepareCardInfo({ expCombined, ...cardInfo }) {
 
 export const isProductOnSubscription = (productName = 'recipient_validation') => state => {
   return _.find(_.get(state, 'billing.subscription.products') || {}, { product: productName });
+};
+
+export const formatToMatchAccountPlan = currentPlan => {
+  if (_.isEmpty(currentPlan)) return {};
+  return {
+    billingId: currentPlan.billing_id,
+    code: currentPlan.plan,
+    includesIp: currentPlan.status === 'deprecated' ? false : true,
+    ...currentPlan,
+  };
 };

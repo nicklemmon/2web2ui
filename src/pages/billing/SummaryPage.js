@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Page } from 'src/components/matchbox';
-import { fetch as fetchAccount, getPlans, getBillingInfo, getUsage } from 'src/actions/account';
+import { fetch as fetchAccount, getBillingInfo, getUsage } from 'src/actions/account';
 import { list as getSendingIps } from 'src/actions/sendingIps';
 import { selectBillingInfo, selectAccountBilling } from 'src/selectors/accountBillingInfo';
 import { selectAccountAgeInDays } from 'src/selectors/accountAge';
@@ -21,7 +21,6 @@ export class BillingSummaryPage extends Component {
       fetchAccount,
       getSubscription,
       getBillingInfo,
-      getPlans,
       getSendingIps,
       getInvoices,
       getUsage,
@@ -29,7 +28,6 @@ export class BillingSummaryPage extends Component {
     fetchAccount();
     getSubscription();
     getBillingInfo();
-    getPlans();
     getSendingIps();
     getInvoices();
     getUsage();
@@ -52,7 +50,7 @@ export class BillingSummaryPage extends Component {
       <SuspendedForBilling
         condition={isSuspendedForBilling}
         account={account}
-        key={'suspended-billing'}
+        key="suspended-billing"
       />
     );
     const manuallyBilledBanner = (
@@ -60,7 +58,7 @@ export class BillingSummaryPage extends Component {
         account={account}
         onZuoraPlan={billingInfo.onZuoraPlan}
         condition={any(isAws, () => !isBillingSubscriptionSelfServe(billingInfo))}
-        key={'manually-billed-banner'}
+        key="manually-billed-banner"
       />
     );
     const billingSummary = (
@@ -72,7 +70,7 @@ export class BillingSummaryPage extends Component {
         invoices={invoices}
         sendingIps={sendingIps}
         accountAgeInDays={accountAgeInDays}
-        key={'billing-summary'}
+        key="billing-summary"
       />
     );
     return [suspendedBilling, manuallyBilledBanner, billingSummary];
@@ -104,7 +102,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   getInvoices,
   getSendingIps,
-  getPlans,
   fetchAccount,
   getBillingInfo,
   getUsage,
