@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Route, Switch } from 'react-router-dom';
-import { Page, Panel, Tabs } from 'src/components/matchbox';
+import { Box, Page, Tabs } from 'src/components/matchbox';
 import { clearSubaccount, getSubaccount } from 'src/actions/subaccounts';
-import { ApiKeySuccessBanner, TabsWrapper } from 'src/components';
+import { ApiKeySuccessBanner } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { selectSubaccount } from 'src/selectors/subaccounts';
 import { listPools } from 'src/actions/ipPools';
@@ -75,29 +75,27 @@ export class DetailsPage extends Component {
       <Page title={`${subaccount.name} (${subaccount.id})`} breadcrumbAction={breadcrumbAction}>
         {newKey && <ApiKeySuccessBanner title="Don't Forget Your API Key" mb="400" />}
 
-        <Panel>
-          <TabsWrapper>
-            <Tabs selected={selectedTab} tabs={tabs} />
-          </TabsWrapper>
+        <Box border="400" borderBottom="0">
+          <Tabs borderBottom="0" selected={selectedTab} tabs={tabs} />
+        </Box>
 
-          <Switch>
-            <Route
-              exact
-              path="/account/subaccounts/:id"
-              render={() => <EditTab subaccount={subaccount} />}
-            />
-            <Route
-              exact
-              path="/account/subaccounts/:id/api-keys"
-              render={() => <ApiKeysTab id={subaccount.id} />}
-            />
-            <Route
-              exact
-              path="/account/subaccounts/:id/sending-domains"
-              render={() => <SendingDomainsTab id={subaccount.id} />}
-            />
-          </Switch>
-        </Panel>
+        <Switch>
+          <Route
+            exact
+            path="/account/subaccounts/:id"
+            render={() => <EditTab subaccount={subaccount} />}
+          />
+          <Route
+            exact
+            path="/account/subaccounts/:id/api-keys"
+            render={() => <ApiKeysTab id={subaccount.id} />}
+          />
+          <Route
+            exact
+            path="/account/subaccounts/:id/sending-domains"
+            render={() => <SendingDomainsTab id={subaccount.id} />}
+          />
+        </Switch>
       </Page>
     );
   }

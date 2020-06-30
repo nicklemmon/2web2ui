@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { TableCollection, Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Button, Box, Panel, Stack } from 'src/components/matchbox';
+import { Button, Panel, Stack } from 'src/components/matchbox';
 import { filterBoxConfig } from 'src/pages/api-keys/tableConfig';
 import { getSubaccountApiKeys } from 'src/selectors/api-keys';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
@@ -16,22 +16,13 @@ const columns = [
 export class ApiKeysTab extends Component {
   renderCollection(keys) {
     return (
-      <div>
-        <Panel.Section>
-          <p>API Keys assigned to this subaccount.</p>
-        </Panel.Section>
-
-        {/* TODO: Box is only used here to control Hibana rendering - can just be Panel.Section when OG theme is removed */}
-        <Box as={Panel.Section}>
-          <TableCollection
-            columns={columns}
-            getRowData={this.getRowData}
-            pagination={true}
-            rows={keys}
-            filterBox={filterBoxConfig}
-          />
-        </Box>
-      </div>
+      <TableCollection
+        columns={columns}
+        getRowData={this.getRowData}
+        pagination={true}
+        rows={keys}
+        filterBox={filterBoxConfig}
+      />
     );
   }
 
@@ -49,20 +40,22 @@ export class ApiKeysTab extends Component {
 
   renderEmpty() {
     return (
-      <Panel.Section style={{ textAlign: 'center' }}>
-        <Stack>
-          <p>
-            This subaccount has no API Keys assigned to it. You can assign an existing one, or
-            create a new one.
-          </p>
+      <Panel>
+        <Panel.Section style={{ textAlign: 'center' }}>
+          <Stack>
+            <p>
+              This subaccount has no API Keys assigned to it. You can assign an existing one, or
+              create a new one.
+            </p>
 
-          <div>
-            <PageLink as={Button} color="orange" plain to="/account/api-keys">
-              Manage API Keys
-            </PageLink>
-          </div>
-        </Stack>
-      </Panel.Section>
+            <div>
+              <PageLink as={Button} variant="secondary" to="/account/api-keys">
+                Manage API Keys
+              </PageLink>
+            </div>
+          </Stack>
+        </Panel.Section>
+      </Panel>
     );
   }
 

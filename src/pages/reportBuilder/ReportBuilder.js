@@ -20,7 +20,12 @@ import {
   selectSummaryChartSearchOptions,
   selectSummaryMetricsProcessed,
 } from 'src/selectors/reportSearchOptions';
-import { BounceReasonsTable, DelayReasonsTable, RejectionReasonsTable } from './components/tabs';
+import {
+  BounceReasonsTable,
+  DelayReasonsTable,
+  LinksTable,
+  RejectionReasonsTable,
+} from './components/tabs';
 import styles from './ReportBuilder.module.scss';
 import moment from 'moment';
 
@@ -142,7 +147,11 @@ export function ReportBuilder({
                 <DelayReasonsTable />
               </Tabs.Item>
             )}
-            {hasLinksTab && <Tabs.Item></Tabs.Item>}
+            {hasLinksTab && (
+              <Tabs.Item>
+                <LinksTable />
+              </Tabs.Item>
+            )}
           </Tabs>
         </div>
       </Panel>

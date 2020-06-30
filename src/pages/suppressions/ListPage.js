@@ -10,6 +10,7 @@ import SuppressionSearch from './components/SuppressionSearch';
 import EmailSearch from './components/EmailSearch';
 import Results from './components/Results';
 import { selectSuppresionsList } from 'src/selectors/suppressions';
+import styles from './ListPage.module.scss';
 
 const tabs = [
   {
@@ -49,7 +50,7 @@ export class ListPage extends Component {
           to: '/lists/suppressions/create',
         }}
       >
-        <Panel>
+        <Panel mb="0" className={styles.FilterPanel}>
           <TabsWrapper>
             <Tabs
               selected={selectedTab}

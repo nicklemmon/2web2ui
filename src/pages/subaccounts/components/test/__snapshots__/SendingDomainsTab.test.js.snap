@@ -64,29 +64,30 @@ exports[`SendingDomainsTab should load domains in tab 1`] = `
 
 exports[`SendingDomainsTab should show empty message when 0 domains exist 1`] = `
 <Fragment>
-  <Panel.Section
-    style={
-      Object {
-        "textAlign": "center",
+  <Panel>
+    <Panel.Section
+      style={
+        Object {
+          "textAlign": "center",
+        }
       }
-    }
-  >
-    <Stack>
-      <p>
-        This subaccount has no sending domains assigned to it. You can assign an existing one, or create a new one.
-      </p>
-      <div>
-        <PageLink
-          as={[Function]}
-          color="orange"
-          plain={true}
-          to="/account/sending-domains"
-        >
-          Manage Sending Domains
-        </PageLink>
-      </div>
-    </Stack>
-  </Panel.Section>
+    >
+      <Stack>
+        <p>
+          This subaccount has no sending domains assigned to it. You can assign an existing one, or create a new one.
+        </p>
+        <div>
+          <PageLink
+            as={[Function]}
+            to="/account/sending-domains"
+            variant="secondary"
+          >
+            Manage Sending Domains
+          </PageLink>
+        </div>
+      </Stack>
+    </Panel.Section>
+  </Panel>
 </Fragment>
 `;
 

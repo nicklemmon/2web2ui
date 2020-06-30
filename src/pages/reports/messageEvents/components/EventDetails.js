@@ -56,7 +56,7 @@ class EventDetails extends Component {
         <Box paddingTop="500" borderBottom="400" />
         <Panel.Section>{this.renderDetails(detailsToRender)}</Panel.Section>
         <Panel.Section>
-          <LabelledValue label="Raw Json">
+          <LabelledValue label="Raw Json" style={{ alignItems: 'center' }}>
             <CopyField value={JSON.stringify(detailsToRender)} />
           </LabelledValue>
         </Panel.Section>

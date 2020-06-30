@@ -3,19 +3,34 @@ import { Button, Modal, Panel, Stack, Text } from 'src/components/matchbox';
 import { ButtonWrapper, CopyField, LabelledValue, ShortKeyCode } from 'src/components';
 import useModal from 'src/hooks/useModal';
 import Heading from 'src/components/text/Heading';
+
 export default function SCIMTokenSection(props) {
-  const { scimTokenList, newScimToken, generateScimToken, listScimToken } = props;
+  const {
+    scimTokenList,
+    newScimToken,
+    generateScimToken,
+    listScimToken,
+    deleteScimToken,
+    error,
+    showAlert,
+    resetScimTokenErrors,
+  } = props;
+  const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
   const getActions =
     scimTokenList.length > 0
       ? [
           {
             content: 'Delete Token',
-            onClick: () => {},
+            onClick: () => {
+              resetScimTokenErrors();
+              openModal({ name: 'Delete Token' });
+            },
             color: 'orange',
           },
           {
             content: 'Generate SCIM Token',
             onClick: () => {
+              resetScimTokenErrors();
               openModal({ name: 'Override Token' });
             },
             color: 'orange',
@@ -25,18 +40,35 @@ export default function SCIMTokenSection(props) {
           {
             content: 'Generate SCIM Token',
             onClick: () => {
+              resetScimTokenErrors();
               handleGenerateToken();
             },
             color: 'orange',
           },
         ];
-  const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
   const handleGenerateToken = () => {
-    generateScimToken().then(() => {
-      openModal({ name: 'Generate SCIM Token' });
+    if (scimTokenList.length > 0) {
+      deleteScimToken({ id: scimTokenList[0].id }).then(() => {
+        generateScimToken().then(() => {
+          openModal({ name: 'Generate SCIM Token' });
+          listScimToken();
+        });
+      });
+    } else {
+      generateScimToken().then(() => {
+        openModal({ name: 'Generate SCIM Token' });
+        listScimToken();
+      });
+    }
+  };
+  const handleDeleteToken = () => {
+    deleteScimToken({ id: scimTokenList[0].id }).then(() => {
       listScimToken();
+      closeModal();
+      showAlert({ type: 'success', message: 'SCIM token deleted' });
     });
   };
+
   const renderModalByName = name => {
     switch (name) {
       case 'Override Token':
@@ -69,6 +101,35 @@ export default function SCIMTokenSection(props) {
                   Generate New Token
                 </Button>
                 <Button variant="secondary" onClick={() => closeModal()}>
+                  Cancel
+                </Button>
+              </ButtonWrapper>
+            </Panel.Section>
+          </Panel>
+        );
+      case 'Delete Token':
+        return (
+          <Panel title="Delete SCIM Token">
+            <Panel.Section>
+              <Stack>
+                <p>
+                  <Text as="span">
+                    The token will be immediately and permanently removed. This cannot be undone.
+                  </Text>
+                </p>
+              </Stack>
+            </Panel.Section>
+            <Panel.Section>
+              <ButtonWrapper>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    handleDeleteToken();
+                  }}
+                >
+                  Delete SCIM Token
+                </Button>
+                <Button variant="monochrome-secondary" onClick={() => closeModal()}>
                   Cancel
                 </Button>
               </ButtonWrapper>
@@ -112,9 +173,11 @@ export default function SCIMTokenSection(props) {
           )}
         </Heading>
       </LabelledValue>
-      <Modal open={isModalOpen} onClose={() => closeModal()} showCloseButton>
-        {isModalOpen && renderModalByName(name)}
-      </Modal>
+      {!error && (
+        <Modal open={isModalOpen} onClose={() => closeModal()} showCloseButton>
+          {isModalOpen && renderModalByName(name)}
+        </Modal>
+      )}
     </Panel.Section>
   );
 }

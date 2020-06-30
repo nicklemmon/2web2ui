@@ -6,6 +6,9 @@ const initialState = {
   generateScimTokenSuccess: null,
   generateScimTokenPending: null,
   generateScimTokenError: null,
+  deleteScimTokenSuccess: null,
+  deleteScimTokenPending: null,
+  deleteScimTokenError: null,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -33,6 +36,40 @@ export default (state = initialState, { type, payload }) => {
 
     case 'LIST_SCIM_TOKEN_FAIL': {
       return { ...state, scimTokenListLoading: false, error: payload };
+    }
+    //DELETE_SCIM_TOKEN
+    case 'DELETE_SCIM_TOKEN_SUCCESS': {
+      return {
+        ...state,
+        deleteScimTokenSuccess: true,
+        deleteScimTokenError: false,
+        deleteScimTokenPending: false,
+      };
+    }
+
+    case 'DELETE_SCIM_TOKEN_PENDING': {
+      return {
+        ...state,
+        deleteScimTokenSuccess: false,
+        deleteScimTokenError: false,
+        deleteScimTokenPending: true,
+      };
+    }
+    case 'DELETE_SCIM_TOKEN_FAIL': {
+      return {
+        ...state,
+        deleteScimTokenSuccess: false,
+        deleteScimTokenError: true,
+        deleteScimTokenPending: false,
+      };
+    }
+    case 'SCIM_TOKEN_ERROR_RESET': {
+      return {
+        ...state,
+        deleteScimTokenSuccess: null,
+        deleteScimTokenError: null,
+        deleteScimTokenPending: null,
+      };
     }
     default:
       return state;

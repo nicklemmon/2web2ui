@@ -39,9 +39,6 @@ exports[`Promo Code async validator should format start time and hours left for 
   </Bold>
    
   Aug 09, 2019 at 12:30pm
-   and 
-  24
-   hours remaining on test
 </React.Fragment>
 `;
 

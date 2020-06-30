@@ -3,6 +3,7 @@ import { getMetricsFromKeys, getQueryFromOptions } from 'src/helpers/metrics';
 
 const DELIVERABILITY_METRICS = getMetricsFromKeys([
   'count_accepted',
+  'count_clicked',
   'count_sent',
   'count_unique_clicked_approx',
   'count_unique_confirmed_opened_approx',

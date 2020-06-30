@@ -11,7 +11,10 @@ exports[`ListPage renders correctly 1`] = `
   }
   title="Suppressions"
 >
-  <Panel>
+  <Panel
+    className="FilterPanel"
+    mb="0"
+  >
     <TabsWrapper>
       <Tabs
         connectBelow={true}
@@ -51,7 +54,10 @@ exports[`ListPage renders correctly with subaccounts 1`] = `
   }
   title="Suppressions"
 >
-  <Panel>
+  <Panel
+    className="FilterPanel"
+    mb="0"
+  >
     <TabsWrapper>
       <Tabs
         connectBelow={true}
@@ -92,7 +98,10 @@ exports[`ListPage renders filter by email tab correctly when selected 1`] = `
   }
   title="Suppressions"
 >
-  <Panel>
+  <Panel
+    className="FilterPanel"
+    mb="0"
+  >
     <TabsWrapper>
       <Tabs
         connectBelow={true}

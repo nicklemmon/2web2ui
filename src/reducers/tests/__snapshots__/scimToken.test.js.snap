@@ -1,0 +1,162 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reducer: ScimToken when delete scim token fails 1`] = `
+Object {
+  "deleteScimTokenError": true,
+  "deleteScimTokenPending": false,
+  "deleteScimTokenSuccess": false,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when delete scim token is pending 1`] = `
+Object {
+  "deleteScimTokenError": false,
+  "deleteScimTokenPending": true,
+  "deleteScimTokenSuccess": false,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when delete scim token succeeds 1`] = `
+Object {
+  "deleteScimTokenError": false,
+  "deleteScimTokenPending": false,
+  "deleteScimTokenSuccess": true,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when generate scim token failed 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": null,
+  "generateScimTokenError": [Error: Oh no!],
+  "generateScimTokenPending": false,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when generate scim token is pending 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": true,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when generate scim token succeeds 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": false,
+  "generateScimTokenSuccess": true,
+  "newScimToken": "this-is-a-fake-api-key",
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when scim token error are reset 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when scim token list failed to load 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": [Error: Oh no!],
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": false,
+}
+`;
+
+exports[`Reducer: ScimToken when scim token list is pending 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [],
+  "scimTokenListLoading": true,
+}
+`;
+
+exports[`Reducer: ScimToken when scim token list loaded 1`] = `
+Object {
+  "deleteScimTokenError": null,
+  "deleteScimTokenPending": null,
+  "deleteScimTokenSuccess": null,
+  "error": null,
+  "generateScimTokenError": null,
+  "generateScimTokenPending": null,
+  "generateScimTokenSuccess": null,
+  "newScimToken": null,
+  "scimTokenList": Array [
+    Object {
+      "created_at": "2019-06-18T20:50:12.164Z",
+      "grants": Array [
+        "scim/manage",
+      ],
+      "id": "oldid",
+      "label": "SCIM Token",
+      "short_key": "old1",
+      "username": "someuser",
+    },
+  ],
+  "scimTokenListLoading": false,
+}
+`;

@@ -44,6 +44,11 @@ exports[`EventDetails Component should render with all props 1`] = `
   <Panel.Section>
     <LabelledValue
       label="Raw Json"
+      style={
+        Object {
+          "alignItems": "center",
+        }
+      }
     >
       <CopyField
         hideCopy={false}
@@ -66,6 +71,11 @@ exports[`EventDetails Component should render with no props 1`] = `
   <Panel.Section>
     <LabelledValue
       label="Raw Json"
+      style={
+        Object {
+          "alignItems": "center",
+        }
+      }
     >
       <CopyField
         hideCopy={false}

@@ -15,7 +15,7 @@ describe('Action Creator: Refresh Engagement Report', () => {
       params: expect.objectContaining({
         campaigns: 'test-camp',
         metrics:
-          'count_accepted,count_sent,count_unique_clicked_approx,count_unique_confirmed_opened_approx',
+          'count_accepted,count_clicked,count_sent,count_unique_clicked_approx,count_unique_confirmed_opened_approx',
       }),
       path: 'deliverability',
       type: 'GET_ENGAGEMENT_AGGREGATE_METRICS',
@@ -37,7 +37,7 @@ describe('Action Creator: Refresh Engagement Report', () => {
       params: expect.objectContaining({
         campaigns: 'test,camp',
         metrics:
-          'count_accepted;count_sent;count_unique_clicked_approx;count_unique_confirmed_opened_approx',
+          'count_accepted;count_clicked;count_sent;count_unique_clicked_approx;count_unique_confirmed_opened_approx',
       }),
       path: 'deliverability',
       type: 'GET_ENGAGEMENT_AGGREGATE_METRICS',

@@ -486,7 +486,7 @@ exports[`FileFieldWrapper renders file input with help message 2`] = `
   </Box>
   <Text
     color="gray.700"
-    fontSize="100"
+    fontSize="200"
     lineHeight="100"
     pt="200"
   >

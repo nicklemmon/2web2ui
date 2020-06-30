@@ -13,7 +13,13 @@ import StatusSection from './StatusSection';
 import SCIMTokenSection from './SCIMTokenSection';
 import { PANEL_LOADING_HEIGHT } from 'src/pages/account/constants';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import { generateScimToken, listScimToken } from 'src/actions/scimToken';
+import {
+  generateScimToken,
+  listScimToken,
+  deleteScimToken,
+  resetScimTokenErrors,
+} from 'src/actions/scimToken';
+import { showAlert } from 'src/actions/globalAlert';
 
 export function SingleSignOnPanel(props) {
   const {
@@ -24,8 +30,13 @@ export function SingleSignOnPanel(props) {
     loading,
     listScimToken,
     generateScimToken,
+    deleteScimToken,
     scimTokenList,
     newScimToken,
+    deleteScimTokenError,
+    generateScimTokenError,
+    resetScimTokenErrors,
+    showAlert,
   } = props;
   useEffect(() => {
     getAccountSingleSignOnDetails();
@@ -49,10 +60,14 @@ export function SingleSignOnPanel(props) {
         <StatusSection readOnly={tfaRequired} {...props} />
         {isSsoScimUiEnabled && provider && (
           <SCIMTokenSection
+            showAlert={showAlert}
             scimTokenList={scimTokenList}
             newScimToken={newScimToken}
             generateScimToken={generateScimToken}
             listScimToken={listScimToken}
+            deleteScimToken={deleteScimToken}
+            resetScimTokenErrors={resetScimTokenErrors}
+            error={deleteScimTokenError || generateScimTokenError}
           />
         )}
       </React.Fragment>
@@ -85,6 +100,9 @@ const mapDispatchToProps = {
   updateAccountSingleSignOn,
   listScimToken,
   generateScimToken,
+  deleteScimToken,
+  resetScimTokenErrors,
+  showAlert,
 };
 
 const mapStateToProps = state => ({
@@ -93,6 +111,8 @@ const mapStateToProps = state => ({
   isSsoScimUiEnabled: isAccountUiOptionSet('sso_scim_section')(state),
   scimTokenList: state.scimToken.scimTokenList,
   newScimToken: state.scimToken.newScimToken,
+  deleteScimTokenError: state.scimToken.deleteScimTokenError,
+  generateScimTokenError: state.scimToken.generateScimTokenError,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleSignOnPanel);

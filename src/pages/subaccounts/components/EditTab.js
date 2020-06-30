@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { PanelLoading } from 'src/components/loading';
-
+import { Panel } from 'src/components/matchbox';
 import { getSubaccount, editSubaccount } from 'src/actions/subaccounts';
 import { selectSubaccount } from 'src/selectors/subaccounts';
 import { showAlert } from 'src/actions/globalAlert';
@@ -29,7 +29,11 @@ export class EditTab extends Component {
       return <PanelLoading />;
     }
 
-    return <SubaccountEditForm subaccount={this.props.subaccount} onSubmit={this.onSubmit} />;
+    return (
+      <Panel>
+        <SubaccountEditForm subaccount={this.props.subaccount} onSubmit={this.onSubmit} />
+      </Panel>
+    );
   }
 }
 
