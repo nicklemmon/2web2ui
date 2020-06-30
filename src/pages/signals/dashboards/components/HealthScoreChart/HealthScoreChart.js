@@ -140,10 +140,8 @@ export function HealthScoreChart(props) {
                     axisLine={false}
                     dataKey="date"
                     height={30}
-                    // hide={!showXAxis}
                     interval="preserveStartEnd"
                     scale="auto"
-                    // tickFormatter={xTickFormatter}
                     tickLine={false}
                     {...getXAxisProps()}
                   />
