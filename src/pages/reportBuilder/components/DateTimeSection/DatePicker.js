@@ -7,6 +7,7 @@ import {
   getStartOfDay,
   getEndOfDay,
   getRelativeDateOptions,
+  getRelativeDates,
   getNextHour,
   isSameDate,
 } from 'src/helpers/date';
@@ -31,6 +32,7 @@ export class DatePicker extends Component {
   state = {
     showDatePicker: false,
     selecting: false,
+    relativeRange: 'custom',
     selected: {},
     validationError: null,
     selectedPrecision: undefined,
@@ -66,10 +68,10 @@ export class DatePicker extends Component {
   }
 
   // Sets local state from reportOptions redux state - need to separate to handle pre-apply state
-  syncTimeToState = ({ from, to, precision }) => {
+  syncTimeToState = ({ from, to, precision, relativeRange }) => {
     if (from && to) {
       const selectedPrecision = this.props.selectPrecision && precision;
-      this.setState({ selected: { from, to }, selectedPrecision });
+      this.setState({ selected: { from, to }, selectedPrecision, relativeRange });
     }
   };
 
@@ -121,6 +123,7 @@ export class DatePicker extends Component {
     }
 
     this.setState({
+      relativeRange: 'custom',
       selected: dates,
       beforeSelected: dates,
       selecting: !selecting,
@@ -163,11 +166,20 @@ export class DatePicker extends Component {
   }
 
   handleSelectRange = value => {
-    if (value === 'custom') {
-      this.setState({ showDatePicker: true });
+    if (value !== 'custom') {
+      const { from, to } = getRelativeDates(value);
+      const { precision: oldPrecision } = this.props;
+      const precision = getRollupPrecision({ from, to, precision: oldPrecision });
+      this.setState({
+        selecting: false,
+        relativeRange: value,
+        selectedPrecision: precision,
+        selected: { from, to },
+      });
     } else {
-      this.setState({ showDatePicker: false });
-      this.props.onChange({ relativeRange: value });
+      this.setState({
+        relativeRange: value,
+      });
     }
   };
 
@@ -189,7 +201,7 @@ export class DatePicker extends Component {
     this.setState({ showDatePicker: false, selecting: false, validationError: null });
     this.props.onChange({
       ...selectedDates,
-      relativeRange: 'custom',
+      relativeRange: this.state.relativeRange,
       precision:
         this.state.selectedPrecision ||
         getPrecision(moment(selectedDates.from), moment(selectedDates.to)),
@@ -214,8 +226,6 @@ export class DatePicker extends Component {
       validationError,
       selectedPrecision,
     } = this.state;
-    const selectedRange =
-      from === this.props.from && to === this.props.to ? this.props.relativeRange : 'custom';
 
     // allow for prop-level override of "now" (DI, etc.)
     const {
@@ -242,7 +252,7 @@ export class DatePicker extends Component {
     const rangeOptions = getRelativeDateOptions(relativeDateOptions).map(({ label, value }) => {
       return {
         content: label,
-        highlighted: selectedRange === value,
+        highlighted: this.state.relativeRange === value,
         onClick: () => this.handleSelectRange(value),
       };
     });
