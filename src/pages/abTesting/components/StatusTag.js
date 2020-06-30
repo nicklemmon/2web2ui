@@ -9,12 +9,12 @@ const StatusTag = ({ status }) => {
 
   let tagColor = null;
 
-  if (status === 'running') {
-    tagColor = 'yellow';
+  if (status === 'completed') {
+    tagColor = 'green';
   }
 
-  if (status === 'completed') {
-    tagColor = 'navy';
+  if (status === 'running') {
+    tagColor = 'yellow';
   }
 
   return <Tag color={tagColor}>{snakeToFriendly(status)}</Tag>;

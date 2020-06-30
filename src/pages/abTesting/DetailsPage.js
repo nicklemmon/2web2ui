@@ -6,7 +6,6 @@ import { selectSubaccountIdFromQuery } from 'src/selectors/subaccounts';
 
 import { Loading, DeleteModal, ConfirmationModal } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Delete, Block } from '@sparkpost/matchbox-icons';
 import { showAlert } from 'src/actions/globalAlert';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
 import EditMode from './EditMode';
@@ -89,20 +88,12 @@ export class DetailsPage extends Component {
     return {
       breadcrumbAction: { content: 'Back to A/B Tests', component: PageLink, to: '/ab-testing' },
       cancelAction: {
-        content: (
-          <span>
-            <Block /> Cancel Test
-          </span>
-        ),
+        content: 'Cancel Test',
         visible: status === 'scheduled' || status === 'running',
         onClick: this.toggleCancel,
       },
       deleteAction: {
-        content: (
-          <span>
-            <Delete /> Delete Test
-          </span>
-        ),
+        content: 'Delete Test',
         onClick: this.toggleDelete,
       },
       test,

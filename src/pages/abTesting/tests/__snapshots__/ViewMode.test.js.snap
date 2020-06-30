@@ -18,10 +18,7 @@ exports[`Page: A/B Test View Mode should render cancelled status correctly 1`] =
   secondaryActions={
     Array [
       Object {
-        "content": <span>
-          <Save />
-           Override with new draft
-        </span>,
+        "content": "Override with new draft",
         "onClick": [Function],
         "visible": true,
       },
@@ -214,10 +211,7 @@ exports[`Page: A/B Test View Mode should render completed status correctly 1`] =
   secondaryActions={
     Array [
       Object {
-        "content": <span>
-          <Save />
-           Override with new draft
-        </span>,
+        "content": "Override with new draft",
         "onClick": [Function],
         "visible": true,
       },
@@ -398,10 +392,7 @@ exports[`Page: A/B Test View Mode should render running status correctly 1`] = `
   secondaryActions={
     Array [
       Object {
-        "content": <span>
-          <Save />
-           Override with new draft
-        </span>,
+        "content": "Override with new draft",
         "onClick": [Function],
         "visible": false,
       },
