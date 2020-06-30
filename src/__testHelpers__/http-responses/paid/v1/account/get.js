@@ -8,7 +8,7 @@ export default () => {
     created: '2018-04-13T03:07:48.627Z',
     options: {
       smtp_tracking_default: false,
-      ui: {}
+      ui: {},
     },
     service_level: 'standard',
     status: 'active',
@@ -16,19 +16,19 @@ export default () => {
     status_updated: '2018-04-13T03:07:48.627Z',
     updated: '2018-06-12T02:16:30.576Z',
     subscription: {
-      code: '50K-0817',
+      code: '1M-premier-0519',
       name: '50K',
       plan_volume: 50000,
       self_serve: true,
       type: 'default',
       recurring_charge: 21,
       period: 'month',
-      overage: 0.7
+      overage: 0.7,
     },
     support: {
       phone: true,
-      online: true
-    }
+      online: true,
+    },
   };
   return { results: account };
 };

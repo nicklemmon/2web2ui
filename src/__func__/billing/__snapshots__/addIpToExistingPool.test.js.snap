@@ -47,18 +47,6 @@ Array [
       "method": "get",
       "params": undefined,
       "responseType": "json",
-      "url": "/v1/account/plans",
-    },
-  ],
-  Array [
-    Object {
-      "data": undefined,
-      "headers": Object {
-        "Authorization": "mock-access-token",
-      },
-      "method": "get",
-      "params": undefined,
-      "responseType": "json",
       "url": "/v1/sending-ips",
     },
   ],

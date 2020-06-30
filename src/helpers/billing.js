@@ -190,7 +190,7 @@ export const formatToMatchAccountPlan = currentPlan => {
   return {
     billingId: currentPlan.billing_id,
     code: currentPlan.plan,
-    includesIp: currentPlan.status === 'deprecated' ? false : true,
+    includesIp: !currentPlan.status ? false : true,
     isFree: currentFreePlans.includes(currentPlan.plan),
     ...currentPlan,
   };

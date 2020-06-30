@@ -173,7 +173,7 @@ export const selectAccountBilling = createSelector([selectAccount], account => (
 export const getBundleTierByPlanCode = createSelector(
   [bundleSelector, currentSubscriptionSelector],
   (bundles, currentSubscription) => {
-    const bundle = _.find(bundles, { bundle: currentSubscription.code });
+    const bundle = _.find(bundles, { bundle: currentSubscription.code }) || {}; //added {} for deprecated plans
     return bundle.tier || '';
   },
 );

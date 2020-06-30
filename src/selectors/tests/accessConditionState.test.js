@@ -72,6 +72,7 @@ describe('Selector: Access Condition State', () => {
         bundle: '5M-0817',
         code: '5M-0817',
         includesIp: true,
+        isFree: false,
         overage: 0.3,
         plan: '5M-0817',
         price: 123,

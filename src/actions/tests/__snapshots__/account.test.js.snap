@@ -72,16 +72,6 @@ Object {
 }
 `;
 
-exports[`getPlans 1`] = `
-Object {
-  "meta": Object {
-    "method": "GET",
-    "url": "/v1/account/plans",
-  },
-  "type": "GET_PLANS",
-}
-`;
-
 exports[`getUsage 1`] = `
 Object {
   "meta": Object {
