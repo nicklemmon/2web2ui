@@ -4,7 +4,7 @@ import _ from 'lodash';
 export const onPlan = planCode => ({ accountPlan }) => accountPlan.code === planCode;
 export const onZuoraPlan = ({ accountPlan }) => Boolean(accountPlan.billingId);
 export const onPlanWithStatus = status => ({ accountPlan }) => {
-  if (_.isEmpty(accountPlan)) return 'deprecated' === status; //since bundlePlans don't return deprecated plans; accountPlan would be {}
+  if (!accountPlan.status) return 'deprecated' === status; //since bundlePlans don't return deprecated plans;
   return accountPlan.status === status;
 };
 export const onServiceLevel = level => ({ account }) => account.service_level === level;
