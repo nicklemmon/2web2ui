@@ -11,7 +11,12 @@ import {
   getNextHour,
   isSameDate,
 } from 'src/helpers/date';
-import { roundBoundaries, getRollupPrecision, getPrecision } from 'src/helpers/metrics';
+import {
+  roundBoundaries,
+  getRollupPrecision,
+  getPrecision,
+  getRecommendedRollupPrecision,
+} from 'src/helpers/metrics';
 import {
   ActionList,
   Box,
@@ -168,8 +173,7 @@ export class DatePicker extends Component {
   handleSelectRange = value => {
     if (value !== 'custom') {
       const { from, to } = getRelativeDates(value);
-      const { precision: oldPrecision } = this.props;
-      const precision = getRollupPrecision({ from, to, precision: oldPrecision });
+      const precision = getRecommendedRollupPrecision(from, moment(to));
       this.setState({
         selecting: false,
         relativeRange: value,
