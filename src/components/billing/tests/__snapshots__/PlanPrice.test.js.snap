@@ -190,40 +190,12 @@ exports[`PlanPrice renders correctly for eternal free plan 1`] = `
        emails/month 
     </span>
     <span>
-       FREE 
-    </span>
-  </span>
-  <span
-    className="SupportLabel"
-  />
-</span>
-`;
-
-exports[`PlanPrice renders correctly with hourly plans 1`] = `
-<span
-  className="notranslate"
->
-  <span
-    className="MainLabel"
-  >
-    <strong>
-      <Text
-        as="span"
-        fontWeight="400"
-      >
-        50,000
-      </Text>
-    </strong>
-    <span>
-       emails/month 
-    </span>
-    <span>
        at 
       <strong>
-        $0.012
+        $9
       </strong>
       /
-      hr
+      mo
     </span>
   </span>
   <span
@@ -336,7 +308,7 @@ exports[`PlanPrice renders free ip and overage correct 1`] = `
   <span
     className="SupportLabel"
   >
-    $0.75/ thousand extra emails. 
+    $0.30/ thousand extra emails. 
     First dedicated IP address is free
   </span>
 </span>
@@ -413,7 +385,7 @@ exports[`PlanPrice renders with overage 1`] = `
   <span
     className="SupportLabel"
   >
-    $0.75/ thousand extra emails. 
+    $0.30/ thousand extra emails. 
   </span>
 </span>
 `;
