@@ -34,7 +34,14 @@ function Cursor({ data, height, points: [{ x, y }], width: chartWidth }) {
   );
 }
 
-function CustomTooltip({ showTooltip, payload, label, labelFormatter, formatter }) {
+function CustomTooltip({
+  showTooltip,
+  payload,
+  label,
+  labelFormatter = noop,
+  nameFormatter = noop,
+  formatter = noop,
+}) {
   if (!showTooltip) {
     return null;
   }
@@ -56,7 +63,7 @@ function CustomTooltip({ showTooltip, payload, label, labelFormatter, formatter 
                 backgroundColor={entry.stroke}
               />
               <Text as="span" fontSize="100" color="white">
-                {entry.name}
+                {nameFormatter(entry.name)}
               </Text>
             </Box>
             <Box ml="800">
@@ -71,12 +78,30 @@ function CustomTooltip({ showTooltip, payload, label, labelFormatter, formatter 
   );
 }
 
+function noop(val) {
+  return val;
+}
+
 export const lineChartConfig = {
   barsBackground: {
     fill: tokens.color_gray_200,
   },
   tooltipStyles: {
     zIndex: tokens.zIndex_overlay,
+  },
+  lineProps: {
+    strokeWidth: 2,
+    animationDuration: 400,
+    activeDot: false,
+    dot: false,
+    type: 'linear',
+  },
+  referenceLineProps: {
+    strokeWidth: 1,
+    strokeDasharray: [5, 5],
+    style: {
+      stroke: tokens.color_gray_600,
+    },
   },
 };
 

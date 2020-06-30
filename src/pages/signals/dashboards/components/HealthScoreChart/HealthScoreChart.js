@@ -1,18 +1,23 @@
 /* eslint-disable lodash/prop-shorthand */
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+import { tokens } from '@sparkpost/design-tokens-hibana';
+import { Bar, Line, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts';
 import { getCaretProps, getDoD } from 'src/helpers/signals';
 import { selectCurrentHealthScoreDashboard } from 'src/selectors/signals';
 import { Panel } from 'src/components/matchbox';
 import BarChart from '../../../components/charts/barchart/BarChart';
+import { LineChart, lineChartConfig } from 'src/components/charts';
 import TooltipMetric from 'src/components/charts/TooltipMetric';
 import { PanelLoading } from 'src/components';
 import Callout from 'src/components/callout';
+import { useHibana } from 'src/context/HibanaContext';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import MetricDisplay from '../MetricDisplay/MetricDisplay';
 import { formatNumber, roundToPlaces } from 'src/helpers/units';
+import { getTooltipLabelFormatter } from 'src/helpers/chart';
 import thresholds from '../../../constants/healthScoreThresholds';
 import {
   newModelLine,
@@ -23,6 +28,7 @@ import OGStyles from './HealthScoreChart.module.scss';
 import hibanaStyles from './HealthScoreChartHibana.module.scss';
 
 export function HealthScoreChart(props) {
+  const [{ isHibanaEnabled }] = useHibana();
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
   const [hoveredDate, setHovered] = useState(props.defaultHovered);
 
@@ -100,39 +106,140 @@ export function HealthScoreChart(props) {
     return { value: _.isNil(max) ? 'n/a' : max };
   }
 
+  // function getXTicks() {
+  //   const { history: data, precision } = props;
+  //   let ticks;
+
+  //   // Shows ticks every Sunday
+  //   if (precision === 'day' && data.length > 15) {
+  //     ticks = data.reduce((acc, { ts }) => {
+  //       if (moment(ts).isoWeekday() === 7) {
+  //         acc.push(ts);
+  //       }
+  //       return acc;
+  //     }, []);
+  //   }
+
+  //   // Show ticks every 15 minutes
+  //   if (precision === '1min') {
+  //     ticks = data.reduce((acc, { ts }) => {
+  //       if (moment(ts).minutes() % 15 === 0) {
+  //         acc.push(ts);
+  //       }
+  //       return acc;
+  //     }, []);
+  //   }
+
+  //   // Show ticks every 30 minutes
+  //   if (precision === '15min') {
+  //     ticks = data.reduce((acc, { ts }) => {
+  //       if (moment(ts).minutes() % 30 === 0) {
+  //         acc.push(ts);
+  //       }
+  //       return acc;
+  //     }, []);
+  //   }
+
+  //   return ticks;
+  // }
+
   return (
     <Panel sectioned title={`${formatDate(filters.from)} – ${formatDate(filters.to)}`}>
       <div className={styles.Content}>
         {noData && <Callout height="100%">Health Scores Not Available</Callout>}
 
         {!noData && (
-          <Fragment>
-            <BarChart
-              margin={newModelMarginsHealthScore}
-              gap={getGap()}
-              onMouseOver={handleDateHover}
-              onMouseOut={() => setHovered({})}
-              hovered={hoveredDate}
-              timeSeries={history}
-              tooltipContent={({ payload = {} }) =>
-                payload.ranking && (
-                  <TooltipMetric
-                    label="Health Score"
-                    color={thresholds[payload.ranking].color}
-                    value={`${roundToPlaces(payload.health_score, 1)}`}
+          <>
+            {isHibanaEnabled ? (
+              <LineChart>
+                <LineChart.Container height={300} data={history}>
+                  <Bar key="noKey" dataKey="noKey" background={lineChartConfig.barsBackground} />
+
+                  <XAxis
+                    axisLine={false}
+                    dataKey="date"
+                    height={30}
+                    // hide={!showXAxis}
+                    interval="preserveStartEnd"
+                    scale="auto"
+                    // tickFormatter={xTickFormatter}
+                    tickLine={false}
+                    ticks={history}
                   />
-                )
-              }
-              yAxisRefLines={[
-                { y: 80, stroke: thresholds.good.color, strokeWidth: 1 },
-                { y: 55, stroke: thresholds.danger.color, strokeWidth: 1 },
-              ]}
-              xAxisRefLines={newModelLine}
-              yKey="health_score"
-              xAxisProps={getXAxisProps()}
-              yAxisProps={{ ticks: [0, 55, 80, 100] }}
-            />
-          </Fragment>
+
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    width={30}
+                    minTickGap={2}
+                    dataKey="health_score"
+                    ticks={[0, 55, 80, 100]}
+                  />
+                  {/* <YAxis
+                    dataKey="health_score"
+                    axisLine={false}
+                    domain={['dataMin', 'dataMax']}
+                    interval="preserveStartEnd"
+                    padding={{ top: 8, bottom: 8 }}
+                    // scale={yScale}
+                    // tickFormatter={yTickFormatter}
+                    tickLine={false}
+                    width={60}
+                  /> */}
+
+                  <Tooltip
+                    cursor={<LineChart.Cursor data={history} />}
+                    content={<LineChart.CustomTooltip showTooltip={true} />}
+                    wrapperStyle={lineChartConfig.tooltipStyles}
+                    isAnimationActive={false}
+                    labelFormatter={getTooltipLabelFormatter}
+                    nameFormatter={() => 'Health Score'}
+                    formatter={val => val}
+                  />
+
+                  <ReferenceLine {...lineChartConfig.referenceLineProps} y={100} />
+
+                  <ReferenceLine {...lineChartConfig.referenceLineProps} y={80} />
+
+                  <ReferenceLine {...lineChartConfig.referenceLineProps} y={55} />
+
+                  <Line
+                    {...lineChartConfig.lineProps}
+                    dataKey="health_score"
+                    stroke={tokens.color_blue_700}
+                  />
+                </LineChart.Container>
+
+                <LineChart.YAxisLabel></LineChart.YAxisLabel>
+              </LineChart>
+            ) : (
+              <BarChart
+                margin={newModelMarginsHealthScore}
+                gap={getGap()}
+                onMouseOver={handleDateHover}
+                onMouseOut={() => setHovered({})}
+                hovered={hoveredDate}
+                timeSeries={history}
+                tooltipContent={({ payload = {} }) =>
+                  payload.ranking && (
+                    <TooltipMetric
+                      label="Health Score"
+                      color={thresholds[payload.ranking].color}
+                      value={`${roundToPlaces(payload.health_score, 1)}`}
+                    />
+                  )
+                }
+                yAxisRefLines={[
+                  { y: 80, stroke: thresholds.good.color, strokeWidth: 1 },
+                  { y: 55, stroke: thresholds.danger.color, strokeWidth: 1 },
+                ]}
+                xAxisRefLines={newModelLine}
+                yKey="health_score"
+                xAxisProps={getXAxisProps()}
+                yAxisProps={{ ticks: [0, 55, 80, 100] }}
+              />
+            )}
+          </>
         )}
         <div className={styles.Metrics}>
           <MetricDisplay
@@ -143,7 +250,7 @@ export function HealthScoreChart(props) {
           <MetricDisplay data-id="health-score-high-value" label="High" {...getMax()} />
           <MetricDisplay data-id="health-score-low-value" label="Low" {...getMin()} />
           {typeof hoveredDate === 'string' && (
-            <Fragment>
+            <>
               <div className={styles.Divider} />
               <div className={styles.Injections}>
                 <MetricDisplay label="Injections" {...getHoverInjectionProps()} />
@@ -151,7 +258,7 @@ export function HealthScoreChart(props) {
               <div className={styles.DoDChange}>
                 <MetricDisplay label="DoD Change" {...getHoverDoDProps()} />
               </div>
-            </Fragment>
+            </>
           )}
         </div>
       </div>

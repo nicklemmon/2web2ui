@@ -19,11 +19,7 @@ export default function SpLineChart(props) {
     const { lines = [] } = props;
     return lines.map(line => {
       const lineProps = {
-        strokeWidth: 2,
-        animationDuration: 400,
-        activeDot: false,
-        dot: false,
-        type: 'linear',
+        ...lineChartConfig.lineProps,
         ...line,
       };
       return <Line {...lineProps} />;
