@@ -17,7 +17,6 @@ import { useHibana } from 'src/context/HibanaContext';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import MetricDisplay from '../MetricDisplay/MetricDisplay';
 import { formatNumber, roundToPlaces } from 'src/helpers/units';
-import { getTooltipLabelFormatter } from 'src/helpers/chart';
 import thresholds from '../../../constants/healthScoreThresholds';
 import {
   newModelLine,
@@ -164,7 +163,7 @@ export function HealthScoreChart(props) {
                     scale="auto"
                     // tickFormatter={xTickFormatter}
                     tickLine={false}
-                    ticks={history}
+                    {...getXAxisProps()}
                   />
 
                   <YAxis
@@ -175,24 +174,13 @@ export function HealthScoreChart(props) {
                     dataKey="health_score"
                     ticks={[0, 55, 80, 100]}
                   />
-                  {/* <YAxis
-                    dataKey="health_score"
-                    axisLine={false}
-                    domain={['dataMin', 'dataMax']}
-                    interval="preserveStartEnd"
-                    padding={{ top: 8, bottom: 8 }}
-                    // scale={yScale}
-                    // tickFormatter={yTickFormatter}
-                    tickLine={false}
-                    width={60}
-                  /> */}
 
                   <Tooltip
                     cursor={<LineChart.Cursor data={history} />}
                     content={<LineChart.CustomTooltip showTooltip={true} />}
                     wrapperStyle={lineChartConfig.tooltipStyles}
                     isAnimationActive={false}
-                    labelFormatter={getTooltipLabelFormatter}
+                    labelFormatter={formatDate}
                     nameFormatter={() => 'Health Score'}
                     formatter={val => val}
                   />
