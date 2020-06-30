@@ -35,7 +35,7 @@ function Cursor({ data, height, points: [{ x, y }], width: chartWidth }) {
 }
 
 function CustomTooltip({
-  showTooltip,
+  showTooltip = true,
   payload,
   label,
   labelFormatter = noop,
@@ -78,8 +78,8 @@ function CustomTooltip({
   );
 }
 
-function noop(val) {
-  return val;
+function noop(arg) {
+  return arg;
 }
 
 export const lineChartConfig = {
@@ -98,7 +98,7 @@ export const lineChartConfig = {
   },
   referenceLineProps: {
     strokeWidth: 1,
-    strokeDasharray: [5, 5],
+    strokeDasharray: '5 5',
     style: {
       stroke: tokens.color_gray_600,
     },

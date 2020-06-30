@@ -105,42 +105,24 @@ export function HealthScoreChart(props) {
     return { value: _.isNil(max) ? 'n/a' : max };
   }
 
-  // function getXTicks() {
-  //   const { history: data, precision } = props;
-  //   let ticks;
+  // TODO: This is fugly
+  function formatTooltipPayload(payload) {
+    const firstItem = payload[0];
+    const payloadPayload = firstItem ? firstItem.payload : {}; // Yes, there is a payload property within this payload object
 
-  //   // Shows ticks every Sunday
-  //   if (precision === 'day' && data.length > 15) {
-  //     ticks = data.reduce((acc, { ts }) => {
-  //       if (moment(ts).isoWeekday() === 7) {
-  //         acc.push(ts);
-  //       }
-  //       return acc;
-  //     }, []);
-  //   }
+    if (payloadPayload) {
+      return [
+        ...payload.map(item => {
+          return {
+            ...item,
+            stroke: thresholds[payloadPayload.ranking].color || undefined,
+          };
+        }),
+      ];
+    }
 
-  //   // Show ticks every 15 minutes
-  //   if (precision === '1min') {
-  //     ticks = data.reduce((acc, { ts }) => {
-  //       if (moment(ts).minutes() % 15 === 0) {
-  //         acc.push(ts);
-  //       }
-  //       return acc;
-  //     }, []);
-  //   }
-
-  //   // Show ticks every 30 minutes
-  //   if (precision === '15min') {
-  //     ticks = data.reduce((acc, { ts }) => {
-  //       if (moment(ts).minutes() % 30 === 0) {
-  //         acc.push(ts);
-  //       }
-  //       return acc;
-  //     }, []);
-  //   }
-
-  //   return ticks;
-  // }
+    return payload;
+  }
 
   return (
     <Panel sectioned title={`${formatDate(filters.from)} – ${formatDate(filters.to)}`}>
@@ -177,7 +159,14 @@ export function HealthScoreChart(props) {
 
                   <Tooltip
                     cursor={<LineChart.Cursor data={history} />}
-                    content={<LineChart.CustomTooltip showTooltip={true} />}
+                    content={({ payload, ...props }) => {
+                      return (
+                        <LineChart.CustomTooltip
+                          {...props}
+                          payload={formatTooltipPayload(payload)}
+                        />
+                      );
+                    }}
                     wrapperStyle={lineChartConfig.tooltipStyles}
                     isAnimationActive={false}
                     labelFormatter={formatDate}
@@ -185,11 +174,23 @@ export function HealthScoreChart(props) {
                     formatter={val => val}
                   />
 
-                  <ReferenceLine {...lineChartConfig.referenceLineProps} y={100} />
+                  <ReferenceLine
+                    {...lineChartConfig.referenceLineProps}
+                    strokeDasharray="none"
+                    y={100}
+                  />
 
-                  <ReferenceLine {...lineChartConfig.referenceLineProps} y={80} />
+                  <ReferenceLine
+                    {...lineChartConfig.referenceLineProps}
+                    y={80}
+                    style={{ stroke: tokens.color_green_700 }}
+                  />
 
-                  <ReferenceLine {...lineChartConfig.referenceLineProps} y={55} />
+                  <ReferenceLine
+                    {...lineChartConfig.referenceLineProps}
+                    y={55}
+                    style={{ stroke: tokens.color_red_700 }}
+                  />
 
                   <Line
                     {...lineChartConfig.lineProps}
