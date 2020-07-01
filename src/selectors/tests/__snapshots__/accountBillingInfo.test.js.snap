@@ -14,8 +14,55 @@ Object {
   "product": "messaging",
   "products": Array [
     Object {
+      "plan": "online-support",
+      "price": 0,
+      "product": "online_support",
+    },
+    Object {
+      "billing_period": "month",
+      "limit": 4,
+      "plan": "ip-0519",
+      "price": 20,
+      "product": "dedicated_ip",
+      "volume": 1,
+    },
+    Object {
+      "limit": 100000,
+      "plan": "subaccounts-premier",
+      "price": 0,
+      "product": "subaccounts",
+      "quantity": 1,
+    },
+    Object {
+      "plan": "sso",
+      "price": 0,
+      "product": "sso",
+    },
+    Object {
+      "plan": "tfa-required",
+      "price": 0,
+      "product": "tfa_required",
+    },
+    Object {
+      "plan": "phone-support",
+      "price": 0,
+      "product": "phone_support",
+    },
+    Object {
+      "billing_id": "id1",
+      "billing_period": "month",
+      "overage": 0.3,
       "plan": "5M-0817",
+      "price": 123,
       "product": "messaging",
+      "volume": 100000,
+    },
+    Object {
+      "billing_period": "month",
+      "daily_limit": -1,
+      "plan": "rv-0519",
+      "price": 0,
+      "product": "recipient_validation",
     },
   ],
   "status": "secret",
@@ -45,6 +92,12 @@ Array [
     "product": "messaging",
     "volume": 2500000,
   },
+  Object {
+    "plan": "free500-0419",
+    "price": 0,
+    "product": "messaging",
+    "volume": 500,
+  },
 ]
 `;
 
@@ -65,6 +118,12 @@ Array [
     "price": 1234,
     "product": "messaging",
     "volume": 2500000,
+  },
+  Object {
+    "plan": "free500-0419",
+    "price": 0,
+    "product": "messaging",
+    "volume": 500,
   },
 ]
 `;

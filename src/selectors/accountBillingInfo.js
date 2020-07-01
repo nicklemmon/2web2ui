@@ -7,6 +7,7 @@ import {
   isSelfServeBilling,
   onPlan,
   onZuoraPlan,
+  hasProductOnSubscription,
 } from 'src/helpers/conditions/account';
 import { selectCondition } from './accessConditionState';
 import { formatToMatchAccountPlan } from 'src/helpers/billing';
@@ -26,6 +27,7 @@ export const selectIsSelfServeBilling = selectCondition(isSelfServeBilling);
 const selectIsCcFree1 = selectCondition(onPlan('ccfree1'));
 const selectIsFree1 = selectCondition(onPlan('free1'));
 const selectOnZuoraPlan = selectCondition(onZuoraPlan);
+const hasDedicatedIpsOnSubscription = selectCondition(hasProductOnSubscription('dedicated_ip'));
 const selectBillingSubscription = state => state.billing.subscription || {};
 const currentFreePlans = ['free500-1018', 'free15K-1018', 'free500-0419', 'free500-SPCEU-0419'];
 export const isManuallyBilled = state => _.get(state, 'billing.subscription.type') === 'manual';
@@ -55,12 +57,13 @@ export const canChangePlanSelector = createSelector(
  */
 export const currentPlanSelector = createSelector(
   //TODO: make the same change as in access control state here
-  [currentPlanCodeSelector, plansSelector, bundleSelector],
-  (currentPlanCode, plans, bundles) => {
+  [currentPlanCodeSelector, plansSelector, bundleSelector, selectBillingSubscription],
+  (currentPlanCode, plans, bundles, subscription) => {
     return (
       formatToMatchAccountPlan({
         ..._.find(plans, { plan: currentPlanCode }),
         ...bundles.find(bundle => bundle.bundle === currentPlanCode),
+        products: subscription.products,
       }) || {}
     );
   },
@@ -71,8 +74,9 @@ export const currentPlanSelector = createSelector(
  */
 export const canUpdateBillingInfoSelector = createSelector(
   [currentPlanSelector, accountBillingSelector, selectIsCcFree1],
-  (currentPlan, accountBilling, isOnLegacyCcFreePlan) =>
-    accountBilling && (isOnLegacyCcFreePlan || !currentPlan.isFree),
+  (currentPlan, accountBilling, isOnLegacyCcFreePlan) => {
+    return accountBilling && (isOnLegacyCcFreePlan || !currentPlan.isFree);
+  },
 );
 /*
 return the promoCode related information from billing
@@ -135,10 +139,10 @@ export const currentBundleSelector = createSelector(
  * Return true if plan can purchase IP and has billing info (except for aws as it'll be billed outside)
  */
 export const canPurchaseIps = createSelector(
-  [currentBundleSelector, accountBillingSelector, selectIsAws],
-  (currentBundle, accountBilling, isAWSAccount) =>
-    hasProductOnCurrentBundle(currentBundle, 'dedicated_ip') === true &&
-    !!(accountBilling || isAWSAccount),
+  [accountBillingSelector, selectIsAws, hasDedicatedIpsOnSubscription],
+  (accountBilling, isAWSAccount, hasDedicatedIpsOnSubscription) => {
+    return hasDedicatedIpsOnSubscription && !!(accountBilling || isAWSAccount);
+  },
 );
 
 export const selectVisibleBundles = createSelector(
@@ -177,10 +181,6 @@ export const getBundleTierByPlanCode = createSelector(
     return bundle.tier || '';
   },
 );
-
-export const hasProductOnCurrentBundle = (currentBundle, product) => {
-  return !_.isEmpty(_.find(currentBundle.products, { product: product }));
-};
 
 export const selectBillingInfo = createSelector(
   [

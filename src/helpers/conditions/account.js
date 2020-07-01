@@ -34,3 +34,6 @@ export const hasAccountOptionEnabled = option => ({ account }) =>
   Boolean(_.get(account.options, option, false));
 export const getAccountUiOptionValue = option => ({ account }) =>
   _.get(account.options, `ui.${option}`);
+export const hasProductOnSubscription = product => ({ accountPlan }) => {
+  return !_.isEmpty(_.find(accountPlan.products, { product: product }));
+};

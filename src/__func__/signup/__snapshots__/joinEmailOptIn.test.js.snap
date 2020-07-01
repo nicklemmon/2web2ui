@@ -103,6 +103,18 @@ Array [
       "method": "get",
       "params": undefined,
       "responseType": "json",
+      "url": "/v1/billing/subscription",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
+      "params": undefined,
+      "responseType": "json",
       "url": "/v1/users/test-username",
     },
   ],

@@ -7,16 +7,16 @@ const getUser = state => state.currentUser;
 const getBundles = state => _.get(state, 'billing.bundles', []);
 const getBundlePlans = state => _.get(state, 'billing.bundlePlans', []);
 const getACReady = state => state.accessControlReady;
+const getBillingSubscription = state => _.get(state, 'billing.subscription', {});
 
 export const getCurrentAccountPlan = createSelector(
-  [getAccount, getBundlePlans, getBundles],
-  (account, bundlePlans, bundles) => {
-    return (
-      {
-        ...bundlePlans.find(plan => plan.plan === account.subscription.code),
-        ...bundles.find(bundle => bundle.bundle === account.subscription.code),
-      } || {}
-    );
+  [getAccount, getBundlePlans, getBundles, getBillingSubscription],
+  (account, bundlePlans, bundles, subscription) => {
+    return {
+      ...bundlePlans.find(plan => plan.plan === account.subscription.code),
+      ...bundles.find(bundle => bundle.bundle === account.subscription.code),
+      products: subscription.products,
+    };
   },
 );
 

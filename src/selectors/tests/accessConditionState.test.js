@@ -14,6 +14,17 @@ describe('Selector: Access Condition State', () => {
         },
       },
       billing: {
+        subscription: {
+          bill_cycle_day: 5,
+          pending_downgrades: [],
+          products: [
+            {
+              product: 'messaging',
+              plan: '5M-0817',
+            },
+          ],
+          type: 'active',
+        },
         bundlePlans: [
           {
             billing_id: 'id1',
