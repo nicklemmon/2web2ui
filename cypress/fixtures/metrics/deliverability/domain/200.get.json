@@ -1,0 +1,11 @@
+{
+  "results": [
+    {
+      "count_targeted": 74262,
+      "count_rendered": 38514,
+      "count_accepted": 64866,
+      "count_bounce": 7293,
+      "domain": "top-domains-only.com"
+    }
+  ]
+}

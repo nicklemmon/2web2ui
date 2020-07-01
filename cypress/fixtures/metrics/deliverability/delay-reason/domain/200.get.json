@@ -1,0 +1,10 @@
+{
+  "results": [
+    {
+      "count_delayed": 10,
+      "count_delayed_first": 5,
+      "reason": "A delay reason reason.",
+      "domain": "gmail.com"
+    }
+  ]
+}

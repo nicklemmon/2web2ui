@@ -1,0 +1,11 @@
+{
+  "results": [
+    {
+      "count_rejected": 5,
+      "rejection_category_name": "Policy Rejection",
+      "rejection_category_id": 1,
+      "reason": "550 - Connection frequency limited",
+      "domain": "gmail.com"
+    }
+  ]
+}

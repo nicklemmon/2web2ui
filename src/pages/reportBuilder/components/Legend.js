@@ -7,7 +7,7 @@ import getConfig from 'src/helpers/getConfig';
 
 function renderMetric(metric, uniqueLabel, removeMetric) {
   return (
-    <Tag key={metric.name} onRemove={() => removeMetric(metric.name)}>
+    <Tag key={metric.name} onRemove={() => removeMetric(metric.name)} data-id="metric-tag">
       <Box as="span" display="inline-flex" alignItems="center">
         <Box //The color circle
           display="inline-block"

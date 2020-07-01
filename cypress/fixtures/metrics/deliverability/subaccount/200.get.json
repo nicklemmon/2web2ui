@@ -1,0 +1,32 @@
+{
+  "results": [
+    {
+      "count_targeted": 100,
+      "count_rendered": 200,
+      "count_accepted": 300,
+      "count_bounce": 400,
+      "subaccount_id": 1
+    },
+    {
+      "count_targeted": 500,
+      "count_rendered": 600,
+      "count_accepted": 700,
+      "count_bounce": 800,
+      "subaccount_id": 2
+    },
+    {
+      "count_targeted": 900,
+      "count_rendered": 1000,
+      "count_accepted": 1100,
+      "count_bounce": 1200,
+      "subaccount_id": 3
+    },
+    {
+      "count_targeted": 1300,
+      "count_rendered": 1400,
+      "count_accepted": 1500,
+      "count_bounce": 1600,
+      "subaccount_id": 0
+    }
+  ]
+}

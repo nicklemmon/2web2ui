@@ -51,6 +51,9 @@ commands:
       - store_artifacts:
           path: /home/circleci/project/cypress/videos
           destination: cypress-videos
+      - store_artifacts:
+          path: /home/circleci/project/cypress/screenshots
+          destination: cypress-screenshots
 
 # These are what actually get run in a workflow
 jobs:
@@ -123,5 +126,5 @@ workflows:
           requires:
             - 'Integration Testing'
       - 'Integration Testing - Hibana':
-           requires:
+          requires:
             - 'Request Hibana Integration Testing'

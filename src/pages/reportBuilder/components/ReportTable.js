@@ -97,7 +97,11 @@ export const ReportTable = props => {
     }
 
     if (!tableData.length) {
-      return <Empty message="There is no data to display" />;
+      return (
+        <Panel>
+          <Empty message="There is no data to display" />
+        </Panel>
+      );
     }
 
     const rowKeyName = GROUP_CONFIG[groupBy].keyName;
@@ -128,7 +132,7 @@ export const ReportTable = props => {
           />
         </Panel.Section>
       </Panel>
-      <div data-id={'summary-table'}>{renderTable()}</div>
+      <div data-id="summary-table">{renderTable()}</div>
     </>
   );
 };
