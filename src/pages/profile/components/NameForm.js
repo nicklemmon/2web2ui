@@ -36,7 +36,7 @@ export class NameForm extends Component {
         </Panel.Section>
 
         <Panel.Section>
-          <Button variant="secondary" submit disabled={submitting || pristine}>
+          <Button variant="primary" submit disabled={submitting || pristine}>
             {submitting ? 'Updating Profile' : 'Update Profile'}
           </Button>
         </Panel.Section>
