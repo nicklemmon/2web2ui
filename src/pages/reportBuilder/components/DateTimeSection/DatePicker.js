@@ -320,7 +320,7 @@ export class DatePicker extends Component {
             )}
           </Box>
         </Box>
-        <Box marginTop="500" padding="400" borderTop="1px solid" borderColor="gray.400">
+        <Box padding="400" borderTop="1px solid" borderColor="gray.400">
           <ButtonWrapper>
             <Button
               variant="primary"
