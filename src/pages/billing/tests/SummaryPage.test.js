@@ -17,6 +17,8 @@ describe('Page: BillingSummaryPage', () => {
         list: [],
       },
       getBillingInfo: jest.fn(),
+      getBundles: jest.fn(),
+      getPlans: jest.fn(),
       getSubscription: jest.fn(),
       fetchAccount: jest.fn(),
       getUsage: jest.fn(),
