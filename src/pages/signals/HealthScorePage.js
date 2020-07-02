@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PageLink } from 'src/components/links';
 import { Box, Grid, Panel } from 'src/components/matchbox';
+import { useHibana } from 'src/context/HibanaContext';
 import { OGOnlyWrapper } from 'src/components/hibana';
 import { selectHealthScoreDetails } from 'src/selectors/signals';
 import { getHealthScore, getSpamHits } from 'src/actions/signals';
@@ -32,7 +33,7 @@ import {
   newModelMarginsOther,
 } from './constants/healthScoreV2';
 
-export class HealthScorePage extends Component {
+export class HealthScorePageClassComponent extends Component {
   state = {
     selectedComponent: null,
   };
@@ -79,6 +80,7 @@ export class HealthScorePage extends Component {
       hoveredDate,
       shouldHighlightSelected,
       resetDateHover,
+      isHibanaEnabled,
     } = this.props;
     const { selectedComponent } = this.state;
 
@@ -113,49 +115,51 @@ export class HealthScorePage extends Component {
 
             {panelContent || (
               <Panel.Section>
-                <HealthScoreLineChart
-                  data={data.map(dataPoint => {
-                    return {
-                      ...dataPoint,
-                      health_score: dataPoint.health_score * 100,
-                    };
-                  })}
-                  onBarMouseOver={handleDateHover}
-                  tooltipFormatter={this.handleTooltipValueFormatting}
-                />
-
-                <BarChart
-                  margin={newModelMarginsHealthScore}
-                  gap={gap}
-                  onClick={handleDateSelect}
-                  onMouseOver={handleDateHover}
-                  onMouseOut={resetDateHover}
-                  disableHover={false}
-                  shouldHighlightSelected={shouldHighlightSelected}
-                  selected={selectedDate}
-                  hovered={hoveredDate}
-                  timeSeries={data}
-                  tooltipContent={({ payload = {} }) =>
-                    payload.ranking && (
-                      <TooltipMetric
-                        label="Health Score"
-                        color={thresholds[payload.ranking].color}
-                        value={`${roundToPlaces(payload.health_score * 100, 1)}`}
-                      />
-                    )
-                  }
-                  yAxisRefLines={[
-                    { y: 0.8, stroke: thresholds.good.color, strokeWidth: 1 },
-                    { y: 0.55, stroke: thresholds.danger.color, strokeWidth: 1 },
-                  ]}
-                  xAxisRefLines={newModelLine}
-                  yKey="health_score"
-                  yAxisProps={{
-                    ticks: [0, 0.55, 0.8, 1],
-                    tickFormatter: tick => parseInt(tick * 100),
-                  }}
-                  xAxisProps={this.getXAxisProps()}
-                />
+                {isHibanaEnabled ? (
+                  <HealthScoreLineChart
+                    data={data.map(dataPoint => {
+                      return {
+                        ...dataPoint,
+                        health_score: dataPoint.health_score * 100,
+                      };
+                    })}
+                    onBarMouseOver={handleDateHover}
+                    tooltipFormatter={this.handleTooltipValueFormatting}
+                  />
+                ) : (
+                  <BarChart
+                    margin={newModelMarginsHealthScore}
+                    gap={gap}
+                    onClick={handleDateSelect}
+                    onMouseOver={handleDateHover}
+                    onMouseOut={resetDateHover}
+                    disableHover={false}
+                    shouldHighlightSelected={shouldHighlightSelected}
+                    selected={selectedDate}
+                    hovered={hoveredDate}
+                    timeSeries={data}
+                    tooltipContent={({ payload = {} }) =>
+                      payload.ranking && (
+                        <TooltipMetric
+                          label="Health Score"
+                          color={thresholds[payload.ranking].color}
+                          value={`${roundToPlaces(payload.health_score * 100, 1)}`}
+                        />
+                      )
+                    }
+                    yAxisRefLines={[
+                      { y: 0.8, stroke: thresholds.good.color, strokeWidth: 1 },
+                      { y: 0.55, stroke: thresholds.danger.color, strokeWidth: 1 },
+                    ]}
+                    xAxisRefLines={newModelLine}
+                    yKey="health_score"
+                    yAxisProps={{
+                      ticks: [0, 0.55, 0.8, 1],
+                      tickFormatter: tick => parseInt(tick * 100),
+                    }}
+                    xAxisProps={this.getXAxisProps()}
+                  />
+                )}
 
                 <ChartHeader title="Injections" tooltipContent={INJECTIONS_INFO} />
 
@@ -297,6 +301,12 @@ export class HealthScorePage extends Component {
       </Page>
     );
   }
+}
+
+function HealthScorePage(props) {
+  const [{ isHibanaEnabled }] = useHibana();
+
+  return <HealthScorePageClassComponent isHibanaEnabled={isHibanaEnabled} {...props} />;
 }
 
 export default withDetails(
