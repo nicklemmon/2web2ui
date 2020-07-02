@@ -8,5 +8,11 @@
 .TitleIcon {
   display: flex;
   align-items: center;
-  margin-right: spacing(small);
+  margin-left: spacing(small);
+  margin-top: 1px;
+}
+
+.VerifyIcon {
+  margin-top: -4px; // Vertical centering for the OG theme only
+  margin-left: 3px;
 }

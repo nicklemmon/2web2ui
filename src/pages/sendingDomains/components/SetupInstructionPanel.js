@@ -1,4 +1,5 @@
 import React from 'react';
+import { Check } from '@sparkpost/matchbox-icons';
 import { Box, Panel } from 'src/components/matchbox';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { VerifiedIcon, ErrorIcon } from './Icons';
@@ -21,7 +22,11 @@ const SetupInstructionPanel = ({
       actions={[
         !isAutoVerified && {
           color: 'orange',
-          content: isVerified ? `Re-verify ${recordType} Record` : `Verify ${recordType} Record`,
+          content: isVerified ? (
+            <VerifyButton>{`Re-verify ${recordType} Record`}</VerifyButton>
+          ) : (
+            <VerifyButton>{`Verify ${recordType} Record`}</VerifyButton>
+          ),
           disabled: isVerifying,
           id: verifyButtonIdentifier,
           onClick: onVerify,
@@ -36,9 +41,22 @@ const SetupInstructionPanel = ({
     >
       {/* TODO: Remove once the `Panel` can support a border below the `title` */}
       <Box mt="400" as="hr" />
+
       <Panel.Section>{children}</Panel.Section>
     </Panel>
   );
 };
+
+function VerifyButton({ children }) {
+  const styles = useHibanaOverride(OGStyles, hibanaStyles);
+
+  return (
+    <Box display="flex" alignItems="center">
+      {children}
+
+      <Check className={styles.VerifyIcon} />
+    </Box>
+  );
+}
 
 export default SetupInstructionPanel;

@@ -11,10 +11,14 @@ exports[`StatusLabel renders verified label 1`] = `
   alignItems="center"
   display="flex"
 >
-  <VerifiedIcon />
-   
-  <strong>
+  <Text
+    as="span"
+    color="gray.900"
+    fontSize="300"
+    fontWeight="400"
+  >
     Verified
-  </strong>
+  </Text>
+  <VerifiedIcon />
 </Box>
 `;

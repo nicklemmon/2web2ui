@@ -1,24 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VerifyEmail component should disable the send button while sending 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -29,25 +26,25 @@ exports[`VerifyEmail component should disable the send button while sending 1`] 
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-             
-            <Button
-              color="orange"
-              disabled={true}
-              onClick={[Function]}
-              plain={true}
-            >
-              Sending Email...
-            </Button>
-             
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            submitting={true}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -58,20 +55,18 @@ exports[`VerifyEmail component should disable the send button while sending 1`] 
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-            <Button
-              color="orange"
-              disabled={true}
-              onClick={[Function]}
-              plain={true}
-            >
-              Sending Email...
-            </Button>
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            submitting={true}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
     </Panel.Section>
@@ -80,84 +75,66 @@ exports[`VerifyEmail component should disable the send button while sending 1`] 
 `;
 
 exports[`VerifyEmail component should error if custom mailbox field is invalid 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
-      <p>
-        Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
-      </p>
-      <Grid>
-        <Grid.Column
-          xs={6}
-        >
-          <div>
-            <TextField
-              connectRight={
-                <strong
-                  className="Domain"
-                >
-                  @xyz.com
-                </strong>
-              }
-              error="Required"
-              id="localPart"
-              onBlur={[Function]}
-              onChange={[Function]}
-              value=""
-            />
-          </div>
-        </Grid.Column>
-        <Grid.Column
-          xs={6}
-        >
-          <div
-            className="ButtonColumn"
+      <Stack>
+        <p>
+          Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
+        </p>
+        <Grid>
+          <Grid.Column
+            xs={6}
           >
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-          </div>
-        </Grid.Column>
-      </Grid>
+            <div>
+              <TextField
+                connectRight={
+                  <strong
+                    className="Domain"
+                  >
+                    @xyz.com
+                  </strong>
+                }
+                error="Required"
+                id="localPart"
+                onBlur={[Function]}
+                onChange={[Function]}
+                value=""
+              />
+            </div>
+          </Grid.Column>
+        </Grid>
+      </Stack>
+    </Panel.Section>
+    <Panel.Section>
+      <VerifyButton
+        onClick={[Function]}
+      />
     </Panel.Section>
   </Panel>
 </Modal>
 `;
 
 exports[`VerifyEmail component should render success message 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -168,24 +145,24 @@ exports[`VerifyEmail component should render success message 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-             
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-             
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -196,19 +173,17 @@ exports[`VerifyEmail component should render success message 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
     </Panel.Section>
@@ -217,83 +192,65 @@ exports[`VerifyEmail component should render success message 1`] = `
 `;
 
 exports[`VerifyEmail component should render with mailbox verification 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
-      <p>
-        Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
-      </p>
-      <Grid>
-        <Grid.Column
-          xs={6}
-        >
-          <div>
-            <TextField
-              connectRight={
-                <strong
-                  className="Domain"
-                >
-                  @xyz.com
-                </strong>
-              }
-              id="localPart"
-              onBlur={[Function]}
-              onChange={[Function]}
-              value=""
-            />
-          </div>
-        </Grid.Column>
-        <Grid.Column
-          xs={6}
-        >
-          <div
-            className="ButtonColumn"
+      <Stack>
+        <p>
+          Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
+        </p>
+        <Grid>
+          <Grid.Column
+            xs={6}
           >
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-          </div>
-        </Grid.Column>
-      </Grid>
+            <div>
+              <TextField
+                connectRight={
+                  <strong
+                    className="Domain"
+                  >
+                    @xyz.com
+                  </strong>
+                }
+                id="localPart"
+                onBlur={[Function]}
+                onChange={[Function]}
+                value=""
+              />
+            </div>
+          </Grid.Column>
+        </Grid>
+      </Stack>
+    </Panel.Section>
+    <Panel.Section>
+      <VerifyButton
+        onClick={[Function]}
+      />
     </Panel.Section>
   </Panel>
 </Modal>
 `;
 
 exports[`VerifyEmail component should render with postmaster and abuse email verification 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -304,24 +261,24 @@ exports[`VerifyEmail component should render with postmaster and abuse email ver
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-             
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-             
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -332,19 +289,17 @@ exports[`VerifyEmail component should render with postmaster and abuse email ver
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
     </Panel.Section>
@@ -353,24 +308,21 @@ exports[`VerifyEmail component should render with postmaster and abuse email ver
 `;
 
 exports[`VerifyEmail component should send abuse-at email 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -381,24 +333,24 @@ exports[`VerifyEmail component should send abuse-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-             
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-             
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -409,19 +361,17 @@ exports[`VerifyEmail component should send abuse-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
     </Panel.Section>
@@ -430,83 +380,65 @@ exports[`VerifyEmail component should send abuse-at email 1`] = `
 `;
 
 exports[`VerifyEmail component should send custom mailbox email 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
-      <p>
-        Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
-      </p>
-      <Grid>
-        <Grid.Column
-          xs={6}
-        >
-          <div>
-            <TextField
-              connectRight={
-                <strong
-                  className="Domain"
-                >
-                  @xyz.com
-                </strong>
-              }
-              id="localPart"
-              onBlur={[Function]}
-              onChange={[Function]}
-              value="krombopulos.michael"
-            />
-          </div>
-        </Grid.Column>
-        <Grid.Column
-          xs={6}
-        >
-          <div
-            className="ButtonColumn"
+      <Stack>
+        <p>
+          Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
+        </p>
+        <Grid>
+          <Grid.Column
+            xs={6}
           >
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-          </div>
-        </Grid.Column>
-      </Grid>
+            <div>
+              <TextField
+                connectRight={
+                  <strong
+                    className="Domain"
+                  >
+                    @xyz.com
+                  </strong>
+                }
+                id="localPart"
+                onBlur={[Function]}
+                onChange={[Function]}
+                value="krombopulos.michael"
+              />
+            </div>
+          </Grid.Column>
+        </Grid>
+      </Stack>
+    </Panel.Section>
+    <Panel.Section>
+      <VerifyButton
+        onClick={[Function]}
+      />
     </Panel.Section>
   </Panel>
 </Modal>
 `;
 
 exports[`VerifyEmail component should send postmaster-at email 1`] = `
-<Modal>
+<Modal
+  showCloseButton={true}
+>
   <Panel
-    actions={
-      Array [
-        Object {
-          "color": "orange",
-          "content": "Close",
-          "onClick": undefined,
-        },
-      ]
-    }
     title="Verify through Email"
   >
     <Panel.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -517,24 +449,24 @@ exports[`VerifyEmail component should send postmaster-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-             
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-             
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
-      <Grid>
+    </Panel.Section>
+    <Panel.Section>
+      <Grid
+        middle="xs"
+      >
         <Grid.Column
           xs={6}
         >
@@ -545,19 +477,17 @@ exports[`VerifyEmail component should send postmaster-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
+          style={
+            Object {
+              "textAlign": "right",
+            }
+          }
           xs={6}
         >
-          <div
-            className="ButtonColumn"
-          >
-            <Button
-              color="orange"
-              onClick={[Function]}
-              plain={true}
-            >
-              Send Email
-            </Button>
-          </div>
+          <VerifyButton
+            onClick={[Function]}
+            variant="secondary"
+          />
         </Grid.Column>
       </Grid>
     </Panel.Section>
