@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import React, { Component } from 'react';
 import { PageLink } from 'src/components/links';
 import { Box, Grid, Panel } from 'src/components/matchbox';
@@ -9,6 +8,7 @@ import Page from './components/SignalsPage';
 import BarChart from './components/charts/barchart/BarChart';
 import DivergingBar from './components/charts/divergingBar/DivergingBar';
 import HealthScoreActions from './components/actionContent/HealthScoreActions';
+import HealthScoreLineChart from './components/HealthScoreLineChart';
 import TooltipMetric from 'src/components/charts/TooltipMetric';
 import DateFilter from './components/filters/DateFilter';
 import {
@@ -62,6 +62,10 @@ export class HealthScorePage extends Component {
     };
   };
 
+  handleTooltipValueFormatting = healthScore => {
+    return roundToPlaces(healthScore * 100, 1);
+  };
+
   renderContent = () => {
     const {
       data = [],
@@ -108,6 +112,17 @@ export class HealthScorePage extends Component {
             <ChartHeader title="Health Score" tooltipContent={HEALTH_SCORE_INFO} />
             {panelContent || (
               <Panel.Section>
+                <HealthScoreLineChart
+                  data={data.map(dataPoint => {
+                    return {
+                      ...dataPoint,
+                      health_score: dataPoint.health_score * 100,
+                    };
+                  })}
+                  onBarMouseOver={handleDateHover}
+                  tooltipFormatter={this.handleTooltipValueFormatting}
+                />
+
                 <BarChart
                   margin={newModelMarginsHealthScore}
                   gap={gap}

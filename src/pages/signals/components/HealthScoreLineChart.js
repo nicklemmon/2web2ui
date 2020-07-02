@@ -4,14 +4,19 @@ import { Bar, Line, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { LineChart, lineChartConfig } from 'src/components/charts';
 import { formatDate, getDateTicks } from 'src/helpers/date';
+
 import thresholds from 'src/pages/signals/constants/healthScoreThresholds';
 
-export default function HealthScoreLineChart({ data, filters, onBarMouseOver }) {
+export default function HealthScoreLineChart({
+  data,
+  filters = [],
+  onBarMouseOver,
+  tooltipFormatter,
+}) {
   return (
     <LineChart>
       <LineChart.Container height={300} data={data}>
         <Bar
-          key="this-is-a-key"
           dataKey="noKey"
           stackId="stack"
           cursor="pointer"
@@ -41,7 +46,13 @@ export default function HealthScoreLineChart({ data, filters, onBarMouseOver }) 
         <Tooltip
           cursor={<LineChart.Cursor data={data} />}
           content={({ payload, ...props }) => {
-            return <LineChart.CustomTooltip {...props} payload={formatTooltipPayload(payload)} />;
+            return (
+              <LineChart.CustomTooltip
+                {...props}
+                payload={formatTooltipPayload(payload)}
+                formatter={tooltipFormatter}
+              />
+            );
           }}
           wrapperStyle={lineChartConfig.tooltipStyles}
           isAnimationActive={false}
