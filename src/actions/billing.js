@@ -210,12 +210,13 @@ export function getPlans() {
   });
 }
 
-export function getSubscription() {
+export function getSubscription({ ...params }) {
   return sparkpostApiRequest({
     type: 'GET_SUBSCRIPTION',
     meta: {
       method: 'GET',
       url: '/v1/billing/subscription',
+      params,
     },
   });
 }

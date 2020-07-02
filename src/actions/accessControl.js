@@ -12,8 +12,8 @@ export function initializeAccessControl() {
     Promise.all([
       dispatch(fetchAccount({ meta })),
       dispatch(getPlans({ meta })),
-      dispatch(getBundles()),
-      dispatch(getSubscription()),
+      dispatch(getBundles({ meta })),
+      dispatch(getSubscription({ meta })),
       dispatch(getCurrentUser({ meta })).then(({ access_level }) =>
         dispatch(getGrants({ role: access_level, meta })),
       ),
