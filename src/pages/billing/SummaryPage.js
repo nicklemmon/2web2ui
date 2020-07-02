@@ -6,7 +6,7 @@ import { list as getSendingIps } from 'src/actions/sendingIps';
 import { selectBillingInfo, selectAccountBilling } from 'src/selectors/accountBillingInfo';
 import { selectAccountAgeInDays } from 'src/selectors/accountAge';
 import ConditionSwitch, { defaultCase } from 'src/components/auth/ConditionSwitch';
-import { getSubscription } from 'src/actions/billing';
+import { getSubscription, getBundles, getPlans } from 'src/actions/billing';
 import { isSuspendedForBilling } from 'src/helpers/conditions/account';
 import { Loading } from 'src/components';
 import BillingSummary from './components/BillingSummary';
@@ -19,6 +19,8 @@ export class BillingSummaryPage extends Component {
   componentDidMount() {
     const {
       fetchAccount,
+      getPlans,
+      getBundles,
       getSubscription,
       getBillingInfo,
       getSendingIps,
@@ -26,6 +28,8 @@ export class BillingSummaryPage extends Component {
       getUsage,
     } = this.props;
     fetchAccount();
+    getPlans();
+    getBundles();
     getSubscription();
     getBillingInfo();
     getSendingIps();
@@ -106,4 +110,6 @@ export default connect(mapStateToProps, {
   getBillingInfo,
   getUsage,
   getSubscription,
+  getBundles,
+  getPlans,
 })(BillingSummaryPage);
