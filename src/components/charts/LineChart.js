@@ -83,11 +83,37 @@ function noop(arg) {
 }
 
 export const lineChartConfig = {
-  barsBackground: {
-    fill: tokens.color_gray_200,
+  barProps: {
+    dataKey: 'noKey',
+    key: 'noKey',
+    cursor: 'pointer',
+    stackId: 'id',
+    isAnimationActive: false,
+    background: tokens.color_gray_200,
   },
-  tooltipStyles: {
-    zIndex: tokens.zIndex_overlay,
+  xAxisProps: {
+    axisLine: false,
+    scale: 'auto',
+    height: 30,
+    tickLine: false,
+    interval: 'preserveStartEnd',
+  },
+  yAxisProps: {
+    axisLine: false,
+    tickLine: false,
+    width: 30,
+    minTickGap: 2,
+    padding: { top: 8, bottom: 8 },
+    interval: 'preserveStartEnd',
+  },
+  tooltipProps: {
+    isAnimationActive: false,
+    styles: {
+      zIndex: tokens.zIndex_overlay,
+    },
+    wrapperStyle: {
+      zIndex: tokens.zIndex_overlay,
+    },
   },
   lineProps: {
     strokeWidth: 2,
@@ -95,6 +121,7 @@ export const lineChartConfig = {
     activeDot: false,
     dot: false,
     type: 'linear',
+    stroke: tokens.color_blue_700,
   },
   referenceLineProps: {
     strokeWidth: 1,
@@ -105,13 +132,14 @@ export const lineChartConfig = {
   },
 };
 
-CustomTooltip.displayName = 'LineChart.CustomTooltip';
 YAxisLabel.displayName = 'LineChart.YAxisLabel';
 Container.displayName = 'LineChart.Container';
 Cursor.displayName = 'LineChart.Cursor';
-LineChart.CustomTooltip = CustomTooltip;
-LineChart.YAxisLabel = YAxisLabel;
+CustomTooltip.displayName = 'LineChart.CustomTooltip';
+
 LineChart.Container = Container;
 LineChart.Cursor = Cursor;
+LineChart.CustomTooltip = CustomTooltip;
+LineChart.YAxisLabel = YAxisLabel;
 
 export default LineChart;

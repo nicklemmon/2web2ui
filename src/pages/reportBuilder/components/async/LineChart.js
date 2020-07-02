@@ -81,36 +81,28 @@ export default function SpLineChart(props) {
   return (
     <LineChart>
       <LineChart.Container syncId={syncId} height={height} data={data}>
-        <Bar key="noKey" dataKey="noKey" background={lineChartConfig.barsBackground} />
+        <Bar {...lineChartConfig.barProps} />
 
         <XAxis
-          axisLine={false}
+          {...lineChartConfig.xAxisProps}
           dataKey="ts"
-          height={30}
           hide={!showXAxis}
-          interval="preserveStartEnd"
-          scale="auto"
           tickFormatter={xTickFormatter}
-          tickLine={false}
           ticks={getXTicks()}
         />
 
         <YAxis
-          axisLine={false}
+          {...lineChartConfig.yAxisProps}
           domain={['dataMin', 'dataMax']}
-          interval="preserveStartEnd"
-          padding={{ top: 8, bottom: 8 }}
           scale={yScale}
           tickFormatter={yTickFormatter}
-          tickLine={false}
           width={60}
         />
 
         <Tooltip
+          {...lineChartConfig.toolTipProps}
           cursor={<LineChart.Cursor data={data} />}
           content={<LineChart.CustomTooltip showTooltip={showTooltip} />}
-          wrapperStyle={lineChartConfig.tooltipStyles}
-          isAnimationActive={false}
           itemSorter={orderDesc}
           labelFormatter={tooltipLabelFormatter}
           formatter={tooltipValueFormatter}

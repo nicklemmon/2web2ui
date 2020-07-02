@@ -16,34 +16,19 @@ export default function HealthScoreLineChart({
   return (
     <LineChart>
       <LineChart.Container height={300} data={data}>
-        <Bar
-          dataKey="noKey"
-          stackId="stack"
-          cursor="pointer"
-          isAnimationActive={false}
-          background={lineChartConfig.barsBackground}
-          onMouseOver={onBarMouseOver}
-        />
+        <Bar {...lineChartConfig.barProps} onMouseOver={onBarMouseOver} />
 
-        <XAxis
-          dataKey="date"
-          axisLine={false}
-          scale="auto"
-          height={30}
-          tickLine={false}
-          {...getXAxisProps(filters)}
-        />
+        <XAxis {...lineChartConfig.xAxisProps} {...getXAxisProps(filters)} />
 
         <YAxis
+          {...lineChartConfig.yAxisProps}
           dataKey="health_score"
-          axisLine={false}
-          tickLine={false}
-          width={30}
-          minTickGap={2}
+          padding={{ top: 0 }}
           ticks={[0, 55, 80, 100]}
         />
 
         <Tooltip
+          {...lineChartConfig.tooltipProps}
           cursor={<LineChart.Cursor data={data} />}
           content={({ payload, ...props }) => {
             return (
@@ -54,8 +39,6 @@ export default function HealthScoreLineChart({
               />
             );
           }}
-          wrapperStyle={lineChartConfig.tooltipStyles}
-          isAnimationActive={false}
           labelFormatter={formatDate}
           nameFormatter={() => 'Health Score'}
           formatter={val => val}
@@ -75,11 +58,7 @@ export default function HealthScoreLineChart({
           style={{ stroke: tokens.color_red_700 }}
         />
 
-        <Line
-          {...lineChartConfig.lineProps}
-          dataKey="health_score"
-          stroke={tokens.color_blue_700}
-        />
+        <Line {...lineChartConfig.lineProps} dataKey="health_score" />
       </LineChart.Container>
     </LineChart>
   );
