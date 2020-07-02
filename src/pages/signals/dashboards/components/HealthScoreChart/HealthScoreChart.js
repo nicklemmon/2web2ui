@@ -105,17 +105,16 @@ export function HealthScoreChart(props) {
     return { value: _.isNil(max) ? 'n/a' : max };
   }
 
-  // TODO: This is fugly
-  function formatTooltipPayload(payload) {
-    const firstItem = payload[0];
-    const payloadPayload = firstItem ? firstItem.payload : {}; // Yes, there is a payload property within this payload object
+  function formatTooltipPayload(data) {
+    const firstItem = data[0];
+    const payload = firstItem ? firstItem.payload : {};
 
-    if (payloadPayload) {
+    if (payload) {
       return [
-        ...payload.map(item => {
+        ...data.map(item => {
           return {
             ...item,
-            stroke: thresholds[payloadPayload.ranking].color || undefined,
+            stroke: thresholds[payload.ranking].color,
           };
         }),
       ];
