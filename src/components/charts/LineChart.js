@@ -4,6 +4,7 @@ import React from 'react';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { ComposedChart, Rectangle, ResponsiveContainer } from 'recharts';
 import { Box, Text } from 'src/components/matchbox';
+import { formatDate } from 'src/helpers/date';
 import styles from './LineChart.module.scss';
 
 function LineChart({ children }) {
@@ -91,6 +92,13 @@ export const lineChartConfig = {
     isAnimationActive: false,
     background: tokens.color_gray_200,
   },
+  cartesianGridProps: {
+    strokeDasharray: '0',
+    vertical: false,
+    style: {
+      stroke: tokens.color_gray_500,
+    },
+  },
   xAxisProps: {
     axisLine: false,
     scale: 'auto',
@@ -114,6 +122,7 @@ export const lineChartConfig = {
     wrapperStyle: {
       zIndex: tokens.zIndex_overlay,
     },
+    labelFormatter: formatDate,
   },
   lineProps: {
     strokeWidth: 2,

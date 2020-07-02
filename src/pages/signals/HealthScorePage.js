@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { PageLink } from 'src/components/links';
+import { Bar, CartesianGrid, Line, Tooltip, XAxis, YAxis } from 'recharts';
 import { Box, Grid, Panel } from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
 import { OGOnlyWrapper } from 'src/components/hibana';
+import { LineChart, lineChartConfig } from 'src/components/charts';
 import { selectHealthScoreDetails } from 'src/selectors/signals';
 import { getHealthScore, getSpamHits } from 'src/actions/signals';
 import Page from './components/SignalsPage';
@@ -163,29 +165,62 @@ export class HealthScorePageClassComponent extends Component {
 
                 <ChartHeader title="Injections" tooltipContent={INJECTIONS_INFO} />
 
-                <BarChart
-                  margin={newModelMarginsOther}
-                  gap={gap}
-                  height={190}
-                  onClick={handleDateSelect}
-                  onMouseOver={handleDateHover}
-                  selected={selectedDate}
-                  hovered={hoveredDate}
-                  shouldHighlightSelected={shouldHighlightSelected}
-                  onMouseOut={resetDateHover}
-                  timeSeries={data}
-                  tooltipContent={({ payload = {} }) => (
-                    <TooltipMetric
-                      label="Injections"
-                      value={formatFullNumber(payload.injections)}
-                    />
-                  )}
-                  yKey="injections"
-                  yAxisProps={{
-                    tickFormatter: tick => formatNumber(tick),
-                  }}
-                  xAxisProps={this.getXAxisProps()}
-                />
+                {isHibanaEnabled ? (
+                  <LineChart>
+                    <LineChart.Container height={250} data={data}>
+                      <Bar {...lineChartConfig.barProps} onMouseOver={handleDateHover} />
+
+                      <CartesianGrid stroke="pink" {...lineChartConfig.cartesianGridProps} />
+
+                      <XAxis
+                        {...lineChartConfig.xAxisProps}
+                        {...this.getXAxisProps()}
+                        dataKey="date"
+                      />
+
+                      <YAxis
+                        {...lineChartConfig.yAxisProps}
+                        dataKey="injections"
+                        tickFormatter={tick => formatNumber(tick)}
+                      />
+
+                      <Tooltip
+                        {...lineChartConfig.tooltipProps}
+                        formatter={formatFullNumber}
+                        cursor={<LineChart.Cursor data={data} />}
+                        content={({ payload, ...props }) => (
+                          <LineChart.CustomTooltip {...props} payload={payload} />
+                        )}
+                      />
+
+                      <Line {...lineChartConfig.lineProps} dataKey="injections" />
+                    </LineChart.Container>
+                  </LineChart>
+                ) : (
+                  <BarChart
+                    margin={newModelMarginsOther}
+                    gap={gap}
+                    height={190}
+                    onClick={handleDateSelect}
+                    onMouseOver={handleDateHover}
+                    selected={selectedDate}
+                    hovered={hoveredDate}
+                    shouldHighlightSelected={shouldHighlightSelected}
+                    onMouseOut={resetDateHover}
+                    timeSeries={data}
+                    tooltipContent={({ payload = {} }) => (
+                      <TooltipMetric
+                        label="Injections"
+                        value={formatFullNumber(payload.injections)}
+                      />
+                    )}
+                    yKey="injections"
+                    yAxisProps={{
+                      tickFormatter: tick => formatNumber(tick),
+                    }}
+                    xAxisProps={this.getXAxisProps()}
+                  />
+                )}
 
                 {selectedComponent && !selectedWeightsAreEmpty && (
                   <>

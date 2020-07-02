@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Bar, Line, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { LineChart, lineChartConfig } from 'src/components/charts';
-import { formatDate, getDateTicks } from 'src/helpers/date';
+import { getDateTicks } from 'src/helpers/date';
 
 import thresholds from 'src/pages/signals/constants/healthScoreThresholds';
 
@@ -30,16 +30,13 @@ export default function HealthScoreLineChart({
         <Tooltip
           {...lineChartConfig.tooltipProps}
           cursor={<LineChart.Cursor data={data} />}
-          content={({ payload, ...props }) => {
-            return (
-              <LineChart.CustomTooltip
-                {...props}
-                payload={formatTooltipPayload(payload)}
-                formatter={tooltipFormatter}
-              />
-            );
-          }}
-          labelFormatter={formatDate}
+          content={({ payload, ...props }) => (
+            <LineChart.CustomTooltip
+              {...props}
+              payload={formatTooltipPayload(payload)}
+              formatter={tooltipFormatter}
+            />
+          )}
           nameFormatter={() => 'Health Score'}
           formatter={val => val}
         />
