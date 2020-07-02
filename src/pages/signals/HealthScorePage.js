@@ -110,6 +110,7 @@ export class HealthScorePage extends Component {
         <OGOnlyWrapper as={Grid.Column} sm={12} md={7}>
           <Panel data-id="health-score-panel">
             <ChartHeader title="Health Score" tooltipContent={HEALTH_SCORE_INFO} />
+
             {panelContent || (
               <Panel.Section>
                 <HealthScoreLineChart
@@ -155,7 +156,9 @@ export class HealthScorePage extends Component {
                   }}
                   xAxisProps={this.getXAxisProps()}
                 />
+
                 <ChartHeader title="Injections" tooltipContent={INJECTIONS_INFO} />
+
                 <BarChart
                   margin={newModelMarginsOther}
                   gap={gap}
@@ -179,9 +182,11 @@ export class HealthScorePage extends Component {
                   }}
                   xAxisProps={this.getXAxisProps()}
                 />
+
                 {selectedComponent && !selectedWeightsAreEmpty && (
                   <>
                     <ChartHeader title={HEALTH_SCORE_COMPONENTS[selectedComponent].chartTitle} />
+
                     <BarChart
                       margin={newModelMarginsOther}
                       gap={gap}
@@ -212,6 +217,7 @@ export class HealthScorePage extends Component {
             )}
           </Panel>
         </OGOnlyWrapper>
+
         <OGOnlyWrapper as={Grid.Column} sm={12} md={5} mdOffset={0}>
           {!loading && (
             <div data-id="health-score-components">
@@ -224,9 +230,11 @@ export class HealthScorePage extends Component {
                       hideLine
                       tooltipContent={HEALTH_SCORE_COMPONENT_INFO}
                     />
+
                     {!loading && selectedWeightsAreEmpty && (
                       <Empty message="Insufficient data to populate this chart" />
                     )}
+
                     {!panelContent && !selectedWeightsAreEmpty && (
                       <Panel.Section>
                         <DivergingBar
@@ -245,6 +253,7 @@ export class HealthScorePage extends Component {
                     )}
                   </Box>
                 </Box>
+
                 <Box as={Grid.Column} xs={12} md={5}>
                   {!panelContent && (
                     <Box as={Panel}>
