@@ -3,7 +3,6 @@ import {
   formatCardTypes,
   formatCreateData,
   formatDataForCors,
-  getPlanPrice,
   prepareCardInfo,
 } from '../billing';
 
@@ -72,17 +71,6 @@ describe('Billing Helpers', () => {
 
     it('should format card type strings', () => {
       expect(formatCardTypes(types)).toMatchSnapshot();
-    });
-  });
-
-  describe('getPlanPrice', () => {
-    const plan = {
-      volume: 500,
-      price: 50,
-    };
-
-    it('returns price info correctly for monthly plan', () => {
-      expect(getPlanPrice(plan)).toMatchSnapshot();
     });
   });
 

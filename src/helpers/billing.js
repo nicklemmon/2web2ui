@@ -162,14 +162,6 @@ export function formatCardTypes(cards) {
   });
 }
 
-export function getPlanPrice(plan) {
-  return {
-    intervalShort: 'mo',
-    intervalLong: 'monthly',
-    price: plan.price,
-  };
-}
-
 export function prepareCardInfo({ expCombined, ...cardInfo }) {
   const expiryInfo = Payment.fns.cardExpiryVal(expCombined);
 

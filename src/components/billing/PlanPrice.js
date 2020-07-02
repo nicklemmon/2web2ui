@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { getPlanPrice } from 'src/helpers/billing';
 import { formatCurrency } from 'src/helpers/units';
 import cx from 'classnames';
 import { Text } from 'src/components/matchbox';
@@ -20,6 +19,13 @@ const PlanPrice = ({
   if (_.isEmpty(plan)) {
     return null;
   }
+  const getPlanPrice = plan => {
+    return {
+      intervalShort: 'mo',
+      intervalLong: 'monthly',
+      price: plan.price,
+    };
+  };
 
   const priceInfo = getPlanPrice(plan);
 
