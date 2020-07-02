@@ -22,13 +22,12 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => {
   const { account, loading: accountLoading } = selectAccountBilling(state);
-  const { countriesLoading, plansLoading, bundlesLoading, bundlePlansLoading } = state.billing;
+  const { countriesLoading, bundlesLoading, bundlePlansLoading } = state.billing;
   return {
     subscription: state.billing.subscription,
     plans: state.billing.bundlePlans,
     bundles: selectAvailableBundles(state),
-    loading:
-      countriesLoading || plansLoading || bundlesLoading || accountLoading || bundlePlansLoading,
+    loading: countriesLoading || bundlesLoading || accountLoading || bundlePlansLoading,
     billingCountries: state.billing.countries,
     account,
   };

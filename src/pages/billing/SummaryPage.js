@@ -90,7 +90,7 @@ export class BillingSummaryPage extends Component {
 const mapStateToProps = state => {
   const { loading, account } = selectAccountBilling(state);
   return {
-    loading: loading || state.billing.plansLoading || !state.account.subscription,
+    loading: loading || !state.account.subscription,
     account,
     subscription: state.billing.subscription || {},
     accountAgeInDays: selectAccountAgeInDays(state),
