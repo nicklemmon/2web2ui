@@ -76,11 +76,7 @@ Array [
         "Authorization": "mock-access-token",
       },
       "method": "get",
-      "params": Object {
-        "meta": Object {
-          "showErrorAlert": false,
-        },
-      },
+      "params": Object {},
       "responseType": "json",
       "url": "/v1/billing/bundles",
     },
@@ -92,11 +88,7 @@ Array [
         "Authorization": "mock-access-token",
       },
       "method": "get",
-      "params": Object {
-        "meta": Object {
-          "showErrorAlert": false,
-        },
-      },
+      "params": Object {},
       "responseType": "json",
       "url": "/v1/billing/subscription",
     },
