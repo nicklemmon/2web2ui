@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import { ApiErrorBanner, DeleteModal, Loading } from 'src/components';
 import { ExternalLink } from 'src/components/links';
 import { Banner, Box, Button, Page, Panel } from 'src/components/matchbox';
@@ -21,6 +22,7 @@ import { selectCondition } from 'src/selectors/accessConditionState';
 import { isSelfServeBilling } from 'src/helpers/conditions/account';
 import { PageLink, SupportTicketLink } from 'src/components/links';
 import { openSupportTicketForm } from 'src/actions/support';
+import styles from './EditPage.module.scss';
 
 const breadcrumbAction = {
   content: 'IP Pools',
@@ -136,7 +138,13 @@ export class EditPage extends Component {
     return (
       <OGOnlyWrapper as={Panel} title="Sending IPs">
         <OGOnlyWrapper as={Panel.Section}>
-          <Box as={Panel} title="Sending IPs" sectioned marginBottom={0} borderBottom={0}>
+          <Box
+            as={Panel}
+            className={classNames(ips && styles.NoBottomBorder)}
+            title="Sending IPs"
+            sectioned
+            marginBottom={0}
+          >
             <p>
               {!ips && <span>There are no IPs in this pool. </span>}
               Add dedicated IPs to this pool by moving them from their current pool{purchaseCTA}.
@@ -144,6 +152,7 @@ export class EditPage extends Component {
             </p>
           </Box>
         </OGOnlyWrapper>
+
         {ips && <IpList ips={ips} pool={pool} />}
       </OGOnlyWrapper>
     );

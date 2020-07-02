@@ -18,7 +18,7 @@ export default class TableHeader extends Component {
   };
 
   renderSortCell = item => {
-    const { label, sortKey } = item;
+    const { label, sortKey, align } = item;
     const { sortColumn, sortDirection } = this.props;
 
     if (sortKey) {
@@ -27,6 +27,7 @@ export default class TableHeader extends Component {
           onClick={() => this.handleSorting(sortKey)}
           direction={sortKey === sortColumn && sortDirection}
           label={label}
+          align={align}
         />
       );
     }

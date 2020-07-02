@@ -29,10 +29,13 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       it('renders the report chart and bounce table depending on the selected tab', () => {
         cy.clock(STABLE_UNIX_DATE);
-        cy.findByText('Bounce Reason').click();
-        cy.findByText('No bounce reasons to report').should('be.visible');
-        cy.findByText('Report').click();
-        cy.get('.recharts-wrapper').should('be.visible');
+
+        cy.findByDataId('summary-chart').within(() => {
+          cy.findByText('Bounce Reason').click();
+          cy.findByText('No bounce reasons to report').should('be.visible');
+          cy.findByText('Report').click();
+          cy.get('.recharts-wrapper').should('be.visible');
+        });
       });
 
       it('renders with bounce reason data', () => {
@@ -103,11 +106,17 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       it('renders the report chart and rejected reason table depending on the selected tab', () => {
         cy.clock(STABLE_UNIX_DATE);
-        cy.findByText('Rejection Reason').click();
+
+        cy.findByDataId('summary-chart').within(() => {
+          cy.findByText('Rejection Reason').click();
+        });
 
         cy.findByDataId('summary-chart').within(() => cy.get('table').should('be.visible'));
-        cy.findByText('Report').click();
-        cy.get('.recharts-wrapper').should('be.visible');
+
+        cy.findByDataId('summary-chart').within(() => {
+          cy.findByText('Report').click();
+          cy.get('.recharts-wrapper').should('be.visible');
+        });
       });
 
       it('renders with rejection reason data', () => {
@@ -177,11 +186,17 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       it('renders the report chart and delay reason table depending on the selected tab', () => {
         cy.clock(STABLE_UNIX_DATE);
-        cy.findByText('Delay Reason').click();
+
+        cy.findByDataId('summary-chart').within(() => {
+          cy.findByText('Delay Reason').click();
+        });
 
         cy.findByDataId('summary-chart').within(() => cy.get('table').should('be.visible'));
-        cy.findByText('Report').click();
-        cy.get('.recharts-wrapper').should('be.visible');
+
+        cy.findByDataId('summary-chart').within(() => {
+          cy.findByText('Report').click();
+          cy.get('.recharts-wrapper').should('be.visible');
+        });
       });
 
       it('renders with delay reason data', () => {
