@@ -132,73 +132,82 @@ export function HealthScoreChart(props) {
         {!noData && (
           <>
             {isHibanaEnabled ? (
-              <LineChart>
-                <LineChart.Container height={300} data={history}>
-                  <Bar key="noKey" dataKey="noKey" background={lineChartConfig.barsBackground} />
+              <div className="LiftTooltip" style={{ position: 'relative' }}>
+                <LineChart>
+                  <LineChart.Container height={300} data={history}>
+                    <Bar
+                      key="this-is-a-key"
+                      dataKey="noKey"
+                      stackId="stack"
+                      cursor="pointer"
+                      isAnimationActive={false}
+                      background={lineChartConfig.barsBackground}
+                      onMouseOver={handleDateHover}
+                    />
 
-                  <XAxis
-                    axisLine={false}
-                    dataKey="date"
-                    height={30}
-                    interval="preserveStartEnd"
-                    scale="auto"
-                    tickLine={false}
-                    {...getXAxisProps()}
-                  />
+                    <XAxis
+                      dataKey="date"
+                      axisLine={false}
+                      scale="auto"
+                      height={30}
+                      tickLine={false}
+                      {...getXAxisProps()}
+                    />
 
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    width={30}
-                    minTickGap={2}
-                    dataKey="health_score"
-                    ticks={[0, 55, 80, 100]}
-                  />
+                    <YAxis
+                      dataKey="health_score"
+                      axisLine={false}
+                      tickLine={false}
+                      width={30}
+                      minTickGap={2}
+                      ticks={[0, 55, 80, 100]}
+                    />
 
-                  <Tooltip
-                    cursor={<LineChart.Cursor data={history} />}
-                    content={({ payload, ...props }) => {
-                      return (
-                        <LineChart.CustomTooltip
-                          {...props}
-                          payload={formatTooltipPayload(payload)}
-                        />
-                      );
-                    }}
-                    wrapperStyle={lineChartConfig.tooltipStyles}
-                    isAnimationActive={false}
-                    labelFormatter={formatDate}
-                    nameFormatter={() => 'Health Score'}
-                    formatter={val => val}
-                  />
+                    <Tooltip
+                      cursor={<LineChart.Cursor data={history} />}
+                      content={({ payload, ...props }) => {
+                        return (
+                          <LineChart.CustomTooltip
+                            {...props}
+                            payload={formatTooltipPayload(payload)}
+                          />
+                        );
+                      }}
+                      wrapperStyle={lineChartConfig.tooltipStyles}
+                      isAnimationActive={false}
+                      labelFormatter={formatDate}
+                      nameFormatter={() => 'Health Score'}
+                      formatter={val => val}
+                    />
 
-                  <ReferenceLine
-                    {...lineChartConfig.referenceLineProps}
-                    strokeDasharray="none"
-                    y={100}
-                  />
+                    <ReferenceLine
+                      {...lineChartConfig.referenceLineProps}
+                      strokeDasharray="none"
+                      y={100}
+                    />
 
-                  <ReferenceLine
-                    {...lineChartConfig.referenceLineProps}
-                    y={80}
-                    style={{ stroke: tokens.color_green_700 }}
-                  />
+                    <ReferenceLine
+                      {...lineChartConfig.referenceLineProps}
+                      y={80}
+                      style={{ stroke: tokens.color_green_700 }}
+                    />
 
-                  <ReferenceLine
-                    {...lineChartConfig.referenceLineProps}
-                    y={55}
-                    style={{ stroke: tokens.color_red_700 }}
-                  />
+                    <ReferenceLine
+                      {...lineChartConfig.referenceLineProps}
+                      y={55}
+                      style={{ stroke: tokens.color_red_700 }}
+                    />
 
-                  <Line
-                    {...lineChartConfig.lineProps}
-                    dataKey="health_score"
-                    stroke={tokens.color_blue_700}
-                  />
-                </LineChart.Container>
+                    <Line
+                      {...lineChartConfig.lineProps}
+                      dataKey="health_score"
+                      stroke={tokens.color_blue_700}
+                    />
+                  </LineChart.Container>
 
-                <LineChart.YAxisLabel></LineChart.YAxisLabel>
-              </LineChart>
+                  <LineChart.YAxisLabel></LineChart.YAxisLabel>
+                </LineChart>
+              </div>
             ) : (
               <BarChart
                 margin={newModelMarginsHealthScore}
