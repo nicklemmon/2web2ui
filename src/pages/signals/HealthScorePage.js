@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PageLink } from 'src/components/links';
-import { Bar, CartesianGrid, Line, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, Line, Tooltip, XAxis, YAxis } from 'recharts';
 import { Box, Grid, Panel } from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
 import { OGOnlyWrapper } from 'src/components/hibana';
@@ -34,6 +34,8 @@ import {
   newModelMarginsHealthScore,
   newModelMarginsOther,
 } from './constants/healthScoreV2';
+
+const CHART_HEIGHT = 250;
 
 export class HealthScorePageClassComponent extends Component {
   state = {
@@ -167,10 +169,8 @@ export class HealthScorePageClassComponent extends Component {
 
                 {isHibanaEnabled ? (
                   <LineChart>
-                    <LineChart.Container height={250} data={data}>
+                    <LineChart.Container height={CHART_HEIGHT} data={data}>
                       <Bar {...lineChartConfig.barProps} onMouseOver={handleDateHover} />
-
-                      <CartesianGrid stroke="pink" {...lineChartConfig.cartesianGridProps} />
 
                       <XAxis
                         {...lineChartConfig.xAxisProps}
@@ -226,30 +226,67 @@ export class HealthScorePageClassComponent extends Component {
                   <>
                     <ChartHeader title={HEALTH_SCORE_COMPONENTS[selectedComponent].chartTitle} />
 
-                    <BarChart
-                      margin={newModelMarginsOther}
-                      gap={gap}
-                      height={190}
-                      onClick={handleDateSelect}
-                      onMouseOver={handleDateHover}
-                      onMouseOut={resetDateHover}
-                      hovered={hoveredDate}
-                      selected={selectedDate}
-                      shouldHighlightSelected={shouldHighlightSelected}
-                      timeSeries={dataForSelectedWeight}
-                      tooltipContent={({ payload = {} }) => (
-                        <TooltipMetric
-                          label={HEALTH_SCORE_COMPONENTS[selectedComponent].label}
-                          value={`${roundToPlaces(payload.weight_value * 100, 4)}%`}
-                        />
-                      )}
-                      yKey="weight_value"
-                      yAxisProps={{
-                        tickFormatter: tick => `${roundToPlaces(tick * 100, 3)}%`,
-                      }}
-                      yDomain={selectedDataIsZero ? [0, 1] : [0, 'auto']}
-                      xAxisProps={this.getXAxisProps()}
-                    />
+                    {isHibanaEnabled ? (
+                      <LineChart>
+                        <LineChart.Container height={CHART_HEIGHT} data={dataForSelectedWeight}>
+                          <Bar {...lineChartConfig.barProps} onMouseOver={handleDateHover} />
+
+                          <XAxis
+                            {...lineChartConfig.xAxisProps}
+                            {...this.getXAxisProps()}
+                            dataKey="date"
+                          />
+
+                          <YAxis
+                            {...lineChartConfig.yAxisProps}
+                            domain={selectedDataIsZero ? [0, 1] : [0, 'auto']}
+                            dataKey="weight_value"
+                            width={35}
+                            tickFormatter={tick => `${roundToPlaces(tick * 100, 3)}%`}
+                          />
+
+                          <Tooltip
+                            {...lineChartConfig.tooltipProps}
+                            cursor={<LineChart.Cursor data={dataForSelectedWeight} />}
+                            content={({ payload, ...props }) => (
+                              <LineChart.CustomTooltip
+                                {...props}
+                                nameFormatter={() => 'Suppression Hits'}
+                                formatter={val => `${roundToPlaces(val * 100, 4)}%`}
+                                payload={payload}
+                              />
+                            )}
+                          />
+
+                          <Line {...lineChartConfig.lineProps} dataKey="weight_value" />
+                        </LineChart.Container>
+                      </LineChart>
+                    ) : (
+                      <BarChart
+                        margin={newModelMarginsOther}
+                        gap={gap}
+                        height={190}
+                        onClick={handleDateSelect}
+                        onMouseOver={handleDateHover}
+                        onMouseOut={resetDateHover}
+                        hovered={hoveredDate}
+                        selected={selectedDate}
+                        shouldHighlightSelected={shouldHighlightSelected}
+                        timeSeries={dataForSelectedWeight}
+                        tooltipContent={({ payload = {} }) => (
+                          <TooltipMetric
+                            label={HEALTH_SCORE_COMPONENTS[selectedComponent].label}
+                            value={`${roundToPlaces(payload.weight_value * 100, 4)}%`}
+                          />
+                        )}
+                        yKey="weight_value"
+                        yAxisProps={{
+                          tickFormatter: tick => `${roundToPlaces(tick * 100, 3)}%`,
+                        }}
+                        yDomain={selectedDataIsZero ? [0, 1] : [0, 'auto']}
+                        xAxisProps={this.getXAxisProps()}
+                      />
+                    )}
                   </>
                 )}
               </Panel.Section>

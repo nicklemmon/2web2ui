@@ -11,9 +11,9 @@ function LineChart({ children }) {
   return <div className={styles.ChartWrapper}>{children}</div>;
 }
 
-function Container({ children, data, height, syncId }) {
+function Container({ children, data, height, width = '99%', syncId }) {
   return (
-    <ResponsiveContainer width="99%" height={height}>
+    <ResponsiveContainer width={width} height={height}>
       <ComposedChart syncId={syncId} barCategoryGap="3%" data={data}>
         {children}
       </ComposedChart>
