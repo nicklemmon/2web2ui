@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { subMonths, format } from 'date-fns';
@@ -32,129 +32,194 @@ import ManualEntryForm from './ManualEntryForm';
 import { FORMATS } from 'src/constants';
 import styles from './DatePicker.module.scss';
 
-export class DatePicker extends Component {
-  DATE_FORMAT = FORMATS.LONG_DATETIME;
-  state = {
-    showDatePicker: false,
-    selecting: false,
-    relativeRange: 'custom',
-    selected: {},
-    validationError: null,
-    selectedPrecision: undefined,
-  };
+const DATE_FORMAT = FORMATS.LONG_DATETIME;
 
-  componentDidMount() {
-    this.syncTimeToState(this.props);
-  }
+const initialState = {
+  showDatePicker: false,
+  selecting: false,
+  relativeRange: 'custom',
+  selected: {},
+  validationError: null,
+  selectedPrecision: undefined,
+};
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.from !== this.props.from ||
-      nextProps.to !== this.props.to ||
-      nextProps.precision !== this.props.precision
-    ) {
-      this.syncTimeToState(nextProps);
+const actionTypes = {
+  open: 'OPEN',
+  close: 'CLOSE',
+  error: 'SET_ERROR',
+  sync: 'SYNC',
+  dayClick: 'DAY_CLICK',
+  dayHover: 'DAY_HOVER',
+  selectRange: 'SELECT_RANGE',
+};
+
+const datePickerReducer = (state, { type, payload }) => {
+  switch (type) {
+    case actionTypes.open: {
+      return { ...state, showDatePicker: true };
+    }
+    case actionTypes.close: {
+      return { ...state, showDatePicker: false, selecting: false, validationError: null };
+    }
+    case actionTypes.error: {
+      const { validationError } = payload;
+      return { ...state, validationError };
+    }
+    case actionTypes.sync:
+    case actionTypes.dayClick:
+    case actionTypes.dayHover:
+      return { ...state, ...payload };
+    default: {
+      return state;
     }
   }
+};
+export function DatePicker(props) {
+  const [state, dispatch] = useReducer(datePickerReducer, initialState);
 
-  //For metrics rollup, update the precision display when precision changes
-  componentDidUpdate(prevProps, prevState) {
-    const { selectedPrecision, showDatePicker } = this.state;
-    const { updateShownPrecision } = this.props;
-    if (updateShownPrecision) {
-      //closing datepicker resets to the actual precision
-      if (prevState.showDatePicker && !showDatePicker) {
-        return updateShownPrecision('');
+  const syncTimeToState = useCallback(
+    ({ from, to, precision, relativeRange }) => {
+      if (from && to) {
+        const selectedPrecision = props.selectPrecision && precision;
+        dispatch({
+          type: actionTypes.sync,
+          payload: {
+            selected: { from, to },
+            selectedPrecision,
+            relativeRange,
+            selecting: false,
+          },
+        });
       }
-      if (prevState.selectedPrecision !== selectedPrecision && showDatePicker) {
-        return updateShownPrecision(selectedPrecision);
-      }
-    }
-  }
+    },
+    [props.selectPrecision],
+  );
+
+  // componentDidMount() {
+  //   syncTimeToState(props);
+  // }
+
+  useEffect(() => {
+    syncTimeToState(props);
+  }, [props, syncTimeToState]);
+
+  // componentWillReceiveProps(nextProps) {
+  //   if (
+  //     nextProps.from !== props.from ||
+  //     nextProps.to !== props.to ||
+  //     nextProps.precision !== props.precision
+  //   ) {
+  //     syncTimeToState(nextProps);
+  //   }
+  // }
+
+  useEffect(() => {
+    syncTimeToState({
+      to: props.to,
+      from: props.from,
+      precision: props.precision,
+      relativeRange: props.relativeRange,
+    });
+  }, [props.to, props.from, props.precision, props.relativeRange, syncTimeToState]);
+
+  // //For metrics rollup, update the precision display when precision changes
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { selectedPrecision, showDatePicker } = state;
+  //   const { updateShownPrecision } = props;
+  //   if (updateShownPrecision) {
+  //     //closing datepicker resets to the actual precision
+  //     if (prevState.showDatePicker && !showDatePicker) {
+  //       return updateShownPrecision('');
+  //     }
+  //     if (prevState.selectedPrecision !== selectedPrecision && showDatePicker) {
+  //       return updateShownPrecision(selectedPrecision);
+  //     }
+  //   }
+  // }
 
   // Sets local state from reportOptions redux state - need to separate to handle pre-apply state
-  syncTimeToState = ({ from, to, precision, relativeRange }) => {
-    if (from && to) {
-      const selectedPrecision = this.props.selectPrecision && precision;
-      this.setState({ selected: { from, to }, selectedPrecision, relativeRange });
-    }
-  };
 
   // Closes popover on escape, submits on enter
-  handleKeyDown = e => {
-    if (!this.state.showDatePicker) {
+  const handleKeyDown = e => {
+    if (!state.showDatePicker) {
       return;
     }
 
     if (e.key === 'Escape') {
-      this.cancelDatePicker();
+      cancelDatePicker();
     }
 
-    if (!this.state.selecting && e.key === 'Enter') {
-      this.handleSubmit();
+    if (!state.selecting && e.key === 'Enter') {
+      handleSubmit();
     }
   };
 
-  handleDayKeyDown = (day, modifiers, e) => {
-    this.handleKeyDown(e);
+  const handleDayKeyDown = (day, modifiers, e) => {
+    handleKeyDown(e);
     e.stopPropagation();
   };
 
-  cancelDatePicker = () => {
-    this.syncTimeToState(this.props);
-    this.setState({ showDatePicker: false });
+  const cancelDatePicker = () => {
+    syncTimeToState(props);
+    dispatch({ type: actionTypes.close });
   };
 
-  showDatePicker = () => {
-    this.setState({ showDatePicker: true });
+  const showDatePicker = () => {
+    dispatch({ type: actionTypes.open });
   };
 
-  handleDayClick = clicked => {
-    const { selecting, selected } = this.state;
-    const { validate, selectPrecision } = this.props;
+  const handleDayClick = clicked => {
+    const { selecting, selected } = state;
+    const { validate, selectPrecision } = props;
 
     const dates = selecting
       ? selected
       : {
-          from: this.fromFormatter(clicked),
-          to: getEndOfDay(clicked, { preventFuture: this.props.preventFuture }),
+          from: fromFormatter(clicked),
+          to: getEndOfDay(clicked, { preventFuture: props.preventFuture }),
         };
 
     const validationError = validate && validate(dates);
 
     if (selecting && validationError) {
-      this.setState({ validationError });
+      dispatch({ type: actionTypes.error, payload: { validationError } });
       return;
     }
 
-    this.setState({
-      relativeRange: 'custom',
-      selected: dates,
-      beforeSelected: dates,
-      selecting: !selecting,
-      validationError: null,
-      selectedPrecision:
-        selectPrecision &&
-        getRollupPrecision({ from: dates.from, to: dates.to, precision: this.props.precision }),
+    dispatch({
+      type: actionTypes.dayClick,
+      payload: {
+        relativeRange: 'custom',
+        selected: dates,
+        beforeSelected: dates,
+        selecting: !selecting,
+        validationError: null,
+        selectedPrecision:
+          selectPrecision &&
+          getRollupPrecision({ from: dates.from, to: dates.to, precision: props.precision }),
+      },
     });
   };
 
-  handleDayHover = hovered => {
-    const { selecting } = this.state;
+  const handleDayHover = hovered => {
+    const { selecting } = state;
 
     if (selecting) {
-      const { from, to, precision } = this.getOrderedRange(hovered);
-      this.setState({ selected: { from, to }, selectedPrecision: precision });
+      const { from, to, precision } = getOrderedRange(hovered);
+      dispatch({
+        type: actionTypes.dayHover,
+        payload: { selected: { from, to }, selectedPrecision: precision },
+      });
     }
   };
 
-  getOrderedRange(newDate) {
-    let { from, to } = this.state.beforeSelected;
-    const { preventFuture, selectPrecision, precision: oldPrecision } = this.props;
+  const getOrderedRange = newDate => {
+    let { from, to } = state.beforeSelected;
+    const { preventFuture, selectPrecision, precision: oldPrecision } = props;
     if (from.getTime() <= newDate.getTime()) {
       to = getEndOfDay(newDate, { preventFuture });
     } else {
-      from = this.fromFormatter(newDate);
+      from = fromFormatter(newDate);
     }
     //Changes datepicker precision if the current set precision is not available
     const precision = getRollupPrecision({
@@ -162,188 +227,190 @@ export class DatePicker extends Component {
       to,
       precision: selectPrecision && oldPrecision,
     });
-    if (this.props.roundToPrecision) {
+    if (props.roundToPrecision) {
       const rounded = roundBoundaries({ from, to, precision });
       from = rounded.from.toDate();
       to = rounded.to.toDate();
     }
     return { from, to, precision };
-  }
+  };
 
-  handleSelectRange = value => {
+  const handleSelectRange = value => {
     if (value !== 'custom') {
       const { from, to } = getRelativeDates(value);
       const precision = getRecommendedRollupPrecision(from, moment(to));
-      this.setState({
-        selecting: false,
-        relativeRange: value,
-        selectedPrecision: precision,
-        selected: { from, to },
+      dispatch({
+        type: actionTypes.selectRange,
+        payload: {
+          selecting: false,
+          relativeRange: value,
+          selectedPrecision: precision,
+          selected: { from, to },
+        },
       });
     } else {
-      this.setState({
-        relativeRange: value,
+      dispatch({
+        type: actionTypes.selectRange,
+        payload: {
+          relativeRange: value,
+        },
       });
     }
   };
 
-  handleFormDates = ({ from, to, precision }, callback) => {
-    const selectedPrecision = this.props.selectPrecision ? precision : undefined;
+  const handleFormDates = ({ from, to, precision }, callback) => {
+    const selectedPrecision = props.selectPrecision ? precision : undefined;
 
-    this.setState({ selected: { from, to }, selectedPrecision }, () => callback());
+    dispatch({
+      type: actionTypes.setFormDates,
+      payload: { selected: { from, to }, selectedPrecision },
+    });
+    callback();
   };
 
-  handleSubmit = () => {
-    const { validate } = this.props;
-    const selectedDates = this.state.selected;
+  const handleSubmit = () => {
+    const { validate } = props;
+    const selectedDates = state.selected;
     const validationError = validate && validate(selectedDates);
     if (validationError) {
-      this.setState({ validationError });
+      dispatch({ type: actionTypes.error, payload: { validationError } });
       return;
     }
 
-    this.setState({ showDatePicker: false, selecting: false, validationError: null });
-    this.props.onChange({
+    dispatch({ type: actionTypes.close });
+    props.onChange({
       ...selectedDates,
-      relativeRange: this.state.relativeRange,
+      relativeRange: state.relativeRange,
       precision:
-        this.state.selectedPrecision ||
+        state.selectedPrecision ||
         getPrecision(moment(selectedDates.from), moment(selectedDates.to)),
     });
   };
 
-  handleTextUpdate = () => {
-    if (this.props.onBlur) {
-      this.props.onBlur();
+  const handleTextUpdate = () => {
+    if (props.onBlur) {
+      props.onBlur();
     }
   };
 
-  fromFormatter = fromDate => {
+  const fromFormatter = fromDate => {
     const isDateToday = isSameDate(getStartOfDay(fromDate), getStartOfDay(new Date()));
-    const formatter = this.props.fromSelectsNextHour && isDateToday ? getNextHour : getStartOfDay;
+    const formatter = props.fromSelectsNextHour && isDateToday ? getNextHour : getStartOfDay;
     return formatter(fromDate);
   };
 
-  render() {
-    const {
-      selected: { from, to },
-      validationError,
-      selectedPrecision,
-    } = this.state;
+  const {
+    selected: { from, to },
+    validationError,
+    selectedPrecision,
+  } = state;
 
-    // allow for prop-level override of "now" (DI, etc.)
-    const {
-      now = new Date(),
-      relativeDateOptions = [],
-      disabled,
-      datePickerProps = {},
-      textFieldProps = {},
-      dateFieldFormat,
-      roundToPrecision,
-      preventFuture,
-      // showPresets = true,
-      error,
-      left,
-      hideManualEntry,
-      precision,
-      selectPrecision,
-      id,
-      label,
-    } = this.props;
+  // allow for prop-level override of "now" (DI, etc.)
+  const {
+    now = new Date(),
+    relativeDateOptions = [],
+    disabled,
+    datePickerProps = {},
+    textFieldProps = {},
+    dateFieldFormat,
+    roundToPrecision,
+    preventFuture,
+    // showPresets = true,
+    error,
+    left,
+    hideManualEntry,
+    precision,
+    selectPrecision,
+    id,
+    label,
+  } = props;
 
-    const dateFormat = dateFieldFormat || this.DATE_FORMAT;
+  const dateFormat = dateFieldFormat || DATE_FORMAT;
 
-    const rangeOptions = getRelativeDateOptions(relativeDateOptions).map(({ label, value }) => {
-      return {
-        content: label,
-        highlighted: this.state.relativeRange === value,
-        onClick: () => this.handleSelectRange(value),
-      };
-    });
+  const rangeOptions = getRelativeDateOptions(relativeDateOptions).map(({ label, value }) => {
+    return {
+      content: label,
+      highlighted: state.relativeRange === value,
+      onClick: () => handleSelectRange(value),
+    };
+  });
 
-    const dateField = (
-      <TextField
-        label={label}
-        id={`date-field-${id}`}
-        onClick={this.showDatePicker}
-        value={`${format(from, dateFormat)} – ${format(to, dateFormat)}`}
-        readOnly
-        onBlur={this.handleTextUpdate}
-        error={error}
-        disabled={disabled}
-        {...textFieldProps}
-      />
-    );
+  const dateField = (
+    <TextField
+      label={label}
+      id={`date-field-${id}`}
+      onClick={showDatePicker}
+      value={`${format(from, dateFormat)} – ${format(to, dateFormat)}`}
+      readOnly
+      onBlur={handleTextUpdate}
+      error={error}
+      disabled={disabled}
+      {...textFieldProps}
+    />
+  );
 
-    return (
-      <Popover
-        id={`popover-${id}`}
-        wrapper="div"
-        className={styles.Popover}
-        trigger={dateField}
-        onClose={this.cancelDatePicker}
-        open={this.state.showDatePicker}
-        left={left}
-      >
-        <Box display="flex">
-          <Box className={styles.ActionList} borderRight="400">
-            <ActionList actions={rangeOptions} />
-          </Box>
-          <Box padding="400" className={styles.DateSelectorWrapper}>
-            <DateSelector
-              className={styles.DateSelector}
-              numberOfMonths={2}
-              fixedWeeks
-              enableOutsideDays={false}
-              initialMonth={subMonths(now, 1)}
-              toMonth={now}
-              disabledDays={{ after: now }}
-              onDayClick={this.handleDayClick}
-              onDayMouseEnter={this.handleDayHover}
-              onDayFocus={this.handleDayHover}
-              onKeyDown={this.handleKeyDown}
-              onDayKeyDown={this.handleDayKeyDown}
-              selectedDays={this.state.selected}
-              {...datePickerProps}
+  return (
+    <Popover
+      id={`popover-${id}`}
+      wrapper="div"
+      className={styles.Popover}
+      trigger={dateField}
+      onClose={cancelDatePicker}
+      open={state.showDatePicker}
+      left={left}
+    >
+      <Box display="flex">
+        <Box className={styles.ActionList} borderRight="400">
+          <ActionList actions={rangeOptions} />
+        </Box>
+        <Box padding="400" className={styles.DateSelectorWrapper}>
+          <DateSelector
+            className={styles.DateSelector}
+            fixedWeeks
+            initialMonth={subMonths(now, 1)}
+            toMonth={now}
+            disabledDays={{ after: now }}
+            onDayClick={handleDayClick}
+            onDayMouseEnter={handleDayHover}
+            onDayFocus={handleDayHover}
+            onKeyDown={handleKeyDown}
+            onDayKeyDown={handleDayKeyDown}
+            selectedDays={state.selected}
+            {...datePickerProps}
+          />
+          {!hideManualEntry && (
+            <ManualEntryForm
+              selectDates={handleFormDates}
+              onEnter={handleKeyDown}
+              to={to}
+              from={from}
+              roundToPrecision={roundToPrecision}
+              preventFuture={preventFuture}
+              selectedPrecision={selectedPrecision}
+              defaultPrecision={selectPrecision && precision}
             />
-            {!hideManualEntry && (
-              <ManualEntryForm
-                selectDates={this.handleFormDates}
-                onEnter={this.handleKeyDown}
-                to={to}
-                from={from}
-                roundToPrecision={roundToPrecision}
-                preventFuture={preventFuture}
-                selectedPrecision={selectedPrecision}
-                defaultPrecision={selectPrecision && precision}
-              />
-            )}
-          </Box>
+          )}
         </Box>
-        <Box padding="400" borderTop="400">
-          <ButtonWrapper>
-            <Button
-              variant="primary"
-              onClick={this.handleSubmit}
-              data-id="date-picker-custom-apply"
-            >
-              Apply
-            </Button>
+      </Box>
+      <Box padding="400" borderTop="400">
+        <ButtonWrapper>
+          <Button variant="primary" onClick={handleSubmit} data-id="date-picker-custom-apply">
+            Apply
+          </Button>
 
-            <Button variant="secondary" onClick={this.cancelDatePicker}>
-              Cancel
-            </Button>
-          </ButtonWrapper>
-        </Box>
-        {validationError && (
-          <span className={styles.Error}>
-            <Error wrapper="span" error={validationError}></Error>
-          </span>
-        )}
-        <WindowEvent event="keydown" handler={this.handleKeyDown} />
-      </Popover>
-    );
-  }
+          <Button variant="secondary" onClick={cancelDatePicker}>
+            Cancel
+          </Button>
+        </ButtonWrapper>
+      </Box>
+      {validationError && (
+        <span className={styles.Error}>
+          <Error wrapper="span" error={validationError}></Error>
+        </span>
+      )}
+      <WindowEvent event="keydown" handler={handleKeyDown} />
+    </Popover>
+  );
 }
 
 export default DatePicker;

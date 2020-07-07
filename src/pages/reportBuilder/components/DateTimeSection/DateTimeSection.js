@@ -40,18 +40,16 @@ const DateTimeSection = ({
   return (
     <Grid>
       <Grid.Column xs={12} md={6}>
-        <div className={styles.FieldWrapperMetricsRollup}>
-          <DatePicker
-            {...reportOptions}
-            relativeDateOptions={RELATIVE_DATE_OPTIONS}
-            disabled={reportLoading}
-            onChange={refreshReportOptions}
-            roundToPrecision={true}
-            selectPrecision={true}
-            label="Date Range"
-            updateShownPrecision={updateShownPrecision}
-          />
-        </div>
+        <DatePicker
+          {...reportOptions}
+          relativeDateOptions={RELATIVE_DATE_OPTIONS}
+          disabled={reportLoading}
+          onChange={refreshReportOptions}
+          roundToPrecision={true}
+          selectPrecision={true}
+          label="Date Range"
+          updateShownPrecision={updateShownPrecision}
+        />
       </Grid.Column>
       <Grid.Column xs={6} md={4}>
         <div className={styles.TimezoneTooltipWrapper}>
