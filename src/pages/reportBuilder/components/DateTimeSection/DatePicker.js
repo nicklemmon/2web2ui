@@ -286,7 +286,7 @@ export class DatePicker extends Component {
         left={left}
       >
         <Box display="flex">
-          <Box className={styles.ActionList} borderRight="1px solid" borderColor="gray.400">
+          <Box className={styles.ActionList} borderRight="400">
             <ActionList actions={rangeOptions} />
           </Box>
           <Box padding="400" className={styles.DateSelectorWrapper}>
@@ -320,7 +320,7 @@ export class DatePicker extends Component {
             )}
           </Box>
         </Box>
-        <Box padding="400" borderTop="1px solid" borderColor="gray.400">
+        <Box padding="400" borderTop="400">
           <ButtonWrapper>
             <Button
               variant="primary"
