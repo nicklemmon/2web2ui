@@ -140,7 +140,7 @@ export class EditPage extends Component {
         <OGOnlyWrapper as={Panel.Section}>
           <Box
             as={Panel}
-            className={classNames(ips && styles.NoBottomBorder)}
+            className={classNames(ips && ips.length > 0 && styles.NoBottomBorder)}
             title="Sending IPs"
             sectioned
             marginBottom={0}

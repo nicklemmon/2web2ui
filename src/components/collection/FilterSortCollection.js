@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, Panel, ScreenReaderOnly, Select, Table } from 'src/components/matchbox';
+import { Grid, Panel, ScreenReaderOnly, Select, Table } from 'src/components/matchbox';
 import { Collection } from 'src/components/index';
 import _ from 'lodash';
 import styles from './FilterSortCollection.module.scss';
@@ -158,7 +158,7 @@ const HibanaFilterSortCollection = ({
       {({ collection, filterBox, pagination }) => (
         <>
           <Panel title={title}>
-            <Box justifyContent="center" alignItems="center" padding="500">
+            <Panel.Section>
               <Grid>
                 <Grid.Column xs={12} md={9}>
                   {filterBox}
@@ -175,7 +175,8 @@ const HibanaFilterSortCollection = ({
                   />
                 </Grid.Column>
               </Grid>
-            </Box>
+            </Panel.Section>
+
             {collection}
           </Panel>
           {pagination}

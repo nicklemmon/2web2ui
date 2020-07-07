@@ -57,7 +57,7 @@ exports[`SendMoreCTA Component renders correctly 2`] = `
           <PageLink
             as={[Function]}
             to="/account/billing"
-            variant="monochrome"
+            variant="monochrome-secondary"
           >
             Switch to a new plan.
           </PageLink>

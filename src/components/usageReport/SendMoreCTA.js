@@ -45,7 +45,7 @@ export function HibanaSendMoreCTA({ hasSendingLimits }) {
             <Case
               condition={onPlanWithStatus('deprecated')}
               children={
-                <PageLink as={Button} variant="monochrome" to="/account/billing">
+                <PageLink as={Button} variant="monochrome-secondary" to="/account/billing">
                   Switch to a new plan.
                 </PageLink>
               }

@@ -36,13 +36,13 @@ export class WebhooksList extends Component {
     const { hasSubaccounts } = this.props;
     const columns = [
       { label: 'Name', sortKey: 'name' },
-      'Target',
-      { label: 'Last Success', sortKey: 'last_successful', width: '18%' },
-      { label: 'Last Failure', sortKey: 'last_failure', width: '18%' },
+      { label: 'Target', width: '20%' },
+      { label: 'Last Success', sortKey: 'last_successful' },
+      { label: 'Last Failure', sortKey: 'last_failure' },
     ];
 
     if (hasSubaccounts) {
-      columns.push({ label: 'Events For', width: '18%', sortKey: 'subaccount_id' });
+      columns.push({ label: 'Events For', sortKey: 'subaccount_id' });
     }
 
     return columns;
@@ -86,7 +86,7 @@ export class WebhooksList extends Component {
     const { error, listWebhooks } = this.props;
     return (
       <ApiErrorBanner
-        message={'Sorry, we seem to have had some trouble loading your webhooks.'}
+        message="Sorry, we seem to have had some trouble loading your webhooks."
         errorDetails={error.message}
         reload={listWebhooks}
       />

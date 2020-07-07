@@ -1,5 +1,5 @@
 import React from 'react';
-import { Banner, Stack } from 'src/components/matchbox';
+import { Banner } from 'src/components/matchbox';
 import { LINKS } from 'src/constants';
 import { ExternalLink } from 'src/components/links';
 
@@ -17,16 +17,14 @@ const UnverifiedBanner = ({ unverifiedDomains, cname }) => {
 
   return (
     <Banner status="warning" title={title} marginBottom="500">
-      <Stack>
-        <p>
-          To verify a tracking domain, edit its DNS settings to <strong>add a CNAME record</strong>{' '}
-          with the value of <strong>{cname}</strong>.
-        </p>
+      <p>
+        To verify a tracking domain, edit its DNS settings to <strong>add a CNAME record</strong>{' '}
+        with the value of <strong>{cname}</strong>.
+      </p>
 
-        <Banner.Actions>
-          <ExternalLink to={LINKS.DOMAIN_VERIFICATION}>Learn more</ExternalLink>
-        </Banner.Actions>
-      </Stack>
+      <Banner.Actions>
+        <ExternalLink to={LINKS.DOMAIN_VERIFICATION}>Learn more</ExternalLink>
+      </Banner.Actions>
     </Banner>
   );
 };
