@@ -45,7 +45,7 @@ export default {
     algolia: {
       appID: 'SFXAWCYDV8',
       apiKey: '9ba87280f36f539fcc0a318c2d4fcfe6',
-      index: 'development_site_posts_support_article',
+      index: 'wp_vip_site_develop_posts_support_article',
     },
   },
   website: {
