@@ -136,9 +136,9 @@ export function clearFilters() {
 export function refreshReportOptions(update) {
   return (dispatch, getState) => {
     const { reportOptions } = getState();
+    const updatedPrecision = update.precision;
     update = { ...reportOptions, ...update };
     const { useMetricsRollup } = selectFeatureFlaggedMetrics(getState());
-    const updatedPrecision = useMetricsRollup && update.precision;
 
     if (update.relativeRange) {
       if (update.relativeRange !== 'custom') {
@@ -150,12 +150,12 @@ export function refreshReportOptions(update) {
         const precision = useMetricsRollup
           ? getRollupPrecision({ from, to, precision: updatedPrecision }) ||
             getRecommendedRollupPrecision(from, moment(to))
-          : getPrecision(from, moment(to));
+          : updatedPrecision || getPrecision(from, moment(to));
         update = { ...update, from, to, precision };
       } else {
         const precision = useMetricsRollup
           ? updatedPrecision || getRecommendedRollupPrecision(update.from, moment(update.to))
-          : getPrecision(update.from, moment(update.to));
+          : updatedPrecision || getPrecision(update.from, moment(update.to));
         update = { ...update, precision };
       }
     }

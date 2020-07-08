@@ -68,6 +68,7 @@ const datePickerReducer = (state, { type, payload }) => {
     case actionTypes.sync:
     case actionTypes.dayClick:
     case actionTypes.dayHover:
+    case actionTypes.selectRange:
       return { ...state, ...payload };
     default: {
       return state;
@@ -95,23 +96,9 @@ export function DatePicker(props) {
     [props.selectPrecision],
   );
 
-  // componentDidMount() {
-  //   syncTimeToState(props);
-  // }
-
   useEffect(() => {
     syncTimeToState(props);
   }, [props, syncTimeToState]);
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (
-  //     nextProps.from !== props.from ||
-  //     nextProps.to !== props.to ||
-  //     nextProps.precision !== props.precision
-  //   ) {
-  //     syncTimeToState(nextProps);
-  //   }
-  // }
 
   useEffect(() => {
     syncTimeToState({
