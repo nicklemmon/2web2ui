@@ -27,7 +27,9 @@ export function CancellationPanel(props) {
         setShowCancelAccountModal(true);
       }
     } catch (error) {
-      ErrorTracker.report('account-cancellation-pendo-guide-error', error);
+      ErrorTracker.report('account-cancellation-pendo-guide-warning', error, {
+        level: 'warning',
+      });
       setShowCancelAccountModal(true);
     }
   };
