@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "count_targeted": 1,
+      "count_rendered": 2,
+      "count_accepted": 3,
+      "count_bounce": 4,
+      "template_id": "my-template-1"
+    },
+    {
+      "count_targeted": 1,
+      "count_rendered": 2,
+      "count_accepted": 3,
+      "count_bounce": 4,
+      "template_id": "my-template-2"
+    }
+  ]
+}

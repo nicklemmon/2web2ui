@@ -1,13 +1,9 @@
 @import '~@sparkpost/matchbox/src/styles/config.scss';
 
 .GreenCheck {
-  margin-right: 3px;
+  margin-left: 3px;
+  margin-top: -3px;
   color: color(green);
-
-  path {
-    stroke: color(green);
-    stroke-width: 4px;
-  }
 }
 
 .RedError {

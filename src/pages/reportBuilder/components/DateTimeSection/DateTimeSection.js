@@ -82,6 +82,7 @@ const DateTimeSection = ({
         ) : (
           <Select
             label="Precision"
+            id="precision-select"
             options={PRECISION_OPTIONS}
             value={shownPrecision}
             disabled={reportLoading}

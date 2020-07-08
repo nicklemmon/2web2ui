@@ -1,0 +1,12 @@
+{
+  "results": [
+    {
+      "bounce_class_name": "Mail Block",
+      "bounce_class_description": "The message was blocked by the receiver",
+      "bounce_category_name": "Block",
+      "classification_id": 50,
+      "count_bounce": 2516,
+      "count_admin_bounce": 0
+    }
+  ]
+}

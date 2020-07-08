@@ -3,53 +3,73 @@
 exports[`VerificationHelp component does not render otherwise 1`] = `""`;
 
 exports[`VerificationHelp component renders for non-verified domains blocked 1`] = `
-<p>
-  Need help verifying your domain? 
-  <a
-    href="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
-    rel="noopener noreferrer"
-    target="_blank"
+<SubduedText
+  as="p"
+  color="gray.600"
+  fontSize="300"
+  mt="300"
+>
+  <span>
+    Need help verifying your domain? 
+  </span>
+  <ExternalLink
+    to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
   >
     Follow this guide.
-  </a>
-</p>
+  </ExternalLink>
+</SubduedText>
 `;
 
 exports[`VerificationHelp component renders for non-verified domains pending 1`] = `
-<p>
-  Need help verifying your domain? 
-  <a
-    href="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
-    rel="noopener noreferrer"
-    target="_blank"
+<SubduedText
+  as="p"
+  color="gray.600"
+  fontSize="300"
+  mt="300"
+>
+  <span>
+    Need help verifying your domain? 
+  </span>
+  <ExternalLink
+    to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
   >
     Follow this guide.
-  </a>
-</p>
+  </ExternalLink>
+</SubduedText>
 `;
 
 exports[`VerificationHelp component renders for non-verified domains unverified 1`] = `
-<p>
-  Need help verifying your domain? 
-  <a
-    href="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
-    rel="noopener noreferrer"
-    target="_blank"
+<SubduedText
+  as="p"
+  color="gray.600"
+  fontSize="300"
+  mt="300"
+>
+  <span>
+    Need help verifying your domain? 
+  </span>
+  <ExternalLink
+    to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
   >
     Follow this guide.
-  </a>
-</p>
+  </ExternalLink>
+</SubduedText>
 `;
 
 exports[`VerificationHelp component renders for non-verified domains verified 1`] = `
-<p>
-  Need help verifying your domain? 
-  <a
-    href="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
-    rel="noopener noreferrer"
-    target="_blank"
+<SubduedText
+  as="p"
+  color="gray.600"
+  fontSize="300"
+  mt="300"
+>
+  <span>
+    Need help verifying your domain? 
+  </span>
+  <ExternalLink
+    to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership"
   >
     Follow this guide.
-  </a>
-</p>
+  </ExternalLink>
+</SubduedText>
 `;

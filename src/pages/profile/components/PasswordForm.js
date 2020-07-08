@@ -42,7 +42,7 @@ export class PasswordForm extends Component {
 
         <Panel.Section>
           <Button
-            variant="secondary"
+            variant="primary"
             submit
             disabled={
               submitting ||

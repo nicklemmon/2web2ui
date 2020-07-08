@@ -18,7 +18,6 @@ import { selectEditInitialValues } from 'src/selectors/abTesting';
 import { formatFormValues } from 'src/helpers/abTesting';
 
 import { Box, Page, Panel, Stack } from 'src/components/matchbox';
-import { Save } from '@sparkpost/matchbox-icons';
 import Section from './components/Section';
 import StatusPanel from './components/StatusPanel';
 import { StatusFields, SettingsFields, VariantsFields } from './components/fields';
@@ -105,11 +104,7 @@ export class EditMode extends Component {
     const { test, deleteAction, cancelAction, handleSubmit } = this.props;
     return [
       {
-        content: (
-          <span>
-            <Save /> Save as Draft
-          </span>
-        ),
+        content: 'Save as Draft',
         visible: test.status === 'draft',
         onClick: handleSubmit(this.handleSaveAsDraft),
       },

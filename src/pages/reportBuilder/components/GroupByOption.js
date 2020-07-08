@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styles from './ReportTable.module.scss';
+import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
 
 export const GroupByOption = props => {
   const { groupBy, hasSubaccounts, tableLoading, _getTableData } = props;
+  const selectId = useUniqueId('break-down-by');
 
   const [topDomainsOnly, setTopDomainsOnly] = useState(true);
 
@@ -43,8 +45,9 @@ export const GroupByOption = props => {
     if (groupBy !== 'watched-domain' && groupBy !== 'domain') {
       return null;
     }
+
     return (
-      <Box marginTop={'500'} className={styles.TopDomainsCheckbox}>
+      <Box marginTop="500" className={styles.TopDomainsCheckbox}>
         <Checkbox
           id="watchedDomains"
           label="Top Domains Only"
@@ -61,6 +64,7 @@ export const GroupByOption = props => {
       <Grid.Column xs={12} md={5} lg={4}>
         <Select
           label="Break Down By"
+          id={selectId}
           options={getSelectOptions()}
           value={groupBy}
           disabled={tableLoading}

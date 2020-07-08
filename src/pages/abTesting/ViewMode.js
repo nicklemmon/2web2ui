@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Box, Page, Panel, Stack } from 'src/components/matchbox';
-import { Save } from '@sparkpost/matchbox-icons';
 import Section from './components/Section';
 import StatusPanel from './components/StatusPanel';
 import { StatusContent, SettingsContent, VariantsContent } from './components/content';
@@ -47,11 +46,7 @@ export class ViewMode extends Component {
     const status = test.status;
     return [
       {
-        content: (
-          <span>
-            <Save /> Override with new draft
-          </span>
-        ),
+        content: 'Override with new draft',
         visible: status === 'completed' || status === 'cancelled',
         onClick: this.toggleOverride,
       },

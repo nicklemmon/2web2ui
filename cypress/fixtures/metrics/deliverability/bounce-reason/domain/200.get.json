@@ -1,0 +1,13 @@
+{
+  "results": [
+    {
+      "bounce_class_name": "Mail Block",
+      "bounce_class_description": "The message was blocked by the receiver",
+      "bounce_category_name": "Block",
+      "classification_id": 50,
+      "count_bounce": 17,
+      "reason": "This is the bounce reason. For real.",
+      "domain": "gmail.com"
+    }
+  ]
+}

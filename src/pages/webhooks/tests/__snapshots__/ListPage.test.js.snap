@@ -6,21 +6,21 @@ Array [
     "label": "Name",
     "sortKey": "name",
   },
-  "Target",
+  Object {
+    "label": "Target",
+    "width": "20%",
+  },
   Object {
     "label": "Last Success",
     "sortKey": "last_successful",
-    "width": "18%",
   },
   Object {
     "label": "Last Failure",
     "sortKey": "last_failure",
-    "width": "18%",
   },
   Object {
     "label": "Events For",
     "sortKey": "subaccount_id",
-    "width": "18%",
   },
 ]
 `;
@@ -145,16 +145,17 @@ exports[`Page: Webhook List should render happy path 1`] = `
           "label": "Name",
           "sortKey": "name",
         },
-        "Target",
+        Object {
+          "label": "Target",
+          "width": "20%",
+        },
         Object {
           "label": "Last Success",
           "sortKey": "last_successful",
-          "width": "18%",
         },
         Object {
           "label": "Last Failure",
           "sortKey": "last_failure",
-          "width": "18%",
         },
       ]
     }

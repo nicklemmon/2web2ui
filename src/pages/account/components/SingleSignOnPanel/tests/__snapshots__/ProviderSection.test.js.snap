@@ -21,7 +21,9 @@ exports[`ProviderSection renders when not provisioned 1`] = `
     </h6>
   </LabelledValue>
   <Modal
+    onClose={[Function]}
     open={false}
+    showCloseButton={true}
   >
     <Connect(ReduxForm)
       onCancel={[Function]}
@@ -52,7 +54,9 @@ exports[`ProviderSection renders when provisioned 1`] = `
     </h6>
   </LabelledValue>
   <Modal
+    onClose={[Function]}
     open={false}
+    showCloseButton={true}
   >
     <Connect(ReduxForm)
       onCancel={[Function]}

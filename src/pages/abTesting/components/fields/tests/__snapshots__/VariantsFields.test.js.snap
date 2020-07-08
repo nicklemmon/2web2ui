@@ -17,7 +17,16 @@ exports[`Variants Fields Component Field Array should render 1 field with disabl
         onClick={[Function]}
         size="small"
       >
-        Remove Variant
+        <span>
+          Remove Variant
+        </span>
+        <RemoveCircle
+          style={
+            Object {
+              "marginLeft": "2px",
+            }
+          }
+        />
       </Button>
     </div>
     <h6
@@ -76,7 +85,16 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
         onClick={[Function]}
         size="small"
       >
-        Remove Variant
+        <span>
+          Remove Variant
+        </span>
+        <RemoveCircle
+          style={
+            Object {
+              "marginLeft": "2px",
+            }
+          }
+        />
       </Button>
     </div>
     <h6
@@ -117,7 +135,16 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
         onClick={[Function]}
         size="small"
       >
-        Remove Variant
+        <span>
+          Remove Variant
+        </span>
+        <RemoveCircle
+          style={
+            Object {
+              "marginLeft": "2px",
+            }
+          }
+        />
       </Button>
     </div>
     <h6
@@ -176,7 +203,16 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         onClick={[Function]}
         size="small"
       >
-        Remove Variant
+        <span>
+          Remove Variant
+        </span>
+        <RemoveCircle
+          style={
+            Object {
+              "marginLeft": "2px",
+            }
+          }
+        />
       </Button>
     </div>
     <h6
@@ -217,7 +253,16 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         onClick={[Function]}
         size="small"
       >
-        Remove Variant
+        <span>
+          Remove Variant
+        </span>
+        <RemoveCircle
+          style={
+            Object {
+              "marginLeft": "2px",
+            }
+          }
+        />
       </Button>
     </div>
     <h6
@@ -276,7 +321,16 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         onClick={[Function]}
         size="small"
       >
-        Remove Variant
+        <span>
+          Remove Variant
+        </span>
+        <RemoveCircle
+          style={
+            Object {
+              "marginLeft": "2px",
+            }
+          }
+        />
       </Button>
     </div>
     <h6
@@ -317,7 +371,16 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         onClick={[Function]}
         size="small"
       >
-        Remove Variant
+        <span>
+          Remove Variant
+        </span>
+        <RemoveCircle
+          style={
+            Object {
+              "marginLeft": "2px",
+            }
+          }
+        />
       </Button>
     </div>
     <h6

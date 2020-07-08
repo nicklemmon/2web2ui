@@ -1,17 +1,17 @@
 @import '~@sparkpost/design-tokens-hibana/tokens';
 
 .CheckboxGrid {
-  grid-row-gap: spacing(400);
+  grid-row-gap: spacing(300);
 
   @media screen and (min-width: media-query(md)) {
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: spacing(600);
-    grid-row-gap: spacing(400);
+    grid-column-gap: spacing(400);
+    grid-row-gap: spacing(300);
   }
 
   @media screen and (min-width: media-query(lg)) {
     grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: spacing(600);
-    grid-row-gap: spacing(600);
+    grid-column-gap: spacing(400);
+    grid-row-gap: spacing(300);
   }
 }

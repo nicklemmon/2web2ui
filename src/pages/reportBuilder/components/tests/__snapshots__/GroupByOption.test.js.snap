@@ -9,6 +9,7 @@ exports[`Group By Option should render correctly with both selector and checkbox
   >
     <Select
       disabled={false}
+      id="break-down-by-1"
       label="Break Down By"
       onChange={[Function]}
       options={

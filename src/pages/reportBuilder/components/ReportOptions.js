@@ -13,7 +13,8 @@ import MetricsDrawer from './MetricsDrawer';
 import { Legend } from './index';
 import _ from 'lodash';
 import AddFiltersSection from './AddFiltersSection';
-import DateTimeSection from './DateTimeSection/';
+import SavedReportsTypeahead from './SavedReportsTypeahead';
+import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
@@ -115,6 +116,9 @@ export function ReportOptions(props) {
   return (
     <div data-id="report-options">
       <Panel.Section>
+        <SavedReportsTypeahead />
+      </Panel.Section>
+      <Panel.Section>
         <DateTimeSection
           reportOptions={reportOptions}
           handleTimezoneSelect={handleTimezoneSelect}
@@ -123,7 +127,7 @@ export function ReportOptions(props) {
         />
       </Panel.Section>
       <Panel.Section>
-        <Inline space={'300'}>
+        <Inline space="300">
           <Button {...getActivatorProps()} onClick={() => handleDrawerOpen(0)} variant="secondary">
             Add Metrics
           </Button>

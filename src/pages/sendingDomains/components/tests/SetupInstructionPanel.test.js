@@ -47,9 +47,8 @@ describe('SetupInstructionPanel', () => {
     const wrapper = subject({ isVerified: true });
 
     it('renders a re-verify button', () => {
-      expect(wrapper).toHaveProp('actions', [
-        expect.objectContaining({ content: 'Re-verify CNAME Record' }),
-      ]);
+      // 😳 Very tightly coupled to the implementation - ideally we would just be looking at the DOM here
+      expect(wrapper.props().actions[0].content.props.children).toBe('Re-verify CNAME Record');
     });
 
     it('renders a verified icon', () => {

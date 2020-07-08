@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from 'src/components/matchbox';
+import { Box, Text } from 'src/components/matchbox';
 import { DomainStatusTag } from 'src/components/tags';
 import { VerifiedIcon } from './Icons';
 
@@ -7,7 +7,11 @@ const StatusLabel = ({ status }) => {
   if (status === 'verified') {
     return (
       <Box display="flex" alignItems="center">
-        <VerifiedIcon /> <strong>Verified</strong>
+        <Text as="span" fontSize="300" fontWeight="400" color="gray.900">
+          Verified
+        </Text>
+
+        <VerifiedIcon />
       </Box>
     );
   }

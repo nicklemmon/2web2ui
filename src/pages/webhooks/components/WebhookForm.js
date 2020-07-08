@@ -4,7 +4,7 @@ import { reduxForm, formValueSelector, Field } from 'redux-form';
 import { selectInitialSubaccountValue, getSelectedEvents } from 'src/selectors/webhooks';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { withRouter } from 'react-router-dom';
-import { Button, Panel, Stack } from 'src/components/matchbox';
+import { Button, Panel, Stack, Tooltip } from 'src/components/matchbox';
 import CheckboxWrapper from 'src/components/reduxFormWrappers/CheckboxWrapper';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { selectWebhookEventListing } from 'src/selectors/eventListing';
@@ -24,25 +24,23 @@ import HibanaStyles from './WebhookFormHibana.module.scss';
 
 const formName = 'webhookForm';
 
-export function EventCheckBoxes({ show, events, disabled }) {
+export function EventCheckBoxes({ events, disabled }) {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
-
-  if (!show) {
-    return null;
-  }
 
   return (
     <div className={styles.CheckboxGrid}>
       {events.map(({ key, display_name, description, name = `events.${key}` }) => (
-        <Field
-          key={key}
-          label={display_name}
-          type="checkbox"
-          name={name}
-          helpText={description}
-          component={CheckboxWrapper}
-          disabled={disabled}
-        />
+        <div key={key}>
+          <Tooltip dark content={description}>
+            <Field
+              label={display_name}
+              type="checkbox"
+              name={name}
+              component={CheckboxWrapper}
+              disabled={disabled}
+            />
+          </Tooltip>
+        </div>
       ))}
     </div>
   );
@@ -92,7 +90,7 @@ export class WebhookForm extends Component {
         <Panel.Section>
           <Stack>
             <EventsRadioGroup disabled={submitting} />
-            <EventCheckBoxes show={showEvents} events={eventListing} disabled={submitting} />
+            {showEvents && <EventCheckBoxes events={eventListing} disabled={submitting} />}
           </Stack>
         </Panel.Section>
         <Panel.Section>
