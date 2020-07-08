@@ -137,9 +137,6 @@ const config = identifier => ({
   },
   splashPage: '/reports/summary',
   summaryChart: {
-    defaultMetrics: ['count_targeted', 'count_rendered', 'count_accepted', 'count_bounce'],
-  },
-  analyticsReport: {
     defaultMetrics: [
       'count_sent',
       'count_unique_confirmed_opened_approx',
