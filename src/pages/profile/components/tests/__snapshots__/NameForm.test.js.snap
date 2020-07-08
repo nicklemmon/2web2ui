@@ -25,7 +25,7 @@ exports[`Component: NameForm should render correctly 1`] = `
   <Panel.Section>
     <Button
       submit={true}
-      variant="secondary"
+      variant="primary"
     >
       Update Profile
     </Button>
@@ -59,7 +59,7 @@ exports[`Component: NameForm should render correctly when updating 1`] = `
     <Button
       disabled={true}
       submit={true}
-      variant="secondary"
+      variant="primary"
     >
       Updating Profile
     </Button>

@@ -45,18 +45,20 @@ exports[`Page: Test List renders page correctly with defaults 1`] = `
         validateDate={[Function]}
       />
     </Panel.Section>
-    <Connect(TrendsChart)
-      filters={
-        Object {
-          "dateRange": Object {
-            "from": "2019-07-11T16:30:00.000Z",
-            "to": "2019-08-10T16:30:00.000Z",
-          },
-          "range": "30days",
-          "tags": Object {},
+    <Panel.Section>
+      <Connect(TrendsChart)
+        filters={
+          Object {
+            "dateRange": Object {
+              "from": "2019-07-11T16:30:00.000Z",
+              "to": "2019-08-10T16:30:00.000Z",
+            },
+            "range": "30days",
+            "tags": Object {},
+          }
         }
-      }
-    />
+      />
+    </Panel.Section>
   </Panel>
   <FilterSortCollection
     defaultSortColumn="start_time"
@@ -149,18 +151,20 @@ exports[`Page: Test List renders page with tests 1`] = `
         validateDate={[Function]}
       />
     </Panel.Section>
-    <Connect(TrendsChart)
-      filters={
-        Object {
-          "dateRange": Object {
-            "from": "2019-07-11T16:30:00.000Z",
-            "to": "2019-08-10T16:30:00.000Z",
-          },
-          "range": "30days",
-          "tags": Object {},
+    <Panel.Section>
+      <Connect(TrendsChart)
+        filters={
+          Object {
+            "dateRange": Object {
+              "from": "2019-07-11T16:30:00.000Z",
+              "to": "2019-08-10T16:30:00.000Z",
+            },
+            "range": "30days",
+            "tags": Object {},
+          }
         }
-      }
-    />
+      />
+    </Panel.Section>
   </Panel>
   <FilterSortCollection
     defaultSortColumn="start_time"

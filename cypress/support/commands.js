@@ -110,6 +110,18 @@ Cypress.Commands.add('stubAuth', () => {
     status: 200,
     response: '@sendingDomainsGet',
   }).as('stubbedSendingDomains');
+  cy.route({
+    method: 'POST',
+    url: '/sockjs-node/**/*',
+    status: 200,
+    response: {},
+  }).as('stubbedSockNodePost');
+  cy.route({
+    method: 'GET',
+    url: '/sockjs-node/**/*',
+    status: 200,
+    response: {},
+  }).as('stubbedSockNodeGet');
 });
 
 /**
@@ -185,11 +197,21 @@ Cypress.Commands.add('withinSnackbar', callback => {
 /**
  * Used to interact and assert within the main content of the page
  *
- * @param {function} callback - The callback function that runs inside the modal
+ * @param {function} callback - The callback function that runs inside the main content of the page
  *
  */
 Cypress.Commands.add('withinMainContent', callback => {
   cy.get('main').within(callback);
+});
+
+/**
+ * Used to interact and assert within the drawer
+ *
+ * @param {function} callback - The callback function that runs inside the drawer
+ *
+ */
+Cypress.Commands.add('withinDrawer', callback => {
+  cy.get('#drawer-portal').within(callback);
 });
 
 Cypress.Commands.add('findByDataId', id => cy.get(`[data-id="${id}"]`));

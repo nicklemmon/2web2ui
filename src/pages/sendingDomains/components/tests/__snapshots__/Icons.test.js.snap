@@ -8,7 +8,7 @@ exports[`Sending Domains Icons renders error icon 1`] = `
 `;
 
 exports[`Sending Domains Icons renders verify icon 1`] = `
-<Check
+<CheckCircle
   className="GreenCheck"
   size={16}
 />

@@ -50,6 +50,7 @@ const DateTimeSection = ({
             selectPrecision={true}
             label="Date Range"
             updateShownPrecision={updateShownPrecision}
+            maxWidth="100%"
           />
         </div>
       </Grid.Column>
@@ -84,6 +85,7 @@ const DateTimeSection = ({
         ) : (
           <Select
             label="Precision"
+            id="precision-select"
             options={PRECISION_OPTIONS}
             value={shownPrecision}
             disabled={reportLoading}

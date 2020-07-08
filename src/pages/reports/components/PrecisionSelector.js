@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 
 import { getPrecisionOptions, roundBoundaries, getRollupPrecision } from 'src/helpers/metrics';
 import { Select } from 'src/components/matchbox';
+import useUniqueId from 'src/hooks/useUniqueId';
 import moment from 'moment';
 
 const PrecisionSelector = ({ from, to, changeTime, selectedPrecision, disabled }) => {
   const precisionOptions = getPrecisionOptions(moment(from), moment(to));
+  const uniqueId = useUniqueId('precision-selector');
 
   useEffect(() => {
     const updatedPrecision = getRollupPrecision({ from, to, precision: selectedPrecision });
@@ -22,6 +24,7 @@ const PrecisionSelector = ({ from, to, changeTime, selectedPrecision, disabled }
 
   return (
     <Select
+      id={uniqueId}
       data-id="precision-selector"
       options={precisionOptions}
       onChange={updatePrecision}

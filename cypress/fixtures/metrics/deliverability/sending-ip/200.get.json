@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "count_targeted": 1000,
+      "count_rendered": 2000,
+      "count_accepted": 3000,
+      "count_bounce": 4000,
+      "sending_ip": "Password Reset"
+    },
+    {
+      "count_targeted": 5000,
+      "count_rendered": 6000,
+      "count_accepted": 7000,
+      "count_bounce": 8000,
+      "sending_ip": "Confirmation"
+    },
+    {
+      "count_targeted": 9000,
+      "count_rendered": 10000,
+      "count_accepted": 11000,
+      "count_bounce": 12000,
+      "sending_ip": "This is a real sending IP, alright."
+    }
+  ]
+}

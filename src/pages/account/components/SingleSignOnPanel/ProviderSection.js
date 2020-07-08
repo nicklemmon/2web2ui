@@ -33,7 +33,7 @@ export class ProviderSection extends React.Component {
         <LabelledValue label="Identity Provider">
           <h6>{provider ? provider : 'Not provisioned'}</h6>
         </LabelledValue>
-        <Modal open={this.state.isModalOpen}>
+        <Modal open={this.state.isModalOpen} showCloseButton onClose={this.closeModal}>
           <ProviderForm onCancel={this.closeModal} onSubmit={this.closeModal} />
         </Modal>
       </Panel.Section>

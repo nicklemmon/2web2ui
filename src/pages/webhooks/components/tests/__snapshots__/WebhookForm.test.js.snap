@@ -10,37 +10,56 @@ exports[`EventCheckboxes component should render with events 1`] = `
 <div
   className="CheckboxGrid"
 >
-  <Field
-    component={[Function]}
-    disabled={false}
-    helpText="A longer description for test event A"
+  <div
     key="testKeyA"
-    label="Test Display Name A"
-    name="events.testKeyA"
-    type="checkbox"
-  />
-  <Field
-    component={[Function]}
-    disabled={false}
-    helpText="A longer description for test event B"
+  >
+    <Tooltip
+      content="A longer description for test event A"
+      dark={true}
+    >
+      <Field
+        component={[Function]}
+        disabled={false}
+        label="Test Display Name A"
+        name="events.testKeyA"
+        type="checkbox"
+      />
+    </Tooltip>
+  </div>
+  <div
     key="testKeyB"
-    label="Test Display Name B"
-    name="events.testKeyB"
-    type="checkbox"
-  />
-  <Field
-    component={[Function]}
-    disabled={false}
-    helpText="A longer description for test event C"
+  >
+    <Tooltip
+      content="A longer description for test event B"
+      dark={true}
+    >
+      <Field
+        component={[Function]}
+        disabled={false}
+        label="Test Display Name B"
+        name="events.testKeyB"
+        type="checkbox"
+      />
+    </Tooltip>
+  </div>
+  <div
     key="testKeyC"
-    label="Test Display Name C"
-    name="events.testKeyC"
-    type="checkbox"
-  />
+  >
+    <Tooltip
+      content="A longer description for test event C"
+      dark={true}
+    >
+      <Field
+        component={[Function]}
+        disabled={false}
+        label="Test Display Name C"
+        name="events.testKeyC"
+        type="checkbox"
+      />
+    </Tooltip>
+  </div>
 </div>
 `;
-
-exports[`EventCheckboxes component should return null if show is false 1`] = `""`;
 
 exports[`Webhooks Form Component auth should render basic auth fields 1`] = `
 Array [
@@ -85,9 +104,6 @@ exports[`Webhooks Form Component should render correctly 1`] = `
       <EventsRadioGroup
         disabled={false}
       />
-      <EventCheckBoxes
-        disabled={false}
-      />
     </Stack>
   </Panel.Section>
   <Panel.Section>
@@ -123,9 +139,7 @@ Array [
   <EventsRadioGroup
     disabled={false}
   />,
-  <EventCheckBoxes
-    disabled={false}
-  />,
+  undefined,
 ]
 `;
 

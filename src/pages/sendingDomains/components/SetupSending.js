@@ -56,7 +56,7 @@ export class SetupSending extends Component {
 
     if (!readyFor.sending && !readyFor.dkim) {
       content = (
-        <SubduedText>
+        <SubduedText mt="300">
           <strong>To use this domain for sending</strong>, add this TXT record to your DNS settings,
           paying close attention to the specified hostname.
         </SubduedText>

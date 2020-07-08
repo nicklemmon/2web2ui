@@ -12,20 +12,14 @@ exports[`Page: A/B Test Details should render correctly and create shared props 
     }
     cancelAction={
       Object {
-        "content": <span>
-          <Block />
-           Cancel Test
-        </span>,
+        "content": "Cancel Test",
         "onClick": [Function],
         "visible": false,
       }
     }
     deleteAction={
       Object {
-        "content": <span>
-          <Delete />
-           Delete Test
-        </span>,
+        "content": "Delete Test",
         "onClick": [Function],
       }
     }

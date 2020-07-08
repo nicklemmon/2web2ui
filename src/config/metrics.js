@@ -390,6 +390,28 @@ export const list = [
     tab: 'delayed',
   },
   {
+    key: 'delayed_rate',
+    label: 'Delayed Rate',
+    category: delivery,
+    unit: 'percent',
+    computeKeys: ['count_delayed', 'count_accepted'],
+    compute: rate,
+    description: 'Percentage of Accepted messages that were Delayed',
+    inReportBuilder: true,
+    tab: 'delayed',
+  },
+  {
+    key: 'rejected_rate',
+    label: 'Rejection Rate',
+    category: injection,
+    unit: 'percent',
+    computeKeys: ['count_rejected', 'count_sent'],
+    compute: rate,
+    description: 'Percentage of Sent messages that were Rejected',
+    inReportBuilder: true,
+    tab: 'rejection',
+  },
+  {
     key: 'count_delayed_first',
     label: 'Delayed 1st Attempt',
     category: delivery,
@@ -441,14 +463,22 @@ export const list = [
   /* below are metrics that never show in the summary report, but are needed when making API calls from the Metrics service */
   {
     key: 'count_inband_bounce',
+    label: 'In-band Bounce',
     type: 'total',
     unit: 'number',
+    description: 'Messages that bounced on delivery attempt during the SMTP session.',
+    category: delivery,
+    inReportBuilder: true,
     tab: 'bounce',
   },
   {
     key: 'count_outofband_bounce',
+    label: 'Out-of-band Bounce',
     type: 'total',
     unit: 'number',
+    description: 'Messages that the ISP bounced subsequent to a successful delivery.',
+    category: delivery,
+    inReportBuilder: true,
     tab: 'bounce',
   },
   {
@@ -469,7 +499,9 @@ export const map = list.reduce((accumulator = {}, metric) => ({
   [metric.key]: metric,
 }));
 
-const selectableMetrics = list.filter(metric => metric.inSummary && metric.category);
+const selectableMetrics = list.filter(
+  metric => (metric.inSummary || metric.inReportBuilder) && metric.category,
+);
 const categoriesObj = categories.reduce((accumulator, current) => {
   accumulator[current] = [];
   return accumulator;

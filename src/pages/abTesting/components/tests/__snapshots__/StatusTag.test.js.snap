@@ -10,7 +10,7 @@ exports[`Status Tag Component should render cancelled 1`] = `
 
 exports[`Status Tag Component should render completed 1`] = `
 <Tag
-  color="navy"
+  color="green"
 >
   Completed
 </Tag>

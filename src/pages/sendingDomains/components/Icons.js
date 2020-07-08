@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Error } from '@sparkpost/matchbox-icons';
+import { CheckCircle, Error } from '@sparkpost/matchbox-icons';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import OGStyles from './Icons.module.scss';
 import hibanaStyles from './IconsHibana.module.scss';
@@ -7,7 +7,7 @@ import hibanaStyles from './IconsHibana.module.scss';
 export function VerifiedIcon() {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
 
-  return <Check size={16} className={styles.GreenCheck} />;
+  return <CheckCircle size={16} className={styles.GreenCheck} />;
 }
 
 VerifiedIcon.displayName = 'VerifiedIcon';

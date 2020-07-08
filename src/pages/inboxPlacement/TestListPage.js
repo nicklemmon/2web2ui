@@ -158,7 +158,7 @@ export const TestListPage = ({ tests, error, loading, listTests }) => {
     >
       {error ? (
         <ApiErrorBanner
-          message={'Sorry, we seem to have had some trouble loading your tests.'}
+          message="Sorry, we seem to have had some trouble loading your tests."
           errorDetails={error.message}
           reload={listTests}
         />
@@ -176,7 +176,10 @@ export const TestListPage = ({ tests, error, loading, listTests }) => {
                 validateDate={validateDate}
               />
             </Panel.Section>
-            <TrendsChart filters={filters} />
+
+            <Panel.Section>
+              <TrendsChart filters={filters} />
+            </Panel.Section>
           </Panel>
           <FilterSortCollection
             title="Inbox Placement Tests"
@@ -193,7 +196,7 @@ export const TestListPage = ({ tests, error, loading, listTests }) => {
               placeholder: 'Search By: Subject, Placement Name, From Address',
               wrapper: props => props,
             }}
-            defaultSortColumn={'start_time'}
+            defaultSortColumn="start_time"
             rows={tests}
             rowComponent={FilterSortCollectionRow}
           />

@@ -65,7 +65,7 @@ exports[`IP Pools Edit Page render tests should not show purchase action if show
     >
       <Box
         as={[Function]}
-        borderBottom={0}
+        className=""
         marginBottom={0}
         sectioned={true}
         title="Sending IPs"
@@ -159,7 +159,7 @@ exports[`IP Pools Edit Page render tests should render the edit page correctly 1
     >
       <Box
         as={[Function]}
-        borderBottom={0}
+        className=""
         marginBottom={0}
         sectioned={true}
         title="Sending IPs"

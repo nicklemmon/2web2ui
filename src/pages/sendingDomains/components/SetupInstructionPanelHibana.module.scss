@@ -2,5 +2,10 @@
 
 .TitleIcon {
   margin-right: 0;
-  margin-left: spacing(200);
+  margin-top: -2px;
+  margin-left: spacing(100);
+}
+
+.VerifyIcon {
+  margin-top: -1px; // The icon is an odd shape - this helps address vertical centering
 }

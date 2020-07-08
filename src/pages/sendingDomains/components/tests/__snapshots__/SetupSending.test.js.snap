@@ -9,6 +9,7 @@ exports[`Component: SetupSending renders correctly for unverified DKIM and inval
       as="p"
       color="gray.600"
       fontSize="300"
+      mt="300"
     >
       <strong>
         To use this domain for sending
@@ -59,6 +60,7 @@ exports[`Component: SetupSending renders correctly for unverified DKIM and inval
       as="p"
       color="gray.600"
       fontSize="300"
+      mt="300"
     >
       <strong>
         To use this domain for sending

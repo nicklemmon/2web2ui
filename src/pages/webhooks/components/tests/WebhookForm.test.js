@@ -6,10 +6,6 @@ import SubaccountSection from '../SubaccountSection';
 jest.mock('src/hooks/useHibanaOverride', () => styles => styles);
 
 describe('EventCheckboxes component', () => {
-  it('should return null if show is false', () => {
-    expect(shallow(<EventCheckBoxes show={false} disabled={false} />)).toMatchSnapshot();
-  });
-
   it('should render with events', () => {
     const events = [
       {
@@ -92,7 +88,7 @@ describe('Webhooks Form Component', () => {
   });
 
   it('should disable input when submitting', () => {
-    wrapper.setProps({ submitting: true, hasSubaccounts: true });
+    wrapper.setProps({ submitting: true, hasSubaccounts: true, showEvents: true });
     expect(wrapper.find('Button').prop('disabled')).toBe(true);
     expect(wrapper.find('NameField').prop('disabled')).toBe(true);
     expect(wrapper.find('TargetField').prop('disabled')).toBe(true);

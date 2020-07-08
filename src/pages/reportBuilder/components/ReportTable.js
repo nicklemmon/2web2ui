@@ -46,7 +46,7 @@ export const ReportTable = props => {
 
     const metricCols = metrics.map(({ label, key }) => ({
       key,
-      label: <Box textAlign={'right'}>{label}</Box>,
+      label: <Box textAlign="right">{label}</Box>,
       className: cx(styles.HeaderCell, styles.NumericalHeader),
     }));
 
@@ -75,7 +75,7 @@ export const ReportTable = props => {
 
       const primaryCol = newFilter.value;
       const metricCols = metrics.map(({ key, unit }) => (
-        <Box textAlign={'right'} key={key}>
+        <Box textAlign="right" key={key}>
           <Unit value={row[key]} unit={unit} />
         </Box>
       ));
@@ -93,11 +93,15 @@ export const ReportTable = props => {
       return null;
     }
     if (tableLoading) {
-      return <PanelLoading minHeight={'250px'} />;
+      return <PanelLoading minHeight="250px" />;
     }
 
     if (!tableData.length) {
-      return <Empty message="There is no data to display" />;
+      return (
+        <Panel>
+          <Empty message="There is no data to display" />
+        </Panel>
+      );
     }
 
     const rowKeyName = GROUP_CONFIG[groupBy].keyName;
@@ -128,7 +132,7 @@ export const ReportTable = props => {
           />
         </Panel.Section>
       </Panel>
-      <div data-id={'summary-table'}>{renderTable()}</div>
+      <div data-id="summary-table">{renderTable()}</div>
     </>
   );
 };

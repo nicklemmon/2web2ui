@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Field, FieldArray } from 'redux-form';
+import { RemoveCircle } from '@sparkpost/matchbox-icons';
 import { Grid, Box, Button, Panel } from 'src/components/matchbox';
 import { OGOnlyWrapper } from 'src/components/hibana';
 import { Add } from '@sparkpost/matchbox-icons';
@@ -60,7 +61,8 @@ export const RenderVariants = ({ fields, formValues, disabled, subaccountId }) =
                 onClick={() => fields.remove(i)}
                 disabled={fields.length === 1}
               >
-                Remove Variant
+                <span>Remove Variant</span>
+                <RemoveCircle style={{ marginLeft: '2px' }} />
               </Button>
             </div>
             <h6 className={styles.SmallHeader}>Variant {i + 1}</h6>

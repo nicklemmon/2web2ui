@@ -149,6 +149,7 @@ function AddFiltersSection({
               <Grid>
                 <Grid.Column>
                   <Select
+                    id={`select-resource-${index}`}
                     options={cleanFilters(key).map(value => ({ value, label: value }))}
                     placeholder="Select Resource"
                     placeholderValue="Select Resource"

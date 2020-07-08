@@ -13,12 +13,18 @@ import { isSelfServeBilling } from 'src/helpers/conditions/account';
 const columns = [
   { label: 'Name', sortKey: 'name', width: '40%' },
   { label: 'ID', sortKey: 'id', width: '40%' },
-  { label: 'Number of IPs Assigned', sortKey: pool => pool.ips.length, width: '20%' },
+  {
+    label: 'Number of IPs Assigned',
+    align: 'right',
+    sortKey: pool => pool.ips.length,
+    width: '35%',
+  },
 ];
 
 export const getRowData = ({ id, name, ips }) => {
   const nameLink = <PageLink to={`/account/ip-pools/edit/${id}`}>{name}</PageLink>;
-  return [nameLink, id, ips.length.toString()];
+
+  return [nameLink, id, <div style={{ textAlign: 'right' }}>{ips.length.toString()}</div>];
 };
 
 export class IpPoolsList extends Component {
@@ -30,7 +36,7 @@ export class IpPoolsList extends Component {
     const { error, listPools } = this.props;
     return (
       <ApiErrorBanner
-        message={'Sorry, we seem to have had some trouble loading your ip pools.'}
+        message="Sorry, we seem to have had some trouble loading your ip pools."
         errorDetails={error.message}
         reload={listPools}
       />
@@ -39,6 +45,7 @@ export class IpPoolsList extends Component {
 
   renderCollection() {
     const { ipPools } = this.props;
+
     return (
       <TableCollection
         columns={columns}
