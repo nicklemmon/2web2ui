@@ -70,7 +70,7 @@ const config = identifier => ({
   metricsRollupPrecisionMap: [
     {
       recommended: 60 * 4,
-      min: 2,
+      min: 0,
       max: 60 * 12,
       value: '1min',
       format: 'ha',
