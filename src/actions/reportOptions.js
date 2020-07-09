@@ -18,6 +18,7 @@ import {
   getRecommendedRollupPrecision,
 } from 'src/helpers/metrics';
 import { isSameDate, getLocalTimezone } from 'src/helpers/date';
+import { dedupeFilters } from 'src/helpers/reports';
 import _ from 'lodash';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
@@ -192,6 +193,10 @@ export function _refreshReportOptions(payload) {
 
     if (!update.metrics) {
       update.metrics = config.summaryChart.defaultMetrics; //TODO: Change to use other metrics
+    }
+
+    if (payload.filters) {
+      update.filters = dedupeFilters([payload.filters]);
     }
 
     if (!update.relativeRange) {
