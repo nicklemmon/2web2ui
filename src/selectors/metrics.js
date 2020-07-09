@@ -5,8 +5,7 @@ import { selectCondition } from 'src/selectors/accessConditionState';
 export const selectFeatureFlaggedMetrics = createSelector(
   [
     selectCondition(isUserUiOptionSet('use-metrics-rollup')),
-    selectCondition(isUserUiOptionSet('isHibanaEnabled')),
     // add more metrics feature flags here
   ],
-  (useMetricsRollup, hibanaEnabled) => ({ useMetricsRollup: useMetricsRollup || hibanaEnabled }),
+  useMetricsRollup => ({ useMetricsRollup }),
 );

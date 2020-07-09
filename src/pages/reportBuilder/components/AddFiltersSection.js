@@ -68,8 +68,7 @@ const reducer = (state, action) => {
 
 function AddFiltersSection({
   reportOptions = {},
-  setFilters,
-  closeDrawer,
+  handleSubmit,
   //Typeahead fetching
   fetchMetricsDomains,
   fetchMetricsCampaigns,
@@ -127,7 +126,7 @@ function AddFiltersSection({
 
   const { filters } = state;
 
-  const handleSubmit = () => {
+  const handleApply = () => {
     //Formats the filters for the query
     const filters = state.filters.reduce((acc, { key, value }) => {
       if (!key) {
@@ -136,8 +135,7 @@ function AddFiltersSection({
 
       return [...acc, ...value];
     }, []);
-    setFilters(filters);
-    closeDrawer();
+    handleSubmit({ filters });
   };
 
   return (
@@ -203,7 +201,7 @@ function AddFiltersSection({
       <Drawer.Footer>
         <Box display="flex">
           <Box pr="100" flex="1">
-            <Button width="100%" onClick={handleSubmit} variant="primary">
+            <Button width="100%" onClick={handleApply} variant="primary">
               Apply Filters
             </Button>
           </Box>

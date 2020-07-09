@@ -1,10 +1,7 @@
 import { dedupeFilters } from 'src/helpers/reports';
-import config from 'src/config';
 
 const initialState = {
-  relativeRange: 'day',
   filters: [],
-  metrics: config.summaryChart.defaultMetrics,
 };
 
 export default (state = initialState, action) => {
@@ -46,6 +43,14 @@ export default (state = initialState, action) => {
 
     case 'CLEAR_FILTERS':
       return { ...state, filters: [] };
+
+    case 'UPDATE_REPORT_OPTIONS': {
+      return {
+        ...state,
+        ...action.payload,
+        isReady: true,
+      };
+    }
 
     default:
       return state;

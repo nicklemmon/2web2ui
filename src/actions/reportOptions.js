@@ -20,6 +20,8 @@ import {
 import { isSameDate, getLocalTimezone } from 'src/helpers/date';
 import _ from 'lodash';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import config from 'src/config';
 
 // array of all lists that need to be re-filtered when time changes
 const metricLists = [
@@ -167,6 +169,56 @@ export function refreshReportOptions(update) {
     return dispatch({
       type: 'REFRESH_REPORT_OPTIONS',
       payload: update,
+    });
+  };
+}
+
+// Updating timezone should only affect timezone
+// Updating precision should only affect precision
+// Updating relative range generates new datetimes
+// Updating datetimes generates precision
+// Datetimes update with any update if non-custom relative range
+
+export function _refreshReportOptions(payload) {
+  return (dispatch, getState) => {
+    const { reportOptions } = getState();
+    let update = { ...reportOptions, ...payload };
+    const { useMetricsRollup } = selectFeatureFlaggedMetrics(getState());
+    const isHibanaEnabled = isUserUiOptionSet('isHibanaEnabled')(getState());
+
+    if (!update.timezone) {
+      update.timezone = getLocalTimezone();
+    }
+
+    if (!update.metrics) {
+      update.metrics = config.summaryChart.defaultMetrics; //TODO: Change to use other metrics
+    }
+
+    if (!update.relativeRange) {
+      update.relativeRange = isHibanaEnabled ? '7days' : 'day';
+    }
+
+    if (update.relativeRange !== 'custom') {
+      // Gets new dates from range + precision
+      const { from, to } = getRelativeDates(update.relativeRange, { precision: update.precision });
+
+      // Updates precision based on new dates if recommended
+      const precision = useMetricsRollup
+        ? getRollupPrecision({ from, to, precision: update.precision }) ||
+          getRecommendedRollupPrecision(from, moment(to))
+        : getPrecision(from, moment(to), update.precision);
+      update = { ...update, from, to, precision };
+    } else {
+      // Custom range, but updates precision if explicit date range updates + precision invalid, will update precision
+      const precision = useMetricsRollup
+        ? update.precision || getRecommendedRollupPrecision(update.from, moment(update.to))
+        : getPrecision(update.from, moment(update.to), update.precsion);
+      update = { ...update, precision };
+    }
+
+    return dispatch({
+      type: 'UPDATE_REPORT_OPTIONS',
+      payload: { ...update, ...payload },
     });
   };
 }

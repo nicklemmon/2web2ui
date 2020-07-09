@@ -43,7 +43,7 @@ export function ReportBuilder({
   }, [reportOptions.metrics]);
 
   useEffect(() => {
-    if (!isEmpty) {
+    if (reportOptions.isReady && !isEmpty) {
       refreshSummaryReport(reportOptions);
     }
   }, [refreshSummaryReport, reportOptions, isEmpty]);
