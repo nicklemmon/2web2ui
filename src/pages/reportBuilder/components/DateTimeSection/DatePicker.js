@@ -324,6 +324,7 @@ export function DatePicker(props) {
 
   const dateField = (
     <TextField
+      date-id={`date-field-${id}`}
       label={label}
       id={`date-field-${id}`}
       onClick={showDatePicker}
@@ -332,6 +333,7 @@ export function DatePicker(props) {
       onBlur={handleTextUpdate}
       error={error}
       disabled={disabled}
+      type="text"
       {...textFieldProps}
     />
   );
@@ -339,7 +341,7 @@ export function DatePicker(props) {
   return (
     <Popover
       id={`popover-${id}`}
-      wrapper="div"
+      as="div"
       className={styles.Popover}
       trigger={dateField}
       onClose={cancelDatePicker}
@@ -352,6 +354,7 @@ export function DatePicker(props) {
         </Box>
         <Box padding="400" className={styles.DateSelectorWrapper}>
           <DateSelector
+            data-id="date-selector"
             className={styles.DateSelector}
             fixedWeeks
             initialMonth={subMonths(now, 1)}
@@ -367,6 +370,7 @@ export function DatePicker(props) {
           />
           {!hideManualEntry && (
             <ManualEntryForm
+              data-id="manual-entry-form"
               selectDates={handleFormDates}
               onEnter={handleKeyDown}
               to={to}

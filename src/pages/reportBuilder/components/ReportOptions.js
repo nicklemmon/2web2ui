@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { _refreshReportOptions as refreshReportOptions } from 'src/actions/reportOptions';
+import { refreshReportOptions } from 'src/actions/reportOptions';
 import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel, Stack, Tag } from 'src/components/matchbox';
 import { Tabs } from 'src/components';
