@@ -10,8 +10,7 @@ import {
   hasProductOnSubscription,
 } from 'src/helpers/conditions/account';
 import { selectCondition } from './accessConditionState';
-import { formatToMatchAccountPlan } from 'src/helpers/billing';
-
+import { getCurrentAccountPlan } from 'src/selectors/accessConditionState';
 const suspendedSelector = state => state.account.isSuspendedForBilling;
 const pendingSubscriptionSelector = state =>
   state.account.pending_subscription ||
@@ -53,27 +52,10 @@ export const canChangePlanSelector = createSelector(
 );
 
 /**
- * Gets current plan
- */
-export const currentPlanSelector = createSelector(
-  //TODO: make the same change as in access control state here
-  [currentPlanCodeSelector, plansSelector, bundleSelector, selectBillingSubscription],
-  (currentPlanCode, plans, bundles, subscription) => {
-    return (
-      formatToMatchAccountPlan({
-        ..._.find(plans, { plan: currentPlanCode }),
-        ...bundles.find(bundle => bundle.bundle === currentPlanCode),
-        products: subscription.products,
-      }) || {}
-    );
-  },
-);
-
-/**
  * Returns true if user has billing account and they are on a paid plan
  */
 export const canUpdateBillingInfoSelector = createSelector(
-  [currentPlanSelector, accountBillingSelector, selectIsCcFree1],
+  [getCurrentAccountPlan, accountBillingSelector, selectIsCcFree1],
   (currentPlan, accountBilling, isOnLegacyCcFreePlan) => {
     return accountBilling && (isOnLegacyCcFreePlan || !currentPlan.isFree);
   },
@@ -187,7 +169,7 @@ export const selectBillingInfo = createSelector(
     canUpdateBillingInfoSelector,
     canChangePlanSelector,
     canPurchaseIps,
-    currentPlanSelector,
+    getCurrentAccountPlan,
     selectOnZuoraPlan,
     selectVisiblePlans,
     selectIsAws,
