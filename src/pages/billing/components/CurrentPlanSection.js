@@ -19,7 +19,7 @@ const CurrentPlanSection = ({ currentPlan, isPlanSelected }) => {
           </Box>
         </div>
       </Panel.Section>
-      {isPlanSelected && !currentPlan.status && (
+      {isPlanSelected && currentPlan.status === 'deprecated' && (
         <Panel.Section>
           <div className={styles.DeprecatedWarning}>
             <Warning size={28} />
