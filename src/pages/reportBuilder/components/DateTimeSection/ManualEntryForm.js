@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useReducer, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import { Grid, TextField } from 'src/components/matchbox';
@@ -13,59 +13,76 @@ import styles from './ManualEntryForm.module.scss';
 
 const DATE_PLACEHOLDER = '1970-01-20';
 const TIME_PLACEHOLDER = '12:00am';
+const DEBOUNCE = 500;
 
-export class ManualEntryForm extends Component {
-  DEBOUNCE = 500;
+const initialState = {
+  toDate: '',
+  toTime: '',
+  fromDate: '',
+  fromTime: '',
+};
 
-  state = {
-    toDate: '',
-    toTime: '',
-    fromDate: '',
-    fromTime: '',
-  };
+const actionTypes = {
+  fieldChange: 'FIELD_CHANGE',
+  syncProps: 'SYNC',
+};
 
-  componentDidMount() {
-    const { to, from } = this.props;
-    this.syncPropsToState({ to, from });
-  }
+export function ManualEntryForm(props) {
+  const [state, dispatch] = useReducer((state, { type, payload }) => {
+    switch (type) {
+      case actionTypes.syncProps: {
+        const { to, from } = payload;
+        return {
+          ...state,
+          toDate: formatInputDate(to),
+          toTime: formatInputTime(to),
+          fromDate: formatInputDate(from),
+          fromTime: formatInputTime(from),
+        };
+      }
+      case actionTypes.fieldChange: {
+        return { ...state, ...payload };
+      }
+      default:
+        return state;
+    }
+  }, initialState);
 
-  componentWillReceiveProps(nextProps) {
-    this.syncPropsToState(nextProps);
-  }
-
-  syncPropsToState({ to, from }) {
-    this.setState({
-      toDate: formatInputDate(to),
-      toTime: formatInputTime(to),
-      fromDate: formatInputDate(from),
-      fromTime: formatInputTime(from),
+  const syncPropsToState = useCallback(({ to, from }) => {
+    dispatch({
+      type: actionTypes.syncProps,
+      payload: { to, from },
     });
-  }
+  }, []);
 
-  handleFieldChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
-    this.debounceChanges();
+  useEffect(() => {
+    syncPropsToState({ to: props.to, from: props.from });
+  }, [syncPropsToState, props.to, props.from]);
+
+  const handleFieldChange = e => {
+    dispatch({ type: actionTypes.fieldChange, payload: { [e.target.id]: e.target.value } });
+    debounceChanges();
   };
 
-  debounceChanges = _.debounce(() => {
-    this.validate();
-  }, this.DEBOUNCE);
+  const debounceChanges = _.debounce(() => {
+    validate();
+  }, DEBOUNCE);
 
-  handleEnter = e => {
+  const handleEnter = e => {
     if (e.key === 'Enter') {
-      this.validate(e, true);
+      validate(e, true);
     }
   };
 
-  handleBlur = e => {
-    this.validate(e, true);
+  const handleBlur = e => {
+    validate(e, true);
   };
 
-  validate = (e, shouldReset) => {
-    const from = parseDatetime(this.state.fromDate, this.state.fromTime);
-    const to = parseDatetime(this.state.toDate, this.state.toTime);
+  function validate(e, shouldReset) {
+    const from = parseDatetime(state.fromDate, state.fromTime);
+    const to = parseDatetime(state.toDate, state.toTime);
     // allow for prop-level override of "now" (DI, etc.)
-    const { now, roundToPrecision, preventFuture, defaultPrecision } = this.props;
+    const { now, roundToPrecision, preventFuture, defaultPrecision } = props;
     try {
       const precision = getRollupPrecision({ from, to, precision: defaultPrecision });
       const { to: roundedTo, from: roundedFrom } = getValidDateRange({
@@ -76,112 +93,110 @@ export class ManualEntryForm extends Component {
         preventFuture,
         precision,
       });
-      return this.props.selectDates(
+      return props.selectDates(
         { to: roundedTo.toDate(), from: roundedFrom.toDate(), precision },
         () => {
           if (e && e.key === 'Enter') {
-            this.props.onEnter(e);
+            props.onEnter(e);
           }
         },
       );
     } catch (e) {
       if (shouldReset) {
-        this.syncPropsToState(this.props); // Resets fields if dates are not valid
+        syncPropsToState(props); // Resets fields if dates are not valid
       }
     }
-  };
+  }
 
-  render() {
-    const { toDate, toTime, fromDate, fromTime } = this.state;
-    const { roundToPrecision, selectedPrecision } = this.props;
+  const { toDate, toTime, fromDate, fromTime } = state;
+  const { roundToPrecision, selectedPrecision } = props;
 
-    let precisionLabel = null;
-    let precisionLabelValue;
-    let shouldDisableTime;
-    const from = parseDatetime(fromDate, fromTime);
-    const to = parseDatetime(toDate, toTime);
+  let precisionLabel = null;
+  let precisionLabelValue;
+  let shouldDisableTime;
+  const from = parseDatetime(fromDate, fromTime);
+  const to = parseDatetime(toDate, toTime);
 
-    if (roundToPrecision) {
-      try {
-        // allow for prop-level override of "now" (DI, etc.)
-        const { now = moment() } = this.props;
-        const { from: validatedFrom, to: validatedTo } = getValidDateRange({
-          from,
-          to,
-          now,
-          roundToPrecision,
-          precision: selectedPrecision,
-        });
+  if (roundToPrecision) {
+    try {
+      // allow for prop-level override of "now" (DI, etc.)
+      const { now = moment() } = props;
+      const { from: validatedFrom, to: validatedTo } = getValidDateRange({
+        from,
+        to,
+        now,
+        roundToPrecision,
+        precision: selectedPrecision,
+      });
 
-        precisionLabelValue = getPrecision(validatedFrom, validatedTo);
-        shouldDisableTime = selectedPrecision
-          ? ['day', 'week', 'month'].includes(selectedPrecision)
-          : getMomentPrecisionByDate(validatedFrom, validatedTo) === 'days';
-      } catch (e) {
-        precisionLabelValue = '';
-      }
-
-      precisionLabel = !selectedPrecision && (
-        <div className={styles.PrecisionLabel}>
-          Precision: {_.startCase(_.words(precisionLabelValue).join(' '))}
-        </div>
-      );
+      precisionLabelValue = getPrecision(validatedFrom, validatedTo);
+      shouldDisableTime = selectedPrecision
+        ? ['day', 'week', 'month'].includes(selectedPrecision)
+        : getMomentPrecisionByDate(validatedFrom, validatedTo) === 'days';
+    } catch (e) {
+      precisionLabelValue = '';
     }
 
-    return (
-      <form onKeyDown={this.handleEnter} className={styles.DateFields}>
-        <Grid middle="xs">
-          <Grid.Column>
-            <TextField
-              id="fromDate"
-              label="From Date"
-              labelHidden
-              placeholder={DATE_PLACEHOLDER}
-              onChange={this.handleFieldChange}
-              onBlur={this.handleBlur}
-              value={fromDate}
-            />
-          </Grid.Column>
-          <Grid.Column>
-            <TextField
-              id="fromTime"
-              label="From Time"
-              labelHidden
-              placeholder={TIME_PLACEHOLDER}
-              onChange={this.handleFieldChange}
-              onBlur={this.handleBlur}
-              value={fromTime}
-              disabled={shouldDisableTime}
-            />
-          </Grid.Column>
-          <Grid.Column>
-            <TextField
-              id="toDate"
-              label="To Date"
-              labelHidden
-              placeholder={DATE_PLACEHOLDER}
-              onChange={this.handleFieldChange}
-              onBlur={this.handleBlur}
-              value={toDate}
-            />
-          </Grid.Column>
-          <Grid.Column>
-            <TextField
-              id="toTime"
-              label="To Time"
-              labelHidden
-              placeholder={TIME_PLACEHOLDER}
-              onChange={this.handleFieldChange}
-              onBlur={this.handleBlur}
-              value={toTime}
-              disabled={shouldDisableTime}
-            />
-          </Grid.Column>
-        </Grid>
-        {precisionLabel}
-      </form>
+    precisionLabel = !selectedPrecision && (
+      <div className={styles.PrecisionLabel}>
+        Precision: {_.startCase(_.words(precisionLabelValue).join(' '))}
+      </div>
     );
   }
+
+  return (
+    <form onKeyDown={handleEnter} className={styles.DateFields}>
+      <Grid middle="xs">
+        <Grid.Column>
+          <TextField
+            id="fromDate"
+            label="From Date"
+            labelHidden
+            placeholder={DATE_PLACEHOLDER}
+            onChange={handleFieldChange}
+            onBlur={handleBlur}
+            value={fromDate}
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <TextField
+            id="fromTime"
+            label="From Time"
+            labelHidden
+            placeholder={TIME_PLACEHOLDER}
+            onChange={handleFieldChange}
+            onBlur={handleBlur}
+            value={fromTime}
+            disabled={shouldDisableTime}
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <TextField
+            id="toDate"
+            label="To Date"
+            labelHidden
+            placeholder={DATE_PLACEHOLDER}
+            onChange={handleFieldChange}
+            onBlur={handleBlur}
+            value={toDate}
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <TextField
+            id="toTime"
+            label="To Time"
+            labelHidden
+            placeholder={TIME_PLACEHOLDER}
+            onChange={handleFieldChange}
+            onBlur={handleBlur}
+            value={toTime}
+            disabled={shouldDisableTime}
+          />
+        </Grid.Column>
+      </Grid>
+      {precisionLabel}
+    </form>
+  );
 }
 
 export default ManualEntryForm;

@@ -39,7 +39,9 @@ export function ReportBuilder({
   const [showTable, setShowTable] = useState(true);
 
   useEffect(() => {
-    refreshSummaryReport(reportOptions);
+    if (reportOptions.isReady) {
+      refreshSummaryReport(reportOptions);
+    }
   }, [refreshSummaryReport, reportOptions]);
 
   const hasBounceTab = processedMetrics.some(({ key }) => {

@@ -90,7 +90,12 @@ export function getDelimiter(filters = []) {
  * and returns the closest precision value
  *
  */
-export function getPrecision(from, to = moment()) {
+export function getPrecision(from, to = moment(), precision) {
+  const precisionOptions = getPrecisionOptions(moment(from), moment(to)).map(({ value }) => value);
+  if (precisionOptions.includes(precision)) {
+    return precision;
+  }
+
   const diff = to.diff(from, 'minutes');
   return precisionMap.find(({ time }) => diff <= time).value;
 }
