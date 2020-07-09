@@ -391,7 +391,8 @@ export const list = [
     category: delivery,
     type: 'total',
     unit: 'number',
-    description: "Number emails that were temporarily rejected by a recipient's mailbox provider.",
+    description:
+      "Number of emails that were temporarily rejected by a recipient's mailbox provider.",
     inSummary: true,
     tab: 'delayed',
   },
@@ -507,7 +508,7 @@ export const map = list.reduce((accumulator = {}, metric) => ({
 }));
 
 const selectableMetrics = list.filter(
-  metric => (metric.inSummary || metric.inReportBuilder) && metric.category,
+  metric => (metric.inSummary || metric.inReportBuilder) && metric.category && !metric.deprecated,
 );
 const categoriesObj = categories.reduce((accumulator, current) => {
   accumulator[current] = [];

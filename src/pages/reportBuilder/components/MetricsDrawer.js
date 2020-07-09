@@ -53,20 +53,18 @@ export default function MetricsDrawer(props) {
   };
   const renderMetrics = metrics =>
     metrics.map(metric => {
-      if (!metric.deprecated) {
-        return (
-          <Tooltip id={metric.key} content={metric.description} portalID="tooltip-portal">
-            <Box marginRight="300" width="200px" key={metric.key} paddingLeft="100">
-              <Checkbox
-                id={metric.key}
-                onChange={() => handleCheckbox(metric.key)}
-                checked={selectedMetrics[metric.key]}
-                label={metric.label}
-              />
-            </Box>
-          </Tooltip>
-        );
-      }
+      return (
+        <Tooltip id={metric.key} content={metric.description} portalID="tooltip-portal">
+          <Box marginRight="300" width="200px" key={metric.key} paddingLeft="100">
+            <Checkbox
+              id={metric.key}
+              onChange={() => handleCheckbox(metric.key)}
+              checked={selectedMetrics[metric.key]}
+              label={metric.label}
+            />
+          </Box>
+        </Tooltip>
+      );
     });
 
   const isSelectedMetricsSameAsCurrentlyAppliedMetrics =

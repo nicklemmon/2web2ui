@@ -191,7 +191,9 @@ export function _refreshReportOptions(payload) {
     }
 
     if (!update.metrics) {
-      update.metrics = config.summaryChart.defaultMetrics; //TODO: Change to use other metrics
+      update.metrics = isHibanaEnabled
+        ? config.reportBuilder.defaultMetrics
+        : config.summaryChart.defaultMetrics;
     }
 
     if (!update.relativeRange) {

@@ -39,7 +39,7 @@ export function ReportBuilder({
   const [showTable, setShowTable] = useState(true);
 
   const isEmpty = useMemo(() => {
-    return !Boolean(reportOptions.metrics.length);
+    return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
   useEffect(() => {
