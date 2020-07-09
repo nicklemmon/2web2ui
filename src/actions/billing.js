@@ -201,12 +201,13 @@ export function getBundles({ meta = {}, ...params } = {}) {
   });
 }
 
-export function getPlans() {
+export function getPlans({ meta = {} } = {}) {
   return sparkpostApiRequest({
     type: 'GET_NEW_PLANS',
     meta: {
       method: 'GET',
       url: '/v1/billing/plans',
+      ...meta,
     },
   });
 }
