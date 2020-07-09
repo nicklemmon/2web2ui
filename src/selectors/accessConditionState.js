@@ -12,11 +12,11 @@ const getBillingSubscription = state => _.get(state, 'billing.subscription', {})
 export const getCurrentAccountPlan = createSelector(
   [getAccount, getBundlePlans, getBundles, getBillingSubscription],
   (account, bundlePlans, bundles, subscription) => {
-    return {
+    return formatToMatchAccountPlan({
       ...bundlePlans.find(plan => plan.plan === account.subscription.code),
       ...bundles.find(bundle => bundle.bundle === account.subscription.code),
       products: subscription.products,
-    };
+    });
   },
 );
 
@@ -27,7 +27,7 @@ const selectAccessConditionState = createSelector(
       account,
       currentUser,
       plans,
-      accountPlan: formatToMatchAccountPlan(accountPlan),
+      accountPlan,
       ready,
     };
   },
