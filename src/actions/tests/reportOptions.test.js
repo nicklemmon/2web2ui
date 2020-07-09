@@ -41,6 +41,13 @@ describe('Action Creator: Report Options', () => {
         to: null,
         cache: {},
       },
+      currentUser: {
+        options: {
+          ui: {
+            isHibanaEnabled: false,
+          },
+        },
+      },
     };
     dispatchMock = jest.fn(a => a);
     getStateMock = jest.fn(() => testState);
@@ -135,7 +142,7 @@ describe('Action Creator: Report Options', () => {
       );
       expect(getRelativeDates).toHaveBeenCalledTimes(1);
       expect(action).toEqual({
-        type: 'REFRESH_REPORT_OPTIONS',
+        type: 'UPDATE_REPORT_OPTIONS',
         payload: expect.objectContaining({
           from: 'relative',
           to: 'relative',

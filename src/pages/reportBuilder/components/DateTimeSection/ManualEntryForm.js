@@ -138,7 +138,7 @@ export function ManualEntryForm(props) {
     }
 
     precisionLabel = !selectedPrecision && (
-      <div className={styles.PrecisionLabel}>
+      <div data-id="precision-label" className={styles.PrecisionLabel}>
         Precision: {_.startCase(_.words(precisionLabelValue).join(' '))}
       </div>
     );
@@ -149,6 +149,7 @@ export function ManualEntryForm(props) {
       <Grid middle="xs">
         <Grid.Column>
           <TextField
+            data-id="fromDate"
             id="fromDate"
             label="From Date"
             labelHidden
@@ -160,6 +161,7 @@ export function ManualEntryForm(props) {
         </Grid.Column>
         <Grid.Column>
           <TextField
+            data-id="fromTime"
             id="fromTime"
             label="From Time"
             labelHidden
@@ -172,6 +174,7 @@ export function ManualEntryForm(props) {
         </Grid.Column>
         <Grid.Column>
           <TextField
+            data-id="toDate"
             id="toDate"
             label="To Date"
             labelHidden
@@ -183,6 +186,7 @@ export function ManualEntryForm(props) {
         </Grid.Column>
         <Grid.Column>
           <TextField
+            data-id="toTime"
             id="toTime"
             label="To Time"
             labelHidden

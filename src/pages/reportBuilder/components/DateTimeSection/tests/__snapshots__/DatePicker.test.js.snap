@@ -1,28 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component: DatePicker handleFormDates should use a date field format if provided 1`] = `
-<TextField
-  disabled={false}
-  id="date-field-date-picker"
-  onBlur={[MockFunction]}
-  onClick={[MockFunction]}
-  readOnly={true}
-  value="YYYY-MM h – YYYY-MM h"
-/>
-`;
-
-exports[`Component: DatePicker should not render range select if showPresets is false 1`] = `
-<TextField
-  disabled={false}
-  id="date-field-date-picker"
-  onBlur={[MockFunction]}
-  onClick={[MockFunction]}
-  readOnly={true}
-  value="MMM Do YYYY h:mma – MMM Do YYYY h:mma"
-/>
-`;
-
-exports[`Component: DatePicker should render ok by default 1`] = `
+exports[`Component: DatePicker should give me 1`] = `
 <Popover
   className="Popover"
   id="popover-date-picker"
@@ -30,11 +8,14 @@ exports[`Component: DatePicker should render ok by default 1`] = `
   open={false}
   trigger={
     <TextField
+      date-id="date-field-date-picker"
       disabled={false}
       id="date-field-date-picker"
+      label="Date Range"
       onBlur={[Function]}
       onClick={[Function]}
       readOnly={true}
+      type="text"
       value="MMM Do YYYY h:mma – MMM Do YYYY h:mma"
     />
   }
@@ -44,26 +25,45 @@ exports[`Component: DatePicker should render ok by default 1`] = `
     display="flex"
   >
     <Box
-      borderColor="gray.400"
-      borderRight="1px solid"
+      borderRight="400"
       className="ActionList"
     >
       <ActionList
         actions={
           Array [
             Object {
-              "content": undefined,
+              "content": "Last Hour",
               "highlighted": false,
               "onClick": [Function],
             },
             Object {
-              "content": undefined,
+              "content": "Last 24 Hours",
               "highlighted": false,
               "onClick": [Function],
             },
             Object {
-              "content": undefined,
+              "content": "Last 7 Days",
               "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 10 Days",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 14 Days",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 30 Days",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Custom",
+              "highlighted": true,
               "onClick": [Function],
             },
           ]
@@ -78,40 +78,157 @@ exports[`Component: DatePicker should render ok by default 1`] = `
         className="DateSelector"
         disabledDays={
           Object {
-            "after": 2017-01-15T12:00:00.000Z,
+            "after": 2017-01-15T11:00:00.000Z,
           }
         }
-        enableOutsideDays={false}
         fixedWeeks={true}
-        initialMonth={2017-01-15T12:00:00.000Z}
-        numberOfMonths={2}
+        initialMonth={2017-01-15T11:00:00.000Z}
         onDayClick={[Function]}
         onDayFocus={[Function]}
         onDayKeyDown={[Function]}
         onDayMouseEnter={[Function]}
         onKeyDown={[Function]}
-        selectedDays={
-          Object {
-            "from": 2017-01-15T11:00:00.000Z,
-            "to": 2017-01-15T12:00:00.000Z,
-          }
-        }
-        toMonth={2017-01-15T12:00:00.000Z}
+        selectedDays={Object {}}
+        toMonth={2017-01-15T11:00:00.000Z}
       />
       <ManualEntryForm
-        from={2017-01-15T11:00:00.000Z}
+        data-id="manual-entry-form"
         onEnter={[Function]}
         preventFuture={true}
         roundToPrecision={true}
         selectDates={[Function]}
-        to={2017-01-15T12:00:00.000Z}
       />
     </Box>
   </Box>
   <Box
-    borderColor="gray.400"
-    borderTop="1px solid"
-    marginTop="500"
+    borderTop="400"
+    padding="400"
+  >
+    <ButtonWrapper>
+      <Button
+        data-id="date-picker-custom-apply"
+        onClick={[Function]}
+        variant="primary"
+      >
+        Apply
+      </Button>
+      <Button
+        onClick={[Function]}
+        variant="secondary"
+      >
+        Cancel
+      </Button>
+    </ButtonWrapper>
+  </Box>
+  <WindowEvent
+    event="keydown"
+    handler={[Function]}
+  />
+</Popover>
+`;
+
+exports[`Component: DatePicker should not render form fields when manual entry is hidden 1`] = `
+<Popover
+  className="Popover"
+  id="popover-date-picker"
+  onClose={[Function]}
+  open={false}
+  trigger={
+    <TextField
+      date-id="date-field-date-picker"
+      disabled={false}
+      id="date-field-date-picker"
+      label="Date Range"
+      onBlur={[Function]}
+      onClick={[Function]}
+      readOnly={true}
+      type="text"
+      value="MMM Do YYYY h:mma – MMM Do YYYY h:mma"
+    />
+  }
+  wrapper="div"
+>
+  <Box
+    display="flex"
+  >
+    <Box
+      borderRight="400"
+      className="ActionList"
+    >
+      <ActionList
+        actions={
+          Array [
+            Object {
+              "content": "Last Hour",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 24 Hours",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 7 Days",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 10 Days",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 14 Days",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Last 30 Days",
+              "highlighted": false,
+              "onClick": [Function],
+            },
+            Object {
+              "content": "Custom",
+              "highlighted": true,
+              "onClick": [Function],
+            },
+          ]
+        }
+      />
+    </Box>
+    <Box
+      className="DateSelectorWrapper"
+      padding="400"
+    >
+      <DatePicker
+        className="DateSelector"
+        disabledDays={
+          Object {
+            "after": 2017-01-15T11:00:00.000Z,
+          }
+        }
+        fixedWeeks={true}
+        initialMonth={2017-01-15T11:00:00.000Z}
+        onDayClick={[Function]}
+        onDayFocus={[Function]}
+        onDayKeyDown={[Function]}
+        onDayMouseEnter={[Function]}
+        onKeyDown={[Function]}
+        selectedDays={Object {}}
+        toMonth={2017-01-15T11:00:00.000Z}
+      />
+      <ManualEntryForm
+        data-id="manual-entry-form"
+        onEnter={[Function]}
+        preventFuture={true}
+        roundToPrecision={true}
+        selectDates={[Function]}
+      />
+    </Box>
+  </Box>
+  <Box
+    borderTop="400"
     padding="400"
   >
     <ButtonWrapper>

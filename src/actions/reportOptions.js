@@ -174,7 +174,7 @@ export function refreshReportOptions(payload) {
 
     return dispatch({
       type: 'UPDATE_REPORT_OPTIONS',
-      payload: { ...update, ...payload },
+      payload: update,
     });
   };
 }
