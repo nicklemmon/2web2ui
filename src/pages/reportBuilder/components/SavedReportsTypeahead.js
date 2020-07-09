@@ -2,10 +2,7 @@ import React from 'react';
 import { parseSearch } from 'src/helpers/reports';
 import { PRESET_REPORT_CONFIGS } from '../constants/presetReport';
 import { Typeahead, TypeaheadItem } from 'src/components/typeahead/Typeahead';
-import {
-  addFilters,
-  _refreshReportOptions as refreshReportOptions,
-} from 'src/actions/reportOptions';
+import { addFilters, refreshReportOptions } from 'src/actions/reportOptions';
 import { connect } from 'react-redux';
 
 export const SavedReportsTypeahead = props => {
