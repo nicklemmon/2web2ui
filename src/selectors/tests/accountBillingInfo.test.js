@@ -127,18 +127,6 @@ const initialState = {
   },
 };
 
-describe('Selector: current plan', () => {
-  let state;
-
-  beforeEach(() => {
-    state = initialState;
-  });
-
-  it('should get current plan from billing', () => {
-    expect(billingInfo.currentPlanSelector(state)).toMatchSnapshot();
-  });
-});
-
 describe('Selector: can update billing info', () => {
   let state;
 
