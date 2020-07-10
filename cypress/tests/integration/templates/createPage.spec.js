@@ -23,7 +23,7 @@ describe('The create template page', () => {
     cy.visit(PAGE_URL);
 
     cy.title().should('include', 'Create Template');
-    cy.findByText('Create Template').should('be.visible');
+    cy.findByRole('heading', { name: 'Create Template' }).should('be.visible');
   });
 
   it('has a link back to the templates list page', () => {

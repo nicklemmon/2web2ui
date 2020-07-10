@@ -12,13 +12,12 @@ describe('The "Reset Your Password" view', () => {
   });
 
   it('renders the heading, username or email address field, and reset password button', () => {
-    cy.findByText('Reset Your Password').should('be.visible');
     cy.title().should('include', 'Reset Password');
   });
 
   it('renders a success message when clicking "Reset Password"', () => {
     cy.findByLabelText('Username or email address').type('myfakeusername@sparkpost.com');
-    cy.findByText('Reset Password').click();
+    cy.findByRole('button', { name: 'Reset Password' }).click();
     cy.findByText(
       'If you have an account with us, please check your email for your password reset instructions.',
     );

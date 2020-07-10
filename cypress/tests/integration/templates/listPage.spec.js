@@ -49,9 +49,10 @@ describe('The templates list page', () => {
     cy.visit(PAGE_URL);
 
     cy.findByText('Manage your email templates').should('be.visible');
-    cy.findByText('Create Template').click();
-    cy.url().should('include', '/create');
-    cy.title().should('include', 'Create Template');
+    cy.verifyLink({
+      content: 'Create Template',
+      href: 'templates/create',
+    });
   });
 
   it('it does not render the "Recent Activity" section when fewer than three template results are returned', () => {
@@ -354,9 +355,9 @@ describe('The templates list page', () => {
   it('has a "Create Template" button that navigates to the template creation page', () => {
     cy.visit(PAGE_URL);
 
-    cy.findByText('Create Template').click();
-
-    cy.title().should('include', 'Create Template');
-    cy.findByText('Create Template').should('be.visible');
+    cy.verifyLink({
+      content: 'Create Template',
+      href: 'templates/create',
+    });
   });
 });

@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import AccessControl from './AccessControl';
 import { AUTH_ROUTE } from 'src/constants';
 import { RouterContextProvider } from 'src/context/RouterContext';
+import RouteFocusHandler from './RouteFocusHandler';
 
 export class PublicRoute extends Component {
   componentDidMount() {
@@ -16,26 +17,37 @@ export class PublicRoute extends Component {
   }
 
   render() {
-    const { component: Component, condition, forceLogout, loggedIn, logout, ...routeProps } = this.props;
+    const {
+      component: Component,
+      condition,
+      forceLogout,
+      loggedIn,
+      logout,
+      ...routeProps
+    } = this.props;
 
     if (forceLogout && loggedIn) {
       return null;
     }
 
     return (
-      <Route {...routeProps} render={(reactRouterProps) => (
-        <AccessControl condition={condition} redirect={AUTH_ROUTE} wait={false}>
-          <RouterContextProvider>
-            <Component {...routeProps} {...reactRouterProps} />
-          </RouterContextProvider>
-        </AccessControl>
-      )} />
+      <Route
+        {...routeProps}
+        render={reactRouterProps => (
+          <AccessControl condition={condition} redirect={AUTH_ROUTE} wait={false}>
+            <RouterContextProvider>
+              <RouteFocusHandler />
+              <Component {...routeProps} {...reactRouterProps} />
+            </RouterContextProvider>
+          </AccessControl>
+        )}
+      />
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  loggedIn: state.auth.loggedIn
+const mapStateToProps = state => ({
+  loggedIn: state.auth.loggedIn,
 });
 
 export default connect(mapStateToProps, { logout })(PublicRoute);

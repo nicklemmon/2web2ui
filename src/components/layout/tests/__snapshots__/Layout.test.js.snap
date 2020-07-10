@@ -11,6 +11,14 @@ exports[`Component: Layout should render a regular route with a specified layout
        | SparkPost
     </title>
   </HelmetWrapper>
+  <ScreenReaderOnly>
+    <div
+      aria-atomic="true"
+      aria-live="assertive"
+    >
+      Foo
+    </div>
+  </ScreenReaderOnly>
   <h1>
     My layout children
   </h1>
@@ -28,6 +36,14 @@ exports[`Component: Layout should render a route that does not specify a layout 
        | SparkPost
     </title>
   </HelmetWrapper>
+  <ScreenReaderOnly>
+    <div
+      aria-atomic="true"
+      aria-live="assertive"
+    >
+      With a Default Layout
+    </div>
+  </ScreenReaderOnly>
   <h1>
     My layout children
   </h1>
