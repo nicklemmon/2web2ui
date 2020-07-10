@@ -30,25 +30,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       cy.findByLabelText('Break Down By').should('be.visible');
     });
 
-    // it('filters by date', () => {
-    //   cy.clock(STABLE_UNIX_DATE);
-
-    //   cy.findByLabelText('Broad Date Range').select('hour');
-    //   cy.url().should('include', 'range=hour');
-
-    //   cy.findByLabelText('Broad Date Range').select('day');
-    //   cy.url().should('include', 'range=day');
-
-    //   cy.findByLabelText('Broad Date Range').select('7days');
-    //   cy.url().should('include', 'range=7days');
-
-    //   cy.findByLabelText('Broad Date Range').select('30days');
-    //   cy.url().should('include', 'range=30days');
-
-    //   cy.findByLabelText('Broad Date Range').select('90days');
-    //   cy.url().should('include', 'range=90days');
-    // });
-
     it('filters by metric', () => {
       // 1. Open the drawer, uncheck default metrics, check all metrics
       cy.findByText('Add Metrics').click();
