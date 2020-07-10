@@ -1,27 +1,8 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
 import { PLACEMENT_FILTER_TYPES } from 'src/pages/inboxPlacement/constants/types';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
-
-export const inboxPlacementApiRequest = ({ type, meta }) => {
-  return (dispatch, getState) => {
-    const { url } = meta;
-    const newUrl = isUserUiOptionSet('use_inbox_placement_ea')(getState())
-      ? url.replace('/inbox-placement', '/inbox-placement-ea')
-      : url;
-    return dispatch(
-      sparkpostApiRequest({
-        type: type,
-        meta: {
-          ...meta,
-          url: newUrl,
-        },
-      }),
-    );
-  };
-};
 
 export function listTests() {
-  return inboxPlacementApiRequest({
+  return sparkpostApiRequest({
     type: 'LIST_TESTS',
     meta: {
       method: 'GET',
@@ -32,7 +13,7 @@ export function listTests() {
 }
 
 export function getSeedList() {
-  return inboxPlacementApiRequest({
+  return sparkpostApiRequest({
     type: 'GET_SEEDS',
     meta: {
       method: 'GET',
@@ -42,7 +23,7 @@ export function getSeedList() {
 }
 
 export const getInboxPlacementTrends = queryParams =>
-  inboxPlacementApiRequest({
+  sparkpostApiRequest({
     type: 'GET_INBOX_PLACEMENT_TRENDS',
     meta: {
       method: 'GET',
@@ -52,7 +33,7 @@ export const getInboxPlacementTrends = queryParams =>
   });
 
 export const getInboxPlacementTrendsFilterValues = queryParams =>
-  inboxPlacementApiRequest({
+  sparkpostApiRequest({
     type: 'GET_INBOX_PLACEMENT_TRENDS_FILTER_VALUES',
     meta: {
       method: 'GET',
@@ -62,7 +43,7 @@ export const getInboxPlacementTrendsFilterValues = queryParams =>
   });
 
 export const getInboxPlacementTest = id =>
-  inboxPlacementApiRequest({
+  sparkpostApiRequest({
     type: 'GET_INBOX_PLACEMENT_TEST',
     meta: {
       method: 'GET',
@@ -88,7 +69,7 @@ export const getInboxPlacementBySendingIp = id =>
   );
 
 export const getInboxPlacementData = (id, type, action) =>
-  inboxPlacementApiRequest({
+  sparkpostApiRequest({
     type: action,
     meta: {
       method: 'GET',
@@ -97,7 +78,7 @@ export const getInboxPlacementData = (id, type, action) =>
   });
 
 export function getInboxPlacementTestContent(id) {
-  return inboxPlacementApiRequest({
+  return sparkpostApiRequest({
     type: 'GET_INBOX_PLACEMENT_TEST_CONTENT',
     meta: {
       method: 'GET',
@@ -107,7 +88,7 @@ export function getInboxPlacementTestContent(id) {
 }
 
 export function getAllInboxPlacementMessages(id, filters) {
-  return inboxPlacementApiRequest({
+  return sparkpostApiRequest({
     type: 'GET_ALL_INBOX_PLACEMENT_MESSAGES',
     meta: {
       method: 'GET',
@@ -126,7 +107,7 @@ export function resetState() {
 }
 
 export function getInboxPlacementMessage(testId, messageId) {
-  return inboxPlacementApiRequest({
+  return sparkpostApiRequest({
     type: 'GET_INBOX_PLACEMENT_MESSAGE',
     meta: {
       method: 'GET',
