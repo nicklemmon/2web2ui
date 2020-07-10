@@ -38,7 +38,7 @@ exports[`EngagementTable when renders table 1`] = `
       Object {
         "key": "count_clicked",
         "label": <HeaderTooltip
-          tooltipContent="Total number of times that links were selected across all messages."
+          tooltipContent="Number of times that links were clicked across all emails."
         >
           Clicks
         </HeaderTooltip>,

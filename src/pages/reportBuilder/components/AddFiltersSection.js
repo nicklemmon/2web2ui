@@ -161,6 +161,7 @@ function AddFiltersSection({
                 <Grid.Column>
                   <Inline align="right">
                     <Button
+                      className={filters.length < 2 && styles.Hidden}
                       size="small"
                       onClick={() => {
                         dispatch({ type: 'REMOVE_FILTER_TYPE', index });
