@@ -11,12 +11,7 @@ import {
   getNextHour,
   isSameDate,
 } from 'src/helpers/date';
-import {
-  roundBoundaries,
-  getRollupPrecision,
-  getPrecision,
-  getRecommendedRollupPrecision,
-} from 'src/helpers/metrics';
+import { roundBoundaries, getRollupPrecision, getPrecision } from 'src/helpers/metrics';
 import {
   ActionList,
   Box,
@@ -223,9 +218,10 @@ export function DatePicker(props) {
   };
 
   const handleSelectRange = value => {
+    const { selectedPrecision: precision } = state;
     if (value !== 'custom') {
-      const { from, to } = getRelativeDates(value);
-      const precision = getRecommendedRollupPrecision(from, moment(to));
+      const { from, to } = getRelativeDates(value, { precision });
+
       dispatch({
         type: actionTypes.selectRange,
         payload: {

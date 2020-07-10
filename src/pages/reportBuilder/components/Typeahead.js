@@ -4,7 +4,7 @@ import { METRICS_API_LIMIT } from 'src/constants';
 import sortMatch from 'src/helpers/sortMatch';
 
 function Typeahead(props) {
-  const { dispatch, index, lookaheadRequest, reportOptions, value, results, ...rest } = props;
+  const { dispatch, index, lookaheadRequest, reportOptions, value, results = [], ...rest } = props;
 
   const [omitResults, setOmitResults] = useState(false);
   const [loading, setLoading] = useState(false);

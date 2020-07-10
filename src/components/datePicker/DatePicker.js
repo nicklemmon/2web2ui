@@ -241,7 +241,6 @@ export class DatePickerClassComponent extends Component {
       selectPrecision,
       id,
       styles,
-      label,
       isHibanaEnabled,
     } = this.props;
 
@@ -270,7 +269,6 @@ export class DatePickerClassComponent extends Component {
         </label>
 
         <TextField
-          label={label}
           id={`date-field-${id}`}
           onClick={this.showDatePicker}
           connectLeft={rangeSelect}
