@@ -149,16 +149,17 @@ export function refreshReportOptions(payload) {
     }
 
     if (payload.filters) {
-      update.filters = dedupeFilters([payload.filters]);
+      update.filters = dedupeFilters(payload.filters);
     }
 
     if (!update.relativeRange) {
       update.relativeRange = isHibanaEnabled ? '7days' : 'day';
     }
 
+    const rollupPrecision = useMetricsRollup && update.precision;
     if (update.relativeRange !== 'custom') {
       // Gets new dates from range + precision
-      const { from, to } = getRelativeDates(update.relativeRange, { precision: update.precision });
+      const { from, to } = getRelativeDates(update.relativeRange, { precision: rollupPrecision });
 
       // Updates precision based on new dates if recommended
       const precision = useMetricsRollup
@@ -169,8 +170,13 @@ export function refreshReportOptions(payload) {
     } else {
       // Custom range, but updates precision if explicit date range updates + precision invalid, will update precision
       const precision = useMetricsRollup
-        ? update.precision || getRecommendedRollupPrecision(update.from, moment(update.to))
-        : getPrecision(update.from, moment(update.to), update.precsion);
+        ? rollupPrecision || getRecommendedRollupPrecision(update.from, moment(update.to))
+        : getPrecision(
+            update.from,
+            moment(update.to),
+            isHibanaEnabled ? update.precision : undefined,
+          );
+
       update = { ...update, precision };
     }
 

@@ -23,6 +23,7 @@ const PrecisionSelector = ({ from, to, changeTime, selectedPrecision, disabled }
   return (
     <Select
       data-id="precision-selector"
+      id="precision-selector"
       options={precisionOptions}
       onChange={updatePrecision}
       value={selectedPrecision}

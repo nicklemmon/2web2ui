@@ -6,18 +6,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'REFRESH_REPORT_OPTIONS': {
-      const {
-        to = state.to,
-        from = state.from,
-        relativeRange = state.relativeRange,
-        metrics = state.metrics,
-        precision = state.precision,
-        timezone = state.timezone,
-      } = action.payload;
-      return { ...state, to, from, precision, timezone, relativeRange, metrics };
-    }
-
     case 'ADD_FILTERS': {
       const mergedFilters = dedupeFilters([...state.filters, ...action.payload]);
       if (mergedFilters.length === state.filters.length) {
@@ -45,9 +33,24 @@ export default (state = initialState, action) => {
       return { ...state, filters: [] };
 
     case 'UPDATE_REPORT_OPTIONS': {
+      const {
+        to = state.to,
+        from = state.from,
+        relativeRange = state.relativeRange,
+        metrics = state.metrics,
+        precision = state.precision,
+        timezone = state.timezone,
+        filters = state.filters,
+      } = action.payload;
       return {
         ...state,
-        ...action.payload,
+        to,
+        from,
+        precision,
+        timezone,
+        relativeRange,
+        metrics,
+        filters,
         isReady: true,
       };
     }

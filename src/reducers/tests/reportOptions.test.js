@@ -40,7 +40,7 @@ describe('Reducer: Report Options', () => {
           timezone: 'America/New_York',
           precision: 'hour',
         },
-        type: 'REFRESH_REPORT_OPTIONS',
+        type: 'UPDATE_REPORT_OPTIONS',
       },
     },
   );
