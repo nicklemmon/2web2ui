@@ -81,6 +81,7 @@ export default class BillingSummary extends Component {
     <DedicatedIpSummarySection
       count={this.props.sendingIps.length}
       plan={this.props.currentPlan}
+      canPurchaseIps={this.props.canPurchaseIps}
       onClick={this.handleIpModal}
       isTransitioningToSelfServe={isTransitioningToSelfServe}
     />

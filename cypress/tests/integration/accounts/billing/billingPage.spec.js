@@ -12,13 +12,16 @@ describe('Billing Page', () => {
       fixture: 'billing/200.get.json',
       fixtureAlias: 'billingGet',
     });
-
     cy.stubRequest({
-      url: `${ACCOUNT_API_BASE_URL}/plans`,
-      fixture: 'account/plans/200.get.json',
+      url: `${BILLING_API_BASE_URL}/plans`,
+      fixture: 'billing/plans/200.get.json',
       fixtureAlias: 'plansGet',
     });
-
+    cy.stubRequest({
+      url: `${BILLING_API_BASE_URL}/bundles`,
+      fixture: 'billing/bundles/200.get.json',
+      fixtureAlias: 'bundlesGet',
+    });
     cy.stubRequest({
       url: '/api/v1/sending-ips',
       fixture: 'sending-ips/200.get.json',

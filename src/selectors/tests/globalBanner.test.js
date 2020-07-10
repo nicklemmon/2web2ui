@@ -48,9 +48,9 @@ describe('globalBanner selectors', () => {
           },
         },
         billing: {
-          plans: [
+          bundlePlans: [
             {
-              code: 'free500-0419',
+              plan: 'free500-0419',
             },
           ],
         },
@@ -73,9 +73,9 @@ describe('globalBanner selectors', () => {
           },
         },
         billing: {
-          plans: [
+          bundlePlans: [
             {
-              code: 'free500-SPCEU-0419',
+              plan: 'free500-SPCEU-0419',
             },
           ],
         },

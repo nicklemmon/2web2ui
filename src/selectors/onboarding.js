@@ -15,7 +15,6 @@ export const choosePlanMSTP = formName =>
     loading: state =>
       Boolean(
         state.account.loading ||
-          state.billing.plansLoading ||
           state.billing.countriesLoading ||
           state.billing.bundlesLoading ||
           state.billing.bundlePlansLoading,
@@ -24,5 +23,5 @@ export const choosePlanMSTP = formName =>
     bundles: state => selectAvailableBundles(state),
     initialValues: getChoosePlanInitialValues,
     selectedPlan: state => formValueSelector(formName)(state, 'planpicker'),
-    hasError: state => Boolean(state.billing.plansError || state.billing.countriesError),
+    hasError: state => Boolean(state.billing.countriesError || state.billing.bundlesError),
   });

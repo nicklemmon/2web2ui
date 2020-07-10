@@ -79,7 +79,31 @@ Array [
       "method": "get",
       "params": undefined,
       "responseType": "json",
-      "url": "/v1/account/plans",
+      "url": "/v1/billing/plans",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
+      "params": Object {},
+      "responseType": "json",
+      "url": "/v1/billing/bundles",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
+      "params": Object {},
+      "responseType": "json",
+      "url": "/v1/billing/subscription",
     },
   ],
   Array [

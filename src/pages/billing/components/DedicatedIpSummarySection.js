@@ -14,6 +14,7 @@ export default function DedicatedIpSummarySection({
   onClick = noop,
   isAWSAccount,
   isTransitioningToSelfServe,
+  canPurchaseIps,
 }) {
   const hasReachedMax = count >= config.sendingIps.maxPerAccount;
   const disabledPurchaseIP = hasReachedMax || plan.isFree;
@@ -27,7 +28,7 @@ export default function DedicatedIpSummarySection({
       color: 'orange',
       visible: count > 0,
     },
-    plan.canPurchaseIps
+    canPurchaseIps
       ? {
           content: 'Add Dedicated IPs',
           disabled: disabledPurchaseIP,

@@ -10,14 +10,64 @@ describe('Selector: Access Condition State', () => {
     testState = {
       account: {
         subscription: {
-          code: 'plan2',
+          code: '5M-0817',
         },
       },
       billing: {
-        plans: [
-          { code: 'plan1', name: 'Plan 1' },
-          { code: 'plan2', name: 'Plan 2' },
-          { code: 'plan3', name: 'Plan 3' },
+        subscription: {
+          bill_cycle_day: 5,
+          pending_downgrades: [],
+          products: [
+            {
+              product: 'messaging',
+              plan: '5M-0817',
+            },
+          ],
+          type: 'active',
+        },
+        bundlePlans: [
+          {
+            billing_id: 'id1',
+            plan: '5M-0817',
+            product: 'messaging',
+            price: 123,
+            overage: 0.3,
+            volume: 5000000,
+          },
+          {
+            billing_id: 'id2',
+            plan: '2.5M-0817',
+            product: 'messaging',
+            price: 1234,
+            overage: 0.4,
+            volume: 2500000,
+          },
+        ],
+        bundles: [
+          {
+            bundle: '5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '5M-0817',
+              },
+            ],
+          },
+          {
+            bundle: '2.5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '2.5M-0817',
+              },
+            ],
+          },
         ],
       },
       currentUser: {},
@@ -27,8 +77,24 @@ describe('Selector: Access Condition State', () => {
     testAccessConditionState = {
       account: testState.account,
       currentUser: testState.currentUser,
-      accountPlan: testState.billing.plans[1],
-      plans: testState.billing.plans,
+      accountPlan: {
+        billingId: 'id1',
+        billing_id: 'id1',
+        bundle: '5M-0817',
+        code: '5M-0817',
+        includesIp: true,
+        isFree: false,
+        overage: 0.3,
+        plan: '5M-0817',
+        price: 123,
+        product: 'messaging',
+        products: [{ plan: '5M-0817', product: 'messaging' }],
+        status: 'secret',
+        tier: 'unlimited',
+        type: 'messaging',
+        volume: 5000000,
+      },
+      plans: testState.billing.bundlePlans,
       ready: false,
     };
   });

@@ -1,7 +1,6 @@
 import { formatCountries } from 'src/helpers/billing';
 
 const initialState = {
-  plansError: null,
   countriesError: null,
   selectedPromo: {},
   promoPending: false,
@@ -9,15 +8,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'GET_PLANS_PENDING':
-      return { ...state, plansLoading: true, plansError: null };
-
-    case 'GET_PLANS_SUCCESS':
-      return { ...state, plans: action.payload, plansLoading: false };
-
-    case 'GET_PLANS_FAIL':
-      return { ...state, plansLoading: false, plansError: action.payload };
-
     case 'GET_COUNTRIES_BILLING_PENDING':
       return { ...state, countriesLoading: true, countriesError: null };
 

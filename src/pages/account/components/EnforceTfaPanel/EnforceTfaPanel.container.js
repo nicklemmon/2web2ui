@@ -13,7 +13,7 @@ import { logout } from 'src/actions/auth';
 import { update as updateAccount } from 'src/actions/account';
 
 import EnforceTfaPanel from './EnforceTfaPanel';
-import { getPlanTierByPlanCode } from 'src/selectors/accountBillingInfo';
+import { getBundleTierByPlanCode } from 'src/selectors/accountBillingInfo';
 
 const mapStateToProps = state => {
   const { accountSingleSignOn, account, tfa } = state;
@@ -21,7 +21,7 @@ const mapStateToProps = state => {
     loading: accountSingleSignOn.loading || tfa.enabled === null,
     ssoEnabled: accountSingleSignOn.enabled,
     tfaRequired:
-      getPlanTierByPlanCode(state) === 'starter' && account.tfa_required
+      getBundleTierByPlanCode(state) === 'starter' && account.tfa_required
         ? false
         : account.tfa_required,
     tfaUpdatePending: account.updateLoading,

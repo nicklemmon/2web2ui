@@ -1,5 +1,5 @@
-import { fetch, getPlans, register, emailRequest, getBillingInfo, getUsage } from '../account';
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+import { fetch, register, emailRequest, getBillingInfo, getUsage } from '../account';
+jest.mock('../helpers/sparkpostApiRequest', () => jest.fn(a => a));
 
 test('fetch - no params', () => {
   const fetchAction = fetch();
@@ -10,15 +10,10 @@ test('fetch with params', () => {
   const fetchAction = fetch({
     this: 'one',
     also: 'that one',
-    meta: { onSuccess: jest.fn() }
+    meta: { onSuccess: jest.fn() },
   });
 
   expect(fetchAction).toMatchSnapshot();
-});
-
-test('getPlans', () => {
-  const getPlansAction = getPlans();
-  expect(getPlansAction).toMatchSnapshot();
 });
 
 test('getBilling', () => {
@@ -42,7 +37,7 @@ describe('Account action creators', () => {
         passowrd: 'foobar',
         tou_accepted: true,
         recaptcha_response: 'foofoo',
-        recaptcha_type: 'invisible'
+        recaptcha_type: 'invisible',
       };
     });
     it('makes api call with passed data', () => {
@@ -58,12 +53,11 @@ describe('Account action creators', () => {
         previousLimit: '1000',
         template_id: 'daily-limit-increase',
         campaign_id: 'support-daily-limit-increase',
-        reason: 'just because i want'
+        reason: 'just because i want',
       };
     });
     it('makes api call with correct data', () => {
       expect(emailRequest(data)).toMatchSnapshot();
     });
   });
-
 });

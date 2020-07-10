@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Page } from 'src/components/matchbox';
-import { fetch as fetchAccount, getPlans, getBillingInfo, getUsage } from 'src/actions/account';
+import { fetch as fetchAccount, getBillingInfo, getUsage } from 'src/actions/account';
 import { list as getSendingIps } from 'src/actions/sendingIps';
 import { selectBillingInfo, selectAccountBilling } from 'src/selectors/accountBillingInfo';
 import { selectAccountAgeInDays } from 'src/selectors/accountAge';
 import ConditionSwitch, { defaultCase } from 'src/components/auth/ConditionSwitch';
-import { getSubscription } from 'src/actions/billing';
+import { getSubscription, getBundles, getPlans } from 'src/actions/billing';
 import { isSuspendedForBilling } from 'src/helpers/conditions/account';
 import { Loading } from 'src/components';
 import BillingSummary from './components/BillingSummary';
@@ -19,17 +19,19 @@ export class BillingSummaryPage extends Component {
   componentDidMount() {
     const {
       fetchAccount,
+      getPlans,
+      getBundles,
       getSubscription,
       getBillingInfo,
-      getPlans,
       getSendingIps,
       getInvoices,
       getUsage,
     } = this.props;
     fetchAccount();
+    getPlans();
+    getBundles();
     getSubscription();
     getBillingInfo();
-    getPlans();
     getSendingIps();
     getInvoices();
     getUsage();
@@ -52,7 +54,7 @@ export class BillingSummaryPage extends Component {
       <SuspendedForBilling
         condition={isSuspendedForBilling}
         account={account}
-        key={'suspended-billing'}
+        key="suspended-billing"
       />
     );
     const manuallyBilledBanner = (
@@ -60,7 +62,7 @@ export class BillingSummaryPage extends Component {
         account={account}
         onZuoraPlan={billingInfo.onZuoraPlan}
         condition={any(isAws, () => !isBillingSubscriptionSelfServe(billingInfo))}
-        key={'manually-billed-banner'}
+        key="manually-billed-banner"
       />
     );
     const billingSummary = (
@@ -72,7 +74,7 @@ export class BillingSummaryPage extends Component {
         invoices={invoices}
         sendingIps={sendingIps}
         accountAgeInDays={accountAgeInDays}
-        key={'billing-summary'}
+        key="billing-summary"
       />
     );
     return [suspendedBilling, manuallyBilledBanner, billingSummary];
@@ -92,7 +94,7 @@ export class BillingSummaryPage extends Component {
 const mapStateToProps = state => {
   const { loading, account } = selectAccountBilling(state);
   return {
-    loading: loading || state.billing.plansLoading || !state.account.subscription,
+    loading: loading || !state.account.subscription,
     account,
     subscription: state.billing.subscription || {},
     accountAgeInDays: selectAccountAgeInDays(state),
@@ -104,9 +106,10 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   getInvoices,
   getSendingIps,
-  getPlans,
   fetchAccount,
   getBillingInfo,
   getUsage,
   getSubscription,
+  getBundles,
+  getPlans,
 })(BillingSummaryPage);

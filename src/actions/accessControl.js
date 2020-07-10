@@ -1,5 +1,6 @@
-import { fetch as fetchAccount, getPlans } from './account';
+import { fetch as fetchAccount } from './account';
 import { get as getCurrentUser, getGrants } from './currentUser';
+import { getPlans, getBundles, getSubscription } from './billing';
 
 // initialize some state used for access control
 export function initializeAccessControl() {
@@ -11,6 +12,8 @@ export function initializeAccessControl() {
     Promise.all([
       dispatch(fetchAccount({ meta })),
       dispatch(getPlans({ meta })),
+      dispatch(getBundles({ meta })),
+      dispatch(getSubscription({ meta })),
       dispatch(getCurrentUser({ meta })).then(({ access_level }) =>
         dispatch(getGrants({ role: access_level, meta })),
       ),

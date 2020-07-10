@@ -23,8 +23,7 @@ exports[`PlanPrice allows class name overriding 1`] = `
       <strong>
         $9
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
@@ -62,8 +61,7 @@ exports[`PlanPrice renders as 0 if flat discount is greater than price 1`] = `
       <strong>
         $0.00
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
@@ -95,8 +93,7 @@ exports[`PlanPrice renders correctly 1`] = `
       <strong>
         $9
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
@@ -156,8 +153,7 @@ exports[`PlanPrice renders correctly for CSM inclusion 1`] = `
       <strong>
         $9
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
@@ -190,40 +186,11 @@ exports[`PlanPrice renders correctly for eternal free plan 1`] = `
        emails/month 
     </span>
     <span>
-       FREE 
-    </span>
-  </span>
-  <span
-    className="SupportLabel"
-  />
-</span>
-`;
-
-exports[`PlanPrice renders correctly with hourly plans 1`] = `
-<span
-  className="notranslate"
->
-  <span
-    className="MainLabel"
-  >
-    <strong>
-      <Text
-        as="span"
-        fontWeight="400"
-      >
-        50,000
-      </Text>
-    </strong>
-    <span>
-       emails/month 
-    </span>
-    <span>
        at 
       <strong>
-        $0.012
+        $9
       </strong>
-      /
-      hr
+      /mo
     </span>
   </span>
   <span
@@ -261,8 +228,7 @@ exports[`PlanPrice renders flat discount 1`] = `
       <strong>
         $4.00
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
@@ -294,8 +260,7 @@ exports[`PlanPrice renders free ip 1`] = `
       <strong>
         $9
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
@@ -329,14 +294,13 @@ exports[`PlanPrice renders free ip and overage correct 1`] = `
       <strong>
         $9
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
     className="SupportLabel"
   >
-    $0.75/ thousand extra emails. 
+    $0.30/ thousand extra emails. 
     First dedicated IP address is free
   </span>
 </span>
@@ -373,8 +337,7 @@ exports[`PlanPrice renders percent discount 1`] = `
       <strong>
         $6.75
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
@@ -406,14 +369,13 @@ exports[`PlanPrice renders with overage 1`] = `
       <strong>
         $9
       </strong>
-      /
-      mo
+      /mo
     </span>
   </span>
   <span
     className="SupportLabel"
   >
-    $0.75/ thousand extra emails. 
+    $0.30/ thousand extra emails. 
   </span>
 </span>
 `;

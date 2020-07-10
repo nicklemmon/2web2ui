@@ -70,6 +70,7 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
       </LabelledValue>
     </Panel.Section>
     <DedicatedIpSummarySection
+      canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
       onClick={[Function]}
@@ -526,6 +527,7 @@ exports[`Component: Billing Summary should render correctly if you can't change 
       </LabelledValue>
     </Panel.Section>
     <DedicatedIpSummarySection
+      canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
       onClick={[Function]}
@@ -701,6 +703,7 @@ exports[`Component: Billing Summary should render correctly if you can't update 
       </LabelledValue>
     </Panel.Section>
     <DedicatedIpSummarySection
+      canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
       onClick={[Function]}
@@ -836,6 +839,7 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
       </LabelledValue>
     </Panel.Section>
     <DedicatedIpSummarySection
+      canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
       onClick={[Function]}
@@ -1015,6 +1019,7 @@ exports[`Component: Billing Summary should render with the billing contact modal
       </LabelledValue>
     </Panel.Section>
     <DedicatedIpSummarySection
+      canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
       onClick={[Function]}
@@ -1194,6 +1199,7 @@ exports[`Component: Billing Summary should render with the payment info modal op
       </LabelledValue>
     </Panel.Section>
     <DedicatedIpSummarySection
+      canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
       onClick={[Function]}
@@ -1373,6 +1379,7 @@ exports[`Component: Billing Summary should show the invoice history if there are
       </LabelledValue>
     </Panel.Section>
     <DedicatedIpSummarySection
+      canPurchaseIps={true}
       count={0}
       isTransitioningToSelfServe={false}
       onClick={[Function]}

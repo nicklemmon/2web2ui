@@ -3,7 +3,9 @@ import _ from 'lodash';
 
 export const onPlan = planCode => ({ accountPlan }) => accountPlan.code === planCode;
 export const onZuoraPlan = ({ accountPlan }) => Boolean(accountPlan.billingId);
-export const onPlanWithStatus = status => ({ accountPlan }) => accountPlan.status === status;
+export const onPlanWithStatus = status => ({ accountPlan }) => {
+  return accountPlan.status === status;
+};
 export const onServiceLevel = level => ({ account }) => account.service_level === level;
 export const isEnterprise = any(onPlan('ent1'), onServiceLevel('enterprise'));
 export const hasStatus = status => ({ account }) => account.status === status;
@@ -31,3 +33,6 @@ export const hasAccountOptionEnabled = option => ({ account }) =>
   Boolean(_.get(account.options, option, false));
 export const getAccountUiOptionValue = option => ({ account }) =>
   _.get(account.options, `ui.${option}`);
+export const hasProductOnSubscription = product => ({ accountPlan }) => {
+  return !_.isEmpty(_.find(accountPlan.products, { product: product }));
+};
