@@ -6,10 +6,10 @@ import * as supportActions from 'src/actions/support';
 import { AccessControl } from 'src/components/auth';
 import { Panel, Tabs, UnstyledLink, Modal } from 'src/components/matchbox';
 import findRouteByPath from 'src/helpers/findRouteByPath';
-import { authorizedToSubmitSupportTickets, entitledToPhoneSupport } from 'src/selectors/support';
+import { authorizedToSubmitSupportTickets } from 'src/selectors/support';
 import SearchPanel from './components/SearchPanel';
 import SupportForm from './components/SupportForm';
-
+import { hasPhoneSupport } from 'src/selectors/accountBillingInfo';
 import styles from './Support.module.scss';
 
 export class Support extends Component {
@@ -98,7 +98,7 @@ export class Support extends Component {
 }
 
 const mapStateToProps = state => ({
-  authorizedToCallSupport: entitledToPhoneSupport(state),
+  authorizedToCallSupport: hasPhoneSupport(state),
   authorizedToSubmitSupportTickets: authorizedToSubmitSupportTickets(state),
   currentSupportView: state.support.currentView,
   loggedIn: state.auth.loggedIn,

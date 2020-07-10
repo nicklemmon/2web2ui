@@ -10,9 +10,11 @@ describe('Support', () => {
   let props;
   let wrapper;
 
-  const findTab = (content) => (
-    wrapper.find('Tabs').prop('tabs').find((tab) => tab.content === content)
-  );
+  const findTab = content =>
+    wrapper
+      .find('Tabs')
+      .prop('tabs')
+      .find(tab => tab.content === content);
 
   beforeEach(() => {
     findRouteByPath.mockImplementation(() => ({ path: '/example' }));
@@ -22,12 +24,12 @@ describe('Support', () => {
       closeSupportPanel: jest.fn(),
       currentSupportView: 'docs',
       location: {
-        search: ''
+        search: '',
       },
       loggedIn: true,
       openSupportPanel: jest.fn(),
       openSupportTicketForm: jest.fn(),
-      showSupportPanel: true
+      showSupportPanel: true,
     };
 
     wrapper = shallow(<Support {...props} />);
@@ -50,7 +52,7 @@ describe('Support', () => {
   it('renders search panel with current page search term', () => {
     findRouteByPath.mockImplementationOnce(() => ({
       path: '/example',
-      supportDocSearch: 'exampleKeyword'
+      supportDocSearch: 'exampleKeyword',
     }));
     wrapper.setProps({ currentSupportView: 'docs' });
 
@@ -60,7 +62,7 @@ describe('Support', () => {
   it('renders search panel without tabs', () => {
     wrapper.setProps({
       authorizedToCallSupport: false,
-      authorizedToSubmitSupportTickets: false
+      authorizedToSubmitSupportTickets: false,
     });
 
     expect(wrapper).toMatchSnapshot();
@@ -104,33 +106,33 @@ describe('Support', () => {
 
   it('opens support ticket tab on mount with deep link', () => {
     const location = {
-      search: '?supportTicket=true&supportIssue=test_issue&supportMessage=testmessage'
+      search: '?supportTicket=true&supportIssue=test_issue&supportMessage=testmessage',
     };
     wrapper = shallow(<Support {...props} location={location} />);
 
     expect(props.openSupportTicketForm).toHaveBeenCalledWith({
       issueId: 'test_issue',
-      message: 'testmessage'
+      message: 'testmessage',
     });
   });
 
   it('opens support ticket tab on location update with deep link', () => {
     wrapper.setProps({
       location: {
-        search: '?supportTicket=true&supportIssue=test_issue&supportMessage=testmessage'
-      }
+        search: '?supportTicket=true&supportIssue=test_issue&supportMessage=testmessage',
+      },
     });
 
     expect(props.openSupportTicketForm).toHaveBeenCalledWith({
       issueId: 'test_issue',
-      message: 'testmessage'
+      message: 'testmessage',
     });
   });
 
   it('only calls openSupportTicketForm once when location stays the same', () => {
     const search = '?supportTicket=true&supportIssue=test_issue&supportMessage=testmessage';
-    wrapper.setProps({ location: { search }});
-    wrapper.setProps({ location: { search }});
+    wrapper.setProps({ location: { search } });
+    wrapper.setProps({ location: { search } });
 
     expect(props.openSupportTicketForm).toHaveBeenCalledTimes(1);
   });
