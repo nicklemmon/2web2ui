@@ -8,6 +8,7 @@ import { Box, Grid, Inline } from 'src/components/matchbox';
 import { Definition } from 'src/components/text';
 import { ReportOptions, ReportTable } from './components';
 import Charts from './components/Charts';
+
 import {
   bounceTabMetrics,
   rejectionTabMetrics,
@@ -19,7 +20,12 @@ import {
   selectSummaryChartSearchOptions,
   selectSummaryMetricsProcessed,
 } from 'src/selectors/reportSearchOptions';
-import { BounceReasonsTable, DelayReasonsTable, LinksTable, RejectionReasonsTable } from './components/tabs';
+import {
+  BounceReasonsTable,
+  DelayReasonsTable,
+  LinksTable,
+  RejectionReasonsTable,
+} from './components/tabs';
 import styles from './ReportBuilder.module.scss';
 import moment from 'moment';
 
@@ -33,7 +39,9 @@ export function ReportBuilder({
   const [showTable, setShowTable] = useState(true);
 
   useEffect(() => {
-    refreshSummaryReport(reportOptions);
+    if (reportOptions.isReady) {
+      refreshSummaryReport(reportOptions);
+    }
   }, [refreshSummaryReport, reportOptions]);
 
   const hasBounceTab = processedMetrics.some(({ key }) => {

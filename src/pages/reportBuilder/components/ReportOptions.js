@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { addFilters, removeFilter, refreshReportOptions } from 'src/actions/reportOptions';
+import { refreshReportOptions } from 'src/actions/reportOptions';
 import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel, Stack, Tag } from 'src/components/matchbox';
 import { Tabs } from 'src/components';
@@ -20,8 +20,6 @@ import useRouter from 'src/hooks/useRouter';
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
   const {
-    removeFilter,
-    addFilters,
     processedMetrics,
     refreshReportOptions,
     reportOptions,
@@ -40,8 +38,7 @@ export function ReportOptions(props) {
   useEffect(() => {
     const { options, filters = [] } = parseSearch(location.search);
 
-    addFilters(filters);
-    refreshReportOptions(options);
+    refreshReportOptions({ ...options, filters });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -55,7 +52,11 @@ export function ReportOptions(props) {
   };
 
   const handleFilterRemove = index => {
-    removeFilter(index);
+    const filters = [
+      ...reportOptions.filters.slice(0, index),
+      ...reportOptions.filters.slice(index + 1),
+    ];
+    refreshReportOptions({ filters });
   };
 
   const handleTimezoneSelect = useCallback(
@@ -143,12 +144,7 @@ export function ReportOptions(props) {
                 <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
               </Tabs.Item>
               <Tabs.Item>
-                <AddFiltersSection
-                  addFilters={addFilters}
-                  closeDrawer={closeDrawer}
-                  refreshReportOptions={refreshReportOptions}
-                  reportOptions={reportOptions}
-                />
+                <AddFiltersSection handleSubmit={handleSubmit} reportOptions={reportOptions} />
               </Tabs.Item>
             </Tabs>
           </Drawer.Content>
@@ -173,8 +169,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  addFilters,
-  removeFilter,
   refreshReportOptions,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ReportOptions);

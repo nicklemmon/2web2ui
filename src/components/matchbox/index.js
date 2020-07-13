@@ -7,6 +7,7 @@ export { default as CodeBlock } from './CodeBlock';
 export { default as ComboBox } from './ComboBox';
 export { default as ComboBoxMenu } from './ComboBoxMenu';
 export { default as ComboBoxTextField } from './ComboBoxTextField';
+export { default as DatePicker } from './DatePicker';
 export { default as Drawer } from './Drawer';
 export { default as EmptyState } from './EmptyState';
 export { default as Error } from './Error';

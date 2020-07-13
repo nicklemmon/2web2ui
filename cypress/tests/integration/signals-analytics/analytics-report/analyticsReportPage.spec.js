@@ -1,4 +1,4 @@
-import { STABLE_UNIX_DATE, PAGE_URL, METRICS } from './constants';
+import { PAGE_URL, METRICS } from './constants';
 import { stubDeliverability, stubTimeSeries, stubSubaccounts, commonBeforeSteps } from './helpers';
 
 if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
@@ -14,9 +14,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       // Filtering form elements
       cy.findByText('Date Range').should('be.visible');
-      // These labels are visually hidden though are associated with the date picker controls
-      cy.findByLabelText('Narrow Date Range').should('be.visible');
-      cy.findByLabelText('Broad Date Range').should('be.visible');
       cy.findByLabelText('Time Zone').should('be.visible');
       cy.findByLabelText('Precision').should('be.visible');
 
@@ -31,25 +28,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       cy.get('.recharts-wrapper').should('be.visible');
 
       cy.findByLabelText('Break Down By').should('be.visible');
-    });
-
-    it('filters by date', () => {
-      cy.clock(STABLE_UNIX_DATE);
-
-      cy.findByLabelText('Broad Date Range').select('hour');
-      cy.url().should('include', 'range=hour');
-
-      cy.findByLabelText('Broad Date Range').select('day');
-      cy.url().should('include', 'range=day');
-
-      cy.findByLabelText('Broad Date Range').select('7days');
-      cy.url().should('include', 'range=7days');
-
-      cy.findByLabelText('Broad Date Range').select('30days');
-      cy.url().should('include', 'range=30days');
-
-      cy.findByLabelText('Broad Date Range').select('90days');
-      cy.url().should('include', 'range=90days');
     });
 
     it('filters by metric', () => {

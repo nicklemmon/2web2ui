@@ -47,7 +47,7 @@ export const GroupByOption = props => {
     }
 
     return (
-      <Box marginTop={'500'} className={styles.TopDomainsCheckbox}>
+      <Box marginTop="500" className={styles.TopDomainsCheckbox}>
         <Checkbox
           id="watchedDomains"
           label="Top Domains Only"

@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import PrecisionSelector from 'src/pages/reports/components/PrecisionSelector'; //TODO: Remove
+import PrecisionSelector from './PrecisionSelector';
 import { isForcedUTCRollupPrecision } from 'src/helpers/metrics';
-import { Box, Grid, Label, Select, Tooltip } from 'src/components/matchbox';
-import DatePicker from 'src/components/datePicker/DatePicker';
+import { Grid, Select, Tooltip } from 'src/components/matchbox';
+import DatePicker from './DatePicker';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import config from 'src/config';
-import styles from './ReportOptions.module.scss';
+import styles from '../ReportOptions.module.scss';
 import _ from 'lodash';
 
 const { metricsRollupPrecisionMap } = config;
@@ -40,22 +40,16 @@ const DateTimeSection = ({
   return (
     <Grid>
       <Grid.Column xs={12} md={6}>
-        <Box marginBottom={[200, 200, 200, 0]}>
-          <div aria-hidden="true">
-            <Label label="Date Range" />
-          </div>
-
-          <DatePicker
-            {...reportOptions}
-            relativeDateOptions={RELATIVE_DATE_OPTIONS}
-            disabled={reportLoading}
-            onChange={refreshReportOptions}
-            roundToPrecision={true}
-            selectPrecision={true}
-            updateShownPrecision={updateShownPrecision}
-            maxWidth="100%"
-          />
-        </Box>
+        <DatePicker
+          {...reportOptions}
+          relativeDateOptions={RELATIVE_DATE_OPTIONS}
+          disabled={reportLoading}
+          onChange={refreshReportOptions}
+          roundToPrecision={true}
+          selectPrecision={true}
+          label="Date Range"
+          updateShownPrecision={updateShownPrecision}
+        />
       </Grid.Column>
       <Grid.Column xs={6} md={4}>
         <div className={styles.TimezoneTooltipWrapper}>

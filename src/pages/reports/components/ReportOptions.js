@@ -137,6 +137,7 @@ export class ReportOptionsClassComponent extends Component {
                 <div className={styles.FieldWrapperMetricsRollup}>
                   <DatePicker
                     {...reportOptions}
+                    label="Date Range"
                     relativeDateOptions={RELATIVE_DATE_OPTIONS}
                     disabled={reportLoading}
                     onChange={refreshReportOptions}
