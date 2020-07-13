@@ -84,5 +84,5 @@ export const TimezoneTypeahead = props => {
     return <Typeahead {...typeaheadProps} selectedItem={UTC_OPTION} disabled />;
   }
 
-  return <Typeahead {...typeaheadProps} />;
+  return <Typeahead {...typeaheadProps} canChange />;
 };
