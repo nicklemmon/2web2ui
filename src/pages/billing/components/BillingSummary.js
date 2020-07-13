@@ -115,7 +115,6 @@ export default class BillingSummary extends Component {
       currentPlan,
       canChangePlan,
       canUpdateBillingInfo,
-      canPurchaseIps,
       invoices,
       accountAgeInDays,
     } = this.props;
@@ -148,7 +147,7 @@ export default class BillingSummary extends Component {
               <PlanSummary plan={account.subscription} pendingCancellation={pending_cancellation} />
             </LabelledValue>
           </Panel.Section>
-          {canPurchaseIps && this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
+          {this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
         </Panel>
 
