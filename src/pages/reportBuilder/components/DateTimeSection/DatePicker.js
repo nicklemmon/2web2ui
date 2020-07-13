@@ -102,23 +102,6 @@ export function DatePicker(props) {
     });
   }, [props.to, props.from, props.precision, props.relativeRange, syncTimeToState]);
 
-  // //For metrics rollup, update the precision display when precision changes
-  // componentDidUpdate(prevProps, prevState) {
-  //   const { selectedPrecision, showDatePicker } = state;
-  //   const { updateShownPrecision } = props;
-  //   if (updateShownPrecision) {
-  //     //closing datepicker resets to the actual precision
-  //     if (prevState.showDatePicker && !showDatePicker) {
-  //       return updateShownPrecision('');
-  //     }
-  //     if (prevState.selectedPrecision !== selectedPrecision && showDatePicker) {
-  //       return updateShownPrecision(selectedPrecision);
-  //     }
-  //   }
-  // }
-
-  // Sets local state from reportOptions redux state - need to separate to handle pre-apply state
-
   // Closes popover on escape, submits on enter
   const handleKeyDown = e => {
     if (!state.showDatePicker) {
