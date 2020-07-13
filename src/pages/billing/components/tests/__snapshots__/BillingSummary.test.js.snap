@@ -245,6 +245,17 @@ exports[`Component: Billing Summary should render correctly for a standard free 
         />
       </LabelledValue>
     </Panel.Section>
+    <DedicatedIpSummarySection
+      canPurchaseIps={false}
+      count={0}
+      isTransitioningToSelfServe={false}
+      onClick={[Function]}
+      plan={
+        Object {
+          "isFree": true,
+        }
+      }
+    />
     <Panel.Section>
       <LabelledValue
         label="Recipient Validation"
@@ -370,6 +381,17 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
         />
       </LabelledValue>
     </Panel.Section>
+    <DedicatedIpSummarySection
+      canPurchaseIps={false}
+      count={0}
+      isTransitioningToSelfServe={false}
+      onClick={[Function]}
+      plan={
+        Object {
+          "isFree": true,
+        }
+      }
+    />
     <Panel.Section>
       <LabelledValue
         label="Recipient Validation"
