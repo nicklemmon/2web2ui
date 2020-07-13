@@ -46,6 +46,7 @@ const actionTypes = {
   dayClick: 'DAY_CLICK',
   dayHover: 'DAY_HOVER',
   selectRange: 'SELECT_RANGE',
+  setFormDates: 'SET_FORM_DATES',
 };
 
 const datePickerReducer = (state, { type, payload }) => {
@@ -64,6 +65,7 @@ const datePickerReducer = (state, { type, payload }) => {
     case actionTypes.dayClick:
     case actionTypes.dayHover:
     case actionTypes.selectRange:
+    case actionTypes.setFormDates:
       return { ...state, ...payload };
     default: {
       return state;
@@ -90,10 +92,6 @@ export function DatePicker(props) {
     },
     [props.selectPrecision],
   );
-
-  useEffect(() => {
-    syncTimeToState(props);
-  }, [props, syncTimeToState]);
 
   useEffect(() => {
     syncTimeToState({
@@ -246,7 +244,7 @@ export function DatePicker(props) {
 
     dispatch({
       type: actionTypes.setFormDates,
-      payload: { selected: { from, to }, selectedPrecision },
+      payload: { selected: { from, to }, selectedPrecision, relativeRange: 'custom' },
     });
     callback();
   };
