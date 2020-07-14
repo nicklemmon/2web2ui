@@ -9,14 +9,12 @@ export function fetch({ type = 'FETCH_METRICS', path, params = {}, context }) {
       url: `/v1/metrics/${path}`,
       params: {
         ...params,
+        ...(useRollup && { rollup: true }), //Done this way because falsy props still show in the snapshot
       },
     };
 
     if (context) {
       meta.context = context;
-    }
-    if (useRollup) {
-      meta.headers = { 'X-Msys-Metrics-Rollup': true };
     }
 
     return dispatch(

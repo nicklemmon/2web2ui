@@ -61,7 +61,7 @@ describe('Metrics Actions', () => {
     },
   ]);
 
-  it('makes request using x-msys-metrics-rollup headers when ui option is set', () => {
+  it('makes request using rollup query param when ui option is set', () => {
     isUserUiOptionSet.mockImplementationOnce(() => () => true);
     const dispatch = jest.fn(a => a);
     const thunk = metrics.fetch({ path: 'foo/1', params: { foo: 'bar' } });
@@ -73,8 +73,8 @@ describe('Metrics Actions', () => {
         url: '/v1/metrics/foo/1',
         params: {
           foo: 'bar',
+          rollup: true,
         },
-        headers: { 'X-Msys-Metrics-Rollup': true },
       },
     });
   });
