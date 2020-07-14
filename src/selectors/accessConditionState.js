@@ -24,9 +24,7 @@ export const getCurrentAccountPlan = createSelector(
       code: currentPlan.plan,
       includesIp:
         Boolean(currentPlan.status) &&
-        !_.isEmpty(_.find(currentBundle.products, { product: 'dedicated_ip' })) //second condition added for starter plans
-          ? true
-          : false,
+        !_.isEmpty(_.find(currentBundle.products, { product: 'dedicated_ip' })), //second condition added for starter plans,
       isFree: currentFreePlans.includes(currentPlan.plan),
       status: !currentPlan.status ? 'deprecated' : currentPlan.status, //since bundlePlans don't return deprecated plans;
       ...currentPlan,
