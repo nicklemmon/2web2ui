@@ -43,7 +43,7 @@ export default function MetricsDrawer(props) {
     return categorizedMetricsList.map(({ category, metrics }) => {
       return (
         <div key={category}>
-          <Box fontWeight="semibold" marginTop="600" marginBottom="400" paddingLeft={'100'}>
+          <Box fontWeight="semibold" marginTop="600" marginBottom="400" paddingLeft="100">
             {category}
           </Box>
           <Inline space="100">{renderMetrics(metrics)}</Inline>
@@ -54,16 +54,18 @@ export default function MetricsDrawer(props) {
   const renderMetrics = metrics =>
     metrics.map(metric => {
       return (
-        <Box marginRight="300" width="200px" key={metric.key} paddingLeft={'100'}>
+        <div key={metric.key}>
           <Tooltip id={metric.key} content={metric.description} portalID="tooltip-portal">
-            <Checkbox
-              id={metric.key}
-              onChange={() => handleCheckbox(metric.key)}
-              checked={selectedMetrics[metric.key]}
-              label={metric.label}
-            />
+            <Box marginRight="300" width="200px" paddingLeft="100">
+              <Checkbox
+                id={metric.key}
+                onChange={() => handleCheckbox(metric.key)}
+                checked={selectedMetrics[metric.key]}
+                label={metric.label}
+              />
+            </Box>
           </Tooltip>
-        </Box>
+        </div>
       );
     });
 
@@ -80,24 +82,33 @@ export default function MetricsDrawer(props) {
   const { DrawerFooter = Drawer.Footer } = props;
   return (
     <>
-      <Box margin="400" paddingBottom={'90px'}>
+      <Box margin="400" paddingBottom="100px">
         {renderMetricsCategories()}
       </Box>
       <DrawerFooter margin="400">
-        <Inline spacing="400">
-          <Button
-            onClick={handleApply}
-            variant="primary"
-            disabled={
-              getSelectedMetrics().length < 1 || isSelectedMetricsSameAsCurrentlyAppliedMetrics
-            }
-          >
-            Apply Metrics
-          </Button>
-          <Button onClick={() => setSelectedMetrics(INITIAL_STATE)} variant="secondary">
-            Clear Metrics
-          </Button>
-        </Inline>
+        <Box display="flex">
+          <Box pr="100" flex="1">
+            <Button
+              width="100%"
+              onClick={handleApply}
+              variant="primary"
+              disabled={
+                getSelectedMetrics().length < 1 || isSelectedMetricsSameAsCurrentlyAppliedMetrics
+              }
+            >
+              Apply Metrics
+            </Button>
+          </Box>
+          <Box pl="100" flex="1">
+            <Button
+              width="100%"
+              onClick={() => setSelectedMetrics(INITIAL_STATE)}
+              variant="secondary"
+            >
+              Clear Metrics
+            </Button>
+          </Box>
+        </Box>
       </DrawerFooter>
     </>
   );

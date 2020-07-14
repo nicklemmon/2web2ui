@@ -18,6 +18,7 @@ export const SavedReportsTypeahead = props => {
   return (
     <Typeahead
       renderItem={item => <TypeaheadItem label={item.name} />}
+      canChange
       label="Report"
       itemToString={report => (report ? report.name : '')}
       name="ReportTypeahead"

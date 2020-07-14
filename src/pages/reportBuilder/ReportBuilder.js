@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { refreshSummaryReport } from 'src/actions/summaryChart';
 import { Page, Panel } from 'src/components/matchbox';
-import { Loading, Unit } from 'src/components';
+import { Empty, Loading, Unit } from 'src/components';
 import { Box, Grid, Inline } from 'src/components/matchbox';
 import { Definition } from 'src/components/text';
 import { ReportOptions, ReportTable } from './components';
@@ -38,11 +38,15 @@ export function ReportBuilder({
 }) {
   const [showTable, setShowTable] = useState(true);
 
+  const isEmpty = useMemo(() => {
+    return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
+  }, [reportOptions.metrics]);
+
   useEffect(() => {
-    if (reportOptions.isReady) {
+    if (reportOptions.isReady && !isEmpty) {
       refreshSummaryReport(reportOptions);
     }
-  }, [refreshSummaryReport, reportOptions]);
+  }, [refreshSummaryReport, reportOptions, isEmpty]);
 
   const hasBounceTab = processedMetrics.some(({ key }) => {
     return bounceTabMetrics.map(({ key }) => key).includes(key);
@@ -56,6 +60,7 @@ export function ReportBuilder({
   const hasLinksTab = processedMetrics.some(({ key }) => {
     return linksTabMetrics.map(({ key }) => key).includes(key);
   });
+
   const tabs = useMemo(
     () =>
       [
@@ -107,57 +112,70 @@ export function ReportBuilder({
     <Page title="Analytics Report">
       <Panel>
         <ReportOptions reportLoading={chart.chartLoading} searchOptions={summarySearchOptions} />
-        <hr className={styles.Line} />
-        <div data-id="summary-chart">
-          <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
-            <Tabs.Item>
-              <Panel.Section className={styles.ChartSection}>
-                <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
-              </Panel.Section>
-              <Box padding="400" backgroundColor={tokens.color_gray_1000}>
-                <Grid>
-                  <Grid.Column sm={3}>
-                    <Box id="date">{renderAggregateMetric(dateLabelValue)}</Box>
-                  </Grid.Column>
-                  <Grid.Column sm={9}>
-                    <Inline space="600">
-                      {chart.aggregateData.map(metric => {
-                        return (
-                          <Box marginRight="600" key={metric.key}>
-                            {renderAggregateMetric(metric)}
-                          </Box>
-                        );
-                      })}
-                    </Inline>
-                  </Grid.Column>
-                </Grid>
-              </Box>
-              {renderLoading()}
-            </Tabs.Item>
-            {hasBounceTab && (
-              <Tabs.Item>
-                <BounceReasonsTable />
-              </Tabs.Item>
-            )}
-            {hasRejectionTab && (
-              <Tabs.Item>
-                <RejectionReasonsTable />
-              </Tabs.Item>
-            )}
-            {hasDelayTab && (
-              <Tabs.Item>
-                <DelayReasonsTable />
-              </Tabs.Item>
-            )}
-            {hasLinksTab && (
-              <Tabs.Item>
-                <LinksTable />
-              </Tabs.Item>
-            )}
-          </Tabs>
-        </div>
+        {isEmpty ? (
+          <Empty
+            message={
+              <>
+                <span>No Data</span>
+                <br />
+                <span>Must select at least one metric.</span>
+              </>
+            }
+          />
+        ) : (
+          <>
+            <hr className={styles.Line} />
+            <div data-id="summary-chart">
+              <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
+                <Tabs.Item>
+                  <Panel.Section className={styles.ChartSection}>
+                    <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
+                  </Panel.Section>
+                  <Box padding="400" backgroundColor={tokens.color_gray_1000}>
+                    <Grid>
+                      <Grid.Column sm={3}>
+                        <Box id="date">{renderAggregateMetric(dateLabelValue)}</Box>
+                      </Grid.Column>
+                      <Grid.Column sm={9}>
+                        <Inline space="600">
+                          {chart.aggregateData.map(metric => {
+                            return (
+                              <Box marginRight="600" key={metric.key}>
+                                {renderAggregateMetric(metric)}
+                              </Box>
+                            );
+                          })}
+                        </Inline>
+                      </Grid.Column>
+                    </Grid>
+                  </Box>
+                  {renderLoading()}
+                </Tabs.Item>
+                {hasBounceTab && (
+                  <Tabs.Item>
+                    <BounceReasonsTable />
+                  </Tabs.Item>
+                )}
+                {hasRejectionTab && (
+                  <Tabs.Item>
+                    <RejectionReasonsTable />
+                  </Tabs.Item>
+                )}
+                {hasDelayTab && (
+                  <Tabs.Item>
+                    <DelayReasonsTable />
+                  </Tabs.Item>
+                )}
+                {hasLinksTab && (
+                  <Tabs.Item>
+                    <LinksTable />
+                  </Tabs.Item>
+                )}
+              </Tabs>
+            </div>
+          </>
+        )}
       </Panel>
-
       {showTable && (
         <div data-id="summary-table">
           <ReportTable />

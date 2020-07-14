@@ -1,21 +1,21 @@
 export const STABLE_UNIX_DATE = 1581087062000; // Stable unix timestamp (2/6/2020)
 export const PAGE_URL =
-  '/reports/summary?from=2020-06-22T19%3A00%3A00Z&to=2020-06-23T19%3A03%3A48Z&range=day&timezone=America%2FNew_York&precision=hour&metrics=count_targeted&metrics=count_rendered&metrics=count_accepted&metrics=count_bounce';
+  '/reports/summary?from=2020-06-22T19%3A00%3A00Z&to=2020-06-23T19%3A03%3A48Z&range=day&timezone=America%2FNew_York&precision=hour&metrics=count_targeted&metrics=count_accepted&metrics=count_bounce';
 export const METRICS = [
   {
     name: 'Admin Bounce Rate',
     queryParam: 'admin_bounce_rate',
   },
   {
-    name: 'Admin Bounced',
+    name: 'Admin Bounces',
     queryParam: 'count_admin_bounce',
   },
   {
-    name: 'Generation Failure',
+    name: 'Generation Failures',
     queryParam: 'count_generation_failed',
   },
   {
-    name: 'Generation Rejection',
+    name: 'Generation Rejections',
     queryParam: 'count_generation_rejection',
   },
   {
@@ -23,7 +23,7 @@ export const METRICS = [
     queryParam: 'count_injected',
   },
   {
-    name: 'Policy Rejection',
+    name: 'Policy Rejections',
     queryParam: 'count_policy_rejection',
   },
   {
@@ -59,7 +59,7 @@ export const METRICS = [
     queryParam: 'block_bounce_rate',
   },
   {
-    name: 'Block Bounced',
+    name: 'Block Bounces',
     queryParam: 'count_block_bounce',
   },
   {
@@ -67,7 +67,7 @@ export const METRICS = [
     queryParam: 'bounce_rate',
   },
   {
-    name: 'Bounced',
+    name: 'Bounces',
     queryParam: 'count_bounce',
   },
   {
@@ -95,7 +95,7 @@ export const METRICS = [
     queryParam: 'hard_bounce_rate',
   },
   {
-    name: 'Hard Bounced',
+    name: 'Hard Bounces',
     queryParam: 'count_hard_bounce',
   },
   {
@@ -107,7 +107,7 @@ export const METRICS = [
     queryParam: 'soft_bounce_rate',
   },
   {
-    name: 'Soft Bounced',
+    name: 'Soft Bounces',
     queryParam: 'count_soft_bounce',
   },
   {
@@ -115,7 +115,7 @@ export const METRICS = [
     queryParam: 'undetermined_bounce_rate',
   },
   {
-    name: 'Undetermined Bounced',
+    name: 'Undetermined Bounces',
     queryParam: 'count_undetermined_bounce',
   },
   {
@@ -127,20 +127,8 @@ export const METRICS = [
     queryParam: 'count_clicked',
   },
   {
-    name: 'Initial Rendered',
-    queryParam: 'count_initial_rendered',
-  },
-  {
-    name: 'Initial Unique Rendered',
-    queryParam: 'count_unique_initial_rendered_approx',
-  },
-  {
     name: 'Open Rate',
     queryParam: 'open_rate_approx',
-  },
-  {
-    name: 'Rendered',
-    queryParam: 'count_rendered',
   },
   {
     name: 'Spam Complaint Rate',
@@ -157,10 +145,6 @@ export const METRICS = [
   {
     name: 'Unique Confirmed Opens',
     queryParam: 'count_unique_confirmed_opened_approx',
-  },
-  {
-    name: 'Unique Rendered',
-    queryParam: 'count_unique_rendered_approx',
   },
   {
     name: 'Unsubscribe Rate',

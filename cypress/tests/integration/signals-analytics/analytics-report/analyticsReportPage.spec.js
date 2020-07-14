@@ -20,9 +20,8 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       // Default selected metrics
       cy.withinMainContent(() => {
         cy.findAllByText('Targeted').should('have.length', 2);
-        cy.findAllByText('Rendered').should('have.length', 2);
         cy.findAllByText('Accepted').should('have.length', 2);
-        cy.findAllByText('Bounced').should('have.length', 2);
+        cy.findAllByText('Bounces').should('have.length', 2);
       });
 
       cy.get('.recharts-wrapper').should('be.visible');
@@ -37,8 +36,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       cy.withinDrawer(() => {
         cy.findByLabelText('Targeted').uncheck({ force: true });
         cy.findByLabelText('Accepted').uncheck({ force: true });
-        cy.findByLabelText('Bounced').uncheck({ force: true });
-        cy.findByLabelText('Rendered').uncheck({ force: true });
+        cy.findByLabelText('Bounces').uncheck({ force: true });
 
         METRICS.forEach(metric => {
           cy.findByLabelText(metric.name).check({ force: true });
@@ -116,9 +114,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       cy.findByDataId('report-options').within(() => {
         verifyMetricTagDismiss('Targeted');
-        verifyMetricTagDismiss('Rendered');
         verifyMetricTagDismiss('Accepted');
-        // verifyMetricTagDismiss('Bounced'); // TODO: This is a bug - the last metric cannot be dismissed - probably how it should be! But the close button should be removed in that case.
       });
     });
 
@@ -180,8 +176,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         cy.findByText('Add Filter').click();
         verifyNumberOfElements(5);
 
-        cy.findByText('Add Filter').should('not.be.visible');
-
         // Then verifying their removal
         cy.findAllByText('Remove')
           .last()
@@ -204,10 +198,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           .click();
         verifyNumberOfElements(1);
 
-        cy.findAllByText('Remove')
-          .last()
-          .click();
-        verifyNumberOfElements(0);
+        cy.findAllByText('Remove').should('not.be.visible');
       });
     });
 
