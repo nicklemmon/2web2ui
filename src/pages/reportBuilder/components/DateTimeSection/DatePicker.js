@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { DateUtils } from 'react-day-picker';
 import { subMonths, format } from 'date-fns';
 import {
   getStartOfDay,
@@ -318,6 +319,14 @@ export function DatePicker(props) {
     };
   });
 
+  const modifiers = {
+    firstSelected: day => {
+      return DateUtils.isSameDay(day, from);
+    },
+    lastSelected: day => DateUtils.isSameDay(day, to),
+    inBetween: day => DateUtils.isDayBetween(day, from, to),
+  };
+
   const dateField = (
     <TextField
       date-id={`date-field-${id}`}
@@ -351,6 +360,7 @@ export function DatePicker(props) {
         <Box padding="400" className={styles.DateSelectorWrapper}>
           <DateSelector
             data-id="date-selector"
+            modifiers={modifiers}
             className={styles.DateSelector}
             fixedWeeks
             initialMonth={subMonths(now, 1)}
