@@ -23,15 +23,13 @@ describe('Component: Summary Chart Metrics Modal', () => {
 
   it('should render with no set metrics', () => {
     const { queryByLabelText } = subject();
-    expect(queryByLabelText('Targeted').checked).toEqual(false);
     expect(queryByLabelText('Injected').checked).toEqual(false);
     expect(queryByLabelText('Accepted').checked).toEqual(false);
     expect(queryByLabelText('Sent').checked).toEqual(false);
   });
 
   it('should render with some set metrics', () => {
-    const { queryByLabelText } = subject({ selectedMetrics: [{ key: 'count_targeted' }] });
-    expect(queryByLabelText('Targeted').checked).toEqual(true);
+    const { queryByLabelText } = subject({ selectedMetrics: [{ key: 'count_Clicks' }] });
     expect(queryByLabelText('Injected').checked).toEqual(false);
     expect(queryByLabelText('Accepted').checked).toEqual(false);
     expect(queryByLabelText('Sent').checked).toEqual(false);
@@ -39,11 +37,9 @@ describe('Component: Summary Chart Metrics Modal', () => {
 
   it('should select metrics', () => {
     const { queryByLabelText } = subject();
-    expect(queryByLabelText('Targeted').checked).toEqual(false);
+    expect(queryByLabelText('Injected').checked).toEqual(false);
 
     fireEvent.click(queryByLabelText('Injected'));
-    fireEvent.click(queryByLabelText('Targeted'));
-    expect(queryByLabelText('Targeted').checked).toEqual(true);
     expect(queryByLabelText('Injected').checked).toEqual(true);
     expect(queryByLabelText('Accepted').checked).toEqual(false);
     expect(queryByLabelText('Sent').checked).toEqual(false);
@@ -60,10 +56,10 @@ describe('Component: Summary Chart Metrics Modal', () => {
   it('should handle submit', () => {
     const { queryByText, queryByLabelText } = subject();
     fireEvent.click(queryByLabelText('Injected'));
-    fireEvent.click(queryByLabelText('Targeted'));
+    fireEvent.click(queryByLabelText('Accepted'));
     fireEvent.click(queryByText('Apply Metrics'));
     expect(defaultProps.handleSubmit).toHaveBeenCalledWith({
-      metrics: ['count_injected', 'count_targeted'],
+      metrics: ['count_accepted', 'count_injected'],
     });
   });
 });

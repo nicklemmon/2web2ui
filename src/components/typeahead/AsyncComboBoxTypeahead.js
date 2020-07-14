@@ -48,7 +48,10 @@ export const ComboBoxTypeahead = ({
     debounceInputChange(inputValue);
   }, [debounceInputChange, inputValue]);
 
-  const isSelectedItem = item => selectedItems.some(selectedItem => selectedItem === item);
+  const isSelectedItem = item =>
+    selectedItems.some(selectedItem => {
+      return selectedItem.value === item.value;
+    });
 
   // Must use state reducer to avoid menu automatically closing
   // see, https://github.com/downshift-js/downshift#statechangetypes

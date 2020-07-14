@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { refreshReportOptions } from 'src/actions/reportOptions';
 import { Heading } from 'src/components/text';
@@ -28,6 +28,10 @@ export function ReportOptions(props) {
   } = props;
 
   const { location, updateRoute } = useRouter();
+
+  const isEmpty = useMemo(() => {
+    return !Boolean(processedMetrics.length);
+  }, [processedMetrics]);
 
   // Updates the query params with incoming search option changes
   useEffect(() => {
@@ -67,12 +71,6 @@ export function ReportOptions(props) {
   );
 
   const handleRemoveMetric = selectedMetric => {
-    const { metrics } = reportOptions;
-    if (metrics.length <= 1) {
-      //Prevent removing all metrics
-      //TODO RB Probably add some sort of snackbar maybe?
-      return;
-    }
     const updatedMetrics = reportOptions.metrics.filter(key => key !== selectedMetric);
     refreshReportOptions({ metrics: updatedMetrics });
   };
@@ -150,14 +148,17 @@ export function ReportOptions(props) {
           </Drawer.Content>
         </Drawer>
       </Panel.Section>
-      <Panel.Section>
-        <Legend metrics={processedMetrics} removeMetric={handleRemoveMetric} />
-      </Panel.Section>
-      {Boolean(reportOptions.filters.length) && ( //Only show if there are active filters
+      {!isEmpty && (
         <Panel.Section>
-          <ActiveFilters />
+          <Legend metrics={processedMetrics} removeMetric={handleRemoveMetric} />
         </Panel.Section>
       )}
+      {!isEmpty &&
+      Boolean(reportOptions.filters.length) && ( //Only show if there are active filters
+          <Panel.Section>
+            <ActiveFilters />
+          </Panel.Section>
+        )}
     </div>
   );
 }

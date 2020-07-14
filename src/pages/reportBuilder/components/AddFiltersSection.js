@@ -1,5 +1,5 @@
 import React, { useReducer, useCallback } from 'react';
-import { Box, Button, Drawer, Grid, Inline, Select, Stack } from 'src/components/matchbox';
+import { Box, Button, Drawer, Grid, Inline, Select } from 'src/components/matchbox';
 import Typeahead from './Typeahead';
 import { Add, Close } from '@sparkpost/matchbox-icons';
 import _ from 'lodash';
@@ -140,12 +140,12 @@ function AddFiltersSection({
 
   return (
     <>
-      <Box p="500">
+      <Box p="500" paddingBottom="100px">
         {filters.map(({ key, value }, index) => (
           <Box key={`filters_section_${index}`} mb="500">
-            <Stack>
-              <Box as={Grid}>
-                <Box as={Grid.Column}>
+            <Box mb="200">
+              <Grid>
+                <Grid.Column>
                   <Select
                     id={`select-resource-${index}`}
                     options={cleanFilters(key).map(value => ({ value, label: value }))}
@@ -157,40 +157,41 @@ function AddFiltersSection({
                       dispatch({ type: 'SET_FILTER_TYPE', filterType: value, index });
                     }}
                   />
-                </Box>
-                <Box as={Grid.Column}>
+                </Grid.Column>
+                <Grid.Column>
                   <Inline align="right">
                     <Button
+                      className={filters.length < 2 && styles.Hidden}
                       size="small"
                       onClick={() => {
                         dispatch({ type: 'REMOVE_FILTER_TYPE', index });
                       }}
                     >
-                      <span>Remove </span>
+                      <span>Remove&nbsp;</span>
                       <Close />
                     </Button>
                   </Inline>
                   <Box>
                     <strong className={styles.Conditional}>equals</strong>
                   </Box>
-                </Box>
-              </Box>
-              <Box>
-                {key && (
-                  <Typeahead
-                    id={`filter_typeahead_${index}`}
-                    lookaheadRequest={FILTER_REQUESTS[key]}
-                    reportOption={reportOptions}
-                    index={index}
-                    dispatch={dispatch}
-                    value={value}
-                    type={key}
-                    label={key}
-                    results={typeaheadCache[key]}
-                  />
-                )}
-              </Box>
-            </Stack>
+                </Grid.Column>
+              </Grid>
+            </Box>
+            <Box>
+              {key && (
+                <Typeahead
+                  id={`filter_typeahead_${index}`}
+                  lookaheadRequest={FILTER_REQUESTS[key]}
+                  reportOption={reportOptions}
+                  index={index}
+                  dispatch={dispatch}
+                  value={value}
+                  type={key}
+                  label={key}
+                  results={typeaheadCache[key]}
+                />
+              )}
+            </Box>
           </Box>
         ))}
         <Button onClick={() => dispatch({ type: 'ADD_FILTER_TYPE' })}>
@@ -199,19 +200,24 @@ function AddFiltersSection({
         </Button>
       </Box>
       <Drawer.Footer>
-        <Inline space="300">
-          <Button onClick={handleApply} variant="primary">
-            Apply Filters
-          </Button>
-          <Button
-            onClick={() => {
-              dispatch({ type: 'RESET_FILTERS' });
-            }}
-            variant="secondary"
-          >
-            Clear Filters
-          </Button>
-        </Inline>
+        <Box display="flex">
+          <Box pr="100" flex="1">
+            <Button width="100%" onClick={handleApply} variant="primary">
+              Apply Filters
+            </Button>
+          </Box>
+          <Box pl="100" flex="1">
+            <Button
+              width="100%"
+              onClick={() => {
+                dispatch({ type: 'RESET_FILTERS' });
+              }}
+              variant="secondary"
+            >
+              Clear Filters
+            </Button>
+          </Box>
+        </Box>
       </Drawer.Footer>
     </>
   );

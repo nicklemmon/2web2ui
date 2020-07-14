@@ -223,20 +223,15 @@ export const RECIPIENT_VALIDATION_TIERS = [
 ];
 
 export const HIBANA_METRICS_COLORS = [
-  tokens.color_red_700,
-  tokens.color_purple_800,
-  tokens.color_yellow_500,
   tokens.color_blue_700,
   tokens.color_teal_600,
-  tokens.color_magenta_800,
+  tokens.color_purple_800,
+  tokens.color_magenta_600,
   tokens.color_blue_900,
-  tokens.color_green_800,
-  tokens.color_red_600,
-  tokens.color_purple_600,
-  tokens.color_yellow_700,
-  tokens.color_teal_700,
-  tokens.color_magenta_700,
-  tokens.color_green_900,
+  tokens.color_yellow_500,
+  tokens.color_gray_700,
+  tokens.color_purple_500,
+  tokens.color_gray_1000,
 ];
 
 export { ROLES, SUBACCOUNT_ROLES, ROLE_LABELS } from './users';

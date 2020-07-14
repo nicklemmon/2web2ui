@@ -70,6 +70,7 @@ export class Typeahead extends Component {
       placeholder = isOpen ? 'Type to search' : 'None',
       renderItem,
       maxWidth,
+      canChange,
     } = this.props;
     const { matches } = this.state;
     const items = matches.map((item, index) =>
@@ -82,22 +83,35 @@ export class Typeahead extends Component {
     );
 
     const listClasses = cx('List', {
-      open: isOpen && !selectedItem && matches.length,
+      open: isOpen && (!selectedItem || canChange) && matches.length,
       hasHelp: !!helpText,
     });
 
-    const textFieldProps = getInputProps({
-      connectRight: selectedItem && !disabled ? this.renderClearButton(clearSelection) : null,
-      readOnly: !!selectedItem,
-      disabled,
-      id: name,
-      label,
-      name,
-      placeholder,
-      helpText,
-      error: !isOpen && error ? error : null,
-      errorInLabel,
-    });
+    const textFieldConfig = canChange
+      ? {
+          disabled,
+          id: name,
+          label,
+          name,
+          placeholder,
+          helpText,
+          error: !isOpen && error ? error : null,
+          errorInLabel,
+        }
+      : {
+          connectRight: selectedItem && !disabled ? this.renderClearButton(clearSelection) : null,
+          readOnly: !!selectedItem,
+          disabled,
+          id: name,
+          label,
+          name,
+          placeholder,
+          helpText,
+          error: !isOpen && error ? error : null,
+          errorInLabel,
+        };
+
+    const textFieldProps = getInputProps(textFieldConfig);
 
     textFieldProps['data-lpignore'] = true;
 
