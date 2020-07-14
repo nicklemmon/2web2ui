@@ -95,10 +95,6 @@ export function DatePicker(props) {
   );
 
   useEffect(() => {
-    syncTimeToState(props);
-  }, [props, syncTimeToState]);
-
-  useEffect(() => {
     syncTimeToState({
       to: props.to,
       from: props.from,
