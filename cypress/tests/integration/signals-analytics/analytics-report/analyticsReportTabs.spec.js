@@ -18,9 +18,8 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           // Uncheck defaults, and check a metric that renders the "Rejection Reason" table
           cy.findByLabelText('Targeted').uncheck({ force: true });
           cy.findByLabelText('Accepted').uncheck({ force: true });
-          cy.findByLabelText('Bounced').uncheck({ force: true });
-          cy.findByLabelText('Rendered').uncheck({ force: true });
-          cy.findByLabelText('Bounced').check({ force: true });
+          cy.findByLabelText('Bounces').uncheck({ force: true });
+          cy.findByLabelText('Bounces').check({ force: true });
           cy.findByText('Apply Metrics').click();
 
           cy.wait(['@getDeliverability', '@getTimeSeries']);
@@ -92,12 +91,11 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         cy.withinDrawer(() => {
           cy.findByLabelText('Targeted').uncheck({ force: true });
           cy.findByLabelText('Accepted').uncheck({ force: true });
-          cy.findByLabelText('Bounced').uncheck({ force: true });
-          cy.findByLabelText('Rendered').uncheck({ force: true });
+          cy.findByLabelText('Bounces').uncheck({ force: true });
           cy.findByLabelText('Rejected').check({ force: true });
-          cy.findByLabelText('Generation Rejection').check({ force: true });
-          cy.findByLabelText('Generation Failure').check({ force: true });
-          cy.findByLabelText('Policy Rejection').check({ force: true });
+          cy.findByLabelText('Generation Rejections').check({ force: true });
+          cy.findByLabelText('Generation Failures').check({ force: true });
+          cy.findByLabelText('Policy Rejections').check({ force: true });
           cy.findByText('Apply Metrics').click();
 
           cy.wait(['@getDeliverability', '@getTimeSeries']);
@@ -172,8 +170,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         cy.withinDrawer(() => {
           cy.findByLabelText('Targeted').uncheck({ force: true });
           cy.findByLabelText('Accepted').uncheck({ force: true });
-          cy.findByLabelText('Bounced').uncheck({ force: true });
-          cy.findByLabelText('Rendered').uncheck({ force: true });
+          cy.findByLabelText('Bounces').uncheck({ force: true });
           cy.findByLabelText('Delayed').check({ force: true });
           cy.findByLabelText('Delivered 1st Attempt').check({ force: true });
           cy.findByLabelText('Delivered 2+ Attempts').check({ force: true });
