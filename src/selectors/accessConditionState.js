@@ -3,23 +3,41 @@ import _ from 'lodash';
 
 const getAccount = state => state.account;
 const getUser = state => state.currentUser;
-const getPlans = state => _.get(state, 'billing.plans', []);
+const getBundles = state => _.get(state, 'billing.bundles', []);
+const getBundlePlans = state => _.get(state, 'billing.bundlePlans', []);
 const getACReady = state => state.accessControlReady;
-
+const getBillingSubscription = state => _.get(state, 'billing.subscription', {});
+const currentFreePlans = ['free500-1018', 'free15K-1018', 'free500-0419', 'free500-SPCEU-0419'];
 export const getCurrentAccountPlan = createSelector(
-  [getAccount, getPlans],
-  (account, plans) => plans.find(plan => plan.code === account.subscription.code) || {},
+  [getAccount, getBundlePlans, getBundles, getBillingSubscription],
+  (account, bundlePlans, bundles, subscription) => {
+    const currentPlan = {
+      ...bundlePlans.find(plan => plan.plan === account.subscription.code),
+      ...bundles.find(bundle => bundle.bundle === account.subscription.code),
+      products: subscription.products,
+    };
+    return {
+      billingId: currentPlan.billing_id,
+      code: currentPlan.plan,
+      includesIp: !currentPlan.status ? false : true,
+      isFree: currentFreePlans.includes(currentPlan.plan),
+      status: !currentPlan.status ? 'deprecated' : currentPlan.status, //since bundlePlans don't return deprecated plans;
+      ...currentPlan,
+    };
+  },
 );
 
 const selectAccessConditionState = createSelector(
-  [getAccount, getUser, getPlans, getCurrentAccountPlan, getACReady],
-  (account, currentUser, plans, accountPlan, ready) => ({
-    account,
-    currentUser,
-    plans,
-    accountPlan,
-    ready,
-  }),
+  [getAccount, getUser, getBundlePlans, getCurrentAccountPlan, getACReady],
+  (account, currentUser, plans, accountPlan, ready) => {
+    return {
+      account,
+      currentUser,
+      plans,
+      accountPlan,
+      ready,
+    };
+  },
 );
 
 export default selectAccessConditionState;

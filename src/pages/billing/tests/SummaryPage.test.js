@@ -17,9 +17,10 @@ describe('Page: BillingSummaryPage', () => {
         list: [],
       },
       getBillingInfo: jest.fn(),
+      getBundles: jest.fn(),
+      getPlans: jest.fn(),
       getSubscription: jest.fn(),
       fetchAccount: jest.fn(),
-      getPlans: jest.fn(),
       getUsage: jest.fn(),
       getSendingIps: jest.fn(),
       getInvoices: jest.fn(),
@@ -38,7 +39,6 @@ describe('Page: BillingSummaryPage', () => {
   });
 
   it('should get plans, sending ips, invoices, and account on mount', () => {
-    expect(props.getPlans).toHaveBeenCalledTimes(1);
     expect(props.getSubscription).toHaveBeenCalledTimes(1);
     expect(props.fetchAccount).toHaveBeenCalledTimes(1);
     expect(props.getBillingInfo).toHaveBeenCalledTimes(1);

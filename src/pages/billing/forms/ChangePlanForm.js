@@ -13,11 +13,8 @@ import Loading from 'src/components/loading';
 import { prepareCardInfo } from 'src/helpers/billing';
 import useRouter from 'src/hooks/useRouter';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
-import {
-  currentPlanSelector,
-  canUpdateBillingInfoSelector,
-  getPromoCodeObject,
-} from 'src/selectors/accountBillingInfo';
+import { canUpdateBillingInfoSelector, getPromoCodeObject } from 'src/selectors/accountBillingInfo';
+import { getCurrentAccountPlan } from 'src/selectors/accessConditionState';
 import { changePlanInitialValues } from 'src/selectors/accountBillingForms';
 import CardSection from '../components/CardSection';
 import CurrentPlanSection from '../components/CurrentPlanSection';
@@ -202,7 +199,7 @@ const mapStateToProps = (state, props) => {
   return {
     initialValues: changePlanInitialValues(state, { planCode, promoCode }),
     canUpdateBillingInfo: canUpdateBillingInfoSelector(state),
-    currentPlan: currentPlanSelector(state),
+    currentPlan: getCurrentAccountPlan(state),
     promoCodeObj: getPromoCodeObject(state),
   };
 };

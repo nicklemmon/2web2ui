@@ -162,16 +162,6 @@ export function formatCardTypes(cards) {
   });
 }
 
-export function getPlanPrice(plan) {
-  const pricingInterval = _.has(plan, 'hourly') ? 'hourly' : 'monthly';
-  const intervalShortName = pricingInterval === 'hourly' ? 'hr' : 'mo';
-  return {
-    intervalShort: intervalShortName,
-    intervalLong: pricingInterval,
-    price: plan.price || plan[pricingInterval],
-  };
-}
-
 export function prepareCardInfo({ expCombined, ...cardInfo }) {
   const expiryInfo = Payment.fns.cardExpiryVal(expCombined);
 

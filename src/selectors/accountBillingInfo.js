@@ -7,14 +7,15 @@ import {
   isSelfServeBilling,
   onPlan,
   onZuoraPlan,
+  hasProductOnSubscription,
 } from 'src/helpers/conditions/account';
 import { selectCondition } from './accessConditionState';
-
+import { getCurrentAccountPlan } from 'src/selectors/accessConditionState';
 const suspendedSelector = state => state.account.isSuspendedForBilling;
 const pendingSubscriptionSelector = state =>
   state.account.pending_subscription ||
   _.get(state, 'billing.subscription.pending_downgrades', []).length > 0;
-const plansSelector = state => state.billing.plans || [];
+const plansSelector = state => state.billing.bundlePlans || [];
 const bundleSelector = state => state.billing.bundles || [];
 const bundlePlanSelector = state => state.billing.bundlePlans || [];
 const accountBillingSelector = state => state.account.billing;
@@ -25,12 +26,17 @@ export const selectIsSelfServeBilling = selectCondition(isSelfServeBilling);
 const selectIsCcFree1 = selectCondition(onPlan('ccfree1'));
 const selectIsFree1 = selectCondition(onPlan('free1'));
 const selectOnZuoraPlan = selectCondition(onZuoraPlan);
+const hasDedicatedIpsOnSubscription = selectCondition(hasProductOnSubscription('dedicated_ip'));
+const selectPhoneSupportOnSubscription = selectCondition(hasProductOnSubscription('phone_support'));
 const selectBillingSubscription = state => state.billing.subscription || {};
 const currentFreePlans = ['free500-1018', 'free15K-1018', 'free500-0419', 'free500-SPCEU-0419'];
 export const isManuallyBilled = state => _.get(state, 'billing.subscription.type') === 'manual';
 const getRecipientValidationUsage = state => _.get(state, 'account.rvUsage.recipient_validation');
 export const currentSubscriptionSelector = state => state.account.subscription;
-
+export const hasPhoneSupport = createSelector(
+  [selectPhoneSupportOnSubscription],
+  hasPhoneSupport => hasPhoneSupport,
+);
 /**
  * Returns current subscription's code
  * @param state
@@ -51,20 +57,13 @@ export const canChangePlanSelector = createSelector(
 );
 
 /**
- * Gets current plan
- */
-export const currentPlanSelector = createSelector(
-  [currentPlanCodeSelector, plansSelector],
-  (currentPlanCode, plans) => _.find(plans, { code: currentPlanCode }) || {},
-);
-
-/**
  * Returns true if user has billing account and they are on a paid plan
  */
 export const canUpdateBillingInfoSelector = createSelector(
-  [currentPlanSelector, accountBillingSelector, selectIsCcFree1],
-  (currentPlan, accountBilling, isOnLegacyCcFreePlan) =>
-    accountBilling && (isOnLegacyCcFreePlan || !currentPlan.isFree),
+  [getCurrentAccountPlan, accountBillingSelector, selectIsCcFree1],
+  (currentPlan, accountBilling, isOnLegacyCcFreePlan) => {
+    return accountBilling && (isOnLegacyCcFreePlan || !currentPlan.isFree);
+  },
 );
 /*
 return the promoCode related information from billing
@@ -74,15 +73,6 @@ export const getPromoCodeObject = createSelector([accountBilling], billing => ({
   promoPending: billing.promoPending,
   selectedPromo: billing.selectedPromo,
 }));
-
-/**
- * Return true if plan can purchase IP and has billing info (except for aws as it'll be billed outside)
- */
-export const canPurchaseIps = createSelector(
-  [currentPlanSelector, accountBillingSelector, selectIsAws],
-  (currentPlan, accountBilling, isAWSAccount) =>
-    currentPlan.canPurchaseIps === true && !!(accountBilling || isAWSAccount),
-);
 
 export const selectAvailablePlans = createSelector(
   [plansSelector, selectIsAws, selectIsSelfServeBilling],
@@ -107,15 +97,6 @@ export const selectVisiblePlans = createSelector(
     ),
 );
 
-export const selectTieredVisiblePlans = createSelector([selectVisiblePlans], plans => {
-  const normalizedPlans = plans.map(plan => ({
-    ...plan,
-    tier: plan.tier || (currentFreePlans.includes(plan.code) ? 'test' : 'default'),
-  }));
-
-  return _.groupBy(normalizedPlans, 'tier');
-});
-
 export const selectAvailableBundles = createSelector(
   [bundleSelector, bundlePlanSelector, selectIsSelfServeBilling],
   (bundles, plans, isSelfServeBilling) => {
@@ -139,6 +120,16 @@ export const selectAvailableBundles = createSelector(
 export const currentBundleSelector = createSelector(
   [currentPlanCodeSelector, selectAvailableBundles],
   (currentPlanCode, bundles) => _.find(bundles, { bundle: currentPlanCode }) || {},
+);
+
+/**
+ * Return true if plan can purchase IP and has billing info (except for aws as it'll be billed outside)
+ */
+export const canPurchaseIps = createSelector(
+  [accountBillingSelector, selectIsAws, hasDedicatedIpsOnSubscription],
+  (accountBilling, isAWSAccount, hasDedicatedIpsOnSubscription) => {
+    return hasDedicatedIpsOnSubscription && !!(accountBilling || isAWSAccount);
+  },
 );
 
 export const selectVisibleBundles = createSelector(
@@ -170,11 +161,11 @@ export const selectAccountBilling = createSelector([selectAccount], account => (
   loading: account.loading || account.billingLoading || account.usageLoading,
 }));
 
-export const getPlanTierByPlanCode = createSelector(
-  [plansSelector, currentSubscriptionSelector],
-  (plans, currentSubscription) => {
-    const plan = _.find(plans, { code: currentSubscription.code });
-    return plan.tier || '';
+export const getBundleTierByPlanCode = createSelector(
+  [bundleSelector, currentSubscriptionSelector],
+  (bundles, currentSubscription) => {
+    const bundle = _.find(bundles, { bundle: currentSubscription.code }) || {}; //added {} for deprecated plans
+    return bundle.tier || '';
   },
 );
 
@@ -183,7 +174,7 @@ export const selectBillingInfo = createSelector(
     canUpdateBillingInfoSelector,
     canChangePlanSelector,
     canPurchaseIps,
-    currentPlanSelector,
+    getCurrentAccountPlan,
     selectOnZuoraPlan,
     selectVisiblePlans,
     selectIsAws,
@@ -198,16 +189,18 @@ export const selectBillingInfo = createSelector(
     plans,
     isAWSAccount,
     subscription,
-  ) => ({
-    canUpdateBillingInfo,
-    canChangePlan,
-    canPurchaseIps,
-    currentPlan,
-    onZuoraPlan,
-    plans,
-    isAWSAccount,
-    subscription,
-  }),
+  ) => {
+    return {
+      canUpdateBillingInfo,
+      canChangePlan,
+      canPurchaseIps,
+      currentPlan,
+      onZuoraPlan,
+      plans,
+      isAWSAccount,
+      subscription,
+    };
+  },
 );
 
 export const selectMonthlyRecipientValidationUsage = createSelector(

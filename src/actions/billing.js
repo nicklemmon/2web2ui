@@ -189,33 +189,37 @@ export function getBillingCountries() {
   });
 }
 
-export function getBundles({ ...params }) {
+export function getBundles({ meta = {}, ...params } = {}) {
   return sparkpostApiRequest({
     type: 'GET_BUNDLES',
     meta: {
       method: 'GET',
       url: '/v1/billing/bundles',
       params,
+      ...meta,
     },
   });
 }
 
-export function getPlans() {
+export function getPlans({ meta = {} } = {}) {
   return sparkpostApiRequest({
     type: 'GET_NEW_PLANS',
     meta: {
       method: 'GET',
       url: '/v1/billing/plans',
+      ...meta,
     },
   });
 }
 
-export function getSubscription() {
+export function getSubscription({ meta = {}, ...params } = {}) {
   return sparkpostApiRequest({
     type: 'GET_SUBSCRIPTION',
     meta: {
       method: 'GET',
       url: '/v1/billing/subscription',
+      params,
+      ...meta,
     },
   });
 }

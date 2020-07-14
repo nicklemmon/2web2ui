@@ -36,7 +36,7 @@ describe('choosePlanMSTP', () => {
   });
 
   it('should return when there is an error', () => {
-    state.billing.plansError = true;
+    state.billing.bundlesError = true;
     const result = choosePlanMSTP()(state, props);
     expect(result.hasError).toEqual(true);
   });

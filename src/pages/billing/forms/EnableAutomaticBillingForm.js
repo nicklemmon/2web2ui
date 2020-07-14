@@ -92,7 +92,7 @@ const mapStateToProps = state => {
         country,
       },
     },
-    loading: state.billing.plansLoading,
+    loading: state.billing.countriesLoading,
   };
 };
 

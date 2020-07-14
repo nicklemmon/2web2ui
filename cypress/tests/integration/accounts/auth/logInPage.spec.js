@@ -30,18 +30,21 @@ describe('The log in page', () => {
     cy.findByText('Reset Your Password').should('be.visible');
   });
 
-  it('has a link to the sign up flow', () => {
-    cy.findByText('Sign up').click();
+  it('has a link to the forgot password, sign up, and single sign-on flows', () => {
+    cy.verifyLink({
+      content: 'Forgot your password?',
+      href: '/forgot-password',
+    });
 
-    cy.title().should('include', 'Sign Up');
-    cy.findByText('Sign Up for SparkPost').should('be.visible');
-  });
+    cy.verifyLink({
+      content: 'Sign up',
+      href: '/join',
+    });
 
-  it('has a link to the single sign-on flow', () => {
-    cy.findByText('Single Sign-On').click();
-
-    cy.title().should('include', 'Single Sign-On');
-    cy.findByText('Single Sign-On').should('be.visible');
+    cy.verifyLink({
+      content: 'Single Sign-On',
+      href: '/auth/sso',
+    });
   });
 
   it('does not log in with an invalid username and password', () => {

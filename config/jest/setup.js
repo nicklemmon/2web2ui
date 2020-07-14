@@ -45,6 +45,7 @@ afterAll(() => {
 });
 
 setupPortals();
+document.body.setAttribute('tabindex', '-1'); // Allows the <body/> to programmatically receive focus
 
 beforeEach(() => {
   // Verifies that at least one assertion is called during a test

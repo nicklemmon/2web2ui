@@ -3,45 +3,12 @@ import * as selectors from '../support';
 jest.mock('src/config/supportIssues', () => [
   { id: 'without_condition' },
   { id: 'when_satisfied', condition: jest.fn(() => true) },
-  { id: 'when_not_satisfied', condition: jest.fn(() => false) }
+  { id: 'when_not_satisfied', condition: jest.fn(() => false) },
 ]);
 
-jest.mock('src/selectors/accessConditionState', () => jest.fn((s) => s));
+jest.mock('src/selectors/accessConditionState', () => jest.fn(s => s));
 
 describe('Selectors: support', () => {
-  describe('entitled to support', () => {
-    it('when account is not loaded', () => {
-      const state = {
-        account: {}
-      };
-      expect(selectors.entitledToPhoneSupport(state)).toBeFalsy();
-    });
-
-    it('when account is not entitled to phone support', () => {
-      const state = {
-        account: {
-          support: {
-            phone: true
-          }
-        }
-      };
-
-      expect(selectors.entitledToPhoneSupport(state)).toBeTruthy();
-    });
-
-    it('when account entitled to phone support', () => {
-      const state = {
-        account: {
-          support: {
-            phone: false
-          }
-        }
-      };
-
-      expect(selectors.entitledToPhoneSupport(state)).toBeFalsy();
-    });
-  });
-
   describe('currentLimitSelector', () => {
     let account;
     let state;
@@ -50,15 +17,14 @@ describe('Selectors: support', () => {
       account = {
         usage: {
           day: {
-            limit: 1000
-          }
-        }
+            limit: 1000,
+          },
+        },
       };
 
       state = {
-        account
+        account,
       };
-
     });
 
     it('returns correct limit', () => {
@@ -73,7 +39,7 @@ describe('Selectors: support', () => {
 
   describe('selectSupportIssues', () => {
     it('should return issues that satisfied condition', () => {
-      const state = { account: { id: 'stubbed_for_snapshot' }};
+      const state = { account: { id: 'stubbed_for_snapshot' } };
       expect(selectors.selectSupportIssues(state)).toMatchSnapshot();
     });
   });
@@ -96,22 +62,23 @@ describe('Selectors: support', () => {
   });
 
   describe('authorizedToSubmitSupportTickets', () => {
-    const issues = [ 'issue1', 'issue2' ];
+    const issues = ['issue1', 'issue2'];
     const accessControlState = {
       currentUser: {
-        grants: [ { key: 'support/manage' } ]
-      }
+        grants: [{ key: 'support/manage' }],
+      },
     };
 
     // selector.resultFunc: https://github.com/reduxjs/reselect#q-how-do-i-test-a-selector
-    const subject = ({ issues, accessControlState }) => selectors.authorizedToSubmitSupportTickets.resultFunc(issues, accessControlState);
+    const subject = ({ issues, accessControlState }) =>
+      selectors.authorizedToSubmitSupportTickets.resultFunc(issues, accessControlState);
 
     it('should allow users who are allowed to submit >0 ticket types and have the grant', () => {
       expect(subject({ issues, accessControlState })).toBeTruthy();
     });
 
     it('should block users without the correct grant', () => {
-      const emptyState = { currentUser: { grants: [{ key: 'robot/dance' }]}};
+      const emptyState = { currentUser: { grants: [{ key: 'robot/dance' }] } };
       expect(subject({ issues, accessControlState: emptyState })).toBeFalsy();
     });
 

@@ -12,9 +12,25 @@ describe('PlanPrice', () => {
 
   beforeEach(() => {
     plan = {
-      monthly: 9,
+      billingId: 'id1',
+      billing_id: 'id1',
+      bundle: '5M-0817',
+      code: '5M-0817',
+      includesIp: true,
+      overage: 0.3,
+      plan: '5M-0817',
+      price: 9,
+      product: 'messaging',
+      products: [
+        {
+          plan: '5M-0817',
+          product: 'messaging',
+        },
+      ],
+      status: 'secret',
+      tier: 'unlimited',
+      type: 'messaging',
       volume: 50000,
-      overage: 0.75,
     };
 
     const props = {
@@ -35,14 +51,6 @@ describe('PlanPrice', () => {
 
   it('allows class name overriding', () => {
     wrapper.setProps({ className: 'abcd-class' });
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it('renders correctly with hourly plans', () => {
-    delete plan.monthly;
-    plan.hourly = 0.012;
-
-    wrapper.setProps({ plan });
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -69,6 +77,8 @@ describe('PlanPrice', () => {
       monthly: 0,
       isFree: true,
       code: 'free15K-banana',
+      plan: 'free15K-banana',
+      price: 0,
     };
 
     wrapper.setProps({ plan: free15kPlan });
@@ -81,6 +91,8 @@ describe('PlanPrice', () => {
       monthly: 0,
       isFree: true,
       code: 'free500-banana',
+      billingId: undefined,
+      billing_id: undefined,
     };
 
     wrapper.setProps({ plan: eternalFree });

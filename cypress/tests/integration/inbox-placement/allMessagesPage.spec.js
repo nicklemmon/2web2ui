@@ -61,7 +61,7 @@ describe('AllMessagesPage', () => {
         cy.get('td')
           .eq(4)
           .should('contain', '---');
-        cy.findByText('View Header').should('not.be.visible');
+        cy.findByText('View Header').should('be.visible');
       });
 
     cy.get('tbody tr')

@@ -50,7 +50,9 @@ Cypress.Commands.add('stubAuth', () => {
   cy.fixture('users/two-factor/200.get.json').as('twoFactorGet');
   cy.fixture('users/200.get.json').as('usersGet');
   cy.fixture('account/200.get.json').as('accountGet');
-  cy.fixture('account/plans/200.get.json').as('plansGet');
+  cy.fixture('billing/plans/200.get.json').as('plansGet');
+  cy.fixture('billing/subscription/200.get.json').as('billingSubscriptionGet');
+  cy.fixture('billing/bundles/200.get.json').as('bundlesGet');
   cy.fixture('authenticate/grants/200.get.admin.json').as('grantsGet');
   cy.fixture('suppression-list/200.get.json').as('suppressionsGet');
   cy.fixture('api-keys/200.get.json').as('apiKeysGet');
@@ -76,10 +78,22 @@ Cypress.Commands.add('stubAuth', () => {
   }).as('stubbedAccountRequest');
   cy.route({
     method: 'GET',
-    url: '/api/v1/account/plans',
+    url: '/api/v1/billing/plans',
     status: 200,
     response: '@plansGet',
   }).as('stubbedPlansRequest');
+  cy.route({
+    method: 'GET',
+    url: '/api/v1/billing/subscription',
+    status: 200,
+    response: '@plansGet',
+  }).as('stubbedBillingSubsriptionRequest');
+  cy.route({
+    method: 'GET',
+    url: '/api/v1/billing/bundles',
+    status: 200,
+    response: '@bundlesGet',
+  }).as('stubbedBundlesRequest');
   cy.route({
     method: 'GET',
     url: `/api/v1/users/${Cypress.env('USERNAME')}`,

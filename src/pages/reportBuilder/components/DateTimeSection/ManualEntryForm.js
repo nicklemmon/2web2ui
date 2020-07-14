@@ -64,9 +64,12 @@ export function ManualEntryForm(props) {
     debounceChanges();
   };
 
-  const debounceChanges = _.debounce(() => {
-    validate();
-  }, DEBOUNCE);
+  const debounceChanges = useCallback(
+    _.debounce(() => {
+      validate();
+    }, DEBOUNCE),
+    [],
+  );
 
   const handleEnter = e => {
     if (e.key === 'Enter') {

@@ -31,29 +31,6 @@ class SignupFlow {
     ]);
     await this.page.simulate('button[id="submit"]', 'click');
   }
-
-  async choosePlan({ planFilter = freePlanPredicate, submit = true } = {}) {
-    // :( The plan picker uses references to an item in `state.billing.plans` as its value.
-    const plan = this.page.store.getState().billing.plans.find(planFilter);
-    this.formFiller({ name: 'planpicker', value: plan, type: 'downshift' });
-
-    if (submit) {
-      await this.page.simulate('form', 'submit');
-    }
-  }
-
-  async fillBillingForm() {
-    this.formFiller([
-      { name: 'card.number', value: '4111111111111111' },
-      { name: 'card.name', value: 'Person Face' },
-      { name: 'card.expCombined', value: '10 / 2022' },
-      { name: 'card.securityCode', value: 123 },
-
-      { type: 'select', name: 'billingAddress.country', value: 'US' },
-      { type: 'select', name: 'billingAddress.state', value: 'MD' },
-      { name: 'billingAddress.zip', value: '12345' },
-    ]);
-  }
 }
 
 export default async () => {

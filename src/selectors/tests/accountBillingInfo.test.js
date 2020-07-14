@@ -1,45 +1,137 @@
 import * as billingInfo from '../accountBillingInfo';
 
-describe('Selector: current plan', () => {
-  let state;
+const initialState = {
+  account: { subscription: { code: '5M-0817' }, billing: {} },
 
-  beforeEach(() => {
-    state = {
-      account: { subscription: { code: 'qwe' } },
-      billing: {
-        plans: [
-          { status: 'public', code: '123' },
-          { status: 'private', code: 'qwe' },
+  billing: {
+    subscription: {
+      bill_cycle_day: 5,
+      pending_downgrades: [],
+      products: [
+        {
+          plan: 'online-support',
+          product: 'online_support',
+          price: 0,
+        },
+        {
+          plan: 'ip-0519',
+          product: 'dedicated_ip',
+          limit: 4,
+          price: 20,
+          volume: 1,
+          billing_period: 'month',
+        },
+        {
+          plan: 'subaccounts-premier',
+          product: 'subaccounts',
+          quantity: 1,
+          limit: 100000,
+          price: 0,
+        },
+        {
+          plan: 'sso',
+          product: 'sso',
+          price: 0,
+        },
+        {
+          plan: 'tfa-required',
+          product: 'tfa_required',
+          price: 0,
+        },
+        {
+          plan: 'phone-support',
+          product: 'phone_support',
+          price: 0,
+        },
+        {
+          billing_id: 'id1',
+          plan: '5M-0817',
+          product: 'messaging',
+          price: 123,
+          overage: 0.3,
+          volume: 100000,
+          billing_period: 'month',
+        },
+        {
+          plan: 'rv-0519',
+          product: 'recipient_validation',
+          daily_limit: -1,
+          price: 0,
+          billing_period: 'month',
+        },
+      ],
+      type: 'active',
+    },
+    bundlePlans: [
+      {
+        billing_id: 'id1',
+        plan: '5M-0817',
+        product: 'messaging',
+        price: 123,
+        overage: 0.3,
+        volume: 5000000,
+      },
+      {
+        billing_id: 'id2',
+        plan: '2.5M-0817',
+        product: 'messaging',
+        price: 1234,
+        overage: 0.4,
+        volume: 2500000,
+      },
+      {
+        plan: 'free500-0419',
+        product: 'messaging',
+        price: 0,
+        volume: 500,
+      },
+    ],
+    bundles: [
+      {
+        bundle: 'free500-0419',
+        status: 'public',
+        tier: 'test',
+        type: 'messaging',
+        products: [
+          {
+            product: 'messaging',
+            plan: 'free500-0419',
+          },
         ],
       },
-    };
-  });
-
-  it('should get current plan from billing', () => {
-    expect(billingInfo.currentPlanSelector(state)).toMatchSnapshot();
-  });
-
-  it('returns empty object when matching plan found', () => {
-    state.account.subscription.code = 'no-match';
-    expect(billingInfo.currentPlanSelector(state)).toEqual({});
-  });
-});
+      {
+        bundle: '5M-0817',
+        status: 'secret',
+        tier: 'unlimited',
+        type: 'messaging',
+        products: [
+          {
+            product: 'messaging',
+            plan: '5M-0817',
+          },
+        ],
+      },
+      {
+        bundle: '2.5M-0817',
+        status: 'secret',
+        tier: 'unlimited',
+        type: 'messaging',
+        products: [
+          {
+            product: 'messaging',
+            plan: '2.5M-0817',
+          },
+        ],
+      },
+    ],
+  },
+};
 
 describe('Selector: can update billing info', () => {
   let state;
 
   beforeEach(() => {
-    state = {
-      account: { subscription: { code: 'paid' }, billing: {} },
-      billing: {
-        plans: [
-          { status: 'public', code: '123' },
-          { status: 'public', code: 'paid', isFree: false },
-          { status: 'public', code: 'free', isFree: true },
-          { status: 'public', code: 'ccfree1', isFree: true },
-        ],
-      },
-    };
+    state = initialState;
   });
 
   it('should return true if on paid plan', () => {
@@ -47,13 +139,21 @@ describe('Selector: can update billing info', () => {
   });
 
   it('should return true if on free legacy plan', () => {
-    state.account.subscription.code = 'ccfree1';
-    expect(billingInfo.canUpdateBillingInfoSelector(state)).toEqual(true);
+    expect(
+      billingInfo.canUpdateBillingInfoSelector({
+        ...initialState,
+        account: { subscription: { code: 'ccfree1' }, billing: {} },
+      }),
+    ).toEqual(true);
   });
 
   it('should return false if on free plan', () => {
-    state.account.subscription.code = 'free';
-    expect(billingInfo.canUpdateBillingInfoSelector(state)).toEqual(false);
+    expect(
+      billingInfo.canUpdateBillingInfoSelector({
+        ...initialState,
+        account: { subscription: { code: 'free500-0419' }, billing: {} },
+      }),
+    ).toEqual(false);
   });
 });
 
@@ -128,18 +228,7 @@ describe('selectBillingInfo', () => {
 describe('canPurchaseIps', () => {
   let state;
   beforeEach(() => {
-    state = {
-      account: {
-        subscription: { code: 'paid1' },
-        billing: {},
-      },
-      billing: {
-        plans: [
-          { status: 'public', code: '123', isFree: true },
-          { status: 'public', code: 'paid1', isFree: false, canPurchaseIps: true },
-        ],
-      },
-    };
+    state = initialState;
   });
 
   it('returns true when plan can buy ip and has billing setup', () => {
@@ -147,14 +236,21 @@ describe('canPurchaseIps', () => {
   });
 
   it('returns false when plan can buy ip but billing is not setup', () => {
-    delete state.account.billing;
-    expect(billingInfo.canPurchaseIps(state)).toBe(false);
+    expect(
+      billingInfo.canPurchaseIps({
+        ...initialState,
+        account: { subscription: { code: '5M-0817' } },
+      }),
+    ).toBe(false);
   });
 
   it('returns true when aws plan can buy ip but billing not setup', () => {
-    delete state.account.billing;
-    state.account.subscription.type = 'aws';
-    expect(billingInfo.canPurchaseIps(state)).toBe(true);
+    expect(
+      billingInfo.canPurchaseIps({
+        ...initialState,
+        account: { subscription: { code: 'abcd', type: 'aws' } },
+      }),
+    ).toBe(true);
   });
 });
 
@@ -162,25 +258,7 @@ describe('plan selector', () => {
   let state;
 
   beforeEach(() => {
-    state = {
-      account: {
-        subscription: { self_serve: true },
-        billing: {},
-      },
-      billing: {
-        plans: [
-          { code: 'pub', status: 'public' },
-          { code: 'pub-free', status: 'public', tier: 'test', isFree: true },
-          { code: 'pub-aws', status: 'public', awsMarketplace: true },
-          { code: 'pub-aws-free', status: 'public', awsMarketplace: true, isFree: true },
-          { code: 'sec', status: 'secret' },
-          { code: 'sec-aws', status: 'secret', awsMarketplace: true },
-          { code: 'starter', status: 'public', tier: 'starter' },
-          { code: 'premier', status: 'public', tier: 'premier' },
-          { code: 'free500-0419', status: 'public', isFree: true },
-        ],
-      },
-    };
+    state = initialState;
   });
 
   describe('selectAvailablePlans', () => {
@@ -189,13 +267,21 @@ describe('plan selector', () => {
     });
 
     it('should return active paid plans', () => {
-      state.account.subscription.self_serve = false;
-      expect(billingInfo.selectAvailablePlans(state)).toMatchSnapshot();
+      expect(
+        billingInfo.selectAvailablePlans({
+          ...initialState,
+          account: { subscription: { code: 'abcd', self_serve: false } },
+        }),
+      ).toMatchSnapshot();
     });
 
     it('should return active AWS plans', () => {
-      state.account.subscription.type = 'aws';
-      expect(billingInfo.selectAvailablePlans(state)).toMatchSnapshot();
+      expect(
+        billingInfo.selectAvailablePlans({
+          ...initialState,
+          account: { subscription: { code: 'abcd', type: 'aws' } },
+        }),
+      ).toMatchSnapshot();
     });
   });
 
@@ -205,19 +291,21 @@ describe('plan selector', () => {
     });
 
     it('should return public paid plans', () => {
-      state.account.subscription.self_serve = false;
-      expect(billingInfo.selectVisiblePlans(state)).toMatchSnapshot();
+      expect(
+        billingInfo.selectVisiblePlans({
+          ...initialState,
+          account: { subscription: { code: 'abcd', self_serve: false } },
+        }),
+      ).toMatchSnapshot();
     });
 
     it('should return public AWS plans', () => {
-      state.account.subscription.type = 'aws';
-      expect(billingInfo.selectVisiblePlans(state)).toMatchSnapshot();
-    });
-  });
-
-  describe('selectedTieredVisiblePlans', () => {
-    it('should separate plans into tiers', () => {
-      expect(billingInfo.selectTieredVisiblePlans(state)).toMatchSnapshot();
+      expect(
+        billingInfo.selectVisiblePlans({
+          ...initialState,
+          account: { subscription: { code: 'abcd', type: 'aws' } },
+        }),
+      ).toMatchSnapshot();
     });
   });
 
@@ -244,49 +332,73 @@ describe('plan selector', () => {
   });
 });
 
-describe('getPlanTierByPlanCode', () => {
+describe('getBundleTierByPlanCode', () => {
   let state;
 
   beforeEach(() => {
     state = {
-      account: {
-        subscription: { code: 'pub' },
-        billing: {},
-      },
+      account: { subscription: { code: '5M-0817' }, billing: {} },
+
       billing: {
-        plans: [
-          { code: 'pub', status: 'public', tier: 'test' },
-          { code: 'pub-free', status: 'public', tier: 'test', isFree: true },
-          { code: 'pub-aws', status: 'public', awsMarketplace: true, tier: 'test' },
+        bundlePlans: [
           {
-            code: 'pub-aws-free',
-            status: 'public',
-            awsMarketplace: true,
-            isFree: true,
-            tier: 'test',
+            billing_id: 'id1',
+            plan: '5M-0817',
+            product: 'messaging',
+            price: 123,
+            overage: 0.3,
+            volume: 5000000,
           },
-          { code: 'sec', status: 'secret', tier: 'test' },
-          { code: 'sec-aws', status: 'secret', awsMarketplace: true, tier: 'starter' },
-          { code: 'starter', status: 'public', tier: 'starter' },
-          { code: 'premier', status: 'public', tier: 'premier' },
-          { code: 'free500-0419', status: 'public', isFree: true },
+          {
+            billing_id: 'id2',
+            plan: '2.5M-0817',
+            product: 'messaging',
+            price: 1234,
+            overage: 0.4,
+            volume: 2500000,
+          },
+        ],
+        bundles: [
+          {
+            bundle: '5M-0817',
+            status: 'secret',
+            tier: 'unlimited',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '5M-0817',
+              },
+            ],
+          },
+          {
+            bundle: '2.5M-0817',
+            status: 'secret',
+            type: 'messaging',
+            products: [
+              {
+                product: 'messaging',
+                plan: '2.5M-0817',
+              },
+            ],
+          },
         ],
       },
     };
   });
 
   it('returns the tier of current plan based on the plancode', () => {
-    expect(billingInfo.getPlanTierByPlanCode(state)).toEqual('test');
+    expect(billingInfo.getBundleTierByPlanCode(state)).toEqual('unlimited');
   });
 
   it("returns a '' when current plan doesn't have a tier", () => {
     state = {
       ...state,
       account: {
-        subscription: { code: 'free500-0419' },
+        subscription: { code: '2.5M-0817' },
         billing: {},
       },
     };
-    expect(billingInfo.getPlanTierByPlanCode(state)).toEqual('');
+    expect(billingInfo.getBundleTierByPlanCode(state)).toEqual('');
   });
 });

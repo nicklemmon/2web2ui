@@ -47,6 +47,7 @@ const actionTypes = {
   dayClick: 'DAY_CLICK',
   dayHover: 'DAY_HOVER',
   selectRange: 'SELECT_RANGE',
+  setFormDates: 'SET_FORM_DATES',
 };
 
 const datePickerReducer = (state, { type, payload }) => {
@@ -65,6 +66,7 @@ const datePickerReducer = (state, { type, payload }) => {
     case actionTypes.dayClick:
     case actionTypes.dayHover:
     case actionTypes.selectRange:
+    case actionTypes.setFormDates:
       return { ...state, ...payload };
     default: {
       return state;
@@ -104,23 +106,6 @@ export function DatePicker(props) {
       relativeRange: props.relativeRange,
     });
   }, [props.to, props.from, props.precision, props.relativeRange, syncTimeToState]);
-
-  // //For metrics rollup, update the precision display when precision changes
-  // componentDidUpdate(prevProps, prevState) {
-  //   const { selectedPrecision, showDatePicker } = state;
-  //   const { updateShownPrecision } = props;
-  //   if (updateShownPrecision) {
-  //     //closing datepicker resets to the actual precision
-  //     if (prevState.showDatePicker && !showDatePicker) {
-  //       return updateShownPrecision('');
-  //     }
-  //     if (prevState.selectedPrecision !== selectedPrecision && showDatePicker) {
-  //       return updateShownPrecision(selectedPrecision);
-  //     }
-  //   }
-  // }
-
-  // Sets local state from reportOptions redux state - need to separate to handle pre-apply state
 
   // Closes popover on escape, submits on enter
   const handleKeyDown = e => {
@@ -247,7 +232,7 @@ export function DatePicker(props) {
 
     dispatch({
       type: actionTypes.setFormDates,
-      payload: { selected: { from, to }, selectedPrecision },
+      payload: { selected: { from, to }, selectedPrecision, relativeRange: 'custom' },
     });
     callback();
   };

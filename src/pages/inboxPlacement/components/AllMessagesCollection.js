@@ -80,11 +80,7 @@ export const AllMessagesCollection = ({
       },
     },
     {
-      component: ({ id, email_address, received_at }) => {
-        if (!received_at) {
-          return null;
-        }
-
+      component: ({ id, email_address }) => {
         return (
           <Button onClick={() => openModal({ id, email_address })} title="Opens a dialog">
             View Header
