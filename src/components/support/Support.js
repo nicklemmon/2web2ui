@@ -83,6 +83,7 @@ export class Support extends Component {
               connectBelow={true}
               selected={visibleTabs.findIndex(tab => tab.view === currentSupportView)}
               tabs={visibleTabs.map(({ content, onClick }) => ({ content, onClick }))}
+              disableResponsiveBehavior
             />
           )}
           {currentSupportView === 'docs' && <SearchPanel defaultSearchText={supportDocSearch} />}

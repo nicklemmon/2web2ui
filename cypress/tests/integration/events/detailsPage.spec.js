@@ -96,11 +96,13 @@ describe('The events details page', () => {
   it('re-renders the event details when clicking on a row within the "Message History" table', () => {
     cy.visit(`${PAGE_BASE_URL}/mock-message-id-1/1234`);
 
-    cy.get('table').within(() => cy.findByText('Delivery').click());
+    // Cypress caught a bug here semantically - basically, a `<tr>` should not have an onClick handler.
+    // There could be a <button/> inside the table, but a pure <tr/> should never be interactive.
+    cy.get('table').within(() => cy.findByText('Delivery').click({ force: true }));
 
     cy.findByText('Mock Subject 2').should('be.visible');
 
-    cy.get('table').within(() => cy.findByText('Injection').click());
+    cy.get('table').within(() => cy.findByText('Injection').click({ force: true }));
 
     cy.findByText('Mock Subject 1').should('be.visible');
   });

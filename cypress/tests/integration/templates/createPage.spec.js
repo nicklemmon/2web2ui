@@ -10,7 +10,7 @@ function submitForm() {
     .should('have.value', 'hello@bounce.uat.sparkspam.com')
     .blur();
 
-  cy.findByText('Create and View').click();
+  cy.findByRole('button', { name: 'Create and View' }).click();
 }
 
 describe('The create template page', () => {
@@ -92,7 +92,7 @@ describe('The create template page', () => {
   it('has a disabled "Create and View" button when relevant form fields have not been filled', () => {
     cy.visit(PAGE_URL);
 
-    cy.findByText('Create and View').should('be.disabled');
+    cy.findByRole('button', { name: 'Create and View' }).should('be.disabled');
   });
 
   it('has a "Cancel" button that links back to the templates list page', () => {

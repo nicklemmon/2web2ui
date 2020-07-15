@@ -31,7 +31,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
     it('filters by metric', () => {
       // 1. Open the drawer, uncheck default metrics, check all metrics
-      cy.findByText('Add Metrics').click();
+      cy.findByRole('button', { name: 'Add Metrics' }).click();
 
       cy.withinDrawer(() => {
         cy.findByLabelText('Targeted').uncheck({ force: true });
@@ -42,7 +42,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByLabelText(metric.name).check({ force: true });
         });
 
-        cy.findByText('Apply Metrics').click();
+        cy.findByRole('button', { name: 'Apply Metrics' }).click();
       });
 
       // 2. Wait for server response
@@ -57,15 +57,15 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       });
 
       // 4. Open the drawer again, clear metrics except for one
-      cy.findByText('Add Metrics').click();
+      cy.findByRole('button', { name: 'Add Metrics' }).click();
 
       cy.withinDrawer(() => {
-        cy.findByText('Apply Metrics').should('be.disabled');
-        cy.findByText('Clear Metrics').click();
-        cy.findByText('Apply Metrics').should('be.disabled');
+        cy.findByRole('button', { name: 'Apply Metrics' }).should('be.disabled');
+        cy.findByRole('button', { name: 'Clear Metrics' }).click();
+        cy.findByRole('button', { name: 'Apply Metrics' }).should('be.disabled');
         cy.findByLabelText('Admin Bounce Rate').check({ force: true });
-        cy.findByText('Apply Metrics').should('not.be.disabled');
-        cy.findByText('Apply Metrics').click();
+        cy.findByRole('button', { name: 'Apply Metrics' }).should('not.be.disabled');
+        cy.findByRole('button', { name: 'Apply Metrics' }).click();
       });
 
       // 5. Wait for the server response

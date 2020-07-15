@@ -52,20 +52,16 @@ describe('The alerts details pages', () => {
     });
   });
 
-  it('renders with a link to the edit alert page', () => {
+  it('renders with a link to the edit alert page and a link to the alerts list page', () => {
     cy.visit(PAGE_URL);
 
-    cy.findByText(/Edit.*/).should('have.attr', 'href', '/alerts/edit/2');
-  });
-
-  it('renders with a link back to the alerts list page', () => {
-    cy.visit(PAGE_URL);
-    cy.get('a[href*="/alerts"]').should('be.visible');
-
-    cy.get('main').within(() => {
-      cy.get('a[href*="/alerts"]').within(() => {
-        cy.findByText('Back to Alerts').should('be.visible');
-      });
+    cy.verifyLink({
+      content: /Edit.*/,
+      href: '/alerts/edit/2',
+    });
+    cy.verifyLink({
+      content: 'Back to Alerts',
+      href: '/alerts',
     });
   });
 

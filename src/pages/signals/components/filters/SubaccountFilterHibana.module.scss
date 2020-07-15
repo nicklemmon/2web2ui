@@ -30,7 +30,10 @@
 .ButtonLabel {
   color: color(gray, 800); // match other selects
   margin-right: spacing(200);
-  max-width: spacing(200);
+  max-width: sizing(1000);
+  font-size: font-size(300);
+  font-weight: font-weight(normal);
+  transform: translateY(1px);
 }
 
 .SubaccountSearch {

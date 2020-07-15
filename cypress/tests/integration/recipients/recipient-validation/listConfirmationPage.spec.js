@@ -57,7 +57,10 @@ describe('The recipient validation list confirmation page', () => {
     cy.visit(PAGE_URL);
 
     cy.findByText('Oh no! There seems to be an issue with your list...').should('be.visible');
-    cy.findByText('Got It').should('have.attr', 'href', '/recipient-validation');
+    cy.verifyLink({
+      content: 'Got It',
+      href: '/recipient-validation',
+    });
   });
 
   it('redirects to the list progress page when clicking "Validate"', () => {
@@ -103,7 +106,7 @@ describe('The recipient validation list confirmation page', () => {
 
     cy.visit(PAGE_URL);
 
-    cy.findByText('Validate').should('be.disabled');
+    cy.findByRole('button', { name: 'Validate' }).should('be.disabled');
 
     cy.findByLabelText('Credit Card Number').type('4000 0000 0000 0000');
     cy.findByLabelText('Cardholder Name').type('John Jacob');
@@ -113,10 +116,13 @@ describe('The recipient validation list confirmation page', () => {
     cy.findByLabelText('State').select('Maryland');
     cy.findByLabelText('Zip Code').type('12345');
 
-    cy.findByText('Validate').click();
+    cy.findByRole('button', { name: 'Validate' }).click();
 
     cy.findByText('Processing').should('be.visible');
-    cy.findByText('Validate Another').should('have.attr', 'href', '/recipient-validation');
+    cy.verifyLink({
+      content: 'Validate Another',
+      href: '/recipient-validation',
+    });
   });
 
   it('renders with the file name of the uploaded file', () => {
@@ -138,10 +144,14 @@ describe('The recipient validation list confirmation page', () => {
 
     cy.visit(PAGE_URL);
 
-    cy.findByText('How was this calculated?').click();
+    cy.findByText('How was this calculated?')
+      .closest('a')
+      .click();
 
-    cy.findAllByText('How was this calculated?').should('have.length', 2);
-    cy.findByText('Number of Emails').should('be.visible');
-    cy.findByText('Cost').should('be.visible');
+    cy.withinModal(() => {
+      cy.findByText('How was this calculated?').should('be.visible');
+      cy.findByText('Number of Emails').should('be.visible');
+      cy.findByText('Cost').should('be.visible');
+    });
   });
 });

@@ -11,6 +11,7 @@ exports[`Support renders search panel by default 1`] = `
   >
     <Tabs
       connectBelow={true}
+      disableResponsiveBehavior={true}
       selected={0}
       tabs={
         Array [
@@ -45,6 +46,7 @@ exports[`Support renders search panel with current page search term 1`] = `
   >
     <Tabs
       connectBelow={true}
+      disableResponsiveBehavior={true}
       selected={0}
       tabs={
         Array [
@@ -95,6 +97,7 @@ exports[`Support renders support contact panel 1`] = `
   >
     <Tabs
       connectBelow={true}
+      disableResponsiveBehavior={true}
       selected={2}
       tabs={
         Array [
@@ -140,6 +143,7 @@ exports[`Support renders support form 1`] = `
   >
     <Tabs
       connectBelow={true}
+      disableResponsiveBehavior={true}
       selected={1}
       tabs={
         Array [

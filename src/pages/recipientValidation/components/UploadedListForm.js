@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getUsage } from 'src/actions/account';
 import { LoadingSVG } from 'src/components/loading/Loading';
-import { Grid, UnstyledLink } from 'src/components/matchbox';
+import { Grid } from 'src/components/matchbox';
+import { ButtonLink } from 'src/components/links';
 import { selectMonthlyRecipientValidationUsage } from 'src/selectors/accountBillingInfo';
 import { calculateNewCost } from 'src/pages/billing/helpers/totalRecipientValidationCost';
 
@@ -52,15 +53,13 @@ export function UploadedListForm({
           ) : (
             <>
               <div className={styles.Cost}>{calculateNewCost(currentUsage, addressCount)}</div>
-              <UnstyledLink onClick={() => setModalisOpen(true)}>
-                How was this calculated?
-              </UnstyledLink>
+              <ButtonLink onClick={() => setModalisOpen(true)}>How was this calculated?</ButtonLink>
             </>
           )}
         </Grid.Column>
       </Grid>
 
-      {<RVPriceModal isOpen={isModalOpen} handleOpen={setModalisOpen} />}
+      <RVPriceModal isOpen={isModalOpen} handleOpen={setModalisOpen} />
     </div>
   );
 }

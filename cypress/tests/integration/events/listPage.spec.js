@@ -233,31 +233,14 @@ describe('The events page', () => {
 
       it('renders documentation about each event type when hovering over a check box label', () => {
         cy.findByText('Delay').trigger('mouseover');
-
-        cy.findAllByText('Remote MTA has temporarily rejected a message.')
-          .last()
-          .should('be.visible');
-
+        cy.findAllByText('Remote MTA has temporarily rejected a message.').should('be.visible');
         cy.findByText('Delay').trigger('mouseout');
-
-        // This is a Matchbox bug - this should be passing but is not due to a CSS issue.
-        // This has already been addressed, though has not yet been part of a formal release:
-        // https://github.com/SparkPost/matchbox/pull/320
-        cy.findAllByText('Remote MTA has temporarily rejected a message.')
-          .last()
-          .should('not.be.visible');
+        cy.findAllByText('Remote MTA has temporarily rejected a message.').should('not.be.visible');
 
         cy.findByText('SMS Status').trigger('mouseover');
-
-        cy.findAllByText('SMPP/SMS message produced a status log output')
-          .last()
-          .should('be.visible');
-
+        cy.findAllByText('SMPP/SMS message produced a status log output').should('be.visible');
         cy.findByText('SMS Status').trigger('mouseout');
-
-        cy.findAllByText('SMPP/SMS message produced a status log output')
-          .last()
-          .should('not.be.visible');
+        cy.findAllByText('SMPP/SMS message produced a status log output').should('not.be.visible');
       });
 
       it('allows the addition and removal of other filters via the "Add Filter" and "Remove" buttons', () => {

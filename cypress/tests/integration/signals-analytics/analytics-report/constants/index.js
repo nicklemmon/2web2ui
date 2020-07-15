@@ -31,6 +31,10 @@ export const METRICS = [
     queryParam: 'count_rejected',
   },
   {
+    name: 'Rejection Rate',
+    queryParam: 'rejected_rate',
+  },
+  {
     name: 'Targeted',
     queryParam: 'count_targeted',
   },
@@ -79,6 +83,10 @@ export const METRICS = [
     queryParam: 'count_delayed_first',
   },
   {
+    name: 'Delayed Rate',
+    queryParam: 'delayed_rate',
+  },
+  {
     name: 'Delivered 1st Attempt',
     queryParam: 'count_delivered_first',
   },
@@ -97,6 +105,14 @@ export const METRICS = [
   {
     name: 'Hard Bounces',
     queryParam: 'count_hard_bounce',
+  },
+  {
+    name: 'In-band Bounce',
+    queryParam: 'count_inband_bounce',
+  },
+  {
+    name: 'Out-of-band Bounce',
+    queryParam: 'count_outofband_bounce',
   },
   {
     name: 'Sent',

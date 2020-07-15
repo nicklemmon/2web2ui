@@ -288,7 +288,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         toggleMobileMenu();
 
         cy.get(mobileNavSelector).within(() => {
-          cy.findByText('Help').click();
+          cy.findByRole('button', { name: 'Help' }).click();
         });
 
         cy.get(mobileNavSelector).should('not.be.visible');

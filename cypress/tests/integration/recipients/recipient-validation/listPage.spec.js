@@ -22,11 +22,10 @@ describe('The recipient validation page', () => {
         cy.findByText('API Integration').click();
         cy.findByText('Integrate Now').should('be.visible');
         cy.findByText('/api/v1/recipient-validation/single/{address}').should('be.visible');
-        cy.findByText('API Docs').should(
-          'have.attr',
-          'href',
-          'https://developers.sparkpost.com/api/recipient-validation/',
-        );
+        cy.verifyLink({
+          content: 'API Docs',
+          href: 'https://developers.sparkpost.com/api/recipient-validation/',
+        });
       });
     });
 

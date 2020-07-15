@@ -180,30 +180,6 @@ describe('The health score dashboard page', () => {
         cy.findByText('10').should('be.visible');
       });
     });
-
-    it('renders tooltips when clicking on bars within the history chart', () => {
-      const rechartsSelector = '.recharts-wrapper';
-      const barSelector = '.recharts-rectangle';
-
-      cy.visit(PAGE_URL);
-
-      cy.get(rechartsSelector).within(() => {
-        // Using the .eq method `indexFromEnd` param, hence the negative value
-        cy.get(barSelector)
-          .eq(-1)
-          .click(); // Hover also triggers this tooltip, but using click since there is no `cy.hover()`. Triggering a `mouseover` does not properly render the tooltip
-
-        // Visibility check not working due to how positioning is handled relative to cursor
-        // Because of the lack of a true `cy.hover()` a true hover can't quite be replicated
-        cy.findByText('79.9').should('exist');
-
-        cy.get(barSelector)
-          .eq(-2)
-          .click();
-
-        cy.findByText('79.4').should('exist');
-      });
-    });
   });
 
   describe('the subaccount table', () => {

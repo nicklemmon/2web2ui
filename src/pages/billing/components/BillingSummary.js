@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { LabelledValue } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Box, Panel, UnstyledLink, Modal } from 'src/components/matchbox';
+import { Box, Panel, Modal } from 'src/components/matchbox';
+import { ButtonLink } from 'src/components/links';
 import { OGOnlyWrapper } from 'src/components/hibana';
 import {
   PremiumBanner,
@@ -102,7 +103,7 @@ export default class BillingSummary extends Component {
               </Text>
             </Text>
           </h6>
-          <UnstyledLink onClick={this.handleRvModal}>How was this calculated?</UnstyledLink>
+          <ButtonLink onClick={this.handleRvModal}>How was this calculated?</ButtonLink>
         </LabelledValue>
       </Panel.Section>
     );

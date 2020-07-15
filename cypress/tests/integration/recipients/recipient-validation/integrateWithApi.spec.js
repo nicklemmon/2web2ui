@@ -37,13 +37,12 @@ describe('The recipient validation API integration page', () => {
     cy.withinMainContent(() => {
       cy.findByText('Integrate Now').should('be.visible');
       cy.findByText('/api/v1/recipient-validation/single/{address}').should('be.visible');
-      cy.findByText('API Docs').should(
-        'have.attr',
-        'href',
-        'https://developers.sparkpost.com/api/recipient-validation/',
-      );
+      cy.verifyLink({
+        content: 'API Docs',
+        href: 'https://developers.sparkpost.com/api/recipient-validation/',
+      });
       cy.findByText('Add a Credit Card').should('be.visible');
-      cy.findByText('Create API Key').should('be.disabled');
+      cy.findByRole('button', { name: 'Create API Key' }).should('be.disabled');
     });
   });
 
@@ -84,7 +83,7 @@ describe('The recipient validation API integration page', () => {
     cy.findByLabelText('Country').select('United States');
     cy.findByLabelText('State').select('Maryland');
     cy.findByLabelText('Zip Code').type('12345');
-    cy.findByText('Create API Key').click();
+    cy.findByRole('button', { name: 'Create API Key' }).click();
 
     cy.title().should('include', 'New API Key');
   });

@@ -189,11 +189,11 @@ describe('Change Billing Plan Page', () => {
     cy.get('[data-id=select-plan-100K-starter-0519]').click();
 
     cy.findByText("Your new plan doesn't include subaccounts.").should('be.visible');
-    cy.findByText('Update Status').should('be.visible');
-    cy.findByText('Update Status')
-      .should('have.prop', 'href')
-      .and('include', 'account/subaccounts');
-    cy.findByText('Change Plan').should('be.disabled');
+    cy.verifyLink({
+      content: 'Update Status',
+      href: '/account/subaccounts',
+    });
+    cy.findByRole('button', { name: 'Change Plan' }).should('be.disabled');
   });
   it('Upgrades free account to starter 50K with query parameter', () => {
     cy.stubRequest({

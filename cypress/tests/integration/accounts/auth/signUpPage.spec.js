@@ -15,23 +15,19 @@ describe('The sign up page', () => {
 
   it('has the title "Sign Up"', () => {
     cy.title().should('include', 'Sign Up');
-    cy.findByText('Sign Up for SparkPost').should('be.visible');
+    cy.findByRole('heading', { name: 'Sign Up for SparkPost' }).should('be.visible');
   });
 
   it('renders the "Create Account" button enabled when all fields are filled out', () => {
+    cy.findByRole('button', { name: 'Create Account' }).should('be.disabled');
+
     cy.findByLabelText('First Name').type('Ron');
     cy.findByLabelText('Last Name').type('Swanson');
     cy.findByLabelText('Email').type('ron.swanson@pawnee.indiana.state.us.gov');
     cy.findByLabelText('Password').type('mulliganssteakhouse');
     cy.get('[name="tou_accepted"]').check({ force: true }); // Unable to use `queryByLabelText` because HTML is structured incorrectly in the Matchbox component
-    cy.findByText('Create Account').should('not.be.disabled');
+    cy.findByRole('button', { name: 'Create Account' }).should('not.be.disabled');
   });
-
-  it('renders with a disabled "Create Account" button when the user has not filled out the form', () => {
-    cy.findByText('Create Account').should('be.disabled');
-  });
-
-  it('renders an error when the user already exists', () => {});
 
   it('renders an error when the user enters an email address in an invalid format', () => {
     cy.findByLabelText('Email')
@@ -41,15 +37,14 @@ describe('The sign up page', () => {
     cy.findByText('Invalid Email').should('be.visible');
   });
 
-  it('renders a link to the terms of service', () => {
-    cy.findByText('Terms of Use').should(
-      'have.attr',
-      'href',
-      'https://www.sparkpost.com/policies/tou',
-    );
-  });
-
-  it('renders a link to the log in page', () => {
-    cy.findByText('Log In').should('have.attr', 'href', '/auth');
+  it('renders a link to the log in page and the terms of service', () => {
+    cy.verifyLink({
+      content: 'Log In',
+      href: '/auth',
+    });
+    cy.verifyLink({
+      content: 'Terms of Use',
+      href: 'https://www.sparkpost.com/policies/tou',
+    });
   });
 });

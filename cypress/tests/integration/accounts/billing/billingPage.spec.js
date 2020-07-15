@@ -77,7 +77,7 @@ describe('Billing Page', () => {
 
     cy.findByText('How was this calculated?').click();
 
-    cy.findAllByText('How was this calculated?').should('have.length', 2); // The content appears both in the modal triggering element and inside the modal
+    cy.withinModal(() => cy.findByText('How was this calculated?').should('be.visible'));
   });
 
   it('displays a pending plan change banner whenever a plan is downgraded and no longer displays the "Change Plan" link', () => {
@@ -666,8 +666,10 @@ describe('Billing Page', () => {
     cy.findByText('Premium Addon Plan')
       .scrollIntoView()
       .should('be.visible');
+
     cy.findAllByText('Contact Us')
       .first()
+      .closest('a')
       .should('have.attr', 'href', 'https://www.sparkpost.com/contact-premium');
   });
 
@@ -677,8 +679,10 @@ describe('Billing Page', () => {
     cy.findByText('Enterprise')
       .scrollIntoView()
       .should('be.visible');
+
     cy.findAllByText('Contact Us')
       .last()
+      .closest('a')
       .should('have.attr', 'href', 'https://www.sparkpost.com/contact-enterprise');
   });
 });
