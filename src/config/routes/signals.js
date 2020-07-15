@@ -3,7 +3,7 @@ import App from 'src/components/layout/App';
 import { hasGrants } from 'src/helpers/conditions';
 import { hasAccountOptionEnabled, isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
-export default [
+const reportsRoutes = [
   {
     path: '/reports',
     redirect: '/reports/summary',
@@ -64,6 +64,68 @@ export default [
     category: 'Signals Analytics',
     subcategory: 'Engagement',
   },
+];
+
+const hibanaReportsRoutes = [
+  {
+    path: '/signals',
+    redirect: '/signals/analytics',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+  },
+  {
+    path: '/reports/summary',
+    redirect: '/signals/analytics',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+  },
+  {
+    path: '/reports/bounce',
+    redirect: '/signals/analytics',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+    search: '?report=bounce',
+  },
+  {
+    path: '/reports/rejections',
+    redirect: '/signals/analytics',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+    search: '?report=rejections',
+  },
+  {
+    path: '/reports/accepted',
+    redirect: '/signals/analytics',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+    search: '?report=accepted',
+  },
+  {
+    path: '/reports/delayed',
+    redirect: '/signals/analytics',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+    search: '?report=delayed',
+  },
+  {
+    path: '/reports/engagement',
+    redirect: '/signals/analytics',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+    search: '?report=engagement',
+  },
+  {
+    path: '/signals/analytics',
+    component: reports.SummaryPage,
+    layout: App,
+    title: 'Analytics Report | Signals Analytics',
+    supportDocSearch: 'reporting',
+    category: 'Signals Analytics',
+    subcategory: 'Analytics Report',
+  },
+];
+
+const signalsRoutes = [
   {
     path: '/reports/message-events',
     component: reports.MessageEventsPage,
@@ -79,12 +141,6 @@ export default [
     title: 'Message History | Events',
     supportDocSearch: 'event',
     category: 'Events',
-  },
-  {
-    path: '/signals',
-    redirect: '/signals/health-score',
-    category: 'Signals Analytics',
-    subcategory: 'Health Score',
   },
   {
     path: '/signals/health-score',
@@ -196,3 +252,7 @@ export default [
     category: 'Configuration',
   },
 ];
+
+export const hibanaSignalsRoutes = [...hibanaReportsRoutes, ...signalsRoutes];
+
+export default [...reportsRoutes, ...signalsRoutes];

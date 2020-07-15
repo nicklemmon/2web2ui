@@ -65,11 +65,12 @@ import { emailRedirects, emailVerificationRedirect } from './emailRoutes';
 import templateRoutes from './templates';
 import inboxPlacementRoutes from './inboxPlacement';
 import blocklistRoutes from './blocklist';
-import signalsRoutes from './signals';
+import signalsRoutes, { hibanaSignalsRoutes } from './signals';
+import templatesRoutes from './templates';
 
 // See @sparkpost/access for role to grant mappings
 
-const routes = [
+const appRoutes = [
   {
     path: '/',
     public: true,
@@ -713,8 +714,20 @@ const routes = [
     component: LogoutPage,
     title: 'Logging out...',
   },
+];
+
+const routes = [
+  ...appRoutes,
   ...signalsRoutes,
   ...templateRoutes,
+  ...inboxPlacementRoutes,
+  ...blocklistRoutes,
+];
+
+const hibanaRoutes = [
+  ...appRoutes,
+  ...hibanaSignalsRoutes,
+  ...templatesRoutes,
   ...inboxPlacementRoutes,
   ...blocklistRoutes,
 ];
@@ -727,4 +740,11 @@ routes.push({
   title: 'Page Not Found',
 });
 
-export default routes;
+hibanaRoutes.push({
+  path: '*',
+  component: PageNotFound,
+  layout: App,
+  title: 'Page Not Found',
+});
+
+export { routes as default, hibanaRoutes };

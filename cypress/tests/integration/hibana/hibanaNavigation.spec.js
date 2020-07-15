@@ -44,7 +44,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         commonBeforeSteps();
 
         cy.get(desktopNavSelector).within(() => {
-          cy.verifyLink({ content: 'Signals Analytics', href: '/reports/summary' });
+          cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
           cy.verifyLink({ content: 'Content', href: '/templates' });
           cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
@@ -60,14 +60,10 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByText('Signals Analytics').click();
         });
 
-        cy.url().should('include', '/reports/summary');
+        cy.url().should('include', '/signals/analytics');
 
         cy.get(secondaryNavSelector).within(() => {
-          cy.verifyLink({ content: 'Summary', href: '/reports/summary' });
-          cy.verifyLink({ content: 'Bounce', href: '/reports/bounce' });
-          cy.verifyLink({ content: 'Rejections', href: '/reports/rejections' });
-          cy.verifyLink({ content: 'Accepted', href: '/reports/accepted' });
-          cy.verifyLink({ content: 'Delayed', href: '/reports/delayed' });
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
           cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
           cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
@@ -248,15 +244,10 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByText('mockuser@example.com');
           cy.findByText('107'); // The user's Customer ID
           cy.findByText('Signals Analytics').click();
-          cy.verifyLink({ content: 'Summary', href: '/reports/summary' });
-          cy.verifyLink({ content: 'Bounce', href: '/reports/bounce' });
-          cy.verifyLink({ content: 'Rejections', href: '/reports/rejections' });
-          cy.verifyLink({ content: 'Accepted', href: '/reports/accepted' });
-          cy.verifyLink({ content: 'Delayed', href: '/reports/delayed' });
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
           cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
           cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
-          cy.verifyLink({ content: 'Engagement', href: '/reports/engagement' });
           cy.findByText('Signals Analytics').click();
 
           cy.verifyLink({ content: 'Events', href: '/reports/message-events' });

@@ -4,19 +4,20 @@ import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import findRouteByPath from 'src/helpers/findRouteByPath';
 import * as analytics from 'src/helpers/analytics';
+import { selectRoutes } from 'src/selectors/routes';
 
 // This component is responsible for loading the GTM snippet, initialising our analytics
 // module, setting the username analytics variable and firing the content-view even on route change.
 
 export class GoogleTagManager extends Component {
   state = {
-    dataLayerLoaded: false
-  }
+    dataLayerLoaded: false,
+  };
 
   componentDidMount() {
     analytics.setup();
 
-    const route = findRouteByPath(this.props.location.pathname);
+    const route = findRouteByPath(this.props.location.pathname, undefined, this.props.routes);
     // for public routes, track initial page view immediately
     if (route.public) {
       this.trackPageview();
@@ -42,12 +43,12 @@ export class GoogleTagManager extends Component {
   }
 
   trackPageview() {
-    const { location } = this.props;
-    const route = findRouteByPath(location.pathname);
+    const { location, routes } = this.props;
+    const route = findRouteByPath(location.pathname, undefined, routes);
 
     analytics.trackPageview({
       path: location.pathname + location.search, // duplicates angular 1.x ui-router "$location.url()" which is /path?plus=search
-      title: route.title || location.pathname // duplicate angular 1.x $rootScope.stateData.title
+      title: route.title || location.pathname, // duplicate angular 1.x $rootScope.stateData.title
     });
   }
 
@@ -61,9 +62,10 @@ export class GoogleTagManager extends Component {
   }
 }
 
-const mapStateToProps = ({ currentUser }) => ({
-  accountId: currentUser.customer,
-  username: currentUser.username
+const mapStateToProps = state => ({
+  accountId: state.currentUser.customer,
+  username: state.currentUser.username,
+  routes: selectRoutes(state),
 });
 const Connected = connect(mapStateToProps)(GoogleTagManager);
 export default withRouter(Connected);

@@ -11,6 +11,7 @@ import SearchPanel from './components/SearchPanel';
 import SupportForm from './components/SupportForm';
 import { hasPhoneSupport } from 'src/selectors/accountBillingInfo';
 import styles from './Support.module.scss';
+import { selectRoutes } from 'src/selectors/routes';
 
 export class Support extends Component {
   TABS = [
@@ -65,9 +66,10 @@ export class Support extends Component {
       location,
       loggedIn,
       showSupportPanel,
+      routes,
     } = this.props;
     const visibleTabs = this.TABS.filter(tab => tab.visible());
-    const { supportDocSearch } = findRouteByPath(location.pathname);
+    const { supportDocSearch } = findRouteByPath(location.pathname, undefined, routes);
 
     if (!loggedIn) {
       return null;
@@ -103,6 +105,7 @@ const mapStateToProps = state => ({
   currentSupportView: state.support.currentView,
   loggedIn: state.auth.loggedIn,
   showSupportPanel: state.support.showPanel,
+  routes: selectRoutes(state),
 });
 
 export const ConnectedSupport = withRouter(connect(mapStateToProps, supportActions)(Support));

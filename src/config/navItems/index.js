@@ -10,6 +10,7 @@ import {
   GridOff,
 } from '@sparkpost/matchbox-icons';
 import { hasGrants } from 'src/helpers/conditions';
+
 import inboxPlacementNavItems from './inboxPlacement';
 
 const dashboard = {
@@ -60,6 +61,30 @@ const signalsAnalytics = {
     {
       label: 'Engagement',
       to: '/reports/engagement',
+    },
+  ],
+};
+
+const hibanaSignalsAnalytics = {
+  label: 'Signals Analytics',
+  to: '/signals',
+  icon: BarChart,
+  children: [
+    {
+      label: 'Analytics Report',
+      to: '/signals/analytics',
+    },
+    {
+      label: 'Health Score',
+      to: '/signals/health-score',
+    },
+    {
+      label: 'Spam Traps',
+      to: '/signals/spam-traps',
+    },
+    {
+      label: 'Engagement Recency',
+      to: '/signals/engagement',
     },
   ],
 };
@@ -213,7 +238,7 @@ export const navItems = [
 ];
 
 export const hibanaNavItems = [
-  signalsAnalytics,
+  hibanaSignalsAnalytics,
   events,
   content,
   recipients,

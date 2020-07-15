@@ -10,7 +10,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
     it('renders the initial state of the page', () => {
       // cy.title().should('include', 'Analytics Report'); // TODO: Once OG theme is removed, adjust title and re-introduce test
-      cy.findByText('Analytics Report').should('be.visible');
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
       // Filtering form elements
       cy.findByText('Date Range').should('be.visible');
