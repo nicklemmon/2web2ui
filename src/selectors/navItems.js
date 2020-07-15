@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash';
-import routes from 'src/config/routes';
+import defaultRoutes, { hibanaRoutes } from 'src/config/routes';
 import { navItems, hibanaNavItems } from 'src/config/navItems';
 import { accountNavItems, hibanaAccountNavItems } from 'src/config/navItems/account';
 import selectAccessConditionState from './accessConditionState';
 import { all } from 'src/helpers/conditions/compose';
 
-export const mapNavToRoutes = _.memoize(items => {
+export const mapNavToRoutes = _.memoize((items, routes = defaultRoutes) => {
   const routesByPath = _.keyBy(routes, 'path');
   return items.map(item => {
     item.route = routesByPath[item.to];
@@ -47,6 +47,11 @@ export function prepareNavItems(items, accessConditionState) {
   return filterNavByAccess(mapped, accessConditionState);
 }
 
+export function prepareHibanaNavItems(items, accessConditionState) {
+  const mapped = mapNavToRoutes(items, hibanaRoutes);
+  return filterNavByAccess(mapped, accessConditionState);
+}
+
 // Navigation items selectors
 export const selectNavItems = createSelector([selectAccessConditionState], accessConditionState =>
   prepareNavItems(navItems, accessConditionState),
@@ -55,7 +60,7 @@ export const selectNavItems = createSelector([selectAccessConditionState], acces
 export const selectHibanaNavItems = createSelector(
   [selectAccessConditionState],
   accessConditionState => {
-    return prepareNavItems(hibanaNavItems, accessConditionState);
+    return prepareHibanaNavItems(hibanaNavItems, accessConditionState);
   },
 );
 
@@ -67,5 +72,5 @@ export const selectAccountNavItems = createSelector(
 // Account item selectors
 export const selectHibanaAccountNavItems = createSelector(
   [selectAccessConditionState],
-  accessConditionState => prepareNavItems(hibanaAccountNavItems, accessConditionState),
+  accessConditionState => prepareHibanaNavItems(hibanaAccountNavItems, accessConditionState),
 );

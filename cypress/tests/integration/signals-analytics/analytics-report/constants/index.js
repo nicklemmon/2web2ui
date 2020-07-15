@@ -107,11 +107,11 @@ export const METRICS = [
     queryParam: 'count_hard_bounce',
   },
   {
-    name: 'In-band Bounce',
+    name: 'In-band Bounces',
     queryParam: 'count_inband_bounce',
   },
   {
-    name: 'Out-of-band Bounce',
+    name: 'Out-of-band Bounces',
     queryParam: 'count_outofband_bounce',
   },
   {
