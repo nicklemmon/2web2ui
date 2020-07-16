@@ -9,6 +9,7 @@ import {
 import { Box, Panel, Tag } from 'src/components/matchbox';
 import LabelledValue from 'src/components/labelledValue/LabelledValue';
 import { MAILBOX_PROVIDERS } from 'src/constants';
+import { Heading } from 'src/components/text';
 import OGStyles from './AlertDetails.module.scss';
 import hibanaStyles from './AlertDetailsHibana.module.scss';
 import useHibanaOverride from 'src/hooks/useHibanaOverride/useHibanaOverride';
@@ -85,7 +86,7 @@ export const AlertDetails = ({
     const shouldShowSubaccounts =
       hasSubaccounts && ((subaccounts.length > 0 && subaccounts[0] !== -1) || any_subaccount);
     const subaccount = shouldShowSubaccounts ? (
-      <span key={'subaccounts'}>
+      <span key="subaccounts">
         <p className={styles.ValueLabel}>Subaccounts</p> {getSubaccountsTags()}
       </span>
     ) : (
@@ -209,7 +210,10 @@ export const AlertDetails = ({
   return (
     <Panel data-id="alert-details-panel">
       <SectionComponent paddingLeft="500" paddingTop="400" width="100%">
-        <h3 className={styles.Title}>Alert Details</h3>
+        <Heading as="h3" className={styles.Title}>
+          Alert Details
+        </Heading>
+
         {renderPrimaryAreaComponent()}
       </SectionComponent>
       {renderAlertDetails()}

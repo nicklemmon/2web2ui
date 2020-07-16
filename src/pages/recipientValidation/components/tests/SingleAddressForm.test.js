@@ -24,7 +24,10 @@ describe('SingleAddressForm', () => {
 
   it('renders correctly', () => {
     wrapper.setProps(props);
-    expect(wrapper).toMatchSnapshot();
+
+    expect(wrapper).toHaveTextContent('Validate a Single Address');
+    expect(wrapper).toHaveTextContent('Enter the email address below you would like to validate.');
+    expect(wrapper.find('[name="address"]')).toExist();
   });
 
   it('should trim email value', () => {

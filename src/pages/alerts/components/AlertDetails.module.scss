@@ -1,9 +1,9 @@
 @import '~@sparkpost/matchbox/src/styles/config.scss';
 
 .Title {
-  display: inline;
-  position: relative;
-  top: rem(8);
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
 }
 
 .ValueLabel {

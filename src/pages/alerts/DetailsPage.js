@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Delete, ContentCopy } from '@sparkpost/matchbox-icons';
 import { DeleteModal, Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
+import { TranslatableText } from 'src/components/text';
 import { Box, Button, Page } from 'src/components/matchbox';
 import withAlert from './containers/DetailsPage.container';
 import { AlertDetails } from './components/AlertDetails';
@@ -57,31 +58,22 @@ export class DetailsPageComponent extends Component {
   };
 
   DuplicateDeleteAction = () => {
-    const { isHibanaEnabled, id } = this.props;
-    return (
-      <>
-        <Box textAlign="right" position="relative" bottom="28px">
-          <PageLink as={Button} flat to={`/alerts/create/${id}`}>
-            {!isHibanaEnabled && <ContentCopy className={styles.Icon} />}
-            <span>Duplicate</span>
-            {isHibanaEnabled && (
-              <Box marginLeft="200">
-                <ContentCopy />
-              </Box>
-            )}
-          </PageLink>
+    const { id } = this.props;
 
-          <Button flat onClick={this.openDeleteModal}>
-            {!isHibanaEnabled && <Delete className={styles.Icon} />}
-            <span>Delete</span>
-            {isHibanaEnabled && (
-              <Box marginLeft="200">
-                <Delete />
-              </Box>
-            )}
-          </Button>
-        </Box>
-      </>
+    return (
+      <Box style={{ float: 'right' }} marginRight="500">
+        <PageLink as={Button} flat to={`/alerts/create/${id}`}>
+          <TranslatableText>Duplicate</TranslatableText>
+
+          <ContentCopy className={styles.Icon} />
+        </PageLink>
+
+        <Button flat onClick={this.openDeleteModal}>
+          <TranslatableText>Delete</TranslatableText>
+
+          <Delete className={styles.Icon} />
+        </Button>
+      </Box>
     );
   };
 

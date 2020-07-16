@@ -35,7 +35,7 @@
     "no-restricted-syntax": [
       "warn",
       {
-        "message": "☀️ Plz avoid bare strings inside JSX ☀️",
+        "message": "☀️ Please wrap bare strings in the <TranslatableText> component ☀️",
         "selector": "JSXElement[children.length > 1] > Literal[value=/\\w+/]"
       }
     ],

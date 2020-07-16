@@ -18,11 +18,6 @@ describe('FileUploadWrapper', () => {
     useHibanaOverride.mockReturnValue(styles);
   });
 
-  it('renders correctly', () => {
-    const wrapper = shallow(<FileUploadWrapperClass {...defaults} />);
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('renders an error correctly', () => {
     const wrapper = shallow(
       <FileUploadWrapperClass {...defaults} meta={{ error: 'oh no', touched: true }} />,
@@ -33,7 +28,10 @@ describe('FileUploadWrapper', () => {
 
   it('renders uploading state correctly', () => {
     const wrapper = shallow(<FileUploadWrapperClass {...defaults} uploading />);
-    expect(wrapper).toMatchSnapshot();
+
+    expect(wrapper).toHaveTextContent('Uploading...');
+    expect(wrapper).toHaveTextContent('Your list will be ready to validate in just a moment.');
+    expect(wrapper.find('Loading')).toExist();
   });
 
   it('FileUploadWrapper.handleCancel', () => {

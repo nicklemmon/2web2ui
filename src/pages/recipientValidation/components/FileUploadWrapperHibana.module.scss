@@ -1,31 +1,11 @@
 @import '~@sparkpost/design-tokens-hibana/tokens';
 
-.Field {
-  padding: spacing(300) 0;
-}
-
 .Help {
   font-size: font-size(300);
 }
 
-.Header {
-  font-size: font-size(500);
-  margin-bottom: spacing(200);
-}
-
-.SubHeader {
-  margin-bottom: spacing(0);
-  font-size: font-size(200);
-  color: color(gray, 700);
-
-  a {
-    font-weight: font-weight(normal);
-    color: color(blue, 700);
-  }
-}
-
 .Dropzone {
-  margin: spacing(200) 0;
+  margin: 0;
   padding: spacing(800);
 
   &:hover,
@@ -36,9 +16,9 @@
 
 .FileTypeWrapper {
   & > * {
-    padding: spacing(100);
+    padding: spacing(200);
     border: 1px solid color(gray, 300);
-    margin: 0 spacing(300);
+    margin: 0 spacing(400);
   }
 
   path {

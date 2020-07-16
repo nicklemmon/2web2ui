@@ -75,7 +75,7 @@ jobs:
       - store_test_results:
           path: test_results
 
-  'Integration Testing':
+  'Integration Testing - OG Theme':
     <<: *defaults
     parallelism: 4
     steps:
@@ -92,7 +92,7 @@ jobs:
             npm run test-integration-ci -- --spec $FORMATTED_SPECS
       - cypress_cleanup
 
-  'Integration Testing - Hibana':
+  'Integration Testing - Hibana Theme':
     <<: *defaults
     parallelism: 4
     steps:
@@ -117,14 +117,9 @@ workflows:
       - 'Build':
           requires:
             - 'Unit Testing'
-      - 'Integration Testing':
+      - 'Integration Testing - OG Theme':
           requires:
             - 'Unit Testing'
-      # Manual approval required to trigger Hibana integration testing runs
-      - 'Request Hibana Integration Testing':
-          type: approval
+      - 'Integration Testing - Hibana Theme':
           requires:
-            - 'Integration Testing'
-      - 'Integration Testing - Hibana':
-          requires:
-            - 'Request Hibana Integration Testing'
+            - 'Unit Testing'

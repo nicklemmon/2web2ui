@@ -24,6 +24,7 @@ const AlertIncidents = ({ incidents = [], alert, subaccountIdToString }) => {
       label: metric === 'health_score' ? SOURCE_FRIENDLY_NAMES[source] : METRICS[metric],
       sortKey: 'triggered_value',
       className: styles.rightAlign,
+      align: 'right',
       key: 'alert_incident_header_label',
     },
   ];
