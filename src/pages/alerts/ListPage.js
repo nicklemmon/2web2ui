@@ -145,7 +145,7 @@ export const AlertsPageComponent = props => {
                     </OGOnlyWrapper>
                   </Panel.Section>
 
-                  <Panel.Section className={styles.Footer} paddingTop="300" paddingBottom="300">
+                  <Panel.Section className={styles.Footer}>
                     <Box color="gray.700" fontSize="200">
                       <DisplayDate
                         timestamp={alert.last_triggered_timestamp}
