@@ -4,18 +4,17 @@ exports[`EditAndPreviewPage renders a page 1`] = `
 <FullPage
   breadcrumbRedirectsTo="/templates"
   primaryArea={
-    <React.Fragment>
-      <div
-        data-id="template-status"
-      >
-        <span>
+    <div
+      data-id="template-status"
+    >
+      <Tag>
+        <OGOnlyWrapper
+          as="span"
+        >
           Draft
-        </span>
-        <FileEdit
-          size={17}
-        />
-      </div>
-    </React.Fragment>
+        </OGOnlyWrapper>
+      </Tag>
+    </div>
   }
   title="Test Template (DRAFT)"
 >
@@ -35,16 +34,17 @@ exports[`EditAndPreviewPage renders a page 1`] = `
 `;
 
 exports[`EditAndPreviewPage renders a page in published mode 1`] = `
-<React.Fragment>
-  <div
-    data-id="template-status"
+<div
+  data-id="template-status"
+>
+  <Tag
+    color="green"
   >
-    <span>
+    <OGOnlyWrapper
+      as="span"
+    >
       Published
-    </span>
-    <CheckCircle
-      size={17}
-    />
-  </div>
-</React.Fragment>
+    </OGOnlyWrapper>
+  </Tag>
+</div>
 `;

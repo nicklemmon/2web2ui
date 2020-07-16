@@ -1,9 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import { FileEdit, CheckCircle } from '@sparkpost/matchbox-icons';
-import { Box, Panel, Stack, Text } from 'src/components/matchbox';
+import { Box, Panel, Stack, Tag } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { Heading } from 'src/components/text';
+import OGOnlyWrapper from 'src/components/hibana/OGOnlyWrapper';
 import ActionPopover from 'src/components/actionPopover';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { formatDate } from 'src/helpers/date';
@@ -32,9 +32,6 @@ const RecentActivity = props => {
           {descendingSortedTemplates.map((template, index) => {
             const version = template.list_status === 'draft' ? 'draft' : 'published';
 
-            {
-              /* Render only the first four items */
-            }
             if (index <= 3) {
               return (
                 <div
@@ -45,35 +42,27 @@ const RecentActivity = props => {
                   <Panel className={styles.Panel} accent>
                     <div className={styles.PanelContent}>
                       <Panel.Section>
-                        <div className={styles.Status}>
-                          {template.list_status === 'published' ||
-                          template.list_status === 'published_with_draft' ? (
-                            <>
-                              <CheckCircle className={styles.PublishedIcon} />
+                        <OGOnlyWrapper as="div" className={styles.PanelStack}>
+                          <Stack>
+                            <div>
+                              {template.list_status === 'published' ||
+                              template.list_status === 'published_with_draft' ? (
+                                <Tag>Published</Tag>
+                              ) : (
+                                <Tag>Draft</Tag>
+                              )}
+                            </div>
 
-                              <span className={styles.StatusContent}>Published</span>
-                            </>
-                          ) : (
-                            <>
-                              <FileEdit />
-
-                              <span className={styles.StatusContent}>Draft</span>
-                            </>
-                          )}
-                        </div>
-
-                        {/* TODO: Remove <strong> when OG theme is removed */}
-                        <strong className={styles.Link}>
-                          <Text as="span" fontWeight="400">
                             <PageLink
+                              className={styles.TemplateName}
                               to={`/${routeNamespace}/edit/${
                                 template.id
                               }/${version}/content${setSubaccountQuery(template.subaccount_id)}`}
                             >
                               {template.name}
                             </PageLink>
-                          </Text>
-                        </strong>
+                          </Stack>
+                        </OGOnlyWrapper>
                       </Panel.Section>
 
                       <Panel.Section paddingTop="200" paddingBottom="200">

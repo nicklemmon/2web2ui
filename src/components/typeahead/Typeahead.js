@@ -120,7 +120,7 @@ export class Typeahead extends Component {
         <Box maxWidth={maxWidth ? maxWidth : '1200'} position="relative">
           <ActionList className={listClasses} actions={items} maxHeight={maxHeight} />
 
-          <TextField {...textFieldProps} onFocus={openMenu} suffix={<Search />} />
+          <TextField {...textFieldProps} onFocus={openMenu} prefix={<Search />} />
         </Box>
       </div>
     );

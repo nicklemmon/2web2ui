@@ -141,7 +141,7 @@ const TestDetails = ({
               id="textfield-placement-search"
               data-id="text-field-placement-search"
               label="Filter"
-              suffix={<Search />}
+              prefix={<Search />}
               onChange={onSearchChange}
               placeholder={textFieldPlaceholder}
             />

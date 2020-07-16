@@ -177,9 +177,7 @@ export const TestListPage = ({ tests, error, loading, listTests }) => {
               />
             </Panel.Section>
 
-            <Panel.Section>
-              <TrendsChart filters={filters} />
-            </Panel.Section>
+            <TrendsChart filters={filters} />
           </Panel>
           <FilterSortCollection
             title="Inbox Placement Tests"

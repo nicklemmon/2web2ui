@@ -47,8 +47,8 @@ exports[`Typeahead render function renders list of matches 1`] = `
       id="subaccount"
       name="subaccount"
       placeholder="None"
+      prefix={<Search />}
       readOnly={false}
-      suffix={<Search />}
     />
   </Box>
 </div>

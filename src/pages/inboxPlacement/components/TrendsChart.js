@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Bar, Rectangle } from 'recharts';
 import moment from 'moment';
 import { tokens } from '@sparkpost/design-tokens-hibana';
-
+import { Panel } from 'src/components/matchbox';
 import BarChart from 'src/components/charts/BarChart';
 import Legend from 'src/components/charts/Legend';
 import { roundToPlaces } from 'src/helpers/units';
@@ -48,7 +48,7 @@ const yAxisProps = {
 
 const getTooltipContent = ({ payload = {} }) => (
   <>
-    <TooltipMetric label={'Total Messages'} value={payload.totalMessages} />
+    <TooltipMetric label="Total Messages" value={payload.totalMessages} />
     {yKeys
       .map(({ fill, label, key }) => (
         <TooltipMetric
@@ -126,7 +126,7 @@ export const TrendsChart = props => {
       {hasNoData ? (
         <Empty message="Inbox Placement Trends Not Available" />
       ) : (
-        <>
+        <Panel.Section>
           {/* float:right doesn't work for some reason. Causes tooltip to not show when hovering bottom of chart */}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Legend items={legend} />
@@ -147,7 +147,7 @@ export const TrendsChart = props => {
               {renderBars}
             </BarChart>
           </div>
-        </>
+        </Panel.Section>
       )}
     </>
   );

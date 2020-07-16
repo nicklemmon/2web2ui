@@ -3,7 +3,9 @@
 .EditorNav {
   position: sticky;
   width: 100%;
-  top: rem(56); // Note `top` offset by the exact height of the navigation above found in `FullPage.module.scss`
+  top: rem(
+    56
+  ); // Note `top` offset by the exact height of the navigation above found in `FullPage.module.scss`
   z-index: 50;
 
   @media (min-width: breakpoint(small)) {
@@ -19,23 +21,6 @@
   }
 }
 
-.GreenColor {
-  color: #44D09E;
-}
-
-.Status {
-  display: flex;
-  align-items: center;
-
-  * {
-    line-height: 100%;
-  }
-
-  svg {
-    margin-left: spacing(small);
-  }
-
-  span {
-    text-transform: uppercase;
-  }
+.StatusContent {
+  color: color(gray, 3);
 }

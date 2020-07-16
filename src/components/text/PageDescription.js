@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Text } from 'src/components/matchbox';
+import { Box } from 'src/components/matchbox';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import OGStyles from './PageDescription.module.scss';
 import hibanaStyles from './PageDescriptionHibana.module.scss';
@@ -17,19 +17,21 @@ export function OGPageDescription(props) {
 }
 
 export function HibanaPageDescription(props) {
-  const { children, className, mb = '500' } = props;
+  const { children, className, mb = '500', maxWidth = '1200' } = props;
 
   return (
-    <Text
+    <Box
+      as="p"
       color="gray.700"
       fontSize="300"
       lineHeight="300"
       mb={mb}
+      maxWidth={maxWidth}
       className={classNames(hibanaStyles.PageDescription, className)}
       data-id={props['data-id']}
     >
       {children}
-    </Text>
+    </Box>
   );
 }
 
@@ -41,6 +43,6 @@ PageDescription.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
   mb: PropTypes.string,
-  marginBottom: PropTypes.string,
+  maxWidth: PropTypes.string,
   'data-id': PropTypes.string,
 };

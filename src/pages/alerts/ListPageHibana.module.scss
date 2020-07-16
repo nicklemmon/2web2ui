@@ -1,11 +1,25 @@
 @import '~@sparkpost/design-tokens-hibana/tokens';
 
+.LastTriggeredCard {
+  height: auto;
+
+  > div {
+    display: unset;
+    flex-direction: unset;
+  }
+}
+
 .Footer {
-  padding: spacing(400);
-  font-size: font-size(300);
+  padding: unset;
+  color: unset;
+  font-size: unset;
+}
+
+.AlertName {
+  align-self: unset;
 }
 
 .Description {
-  top: -15px;
+  top: unset;
   width: 100%;
 }

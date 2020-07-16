@@ -60,19 +60,20 @@ export class DetailsPageComponent extends Component {
     const { isHibanaEnabled, id } = this.props;
     return (
       <>
-        <Box textAlign={'right'} position={'relative'} bottom="28px">
+        <Box textAlign="right" position="relative" bottom="28px">
           <PageLink as={Button} flat to={`/alerts/create/${id}`}>
             {!isHibanaEnabled && <ContentCopy className={styles.Icon} />}
-            Duplicate
+            <span>Duplicate</span>
             {isHibanaEnabled && (
               <Box marginLeft="200">
                 <ContentCopy />
               </Box>
             )}
           </PageLink>
+
           <Button flat onClick={this.openDeleteModal}>
             {!isHibanaEnabled && <Delete className={styles.Icon} />}
-            Delete
+            <span>Delete</span>
             {isHibanaEnabled && (
               <Box marginLeft="200">
                 <Delete />
@@ -88,7 +89,7 @@ export class DetailsPageComponent extends Component {
     <PageLink
       as={Button}
       to={`/alerts/edit/${this.props.id}`}
-      variant={'primary'}
+      variant="primary"
       className={styles.Actions}
     >
       Edit Alert

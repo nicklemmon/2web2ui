@@ -4,13 +4,14 @@ import { PageLink } from 'src/components/links';
 import { PageDescription } from 'src/components/text';
 import { Box, Grid, Page, Panel, Tag, Stack } from 'src/components/matchbox';
 import { Templates } from 'src/components/images';
+import { Heading } from 'src/components/text';
+import { OGOnlyWrapper } from 'src/components/hibana';
 import AlertCollection from './components/AlertCollection';
 import withAlertsList from './containers/ListPage.container';
 import OGStyles from './ListPage.module.scss';
 import hibanaStyles from './ListPageHibana.module.scss';
 import _ from 'lodash';
 import { METRICS } from './constants/formConstants';
-import { useHibana } from 'src/context/HibanaContext';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 
 export class ListPage extends Component {
@@ -58,7 +59,7 @@ export class ListPage extends Component {
     const { error, listAlerts } = this.props;
     return (
       <ApiErrorBanner
-        message={'Sorry, we seem to have had some trouble loading your alerts.'}
+        message="Sorry, we seem to have had some trouble loading your alerts."
         errorDetails={error.message}
         reload={listAlerts}
       />
@@ -91,9 +92,8 @@ export class ListPage extends Component {
           title="Are you sure you want to delete this alert?"
           content={
             <p>
-              {'The alert "'}
-              <strong>{alertToDelete.name}</strong>
-              {'" will be permanently removed. This cannot be undone.'}
+              The alert <strong>"{alertToDelete.name}"</strong> will be permanently removed. This
+              cannot be undone.
             </p>
           }
           onDelete={this.handleDelete}
@@ -106,10 +106,7 @@ export class ListPage extends Component {
 }
 
 export const AlertsPageComponent = props => {
-  const [state] = useHibana();
-  const { isHibanaEnabled } = state;
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
-  const CardSectionComponent = isHibanaEnabled ? Box : Panel.Section;
 
   const { alerts, recentlyTriggeredAlerts, handleDelete } = props;
 
@@ -121,29 +118,41 @@ export const AlertsPageComponent = props => {
     return (
       <div data-id="recent-incidents">
         <Stack space="400">
-          <h3>Recent Incidents</h3>
+          <Heading as="h2" looksLike="h3">
+            Recent Incidents
+          </Heading>
+
           <Grid>
             {recentlyTriggeredAlerts.map(alert => (
               <Grid.Column xs={12} md={6} lg={3} key={alert.id}>
-                <Panel accent>
-                  <CardSectionComponent className={styles.LastTriggeredCard} padding={'400'}>
-                    <Box height={'100px'}>
+                <Panel accent mb="0">
+                  <Panel.Section className={styles.LastTriggeredCard}>
+                    <OGOnlyWrapper as="div" className={styles.PanelStack}>
                       <Stack>
-                        <PageLink className={styles.AlertName} to={`/alerts/details/${alert.id}`}>
-                          <strong data-id="link-alert-name">{alert.name}</strong>
+                        {/* Extra <div> here prevents flex parent from stretching tag to full width */}
+                        <div>
+                          <Tag>{METRICS[alert.metric]}</Tag>
+                        </div>
+
+                        <PageLink
+                          className={styles.AlertName}
+                          to={`/alerts/details/${alert.id}`}
+                          data-id="link-alert-name"
+                        >
+                          {alert.name}
                         </PageLink>
-                        <Tag>{METRICS[alert.metric]}</Tag>
                       </Stack>
-                    </Box>
-                  </CardSectionComponent>
-                  <CardSectionComponent className={styles.Footer} padding={'400'}>
-                    <Box height={'20px'}>
+                    </OGOnlyWrapper>
+                  </Panel.Section>
+
+                  <Panel.Section className={styles.Footer} paddingTop="300" paddingBottom="300">
+                    <Box color="gray.700" fontSize="200">
                       <DisplayDate
                         timestamp={alert.last_triggered_timestamp}
                         formattedDate={alert.last_triggered_formatted}
                       />
                     </Box>
-                  </CardSectionComponent>
+                  </Panel.Section>
                 </Panel>
               </Grid.Column>
             ))}

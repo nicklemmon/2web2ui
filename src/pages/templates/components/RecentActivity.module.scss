@@ -22,26 +22,19 @@
   height: 100%;
 }
 
+.PanelStack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+}
+
+.TemplateName {
+  align-self: center;
+}
+
 .Date {
   color: color(gray, 3);
   font-size: rem(14);
-}
-
-.Status {
-  display: flex;
-  align-items: center;
-  color: color(gray, 3);
-  font-size: rem(14);
-  border: 0;
-}
-
-.StatusContent {
-  text-transform: uppercase;
-  margin-left: spacing('smaller');
-}
-
-.PublishedIcon {
-  fill: #44d09e;
 }
 
 .Meta {

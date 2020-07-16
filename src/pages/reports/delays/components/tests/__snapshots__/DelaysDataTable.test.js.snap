@@ -37,9 +37,7 @@ exports[`DelaysDataTable:  should render page 1`] = `
     ]
   }
   wrapperComponent={[Function]}
->
-  <Component />
-</TableCollection>
+/>
 `;
 
 exports[`DelaysDataTable:  should render row data properly 1`] = `

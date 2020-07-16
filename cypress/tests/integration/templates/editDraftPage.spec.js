@@ -71,10 +71,10 @@ describe('The templates edit draft page', () => {
     cy.findByText('Stubbed Template 1 (DRAFT)');
   });
 
-  it('renders the status in the header as "DRAFT"', () => {
+  it('renders the status in the header as "Draft"', () => {
     cy.visit(PAGE_URL);
 
-    cy.get('[data-id="template-status"]').within(() => {
+    cy.findByDataId('template-status').within(() => {
       cy.findByText('Draft').should('be.visible'); // Note - content is capitalized with CSS, so the markup is not "DRAFT"
     });
   });

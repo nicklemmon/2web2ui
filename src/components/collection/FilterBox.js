@@ -33,7 +33,7 @@ function CollectionFilterBox(props) {
         label={isHibanaEnabled ? label || 'Filter By' : undefined}
         id="collection-filter-box"
         name="collection-filter-box"
-        suffix={<Search />}
+        prefix={<Search />}
         placeholder={placeholderText}
         onChange={e => onChange(e.target.value)}
         onBlur={e => onBlur(e.target.value)}

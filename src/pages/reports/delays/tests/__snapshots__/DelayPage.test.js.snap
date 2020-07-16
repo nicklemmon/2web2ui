@@ -30,7 +30,6 @@ exports[`DelayPage:  should render 1`] = `
         },
       ]
     }
-    title="Delayed Messages"
     totalAccepted={1000}
   />
 </Page>
@@ -84,7 +83,6 @@ exports[`DelayPage:  should show loading panel when aggregates are still loading
         },
       ]
     }
-    title="Delayed Messages"
     totalAccepted={1000}
   />
 </Page>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { TableCollection, Empty } from 'src/components';
-import { NewCollectionBody } from 'src/components/collection';
-import { Panel, Table, Tag } from 'src/components/matchbox';
+import { Panel, Tag } from 'src/components/matchbox';
 import { FORMATS } from 'src/constants';
 import { formatDateTime } from 'src/helpers/date';
 import { METRICS, FILTERS_FRIENDLY_NAMES, SOURCE_FRIENDLY_NAMES } from '../constants/formConstants';
@@ -62,7 +61,7 @@ const AlertIncidents = ({ incidents = [], alert, subaccountIdToString }) => {
         if (!tag) {
           return acc;
         }
-        return [...acc, <span key={'join_and'}> and </span>, tag];
+        return [...acc, <span key="join_and"> and </span>, tag];
       }, null);
 
       return joinTags;
@@ -87,9 +86,6 @@ const AlertIncidents = ({ incidents = [], alert, subaccountIdToString }) => {
     ];
   };
 
-  const TableWrapper = props => <Table>{props.children}</Table>;
-  const title = 'Alert Incidents';
-
   return (
     <>
       {incidents.length <= 0 ? (
@@ -98,17 +94,13 @@ const AlertIncidents = ({ incidents = [], alert, subaccountIdToString }) => {
         </Panel>
       ) : (
         <TableCollection
-          wrapperComponent={TableWrapper}
           rows={incidents}
           columns={columns}
           getRowData={getRowData}
           pagination
           defaultSortColumn="first_fired"
           defaultSortDirection="desc"
-          title={title}
-        >
-          {props => <NewCollectionBody {...props} />}
-        </TableCollection>
+        />
       )}
     </>
   );

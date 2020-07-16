@@ -34,10 +34,10 @@ describe('The templates published template page', () => {
     });
   });
 
-  it('renders the status in the header as "PUBLISHED"', () => {
+  it('renders the status in the header as "Published"', () => {
     cy.visit(PAGE_URL);
 
-    cy.get('[data-id="template-status"]').within(() => {
+    cy.findByDataId('template-status').within(() => {
       cy.findByText('Published').should('be.visible'); // Note - content is capitalized with CSS, so the markup is not "DRAFT"
     });
   });

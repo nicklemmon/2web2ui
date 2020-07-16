@@ -20,7 +20,7 @@ const Panel = props => {
   }
 
   // TODO: Remove baked in margin
-  return <HibanaPanel mb={props.mb ? props.mb : '400'} {...props} />;
+  return <HibanaPanel mb={props.mb ? props.mb : '500'} {...props} />;
 };
 
 const Section = props => {

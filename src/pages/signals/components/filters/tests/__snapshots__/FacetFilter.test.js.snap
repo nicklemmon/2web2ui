@@ -51,7 +51,7 @@ exports[`FacetFilter renders facet select and search input 1`] = `
         onChange={[Function]}
         onKeyPress={[Function]}
         placeholder="Search"
-        suffix={<Search />}
+        prefix={<Search />}
         value=""
       />
     </div>

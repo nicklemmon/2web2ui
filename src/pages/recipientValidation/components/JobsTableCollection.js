@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScreenReaderOnly, Table } from 'src/components/matchbox';
-import { TableCollection, NewCollectionBody } from 'src/components/collection';
+import { ScreenReaderOnly, Panel, Table } from 'src/components/matchbox';
+import { TableCollection } from 'src/components/collection';
 import { formatDateTime } from 'src/helpers/date';
+import { Heading } from 'src/components/text';
 import withJobs from '../containers/withJobs';
 import JobFileName from './JobFileName';
 import JobAddressCount from './JobAddressCount';
@@ -52,7 +53,19 @@ export const JobsTableCollection = ({ jobs }) => {
     },
   ];
 
-  const TableWrapper = props => <Table>{props.children}</Table>;
+  const TableWrapper = props => (
+    <Panel>
+      <Panel.Section>
+        <Heading as="h3" looksLike="h4">
+          Recent Validations
+        </Heading>
+      </Panel.Section>
+
+      <Panel.Section style={{ padding: 0 }}>
+        <Table>{props.children}</Table>
+      </Panel.Section>
+    </Panel>
+  );
 
   const renderRow = columns => props =>
     columns.map(({ dataCellComponent: DataCellComponent }) => <DataCellComponent {...props} />);
@@ -65,11 +78,8 @@ export const JobsTableCollection = ({ jobs }) => {
       getRowData={renderRow(columns)}
       rows={jobs}
       pagination
-      title="Recent Validations"
       wrapperComponent={TableWrapper}
-    >
-      {props => <NewCollectionBody {...props} />}
-    </TableCollection>
+    />
   );
 };
 

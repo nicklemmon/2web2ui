@@ -7,39 +7,24 @@ exports[`Template List Components LastUpdated should render 1`] = `
 `;
 
 exports[`Template List Components Name should render 1`] = `
-<Fragment>
-  <strong>
-    <Text
-      as="span"
-      fontWeight="400"
-    >
-      <PageLink
-        to="/templates/edit/id-123/draft/content?subaccount=123"
-      >
-        template name
-      </PageLink>
-    </Text>
-  </strong>
-</Fragment>
+<PageLink
+  to="/templates/edit/id-123/draft/content?subaccount=123"
+>
+  template name
+</PageLink>
 `;
 
 exports[`Template List Components Status should render draft 1`] = `
 <Tag>
-  <Edit />
-   
-  <span>
-    Draft
-  </span>
+  Draft
 </Tag>
 `;
 
 exports[`Template List Components Status should render published 1`] = `
-<Tag>
-  <CheckCircle />
-   
-  <span>
-    Published
-  </span>
+<Tag
+  color="green"
+>
+  Published
 </Tag>
 `;
 
@@ -49,12 +34,10 @@ exports[`Template List Components Status should render unpublished changes 1`] =
   dark={true}
   id="templates-status-3"
 >
-  <Tag>
-    <CheckCircle />
-     
-    <span>
-      Published
-    </span>
+  <Tag
+    color="green"
+  >
+    Published
   </Tag>
 </Tooltip>
 `;

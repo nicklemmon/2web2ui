@@ -24,7 +24,9 @@ exports[`Page: Alert Details should render Alert Details Page 1`] = `
           <ContentCopy
             className="Icon"
           />
-          Duplicate
+          <span>
+            Duplicate
+          </span>
         </PageLink>
         <Button
           flat={true}
@@ -33,7 +35,9 @@ exports[`Page: Alert Details should render Alert Details Page 1`] = `
           <Delete
             className="Icon"
           />
-          Delete
+          <span>
+            Delete
+          </span>
         </Button>
       </Box>
     </React.Fragment>
