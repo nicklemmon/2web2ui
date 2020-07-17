@@ -597,13 +597,13 @@ describe('Change Billing Plan Page', () => {
       fixture: 'billing/subscription/200.get.test-plan.json',
     });
     cy.stubRequest({
-      url: '/api/v1/account/subscription/promo-codes/*',
-      fixture: 'account/billing/200.get.promo-code.json',
+      url: '/api/v1/billing/subscription/promo-codes/*',
+      fixture: 'billing/subscription/200.get.promo-code.json',
       fixtureAlias: 'promoGet',
     });
     cy.stubRequest({
       method: 'POST',
-      url: '/api/v1/account/subscription/promo-codes/*',
+      url: '/api/v1/billing/subscription/promo-codes/*',
       fixture: 'blank.json',
       fixtureAlias: 'promoGet',
     });

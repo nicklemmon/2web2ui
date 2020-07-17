@@ -86,7 +86,7 @@ export function verifyPromoCode({ promoCode, billingId, meta = {} }) {
     type: 'VERIFY_PROMO_CODE',
     meta: {
       method: 'GET',
-      url: `v1/account/subscription/promo-codes/${promoCode}`,
+      url: `v1/billing/subscription/promo-codes/${promoCode}`,
       params: {
         billing_id: billingId,
       },
@@ -100,7 +100,7 @@ export function consumePromoCode({ promoCode, billingId, meta = {} }) {
     type: 'CONSUME_PROMO_CODE',
     meta: {
       method: 'POST',
-      url: `v1/account/subscription/promo-codes/${promoCode}`,
+      url: `v1/billing/subscription/promo-codes/${promoCode}`,
       params: {
         billing_id: billingId,
       },

@@ -236,8 +236,8 @@ describe('The billing plan page', () => {
     describe('the promo code field', () => {
       it('renders an "Invalid promo code" error when no valid promo code is found', () => {
         cy.stubRequest({
-          fixture: 'account/subscription/promo-codes/400.get.json',
-          url: '/api/v1/account/subscription/promo-codes/*',
+          fixture: 'billing/subscription/promo-codes/400.get.json',
+          url: '/api/v1/billing/subscription/promo-codes/*',
           statusCode: 400,
           requestAlias: 'invalidPromoCodeRequest',
         });
@@ -252,8 +252,8 @@ describe('The billing plan page', () => {
 
       it('renders a "Resource could not be found" error when no entry is made in the promo code field and the user clicks "Apply"', () => {
         cy.stubRequest({
-          url: '/api/v1/account/subscription/promo-codes/*',
-          fixture: 'account/subscription/promo-codes/404.get.json',
+          url: '/api/v1/billing/subscription/promo-codes/*',
+          fixture: 'billing/subscription/promo-codes/404.get.json',
           statusCode: 404,
           requestAlias: 'resourceNotFoundRequest',
         });
@@ -265,8 +265,8 @@ describe('The billing plan page', () => {
 
       it('applies the promo code when the promo code is valid', () => {
         cy.stubRequest({
-          url: '/api/v1/account/subscription/promo-codes/*',
-          fixture: 'account/subscription/promo-codes/200.get.json',
+          url: '/api/v1/billing/subscription/promo-codes/*',
+          fixture: 'billing/subscription/promo-codes/200.get.json',
         });
 
         cy.findByLabelText('Promo Code').type('abc');
