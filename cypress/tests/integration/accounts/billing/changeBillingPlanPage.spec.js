@@ -598,7 +598,7 @@ describe('Change Billing Plan Page', () => {
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription/promo-codes/*',
-      fixture: 'billing/subscription/200.get.promo-code.json',
+      fixture: 'billing/subscription/promo-codes/200.get.json',
       fixtureAlias: 'promoGet',
     });
     cy.stubRequest({
