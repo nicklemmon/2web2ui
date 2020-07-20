@@ -5,7 +5,6 @@ exports[`Modal OGModal should render correctly 1`] = `
   containerId="modal-portal"
 >
   <Modal
-    className="Modal"
     onClose={[MockFunction]}
     open={true}
   >
