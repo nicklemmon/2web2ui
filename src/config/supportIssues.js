@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import {
-  hasOnlineSupport,
   hasStatus,
   hasStatusReasonCategory,
   isSuspendedForBilling,
   onPlanWithStatus,
   isSelfServeBilling,
+  hasProductOnSubscription,
 } from 'src/helpers/conditions/account';
 import { isEmailVerified } from 'src/helpers/conditions/user';
 import { all, not, any } from 'src/helpers/conditions';
@@ -21,7 +21,7 @@ const LIMITS = 'DailyLimits';
 const SUPPORT = 'Support';
 
 const defaultMessageLabel = 'Tell us more about your issue';
-const defaultCondition = all(hasOnlineSupport, hasStatus('active'));
+const defaultCondition = all(hasProductOnSubscription('online_support'), hasStatus('active'));
 
 /**
  * @example
@@ -117,7 +117,7 @@ const supportIssues = [
     messageLabel: 'What limit do you need and why?',
     type: LIMITS,
     condition: all(
-      hasOnlineSupport,
+      hasProductOnSubscription('online_support'),
       isAdmin,
       isEmailVerified,
       hasStatus('active'),
