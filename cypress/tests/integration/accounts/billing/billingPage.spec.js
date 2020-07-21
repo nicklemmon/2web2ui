@@ -524,7 +524,7 @@ describe('Billing Page', () => {
 
         cy.stubRequest({
           method: 'PUT',
-          url: `${ACCOUNT_API_BASE_URL}/billing`,
+          url: `${BILLING_API_BASE_URL}`,
           fixture: 'billing/200.put.json',
           requestAlias: 'billingUpdate',
         });
@@ -549,7 +549,7 @@ describe('Billing Page', () => {
         cy.stubRequest({
           method: 'PUT',
           statusCode: 400,
-          url: `${ACCOUNT_API_BASE_URL}/billing`,
+          url: `${BILLING_API_BASE_URL}`,
           fixture: '400.json',
         });
 
