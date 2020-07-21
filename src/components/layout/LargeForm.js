@@ -1,6 +1,6 @@
 import React from 'react';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
-import ScrollToTop from './ScrollToTop';
+import ScrollToTop from './components/ScrollToTop';
 import OGStyles from './Layout.module.scss';
 import HibanaStyles from './LayoutHibana.module.scss';
 

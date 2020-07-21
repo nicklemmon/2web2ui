@@ -12,12 +12,12 @@ describe('ScrollToTop', () => {
   });
 
   it('renders nothing', () => {
-    const wrapper = shallow(<ScrollToTop/>);
+    const wrapper = shallow(<ScrollToTop />);
     expect(wrapper.html()).toEqual(null);
   });
 
   it('scrolls to top once on mount', () => {
-    shallow(<ScrollToTop/>);
+    shallow(<ScrollToTop />);
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
     expect(window.scrollTo).toHaveBeenCalledTimes(1);
   });
