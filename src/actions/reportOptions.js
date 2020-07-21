@@ -153,31 +153,48 @@ export function refreshReportOptions(payload) {
     }
 
     if (!update.relativeRange) {
-      update.relativeRange = isHibanaEnabled ? '7days' : 'day';
+      update.relativeRange = isHibanaEnabled ? '7days' : 'day'; //Default relative range
     }
 
-    const rollupPrecision = useMetricsRollup && update.precision;
-    if (update.relativeRange !== 'custom') {
-      // Gets new dates from range + precision
-      const { from, to } = getRelativeDates(update.relativeRange, { precision: rollupPrecision });
-
-      // Updates precision based on new dates if recommended
-      const precision = useMetricsRollup
-        ? getRollupPrecision({ from, to, precision: update.precision }) ||
-          getRecommendedRollupPrecision(from, moment(to))
-        : getPrecision(from, moment(to), update.precision);
-      update = { ...update, from, to, precision };
+    if (isHibanaEnabled) {
+      // explicit update of range, new dates, try to preserve precision
+      let updateFrom = update.from;
+      let updateTo = update.to;
+      let updatePrecision = update.precision;
+      if (update.relativeRange !== 'custom') {
+        //regardless, update the dates
+        const { from, to } = getRelativeDates(update.relativeRange, {
+          precision: updatePrecision,
+        });
+        updateFrom = from;
+        updateTo = to;
+      }
+      const precision =
+        getRollupPrecision({ from: updateFrom, to: updateTo, precision: updatePrecision }) ||
+        getRecommendedRollupPrecision(updateFrom, moment(updateTo));
+      update = { ...update, from: updateFrom, to: updateTo, precision };
     } else {
-      // Custom range, but updates precision if explicit date range updates + precision invalid, will update precision
-      const precision = useMetricsRollup
-        ? rollupPrecision || getRecommendedRollupPrecision(update.from, moment(update.to))
-        : getPrecision(
-            update.from,
-            moment(update.to),
-            isHibanaEnabled ? update.precision : undefined,
-          );
+      //old version of update
 
-      update = { ...update, precision };
+      const rollupPrecision = useMetricsRollup && update.precision;
+
+      if (update.relativeRange !== 'custom') {
+        const { from, to } = getRelativeDates(update.relativeRange, {
+          precision: rollupPrecision,
+        });
+        //for metrics rollup, when using the relative dates, get the precision, else use the given precision
+        //If precision is not in the URL, get the recommended precision.
+        const precision = useMetricsRollup
+          ? getRollupPrecision({ from, to, precision: rollupPrecision }) ||
+            getRecommendedRollupPrecision(from, moment(to))
+          : getPrecision(from, moment(to));
+        update = { ...update, from, to, precision };
+      } else {
+        const precision = useMetricsRollup
+          ? rollupPrecision || getRecommendedRollupPrecision(update.from, moment(update.to))
+          : getPrecision(update.from, moment(update.to));
+        update = { ...update, precision };
+      }
     }
 
     return dispatch({
