@@ -128,7 +128,7 @@ Array [
       "method": "put",
       "params": undefined,
       "responseType": "json",
-      "url": "/v1/account/billing",
+      "url": "/v1/billing",
     },
   ],
   Array [
