@@ -9,7 +9,7 @@ import {
   hasStatusReasonCategory,
   isCustomBilling,
   isSelfServeBilling,
-  hasOnlineSupport,
+  hasProductOnSubscription,
   isAccountUiOptionSet,
   hasAccountOptionEnabled,
   getAccountUiOptionValue,
@@ -147,22 +147,36 @@ describe('Condition: isSelfServeBilling', () => {
   });
 });
 
-describe('Condition: hasOnlineSupport', () => {
-  it('should return true for accounts with online support', () => {
+describe('Condition: hasProductOnSubscription', () => {
+  it('should return true for if a certain product is on subscription', () => {
     const state = {
-      account: {
-        support: {
-          online: true,
-        },
+      accountPlan: {
+        products: [
+          {
+            plan: 'online-support',
+            product: 'online_support',
+            price: 0,
+          },
+        ],
       },
     };
 
-    expect(hasOnlineSupport(state)).toEqual(true);
+    expect(hasProductOnSubscription('online_support')(state)).toEqual(true);
   });
 
-  it('should return false for accounts without online support', () => {
-    const state = {};
-    expect(hasOnlineSupport(state)).toEqual(false);
+  it('should return false for if a certain product is not on subscription', () => {
+    const state = {
+      accountPlan: {
+        products: [
+          {
+            plan: 'online-support',
+            product: 'online_support',
+            price: 0,
+          },
+        ],
+      },
+    };
+    expect(hasProductOnSubscription('phone_support')(state)).toEqual(false);
   });
 });
 
