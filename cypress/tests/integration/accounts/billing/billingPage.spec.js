@@ -318,7 +318,7 @@ describe('Billing Page', () => {
             .last()
             .click({ force: true });
 
-          cy.findAllByText('Required').should('have.length', 5);
+          cy.findAllByText(/Required */i).should('have.length', 5);
         });
       });
 
