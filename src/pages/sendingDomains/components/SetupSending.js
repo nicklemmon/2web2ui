@@ -13,8 +13,9 @@ import SetupInstructionPanel from './SetupInstructionPanel';
 // actions
 import { showAlert } from 'src/actions/globalAlert';
 import { verifyDkim } from 'src/actions/sendingDomains';
-import { updateUserUIOptions } from 'src/actions/currentUser';
+import { updateUserUIOptions, get as getCurrentUser } from 'src/actions/currentUser';
 import { hasAutoVerifyEnabledSelector } from 'src/selectors/account';
+import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { resolveReadyFor } from 'src/helpers/domains';
 import { trackCustomConversionGoal } from 'src/helpers/vwo';
@@ -31,20 +32,26 @@ export class SetupSending extends Component {
       domain: { id, subaccount_id: subaccount },
       verifyDkim,
       showAlert,
+      sawVideoWhileSignUp,
     } = this.props;
 
     return verifyDkim({ id, subaccount }).then(results => {
       const readyFor = resolveReadyFor(results);
 
-      switch (isUserUiOptionSet('sawVideoWhileSignUp')) {
+      switch (sawVideoWhileSignUp) {
         case 'true':
           trackCustomConversionGoal([204]);
+          this.props.updateUserUIOptions({ sawVideoWhileSignUp: 'vwo goal triggered' }).then(() => {
+            this.props.getCurrentUser();
+          });
           break;
         case 'false':
           trackCustomConversionGoal([205]);
+          this.props.updateUserUIOptions({ sawVideoWhileSignUp: 'vwo goal triggered' }).then(() => {
+            this.props.getCurrentUser();
+          });
           break;
         default:
-          updateUserUIOptions({ sawVideoWhileSignUp: 'vwo goal triggered' });
           break;
       }
 
@@ -161,8 +168,11 @@ const mapStateToProps = state => ({
   hasAutoVerifyEnabled: hasAutoVerifyEnabledSelector(state),
   verifyDkimError: state.sendingDomains.verifyDkimError,
   verifyDkimLoading: state.sendingDomains.verifyDkimLoading,
+  sawVideoWhileSignUp: selectCondition(isUserUiOptionSet('sawVideoWhileSignUp'))(state),
 });
 
 export default withRouter(
-  connect(mapStateToProps, { verifyDkim, showAlert, updateUserUIOptions })(SetupSending),
+  connect(mapStateToProps, { verifyDkim, showAlert, updateUserUIOptions, getCurrentUser })(
+    SetupSending,
+  ),
 );
