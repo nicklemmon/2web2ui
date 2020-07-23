@@ -13,10 +13,11 @@ import SetupInstructionPanel from './SetupInstructionPanel';
 // actions
 import { showAlert } from 'src/actions/globalAlert';
 import { verifyDkim } from 'src/actions/sendingDomains';
-
+import { updateUserUIOptions } from 'src/actions/currentUser';
 import { hasAutoVerifyEnabledSelector } from 'src/selectors/account';
-
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { resolveReadyFor } from 'src/helpers/domains';
+import { trackCustomConversionGoal } from 'src/helpers/vwo';
 import config from 'src/config';
 
 export class SetupSending extends Component {
@@ -34,6 +35,18 @@ export class SetupSending extends Component {
 
     return verifyDkim({ id, subaccount }).then(results => {
       const readyFor = resolveReadyFor(results);
+
+      switch (isUserUiOptionSet('sawVideoWhileSignUp')) {
+        case 'true':
+          trackCustomConversionGoal([204]);
+          break;
+        case 'false':
+          trackCustomConversionGoal([205]);
+          break;
+        default:
+          updateUserUIOptions({ sawVideoWhileSignUp: 'vwo goal triggered' });
+          break;
+      }
 
       if (readyFor.dkim) {
         showAlert({
@@ -150,4 +163,6 @@ const mapStateToProps = state => ({
   verifyDkimLoading: state.sendingDomains.verifyDkimLoading,
 });
 
-export default withRouter(connect(mapStateToProps, { verifyDkim, showAlert })(SetupSending));
+export default withRouter(
+  connect(mapStateToProps, { verifyDkim, showAlert, updateUserUIOptions })(SetupSending),
+);
