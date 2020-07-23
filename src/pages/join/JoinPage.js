@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
 import cookie from 'js-cookie';
 import _ from 'lodash';
-
 import { CenteredLogo } from 'src/components';
 import { BottomPad } from 'src/components/hibana';
 import { PageLink } from 'src/components/links';
@@ -14,10 +13,11 @@ import JoinError from './components/JoinError';
 import SignUpTabs from './components/SignUpTabs';
 import { inSPCEU } from 'src/config/tenant';
 import { authenticate } from 'src/actions/auth';
+import { get as getCurrentUser, updateUserUIOptions } from 'src/actions/currentUser';
+import { register } from 'src/actions/account';
 import getConfig from 'src/helpers/getConfig';
 import { loadScript } from 'src/helpers/loadScript';
 import * as analytics from 'src/helpers/analytics';
-import { register } from 'src/actions/account';
 import {
   AFTER_JOIN_REDIRECT_ROUTE,
   LINKS,
@@ -32,15 +32,18 @@ export class JoinPage extends Component {
   };
 
   extractQueryParams = () => {
-    const { params } = this.props;
+    const {
+      params: { video, ...restParams },
+    } = this.props;
     const existingCookie = cookie.getJSON(getConfig('attribution.cookieName')) || {};
 
-    const allData = { ...existingCookie, ...params };
+    const allData = { ...existingCookie, ...restParams };
 
     return {
       sfdcid: allData.sfdcid,
       attributionData: _.pick(allData, getConfig('salesforceDataParams')),
       creationParams: allData,
+      video,
     };
   };
 
@@ -51,7 +54,12 @@ export class JoinPage extends Component {
       register,
       authenticate,
     } = this.props;
-    const { sfdcid, attributionData, creationParams } = this.extractQueryParams();
+    const {
+      sfdcid,
+      attributionData,
+      creationParams,
+      video: sawVideoWhileSignUp,
+    } = this.extractQueryParams();
 
     const accountFields = _.omit(values, 'email_opt_in');
     const signupData = {
@@ -70,6 +78,10 @@ export class JoinPage extends Component {
         return authenticate(accountData.username, values.password);
       })
       .then(() => {
+        this.props.getCurrentUser().then(() => {
+          this.props.updateUserUIOptions({ sawVideoWhileSignUp });
+        });
+
         if (product === 'rv') {
           return this.props.history.push('/onboarding/recipient-validation');
         }
@@ -123,4 +135,8 @@ function mapStateToProps(state, props) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, { authenticate, register })(JoinPage));
+export default withRouter(
+  connect(mapStateToProps, { authenticate, register, getCurrentUser, updateUserUIOptions })(
+    JoinPage,
+  ),
+);
