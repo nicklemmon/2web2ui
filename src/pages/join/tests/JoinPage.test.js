@@ -35,6 +35,8 @@ describe('JoinPage', () => {
         pathname: '/join',
       },
       title: 'Sign Up',
+      getCurrentUser: jest.fn(() => Promise.resolve()),
+      updateUserUIOptions: jest.fn(),
     };
     formValues = {
       first_name: 'foo',

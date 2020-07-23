@@ -142,6 +142,36 @@ Array [
       "method": "get",
       "params": undefined,
       "responseType": "json",
+      "url": "/v1/users/test-username",
+    },
+  ],
+  Array [
+    Object {
+      "data": Object {
+        "options": Object {
+          "ui": Object {
+            "sawVideoWhileSignUp": undefined,
+          },
+        },
+      },
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "put",
+      "params": undefined,
+      "responseType": "json",
+      "url": "/v1/users/test-username",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
+      "params": undefined,
+      "responseType": "json",
       "url": "/v1/billing/plans",
     },
   ],
