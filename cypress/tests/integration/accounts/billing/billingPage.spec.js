@@ -323,41 +323,53 @@ describe('Billing Page', () => {
       });
 
       it('renders a success message when successfully updating payment information', () => {
-        fillOutForm();
-
         cy.stubRequest({
           method: 'POST',
           url: `${BILLING_API_BASE_URL}/cors-data*`,
           fixture: 'billing/cors-data/200.post.json',
+          requestAlias: 'corsReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: '/v1/payment-methods/credit-cards',
           fixture: 'zuora/payment-method/credit-cards/200.post.json',
+          requestAlias: 'creditCardsReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: `${ACCOUNT_API_BASE_URL}/subscription/check`,
           fixture: 'account/subscription/check/200.post.json',
+          requestAlias: 'accountSubReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: `${BILLING_API_BASE_URL}/subscription/check`,
           fixture: 'billing/subscription/check/200.post.json',
+          requestAlias: 'billingSubReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: `${BILLING_API_BASE_URL}/collect`,
           fixture: 'billing/collect/200.post.json',
+          requestAlias: 'billingCollectReq',
         });
 
-        cy.findAllByText(/Update Payment Information */i)
-          .last()
-          .click();
+        fillOutForm();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Payment Information' }).click();
+        });
+
+        cy.wait([
+          '@corsReq',
+          '@creditCardsReq',
+          '@accountSubReq',
+          '@billingSubReq',
+          '@billingCollectReq',
+        ]);
 
         cy.findByText('Payment Information Updated').should('be.visible');
         cy.findByLabelText('Credit Card Number').should('not.be.visible'); // The modal should now be closed
@@ -369,19 +381,22 @@ describe('Billing Page', () => {
           statusCode: 400,
           url: `${BILLING_API_BASE_URL}/cors-data*`,
           fixture: 'billing/cors-data/400.post.json',
+          requestAlias: 'corsReq',
         });
 
         fillOutForm();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Payment Information' }).click();
+        });
 
-        cy.findAllByText(/Update Payment Information */i)
-          .last()
-          .click();
+        cy.wait('@corsReq');
 
         cy.findByText('Something went wrong.').should('be.visible');
         cy.findByText('View Details').click();
         cy.findByText('This is an error').should('be.visible');
       });
-      describe('reports error to sentry', () => {
+
+      describe('reports errors to sentry', () => {
         it('sends zuora error codes to sentry when zuora errors with 200', () => {
           cy.stubRequest({
             method: 'POST',
@@ -415,9 +430,10 @@ describe('Billing Page', () => {
           });
 
           fillOutForm();
-          cy.findAllByText(/Update Payment Information */i)
-            .last()
-            .click();
+          cy.withinModal(() => {
+            cy.findByRole('button', { name: 'Update Payment Information' }).click();
+          });
+
           cy.findByText("'termType' value should be one of: TERMED, EVERGREEN").should(
             'be.visible',
           );
@@ -457,9 +473,10 @@ describe('Billing Page', () => {
           });
 
           fillOutForm();
-          cy.findAllByText(/Update Payment Information */i)
-            .last()
-            .click();
+          cy.withinModal(() => {
+            cy.findByRole('button', { name: 'Update Payment Information' }).click();
+          });
+
           cy.findByText('An error occurred while contacting the billing service').should(
             'be.visible',
           );
@@ -475,7 +492,7 @@ describe('Billing Page', () => {
         });
 
         cy.visit(PAGE_URL);
-        cy.findByText('Update Billing Contact').click();
+        cy.findByRole('button', { name: 'Update Billing Contact' }).click();
       });
 
       it('closes the modal when clicking "Cancel"', () => {
@@ -499,9 +516,9 @@ describe('Billing Page', () => {
         cy.findByLabelText('Email').clear();
         cy.findByLabelText('Zip Code').clear();
 
-        cy.findAllByText('Update Billing Contact')
-          .last()
-          .click();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Billing Contact' }).click();
+        });
 
         cy.findAllByText('Required').should('have.length', 4);
       });
@@ -529,9 +546,9 @@ describe('Billing Page', () => {
           requestAlias: 'billingUpdate',
         });
 
-        cy.findAllByText('Update Billing Contact')
-          .last()
-          .click();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Billing Contact' }).click();
+        });
 
         cy.wait('@billingUpdate').then(({ request }) => {
           cy.wrap(request.body).should('have.property', 'country_code', 'US');
@@ -553,9 +570,9 @@ describe('Billing Page', () => {
           fixture: '400.json',
         });
 
-        cy.findAllByText('Update Billing Contact')
-          .last()
-          .click();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Billing Contact' }).click();
+        });
 
         cy.findByText('Something went wrong.').should('be.visible');
         cy.findByText('View Details').click();

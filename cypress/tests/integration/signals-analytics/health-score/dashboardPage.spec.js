@@ -198,6 +198,7 @@ describe('The health score dashboard page', () => {
     });
 
     it('renders each subaccount along with the current health score for that subaccount', () => {
+      Cypress.currentTest.retries(2);
       function getTableRow(rowIndex) {
         return cy
           .get('tbody tr')

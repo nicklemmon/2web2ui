@@ -65,21 +65,6 @@ describe('The engagement details page', () => {
     });
   });
 
-  it('renders tooltip content when hovering over the icon within the page heading', () => {
-    cy.visit(PAGE_URL);
-
-    cy.get('main').within(() => {
-      cy.findByText('Engagement Recency')
-        .closest('h1')
-        .find('svg')
-        .trigger('mouseover');
-    });
-
-    cy.findAllByText(
-      'The share over time of your email that has been sent to recipients who most recently opened messages or clicked links during several defined time periods.',
-    ).should('be.visible');
-  });
-
   it('renders the empty state when no results are returned', () => {
     stubEmptyState();
     cy.visit(PAGE_URL);

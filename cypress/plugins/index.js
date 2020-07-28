@@ -11,7 +11,10 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-module.exports = on => {
+module.exports = (on, config) => {
+  require('cypress-plugin-retries/lib/plugin')(on);
+  require('@cypress/code-coverage/task')(on, config);
+
   on('task', {
     // Used to allow `cy.log()` to the Node console when running in headless mode
     log(message) {
@@ -22,18 +25,27 @@ module.exports = on => {
     },
   });
 
-  // See: https://github.com/cypress-io/cypress/issues/3602#issuecomment-591531887
-  // Helps prevent Cypress-launched Chrome browser from crashing when using CircleCI
-  on('before:browser:launch', (browser = {}, launchOptions) => {
-    // `args` is an array of all the arguments that will
-    // be passed to browsers when it launches
+  // Configuration options that do not change between environments
+  config.blacklistHosts = [
+    'api.sparkpost.test',
+    'api-staging.sparkpost.com',
+    '*google-analytics.com',
+    '*.storage.googleapis.com',
+    '*pendo.io',
+    'api.segment.io',
+    'cdn.segment.com',
+    '*siftscience.com',
+    '*googletagmanager.com',
+    '*sentry.io',
+    '*zuora.com',
+  ];
+  config.integrationFolder = 'cypress/tests/integration';
+  config.reporter = 'cypress-multi-reporters';
+  config.reporterOptions = {
+    configFile: 'cypress.reporter.json',
+  };
+  config.viewportWidth = 1280;
+  config.viewportHeight = 800;
 
-    if (browser.family === 'chromium' && browser.name !== 'electron') {
-      // see: https://github.com/cypress-io/cypress/issues/3633
-      launchOptions.args.push('--disable-dev-shm-usage');
-
-      // whatever you return here becomes the launchOptions
-      return launchOptions;
-    }
-  });
+  return config;
 };

@@ -482,6 +482,7 @@ describe('The templates edit draft page', () => {
     });
 
     it("saves the user's test data entry to local storage as the user edits test data", () => {
+      Cypress.currentTest.retries(2);
       cy.visit(PAGE_URL);
 
       cy.findByText('Test Data').click();

@@ -115,12 +115,15 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       });
 
       it('routes to the recipient list page when the user does not have Recipient Validation grants when navigating using the "Recipients" nav item', () => {
+        Cypress.currentTest.retries(2);
         cy.stubRequest({
           url: '/api/v1/authenticate/grants*',
           fixture: 'authenticate/grants/200.get.templates.json',
+          requestAlias: 'grantsReq',
         });
 
         commonBeforeSteps();
+        cy.wait('@grantsReq');
 
         cy.get(desktopNavSelector).within(() => {
           cy.findByText('Recipients').click();
@@ -133,9 +136,12 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       it('renders the subnav links when subsections within the "Recipient Validation" category when a subroute is visited', () => {
         commonBeforeSteps();
 
-        cy.get(desktopNavSelector).within(() => {
-          cy.findByText('Recipients').click();
+        cy.stubRequest({
+          url: '/api/v1/recipient-validation/list',
+          fixture: 'recipient-validation/list/200.get.json',
         });
+
+        cy.visit('/recipient-validation/list');
 
         cy.findByText('Single Address').click();
 
@@ -296,6 +302,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       });
 
       it('moves focus to the menu when opened', () => {
+        Cypress.currentTest.retries(2);
         commonBeforeSteps();
         toggleMobileMenu();
 

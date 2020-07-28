@@ -85,6 +85,8 @@ describe('The events page', () => {
   });
 
   it('renders the "Share this report" modal when clicking on the "Share" button', () => {
+    Cypress.currentTest.retries(2);
+
     cy.visit(PAGE_URL);
 
     cy.findByText('Share').click();

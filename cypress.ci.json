@@ -1,0 +1,4 @@
+{
+  "baseUrl": "http://app-staging.sparkpost.com:5000",
+  "numTestsKeptInMemory": 1
+}
