@@ -52,7 +52,8 @@
     ],
     "plugins": [
       "lodash",
-      "recharts"
+      "recharts",
+      "@babel/plugin-proposal-class-properties"
     ]
   },
   "description": "SparkPost web app built in React",
@@ -125,7 +126,8 @@
     "validator": "^10.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.1.6",
+    "@babel/core": "7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@cypress/code-coverage": "^3.8.1",
     "@sheerun/mutationobserver-shim": "^0.3.3",
     "@storybook/addon-docs": "^5.2.6",
@@ -147,7 +149,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-named-asset-import": "^0.3.0",
     "babel-plugin-recharts": "^1.2.0",
-    "babel-preset-react-app": "^7.0.0",
+    "babel-preset-react-app": "9.1.2",
     "brace": "^0.11.0",
     "browserslist": "^4.0.0",
     "caniuse-db": "^1.0.30000875",

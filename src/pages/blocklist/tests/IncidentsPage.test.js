@@ -42,7 +42,7 @@ describe('IncidentsPage', () => {
   const mockListMonitors = jest.fn();
   const mockListIncidents = jest.fn();
 
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const now = new Date('2019-12-18T04:20:00-04:00');
     Date.now = jest.fn(() => now);
 

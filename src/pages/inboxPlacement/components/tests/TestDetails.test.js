@@ -13,7 +13,7 @@ describe('Component: TestDetails', () => {
     spam_pct: 0,
     missing_pct: 1,
   };
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = {
       details: {
         start_time: '2019-07-08T15:49:56.954Z',

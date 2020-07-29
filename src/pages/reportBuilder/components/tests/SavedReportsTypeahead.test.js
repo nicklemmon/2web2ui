@@ -12,7 +12,7 @@ describe('Saved Reports Typeahead', () => {
     },
   };
 
-  const subject = ({ ...props }) => {
+  const subject = props => {
     return shallow(<SavedReportsTypeahead {...defaultProps} {...props} />);
   };
 

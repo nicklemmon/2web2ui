@@ -5,7 +5,8 @@ import FolderPlacementBarChart from '../FolderPlacementBarChart';
 
 describe('Component: FolderPlacementBarChart', () => {
   const defaultPlacements = {};
-  const subject = ({ ...props }) => shallow(<FolderPlacementBarChart placements={defaultPlacements} {...props}/>);
+  const subject = props =>
+    shallow(<FolderPlacementBarChart placements={defaultPlacements} {...props} />);
 
   it('renders nothing with defaults', () => {
     expect(subject().isEmptyRender()).toBe(true);
@@ -15,10 +16,9 @@ describe('Component: FolderPlacementBarChart', () => {
     const placements = {
       inbox_pct: 0.905,
       spam_pct: 0.55,
-      missing_pct: 0.40
+      missing_pct: 0.4,
     };
 
     expect(subject({ placements })).toMatchSnapshot();
   });
-
 });

@@ -14,7 +14,7 @@ describe('Blocklist Component: MonitorsCollection', () => {
       active_listing_count: 2,
     },
   ];
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = { monitors };
 
     return render(

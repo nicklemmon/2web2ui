@@ -32,7 +32,7 @@ const activeIncidents = [
 ];
 
 describe('Blocklist Component: RelatedIncidents', () => {
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = { incidents: [], header: '', type: 'blocklist' };
 
     return render(

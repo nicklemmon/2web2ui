@@ -21,7 +21,7 @@ describe('Blocklist Component: IncidentsCollection', () => {
       occurred_at_timestamp: 123456789,
     },
   ];
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = { incidents, dateOptions, updateDateRange };
 
     return render(

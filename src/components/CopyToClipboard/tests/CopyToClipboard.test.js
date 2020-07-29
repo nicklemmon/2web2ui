@@ -8,7 +8,7 @@ describe('CopyToClipboard Component', () => {
   window.setTimeout = jest.fn();
   window.clearTimeout = jest.fn();
 
-  const subject = ({ ...props }) => shallow(<CopyToClipboard {...props} />);
+  const subject = props => shallow(<CopyToClipboard {...props} />);
 
   it('renders with default props', () => {
     const wrapper = subject();

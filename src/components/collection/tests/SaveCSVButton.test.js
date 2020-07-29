@@ -16,7 +16,7 @@ describe('Save CSV Button', () => {
     saveCsv: true,
   };
 
-  const subject = ({ ...props }) => shallow(<SaveCSVButton {...props} />);
+  const subject = props => shallow(<SaveCSVButton {...props} />);
 
   beforeEach(() => {
     Papa.unparse = jest.fn(() => 'mydata');

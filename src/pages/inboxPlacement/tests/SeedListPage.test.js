@@ -4,7 +4,7 @@ import React from 'react';
 import { SeedListPage } from '../SeedListPage';
 
 describe('Page: SeedList tests', () => {
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = {
       loading: false,
       seeds: [],

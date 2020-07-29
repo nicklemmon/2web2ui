@@ -12,7 +12,7 @@ jest.mock('src/hooks/useRouter');
 describe('Page: Test List', () => {
   const now = moment.utc(new Date('2019-08-10T12:30:00-04:00'));
   Date.now = jest.fn(() => now);
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const from = moment(now).subtract(30, 'd');
     const to = now;
     useRouter.mockReturnValue({
