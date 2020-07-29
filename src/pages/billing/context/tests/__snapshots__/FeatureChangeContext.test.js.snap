@@ -48,7 +48,9 @@ Object {
       </Button>,
       "condition": false,
       "description": <div>
-        Your new plan doesn't include subaccounts.
+        <React.Fragment>
+          Your new plan doesn't include subaccounts.
+        </React.Fragment>
         <React.Fragment>
           <span>
              Please 
