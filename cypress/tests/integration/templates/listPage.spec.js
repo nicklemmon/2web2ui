@@ -96,6 +96,13 @@ describe('The templates list page', () => {
       fixture: 'templates/stubbed-template-1/200.get.json',
     });
 
+    cy.stubRequest({
+      method: 'POST',
+      url: '/api/v1/templates',
+      fixture: 'templates/200.post.json',
+      requestAlias: 'duplicateReq',
+    });
+
     cy.visit(PAGE_URL);
 
     cy.findAllByText('Open Menu')
@@ -106,12 +113,32 @@ describe('The templates list page', () => {
 
     cy.findByLabelText(/Template Name/g).should('have.value', 'Stubbed Template 1 (COPY)');
     cy.findByLabelText(/Template ID/g).should('have.value', 'stubbed-template-1-copy');
+
+    cy.withinModal(() => {
+      cy.findByRole('button', { name: 'Duplicate' }).click();
+    });
+
+    cy.wait('@duplicateReq').then(({ request }) => {
+      cy.wrap(request.body).should('have.property', 'name', 'Stubbed Template 1 (COPY)');
+      cy.wrap(request.body).should('have.property', 'id', 'stubbed-template-1-copy');
+    });
+
+    cy.withinSnackbar(() => {
+      cy.findByText('Template Stubbed Template 1 duplicated').should('be.visible');
+    });
   });
 
   it('renders "Recent Activity" results with a delete action', () => {
     cy.stubRequest({
       url: TEMPLATES_API_URL,
       fixture: 'templates/200.get.3-results.json',
+    });
+
+    cy.stubRequest({
+      method: 'DELETE',
+      url: `${TEMPLATES_API_URL}/stubbed-template-1`,
+      fixture: 'templates/stubbed-template-1/200.delete.json',
+      requestAlias: 'deleteReq',
     });
 
     cy.visit(PAGE_URL);
@@ -122,7 +149,16 @@ describe('The templates list page', () => {
 
     cy.findByText('Delete Template').click();
 
-    cy.findByText('Are you sure you want to delete your template?').should('be.visible');
+    cy.withinModal(() => {
+      cy.findByText('Are you sure you want to delete your template?').should('be.visible');
+      cy.findByRole('button', { name: 'Delete All Versions' }).click();
+    });
+
+    cy.wait('@deleteReq');
+
+    cy.withinSnackbar(() => {
+      cy.findByText('Template Stubbed Template 1 deleted').should('be.visible');
+    });
   });
 
   it('has a table that sorts by "Template Name" alphabetically"', () => {

@@ -49,12 +49,14 @@ export function SingleSignOnPanel(props) {
 
   const renderContent = () => {
     return (
-      <React.Fragment>
+      <>
         {tfaRequired && (
-          <p>
-            Single sign-on is not available while two-factor authentication is required on this
-            account.
-          </p>
+          <Panel.Section>
+            <p>
+              Single sign-on is not available while two-factor authentication is required on this
+              account.
+            </p>
+          </Panel.Section>
         )}
         <ProviderSection readOnly={tfaRequired} provider={provider} />
         <StatusSection readOnly={tfaRequired} {...props} />
@@ -70,7 +72,7 @@ export function SingleSignOnPanel(props) {
             error={deleteScimTokenError || generateScimTokenError}
           />
         )}
-      </React.Fragment>
+      </>
     );
   };
 

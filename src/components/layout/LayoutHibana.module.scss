@@ -12,23 +12,29 @@
 // TODO: This CSS is horrible because of overrides...need to refactor when the OG theme is removed
 .content {
   padding: spacing(800) spacing(400);
+  padding-bottom: sizing(900);
 
   @media (min-width: media-query(md)) {
     padding: 0 spacing(500) spacing(400) spacing(500);
+    padding-bottom: sizing(900);
   }
 
   .app & {
     padding: spacing(800) spacing(400);
+    padding-bottom: sizing(900);
 
     @media (min-width: media-query(md)) {
       padding: 0 spacing(500) spacing(400) spacing(500);
+      padding-bottom: sizing(900);
     }
 
     &.bannerOpen {
       padding: spacing(800) spacing(400);
+      padding-bottom: sizing(900);
 
       @media (min-width: media-query(md)) {
         padding: 0 spacing(500) spacing(400) spacing(500);
+        padding-bottom: sizing(900);
       }
     }
   }

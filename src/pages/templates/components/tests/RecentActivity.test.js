@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import TestApp from 'src/__testHelpers__/TestApp';
 import RecentActivity from '../RecentActivity';
 
@@ -81,25 +80,6 @@ describe('RecentActivity', () => {
 
     expect(queryAllByRole('listitem')).toHaveLength(4);
     expect(queryAllByRole('listitem')).not.toHaveLength(5);
-  });
-
-  it('invokes the `onToggleDuplicateModal` propr when `DuplicateAction` is clicked', async () => {
-    const mockToggleDeleteModal = jest.fn();
-    const mockToggleDuplicateModal = jest.fn();
-
-    const { getAllByText, getByText } = subject({
-      templates: [publishedWithDraftTemplate, publishedTemplate, draftTemplate, draftTemplate],
-      onToggleDeleteModal: mockToggleDeleteModal,
-      onToggleDuplicateModal: mockToggleDuplicateModal,
-    });
-
-    userEvent.click(getAllByText('Open Menu')[0]);
-
-    userEvent.click(getByText('Duplicate Template'));
-    expect(mockToggleDuplicateModal).toHaveBeenCalled();
-
-    userEvent.click(getByText('Delete Template'));
-    expect(mockToggleDeleteModal).toHaveBeenCalled();
   });
 
   it('does not render action buttons when `hasActionButtons` is `false`', () => {
