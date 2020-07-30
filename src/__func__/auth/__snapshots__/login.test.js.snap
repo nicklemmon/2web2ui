@@ -40,6 +40,33 @@ Array [
         "Authorization": "mock-access-token",
       },
       "method": "get",
+      "params": undefined,
+      "responseType": "json",
+      "url": "/v1/users/test-username",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
+      "params": Object {
+        "beta": false,
+        "role": "admin",
+      },
+      "responseType": "json",
+      "url": "/v1/authenticate/grants",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
       "params": Object {},
       "responseType": "json",
       "url": "/v1/account",
@@ -79,33 +106,6 @@ Array [
       "params": Object {},
       "responseType": "json",
       "url": "/v1/billing/subscription",
-    },
-  ],
-  Array [
-    Object {
-      "data": undefined,
-      "headers": Object {
-        "Authorization": "mock-access-token",
-      },
-      "method": "get",
-      "params": undefined,
-      "responseType": "json",
-      "url": "/v1/users/test-username",
-    },
-  ],
-  Array [
-    Object {
-      "data": undefined,
-      "headers": Object {
-        "Authorization": "mock-access-token",
-      },
-      "method": "get",
-      "params": Object {
-        "beta": false,
-        "role": "admin",
-      },
-      "responseType": "json",
-      "url": "/v1/authenticate/grants",
     },
   ],
   Array [
