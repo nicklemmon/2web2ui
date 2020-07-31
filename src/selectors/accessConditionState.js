@@ -17,7 +17,7 @@ export const getCurrentAccountPlan = createSelector(
     const currentPlan = {
       ...currentMessagingPlanDetails,
       ...currentBundle,
-      products: subscription.products,
+      products: subscription.products || [],
     };
     return {
       billingId: currentPlan.billing_id,
