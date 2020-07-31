@@ -176,17 +176,17 @@ describe('Billing Page', () => {
     const dedicatedIpsApiUrl = `${ACCOUNT_API_BASE_URL}/add-ons/dedicated_ips`;
 
     function assignToNewIpPool() {
-      cy.findByLabelText(/Quantity */i).type('1'); // Helps avoid encountering the 'Required' error message
-      cy.findByLabelText(/Name your new IP Pool */i).type('myPool');
+      cy.findByLabelText(/Quantity/i).type('1'); // Helps avoid encountering the 'Required' error message
+      cy.findByLabelText(/Name your new IP Pool/i).type('myPool');
       cy.findAllByText('Add Dedicated IPs')
         .last()
         .click();
     }
 
     function assignToExistingIpPool() {
-      cy.findByLabelText(/Quantity */i).type('1'); // Helps avoid encountering the 'Required' error message
+      cy.findByLabelText(/Quantity/i).type('1'); // Helps avoid encountering the 'Required' error message
       cy.findByLabelText('Assign to an existing IP Pool').check({ force: true }); // `force` required to handle Matchbox design issue
-      cy.findByLabelText(/Choose an IP Pool */i).select('myPool');
+      cy.findByLabelText(/Choose an IP Pool/i).select('myPool');
       cy.findAllByText('Add Dedicated IPs')
         .last()
         .click();
@@ -301,24 +301,23 @@ describe('Billing Page', () => {
         });
 
         cy.visit(PAGE_URL);
-        cy.findByText(/Update Payment Information */i).click();
+        cy.findByRole('button', { name: /Update Payment Information/i }).click();
       });
 
       it('closes the modal when clicking "Cancel"', () => {
         cy.withinModal(() => {
           cy.findAllByText('Update Payment Information').should('be.visible');
-          cy.findByText('Cancel').click({ force: true });
+          cy.findByRole('button', { name: 'Cancel' }).click();
           cy.findAllByText('Update Payment Information').should('not.be.visible');
         });
       });
 
       it('renders "Required" validation errors when skipping the "Credit Card Number", "Cardholder Name", "Expiration Date", "Security Code", and "Zip Code" fields', () => {
-        cy.withinModal(() => {
-          cy.findAllByText('Update Payment Information')
-            .last()
-            .click({ force: true });
+        Cypress.currentTest.retries(2);
 
-          cy.findAllByText(/Required */i).should('have.length', 5);
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Payment Information' }).click();
+          cy.findAllByText(/Required/i).should('have.length', 5);
         });
       });
 
@@ -371,7 +370,9 @@ describe('Billing Page', () => {
           '@billingCollectReq',
         ]);
 
-        cy.findByText('Payment Information Updated').should('be.visible');
+        cy.withinSnackbar(() => {
+          cy.findByText('Payment Information Updated').should('be.visible');
+        });
         cy.findByLabelText('Credit Card Number').should('not.be.visible'); // The modal should now be closed
       });
 
@@ -391,9 +392,11 @@ describe('Billing Page', () => {
 
         cy.wait('@corsReq');
 
-        cy.findByText('Something went wrong.').should('be.visible');
-        cy.findByText('View Details').click();
-        cy.findByText('This is an error').should('be.visible');
+        cy.withinSnackbar(() => {
+          cy.findByText('Something went wrong.').should('be.visible');
+          cy.findByText('View Details').click();
+          cy.findByText('This is an error').should('be.visible');
+        });
       });
 
       describe('reports errors to sentry', () => {
@@ -497,9 +500,7 @@ describe('Billing Page', () => {
 
       it('closes the modal when clicking "Cancel"', () => {
         cy.findByLabelText('First Name').should('be.visible');
-
-        cy.findByText('Cancel').click();
-
+        cy.findByRole('button', { name: 'Cancel' }).click();
         cy.findByLabelText('First Name').should('not.be.visible');
       });
 

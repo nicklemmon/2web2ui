@@ -4,7 +4,7 @@ import { Text } from 'src/components/matchbox';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 
 export function OGHeading(props) {
-  const { as, looksLike, className, children } = props;
+  const { as, looksLike, className, children, id } = props;
   const Component = looksLike ? looksLike : as;
   const headingLevel = as.replace('h', '');
 
@@ -14,6 +14,7 @@ export function OGHeading(props) {
       aria-level={headingLevel}
       className={className}
       data-id={props['data-id']}
+      id={id}
     >
       {children}
     </Component>
@@ -21,7 +22,7 @@ export function OGHeading(props) {
 }
 
 export function HibanaHeading(props) {
-  const { as, looksLike, className, children } = props;
+  const { as, looksLike, className, children, id } = props;
   const Component = looksLike ? looksLike : as;
   const headingLevel = as.replace('h', '');
 
@@ -32,6 +33,7 @@ export function HibanaHeading(props) {
       aria-level={headingLevel}
       className={className}
       data-id={props['data-id']}
+      id={id}
     >
       {children}
     </Text>
@@ -48,4 +50,5 @@ Heading.propTypes = {
   looksLike: PropTypes.oneOf(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']),
   className: PropTypes.string,
   'data-id': PropTypes.string,
+  id: PropTypes.string,
 };

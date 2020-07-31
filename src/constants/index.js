@@ -44,6 +44,7 @@ export const LINKS = {
   SUBACCOUNTS: 'https://sparkpost.com/docs/user-guide/subaccounts/',
   SUBACCOUNTS_API: 'https://developers.sparkpost.com/api/subaccounts.html',
   TOU: 'https://www.sparkpost.com/policies/tou',
+  SECURITY: 'https://www.sparkpost.com/policies/security/',
   DOMAIN_VERIFICATION:
     'https://www.sparkpost.com/docs/tech-resources/enabling-multiple-custom-tracking-domains',
   SENDING_REQS: 'https://www.sparkpost.com/docs/getting-started/requirements-for-sending-domains',
@@ -68,6 +69,7 @@ export const LINKS = {
   RECIPIENT_VALIDATION_ACCESS: 'https://www.sparkpost.com/rv-access',
   AUTO_IP_WARMUP_SETUP: 'https://www.sparkpost.com/docs/user-guide/automated-ip-warmup/',
   MAILBOX_PROVIDERS: 'https://www.sparkpost.com/docs/user-guide/alerts/#mailbox-providers',
+  STATUS: 'https://status.sparkpost.com/',
 };
 
 export const ENTERPRISE_PLAN_CODES = ['ent1'];
