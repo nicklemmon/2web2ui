@@ -32,7 +32,7 @@ describe('Action: Initialize Access Control', () => {
     expect(getPlans).toHaveBeenCalledWith({ meta });
     expect(getBundles).toHaveBeenCalledWith({ meta });
     expect(getSubscription).toHaveBeenCalledWith({ meta });
-    expect(dispatch).toHaveBeenCalledTimes(6);
+    expect(dispatch).toHaveBeenCalledTimes(7);
   });
   it('should initialize access control with a series of calls for heroku users', async () => {
     getCurrentUser.mockImplementation(() => Promise.resolve({ access_level: 'heroku' }));
@@ -46,6 +46,6 @@ describe('Action: Initialize Access Control', () => {
     expect(getPlans).toHaveBeenCalledWith({ meta });
     expect(getBundles).toHaveBeenCalledWith({ meta });
     expect(getSubscription).not.toHaveBeenCalled();
-    expect(dispatch).toHaveBeenCalledTimes(5);
+    expect(dispatch).toHaveBeenCalledTimes(6);
   });
 });
