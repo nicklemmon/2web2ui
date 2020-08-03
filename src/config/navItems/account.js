@@ -36,7 +36,11 @@ const profile = {
   to: '/account/profile',
   section: 1,
 };
-
+const usageRoute = {
+  label: 'Usage',
+  to: '/usage',
+  section: 1,
+};
 const billingFreePlan = {
   label: 'Billing',
   to: '/account/billing',
@@ -131,6 +135,10 @@ export const hibanaAccountNavItems = [
   {
     ...accountSettings,
   },
+  // myPlan, // In the mock, but doesn't exist yet?
+
+  usageRoute,
+
   {
     ...billingFreePlan,
   },

@@ -33,6 +33,7 @@ import {
   trackingDomains,
   users,
   webhooks,
+  UsagePage,
 } from 'src/pages';
 
 import LogoutPage from 'src/pages/logout/LogoutPage';
@@ -790,6 +791,16 @@ const appRoutes = [
   },
 ];
 
+const usageRoute = [
+  {
+    path: '/usage',
+    component: UsagePage,
+    layout: App,
+    title: 'Usage',
+    category: 'Account',
+  },
+];
+
 const routes = [
   ...appRoutes,
   ...signalsRoutes,
@@ -804,6 +815,7 @@ const hibanaRoutes = [
   ...templatesRoutes,
   ...inboxPlacementRoutes,
   ...hibanaBlocklistRoutes,
+  ...usageRoute,
 ];
 
 // ensure 404 is always last in routes

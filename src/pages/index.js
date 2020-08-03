@@ -38,3 +38,4 @@ export { default as SingleResultPage } from './recipientValidation/SingleResult'
 export { default as UploadedListPage } from './recipientValidation/UploadedListPage';
 export { default as snippets } from './snippets';
 export { default as inboxPlacement } from './inboxPlacement';
+export { UsagePage } from './usage';
