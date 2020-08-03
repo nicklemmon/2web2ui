@@ -12,6 +12,10 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
   const overage = remaining < 0 ? Math.abs(remaining) : 0;
   const hasDailyLimit = usage && usage.day.limit && usage.day.limit > 0;
   const hasMonthlyLimit = usage && usage.month.limit && usage.month.limit > 0;
+  const isNearingMonthlyLimit =
+    usage && subscription && remaining > 0 && remaining / subscription.plan_volume < 0.1;
+  const isNearingDailyLimit =
+    usage && usage.day.used - usage.day.limit > 0 && usage.day.used / usage.day.limit > 0.9;
   return (
     <>
       <Layout.Section annotated>
@@ -30,15 +34,18 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
             </SubduedText>
             <ExternalLink to={LINKS.DAILY_MONTHLY_QUOTA_LIMIT_DOC}>Quota Limits</ExternalLink>
           </>
-          <>
-            <Text fontSize="200" fontWeight="bold">
-              Upgrade
-            </Text>
-            <SubduedText>
-              Your usage indicates that you are nearing you're daily or monthly limits. Upgrade your
-              plan in <PageLink to="account/billing/plan">Billing</PageLink>.
-            </SubduedText>
-          </>
+          {isNearingMonthlyLimit ||
+            (isNearingDailyLimit && (
+              <>
+                <Text fontSize="200" fontWeight="bold">
+                  Upgrade
+                </Text>
+                <SubduedText>
+                  Your usage indicates that you are nearing you're daily or monthly limits. Upgrade
+                  your plan in <PageLink to="account/billing/plan">Billing</PageLink>.
+                </SubduedText>
+              </>
+            ))}
         </Stack>
       </Layout.Section>
 
