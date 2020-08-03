@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import { Page, Layout } from 'src/components/matchbox';
 import { connect } from 'react-redux';
-import { fetch as getAccount } from 'src/actions/account';
+import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { getSubscription } from 'src/actions/billing';
 import { MessagingUsageSection } from './components/MessagingUsageSection';
 import { FeatureUsageSection } from './components/FeatureUsageSection';
+import { RVUsageSection } from './components/RVUsageSection';
 
 export function UsagePage({
   getAccount,
   getSubscription,
+  getUsage,
   usage,
+  rvUsage,
   subscription,
   billingSubscription,
 }) {
@@ -21,6 +24,10 @@ export function UsagePage({
     getSubscription();
   }, [getSubscription]);
 
+  useEffect(() => {
+    getUsage();
+  }, [getUsage]);
+
   return (
     <Page title="Usage">
       <Layout>
@@ -29,6 +36,9 @@ export function UsagePage({
       <Layout>
         <FeatureUsageSection billingSubscription={billingSubscription} />
       </Layout>
+      <Layout>
+        <RVUsageSection rvUsage={rvUsage} />
+      </Layout>
     </Page>
   );
 }
@@ -36,9 +46,10 @@ export function UsagePage({
 const mapStateToProps = state => {
   return {
     usage: state.account.usage,
+    rvUsage: state.account.rvUsage,
     subscription: state.account.subscription,
     billingSubscription: state.billing.subscription,
   };
 };
 
-export default connect(mapStateToProps, { getAccount, getSubscription })(UsagePage);
+export default connect(mapStateToProps, { getAccount, getSubscription, getUsage })(UsagePage);
