@@ -1,4 +1,4 @@
-import totalRVCost, { calculateCost, calculateNewCost } from '../totalRecipientValidationCost';
+import totalRVCost, { calculateCost, calculateNewCost } from '../recipientValidation';
 
 describe('Total RV Cost', () => {
   it('should calculate price correctly', () => {
