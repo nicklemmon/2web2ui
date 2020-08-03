@@ -114,7 +114,10 @@ export const IncidentsPage = props => {
       title="Blocklist Incidents"
       primaryAction={{
         content: monitors.length === 0 ? 'Add to Watchlist' : 'View Watchlist',
-        to: monitors.length === 0 ? '/blocklist/watchlist/add' : '/blocklist/watchlist',
+        to:
+          monitors.length === 0
+            ? '/signals/blocklist/watchlist/add'
+            : '/signals/blocklist/watchlist',
         component: PageLink,
       }}
     >

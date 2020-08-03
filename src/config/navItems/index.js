@@ -86,6 +86,10 @@ const hibanaSignalsAnalytics = {
       label: 'Engagement Recency',
       to: '/signals/engagement',
     },
+    {
+      label: 'Blocklist',
+      to: '/signals/blocklist/incidents',
+    },
   ],
 };
 
@@ -146,7 +150,7 @@ const blocklist = {
   label: 'Blocklist',
   icon: GridOff,
   tag: 'preview',
-  to: '/blocklist/incidents',
+  to: '/signals/blocklist/incidents',
 };
 
 const webhooks = {
@@ -243,6 +247,5 @@ export const hibanaNavItems = [
   content,
   recipients,
   inboxPlacementNavItems,
-  blocklist,
   hibanaConfiguration,
 ];

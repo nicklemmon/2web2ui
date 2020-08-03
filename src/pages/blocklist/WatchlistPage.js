@@ -58,12 +58,12 @@ export const WatchlistPage = props => {
       title="Watched IPs and Domains"
       primaryAction={{
         content: 'Add IP or Sending Domain',
-        to: '/blocklist/watchlist/add',
+        to: '/signals/blocklist/watchlist/add',
         component: PageLink,
       }}
       breadcrumbAction={{
         content: 'Blocklisting Incidents',
-        to: '/blocklist/incidents',
+        to: '/signals/blocklist/incidents',
         component: PageLink,
       }}
     >

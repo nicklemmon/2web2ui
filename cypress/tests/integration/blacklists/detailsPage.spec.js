@@ -1,4 +1,4 @@
-const PAGE_URL = '/blocklist/incidents/7';
+const PAGE_URL = '/signals/blocklist/incidents/7';
 const BLOCKLIST_BASE_API_URL = '/api/v1/blacklist-monitors';
 
 describe('Blocklist Incident Details Page', () => {
@@ -123,7 +123,7 @@ describe('Blocklist Incident Details Page', () => {
           .contains('127.0.0.2')
           .click();
       });
-      cy.url().should('include', '/blocklist/incidents/9');
+      cy.url().should('include', '/signals/blocklist/incidents/9');
     });
   });
 
@@ -147,7 +147,7 @@ describe('Blocklist Incident Details Page', () => {
           .contains('new.spam.dnsbl.sorbs.net')
           .click();
       });
-      cy.url().should('include', '/blocklist/incidents/8');
+      cy.url().should('include', '/signals/blocklist/incidents/8');
     });
   });
 });

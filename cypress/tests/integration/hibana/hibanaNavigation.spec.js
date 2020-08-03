@@ -49,7 +49,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.verifyLink({ content: 'Content', href: '/templates' });
           cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-          cy.verifyLink({ content: 'Blocklist', href: '/blocklist/incidents' });
         });
       });
 
@@ -67,6 +66,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
           cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
           cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
         });
       });
 
@@ -164,18 +164,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         cy.get(secondaryNavSelector).should('not.be.visible');
       });
 
-      it('does not render the subnav when "Blocklist" is active', () => {
-        commonBeforeSteps();
-
-        cy.get(desktopNavSelector).within(() => {
-          cy.findByText('Blocklist').click();
-        });
-
-        cy.url().should('include', '/blocklist/incidents');
-
-        cy.get(secondaryNavSelector).should('not.be.visible');
-      });
-
       it("renders the pending cancellation banner when the user's account is pending cancellation", () => {
         cy.stubAuth();
 
@@ -254,6 +242,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
           cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
           cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
           cy.findByText('Signals Analytics').click();
 
           cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
@@ -271,7 +260,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByText('Recipients').click();
 
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-          cy.verifyLink({ content: 'Blocklist', href: '/blocklist/incidents' });
 
           cy.findByText('Configuration').click();
           cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });

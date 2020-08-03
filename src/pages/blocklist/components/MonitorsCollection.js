@@ -40,7 +40,7 @@ export const MonitorsCollection = props => {
     ({ resource, active_listing_count, total_listing_count }) => {
       return [
         <div className={styles.NameDetails}>
-          <PageLink to={`/blocklist/incidents?search=${resource}`}>{resource}</PageLink>
+          <PageLink to={`/signals/blocklist/incidents?search=${resource}`}>{resource}</PageLink>
         </div>,
         <div className={classNames(styles.ListingDetails, styles.ListingDetailsCell)}>
           {active_listing_count}

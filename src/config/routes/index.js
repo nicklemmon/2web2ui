@@ -64,7 +64,7 @@ import {
 import { emailRedirects, emailVerificationRedirect } from './emailRoutes';
 import templateRoutes from './templates';
 import inboxPlacementRoutes from './inboxPlacement';
-import blocklistRoutes from './blocklist';
+import blocklistRoutes, { hibanaBlocklistRoutes } from './blocklist';
 import signalsRoutes, { hibanaSignalsRoutes } from './signals';
 import templatesRoutes from './templates';
 
@@ -729,7 +729,7 @@ const hibanaRoutes = [
   ...hibanaSignalsRoutes,
   ...templatesRoutes,
   ...inboxPlacementRoutes,
-  ...blocklistRoutes,
+  ...hibanaBlocklistRoutes,
 ];
 
 // ensure 404 is always last in routes

@@ -4,7 +4,7 @@ import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
 const blocklistRoutes = [
   {
-    path: '/blocklist/incidents',
+    path: '/signals/blocklist/incidents',
     component: blocklist.IncidentsPage,
     layout: App,
     condition: hasAccountOptionEnabled('blacklist_monitors'),
@@ -13,7 +13,7 @@ const blocklistRoutes = [
     category: 'Blocklist',
   },
   {
-    path: '/blocklist/watchlist',
+    path: '/signals/blocklist/watchlist',
     component: blocklist.WatchlistPage,
     layout: App,
     condition: hasAccountOptionEnabled('blacklist_monitors'),
@@ -22,7 +22,7 @@ const blocklistRoutes = [
     category: 'Blocklist',
   },
   {
-    path: '/blocklist/watchlist/add',
+    path: '/signals/blocklist/watchlist/add',
     component: blocklist.WatchlistAddPage,
     condition: hasAccountOptionEnabled('blacklist_monitors'),
     layout: App,
@@ -31,7 +31,7 @@ const blocklistRoutes = [
     category: 'Blocklist',
   },
   {
-    path: '/blocklist/incidents/:id',
+    path: '/signals/blocklist/incidents/:id',
     component: blocklist.IncidentDetailsPage,
     condition: hasAccountOptionEnabled('blacklist_monitors'),
     layout: App,
@@ -42,3 +42,9 @@ const blocklistRoutes = [
 ];
 
 export default blocklistRoutes;
+
+export const hibanaBlocklistRoutes = blocklistRoutes.map(route => ({
+  ...route,
+  category: 'Signals Analytics',
+  subcategory: 'Blocklist',
+}));

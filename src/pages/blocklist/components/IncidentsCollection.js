@@ -25,7 +25,7 @@ const getRowData = ({
   resolved_at_formatted,
 }) => {
   return [
-    <PageLink to={`/blocklist/incidents/${id}`}>
+    <PageLink to={`/signals/blocklist/incidents/${id}`}>
       <span className={styles.DetailsLink}>{resource}</span>
       <span> on </span> <span className={styles.DetailsLink}>{blacklist_name}</span>
     </PageLink>,

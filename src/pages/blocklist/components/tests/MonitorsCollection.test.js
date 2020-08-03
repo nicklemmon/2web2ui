@@ -40,6 +40,6 @@ describe('Blocklist Component: MonitorsCollection', () => {
   it('links each item to the incidents page filtered by the resource', () => {
     const { queryByText } = subject();
     const anchor = queryByText('1.2.3.4');
-    expect(anchor.getAttribute('href')).toBe('/blocklist/incidents?search=1.2.3.4');
+    expect(anchor.getAttribute('href')).toBe('/signals/blocklist/incidents?search=1.2.3.4');
   });
 });
