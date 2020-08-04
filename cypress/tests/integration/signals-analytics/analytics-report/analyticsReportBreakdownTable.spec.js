@@ -30,6 +30,12 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
   describe('Analytics Report breakdown table', () => {
     beforeEach(() => {
       cy.stubAuth();
+
+      cy.stubRequest({
+        url: '/api/v1/subaccounts',
+        fixture: 'subaccounts/200.get.json',
+        requestAliasList: 'getSubaccountList',
+      });
       cy.login({ isStubbed: true });
     });
 
@@ -229,7 +235,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       verifyRow({
         rowIndex: 1,
-        firstCell: 'Deleted (ID 3)',
+        firstCell: 'Subaccount 3',
         secondCell: '900',
         thirdCell: '1K',
         fourthCell: '1.1K',
@@ -238,7 +244,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       verifyRow({
         rowIndex: 2,
-        firstCell: 'Deleted (ID 2)',
+        firstCell: 'Subaccount 2',
         secondCell: '500',
         thirdCell: '600',
         fourthCell: '700',
@@ -247,7 +253,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       verifyRow({
         rowIndex: 3,
-        firstCell: 'Deleted (ID 1)',
+        firstCell: 'Subaccount 1',
         secondCell: '100',
         thirdCell: '200',
         fourthCell: '300',

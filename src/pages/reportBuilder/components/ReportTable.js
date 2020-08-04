@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import { _getTableData } from 'src/actions/summaryChart';
-import typeaheadCacheSelector from 'src/selectors/reportFilterTypeaheadCache';
+import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 
 import { TableCollection, Unit, PanelLoading } from 'src/components';
@@ -11,7 +11,6 @@ import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
 import { Panel, Table, Box } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
-import _ from 'lodash';
 
 import styles from './ReportTable.module.scss';
 
@@ -30,8 +29,13 @@ export const ReportTable = props => {
     metrics,
     tableData = [],
     tableLoading,
-    typeaheadCache,
+    subaccounts,
+    getSubaccountsList,
   } = props;
+
+  useEffect(() => {
+    getSubaccountsList();
+  }, [getSubaccountsList]);
 
   //TODO RB CLEANUP: Change value. Default has to be 'aggregate' for now due to sharing reducer with non-hibana summary report
   const groupBy = props.groupBy === 'aggregate' ? 'placeholder' : props.groupBy;
@@ -58,8 +62,13 @@ export const ReportTable = props => {
       return { type: 'Subaccount', value: 'Master Account (ID 0)', id: 0 };
     }
 
-    const subaccount = _.find(typeaheadCache, { type: 'Subaccount', id: subaccountId });
-    const value = _.get(subaccount, 'value') || `Deleted (ID ${subaccountId})`;
+    const subaccount = subaccounts.find(({ id }) => {
+      return id === subaccountId;
+    });
+
+    const value = subaccount
+      ? `${subaccount?.name} (ID ${subaccount?.id})`
+      : `Subaccount ${subaccountId}`;
     return { type: 'Subaccount', value, id: subaccountId };
   };
 
@@ -138,9 +147,9 @@ export const ReportTable = props => {
 };
 
 const mapStateToProps = state => ({
-  typeaheadCache: typeaheadCacheSelector(state),
+  subaccounts: state.subaccounts.list,
   hasSubaccounts: hasSubaccounts(state),
   ...state.summaryChart,
 });
 
-export default connect(mapStateToProps, { _getTableData })(ReportTable);
+export default connect(mapStateToProps, { _getTableData, getSubaccountsList })(ReportTable);
