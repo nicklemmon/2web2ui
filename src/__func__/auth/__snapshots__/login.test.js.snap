@@ -52,12 +52,9 @@ Array [
         "Authorization": "mock-access-token",
       },
       "method": "get",
-      "params": Object {
-        "beta": false,
-        "role": "admin",
-      },
+      "params": Object {},
       "responseType": "json",
-      "url": "/v1/authenticate/grants",
+      "url": "/v1/account",
     },
   ],
   Array [
@@ -67,9 +64,12 @@ Array [
         "Authorization": "mock-access-token",
       },
       "method": "get",
-      "params": Object {},
+      "params": Object {
+        "beta": false,
+        "role": "admin",
+      },
       "responseType": "json",
-      "url": "/v1/account",
+      "url": "/v1/authenticate/grants",
     },
   ],
   Array [
