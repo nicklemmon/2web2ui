@@ -40,6 +40,7 @@ const usageRoute = {
   label: 'Usage',
   to: '/usage',
   section: 1,
+  condition: hasGrants('users/manage'),
 };
 const billingFreePlan = {
   label: 'Billing',

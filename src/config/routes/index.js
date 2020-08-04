@@ -798,6 +798,7 @@ const usageRoute = [
     layout: App,
     title: 'Usage',
     category: 'Account',
+    condition: hasGrants('users/manage'),
   },
 ];
 
