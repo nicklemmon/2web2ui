@@ -34,18 +34,17 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
             </SubduedText>
             <ExternalLink to={LINKS.DAILY_MONTHLY_QUOTA_LIMIT_DOC}>Quota Limits</ExternalLink>
           </>
-          {isNearingMonthlyLimit ||
-            (isNearingDailyLimit && (
-              <>
-                <Text fontSize="200" fontWeight="bold">
-                  Upgrade
-                </Text>
-                <SubduedText>
-                  Your usage indicates that you are nearing you're daily or monthly limits. Upgrade
-                  your plan in <PageLink to="account/billing/plan">Billing</PageLink>.
-                </SubduedText>
-              </>
-            ))}
+          {(isNearingMonthlyLimit || isNearingDailyLimit) && (
+            <>
+              <Text fontSize="200" fontWeight="bold">
+                Upgrade
+              </Text>
+              <SubduedText>
+                Your usage indicates that you are nearing you're daily or monthly limits. Upgrade
+                your plan in <PageLink to="account/billing/plan">Billing</PageLink>.
+              </SubduedText>
+            </>
+          )}
         </Stack>
       </Layout.Section>
 

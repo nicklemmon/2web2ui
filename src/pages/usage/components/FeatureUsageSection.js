@@ -17,7 +17,7 @@ export const FeatureUsageSection = ({ billingSubscription }) => {
           <Stack>
             {getProduct('dedicated_ip') && (
               <>
-                <Heading looksLike="h6" as="p">
+                <Heading looksLike="h6" as="h3">
                   Dedicated IPs
                 </Heading>
                 <SubduedText>
@@ -33,7 +33,7 @@ export const FeatureUsageSection = ({ billingSubscription }) => {
             )}
             {getProduct('subaccounts') && (
               <>
-                <Heading looksLike="h6" as="p">
+                <Heading looksLike="h6" as="h3">
                   Subaccounts
                 </Heading>
                 <SubduedText as="p">
