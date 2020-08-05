@@ -51,69 +51,73 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
       <Layout.Section>
         {usage && (
           <Box padding="400" backgroundColor={tokens.color_gray_1000}>
-            <Grid>
-              <Grid.Column sm={3}>
-                <Box id="date">
-                  <LabelAndKeyPair
-                    label="Billing Cycle"
-                    value={`${formatDate(usage.month.start)} - ${formatDate(usage.month.end)}`}
-                  ></LabelAndKeyPair>
-                </Box>
-              </Grid.Column>
-              <Grid.Column sm={9}>
-                <Inline space="400">
-                  <Box>
+            <Stack>
+              <Grid>
+                <Grid.Column sm={3}>
+                  <Box id="date">
                     <LabelAndKeyPair
-                      label="Today's Usage"
-                      value={usage.day.used.toLocaleString()}
+                      label="Billing Cycle"
+                      value={`${formatDate(usage.month.start)} - ${formatDate(usage.month.end)}`}
                     ></LabelAndKeyPair>
                   </Box>
-                  <Box>
-                    {hasDailyLimit && (
+                </Grid.Column>
+                <Grid.Column sm={9}>
+                  <Inline space="400">
+                    <Box>
                       <LabelAndKeyPair
-                        label="Daily Limit"
-                        value={usage.day.limit.toLocaleString()}
+                        label="Today's Usage"
+                        value={usage.day.used.toLocaleString()}
                       ></LabelAndKeyPair>
+                    </Box>
+                    <Box>
+                      {hasDailyLimit && (
+                        <LabelAndKeyPair
+                          label="Daily Limit"
+                          value={usage.day.limit.toLocaleString()}
+                        ></LabelAndKeyPair>
+                      )}
+                    </Box>
+                  </Inline>
+                </Grid.Column>
+              </Grid>
+              <Grid>
+                <Grid.Column sm={3}>
+                  <Box></Box>
+                </Grid.Column>
+                <Grid.Column sm={9}>
+                  <Inline space="400">
+                    <Box>
+                      <LabelAndKeyPair
+                        label="Month's Usage"
+                        value={usage.month.used.toLocaleString()}
+                      ></LabelAndKeyPair>
+                    </Box>
+                    <Box>
+                      <LabelAndKeyPair
+                        label="Monthly Allotment"
+                        value={subscription.plan_volume.toLocaleString()}
+                      ></LabelAndKeyPair>
+                    </Box>
+                    {overage > 0 && (
+                      <Box>
+                        <LabelAndKeyPair
+                          label="Month's Overages"
+                          value={overage.toLocaleString()}
+                        ></LabelAndKeyPair>
+                      </Box>
                     )}
-                  </Box>
-                </Inline>
-              </Grid.Column>
-              <Grid.Column sm={3}>
-                <Box></Box>
-              </Grid.Column>
-              <Grid.Column sm={9}>
-                <Inline space="400">
-                  <Box>
-                    <LabelAndKeyPair
-                      label="Month's Usage"
-                      value={usage.month.used.toLocaleString()}
-                    ></LabelAndKeyPair>
-                  </Box>
-                  <Box>
-                    <LabelAndKeyPair
-                      label="Monthly Allotment"
-                      value={subscription.plan_volume.toLocaleString()}
-                    ></LabelAndKeyPair>
-                  </Box>
-                  {overage > 0 && (
-                    <Box>
-                      <LabelAndKeyPair
-                        label="Month's Overages"
-                        value={overage.toLocaleString()}
-                      ></LabelAndKeyPair>
-                    </Box>
-                  )}
-                  {hasMonthlyLimit && (
-                    <Box>
-                      <LabelAndKeyPair
-                        label="Monthly Limit"
-                        value={usage.month.limit.toLocaleString()}
-                      ></LabelAndKeyPair>
-                    </Box>
-                  )}
-                </Inline>
-              </Grid.Column>
-            </Grid>
+                    {hasMonthlyLimit && (
+                      <Box>
+                        <LabelAndKeyPair
+                          label="Monthly Limit"
+                          value={usage.month.limit.toLocaleString()}
+                        ></LabelAndKeyPair>
+                      </Box>
+                    )}
+                  </Inline>
+                </Grid.Column>
+              </Grid>
+            </Stack>
           </Box>
         )}
       </Layout.Section>

@@ -16,7 +16,7 @@ export const FeatureUsageSection = ({ billingSubscription }) => {
         <Box border="400" borderColor="gray.400" padding="400">
           <Stack>
             {getProduct('dedicated_ip') && (
-              <>
+              <Stack space="100">
                 <Heading looksLike="h6" as="h3">
                   Dedicated IPs
                 </Heading>
@@ -29,14 +29,14 @@ export const FeatureUsageSection = ({ billingSubscription }) => {
                     getProduct('dedicated_ip').limit,
                   )}
                 ></ProgressBar>
-              </>
+              </Stack>
             )}
             {getProduct('subaccounts') && (
-              <>
+              <Stack space="100">
                 <Heading looksLike="h6" as="h3">
                   Subaccounts
                 </Heading>
-                <SubduedText as="p">
+                <SubduedText>
                   {getProduct('subaccounts').quantity || 0} of {getProduct('subaccounts').limit}
                 </SubduedText>
                 <ProgressBar
@@ -45,7 +45,7 @@ export const FeatureUsageSection = ({ billingSubscription }) => {
                     getProduct('subaccounts').limit,
                   )}
                 ></ProgressBar>
-              </>
+              </Stack>
             )}
           </Stack>
         </Box>
