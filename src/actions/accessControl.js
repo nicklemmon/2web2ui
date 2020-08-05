@@ -13,19 +13,18 @@ export function initializeAccessControl() {
   return (dispatch, getState) =>
     Promise.all([dispatch(getCurrentUser({ meta })), dispatch(fetchAccount({ meta }))]).then(
       ([currentUser]) => {
-        const allInitialCalls = [
+        const state = getState();
+        const promises = [
           dispatch(getGrants({ role: currentUser.access_level, meta })),
           dispatch(getPlans({ meta })),
           dispatch(getBundles({ meta })),
         ];
-        if (isHeroku(getState()) || isAzure(getState()) || isAws(getState())) {
-          return Promise.all([...allInitialCalls]).then(() =>
-            dispatch({ type: 'ACCESS_CONTROL_READY' }),
-          );
+
+        if (!isHeroku(state) && !isAzure(state) && !isAws(state)) {
+          promises.push(dispatch(getSubscription({ meta })));
         }
-        return Promise.all([...allInitialCalls, dispatch(getSubscription({ meta }))]).then(() =>
-          dispatch({ type: 'ACCESS_CONTROL_READY' }),
-        );
+
+        return Promise.all(promises).then(() => dispatch({ type: 'ACCESS_CONTROL_READY' }));
       },
     );
 }
