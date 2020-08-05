@@ -48,4 +48,21 @@ describe('Action: Initialize Access Control', () => {
     expect(getSubscription).not.toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalledTimes(6);
   });
+
+  it('should initialize access control with a series of calls for aws users', async () => {
+    const thunk = initializeAccessControl();
+    const state = {
+      currentUser: { access_level: 'admin' },
+      account: { subscription: { type: 'aws' } },
+    };
+
+    await thunk(dispatch, () => state);
+    expect(getCurrentUser).toHaveBeenCalledWith({ meta });
+    expect(getGrants).toHaveBeenCalledWith({ role: 'admin', meta });
+    expect(fetchAccount).toHaveBeenCalledWith({ meta });
+    expect(getPlans).toHaveBeenCalledWith({ meta });
+    expect(getBundles).toHaveBeenCalledWith({ meta });
+    expect(getSubscription).not.toHaveBeenCalled();
+    expect(dispatch).toHaveBeenCalledTimes(6);
+  });
 });

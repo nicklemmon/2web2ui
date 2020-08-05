@@ -2,6 +2,7 @@ import { fetch as fetchAccount } from './account';
 import { get as getCurrentUser, getGrants } from './currentUser';
 import { getPlans, getBundles, getSubscription } from './billing';
 import { isHeroku, isAzure } from 'src/helpers/conditions/user';
+import { isAws } from 'src/helpers/conditions/account';
 
 // initialize some state used for access control
 export function initializeAccessControl() {
@@ -10,21 +11,20 @@ export function initializeAccessControl() {
   const meta = { showErrorAlert: false };
 
   return (dispatch, getState) =>
-    dispatch(getCurrentUser({ meta })).then(({ access_level }) => {
-      const allInitialCalls = [
-        dispatch(getGrants({ role: access_level, meta })),
-        dispatch(fetchAccount({ meta })),
-        dispatch(getPlans({ meta })),
-        dispatch(getBundles({ meta })),
-      ];
+    Promise.all([dispatch(getCurrentUser({ meta })), dispatch(fetchAccount({ meta }))]).then(
+      ([currentUser]) => {
+        const state = getState();
+        const promises = [
+          dispatch(getGrants({ role: currentUser.access_level, meta })),
+          dispatch(getPlans({ meta })),
+          dispatch(getBundles({ meta })),
+        ];
 
-      if (isHeroku(getState()) || isAzure(getState())) {
-        return Promise.all([...allInitialCalls]).then(() =>
-          dispatch({ type: 'ACCESS_CONTROL_READY' }),
-        );
-      }
-      return Promise.all([...allInitialCalls, dispatch(getSubscription({ meta }))]).then(() =>
-        dispatch({ type: 'ACCESS_CONTROL_READY' }),
-      );
-    });
+        if (!isHeroku(state) && !isAzure(state) && !isAws(state)) {
+          promises.push(dispatch(getSubscription({ meta })));
+        }
+
+        return Promise.all(promises).then(() => dispatch({ type: 'ACCESS_CONTROL_READY' }));
+      },
+    );
 }

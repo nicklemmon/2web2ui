@@ -23,7 +23,8 @@ import addRVtoSubscription from 'src/actions/addRVtoSubscription';
 import { getSubscription as getBillingSubscription } from 'src/actions/billing';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-
+import { isHeroku, isAzure } from 'src/helpers/conditions/user';
+import { isAws } from 'src/helpers/conditions/account';
 import { OGOnlyWrapper } from 'src/components/hibana';
 
 import OGStyles from './UploadedListPage.module.scss';
@@ -51,6 +52,9 @@ export function UploadedListPage(props) {
     addRVtoSubscriptionloading,
     addRVtoSubscriptionerror,
     triggerJob,
+    isHeroku,
+    isAzure,
+    isAws,
   } = props;
 
   const [useSavedCC, setUseSavedCC] = useState(Boolean(billing.credit_card));
@@ -59,8 +63,10 @@ export function UploadedListPage(props) {
     getJobStatus(listId);
   }, [getJobStatus, listId]);
   useEffect(() => {
-    getBillingSubscription();
-  }, [getBillingSubscription]);
+    if (!isHeroku && !isAzure && !isAws) {
+      getBillingSubscription();
+    }
+  }, [getBillingSubscription, isAws, isAzure, isHeroku]);
   useEffect(() => {
     getBillingInfo();
   }, [getBillingInfo]);
@@ -167,6 +173,9 @@ const mapStateToProps = (state, props) => {
     isManuallyBilled: isManuallyBilled(state),
     addRVtoSubscriptionloading: state.addRVtoSubscription.addRVtoSubscriptionloading,
     addRVtoSubscriptionerror: state.addRVtoSubscription.addRVtoSubscriptionerror,
+    isHeroku: isHeroku(state),
+    isAzure: isAzure(state),
+    isAws: isAws(state),
   };
 };
 

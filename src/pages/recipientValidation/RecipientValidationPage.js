@@ -20,7 +20,8 @@ import ValidateSection from './components/ValidateSection';
 import { FORMS } from 'src/constants';
 import RVPriceModal from './components/RVPriceModal';
 import { PageDescription } from 'src/components/text';
-
+import { isHeroku, isAzure } from 'src/helpers/conditions/user';
+import { isAws } from 'src/helpers/conditions/account';
 import OGStyles from './RecipientValidationPage.module.scss';
 import hibanaStyles from './RecipientValidationPageHibana.module.scss';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
@@ -57,6 +58,9 @@ export function RecipientValidationPage(props) {
     history,
     reset,
     handleSubmit,
+    isHeroku,
+    isAzure,
+    isAws,
   } = props;
 
   const [useSavedCC, setUseSavedCC] = useState(Boolean(billing.credit_card));
@@ -82,8 +86,10 @@ export function RecipientValidationPage(props) {
     getBillingInfo();
   }, [getBillingInfo]);
   useEffect(() => {
-    getBillingSubscription();
-  }, [getBillingSubscription]);
+    if (!isHeroku && !isAzure && !isAws) {
+      getBillingSubscription();
+    }
+  }, [getBillingSubscription, isAws, isAzure, isHeroku]);
   useEffect(() => {
     setUseSavedCC(Boolean(billing.credit_card));
   }, [billing, billing.credit_card]);
@@ -216,6 +222,9 @@ const mapStateToProps = (state, props) => {
     addRVFormValues: state.addRVtoSubscription.formValues,
     addRVtoSubscriptionerror: state.addRVtoSubscription.addRVtoSubscriptionerror,
     addRVtoSubscriptionsuccess: state.addRVtoSubscription.addRVtoSubscriptionsuccess,
+    isHeroku: isHeroku(state),
+    isAzure: isAzure(state),
+    isAws: isAws(state),
   };
 };
 
