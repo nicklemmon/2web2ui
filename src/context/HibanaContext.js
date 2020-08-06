@@ -9,17 +9,9 @@ import { selectCondition } from 'src/selectors/accessConditionState';
 const HibanaStateContext = createContext();
 
 function Provider(props) {
-  const { isHibanaEnabled: _isHibanaEnabled, children, ...rest } = props;
+  const { children, ...rest } = props;
 
-  // TODO: When OG theme is removed, the env variables will no longer be necessary
-  const isHibanaEnabled =
-    process.env.REACT_APP_DEFAULT_TO_HIBANA === 'true' ? true : _isHibanaEnabled;
-
-  return (
-    <HibanaStateContext.Provider value={{ isHibanaEnabled, ...rest }}>
-      {children}
-    </HibanaStateContext.Provider>
-  );
+  return <HibanaStateContext.Provider value={rest}>{children}</HibanaStateContext.Provider>;
 }
 
 function mapStateToProps(state) {

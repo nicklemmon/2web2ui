@@ -8,6 +8,7 @@ export { default as SsoAuthPage } from './auth/SsoAuthPage';
 export { default as billing } from './billing';
 export { default as blocklist } from './blocklist';
 export { default as DashboardPage } from './dashboard';
+export { default as DashboardPageV2 } from './dashboardV2';
 export { default as ProfilePage } from './profile/ProfilePage';
 export { default as abTesting } from './abTesting';
 export { default as apiKeys } from './api-keys';

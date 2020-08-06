@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import { useHibana } from 'src/context/HibanaContext';
 jest.mock('src/context/HibanaContext');
 
+/* eslint-disable jest/expect-expect */
 describe('Panel Matchbox component wrapper: ', () => {
   const subject = (Component, props) => {
     return shallow(<Component {...props}>Children...</Component>);
@@ -32,7 +33,7 @@ describe('Panel Matchbox component wrapper: ', () => {
     expect(wrapper).toHaveTextContent('Children...');
   };
 
-  describe('Standalone Panel', () => {
+  describe('Panel', () => {
     const defaultProps = {
       accent: true,
     };
@@ -61,7 +62,7 @@ describe('Panel Matchbox component wrapper: ', () => {
     });
   });
 
-  describe('Panel Section', () => {
+  describe('Panel.Section', () => {
     const defaultProps = {};
 
     const systemProps = {
@@ -89,7 +90,7 @@ describe('Panel Matchbox component wrapper: ', () => {
     });
   });
 
-  describe('Panel Footer', () => {
+  describe('Panel.Footer', () => {
     const defaultProps = {
       left: 'foo',
       right: 'bar',
@@ -117,6 +118,55 @@ describe('Panel Matchbox component wrapper: ', () => {
         pickedProps: defaultProps,
         omittedProps: systemProps,
       });
+    });
+  });
+
+  describe('Panel.Headline', () => {
+    const subject = props => shallow(<Panel.Headline {...props} />);
+
+    it('renders with passed in children', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject({ children: 'Hello!' });
+
+      expect(wrapper).toHaveTextContent('Hello!');
+    });
+
+    it('renders with the default "as" value of "h3"', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject();
+
+      expect(wrapper.find('Heading')).toHaveProp('as', 'h3');
+    });
+
+    it('renders with the passed in "as" prop', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject({ as: 'h4' });
+
+      expect(wrapper.find('Heading')).toHaveProp('as', 'h4');
+    });
+
+    it('throws an error when Hibana is not enabled', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+
+      expect(subject).toThrowError();
+    });
+  });
+
+  describe('Panel.HeadlineIcon', () => {
+    const subject = props => shallow(<Panel.HeadlineIcon {...props} />);
+
+    it('renders with the "as" prop', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const MyIcon = () => <div>I am pretending to be an icon.</div>;
+      const wrapper = subject({ as: MyIcon });
+
+      expect(wrapper.find('Box')).toHaveProp('as', MyIcon);
+    });
+
+    it('throws an error when Hibana is not enabled', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+
+      expect(subject).toThrowError();
     });
   });
 });

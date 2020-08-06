@@ -8,6 +8,7 @@ import {
   AuthPage,
   billing,
   DashboardPage,
+  DashboardPageV2,
   DefaultRedirect,
   EnableTfaPage,
   ipPools,
@@ -46,8 +47,14 @@ import {
   isCustomBilling,
   isEnterprise,
   isSelfServeBilling,
+  isAccountUiOptionSet,
 } from 'src/helpers/conditions/account';
-import { isAzure, isHeroku, isSubaccountUser } from 'src/helpers/conditions/user';
+import {
+  isAzure,
+  isHeroku,
+  isUserUiOptionSet,
+  isSubaccountUser,
+} from 'src/helpers/conditions/user';
 import { configEquals, configFlag } from 'src/helpers/conditions/config';
 import App from 'src/components/layout/App';
 import LargeForm from 'src/components/layout/LargeForm';
@@ -177,6 +184,18 @@ const appRoutes = [
     // hide routes based on config, account/user settings, etc. without having to mess
     // around with grants in the web UI keys
     supportDocSearch: 'started',
+  },
+  {
+    path: '/dashboardV2',
+    component: DashboardPageV2,
+    layout: App,
+    title: 'Dashboard',
+    condition: all(
+      not(isSubaccountUser),
+      configEquals('splashPage', '/dashboard'), // want to hide if not a splash page https://jira.int.messagesystems.com/browse/FAD-6046
+      isAccountUiOptionSet('allow_dashboard_v2'),
+      isUserUiOptionSet('isHibanaEnabled'),
+    ),
   },
   {
     path: '/account/security',

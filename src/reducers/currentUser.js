@@ -17,7 +17,26 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, loading: true };
 
     case 'GET_CURRENT_USER_SUCCESS':
-      return { ...state, ...payload, loading: false, cookie_consent: !!payload.cookie_consent };
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+        cookie_consent: !!payload.cookie_consent,
+        // TODO: Remove when OG theme is removed
+        // Just defaults the app state to having Hibana enabled when using the env variable
+        // Run the app locally with `npm run start-app-hibana`
+        options: {
+          ...state.options,
+          ...payload.options,
+          ui: {
+            ...state.options?.ui,
+            ...payload.options?.ui,
+            ...(process.env.REACT_APP_DEFAULT_TO_HIBANA === 'true'
+              ? { isHibanaEnabled: true }
+              : undefined),
+          },
+        },
+      };
 
     case 'GET_GRANTS_SUCCESS':
       return { ...state, grants: payload };

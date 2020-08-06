@@ -316,7 +316,7 @@ describe('Billing Page', () => {
         Cypress.currentTest.retries(2);
 
         cy.withinModal(() => {
-          cy.findByRole('button', { name: 'Update Payment Information' }).click();
+          cy.findByRole('button', { name: 'Update Payment Information' }).click({ force: true });
           cy.findAllByText(/Required/i).should('have.length', 5);
         });
       });
@@ -500,7 +500,7 @@ describe('Billing Page', () => {
 
       it('closes the modal when clicking "Cancel"', () => {
         cy.findByLabelText('First Name').should('be.visible');
-        cy.findByRole('button', { name: 'Cancel' }).click();
+        cy.findByRole('button', { name: 'Cancel' }).click({ force: true });
         cy.findByLabelText('First Name').should('not.be.visible');
       });
 
