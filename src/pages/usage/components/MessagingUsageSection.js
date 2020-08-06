@@ -3,7 +3,6 @@ import { Box, Grid, Inline, Layout, Stack } from 'src/components/matchbox';
 import { ExternalLink, PageLink } from 'src/components/links';
 import { Heading, SubduedText } from 'src/components/text';
 import { formatDate } from 'src/helpers/date';
-import { tokens } from '@sparkpost/design-tokens-hibana';
 import { LINKS } from 'src/constants';
 import { LabelAndKeyPair } from './LabelAndKeyPair';
 
@@ -50,7 +49,7 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
 
       <Layout.Section>
         {usage && (
-          <Box padding="400" backgroundColor={tokens.color_gray_1000}>
+          <Box padding="400" backgroundColor="gray.1000">
             <Stack>
               <Grid>
                 <Grid.Column sm={3}>

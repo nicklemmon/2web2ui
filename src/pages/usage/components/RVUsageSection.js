@@ -4,7 +4,6 @@ import { SubduedText } from 'src/components/text';
 import { PageLink } from 'src/components/links';
 import { formatDate } from 'src/helpers/date';
 import totalRecipientValidationCost from 'src/helpers/recipientValidation';
-import { tokens } from '@sparkpost/design-tokens-hibana';
 import { LabelAndKeyPair } from './LabelAndKeyPair';
 import _ from 'lodash';
 
@@ -20,7 +19,7 @@ export const RVUsageSection = ({ rvUsage: { recipient_validation } = {} }) => {
         </SubduedText>
       </Layout.Section>
       <Layout.Section>
-        <Box padding="400" backgroundColor={tokens.color_gray_1000}>
+        <Box padding="400" backgroundColor="gray.1000">
           <Grid>
             <Grid.Column sm={3}>
               {recipient_validation && (
