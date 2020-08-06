@@ -6,6 +6,9 @@ export const FeatureUsageSection = ({ billingSubscription }) => {
 
   const getProduct = product_name => products.find(x => x.product === product_name);
   const getPercent = (used, limit) => Math.floor((used / limit) * 100);
+
+  const hasAnyProductOnSubscription = getProduct('dedicated_ip') && getProduct('subaccounts');
+  if (!hasAnyProductOnSubscription) return null;
   return (
     <>
       <Layout.Section annotated>

@@ -36,9 +36,7 @@ export function UsagePage({
       <Layout>
         <FeatureUsageSection billingSubscription={billingSubscription} />
       </Layout>
-      <Layout>
-        <RVUsageSection rvUsage={rvUsage} />
-      </Layout>
+      <Layout>{rvUsage && <RVUsageSection rvUsage={rvUsage} />}</Layout>
     </Page>
   );
 }
