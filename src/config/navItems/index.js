@@ -196,6 +196,11 @@ const subaccounts = {
   divider: true,
 };
 
+const domains = {
+  label: 'Domains',
+  to: '/domains',
+};
+
 const configurationBase = {
   label: 'Configuration',
   to: '/account',
@@ -219,6 +224,7 @@ const OGConfiguration = {
 const hibanaConfiguration = {
   ...configurationBase,
   children: [
+    domains,
     sendingDomains,
     trackingDomains,
     webhooks,
