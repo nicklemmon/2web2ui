@@ -6,6 +6,7 @@ import { getSubscription } from 'src/actions/billing';
 import { MessagingUsageSection } from './components/MessagingUsageSection';
 import { FeatureUsageSection } from './components/FeatureUsageSection';
 import { RVUsageSection } from './components/RVUsageSection';
+import { Loading } from 'src/components';
 
 export function UsagePage({
   getAccount,
@@ -15,6 +16,7 @@ export function UsagePage({
   rvUsage,
   subscription,
   billingSubscription,
+  loading,
 }) {
   useEffect(() => {
     getAccount({ include: 'usage' });
@@ -27,6 +29,8 @@ export function UsagePage({
   useEffect(() => {
     getUsage();
   }, [getUsage]);
+
+  if (loading) return <Loading />;
 
   return (
     <Page title="Usage">
@@ -47,6 +51,7 @@ const mapStateToProps = state => {
     rvUsage: state.account.rvUsage,
     subscription: state.account.subscription,
     billingSubscription: state.billing.subscription,
+    loading: state.account.loading && state.billing.loading && state.billing.usageLoading,
   };
 };
 
