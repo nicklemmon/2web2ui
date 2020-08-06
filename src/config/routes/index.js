@@ -54,8 +54,8 @@ import {
 import {
   isAzure,
   isHeroku,
-  isUserUiOptionSet,
   isSubaccountUser,
+  isUserUiOptionSet,
 } from 'src/helpers/conditions/user';
 import { configEquals, configFlag } from 'src/helpers/conditions/config';
 import App from 'src/components/layout/App';
@@ -552,6 +552,14 @@ const appRoutes = [
     category: 'Account',
   },
   {
+    path: '/usage',
+    component: UsagePage,
+    layout: App,
+    title: 'Usage',
+    category: 'Account',
+    condition: all(hasGrants('users/manage'), isUserUiOptionSet('isHibanaEnabled')),
+  },
+  {
     path: '/account/ip-pools',
     component: ipPools.ListPage,
     condition: hasGrants('ip_pools/manage'),
@@ -791,17 +799,6 @@ const appRoutes = [
   },
 ];
 
-const usageRoute = [
-  {
-    path: '/usage',
-    component: UsagePage,
-    layout: App,
-    title: 'Usage',
-    category: 'Account',
-    condition: hasGrants('users/manage'),
-  },
-];
-
 const routes = [
   ...appRoutes,
   ...signalsRoutes,
@@ -816,7 +813,6 @@ const hibanaRoutes = [
   ...templatesRoutes,
   ...inboxPlacementRoutes,
   ...hibanaBlocklistRoutes,
-  ...usageRoute,
 ];
 
 // ensure 404 is always last in routes
