@@ -41,8 +41,8 @@
       "eslint --fix",
       "git add"
     ],
-    "src/**/*.{css,scss}": [
-      "stylelint --fix",
+    "src/**/*.{js,css,scss}": [
+      "stylelint",
       "git add"
     ]
   },
@@ -217,9 +217,12 @@
     "sass-loader": "7.1.0",
     "semver": "^5.5.0",
     "style-loader": "0.23.1",
-    "stylelint": "^12.0.0",
+    "stylelint": "^12.0.1",
     "stylelint-config-prettier": "^6.0.0",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
     "stylelint-prettier": "^1.1.1",
+    "stylelint-processor-styled-components": "^1.10.0",
     "terser-webpack-plugin": "1.2.2",
     "url-loader": "1.1.2",
     "wait-on": "^3.3.0",

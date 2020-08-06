@@ -1,4 +1,13 @@
 {
-  "plugins": ["stylelint-prettier"],
-  "extends": ["stylelint-prettier/recommended"]
+  "processors": [
+    "stylelint-processor-styled-components"
+  ],
+  "plugins": [
+    "stylelint-prettier"
+  ],
+  "extends": [
+    "stylelint-config-recommended",
+    "stylelint-config-styled-components",
+    "stylelint-prettier/recommended"
+  ]
 }
