@@ -31,6 +31,8 @@
     "lodash/prefer-some": "off",
     "lodash/prefer-startswith": "off",
     "lodash/prefer-times": "off",
+    "react/forbid-component-props": ["error", { "forbid": ["style"] }],
+    "react/forbid-dom-props": ["error", { "forbid": ["style"] }],
     // Custom rule for i18n
     "no-restricted-syntax": [
       "warn",
