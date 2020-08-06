@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Grid, Inline, Text, Layout, Stack } from 'src/components/matchbox';
+import { Box, Grid, Inline, Layout, Stack } from 'src/components/matchbox';
 import { ExternalLink, PageLink } from 'src/components/links';
-import { SubduedText } from 'src/components/text';
+import { Heading, SubduedText } from 'src/components/text';
 import { formatDate } from 'src/helpers/date';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { LINKS } from 'src/constants';
@@ -26,9 +26,9 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
             <ExternalLink to={LINKS.DAILY_USAGE}>Messaging Usage Definition</ExternalLink>
           </>
           <>
-            <Text fontSize="200" fontWeight="bold">
+            <Heading as="h3" looksLike="h6">
               Limits
-            </Text>
+            </Heading>
             <SubduedText>
               Each SparkPost account has a daily and monthly quota based on the current plan level
             </SubduedText>
@@ -36,9 +36,9 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
           </>
           {(isNearingMonthlyLimit || isNearingDailyLimit) && (
             <>
-              <Text fontSize="200" fontWeight="bold">
+              <Heading as="h3" looksLike="h6">
                 Upgrade
-              </Text>
+              </Heading>
               <SubduedText>
                 Your usage indicates that you are nearing you're daily or monthly limits. Upgrade
                 your plan in <PageLink to="account/billing/plan">Billing</PageLink>.
