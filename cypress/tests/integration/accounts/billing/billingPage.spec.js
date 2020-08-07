@@ -499,9 +499,11 @@ describe('Billing Page', () => {
       });
 
       it('closes the modal when clicking "Cancel"', () => {
-        cy.findByLabelText('First Name').should('be.visible');
-        cy.findByRole('button', { name: 'Cancel' }).click({ force: true });
-        cy.findByLabelText('First Name').should('not.be.visible');
+        cy.withinModal(() => {
+          cy.findByLabelText('First Name').should('be.visible');
+          cy.findByRole('button', { name: 'Cancel' }).click({ force: true });
+          cy.findByLabelText('First Name').should('not.be.visible');
+        });
       });
 
       it('renders each field with the current billing contact information', () => {

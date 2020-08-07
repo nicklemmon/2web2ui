@@ -19,7 +19,7 @@ import CardSummary from 'src/components/billing/CardSummary';
 import PlanSummary from './PlanSummary';
 import RecipientValidationModal from './RecipientValidationModal';
 import { formatFullNumber } from 'src/helpers/units';
-import totalRVCost from '../helpers/totalRecipientValidationCost';
+import totalRVCost from 'src/helpers/recipientValidation';
 import _ from 'lodash';
 import { formatDateTime } from 'src/helpers/date';
 import { Text } from 'src/components/matchbox';

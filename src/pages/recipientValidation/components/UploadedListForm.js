@@ -5,7 +5,7 @@ import { LoadingSVG } from 'src/components/loading/Loading';
 import { Grid } from 'src/components/matchbox';
 import { ButtonLink } from 'src/components/links';
 import { selectMonthlyRecipientValidationUsage } from 'src/selectors/accountBillingInfo';
-import { calculateNewCost } from 'src/pages/billing/helpers/totalRecipientValidationCost';
+import { calculateNewCost } from 'src/helpers/recipientValidation';
 
 import OGStyles from './UploadedListForm.module.scss';
 import hibanaStyles from './UploadedListFormHibana.module.scss';

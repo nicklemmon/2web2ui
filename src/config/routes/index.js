@@ -33,6 +33,7 @@ import {
   trackingDomains,
   users,
   webhooks,
+  UsagePage,
 } from 'src/pages';
 
 import LogoutPage from 'src/pages/logout/LogoutPage';
@@ -53,8 +54,8 @@ import {
 import {
   isAzure,
   isHeroku,
-  isUserUiOptionSet,
   isSubaccountUser,
+  isUserUiOptionSet,
 } from 'src/helpers/conditions/user';
 import { configEquals, configFlag } from 'src/helpers/conditions/config';
 import App from 'src/components/layout/App';
@@ -549,6 +550,14 @@ const appRoutes = [
     title: 'Billing | Change My Plan',
     supportDocSearch: 'upgrade account',
     category: 'Account',
+  },
+  {
+    path: '/usage',
+    component: UsagePage,
+    layout: App,
+    title: 'Usage',
+    category: 'Account',
+    condition: all(hasGrants('users/manage'), isUserUiOptionSet('isHibanaEnabled')),
   },
   {
     path: '/account/ip-pools',
