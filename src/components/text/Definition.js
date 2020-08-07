@@ -1,7 +1,19 @@
 import React from 'react';
 import useUniqueId from 'src/hooks/useUniqueId';
-import { Box } from 'src/components/matchbox';
 import { tokens } from '@sparkpost/design-tokens-hibana';
+import styled from 'styled-components';
+import { useHibana } from 'src/context/HibanaContext';
+
+const StyledLabel = styled.div`
+  font-size: ${props => (props.isHibanaEnabled ? props.theme.fontSizes[200] : '0.89rem')};
+  font-weight: ${props => (props.isHibanaEnabled ? props.theme.fontWeights['semibold'] : 600)};
+  color: ${props => props.isHibanaEnabled && props.dark && props.theme.colors.gray[600]};
+`;
+
+const StyledValue = styled.div`
+  font-size: ${props => (props.isHibanaEnabled ? props.theme.fontSizes[400] : '0.89rem')};
+  color: ${props => props.isHibanaEnabled && props.dark && tokens.color_white};
+`;
 
 const Definition = ({ children, dark }) => {
   const id = useUniqueId('definition');
@@ -20,19 +32,23 @@ const Definition = ({ children, dark }) => {
 };
 
 const Label = ({ children, id, dark }) => {
+  const [state] = useHibana();
+  const { isHibanaEnabled } = state;
   return (
-    <Box fontSize="200" fontWeight="600" color={dark && 'gray.600'} id={id}>
+    <StyledLabel id={id} dark={dark} isHibanaEnabled={isHibanaEnabled}>
       {children}
-    </Box>
+    </StyledLabel>
   );
 };
-const Value = ({ ariaLabelledby, children, dark }) => (
-  <div aria-labelledby={ariaLabelledby}>
-    <Box fontSize="400" color={dark && tokens.color_white}>
+const Value = ({ ariaLabelledby, children, dark }) => {
+  const [state] = useHibana();
+  const { isHibanaEnabled } = state;
+  return (
+    <StyledValue aria-labelledby={ariaLabelledby} dark={dark} isHibanaEnabled={isHibanaEnabled}>
       {children}
-    </Box>
-  </div>
-);
+    </StyledValue>
+  );
+};
 
 Definition.Label = Label;
 Definition.Value = Value;
