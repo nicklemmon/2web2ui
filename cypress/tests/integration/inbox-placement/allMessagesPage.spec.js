@@ -31,20 +31,20 @@ describe('AllMessagesPage', () => {
   //   cy.findByDataId('loading').should('be.visible');
   // });
 
-  // it('renders aggregates', () => {
-  //   cy.findByPanelTitle('Deliverability').within(() => {
-  //     cy.findByAriaLabelledByText('Sent').should('contain', 4);
-  //     cy.findByAriaLabelledByText('Inbox').should('contain', 2);
-  //     cy.findByAriaLabelledByText('Spam').should('contain', 1);
-  //     cy.findByAriaLabelledByText('Missing').should('contain', 1);
-  //   });
+  it('renders aggregates', () => {
+    cy.findByPanelTitle('Deliverability').within(() => {
+      cy.findByAriaLabelledByText('Sent').should('contain', 4);
+      cy.findByAriaLabelledByText('Inbox').should('contain', 2);
+      cy.findByAriaLabelledByText('Spam').should('contain', 1);
+      cy.findByAriaLabelledByText('Missing').should('contain', 1);
+    });
 
-  //   cy.findByPanelTitle('Authentication').within(() => {
-  //     cy.findByAriaLabelledByText('SPF').should('contain', '0%');
-  //     cy.findByAriaLabelledByText('DKIM').should('contain', '100%');
-  //     cy.findByAriaLabelledByText('DMARC').should('contain', '0%');
-  //   });
-  // });
+    cy.findByPanelTitle('Authentication').within(() => {
+      cy.findByAriaLabelledByText('SPF').should('contain', '0%');
+      cy.findByAriaLabelledByText('DKIM').should('contain', '100%');
+      cy.findByAriaLabelledByText('DMARC').should('contain', '0%');
+    });
+  });
 
   it('renders collection of messages', () => {
     cy.get('tbody tr')

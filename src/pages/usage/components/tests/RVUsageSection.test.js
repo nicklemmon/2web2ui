@@ -25,9 +25,6 @@ describe('RVUsageSection', () => {
 
   const instance = shallow(<RVUsageSection {...defaultProps} />);
 
-  it('renders with correct title', () => {
-    expect(instance).toHaveTextContent('Recipient Validation Usage');
-  });
   it('renders correct label and value pairs', () => {
     expect(instance).toHaveTextContent('Date Range');
     expect(instance).toHaveTextContent(

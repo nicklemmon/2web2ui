@@ -27,9 +27,6 @@ describe('MessageUsageSection', () => {
   };
 
   const instance = (props = {}) => shallow(<MessagingUsageSection {...defaultProps} {...props} />);
-  it('renders correct title', () => {
-    expect(instance()).toHaveTextContent('Messaging Usage');
-  });
   describe('should display Upgrade section only if the usage is nearing limit', () => {
     it("if usage is already over limit Upgrade section doesn't render", () => {
       expect(instance()).not.toHaveTextContent('Upgrade');

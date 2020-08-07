@@ -28,9 +28,6 @@ describe('FeatureUsageSection', () => {
     },
   };
   const instance = (props = {}) => shallow(<FeatureUsageSection {...props} />);
-  it('renders the correct title for section', () => {
-    expect(instance(defaultProps)).toHaveTextContent('Feature Usage');
-  });
   it('renders a product section only when it is present in subscription', () => {
     expect(instance(defaultProps)).toHaveTextContent('Dedicated IPs');
     expect(instance(defaultProps)).toHaveTextContent('Subaccounts');
@@ -53,5 +50,24 @@ describe('FeatureUsageSection', () => {
         },
       }),
     ).not.toHaveTextContent('Dedicated IPs');
+  });
+  it('renders null when subaccounts or dedicated Ip is not in subscription', () => {
+    expect(
+      instance({
+        billingSubscription: {
+          bill_cycle_day: 5,
+          pending_downgrades: [],
+          products: [
+            {
+              plan: 'messagging-0123',
+              product: 'messaging',
+              volume: 10000,
+              billing_period: 'month',
+            },
+          ],
+          type: 'active',
+        },
+      }).html(),
+    ).toEqual(null);
   });
 });

@@ -51,7 +51,7 @@ const mapStateToProps = state => {
     rvUsage: state.account.rvUsage,
     subscription: state.account.subscription,
     billingSubscription: state.billing.subscription,
-    loading: state.account.loading && state.billing.loading && state.billing.usageLoading,
+    loading: state.account.loading || state.billing.loading || state.billing.usageLoading,
   };
 };
 

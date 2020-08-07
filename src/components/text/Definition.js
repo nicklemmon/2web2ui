@@ -1,6 +1,5 @@
 import React from 'react';
 import useUniqueId from 'src/hooks/useUniqueId';
-import Bold from './Bold';
 import { Box } from 'src/components/matchbox';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 
@@ -22,14 +21,16 @@ const Definition = ({ children, dark }) => {
 
 const Label = ({ children, id, dark }) => {
   return (
-    <Bold id={id}>
-      <Box color={dark && tokens.color_gray_600}>{children}</Box>
-    </Bold>
+    <Box fontSize="200" fontWeight="600" color={dark && 'gray.600'} id={id}>
+      {children}
+    </Box>
   );
 };
 const Value = ({ ariaLabelledby, children, dark }) => (
   <div aria-labelledby={ariaLabelledby}>
-    <Box color={dark && tokens.color_white}>{children}</Box>
+    <Box fontSize="400" color={dark && tokens.color_white}>
+      {children}
+    </Box>
   </div>
 );
 

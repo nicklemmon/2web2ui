@@ -39,8 +39,8 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
                 Upgrade
               </Heading>
               <SubduedText>
-                Your usage indicates that you are nearing you're daily or monthly limits. Upgrade
-                your plan in <PageLink to="account/billing/plan">Billing</PageLink>.
+                Your usage indicates that you're nearing your daily or monthly limits. Upgrade your
+                plan in <PageLink to="account/billing/plan">Billing</PageLink>.
               </SubduedText>
             </>
           )}
