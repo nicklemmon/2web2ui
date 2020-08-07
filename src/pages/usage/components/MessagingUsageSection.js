@@ -20,11 +20,12 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Messaging Usage</Layout.SectionTitle>
         <Stack>
-          <>
+          <Stack space="100">
             <SubduedText>All message injections count toward messaging usage.</SubduedText>
             <ExternalLink to={LINKS.DAILY_USAGE}>Messaging Usage Definition</ExternalLink>
-          </>
-          <>
+          </Stack>
+
+          <Stack space="100">
             <Heading as="h3" looksLike="h6">
               Limits
             </Heading>
@@ -32,9 +33,10 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
               Each SparkPost account has a daily and monthly quota based on the current plan level
             </SubduedText>
             <ExternalLink to={LINKS.DAILY_MONTHLY_QUOTA_LIMIT_DOC}>Quota Limits</ExternalLink>
-          </>
+          </Stack>
+
           {(isNearingMonthlyLimit || isNearingDailyLimit) && (
-            <>
+            <Stack space="100">
               <Heading as="h3" looksLike="h6">
                 Upgrade
               </Heading>
@@ -42,7 +44,7 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
                 Your usage indicates that you're nearing your daily or monthly limits. Upgrade your
                 plan in <PageLink to="account/billing/plan">Billing</PageLink>.
               </SubduedText>
-            </>
+            </Stack>
           )}
         </Stack>
       </Layout.Section>
