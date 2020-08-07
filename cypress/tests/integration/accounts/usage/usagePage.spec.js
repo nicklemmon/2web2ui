@@ -28,6 +28,7 @@ describe('The usage page', () => {
       });
 
       cy.visit(PAGE_URL);
+      cy.wait('@getRVUsage');
       cy.title().should('include', 'Usage');
       cy.findByRole('heading', { name: 'Usage' }).should('be.visible');
     });
@@ -40,6 +41,7 @@ describe('The usage page', () => {
       });
 
       cy.visit(PAGE_URL);
+      cy.wait('@getRVUsage');
       cy.findByText('Messaging Usage').should('be.visible');
       cy.findByText('Feature Usage').should('be.visible');
       cy.findByText('Recipient Validation Usage').should('be.visible');
@@ -53,6 +55,7 @@ describe('The usage page', () => {
       });
 
       cy.visit(PAGE_URL);
+      cy.wait('@getRVUsage');
       cy.findByText('Messaging Usage').should('be.visible');
       cy.findByText('Feature Usage').should('be.visible');
       cy.findByText('Recipient Validation Usage').should('not.be.visible');
