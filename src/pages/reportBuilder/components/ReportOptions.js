@@ -34,7 +34,21 @@ export function ReportOptions(props) {
     //If user presses escape in typeahead, clears report. Keeps current active report options.
     if (report) {
       const { options, filters = [] } = parseSearch(report.query_string);
-      refreshReportOptions({ ...options, filters });
+      //Keep time range and filters when changing to preset report from another preset report.
+      if (report.type === 'preset' && (!selectedReport || selectedReport.type === 'preset')) {
+        const {
+          from,
+          to,
+          relativeRange,
+          timezone,
+          precision,
+          filters: reportOptionsFilters,
+        } = reportOptions;
+        const mergedOptions = { ...options, from, to, relativeRange, timezone, precision };
+        refreshReportOptions({ ...mergedOptions, filters: reportOptionsFilters });
+      } else {
+        refreshReportOptions({ ...options, filters });
+      }
     }
 
     setReport(report);
