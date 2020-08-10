@@ -44,7 +44,7 @@ const Footer = props => {
   return <HibanaPanel.Footer {...props} />;
 };
 
-const Headline = ({ children, as = 'h3' }) => {
+const Headline = ({ children, as = 'h3', paddingBottom = '400' }) => {
   const [{ isHibanaEnabled }] = useHibana();
 
   if (!isHibanaEnabled) {
@@ -52,11 +52,13 @@ const Headline = ({ children, as = 'h3' }) => {
   }
 
   return (
-    <Heading as={as}>
-      <Box as="span" fontWeight="medium" display="flex" alignItems="center">
-        {children}
-      </Box>
-    </Heading>
+    <Box paddingBottom={paddingBottom}>
+      <Heading as={as}>
+        <Box as="span" fontWeight="medium" display="flex" alignItems="center">
+          {children}
+        </Box>
+      </Heading>
+    </Box>
   );
 };
 
@@ -77,6 +79,7 @@ HeadlineIcon.displayName = 'Panel.HeadlineIcon';
 
 Headline.propTypes = {
   as: PropTypes.oneOf(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']),
+  paddingBottom: PropTypes.string,
 };
 
 HeadlineIcon.propTypes = {
