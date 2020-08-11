@@ -89,13 +89,12 @@ export const list = [
   },
   {
     key: 'count_rendered',
-    label: 'Rendered',
+    label: 'Opens',
     type: 'total',
     category: engagement,
     unit: 'number',
-    description: 'Total renderings of a message.',
+    description: 'Total opens of a message.',
     inSummary: true,
-    deprecated: true,
   },
   {
     key: 'count_unique_rendered_approx',
@@ -110,13 +109,12 @@ export const list = [
   },
   {
     key: 'count_initial_rendered',
-    label: 'Initial Rendered',
+    label: 'Initial Opens',
     type: 'total',
     category: engagement,
     unit: 'number',
-    description: 'Total initial renderings of a message.',
+    description: 'Total initial opens of a message.',
     inSummary: true,
-    deprecated: true,
   },
   {
     key: 'count_unique_initial_rendered_approx',

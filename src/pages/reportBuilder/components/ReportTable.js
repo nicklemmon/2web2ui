@@ -16,7 +16,7 @@ import styles from './ReportTable.module.scss';
 
 const tableWrapper = props => {
   return (
-    <Panel>
+    <Panel borderTop="0">
       <Table freezeFirstColumn>{props.children}</Table>
     </Panel>
   );
@@ -52,6 +52,8 @@ export const ReportTable = props => {
       key,
       label: <Box textAlign="right">{label}</Box>,
       className: cx(styles.HeaderCell, styles.NumericalHeader),
+      align: 'right',
+      sortKey: key,
     }));
 
     return [primaryCol, ...metricCols];
@@ -131,7 +133,7 @@ export const ReportTable = props => {
 
   return (
     <>
-      <Panel marginBottom={0}>
+      <Panel marginBottom="-1px">
         <Panel.Section>
           <GroupByOption
             _getTableData={_getTableData}

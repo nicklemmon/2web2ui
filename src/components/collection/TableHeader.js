@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'src/components/matchbox';
 import SortLabel from './SortLabel';
+import { Box } from 'src/components/matchbox';
 
 export default class TableHeader extends Component {
   handleSorting = column => {
@@ -42,11 +43,11 @@ export default class TableHeader extends Component {
       if (typeof item === 'string' || item === null) {
         return <Table.HeaderCell key={`column ${i}: ${item}`}>{item}</Table.HeaderCell>;
       }
-      const { label, sortKey, ...rest } = item;
+      const { label, sortKey, minWidth, ...rest } = item;
 
       return (
         <Table.HeaderCell key={label} {...rest}>
-          {this.renderSortCell(item)}
+          <Box minWidth={minWidth}>{this.renderSortCell(item)}</Box>
         </Table.HeaderCell>
       );
     });

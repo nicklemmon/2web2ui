@@ -30,7 +30,9 @@ export function ReportOptions(props) {
   const [selectedReport, setReport] = useState(undefined);
 
   const { location, updateRoute } = useRouter();
-  const handleReportChange = report => {
+  const handleReportChange = reportKey => {
+    //TODO: Remove and swap reportKey to report once typeahead fixed
+    const report = PRESET_REPORT_CONFIGS.find(({ key }) => key === reportKey);
     //If user presses escape in typeahead, clears report. Keeps current active report options.
     if (report) {
       const { options, filters = [] } = parseSearch(report.query_string);

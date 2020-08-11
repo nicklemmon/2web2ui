@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Typeahead } from './Typeahead';
 import moment from 'moment-timezone';
 import styles from './Typeahead.module.scss';
+import { AccessTime } from '@sparkpost/matchbox-icons';
 
 const Item = ({ label }) => (
   <div className={styles.Item}>
@@ -77,6 +78,7 @@ export const TimezoneTypeahead = props => {
     selectedItem: selected,
     onChange: onChange,
     maxNumberOfResults: options.length,
+    icon: AccessTime,
     ...rest,
   };
 

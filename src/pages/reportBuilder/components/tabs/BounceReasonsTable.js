@@ -27,11 +27,11 @@ const filterBoxConfig = {
 };
 
 const columns = [
-  { label: 'Count %', sortKey: 'count_bounce' },
-  { label: 'Classification', sortKey: 'classification_id' },
+  { label: 'Count %', minWidth: '90px', sortKey: 'count_bounce' },
+  { label: 'Classification', minWidth: '900', sortKey: 'classification_id' },
   { label: 'Category', sortKey: 'bounce_category_name' },
-  { label: 'Reason', width: '45%', sortKey: 'reason' },
-  { label: 'Domain', sortKey: 'domain' },
+  { label: 'Reason', minWidth: '1000', sortKey: 'reason' },
+  { label: 'Domain', minWidth: '90px', sortKey: 'domain' },
 ];
 
 export function BounceReasonsTable(props) {

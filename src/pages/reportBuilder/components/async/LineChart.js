@@ -18,6 +18,7 @@ import moment from 'moment';
 import styles from './LineChart.module.scss';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { Box, Text } from 'src/components/matchbox';
+import { LegendCircle } from 'src/components';
 
 const identity = a => a;
 
@@ -38,13 +39,7 @@ const CustomTooltip = ({ showTooltip, payload, label, labelFormatter, formatter 
         <Box key={`report_chart_${entry.name}`} mb="100">
           <Box justifyContent="space-between" alignItems="center" display="flex">
             <Box display="inline-flex" alignItems="center">
-              <Box //The color circle
-                height="14px"
-                width="14px"
-                borderRadius="circle"
-                mr={tokens.spacing_300}
-                backgroundColor={entry.stroke}
-              />
+              <LegendCircle mr={tokens.spacing_300} color={entry.stroke} />
               <Text as="span" fontSize="100" color="white">
                 {entry.name}
               </Text>

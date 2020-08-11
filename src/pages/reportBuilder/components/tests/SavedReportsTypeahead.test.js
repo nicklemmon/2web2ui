@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import SavedReportsTypeahead from '../SavedReportsTypeahead';
-
-describe('Saved Reports Typeahead', () => {
+//TODO: Skip until typeahead replaced
+describe.skip('Saved Reports Typeahead', () => {
   const defaultProps = {
     handleReportChange: jest.fn(),
     selectedReport: {

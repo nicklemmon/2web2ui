@@ -10,7 +10,8 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
     it('Selecting a preset report works correctly', () => {
       cy.withinMainContent(() => {
-        cy.findByLabelText('Report').type('Engagement');
+        // cy.findByLabelText('Report').type('Engagement');
+        cy.findByDataId('report-select').select('engagement'); //TODO: Remove
         cy.findByText('Engagement Report').should('be.visible');
         cy.findByText('Engagement Report').click({ force: true });
         cy.wait(['@getTimeSeries', '@getDeliverability']);
@@ -62,16 +63,19 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         assertions();
 
         //Change to engagement report
-        cy.findByLabelText('Report').type('Engagement');
-        cy.findByText('Engagement Report').click({ force: true });
+        // cy.findByLabelText('Report').type('Engagement');
+        cy.findByDataId('report-select').select('engagement'); //TODO: Remove
+
+        // cy.findByText('Engagement Report').click({ force: true });
         assertions();
         cy.findAllByText('Sent').should('be.visible');
 
         //Change to summary report
-        cy.findByLabelText('Report')
-          .clear()
-          .type('Summary');
-        cy.findByText('Summary Report').click({ force: true });
+        // cy.findByLabelText('Report')
+        //   .clear()
+        //   .type('Summary');
+        cy.findByDataId('report-select').select('summary'); //TODO: Remove
+        // cy.findByText('Summary Report').click({ force: true });
         cy.wait(['@getUTCTimeSeries', '@getUTCDeliverability']);
         assertions();
         cy.findAllByText('Targeted').should('be.visible');

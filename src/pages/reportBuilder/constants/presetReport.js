@@ -24,7 +24,7 @@ export const PRESET_REPORT_CONFIGS = [
     key: 'delayed',
     name: 'Delayed Report',
     query_string:
-      'range=day&metrics=count_sent&metrics=count_sent&metrics=count_accepted&metrics=count_delivered_first&metrics=count_delivered_subsequent&metrics=accepted_rate&metrics=count_delayed&metrics=delayed_rate',
+      'range=day&metrics=count_sent&metrics=count_accepted&metrics=count_delivered_first&metrics=count_delivered_subsequent&metrics=accepted_rate&metrics=count_delayed&metrics=delayed_rate',
     type: 'preset',
   },
   {

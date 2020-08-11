@@ -11,27 +11,33 @@ exports[`Component: TableHeader renders header correctly with complex column con
     <Table.HeaderCell
       key="Recipient"
     >
-      <SortLabel
-        direction="asc"
-        label="Recipient"
-        onClick={[Function]}
-      />
+      <Box>
+        <SortLabel
+          direction="asc"
+          label="Recipient"
+          onClick={[Function]}
+        />
+      </Box>
     </Table.HeaderCell>
     <Table.HeaderCell
       key="Type"
       width="18%"
     >
-      <SortLabel
-        direction={false}
-        label="Type"
-        onClick={[Function]}
-      />
+      <Box>
+        <SortLabel
+          direction={false}
+          label="Type"
+          onClick={[Function]}
+        />
+      </Box>
     </Table.HeaderCell>
     <Table.HeaderCell
       key="Source"
       width="20%"
     >
-      Source
+      <Box>
+        Source
+      </Box>
     </Table.HeaderCell>
   </Table.Row>
 </thead>

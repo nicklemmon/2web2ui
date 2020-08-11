@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Inline, Tag, Box } from 'src/components/matchbox';
+import { LegendCircle } from 'src/components';
 
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import getConfig from 'src/helpers/getConfig';
@@ -9,15 +10,7 @@ function renderMetric(metric, uniqueLabel, removeMetric) {
   return (
     <Tag key={metric.name} onRemove={() => removeMetric(metric.name)} data-id="metric-tag">
       <Box as="span" display="inline-flex" alignItems="center">
-        <Box //The color circle
-          display="inline-block"
-          height="16px"
-          width="16px"
-          borderRadius="circle"
-          backgroundColor={metric.stroke}
-          position="relative"
-          right="9px"
-        />
+        <LegendCircle color={metric.stroke} right="9px" />
         <Box>
           {metric.isUniquePerTimePeriod && uniqueLabel
             ? `${metric.label} ${uniqueLabel}`

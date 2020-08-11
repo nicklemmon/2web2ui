@@ -32,6 +32,7 @@ export { default as Abbreviation } from './abbreviation';
 export { default as RecipientValidationPriceTable } from './recipientValidation/RecipientValidationPriceTable';
 export { default as ButtonWrapper } from './buttonWrapper/ButtonWrapper';
 export { default as Tabs } from './tabs/Tabs';
+export { default as LegendCircle } from './legendCircle/LegendCircle';
 
 export * from './breadcrumbs';
 export * from './collection';

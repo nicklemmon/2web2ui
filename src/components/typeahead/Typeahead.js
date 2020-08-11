@@ -71,6 +71,7 @@ export class Typeahead extends Component {
       renderItem,
       maxWidth,
       canChange,
+      icon,
     } = this.props;
     const { matches } = this.state;
     const items = matches.map((item, index) =>
@@ -115,12 +116,14 @@ export class Typeahead extends Component {
 
     textFieldProps['data-lpignore'] = true;
 
+    const Icon = icon || Search;
+
     return (
       <div className={cx('Typeahead')}>
         <Box maxWidth={maxWidth ? maxWidth : '1200'} position="relative">
           <ActionList className={listClasses} actions={items} maxHeight={maxHeight} />
 
-          <TextField {...textFieldProps} onFocus={openMenu} prefix={<Search />} />
+          <TextField {...textFieldProps} onFocus={openMenu} prefix={<Icon />} />
         </Box>
       </div>
     );

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { refreshSummaryReport } from 'src/actions/summaryChart';
 import { Page, Panel } from 'src/components/matchbox';
-import { Empty, Loading, Unit } from 'src/components';
+import { Empty, Loading, Unit, LegendCircle } from 'src/components';
 import { Box, Grid, Inline } from 'src/components/matchbox';
 import { Definition } from 'src/components/text';
 import { ReportOptions, ReportTable } from './components';
@@ -28,6 +28,19 @@ import {
 } from './components/tabs';
 import styles from './ReportBuilder.module.scss';
 import moment from 'moment';
+
+const MetricDefinition = ({ label, children }) => {
+  return (
+    <Definition>
+      <Definition.Label>
+        <Box color={tokens.color_gray_600}>{label}</Box>
+      </Definition.Label>
+      <Definition.Value>
+        <Box color={tokens.color_white}>{children}</Box>
+      </Definition.Value>
+    </Definition>
+  );
+};
 
 export function ReportBuilder({
   chart,
@@ -88,21 +101,7 @@ export function ReportBuilder({
   };
 
   const { to, from } = summarySearchOptions;
-  const dateLabelValue = {
-    label: 'Date',
-    value: `${moment(from).format('MMM Do')} - ${moment(to).format('MMM Do, YYYY')}`,
-  };
-
-  const renderAggregateMetric = useCallback(({ label, value, unit }) => {
-    return (
-      <Definition dark>
-        <Definition.Label>{label}</Definition.Label>
-        <Definition.Value>
-          <Unit value={value} unit={unit} />
-        </Definition.Value>
-      </Definition>
-    );
-  }, []);
+  const dateValue = `${moment(from).format('MMM Do')} - ${moment(to).format('MMM Do, YYYY')}`;
 
   return (
     <Page title="Analytics Report">
@@ -130,14 +129,26 @@ export function ReportBuilder({
                   <Box padding="400" backgroundColor={tokens.color_gray_1000}>
                     <Grid>
                       <Grid.Column sm={3}>
-                        <Box id="date">{renderAggregateMetric(dateLabelValue)}</Box>
+                        <Box id="date">
+                          <MetricDefinition label="Date">
+                            <Unit value={dateValue} />
+                          </MetricDefinition>
+                        </Box>
                       </Grid.Column>
                       <Grid.Column sm={9}>
                         <Inline space="600">
-                          {chart.aggregateData.map(metric => {
+                          {chart.aggregateData.map(({ key, label, value, unit }) => {
+                            const stroke = processedMetrics.find(({ key: newKey }) => {
+                              return newKey === key;
+                            })?.stroke;
                             return (
-                              <Box marginRight="600" key={metric.key}>
-                                {renderAggregateMetric(metric)}
+                              <Box marginRight="600" key={key}>
+                                <MetricDefinition label={label}>
+                                  <Box display="flex" alignItems="center">
+                                    {stroke && <LegendCircle marginRight="200" color={stroke} />}
+                                    <Unit value={value} unit={unit} />
+                                  </Box>
+                                </MetricDefinition>
                               </Box>
                             );
                           })}
