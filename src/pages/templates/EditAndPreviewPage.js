@@ -1,9 +1,10 @@
 import React from 'react';
-import { FileEdit, CheckCircle } from '@sparkpost/matchbox-icons';
 import { Prompt } from 'react-router';
 import { RedirectAndAlert } from 'src/components/globalAlert';
 import FullPage from 'src/components/fullPage';
 import Loading from 'src/components/loading';
+import { Tag } from 'src/components/matchbox';
+import { OGOnlyWrapper } from 'src/components/hibana';
 import EditNavigation from './components/EditNavigation';
 import links from './constants/editNavigationLinks';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
@@ -39,21 +40,21 @@ const EditAndPreviewPage = () => {
   }
 
   const primaryArea = () => (
-    <>
+    <div data-id="template-status">
       {isPublishedMode ? (
-        <div className={styles.Status} data-id="template-status">
-          <span>Published</span>
-
-          <CheckCircle size={17} className={styles.GreenColor} />
-        </div>
+        <Tag color="green">
+          <OGOnlyWrapper as="span" className={styles.StatusContent}>
+            Published
+          </OGOnlyWrapper>
+        </Tag>
       ) : (
-        <div className={styles.Status} data-id="template-status">
-          <span>Draft</span>
-
-          <FileEdit size={17} />
-        </div>
+        <Tag>
+          <OGOnlyWrapper as="span" className={styles.StatusContent}>
+            Draft
+          </OGOnlyWrapper>
+        </Tag>
       )}
-    </>
+    </div>
   );
 
   const title = draft => {

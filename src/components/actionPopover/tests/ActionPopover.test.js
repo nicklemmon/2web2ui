@@ -8,7 +8,11 @@ describe('ActionPopover Component', () => {
   const subject = props => shallow(<ActionPopover id="test-popover" {...props} />);
 
   it('should render with no props', () => {
-    expect(subject()).toMatchSnapshot();
+    const wrapper = subject();
+
+    expect(wrapper.find('Popover')).toHaveProp('portalId', 'popover-portal');
+    expect(wrapper.find('Popover')).toHaveProp('left', true);
+    expect(wrapper.find('ActionList')).toExist();
   });
 
   it('should render with actions', () => {
@@ -17,6 +21,7 @@ describe('ActionPopover Component', () => {
       { content: 'Delete', onClick: jest.fn() },
     ];
     const wrapper = subject({ actions });
-    expect(wrapper).toMatchSnapshot();
+
+    expect(wrapper.find('ActionList')).toHaveProp('actions', actions);
   });
 });

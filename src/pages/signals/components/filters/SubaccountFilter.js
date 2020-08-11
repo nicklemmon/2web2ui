@@ -41,7 +41,8 @@ export class SubaccountFilterClassComponent extends React.Component {
     this.setState({ isOpen: false, isSearchOpen: false });
   };
 
-  handleChange = ({ id, name }) => {
+  handleChange = subaccount => {
+    const { name, id } = subaccount || OPTIONS[0];
     this.close();
     this.props.changeSignalOptions({ subaccount: { id, name } });
   };
@@ -118,6 +119,11 @@ export class SubaccountFilterClassComponent extends React.Component {
                     label="Subaccount Search"
                     onChange={this.handleChange}
                     placeholder="Search here"
+                    selectedItem={
+                      OPTIONS[0].condition(subaccount) || OPTIONS[1].condition(subaccount)
+                        ? ''
+                        : subaccount
+                    }
                     unfiltered
                   />
                 </div>

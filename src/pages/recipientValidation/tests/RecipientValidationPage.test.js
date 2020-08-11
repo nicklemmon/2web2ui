@@ -57,7 +57,7 @@ describe('Page: Recipient Email Verification (shallow)', () => {
 
   it('renders Api tab correctly when selected', () => {
     wrapper = subject({ tab: 2 });
-    expect(wrapper.find('ApiIntegrationDocs')).toExist();
+    expect(wrapper.find('ApiDetails')).toExist();
   });
 
   it('when billingLoading is true ValidateSection is not rendered', () => {

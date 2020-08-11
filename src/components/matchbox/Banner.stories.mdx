@@ -1,34 +1,23 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import { Banner, Button } from 'src/components/matchbox';
-import { ButtonWrapper } from 'src/components';
 
 <Meta title="Misc|Banner" component={Banner} />
 
 # Banner
 
 Use the `<Banner/>` component to highlight important information or account state changes to the
-user.
-
-## Usage with the Button Component
-
-When child `<Button/>` components are rendered inside a banner instance, the following should be the
-case:
-
-- When there is only a `Button` by itself, the button should be gray with an outline
-- When two `Button` instances present, the first button should be filled and gray and the second
-  should be gray with an outline
-
-**NOTE:** The following examples only work visually with Hibana enabled.
+user. When `<Banner/>` components contain child `<Button/>` or link components, wrap them in
+`<Banner.Actions/>`.
 
 ### With Two Buttons
 
 <Preview>
   <Banner status="warning" title="This is a warning banner with buttons">
     <p>This is some content in a banner.</p>
-    <ButtonWrapper>
+    <Banner.Actions>
       <Button variant="monochrome-primary">Continue</Button>
       <Button variant="monochrome">Cancel</Button>
-    </ButtonWrapper>
+    </Banner.Actions>
   </Banner>
 </Preview>
 
@@ -37,23 +26,22 @@ case:
 <Preview>
   <Banner status="warning" title="This is a warning banner with buttons">
     <p>This is some content in a banner.</p>
-    <ButtonWrapper>
+    <Banner.Actions>
       <Button variant="monochrome">Continue</Button>
-    </ButtonWrapper>
+    </Banner.Actions>
   </Banner>
 </Preview>
 
 ```js
 import { Banner, Button } from 'src/components/matchbox';
-import { ButtonWrapper } from 'src/components';
 
 const MyComponent = () => {
   return (
     <Banner status="warning" title="This is a warning banner with buttons">
       <p>This is some content in a banner.</p>
-      <ButtonWrapper>
+      <Banner.Actions>
         <Button variant="monochrome">Continue</Button>
-      </ButtonWrapper>
+      </Banner.Actions>
     </Banner>
   );
 };

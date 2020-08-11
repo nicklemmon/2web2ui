@@ -6,7 +6,24 @@ exports[`StatusSection disables buttons when updating 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": "Enable SSO",
+        "content": <span
+          style={
+            Object {
+              "display": "inline-flex",
+            }
+          }
+        >
+          <span>
+            Enable SSO
+          </span>
+          <PowerSettingsNew
+            style={
+              Object {
+                "marginLeft": "3px",
+              }
+            }
+          />
+        </span>,
         "disabled": true,
         "onClick": [Function],
       },
@@ -42,7 +59,24 @@ exports[`StatusSection renders when disabled 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": "Enable SSO",
+        "content": <span
+          style={
+            Object {
+              "display": "inline-flex",
+            }
+          }
+        >
+          <span>
+            Enable SSO
+          </span>
+          <PowerSettingsNew
+            style={
+              Object {
+                "marginLeft": "3px",
+              }
+            }
+          />
+        </span>,
         "disabled": false,
         "onClick": [Function],
       },
@@ -77,7 +111,24 @@ exports[`StatusSection renders when enabled 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": "Disable SSO",
+        "content": <span
+          style={
+            Object {
+              "display": "inline-flex",
+            }
+          }
+        >
+          <span>
+            Disable SSO
+          </span>
+          <PowerSettingsNew
+            style={
+              Object {
+                "marginLeft": "3px",
+              }
+            }
+          />
+        </span>,
         "disabled": false,
         "onClick": [Function],
       },
@@ -120,7 +171,24 @@ exports[`StatusSection renders when readOnly 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": "Enable SSO",
+        "content": <span
+          style={
+            Object {
+              "display": "inline-flex",
+            }
+          }
+        >
+          <span>
+            Enable SSO
+          </span>
+          <PowerSettingsNew
+            style={
+              Object {
+                "marginLeft": "3px",
+              }
+            }
+          />
+        </span>,
         "disabled": true,
         "onClick": [Function],
       },

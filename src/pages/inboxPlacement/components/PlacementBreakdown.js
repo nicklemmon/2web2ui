@@ -4,7 +4,6 @@ import { PageLink } from 'src/components/links';
 import { slugToFriendly } from 'src/helpers/string';
 import { formatPercent } from 'src/helpers/units';
 import { PLACEMENT_FILTER_TYPES } from '../constants/types';
-import formatFilterName, { formatRegion } from '../helpers/formatFilterName.js';
 
 const getPlacementNameByType = (type, { mailbox_provider, region, sending_ip }) => {
   switch (type) {
@@ -26,9 +25,7 @@ const PlacementBreakdown = ({ data = [], type }) => {
         const name = getPlacementNameByType(type, props);
 
         return (
-          <PageLink to={`/inbox-placement/details/${props.id}/${type}/${name}`}>
-            {formatFilterName(type, name)}
-          </PageLink>
+          <PageLink to={`/inbox-placement/details/${props.id}/${type}/${name}`}>{name}</PageLink>
         );
       },
       header: {
@@ -37,7 +34,7 @@ const PlacementBreakdown = ({ data = [], type }) => {
       },
     },
     {
-      component: ({ region }) => formatRegion(region),
+      component: ({ region }) => region,
       header: {
         label: 'Region',
         sortKey: 'region',

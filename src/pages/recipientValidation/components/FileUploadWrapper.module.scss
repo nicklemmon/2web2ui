@@ -3,9 +3,7 @@
 .Field {
   border: none;
   margin: 0 auto;
-  padding: spacing(large) 0;
   max-width: 630px;
-
   text-align: center;
 }
 
@@ -14,33 +12,16 @@
   line-height: 1.4em;
 }
 
-.Header {
-  font-size: rem(20);
-  font-weight: 600;
-  color: color(gray, 2);
-}
-
-.SubHeader {
-  margin-bottom: spacing(small);
-  font-weight: 400;
-  font-size: rem(15);
-  color: color(gray, 2);
-
-  a {
-    color: color(orange);
-    font-weight: 600;
-  }
-}
-
 .Dropzone {
   margin-bottom: spacing();
-  padding: rem(50);
+  padding: rem(40);
   border: 1px dashed transparent;
   text-align: center;
   cursor: pointer;
   transition: 0.15s;
 
-  &:hover, &.Active {
+  &:hover,
+  &.Active {
     border: 1px dashed color(gray, 6);
   }
 }

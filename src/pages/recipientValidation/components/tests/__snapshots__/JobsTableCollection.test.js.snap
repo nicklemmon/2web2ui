@@ -61,9 +61,6 @@ exports[`JobsTableCollection renders a table of jobs 1`] = `
   getRowData={[Function]}
   pagination={true}
   rows={Array []}
-  title="Recent Validations"
   wrapperComponent={[Function]}
->
-  <Component />
-</TableCollection>
+/>
 `;

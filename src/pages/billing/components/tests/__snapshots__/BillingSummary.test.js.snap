@@ -102,11 +102,11 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -245,6 +245,17 @@ exports[`Component: Billing Summary should render correctly for a standard free 
         />
       </LabelledValue>
     </Panel.Section>
+    <DedicatedIpSummarySection
+      canPurchaseIps={false}
+      count={0}
+      isTransitioningToSelfServe={false}
+      onClick={[Function]}
+      plan={
+        Object {
+          "isFree": true,
+        }
+      }
+    />
     <Panel.Section>
       <LabelledValue
         label="Recipient Validation"
@@ -267,11 +278,11 @@ exports[`Component: Billing Summary should render correctly for a standard free 
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -370,6 +381,17 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
         />
       </LabelledValue>
     </Panel.Section>
+    <DedicatedIpSummarySection
+      canPurchaseIps={false}
+      count={0}
+      isTransitioningToSelfServe={false}
+      onClick={[Function]}
+      plan={
+        Object {
+          "isFree": true,
+        }
+      }
+    />
     <Panel.Section>
       <LabelledValue
         label="Recipient Validation"
@@ -392,11 +414,11 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -559,11 +581,11 @@ exports[`Component: Billing Summary should render correctly if you can't change 
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -735,11 +757,11 @@ exports[`Component: Billing Summary should render correctly if you can't update 
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -871,11 +893,11 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -1051,11 +1073,11 @@ exports[`Component: Billing Summary should render with the billing contact modal
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -1231,11 +1253,11 @@ exports[`Component: Billing Summary should render with the payment info modal op
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>
@@ -1411,11 +1433,11 @@ exports[`Component: Billing Summary should show the invoice history if there are
             </Text>
           </Text>
         </h6>
-        <UnstyledLink
+        <ButtonLink
           onClick={[Function]}
         >
           How was this calculated?
-        </UnstyledLink>
+        </ButtonLink>
       </LabelledValue>
     </Panel.Section>
   </Panel>

@@ -1,4 +1,4 @@
-const PAGE_BASE_URL = '/blocklist/watchlist';
+const PAGE_BASE_URL = '/signals/blocklist/watchlist';
 
 describe('The blocklist watchlist page', () => {
   beforeEach(() => {
@@ -149,7 +149,7 @@ describe('The blocklist watchlist page', () => {
       cy.findByText('2.2.8', { container: val[0] }).should(
         'have.attr',
         'href',
-        '/blocklist/incidents?search=2.2.8',
+        '/signals/blocklist/incidents?search=2.2.8',
       );
     });
   });

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { LabelledValue } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Box, Panel, UnstyledLink, Modal } from 'src/components/matchbox';
+import { Box, Panel, Modal } from 'src/components/matchbox';
+import { ButtonLink } from 'src/components/links';
 import { OGOnlyWrapper } from 'src/components/hibana';
 import {
   PremiumBanner,
@@ -18,7 +19,7 @@ import CardSummary from 'src/components/billing/CardSummary';
 import PlanSummary from './PlanSummary';
 import RecipientValidationModal from './RecipientValidationModal';
 import { formatFullNumber } from 'src/helpers/units';
-import totalRVCost from '../helpers/totalRecipientValidationCost';
+import totalRVCost from 'src/helpers/recipientValidation';
 import _ from 'lodash';
 import { formatDateTime } from 'src/helpers/date';
 import { Text } from 'src/components/matchbox';
@@ -102,7 +103,7 @@ export default class BillingSummary extends Component {
               </Text>
             </Text>
           </h6>
-          <UnstyledLink onClick={this.handleRvModal}>How was this calculated?</UnstyledLink>
+          <ButtonLink onClick={this.handleRvModal}>How was this calculated?</ButtonLink>
         </LabelledValue>
       </Panel.Section>
     );
@@ -115,7 +116,6 @@ export default class BillingSummary extends Component {
       currentPlan,
       canChangePlan,
       canUpdateBillingInfo,
-      canPurchaseIps,
       invoices,
       accountAgeInDays,
     } = this.props;
@@ -148,7 +148,7 @@ export default class BillingSummary extends Component {
               <PlanSummary plan={account.subscription} pendingCancellation={pending_cancellation} />
             </LabelledValue>
           </Panel.Section>
-          {canPurchaseIps && this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
+          {this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
         </Panel>
 

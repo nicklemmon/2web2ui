@@ -6,10 +6,11 @@ import { Inline, ScreenReaderOnly } from 'src/components/matchbox';
 import findRouteByPath from 'src/helpers/findRouteByPath';
 import AccountPopover from './AccountPopover';
 import styles from './DesktopNavigation.module.scss';
+import { hibanaRoutes } from 'src/config/routes';
 
 export default function DesktopNavigation(props) {
   const { navItems, location } = props;
-  const { category, subcategory } = findRouteByPath(location.pathname);
+  const { category, subcategory } = findRouteByPath(location.pathname, undefined, hibanaRoutes);
 
   const isCategoryActive = navItem => category === navItem.label;
 

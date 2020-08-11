@@ -65,9 +65,36 @@ Array [
         "Authorization": "mock-access-token",
       },
       "method": "get",
+      "params": undefined,
+      "responseType": "json",
+      "url": "/v1/users/test-username",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
       "params": Object {},
       "responseType": "json",
       "url": "/v1/account",
+    },
+  ],
+  Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Authorization": "mock-access-token",
+      },
+      "method": "get",
+      "params": Object {
+        "beta": false,
+        "role": "admin",
+      },
+      "responseType": "json",
+      "url": "/v1/authenticate/grants",
     },
   ],
   Array [
@@ -120,17 +147,20 @@ Array [
   ],
   Array [
     Object {
-      "data": undefined,
+      "data": Object {
+        "options": Object {
+          "ui": Object {
+            "sawVideoWhileSignUp": undefined,
+          },
+        },
+      },
       "headers": Object {
         "Authorization": "mock-access-token",
       },
-      "method": "get",
-      "params": Object {
-        "beta": false,
-        "role": "admin",
-      },
+      "method": "put",
+      "params": undefined,
       "responseType": "json",
-      "url": "/v1/authenticate/grants",
+      "url": "/v1/users/test-username",
     },
   ],
   Array [

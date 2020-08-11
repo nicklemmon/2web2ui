@@ -74,34 +74,43 @@ export const FeatureChangeProvider = ({
           case 'subaccounts':
             //there will always be a limit present for each plan,
             //but till the api is released we need to default the higher limit to keep the current flow working
-            const limit = _.get(comparedPlan, 'limit', 5000);
-            const qtyExceedsLimit = Boolean(quantity > limit);
-            const isLimitDecreasing = currentLimit > limit;
+            const limitOfNewPlan = _.get(comparedPlan, 'limit', 5000);
+            const isLimitDecreasing = currentLimit > limitOfNewPlan;
             //we let the user upgrade/downgrade without showing subaccount section if current limit_override
-            //is higher than current Limit and that of compared plan
-            const overrideCondition =
-              limit_override && limit_override > currentLimit && limit_override > limit;
+            //is higher than that of compared plan and quantity < limit_override
+            const overrideCondition = limit_override && limit_override > limitOfNewPlan;
+            const qtyExceedsLimit = overrideCondition
+              ? Boolean(quantity > limit_override)
+              : Boolean(quantity > limitOfNewPlan);
             if (
-              (actions.subaccounts || qtyExceedsLimit || isLimitDecreasing) &&
-              !overrideCondition
+              actions.subaccounts ||
+              (!overrideCondition && isLimitDecreasing) ||
+              qtyExceedsLimit
             ) {
+              const noOfSubaccountsToUpdate = !overrideCondition
+                ? quantity - limitOfNewPlan
+                : quantity - limit_override;
               resObject.subaccounts = {
                 label: 'Subaccounts',
                 description: (
                   <div>
-                    {limit === 0
-                      ? "Your new plan doesn't include subaccounts."
-                      : `Your new plan only allows for ${pluralString(
-                          limit,
-                          'active subaccount',
-                          'active subaccounts',
-                        )}.`}
+                    {!overrideCondition && (
+                      <>
+                        {limitOfNewPlan === 0
+                          ? "Your new plan doesn't include subaccounts."
+                          : `Your new plan only allows for ${pluralString(
+                              limitOfNewPlan,
+                              'active subaccount',
+                              'active subaccounts',
+                            )}.`}
+                      </>
+                    )}
                     {qtyExceedsLimit && (
                       <>
                         <span> Please </span>
                         <strong>
                           change the status to terminated for{' '}
-                          {pluralString(quantity - limit, 'subaccount', 'subaccounts')}
+                          {pluralString(noOfSubaccountsToUpdate, 'subaccount', 'subaccounts')}
                         </strong>
                         <span> to continue.</span>
                       </>

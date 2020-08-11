@@ -16,7 +16,6 @@ import AllMessagesCollection from './components/AllMessagesCollection';
 import { formatPercent } from 'src/helpers/units';
 import { PLACEMENT_FILTER_TYPES } from './constants/types';
 import { selectSinglePlacementResult } from 'src/selectors/inboxPlacement';
-import formatFilterName from './helpers/formatFilterName';
 
 export const AllMessagesPage = ({
   id,
@@ -92,7 +91,7 @@ export const AllMessagesPage = ({
         to: `/inbox-placement/details/${id}`,
       }}
       title="Diagnostic Details"
-      subtitle={formatFilterName(filterType, filterName)}
+      subtitle={filterName}
     >
       <Grid>
         <Grid.Column xs={12} sm={12} md={7}>

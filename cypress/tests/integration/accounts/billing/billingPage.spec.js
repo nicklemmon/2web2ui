@@ -77,7 +77,7 @@ describe('Billing Page', () => {
 
     cy.findByText('How was this calculated?').click();
 
-    cy.findAllByText('How was this calculated?').should('have.length', 2); // The content appears both in the modal triggering element and inside the modal
+    cy.withinModal(() => cy.findByText('How was this calculated?').should('be.visible'));
   });
 
   it('displays a pending plan change banner whenever a plan is downgraded and no longer displays the "Change Plan" link', () => {
@@ -176,17 +176,17 @@ describe('Billing Page', () => {
     const dedicatedIpsApiUrl = `${ACCOUNT_API_BASE_URL}/add-ons/dedicated_ips`;
 
     function assignToNewIpPool() {
-      cy.findByLabelText(/Quantity */i).type('1'); // Helps avoid encountering the 'Required' error message
-      cy.findByLabelText(/Name your new IP Pool */i).type('myPool');
+      cy.findByLabelText(/Quantity/i).type('1'); // Helps avoid encountering the 'Required' error message
+      cy.findByLabelText(/Name your new IP Pool/i).type('myPool');
       cy.findAllByText('Add Dedicated IPs')
         .last()
         .click();
     }
 
     function assignToExistingIpPool() {
-      cy.findByLabelText(/Quantity */i).type('1'); // Helps avoid encountering the 'Required' error message
+      cy.findByLabelText(/Quantity/i).type('1'); // Helps avoid encountering the 'Required' error message
       cy.findByLabelText('Assign to an existing IP Pool').check({ force: true }); // `force` required to handle Matchbox design issue
-      cy.findByLabelText(/Choose an IP Pool */i).select('myPool');
+      cy.findByLabelText(/Choose an IP Pool/i).select('myPool');
       cy.findAllByText('Add Dedicated IPs')
         .last()
         .click();
@@ -301,65 +301,78 @@ describe('Billing Page', () => {
         });
 
         cy.visit(PAGE_URL);
-        cy.findByText(/Update Payment Information */i).click();
+        cy.findByRole('button', { name: /Update Payment Information/i }).click();
       });
 
       it('closes the modal when clicking "Cancel"', () => {
         cy.withinModal(() => {
           cy.findAllByText('Update Payment Information').should('be.visible');
-          cy.findByText('Cancel').click({ force: true });
+          cy.findByRole('button', { name: 'Cancel' }).click();
           cy.findAllByText('Update Payment Information').should('not.be.visible');
         });
       });
 
       it('renders "Required" validation errors when skipping the "Credit Card Number", "Cardholder Name", "Expiration Date", "Security Code", and "Zip Code" fields', () => {
-        cy.withinModal(() => {
-          cy.findAllByText('Update Payment Information')
-            .last()
-            .click({ force: true });
+        Cypress.currentTest.retries(2);
 
-          cy.findAllByText('Required').should('have.length', 5);
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Payment Information' }).click({ force: true });
+          cy.findAllByText(/Required/i).should('have.length', 5);
         });
       });
 
       it('renders a success message when successfully updating payment information', () => {
-        fillOutForm();
-
         cy.stubRequest({
           method: 'POST',
           url: `${BILLING_API_BASE_URL}/cors-data*`,
           fixture: 'billing/cors-data/200.post.json',
+          requestAlias: 'corsReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: '/v1/payment-methods/credit-cards',
           fixture: 'zuora/payment-method/credit-cards/200.post.json',
+          requestAlias: 'creditCardsReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: `${ACCOUNT_API_BASE_URL}/subscription/check`,
           fixture: 'account/subscription/check/200.post.json',
+          requestAlias: 'accountSubReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: `${BILLING_API_BASE_URL}/subscription/check`,
           fixture: 'billing/subscription/check/200.post.json',
+          requestAlias: 'billingSubReq',
         });
 
         cy.stubRequest({
           method: 'POST',
           url: `${BILLING_API_BASE_URL}/collect`,
           fixture: 'billing/collect/200.post.json',
+          requestAlias: 'billingCollectReq',
         });
 
-        cy.findAllByText(/Update Payment Information */i)
-          .last()
-          .click();
+        fillOutForm();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Payment Information' }).click();
+        });
 
-        cy.findByText('Payment Information Updated').should('be.visible');
+        cy.wait([
+          '@corsReq',
+          '@creditCardsReq',
+          '@accountSubReq',
+          '@billingSubReq',
+          '@billingCollectReq',
+        ]);
+
+        cy.withinSnackbar(() => {
+          cy.findByText('Payment Information Updated').should('be.visible');
+        });
         cy.findByLabelText('Credit Card Number').should('not.be.visible'); // The modal should now be closed
       });
 
@@ -369,19 +382,24 @@ describe('Billing Page', () => {
           statusCode: 400,
           url: `${BILLING_API_BASE_URL}/cors-data*`,
           fixture: 'billing/cors-data/400.post.json',
+          requestAlias: 'corsReq',
         });
 
         fillOutForm();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Payment Information' }).click();
+        });
 
-        cy.findAllByText(/Update Payment Information */i)
-          .last()
-          .click();
+        cy.wait('@corsReq');
 
-        cy.findByText('Something went wrong.').should('be.visible');
-        cy.findByText('View Details').click();
-        cy.findByText('This is an error').should('be.visible');
+        cy.withinSnackbar(() => {
+          cy.findByText('Something went wrong.').should('be.visible');
+          cy.findByText('View Details').click();
+          cy.findByText('This is an error').should('be.visible');
+        });
       });
-      describe('reports error to sentry', () => {
+
+      describe('reports errors to sentry', () => {
         it('sends zuora error codes to sentry when zuora errors with 200', () => {
           cy.stubRequest({
             method: 'POST',
@@ -415,9 +433,10 @@ describe('Billing Page', () => {
           });
 
           fillOutForm();
-          cy.findAllByText(/Update Payment Information */i)
-            .last()
-            .click();
+          cy.withinModal(() => {
+            cy.findByRole('button', { name: 'Update Payment Information' }).click();
+          });
+
           cy.findByText("'termType' value should be one of: TERMED, EVERGREEN").should(
             'be.visible',
           );
@@ -457,9 +476,10 @@ describe('Billing Page', () => {
           });
 
           fillOutForm();
-          cy.findAllByText(/Update Payment Information */i)
-            .last()
-            .click();
+          cy.withinModal(() => {
+            cy.findByRole('button', { name: 'Update Payment Information' }).click();
+          });
+
           cy.findByText('An error occurred while contacting the billing service').should(
             'be.visible',
           );
@@ -475,15 +495,15 @@ describe('Billing Page', () => {
         });
 
         cy.visit(PAGE_URL);
-        cy.findByText('Update Billing Contact').click();
+        cy.findByRole('button', { name: 'Update Billing Contact' }).click();
       });
 
       it('closes the modal when clicking "Cancel"', () => {
-        cy.findByLabelText('First Name').should('be.visible');
-
-        cy.findByText('Cancel').click();
-
-        cy.findByLabelText('First Name').should('not.be.visible');
+        cy.withinModal(() => {
+          cy.findByLabelText('First Name').should('be.visible');
+          cy.findByRole('button', { name: 'Cancel' }).click({ force: true });
+          cy.findByLabelText('First Name').should('not.be.visible');
+        });
       });
 
       it('renders each field with the current billing contact information', () => {
@@ -499,9 +519,9 @@ describe('Billing Page', () => {
         cy.findByLabelText('Email').clear();
         cy.findByLabelText('Zip Code').clear();
 
-        cy.findAllByText('Update Billing Contact')
-          .last()
-          .click();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Billing Contact' }).click();
+        });
 
         cy.findAllByText('Required').should('have.length', 4);
       });
@@ -524,14 +544,14 @@ describe('Billing Page', () => {
 
         cy.stubRequest({
           method: 'PUT',
-          url: `${ACCOUNT_API_BASE_URL}/billing`,
+          url: `${BILLING_API_BASE_URL}`,
           fixture: 'billing/200.put.json',
           requestAlias: 'billingUpdate',
         });
 
-        cy.findAllByText('Update Billing Contact')
-          .last()
-          .click();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Billing Contact' }).click();
+        });
 
         cy.wait('@billingUpdate').then(({ request }) => {
           cy.wrap(request.body).should('have.property', 'country_code', 'US');
@@ -549,13 +569,13 @@ describe('Billing Page', () => {
         cy.stubRequest({
           method: 'PUT',
           statusCode: 400,
-          url: `${ACCOUNT_API_BASE_URL}/billing`,
+          url: `${BILLING_API_BASE_URL}`,
           fixture: '400.json',
         });
 
-        cy.findAllByText('Update Billing Contact')
-          .last()
-          .click();
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Update Billing Contact' }).click();
+        });
 
         cy.findByText('Something went wrong.').should('be.visible');
         cy.findByText('View Details').click();
@@ -666,8 +686,10 @@ describe('Billing Page', () => {
     cy.findByText('Premium Addon Plan')
       .scrollIntoView()
       .should('be.visible');
+
     cy.findAllByText('Contact Us')
       .first()
+      .closest('a')
       .should('have.attr', 'href', 'https://www.sparkpost.com/contact-premium');
   });
 
@@ -677,8 +699,10 @@ describe('Billing Page', () => {
     cy.findByText('Enterprise')
       .scrollIntoView()
       .should('be.visible');
+
     cy.findAllByText('Contact Us')
       .last()
+      .closest('a')
       .should('have.attr', 'href', 'https://www.sparkpost.com/contact-enterprise');
   });
 });

@@ -93,6 +93,8 @@ describe('The recipients suppressions list page', () => {
     });
 
     it('renders a delete modal when clicking the "Delete" button within a table row', () => {
+      Cypress.currentTest.retries(2);
+
       cy.stubRequest({
         method: 'DELETE',
         url: '/api/v1/suppression-list/fake-email@gmail.com',

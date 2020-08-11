@@ -84,7 +84,7 @@ describe('The recipient validation list progress page', () => {
     cy.visit(APP_URL);
 
     cy.findByText('Oh no! There seems to be an issue with your list...').should('be.visible');
-    cy.findByText('Got It').should('have.attr', 'href', '/recipient-validation');
+    cy.verifyLink({ content: 'Got It', href: '/recipient-validation' });
   });
 
   describe('the "Processing" state', () => {

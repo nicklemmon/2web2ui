@@ -6,7 +6,7 @@ import { formatCurrency, formatFullNumber } from 'src/helpers/units';
 import styles from './RecipientValidationModal.module.scss';
 import cx from 'classnames';
 import { RECIPIENT_VALIDATION_TIERS } from 'src/constants';
-import totalRecipientValidationCost from '../helpers/totalRecipientValidationCost';
+import totalRecipientValidationCost from 'src/helpers/recipientValidation';
 
 export default ({ onClose, volumeUsed }) => {
   const TierRows = RECIPIENT_VALIDATION_TIERS.map(({ volumeMax, volumeMin, cost }) => {

@@ -104,6 +104,18 @@ describe('SubaccountFilter Component', () => {
     expect(changeSignalOptions).toHaveBeenCalledWith({ subaccount: value });
   });
 
+  it('calls changeSignalOptions with default option when subaccount is cleared', () => {
+    const changeSignalOptions = jest.fn();
+    const wrapper = subject({ changeSignalOptions });
+
+    wrapper.setState({ isOpen: true, isSearchOpen: true });
+    wrapper.find('Connect(SubaccountTypeahead)').simulate('change', null);
+
+    expect(changeSignalOptions).toHaveBeenCalledWith({
+      subaccount: { id: undefined, name: 'Master & All Subaccounts' },
+    });
+  });
+
   describe('events', () => {
     let stateSpy;
     let wrapper;

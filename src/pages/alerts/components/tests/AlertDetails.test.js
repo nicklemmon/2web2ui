@@ -28,11 +28,6 @@ describe('Alert Details Component', () => {
     renderPrimaryAreaComponent: () => <div>My Primary Area</div>,
   };
 
-  it('should render the alert details component correctly', () => {
-    const wrapper = shallow(<AlertDetails {...props} />);
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('should show Any Subaccount tag in the subaccounts field if no subaccounts and any_subaccount is true', () => {
     const newAlert = { ...alert, subaccounts: [], any_subaccount: true };
     const wrapper = shallow(<AlertDetails {...props} alert={newAlert} />);

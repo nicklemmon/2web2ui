@@ -31,11 +31,13 @@
     "lodash/prefer-some": "off",
     "lodash/prefer-startswith": "off",
     "lodash/prefer-times": "off",
+    "react/forbid-component-props": ["error", { "forbid": ["style"] }],
+    "react/forbid-dom-props": ["error", { "forbid": ["style"] }],
     // Custom rule for i18n
     "no-restricted-syntax": [
       "warn",
       {
-        "message": "☀️ Plz avoid bare strings inside JSX ☀️",
+        "message": "☀️ Please wrap bare strings in the <TranslatableText> component ☀️",
         "selector": "JSXElement[children.length > 1] > Literal[value=/\\w+/]"
       }
     ],

@@ -66,9 +66,9 @@ describe('Alerts Page - Edit', () => {
     });
 
     cy.wait('@getAlert');
-    cy.findByText('Update Alert').should('have.attr', 'disabled');
+    cy.findByRole('button', { name: 'Update Alert' }).should('have.attr', 'disabled');
     cy.get('[name="emails"]').type('sparkky@sparkpost.io', { force: true });
-    cy.findByText('Update Alert').click();
+    cy.findByRole('button', { name: 'Update Alert' }).click();
 
     cy.wait(['@postNewAlert', '@getAlert', '@getAlertIncidents']).then(xhrs => {
       const [postRequest, alert] = xhrs;

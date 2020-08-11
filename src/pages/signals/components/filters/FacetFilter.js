@@ -80,7 +80,7 @@ export class FacetFilter extends React.Component {
                 onKeyPress={onEnter(this.handleFacetSearch)}
                 onBlur={this.handleFacetSearch}
                 placeholder="Search"
-                suffix={<Search />}
+                prefix={<Search />}
                 value={searchTerm}
               />
             </div>

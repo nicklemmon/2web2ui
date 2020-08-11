@@ -5,22 +5,15 @@ module.exports = {
     '!src/**/*.container.{js,jsx}',
     '!src/**/*.fake.{js,jsx}',
   ],
-  coverageDirectory: 'build-reports',
-  coverageReporters: ['lcov', 'text'],
+  coverageDirectory: 'jest-coverage',
+  coverageReporters: ['json', 'lcov', 'text'],
   coveragePathIgnorePatterns: [
     '<rootDir>/src/App.js',
     '<rootDir>/src/store.js',
     '<rootDir>/src/config',
-    '<rootDir>/src/helpers/registerServiceWorker',
     '<rootDir>/src/reducers',
     'tests/helpers/',
     'index.js',
-    // Uses `require.context` which is provided by Webpack and hard to test
-    '<rootDir>/src/components/notifications/staticMarkdownNotifications.js',
-    // TODO: Temporary file that will need to be removed when this feature is live
-    '<rootDir>/src/pages/NotificationTestPage.js',
-    // covered by Cypress
-    '<rootDir>/src/pages/billing/forms/ChangePlanForm.js',
   ],
   reporters: ['default', 'jest-junit'],
   testResultsProcessor: './node_modules/jest-junit-reporter',

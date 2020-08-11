@@ -116,10 +116,6 @@ describe('metrics helpers', () => {
     const to = moment('2016-12-19T00:30').utc();
     expect(metricsHelpers.getPrecisionOptions(from, to)).toEqual([
       {
-        label: '5 Min',
-        value: '5min',
-      },
-      {
         label: '15 Min',
         value: '15min',
       },

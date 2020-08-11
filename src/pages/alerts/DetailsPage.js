@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Delete, ContentCopy } from '@sparkpost/matchbox-icons';
 import { DeleteModal, Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
+import { TranslatableText } from 'src/components/text';
 import { Box, Button, Page } from 'src/components/matchbox';
 import withAlert from './containers/DetailsPage.container';
 import { AlertDetails } from './components/AlertDetails';
@@ -57,30 +58,22 @@ export class DetailsPageComponent extends Component {
   };
 
   DuplicateDeleteAction = () => {
-    const { isHibanaEnabled, id } = this.props;
+    const { id } = this.props;
+
     return (
-      <>
-        <Box textAlign={'right'} position={'relative'} bottom="28px">
-          <PageLink as={Button} flat to={`/alerts/create/${id}`}>
-            {!isHibanaEnabled && <ContentCopy className={styles.Icon} />}
-            Duplicate
-            {isHibanaEnabled && (
-              <Box marginLeft="200">
-                <ContentCopy />
-              </Box>
-            )}
-          </PageLink>
-          <Button flat onClick={this.openDeleteModal}>
-            {!isHibanaEnabled && <Delete className={styles.Icon} />}
-            Delete
-            {isHibanaEnabled && (
-              <Box marginLeft="200">
-                <Delete />
-              </Box>
-            )}
-          </Button>
-        </Box>
-      </>
+      <Box style={{ float: 'right' }} marginRight="500">
+        <PageLink as={Button} flat to={`/alerts/create/${id}`}>
+          <TranslatableText>Duplicate</TranslatableText>
+
+          <ContentCopy className={styles.Icon} />
+        </PageLink>
+
+        <Button flat onClick={this.openDeleteModal}>
+          <TranslatableText>Delete</TranslatableText>
+
+          <Delete className={styles.Icon} />
+        </Button>
+      </Box>
     );
   };
 
@@ -88,7 +81,7 @@ export class DetailsPageComponent extends Component {
     <PageLink
       as={Button}
       to={`/alerts/edit/${this.props.id}`}
-      variant={'primary'}
+      variant="primary"
       className={styles.Actions}
     >
       Edit Alert

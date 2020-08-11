@@ -7,7 +7,7 @@ exports[`TestCollection Component should render 1`] = `
       Object {
         "label": "Alert Name",
         "sortKey": "name",
-        "width": "40%",
+        "width": "35%",
       },
       Object {
         "label": "Metric",
@@ -64,17 +64,12 @@ exports[`TestCollection Component should render 1`] = `
       },
     ]
   }
-  title="All alerts"
-  wrapperComponent={[Function]}
->
-  <Component />
-</TableCollection>
+/>
 `;
 
 exports[`TestCollection Component should render row data properly 1`] = `
 Array [
   <PageLink
-    className="AlertNameLink"
     to="/alerts/details/id-1"
   >
     my alert 1
@@ -107,7 +102,6 @@ Array [
 exports[`TestCollection Component should render row data properly 2`] = `
 Array [
   <PageLink
-    className="AlertNameLink"
     to="/alerts/details/id-2"
   >
     my alert 2
@@ -140,7 +134,6 @@ Array [
 exports[`TestCollection Component should render row data properly 3`] = `
 Array [
   <PageLink
-    className="AlertNameLink"
     to="/alerts/details/id-3"
   >
     my alert 3

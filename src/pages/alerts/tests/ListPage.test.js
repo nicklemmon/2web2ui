@@ -84,18 +84,12 @@ describe('Page: Alerts List', () => {
       .dive()
       .find('Panel');
     expect(panel).toHaveLength(2);
-    expect(
-      panel
-        .first()
-        .find('[data-id="link-alert-name"]')
-        .text(),
-    ).toEqual(recentlyTriggeredAlerts[0].name);
-    expect(
-      panel
-        .last()
-        .find('[data-id="link-alert-name"]')
-        .text(),
-    ).toEqual(recentlyTriggeredAlerts[1].name);
+    expect(panel.first().find('[data-id="link-alert-name"]')).toHaveTextContent(
+      recentlyTriggeredAlerts[0].name,
+    );
+    expect(panel.last().find('[data-id="link-alert-name"]')).toHaveTextContent(
+      recentlyTriggeredAlerts[1].name,
+    );
   });
 
   it('should toggle delete modal', () => {

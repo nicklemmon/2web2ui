@@ -16,6 +16,7 @@ import AddFiltersSection from './AddFiltersSection';
 import SavedReportsTypeahead from './SavedReportsTypeahead';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
+import { PRESET_REPORT_CONFIGS } from '../constants/presetReport';
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
@@ -26,8 +27,36 @@ export function ReportOptions(props) {
     reportLoading,
     searchOptions,
   } = props;
+  const [selectedReport, setReport] = useState(undefined);
 
   const { location, updateRoute } = useRouter();
+  const handleReportChange = report => {
+    //If user presses escape in typeahead, clears report. Keeps current active report options.
+    if (report) {
+      const { options, filters = [] } = parseSearch(report.query_string);
+      //Keep time range and filters when changing to preset report from another preset report.
+      if (report.type === 'preset' && (!selectedReport || selectedReport.type === 'preset')) {
+        const {
+          from,
+          to,
+          relativeRange,
+          timezone,
+          precision,
+          filters: reportOptionsFilters,
+        } = reportOptions;
+        const mergedOptions = { ...options, from, to, relativeRange, timezone, precision };
+        refreshReportOptions({ ...mergedOptions, filters: reportOptionsFilters });
+      } else {
+        refreshReportOptions({ ...options, filters });
+      }
+    }
+
+    setReport(report);
+  };
+
+  const isEmpty = useMemo(() => {
+    return !Boolean(processedMetrics.length);
+  }, [processedMetrics]);
 
   const isEmpty = useMemo(() => {
     return !Boolean(processedMetrics.length);
@@ -40,9 +69,18 @@ export function ReportOptions(props) {
 
   //Initializes the report options with the search
   useEffect(() => {
-    const { options, filters = [] } = parseSearch(location.search);
+    const { options, filters = [], report: reportKey } = parseSearch(location.search);
+    const report = PRESET_REPORT_CONFIGS.find(({ key }) => key === reportKey);
 
-    refreshReportOptions({ ...options, filters });
+    if (report) {
+      const { options: reportOptions, filters: reportFilters = [] } = parseSearch(
+        report.query_string,
+      );
+      setReport(report);
+      refreshReportOptions({ ...reportOptions, filters: reportFilters });
+    } else {
+      refreshReportOptions({ ...options, filters });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -115,7 +153,10 @@ export function ReportOptions(props) {
   return (
     <div data-id="report-options">
       <Panel.Section>
-        <SavedReportsTypeahead />
+        <SavedReportsTypeahead
+          selectedItem={selectedReport}
+          handleReportChange={handleReportChange}
+        />
       </Panel.Section>
       <Panel.Section>
         <DateTimeSection

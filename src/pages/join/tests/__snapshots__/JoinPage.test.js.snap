@@ -12,6 +12,7 @@ Object {
     "utm_source": "script",
   },
   "sfdcid": "overridden",
+  "video": undefined,
 }
 `;
 
@@ -20,6 +21,7 @@ Object {
   "attributionData": Object {},
   "creationParams": Object {},
   "sfdcid": undefined,
+  "video": undefined,
 }
 `;
 
@@ -33,6 +35,7 @@ Object {
     "utm_source": "script",
   },
   "sfdcid": "123",
+  "video": undefined,
 }
 `;
 

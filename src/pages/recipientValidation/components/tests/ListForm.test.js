@@ -28,7 +28,8 @@ describe('ListForm', () => {
 
   it('renders correctly', () => {
     wrapper.setProps(props);
-    expect(wrapper).toMatchSnapshot();
+
+    expect(wrapper.find('Field[name="csv"]')).toExist();
   });
 
   it('should submit csv', async () => {

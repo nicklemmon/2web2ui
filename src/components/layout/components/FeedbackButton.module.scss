@@ -1,0 +1,14 @@
+@import '~@sparkpost/design-tokens-hibana/tokens';
+
+.FeedbackButton {
+  position: fixed;
+  bottom: spacing(400);
+  right: spacing(400);
+  border-radius: border-radius('pill');
+  box-shadow: box-shadow(300);
+
+  @media (min-width: media-query(md)) {
+    bottom: spacing(600);
+    right: spacing(500);
+  }
+}

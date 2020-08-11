@@ -9,7 +9,7 @@ describe('Stop Monitoring Modal', () => {
   const deleteMonitor = jest.fn().mockResolvedValue();
   const showAlert = jest.fn();
   const monitorToDelete = 'sparkpost.io';
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = { closeModal, monitorToDelete, deleteMonitor, showAlert };
 
     return render(

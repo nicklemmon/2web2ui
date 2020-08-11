@@ -8,6 +8,8 @@ import {
   AuthPage,
   billing,
   DashboardPage,
+  DashboardPageV2,
+  domains,
   DefaultRedirect,
   EnableTfaPage,
   ipPools,
@@ -31,6 +33,7 @@ import {
   trackingDomains,
   users,
   webhooks,
+  UsagePage,
 } from 'src/pages';
 
 import LogoutPage from 'src/pages/logout/LogoutPage';
@@ -46,8 +49,14 @@ import {
   isCustomBilling,
   isEnterprise,
   isSelfServeBilling,
+  isAccountUiOptionSet,
 } from 'src/helpers/conditions/account';
-import { isAzure, isHeroku, isSubaccountUser } from 'src/helpers/conditions/user';
+import {
+  isAzure,
+  isHeroku,
+  isSubaccountUser,
+  isUserUiOptionSet,
+} from 'src/helpers/conditions/user';
 import { configEquals, configFlag } from 'src/helpers/conditions/config';
 import App from 'src/components/layout/App';
 import LargeForm from 'src/components/layout/LargeForm';
@@ -64,12 +73,13 @@ import {
 import { emailRedirects, emailVerificationRedirect } from './emailRoutes';
 import templateRoutes from './templates';
 import inboxPlacementRoutes from './inboxPlacement';
-import blocklistRoutes from './blocklist';
-import signalsRoutes from './signals';
+import blocklistRoutes, { hibanaBlocklistRoutes } from './blocklist';
+import signalsRoutes, { hibanaSignalsRoutes } from './signals';
+import templatesRoutes from './templates';
 
 // See @sparkpost/access for role to grant mappings
 
-const routes = [
+const appRoutes = [
   {
     path: '/',
     public: true,
@@ -176,6 +186,18 @@ const routes = [
     // hide routes based on config, account/user settings, etc. without having to mess
     // around with grants in the web UI keys
     supportDocSearch: 'started',
+  },
+  {
+    path: '/dashboardV2',
+    component: DashboardPageV2,
+    layout: App,
+    title: 'Dashboard',
+    condition: all(
+      not(isSubaccountUser),
+      configEquals('splashPage', '/dashboard'), // want to hide if not a splash page https://jira.int.messagesystems.com/browse/FAD-6046
+      isAccountUiOptionSet('allow_dashboard_v2'),
+      isUserUiOptionSet('isHibanaEnabled'),
+    ),
   },
   {
     path: '/account/security',
@@ -530,6 +552,14 @@ const routes = [
     category: 'Account',
   },
   {
+    path: '/usage',
+    component: UsagePage,
+    layout: App,
+    title: 'Usage',
+    category: 'Account',
+    condition: all(hasGrants('users/manage'), isUserUiOptionSet('isHibanaEnabled')),
+  },
+  {
     path: '/account/ip-pools',
     component: ipPools.ListPage,
     condition: hasGrants('ip_pools/manage'),
@@ -686,6 +716,60 @@ const routes = [
     subcategory: 'Recipient Validation',
   },
   {
+    path: '/domains',
+    component: domains.ListPage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/create',
+    component: domains.CreatePage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Add a Domain | Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/:id',
+    component: domains.DetailsPage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Domain Details | Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/:id/verify-bounce',
+    component: domains.VerifyBounceDomainPage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Verify Bounce Domain | Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/:id/verify-sending',
+    component: domains.VerifySendingDomainPage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Verify Sending Domain | Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/:id/verify-tracking',
+    component: domains.VerifyTrackingDomainPage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Verify Tracking Domain | Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
     path: '/support/aws-premium',
     component: PremiumSupportPage,
     condition: isAws,
@@ -713,10 +797,22 @@ const routes = [
     component: LogoutPage,
     title: 'Logging out...',
   },
+];
+
+const routes = [
+  ...appRoutes,
   ...signalsRoutes,
   ...templateRoutes,
   ...inboxPlacementRoutes,
   ...blocklistRoutes,
+];
+
+const hibanaRoutes = [
+  ...appRoutes,
+  ...hibanaSignalsRoutes,
+  ...templatesRoutes,
+  ...inboxPlacementRoutes,
+  ...hibanaBlocklistRoutes,
 ];
 
 // ensure 404 is always last in routes
@@ -727,4 +823,11 @@ routes.push({
   title: 'Page Not Found',
 });
 
-export default routes;
+hibanaRoutes.push({
+  path: '*',
+  component: PageNotFound,
+  layout: App,
+  title: 'Page Not Found',
+});
+
+export { routes as default, hibanaRoutes };

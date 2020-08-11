@@ -9,7 +9,7 @@ import * as supportActions from 'src/actions/support';
 import { SelectWrapper, TextFieldWrapper } from 'src/components';
 import FileFieldWrapper from 'src/components/reduxFormWrappers/FileFieldWrapper';
 import config from 'src/config';
-import { hasOnlineSupport, isAws } from 'src/helpers/conditions/account';
+import { isAws } from 'src/helpers/conditions/account';
 import { isHeroku } from 'src/helpers/conditions/user';
 import { getBase64Contents } from 'src/helpers/file';
 import { required, maxFileSize } from 'src/helpers/validation';
@@ -18,6 +18,7 @@ import {
   selectSupportIssue,
   selectSupportIssues,
 } from 'src/selectors/support';
+import { hasOnlineSupport } from 'src/selectors/accountBillingInfo';
 import NoIssues from './NoIssues';
 import HerokuMessage from './HerokuMessage';
 import styles from '../Support.module.scss';

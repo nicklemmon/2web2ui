@@ -103,10 +103,9 @@ describe('The recipient validation /single route', () => {
     cy.visit('/recipient-validation/single');
 
     cy.findByText('Add a Credit Card').should('be.visible');
-    cy.findByText('Validate').should('be.disabled');
+    cy.findByRole('button', { name: 'Validate' }).should('be.disabled');
 
     cy.findByLabelText('Email Address').type(fakeEmail);
-
     cy.findByLabelText('Credit Card Number').type('4000 0000 0000 0000');
     cy.findByLabelText('Cardholder Name').type('John Jacob');
     cy.findByLabelText('Expiration Date').type('01/2099');
@@ -115,7 +114,7 @@ describe('The recipient validation /single route', () => {
     cy.findByLabelText('State').select('Maryland');
     cy.findByLabelText('Zip Code').type('12345');
 
-    cy.findByText('Validate').click();
+    cy.findByRole('button', { name: 'Validate' }).click();
     cy.title().should('include', 'Results | Recipient Validation');
   });
 });

@@ -7,12 +7,6 @@ jest.mock('src/hooks/useHibanaOverride', () => styles => styles);
 describe('Signals InfoTooltip Component', () => {
   const subject = props => shallow(<InfoTooltip content="Foo" {...props} />);
 
-  it('renders correctly', () => {
-    const wrapper = subject();
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('renders with size correctly', () => {
     const wrapper = subject({ size: 15 });
 

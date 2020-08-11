@@ -7,7 +7,7 @@ jest.mock('src/context/HibanaContext', () => ({
 }));
 
 describe('Tabs Component: ', () => {
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = {
       tabs: [{ content: 'Tab 1' }, { content: 'Tab 2' }],
       forceRender: true,

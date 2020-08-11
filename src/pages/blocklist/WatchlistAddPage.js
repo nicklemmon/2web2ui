@@ -33,7 +33,7 @@ export const WatchlistAddPage = ({
       watchlistAdd(resource)
         .then(({ resource }) => {
           showAlert({ type: 'success', message: `Added ${resource} to Watchlist` });
-          history.push(`/blocklist/watchlist`);
+          history.push(`/signals/blocklist/watchlist`);
         })
         .catch(() => {
           // Don't do anything since `submitError` prop will be passed
@@ -65,7 +65,7 @@ export const WatchlistAddPage = ({
       title="Add to Watchlist"
       breadcrumbAction={{
         content: 'Watchlist',
-        to: '/blocklist/watchlist',
+        to: '/signals/blocklist/watchlist',
         component: PageLink,
       }}
     >

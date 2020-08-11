@@ -36,7 +36,7 @@ describe('Component: PlacementBreakdown', () => {
     },
   ];
 
-  const subject = ({ ...props }) => shallow(<PlacementBreakdown data={[]} {...props} />);
+  const subject = props => shallow(<PlacementBreakdown data={[]} {...props} />);
 
   it('renders correctly with no data', () => {
     expect(subject()).toMatchSnapshot();

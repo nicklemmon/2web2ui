@@ -1,12 +1,13 @@
 import React from 'react';
 import { Grid } from 'src/components/matchbox';
+import { Heading } from 'src/components/text';
 import CodeBlock from './CodeBlock';
 
 import OGStyles from './ApiDetails.module.scss';
 import hibanaStyles from './ApiDetailsHibana.module.scss';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 
-export const ApiIntegrationDocs = () => {
+const ApiDetails = () => {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
   const Tab = () => <span className={styles.tab} />;
   const White = ({ children }) => <span className={styles.white}>{children}</span>;
@@ -60,22 +61,22 @@ export const ApiIntegrationDocs = () => {
   );
 
   return (
-    <div className={styles.Container}>
-      <Grid>
-        <Grid.Column xs={12} md={6} lg={5}>
-          <div className={styles.Header}>Integrate Now</div>
-          <p>Validate an email the moment you receive it, in real-time.</p>
-          <p>Block fake emails and catch typos with a single API request.</p>
-          {exampleMethod}
-        </Grid.Column>
-        <Grid.Column xs={12} md={6} lgOffset={1}>
-          <div className={styles.CodeSection}>
-            <CodeBlock>{codeBlock}</CodeBlock>
-          </div>
-        </Grid.Column>
-      </Grid>
-    </div>
+    <Grid>
+      <Grid.Column xs={12} md={6} lg={5}>
+        <Heading as="h3" looksLike="h5" className={styles.Header}>
+          Integrate Now
+        </Heading>
+        <p>Validate an email the moment you receive it, in real-time.</p>
+        <p>Block fake emails and catch typos with a single API request.</p>
+        {exampleMethod}
+      </Grid.Column>
+      <Grid.Column xs={12} md={6} lgOffset={1}>
+        <div className={styles.CodeSection}>
+          <CodeBlock>{codeBlock}</CodeBlock>
+        </div>
+      </Grid.Column>
+    </Grid>
   );
 };
 
-export default ApiIntegrationDocs;
+export default ApiDetails;

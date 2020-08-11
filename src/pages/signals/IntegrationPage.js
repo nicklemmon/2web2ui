@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useCallback, useEffect } from 'react';
-import { Page } from 'src/components/matchbox';
+import { Box, Page } from 'src/components/matchbox';
 import { CursorPaging, PerPageButtons } from 'src/components/collection';
 import { PageDescription } from 'src/components/text';
 import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
@@ -86,26 +86,28 @@ const IntegrationPage = ({
           getData();
         }}
       />
-      <CursorPaging
-        currentPage={filters.page + 1}
-        handleFirstPage={() => {
-          updateFilters({ page: 0 });
-        }}
-        handlePageChange={nextPageNumber => {
-          updateFilters({ page: nextPageNumber - 1 });
-        }}
-        nextDisabled={totalCount <= filters.perPage * (filters.page + 1)}
-        previousDisabled={filters.page === 0}
-        perPage={filters.perPage}
-        totalCount={totalCount}
-      />
-      <PerPageButtons
-        onPerPageChange={nextPageSize => {
-          updateFilters({ perPage: nextPageSize, page: 0 });
-        }}
-        perPage={filters.perPage}
-        totalCount={totalCount}
-      />
+      <Box display="flex" justifyContent="space-between">
+        <CursorPaging
+          currentPage={filters.page + 1}
+          handleFirstPage={() => {
+            updateFilters({ page: 0 });
+          }}
+          handlePageChange={nextPageNumber => {
+            updateFilters({ page: nextPageNumber - 1 });
+          }}
+          nextDisabled={totalCount <= filters.perPage * (filters.page + 1)}
+          previousDisabled={filters.page === 0}
+          perPage={filters.perPage}
+          totalCount={totalCount}
+        />
+        <PerPageButtons
+          onPerPageChange={nextPageSize => {
+            updateFilters({ perPage: nextPageSize, page: 0 });
+          }}
+          perPage={filters.perPage}
+          totalCount={totalCount}
+        />
+      </Box>
     </Page>
   );
 };

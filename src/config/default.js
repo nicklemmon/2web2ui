@@ -71,7 +71,7 @@ const config = identifier => ({
     {
       recommended: 60 * 4,
       min: 0,
-      max: 60 * 12,
+      max: 60 * 24,
       value: '1min',
       format: 'ha',
       uniqueLabel: 'per minute',
@@ -79,7 +79,7 @@ const config = identifier => ({
     {
       recommended: 60 * 12,
       min: 10,
-      max: 60 * 24 * 2,
+      max: 60 * 24,
       value: '5min',
       format: 'ha',
       uniqueLabel: 'per minute',
@@ -87,7 +87,7 @@ const config = identifier => ({
     {
       recommended: 60 * 24 * 2,
       min: 30,
-      max: 60 * 24 * 10,
+      max: 60 * 24 * 2,
       value: '15min',
       format: 'ha',
       uniqueLabel: 'per minute',

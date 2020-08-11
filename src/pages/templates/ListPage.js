@@ -183,7 +183,7 @@ export default class ListPage extends Component {
       >
         {error ? (
           <ApiErrorBanner
-            message={'Sorry, we seem to have had some trouble loading your templates.'}
+            message="Sorry, we seem to have had some trouble loading your templates."
             errorDetails={error.message}
             reload={listTemplates}
           />

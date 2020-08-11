@@ -9,8 +9,8 @@
   height: 100%;
 }
 
-.PanelContent {
-  grid-template-rows: 5fr 2fr;
+.TemplateName {
+  align-self: unset;
 }
 
 .Date {
@@ -31,8 +31,4 @@
 // If the accent were ever removed, this would probably break
 .RecentActivityPanel > div:not(:first-child) {
   height: 100%;
-}
-
-.PublishedIcon {
-  fill: color(green, 700);
 }

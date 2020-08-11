@@ -44,12 +44,11 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         commonBeforeSteps();
 
         cy.get(desktopNavSelector).within(() => {
-          cy.verifyLink({ content: 'Signals Analytics', href: '/reports/summary' });
+          cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
           cy.verifyLink({ content: 'Content', href: '/templates' });
           cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-          cy.verifyLink({ content: 'Blocklist', href: '/blocklist/incidents' });
         });
       });
 
@@ -60,17 +59,14 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByText('Signals Analytics').click();
         });
 
-        cy.url().should('include', '/reports/summary');
+        cy.url().should('include', '/signals/analytics');
 
         cy.get(secondaryNavSelector).within(() => {
-          cy.verifyLink({ content: 'Summary', href: '/reports/summary' });
-          cy.verifyLink({ content: 'Bounce', href: '/reports/bounce' });
-          cy.verifyLink({ content: 'Rejections', href: '/reports/rejections' });
-          cy.verifyLink({ content: 'Accepted', href: '/reports/accepted' });
-          cy.verifyLink({ content: 'Delayed', href: '/reports/delayed' });
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
           cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
           cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
         });
       });
 
@@ -119,12 +115,15 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       });
 
       it('routes to the recipient list page when the user does not have Recipient Validation grants when navigating using the "Recipients" nav item', () => {
+        Cypress.currentTest.retries(2);
         cy.stubRequest({
           url: '/api/v1/authenticate/grants*',
           fixture: 'authenticate/grants/200.get.templates.json',
+          requestAlias: 'grantsReq',
         });
 
         commonBeforeSteps();
+        cy.wait('@grantsReq');
 
         cy.get(desktopNavSelector).within(() => {
           cy.findByText('Recipients').click();
@@ -137,9 +136,12 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       it('renders the subnav links when subsections within the "Recipient Validation" category when a subroute is visited', () => {
         commonBeforeSteps();
 
-        cy.get(desktopNavSelector).within(() => {
-          cy.findByText('Recipients').click();
+        cy.stubRequest({
+          url: '/api/v1/recipient-validation/list',
+          fixture: 'recipient-validation/list/200.get.json',
         });
+
+        cy.visit('/recipient-validation/list');
 
         cy.findByText('Single Address').click();
 
@@ -158,18 +160,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         });
 
         cy.url().should('include', '/inbox-placement');
-
-        cy.get(secondaryNavSelector).should('not.be.visible');
-      });
-
-      it('does not render the subnav when "Blocklist" is active', () => {
-        commonBeforeSteps();
-
-        cy.get(desktopNavSelector).within(() => {
-          cy.findByText('Blocklist').click();
-        });
-
-        cy.url().should('include', '/blocklist/incidents');
 
         cy.get(secondaryNavSelector).should('not.be.visible');
       });
@@ -248,15 +238,11 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByText('mockuser@example.com');
           cy.findByText('107'); // The user's Customer ID
           cy.findByText('Signals Analytics').click();
-          cy.verifyLink({ content: 'Summary', href: '/reports/summary' });
-          cy.verifyLink({ content: 'Bounce', href: '/reports/bounce' });
-          cy.verifyLink({ content: 'Rejections', href: '/reports/rejections' });
-          cy.verifyLink({ content: 'Accepted', href: '/reports/accepted' });
-          cy.verifyLink({ content: 'Delayed', href: '/reports/delayed' });
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
           cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
           cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
           cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
-          cy.verifyLink({ content: 'Engagement', href: '/reports/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
           cy.findByText('Signals Analytics').click();
 
           cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
@@ -274,7 +260,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.findByText('Recipients').click();
 
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-          cy.verifyLink({ content: 'Blocklist', href: '/blocklist/incidents' });
 
           cy.findByText('Configuration').click();
           cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
@@ -297,7 +282,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         toggleMobileMenu();
 
         cy.get(mobileNavSelector).within(() => {
-          cy.findByText('Help').click();
+          cy.findByRole('button', { name: 'Help' }).click();
         });
 
         cy.get(mobileNavSelector).should('not.be.visible');
@@ -305,6 +290,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       });
 
       it('moves focus to the menu when opened', () => {
+        Cypress.currentTest.retries(2);
         commonBeforeSteps();
         toggleMobileMenu();
 

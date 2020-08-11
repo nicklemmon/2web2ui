@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 
-import { ApiIntegrationDocs } from '../ApiDetails';
+import ApiDetails from '../ApiDetails';
 import styles from '../ApiDetails.module.scss';
 
 jest.mock('src/hooks/useHibanaOverride');
@@ -13,7 +13,9 @@ describe('ApiDetails tab', () => {
   });
 
   it('should render page correctly', () => {
-    const wrapper = shallow(<ApiIntegrationDocs />);
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = shallow(<ApiDetails />);
+
+    expect(wrapper).toHaveTextContent('Integrate Now');
+    expect(wrapper.find('CodeBlock')).toExist();
   });
 });

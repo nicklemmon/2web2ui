@@ -10,6 +10,7 @@ import {
   GridOff,
 } from '@sparkpost/matchbox-icons';
 import { hasGrants } from 'src/helpers/conditions';
+
 import inboxPlacementNavItems from './inboxPlacement';
 
 const dashboard = {
@@ -60,6 +61,34 @@ const signalsAnalytics = {
     {
       label: 'Engagement',
       to: '/reports/engagement',
+    },
+  ],
+};
+
+const hibanaSignalsAnalytics = {
+  label: 'Signals Analytics',
+  to: '/signals',
+  icon: BarChart,
+  children: [
+    {
+      label: 'Analytics Report',
+      to: '/signals/analytics',
+    },
+    {
+      label: 'Health Score',
+      to: '/signals/health-score',
+    },
+    {
+      label: 'Spam Traps',
+      to: '/signals/spam-traps',
+    },
+    {
+      label: 'Engagement Recency',
+      to: '/signals/engagement',
+    },
+    {
+      label: 'Blocklist',
+      to: '/signals/blocklist/incidents',
     },
   ],
 };
@@ -121,7 +150,7 @@ const blocklist = {
   label: 'Blocklist',
   icon: GridOff,
   tag: 'preview',
-  to: '/blocklist/incidents',
+  to: '/signals/blocklist/incidents',
 };
 
 const webhooks = {
@@ -167,6 +196,11 @@ const subaccounts = {
   divider: true,
 };
 
+const domains = {
+  label: 'Domains',
+  to: '/domains',
+};
+
 const configurationBase = {
   label: 'Configuration',
   to: '/account',
@@ -190,6 +224,7 @@ const OGConfiguration = {
 const hibanaConfiguration = {
   ...configurationBase,
   children: [
+    domains,
     sendingDomains,
     trackingDomains,
     webhooks,
@@ -213,11 +248,10 @@ export const navItems = [
 ];
 
 export const hibanaNavItems = [
-  signalsAnalytics,
+  hibanaSignalsAnalytics,
   events,
   content,
   recipients,
   inboxPlacementNavItems,
-  blocklist,
   hibanaConfiguration,
 ];

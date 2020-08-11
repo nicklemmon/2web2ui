@@ -1,13 +1,7 @@
 @import '~@sparkpost/matchbox/src/styles/config.scss';
 
-.Container {
-  padding: rem(20) rem(30);
-}
-
 .Header {
-  margin: spacing(larger) 0;
-  font-size: rem(20);
-  font-weight: 600;
+  margin-bottom: spacing();
 }
 
 .SubHeader {
@@ -33,8 +27,6 @@
 }
 
 .CodeSection {
-  margin-top: rem(15);
-  margin: 1rem;
   min-width: 350px;
 
   * {

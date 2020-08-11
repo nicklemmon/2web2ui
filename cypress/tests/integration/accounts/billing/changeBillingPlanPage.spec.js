@@ -189,11 +189,11 @@ describe('Change Billing Plan Page', () => {
     cy.get('[data-id=select-plan-100K-starter-0519]').click();
 
     cy.findByText("Your new plan doesn't include subaccounts.").should('be.visible');
-    cy.findByText('Update Status').should('be.visible');
-    cy.findByText('Update Status')
-      .should('have.prop', 'href')
-      .and('include', 'account/subaccounts');
-    cy.findByText('Change Plan').should('be.disabled');
+    cy.verifyLink({
+      content: 'Update Status',
+      href: '/account/subaccounts',
+    });
+    cy.findByRole('button', { name: 'Change Plan' }).should('be.disabled');
   });
   it('Upgrades free account to starter 50K with query parameter', () => {
     cy.stubRequest({
@@ -582,6 +582,31 @@ describe('Change Billing Plan Page', () => {
     cy.url().should('equal', `${Cypress.config().baseUrl}/account/billing`);
   });
 
+  it('downgrades from premier to starter with quantity excedding limit_override', () => {
+    cy.stubRequest({
+      url: '/api/v1/account',
+      fixture: 'account/200.get.250k-premier-plan.json',
+      requestAlias: 'accountGet',
+    });
+    cy.stubRequest({
+      url: '/api/v1/billing',
+      fixture: 'billing/200.get.json',
+      fixtureAlias: 'billingGet',
+      requestAlias: 'billingGet',
+    });
+    cy.stubRequest({
+      url: '/api/v1/billing/subscription',
+      fixture: 'billing/subscription/200.get.premier-plan-with-limitoverride.json',
+      requestAlias: 'subscriptionGet',
+    });
+
+    cy.visit('/account/billing/plan');
+
+    cy.get('[data-id=select-plan-50K-starter-0519]').click();
+
+    cy.findByText(/Update Status*/).should('be.visible');
+  });
+
   it('Upgrades from free to paid using a promo code', () => {
     cy.stubRequest({
       url: '/api/v1/account',
@@ -597,13 +622,13 @@ describe('Change Billing Plan Page', () => {
       fixture: 'billing/subscription/200.get.test-plan.json',
     });
     cy.stubRequest({
-      url: '/api/v1/account/subscription/promo-codes/*',
-      fixture: 'account/billing/200.get.promo-code.json',
+      url: '/api/v1/billing/subscription/promo-codes/*',
+      fixture: 'billing/subscription/promo-codes/200.get.json',
       fixtureAlias: 'promoGet',
     });
     cy.stubRequest({
       method: 'POST',
-      url: '/api/v1/account/subscription/promo-codes/*',
+      url: '/api/v1/billing/subscription/promo-codes/*',
       fixture: 'blank.json',
       fixtureAlias: 'promoGet',
     });

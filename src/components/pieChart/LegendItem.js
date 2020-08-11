@@ -18,7 +18,7 @@ function OGLegendItem(props) {
     otherHovered && styles.otherHovered,
   );
   const breadcrumbMarkup = breadcrumb ? <ChevronLeft className={styles.BreadcrumbIcon} /> : null;
-  const expandMarkup = children && children.length ? <ChevronRight /> : null;
+  const expandMarkup = children?.length ? <ChevronRight /> : null;
 
   return (
     <a className={itemClasses} onClick={onClick} title={onClick && `View ${name}`} {...props}>

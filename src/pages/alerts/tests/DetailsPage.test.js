@@ -30,10 +30,6 @@ describe('Page: Alert Details', () => {
     wrapper = shallow(<DetailsPage {...props} />);
   });
 
-  it('should render Alert Details Page', () => {
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('should get subaccounts on mount', () => {
     wrapper = shallow(<DetailsPage {...props} />);
     expect(props.listSubaccounts).toHaveBeenCalled();

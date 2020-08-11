@@ -5,7 +5,7 @@ import CongratsBanner from '../CongratsBanner';
 
 describe('Blocklist Component: CongratsBanner', () => {
   const mockDismiss = jest.fn();
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = { mockDismiss };
 
     return render(

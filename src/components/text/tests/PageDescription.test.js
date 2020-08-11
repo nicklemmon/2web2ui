@@ -7,19 +7,21 @@ jest.mock('src/context/HibanaContext');
 
 describe('PageDescription', () => {
   const hibanaSubject = props => {
+    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+
     return render(<HibanaPageDescription {...props} />);
   };
   const OGSubject = props => {
+    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+
     return render(<OGPageDescription {...props} />);
   };
 
   describe('with Hibana enabled', () => {
-    beforeEach(() => useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]));
-
     it('renders with passed in children as a paragraph', () => {
-      const { queryByText, container } = hibanaSubject({ children: 'Hello, world.' });
+      const { getByText, container } = hibanaSubject({ children: 'Hello, world.' });
 
-      expect(queryByText('Hello, world.')).toBeInTheDocument();
+      expect(getByText('Hello, world.')).toBeInTheDocument();
       expect(container.querySelector('p')).toBeTruthy();
     });
 
@@ -37,12 +39,10 @@ describe('PageDescription', () => {
   });
 
   describe('with Hibana disabled', () => {
-    beforeEach(() => useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]));
-
     it('renders with passed in children as a paragraph', () => {
-      const { queryByText, container } = OGSubject({ children: 'Hello, world.' });
+      const { getByText, container } = OGSubject({ children: 'Hello, world.' });
 
-      expect(queryByText('Hello, world.')).toBeInTheDocument();
+      expect(getByText('Hello, world.')).toBeInTheDocument();
       expect(container.querySelector('p')).toBeTruthy();
     });
 

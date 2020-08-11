@@ -11,7 +11,7 @@ describe('PrecisionSelector', () => {
     changeTime: mockChangeTime,
     selectedPrecision: 'hour',
   };
-  const subject = ({ ...props }) => {
+  const subject = props => {
     return render(
       <TestApp>
         <PrecisionSelector {...defaults} {...props} />

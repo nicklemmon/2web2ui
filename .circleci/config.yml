@@ -34,35 +34,65 @@ commands:
       changed.'
     steps:
       - checkout
+      - run:
+          name: 'Configure /etc/hosts so that application tenant is defined for integration testing'
+          command: sudo echo 127.0.0.1 app-staging.sparkpost.com | sudo tee -a /etc/hosts
       - restore_npm_cache
       - run: npm ci
       - save_npm_cache
 
   cypress_dependencies:
+    description: 'Installs some Cypress-specific dependencies that are not pre-installed on the image we are using.'
     steps:
       - run:
           name: 'Install Cypress Dependencies'
           command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
   cypress_cleanup:
+    parameters:
+      theme:
+        type: string
+        description: '`og` or `hibana` Theme'
+        default: og
+
     steps:
       - store_test_results:
+          name: 'Upload test report'
           path: /home/circleci/project/cypress/results
       - store_artifacts:
+          name: 'Upload videos'
           path: /home/circleci/project/cypress/videos
           destination: cypress-videos
       - store_artifacts:
+          name: 'Upload screenshots'
           path: /home/circleci/project/cypress/screenshots
           destination: cypress-screenshots
+      - run:
+          name: 'Check for coverage report'
+          command: |
+            FILE=./cypress-coverage/coverage-final.json
+
+            if [ -f "$FILE" ]; then
+                echo "$FILE exists."
+                exit 0
+            else
+                echo "$FILE does not exist."
+                exit 1
+            fi
+      - run:
+          name: 'Rename coverage report'
+          command: mkdir -p coverage && mv cypress-coverage/coverage-final.json coverage/from-cypress-<< parameters.theme >>-${CIRCLE_NODE_INDEX}.json
+      - run: ls -al && cd coverage && ls -al && cd ../
+      - run: mkdir -p workspace && mv coverage workspace
+      # Saves the coverage folder to a temporary workspace directory for use by later jobs
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - coverage
+
 
 # These are what actually get run in a workflow
 jobs:
-  'Build':
-    <<: *defaults
-    steps:
-      - setup
-      - run: npm run build
-
   'Unit Testing':
     <<: *defaults
     parallelism: 4
@@ -74,13 +104,64 @@ jobs:
             circleci tests split --split-by=timings)
       - store_test_results:
           path: test_results
+      - run:
+          name: 'Check for coverage report'
+          command: |
+            FILE=./jest-coverage/coverage-final.json
 
-  'Integration Testing':
+            if [ -f "$FILE" ]; then
+                echo "$FILE exists."
+                exit 0
+            else
+                echo "$FILE does not exist."
+                exit 1
+            fi
+      - run:
+          name: 'Make coverage directory and move Jest coverage report using the runner node index'
+          command: mkdir -p coverage && mv jest-coverage/coverage-final.json coverage/from-jest-${CIRCLE_NODE_INDEX}.json
+      - run:
+          name: 'Move coverage report to temporary workspace directory'
+          command: mkdir -p workspace && mv coverage workspace
+      # Saves the coverage folder to a temporary workspace directory for use by later jobs
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - coverage
+
+  'Build - OG Theme':
     <<: *defaults
-    parallelism: 4
+    steps:
+      - setup
+      - run: npm run build-ci
+      - run: mkdir -p workspace && mv build build-og && mv build-og workspace
+      # Saves the build folder to a temporary workspace directory for use by later jobs
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - build-og
+
+  'Build - Hibana':
+    <<: *defaults
+    steps:
+      - setup
+      - run: npm run build-ci-hibana
+      - run: mkdir -p workspace && mv build build-hibana && mv build-hibana workspace
+      # Saves the build folder to a temporary workspace directory for use by later jobs
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - build-hibana
+
+  'Integration Testing - OG Theme':
+    <<: *defaults
+    parallelism: 5
     steps:
       - setup
       - cypress_dependencies
+      # Restores the /build folder from the previous job
+      - attach_workspace:
+          at: ./
+      - run: mv build-og build
       - run:
           name: 'Run Cypress Integration Tests'
           command: |
@@ -90,14 +171,19 @@ jobs:
             FORMATTED_SPECS=$(join , ${SPECS[@]})
             echo $FORMATTED_SPECS
             npm run test-integration-ci -- --spec $FORMATTED_SPECS
-      - cypress_cleanup
+      - cypress_cleanup:
+          theme: og
 
-  'Integration Testing - Hibana':
+  'Integration Testing - Hibana Theme':
     <<: *defaults
-    parallelism: 4
+    parallelism: 5
     steps:
       - setup
       - cypress_dependencies
+      # Restores the /build folder from the previous job
+      - attach_workspace:
+          at: ./
+      - run: mv build-hibana build
       - run:
           name: 'Run Cypress Integration Tests'
           command: |
@@ -107,24 +193,41 @@ jobs:
             FORMATTED_SPECS=$(join , ${SPECS[@]})
             echo $FORMATTED_SPECS
             npm run test-integration-ci-hibana -- --spec $FORMATTED_SPECS
-      - cypress_cleanup
+      - cypress_cleanup:
+          theme: hibana
+
+  'Code coverage':
+    <<: *defaults
+    steps:
+      - checkout
+      # Restores the /coverage folder from the previous job
+      - attach_workspace:
+          at: ./
+      - run: cd coverage && ls -al && cd ../
+      - run:
+          name: 'Merge code coverage reports from multiple sources'
+          command: npx nyc merge coverage coverage/coverage.json
+      - run: cd coverage && ls -al && cd ../ && ls -al
+      - run:
+          name: 'Upload code coverage report'
+          command: bash <(curl -s https://codecov.io/bash) -f coverage/coverage.json -Z || echo 'Codecov upload failed'
+          when: on_success
 
 workflows:
   version: 2
   test-and-build:
     jobs:
       - 'Unit Testing'
-      - 'Build':
+      - 'Build - OG Theme'
+      - 'Build - Hibana'
+      - 'Integration Testing - OG Theme':
+          requires:
+            - 'Build - OG Theme'
+      - 'Integration Testing - Hibana Theme':
+          requires:
+            - 'Build - Hibana'
+      - 'Code coverage':
           requires:
             - 'Unit Testing'
-      - 'Integration Testing':
-          requires:
-            - 'Unit Testing'
-      # Manual approval required to trigger Hibana integration testing runs
-      - 'Request Hibana Integration Testing':
-          type: approval
-          requires:
-            - 'Integration Testing'
-      - 'Integration Testing - Hibana':
-          requires:
-            - 'Request Hibana Integration Testing'
+            - 'Integration Testing - OG Theme'
+            - 'Integration Testing - Hibana Theme'

@@ -10,6 +10,7 @@ const ActionPopover = ({ actions }) => {
   return (
     <div style={{ textAlign: 'right' }}>
       <Popover
+        portalId="popover-portal"
         id={uniqueId}
         left
         trigger={

@@ -1,15 +1,17 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { ScreenReaderOnly } from 'src/components/matchbox';
 import Form from './Form';
 import findRouteByPath from 'src/helpers/findRouteByPath';
 import { Helmet } from 'react-helmet';
+import { selectRoutes } from 'src/selectors/routes';
 
 /**
  * Returns layout component from routes config
  */
-export const Layout = ({ children, location }) => {
-  const route = findRouteByPath(location.pathname);
+export const Layout = ({ children, location, routes }) => {
+  const route = findRouteByPath(location.pathname, undefined, routes);
   const LayoutComponent = route.layout || Form;
 
   return (
@@ -40,4 +42,8 @@ export const Layout = ({ children, location }) => {
   );
 };
 
-export default withRouter(Layout);
+export default withRouter(
+  connect(state => ({
+    routes: selectRoutes(state),
+  }))(Layout),
+);

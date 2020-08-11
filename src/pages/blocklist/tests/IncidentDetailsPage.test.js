@@ -59,7 +59,7 @@ describe('IncidentDetailsPage', () => {
   const mockListIncidentsForBlocklist = jest.fn();
   const mockListHistoricalResolvedIncidents = jest.fn();
 
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = {
       id: mockIncident.id,
       getIncident: mockGetIncident,

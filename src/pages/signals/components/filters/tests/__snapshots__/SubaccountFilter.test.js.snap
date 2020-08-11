@@ -53,6 +53,7 @@ exports[`SubaccountFilter Component renders open popover with options 1`] = `
           label="Subaccount Search"
           onChange={[Function]}
           placeholder="Search here"
+          selectedItem=""
           unfiltered={true}
         />
       </div>
@@ -183,6 +184,12 @@ exports[`SubaccountFilter Component renders with subaccount 1`] = `
               label="Subaccount Search"
               onChange={[Function]}
               placeholder="Search here"
+              selectedItem={
+                Object {
+                  "id": 123,
+                  "name": "Test Subaccount",
+                }
+              }
               unfiltered={true}
             />
           </div>

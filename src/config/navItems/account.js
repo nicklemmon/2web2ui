@@ -1,15 +1,4 @@
-import {
-  OpenInNew,
-  ExitToApp,
-  Person,
-  Settings,
-  CreditCard,
-  People,
-  Dashboard,
-  Lock,
-  AddAlert,
-  HelpOutline,
-} from '@sparkpost/matchbox-icons';
+import { OpenInNew, ExitToApp } from '@sparkpost/matchbox-icons';
 import { LINKS } from 'src/constants';
 import { openSupportPanel } from 'src/actions/support';
 import { isHeroku } from 'src/helpers/conditions/user';
@@ -47,7 +36,12 @@ const profile = {
   to: '/account/profile',
   section: 1,
 };
-
+const usageRoute = {
+  label: 'Usage',
+  to: '/usage',
+  section: 1,
+  condition: hasGrants('users/manage'),
+};
 const billingFreePlan = {
   label: 'Billing',
   to: '/account/billing',
@@ -138,42 +132,38 @@ export const accountNavItems = [
 export const hibanaAccountNavItems = [
   {
     ...profile,
-    icon: Person,
   },
   {
     ...accountSettings,
-    icon: Settings,
   },
   // myPlan, // In the mock, but doesn't exist yet?
-  // usage,  // In the mock, but doesn't exist yet?
+
+  usageRoute,
+
   {
     ...billingFreePlan,
-    icon: CreditCard,
   },
   {
     ...billingPaidPlan,
-    icon: CreditCard,
   },
   {
     ...users,
-    icon: People,
   },
   {
     ...dataAndPrivacy,
-    icon: Lock,
   },
   {
     ...subaccounts,
-    icon: Dashboard, // TODO: This will be replaced by a different icon
   },
   {
     ...alerts,
-    icon: AddAlert, // TODO: This will be replaced by a different icon
   },
   {
     ...help,
-    icon: HelpOutline,
   },
   APIDocs,
-  logOut,
+  {
+    ...logOut,
+    icon: undefined,
+  },
 ];

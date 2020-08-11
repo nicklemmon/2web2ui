@@ -63,6 +63,14 @@ describe('Heading', () => {
 
       expect(headingEl).toBeTruthy();
     });
+
+    it('renders with the passed in "id"', () => {
+      const { container } = hibanaSubject({ id: 'my-id' });
+
+      const headingEl = container.querySelector('#my-id');
+
+      expect(headingEl).toBeTruthy();
+    });
   });
 
   describe('with Hibana disabled', () => {
@@ -101,6 +109,14 @@ describe('Heading', () => {
       const { container } = OGSubject({ 'data-id': 'my-id' });
 
       const headingEl = container.querySelector('[data-id="my-id"]');
+
+      expect(headingEl).toBeTruthy();
+    });
+
+    it('renders with the passed in "id"', () => {
+      const { container } = OGSubject({ id: 'my-id' });
+
+      const headingEl = container.querySelector('#my-id');
 
       expect(headingEl).toBeTruthy();
     });

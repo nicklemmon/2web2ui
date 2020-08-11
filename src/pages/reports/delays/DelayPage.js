@@ -24,9 +24,7 @@ export class DelayPage extends Component {
       return <PanelLoading />;
     }
 
-    return (
-      <DelaysDataTable title="Delayed Messages" totalAccepted={totalAccepted} rows={reasons} />
-    );
+    return <DelaysDataTable totalAccepted={totalAccepted} rows={reasons} />;
   }
 
   renderTopLevelMetrics() {

@@ -95,14 +95,10 @@ export function ReportBuilder({
 
   const renderAggregateMetric = useCallback(({ label, value, unit }) => {
     return (
-      <Definition>
-        <Definition.Label>
-          <Box color={tokens.color_gray_600}>{label}</Box>
-        </Definition.Label>
+      <Definition dark>
+        <Definition.Label>{label}</Definition.Label>
         <Definition.Value>
-          <Box color={tokens.color_white}>
-            <Unit value={value} unit={unit} />
-          </Box>
+          <Unit value={value} unit={unit} />
         </Definition.Value>
       </Definition>
     );

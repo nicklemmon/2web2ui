@@ -1,6 +1,8 @@
 import { fetch as fetchAccount } from './account';
 import { get as getCurrentUser, getGrants } from './currentUser';
 import { getPlans, getBundles, getSubscription } from './billing';
+import { isHeroku, isAzure } from 'src/helpers/conditions/user';
+import { isAws } from 'src/helpers/conditions/account';
 
 // initialize some state used for access control
 export function initializeAccessControl() {
@@ -8,14 +10,21 @@ export function initializeAccessControl() {
   // Hides global alerts when user is logged out and redirected to /auth
   const meta = { showErrorAlert: false };
 
-  return dispatch =>
-    Promise.all([
-      dispatch(fetchAccount({ meta })),
-      dispatch(getPlans({ meta })),
-      dispatch(getBundles({ meta })),
-      dispatch(getSubscription({ meta })),
-      dispatch(getCurrentUser({ meta })).then(({ access_level }) =>
-        dispatch(getGrants({ role: access_level, meta })),
-      ),
-    ]).then(() => dispatch({ type: 'ACCESS_CONTROL_READY' }));
+  return (dispatch, getState) =>
+    Promise.all([dispatch(getCurrentUser({ meta })), dispatch(fetchAccount({ meta }))]).then(
+      ([currentUser]) => {
+        const state = getState();
+        const promises = [
+          dispatch(getGrants({ role: currentUser.access_level, meta })),
+          dispatch(getPlans({ meta })),
+          dispatch(getBundles({ meta })),
+        ];
+
+        if (!isHeroku(state) && !isAzure(state) && !isAws(state)) {
+          promises.push(dispatch(getSubscription({ meta })));
+        }
+
+        return Promise.all(promises).then(() => dispatch({ type: 'ACCESS_CONTROL_READY' }));
+      },
+    );
 }

@@ -82,7 +82,7 @@ describe('Selector: Access Condition State', () => {
         billing_id: 'id1',
         bundle: '5M-0817',
         code: '5M-0817',
-        includesIp: true,
+        includesIp: false,
         isFree: false,
         overage: 0.3,
         plan: '5M-0817',

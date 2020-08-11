@@ -32,7 +32,7 @@ export function verifyTemplateSettingsIsDisabled() {
       cy.get('input').should('be.disabled');
     });
 
-  cy.findAllByText('Update Settings').should('be.disabled');
+  cy.findAllByRole('button', { name: 'Update Settings' }).should('be.disabled');
 }
 
 export function typeInEditor(content) {

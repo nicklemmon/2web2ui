@@ -1,6 +1,6 @@
 export const STABLE_UNIX_DATE = 1581087062000; // Stable unix timestamp (2/6/2020)
 export const PAGE_URL =
-  '/reports/summary?from=2020-06-22T19%3A00%3A00Z&to=2020-06-23T19%3A03%3A48Z&range=day&timezone=America%2FNew_York&precision=hour&metrics=count_targeted&metrics=count_accepted&metrics=count_bounce';
+  '/signals/analytics?from=2020-06-22T19%3A00%3A00Z&to=2020-06-23T19%3A03%3A48Z&range=day&timezone=America%2FNew_York&precision=hour&metrics=count_targeted&metrics=count_accepted&metrics=count_bounce';
 export const METRICS = [
   {
     name: 'Admin Bounce Rate',
@@ -29,6 +29,10 @@ export const METRICS = [
   {
     name: 'Rejected',
     queryParam: 'count_rejected',
+  },
+  {
+    name: 'Rejection Rate',
+    queryParam: 'rejected_rate',
   },
   {
     name: 'Targeted',
@@ -79,6 +83,10 @@ export const METRICS = [
     queryParam: 'count_delayed_first',
   },
   {
+    name: 'Delayed Rate',
+    queryParam: 'delayed_rate',
+  },
+  {
     name: 'Delivered 1st Attempt',
     queryParam: 'count_delivered_first',
   },
@@ -97,6 +105,14 @@ export const METRICS = [
   {
     name: 'Hard Bounces',
     queryParam: 'count_hard_bounce',
+  },
+  {
+    name: 'In-band Bounces',
+    queryParam: 'count_inband_bounce',
+  },
+  {
+    name: 'Out-of-band Bounces',
+    queryParam: 'count_outofband_bounce',
   },
   {
     name: 'Sent',

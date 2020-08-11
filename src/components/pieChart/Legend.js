@@ -16,7 +16,7 @@ const Legend = ({
   hoveredItem,
 }) => {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
-  const hoveredDataSet = hoveredItem && hoveredItem.dataSet;
+  const hoveredDataSet = hoveredItem?.dataSet;
 
   const primaryLegend = primaryData.map((item, i) => (
     <LegendItem

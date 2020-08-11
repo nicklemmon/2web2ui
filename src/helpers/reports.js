@@ -21,7 +21,7 @@ export function parseSearch(search) {
     return { options: {} };
   }
 
-  const { from, to, range, metrics, timezone, precision, filters = [] } = qs.parse(search);
+  const { from, to, range, metrics, timezone, precision, filters = [], report } = qs.parse(search);
   const filtersList = (typeof filters === 'string' ? [filters] : filters).map(filter => {
     const parts = filter.split(':');
     const type = parts.shift();
@@ -72,5 +72,5 @@ export function parseSearch(search) {
   }
 
   // filters are used in pages to dispatch updates to Redux store
-  return { options, filters: filtersList };
+  return { options, filters: filtersList, report };
 }

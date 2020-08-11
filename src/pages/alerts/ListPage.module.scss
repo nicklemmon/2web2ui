@@ -11,14 +11,20 @@
   }
 }
 
+.PanelStack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+}
+
+.AlertName {
+  align-self: center;
+}
+
 .Footer {
   padding: spacing(base);
   color: color(gray, 3);
   font-size: rem(14);
-}
-
-.AlertName {
-  flex: 1;
 }
 
 .Description {

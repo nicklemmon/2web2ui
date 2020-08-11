@@ -14,13 +14,14 @@ describe('Summary Table', () => {
 
   const props = {
     _getTableData: jest.fn(),
+    getSubaccountsList: jest.fn(),
     refresh: jest.fn(),
     metrics: [
       { key: 'metric_1', label: 'Metric 1' },
       { key: 'metric_2', unit: 'millisecond', label: 'Metric 2' },
     ],
     groupBy: 'domain',
-    typeaheadCache: [{ type: 'Subaccount', id: 555, value: 'sub 1 name' }],
+    subaccounts: [{ id: 555, name: 'sub 1 name' }],
     tableData: [],
     tableLoading: false,
     hasSubaccounts: false,
@@ -65,8 +66,8 @@ describe('Summary Table', () => {
     expect(within(tableContent).queryByText('Subaccount')).toBeInTheDocument();
     expect(within(tableContent).queryByText('Metric 1')).toBeInTheDocument();
     expect(within(tableContent).queryByText('Master Account (ID 0)')).toBeInTheDocument();
-    expect(within(tableContent).queryByText('sub 1 name')).toBeInTheDocument();
-    expect(within(tableContent).queryByText('Deleted (ID 1010)')).toBeInTheDocument();
+    expect(within(tableContent).queryByText('sub 1 name (ID 555)')).toBeInTheDocument();
+    expect(within(tableContent).queryByText('Subaccount 1010')).toBeInTheDocument();
     expect(within(tableContent).queryAllByText('123')).not.toHaveLength(0);
     expect(within(tableContent).queryAllByText('12,345')).not.toHaveLength(0);
   });

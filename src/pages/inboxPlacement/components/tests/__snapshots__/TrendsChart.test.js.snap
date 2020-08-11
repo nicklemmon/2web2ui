@@ -2,180 +2,182 @@
 
 exports[`Inbox Placement Trends Chart renders happy path correctly 1`] = `
 <Fragment>
-  <div
-    style={
-      Object {
-        "display": "flex",
-        "justifyContent": "flex-end",
-      }
-    }
-  >
-    <Legend
-      items={
-        Array [
-          Object {
-            "fill": "#429bff",
-            "label": "Inbox",
-          },
-          Object {
-            "fill": "#abd2ff",
-            "label": "Spam",
-          },
-          Object {
-            "fill": "#203752",
-            "label": "Missing",
-          },
-          Object {
-            "fill": "#ffffff",
-            "hasBorder": true,
-            "label": "No Tests Sent",
-          },
-        ]
-      }
-    />
-  </div>
-  <div
-    className="LiftTooltip"
-    onMouseOut={[Function]}
-  >
-    <BarChart
-      activeFill="#22838A"
-      fill="#B3ECEF"
-      gap={1}
-      hasBackgroundBars={false}
-      height={250}
-      hovered=""
-      margin={
+  <Panel.Section>
+    <div
+      style={
         Object {
-          "bottom": 25,
-          "left": 30,
-          "right": 10,
-          "top": 10,
+          "display": "flex",
+          "justifyContent": "flex-end",
         }
-      }
-      onMouseOver={[Function]}
-      shouldHighlightSelected={true}
-      timeSeries={
-        Array [
-          Object {
-            "date": "2019-11-10",
-            "inbox": 0.5,
-            "missing": 0,
-            "spam": 0.5,
-            "totalMessages": 10,
-          },
-          Object {
-            "date": "2019-11-11",
-            "inbox": 0.8,
-            "missing": 0.05,
-            "spam": 0.15,
-            "totalMessages": 40,
-          },
-        ]
-      }
-      tooltipContent={[Function]}
-      tooltipWidth="150px"
-      width="99%"
-      xAxisProps={
-        Object {
-          "tickFormatter": [Function],
-          "ticks": Array [],
-        }
-      }
-      xAxisRefLines={Array []}
-      xKey="date"
-      yAxisProps={
-        Object {
-          "domain": Array [
-            0,
-            1,
-          ],
-          "tickFormatter": [Function],
-          "ticks": Array [
-            0,
-            0.25,
-            0.5,
-            0.75,
-            1,
-          ],
-        }
-      }
-      yAxisRefLines={Array []}
-      yKey="value"
-      yRange={
-        Array [
-          "auto",
-          "auto",
-        ]
       }
     >
-      <Bar
-        animationBegin={0}
-        animationDuration={400}
-        animationEasing="ease"
-        cursor="pointer"
-        data={Array []}
-        dataKey="missing"
-        fill="#203752"
-        hide={false}
-        isAnimationActive={false}
-        key="missing"
-        layout="vertical"
-        legendType="rect"
-        minPointSize={0}
-        onAnimationEnd={[Function]}
-        onAnimationStart={[Function]}
-        onMouseOver={[Function]}
-        shape={[Function]}
-        stackId="stack"
-        xAxisId={0}
-        yAxisId={0}
+      <Legend
+        items={
+          Array [
+            Object {
+              "fill": "#429bff",
+              "label": "Inbox",
+            },
+            Object {
+              "fill": "#abd2ff",
+              "label": "Spam",
+            },
+            Object {
+              "fill": "#203752",
+              "label": "Missing",
+            },
+            Object {
+              "fill": "#ffffff",
+              "hasBorder": true,
+              "label": "No Tests Sent",
+            },
+          ]
+        }
       />
-      <Bar
-        animationBegin={0}
-        animationDuration={400}
-        animationEasing="ease"
-        cursor="pointer"
-        data={Array []}
-        dataKey="spam"
-        fill="#abd2ff"
-        hide={false}
-        isAnimationActive={false}
-        key="spam"
-        layout="vertical"
-        legendType="rect"
-        minPointSize={0}
-        onAnimationEnd={[Function]}
-        onAnimationStart={[Function]}
+    </div>
+    <div
+      className="LiftTooltip"
+      onMouseOut={[Function]}
+    >
+      <BarChart
+        activeFill="#22838A"
+        fill="#B3ECEF"
+        gap={1}
+        hasBackgroundBars={false}
+        height={250}
+        hovered=""
+        margin={
+          Object {
+            "bottom": 25,
+            "left": 30,
+            "right": 10,
+            "top": 10,
+          }
+        }
         onMouseOver={[Function]}
-        shape={[Function]}
-        stackId="stack"
-        xAxisId={0}
-        yAxisId={0}
-      />
-      <Bar
-        animationBegin={0}
-        animationDuration={400}
-        animationEasing="ease"
-        cursor="pointer"
-        data={Array []}
-        dataKey="inbox"
-        fill="#429bff"
-        hide={false}
-        isAnimationActive={false}
-        key="inbox"
-        layout="vertical"
-        legendType="rect"
-        minPointSize={0}
-        onAnimationEnd={[Function]}
-        onAnimationStart={[Function]}
-        onMouseOver={[Function]}
-        shape={[Function]}
-        stackId="stack"
-        xAxisId={0}
-        yAxisId={0}
-      />
-    </BarChart>
-  </div>
+        shouldHighlightSelected={true}
+        timeSeries={
+          Array [
+            Object {
+              "date": "2019-11-10",
+              "inbox": 0.5,
+              "missing": 0,
+              "spam": 0.5,
+              "totalMessages": 10,
+            },
+            Object {
+              "date": "2019-11-11",
+              "inbox": 0.8,
+              "missing": 0.05,
+              "spam": 0.15,
+              "totalMessages": 40,
+            },
+          ]
+        }
+        tooltipContent={[Function]}
+        tooltipWidth="150px"
+        width="99%"
+        xAxisProps={
+          Object {
+            "tickFormatter": [Function],
+            "ticks": Array [],
+          }
+        }
+        xAxisRefLines={Array []}
+        xKey="date"
+        yAxisProps={
+          Object {
+            "domain": Array [
+              0,
+              1,
+            ],
+            "tickFormatter": [Function],
+            "ticks": Array [
+              0,
+              0.25,
+              0.5,
+              0.75,
+              1,
+            ],
+          }
+        }
+        yAxisRefLines={Array []}
+        yKey="value"
+        yRange={
+          Array [
+            "auto",
+            "auto",
+          ]
+        }
+      >
+        <Bar
+          animationBegin={0}
+          animationDuration={400}
+          animationEasing="ease"
+          cursor="pointer"
+          data={Array []}
+          dataKey="missing"
+          fill="#203752"
+          hide={false}
+          isAnimationActive={false}
+          key="missing"
+          layout="vertical"
+          legendType="rect"
+          minPointSize={0}
+          onAnimationEnd={[Function]}
+          onAnimationStart={[Function]}
+          onMouseOver={[Function]}
+          shape={[Function]}
+          stackId="stack"
+          xAxisId={0}
+          yAxisId={0}
+        />
+        <Bar
+          animationBegin={0}
+          animationDuration={400}
+          animationEasing="ease"
+          cursor="pointer"
+          data={Array []}
+          dataKey="spam"
+          fill="#abd2ff"
+          hide={false}
+          isAnimationActive={false}
+          key="spam"
+          layout="vertical"
+          legendType="rect"
+          minPointSize={0}
+          onAnimationEnd={[Function]}
+          onAnimationStart={[Function]}
+          onMouseOver={[Function]}
+          shape={[Function]}
+          stackId="stack"
+          xAxisId={0}
+          yAxisId={0}
+        />
+        <Bar
+          animationBegin={0}
+          animationDuration={400}
+          animationEasing="ease"
+          cursor="pointer"
+          data={Array []}
+          dataKey="inbox"
+          fill="#429bff"
+          hide={false}
+          isAnimationActive={false}
+          key="inbox"
+          layout="vertical"
+          legendType="rect"
+          minPointSize={0}
+          onAnimationEnd={[Function]}
+          onAnimationStart={[Function]}
+          onMouseOver={[Function]}
+          shape={[Function]}
+          stackId="stack"
+          xAxisId={0}
+          yAxisId={0}
+        />
+      </BarChart>
+    </div>
+  </Panel.Section>
 </Fragment>
 `;

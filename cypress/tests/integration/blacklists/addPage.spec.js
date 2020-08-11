@@ -10,7 +10,7 @@ describe('Blocklist - Add to Watchlist Page', () => {
       requestAlias: 'addNewResource',
     });
 
-    cy.visit('/blocklist/watchlist/add');
+    cy.visit('/signals/blocklist/watchlist/add');
   });
 
   it('has a relevant page title', () => {
@@ -18,16 +18,16 @@ describe('Blocklist - Add to Watchlist Page', () => {
   });
 
   it('successfully adds a single resource and redirects to watchlist page', () => {
-    cy.findByText('Save').should('be.disabled');
-    cy.findByText('Save and Add Another').should('be.disabled');
+    cy.findByRole('button', { name: 'Save' }).should('be.disabled');
+    cy.findByRole('button', { name: 'Save and Add Another' }).should('be.disabled');
     cy.findByLabelText('IP or Sending Domain').type('sparkpost.io');
-    cy.findByText('Save').click();
+    cy.findByRole('button', { name: 'Save' }).click();
     cy.wait('@addNewResource').then(({ requestBody }) => {
       expect(requestBody).to.deep.equal({
         resource: 'sparkpost.io',
       });
     });
-    cy.url().should('include', '/blocklist/watchlist');
+    cy.url().should('include', '/signals/blocklist/watchlist');
     cy.url().should('not.include', '/add');
     cy.findByText('Added sparkpost.io to Watchlist').should('be.visible');
   });
@@ -40,7 +40,7 @@ describe('Blocklist - Add to Watchlist Page', () => {
         resource: 'sparkpost.io',
       });
     });
-    cy.url().should('include', '/blocklist/watchlist/add');
+    cy.url().should('include', '/signals/blocklist/watchlist/add');
     cy.findByText('Added sparkpost.io to Watchlist').should('be.visible');
 
     cy.findByLabelText('IP or Sending Domain').type('123.123');

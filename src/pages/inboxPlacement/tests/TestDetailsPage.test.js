@@ -4,7 +4,7 @@ import TestApp from 'src/__testHelpers__/TestApp';
 import { TestDetailsPage } from '../TestDetailsPage';
 
 describe('Page: Single Inbox Placement Test', () => {
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = {
       getInboxPlacementTest: jest.fn(),
       getInboxPlacementByProvider: jest.fn(),

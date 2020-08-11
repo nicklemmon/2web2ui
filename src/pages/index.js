@@ -8,6 +8,8 @@ export { default as SsoAuthPage } from './auth/SsoAuthPage';
 export { default as billing } from './billing';
 export { default as blocklist } from './blocklist';
 export { default as DashboardPage } from './dashboard';
+export { default as DashboardPageV2 } from './dashboardV2';
+export { default as domains } from './domains';
 export { default as ProfilePage } from './profile/ProfilePage';
 export { default as abTesting } from './abTesting';
 export { default as apiKeys } from './api-keys';
@@ -36,3 +38,4 @@ export { default as SingleResultPage } from './recipientValidation/SingleResult'
 export { default as UploadedListPage } from './recipientValidation/UploadedListPage';
 export { default as snippets } from './snippets';
 export { default as inboxPlacement } from './inboxPlacement';
+export { UsagePage } from './usage';

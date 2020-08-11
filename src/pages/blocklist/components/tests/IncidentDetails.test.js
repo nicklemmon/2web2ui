@@ -4,7 +4,7 @@ import TestApp from 'src/__testHelpers__/TestApp';
 import IncidentDetails from '../IncidentDetails';
 
 describe('Blocklist Component: RelatedIncidents', () => {
-  const subject = ({ ...props }) => {
+  const subject = props => {
     const defaults = {
       resourceName: '1.2.3.4',
       blocklistName: 'spamhaus.org - sbl',
@@ -59,6 +59,6 @@ describe('Blocklist Component: RelatedIncidents', () => {
     });
     const anchor = queryByText('Listed Jan 1 2019, 5:35pm | Resolved Jan 4 2019, 5:35pm');
     expect(anchor).toBeInTheDocument();
-    expect(anchor.getAttribute('href')).toBe('/blocklist/incidents/abc');
+    expect(anchor.getAttribute('href')).toBe('/signals/blocklist/incidents/abc');
   });
 });

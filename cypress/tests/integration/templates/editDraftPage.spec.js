@@ -71,10 +71,10 @@ describe('The templates edit draft page', () => {
     cy.findByText('Stubbed Template 1 (DRAFT)');
   });
 
-  it('renders the status in the header as "DRAFT"', () => {
+  it('renders the status in the header as "Draft"', () => {
     cy.visit(PAGE_URL);
 
-    cy.get('[data-id="template-status"]').within(() => {
+    cy.findByDataId('template-status').within(() => {
       cy.findByText('Draft').should('be.visible'); // Note - content is capitalized with CSS, so the markup is not "DRAFT"
     });
   });
@@ -482,6 +482,7 @@ describe('The templates edit draft page', () => {
     });
 
     it("saves the user's test data entry to local storage as the user edits test data", () => {
+      Cypress.currentTest.retries(2);
       cy.visit(PAGE_URL);
 
       cy.findByText('Test Data').click();

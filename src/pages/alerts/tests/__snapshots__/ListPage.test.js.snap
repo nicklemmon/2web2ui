@@ -4,11 +4,13 @@ exports[`Page: Alerts List should render delete modal 1`] = `
 <DeleteModal
   content={
     <p>
-      The alert "
+      The alert 
       <strong>
+        "
         foo
+        "
       </strong>
-      " will be permanently removed. This cannot be undone.
+       will be permanently removed. This cannot be undone.
     </p>
   }
   onCancel={[Function]}
@@ -102,9 +104,12 @@ exports[`Page: Alerts List should render happy path 1`] = `
   <DeleteModal
     content={
       <p>
-        The alert "
-        <strong />
-        " will be permanently removed. This cannot be undone.
+        The alert 
+        <strong>
+          "
+          "
+        </strong>
+         will be permanently removed. This cannot be undone.
       </p>
     }
     onCancel={[Function]}

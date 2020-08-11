@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, formValueSelector } from 'redux-form';
-import { Panel } from 'src/components/matchbox';
 import { maxFileSize, fileExtension } from 'src/helpers/validation';
 import FileUploadWrapper from './FileUploadWrapper';
 import { uploadList, resetUploadError } from 'src/actions/recipientValidation';
@@ -44,7 +43,7 @@ export class ListForm extends Component {
     }
   }
 
-  renderListTabBody = () => {
+  render() {
     return (
       <Field
         component={FileUploadWrapper}
@@ -54,10 +53,6 @@ export class ListForm extends Component {
         data-id="recipient-list-dropzone"
       />
     );
-  };
-
-  render() {
-    return <Panel.Section>{this.renderListTabBody()}</Panel.Section>;
   }
 }
 

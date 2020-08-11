@@ -13,6 +13,7 @@ export function mkPortal(id) {
 // Note: this must run before any attempt to `mount()` a React component
 // which uses a Modal or an Alert.
 function setupPortals() {
+  mkPortal('popover-portal');
   mkPortal('modal-portal');
   mkPortal('alert-portal');
 }

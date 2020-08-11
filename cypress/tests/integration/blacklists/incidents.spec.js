@@ -1,6 +1,6 @@
 import moment from 'moment';
 const utcFormatMatcher = /\d+-\d+-\d+T/g;
-const PAGE_BASE_URL = '/blocklist/incidents';
+const PAGE_BASE_URL = '/signals/blocklist/incidents';
 const dateFormat = 'MMM D YYYY, h:mma';
 
 let nov = moment('2019-11-20T17:14:57.899Z');
@@ -29,7 +29,7 @@ describe('The blocklist incidents page', () => {
 
     cy.verifyLink({
       content: 'Add to Watchlist',
-      href: '/blocklist/watchlist/add',
+      href: '/signals/blocklist/watchlist/add',
     });
   });
 

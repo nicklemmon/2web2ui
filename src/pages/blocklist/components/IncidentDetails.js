@@ -71,7 +71,7 @@ export default ({
             ) : (
               historicalIncidents.map(({ id, occurred_at_formatted, resolved_at_formatted }) => (
                 <div className={styles.Value} key={id}>
-                  <PageLink to={`/blocklist/incidents/${id}`}>
+                  <PageLink to={`/signals/blocklist/incidents/${id}`}>
                     {`Listed ${occurred_at_formatted} | Resolved ${resolved_at_formatted}`}
                   </PageLink>
                 </div>

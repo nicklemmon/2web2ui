@@ -33,10 +33,6 @@ describe('UploadedListForm', () => {
     return method(component);
   };
 
-  it('should render correctly', () => {
-    expect(subject()).toMatchSnapshot();
-  });
-
   it('should call getUsage on mount', () => {
     const getUsage = jest.fn();
     subject({ getUsage }, mount);
@@ -45,7 +41,7 @@ describe('UploadedListForm', () => {
 
   it('should open modal on click of link', async () => {
     const wrapper = subject();
-    await wrapper.find('UnstyledLink').simulate('click');
+    await wrapper.find('ButtonLink').simulate('click');
     expect(wrapper.find('RVPriceModal')).toHaveProp('isOpen', true);
   });
 

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Table } from 'src/components/matchbox';
-
+import { Panel, Table } from 'src/components/matchbox';
 import { TableCollection, Empty, LongTextContainer } from 'src/components';
-import { Panel } from 'src/components/matchbox';
-import { NewCollectionBody } from 'src/components/collection';
+import { Heading } from 'src/components/text';
 import { Percent } from 'src/components/formatters';
 import { safeRate } from 'src/helpers/math';
 import AddFilterLink from '../../components/AddFilterLink';
@@ -24,7 +22,7 @@ export class DelaysDataTable extends Component {
       <LongTextContainer text={reason} />,
       <AddFilterLink
         newFilter={{ type: 'Recipient Domain', value: domain }}
-        reportType={'delayed'}
+        reportType="delayed"
         content={domain}
       />,
       count_delayed,
@@ -34,7 +32,19 @@ export class DelaysDataTable extends Component {
     ];
   };
 
-  TableWrapper = props => <Table>{props.children}</Table>;
+  TableWrapper = props => (
+    <Panel>
+      <Panel.Section>
+        <Heading as="h3" looksLike="h4">
+          Delayed Messages
+        </Heading>
+      </Panel.Section>
+
+      <Panel.Section style={{ padding: 0 }}>
+        <Table>{props.children}</Table>
+      </Panel.Section>
+    </Panel>
+  );
 
   render() {
     const { rows, title } = this.props;
@@ -57,9 +67,7 @@ export class DelaysDataTable extends Component {
         defaultSortDirection="desc"
         title={title}
         wrapperComponent={this.TableWrapper}
-      >
-        {props => <NewCollectionBody {...props} />}
-      </TableCollection>
+      />
     );
   }
 }

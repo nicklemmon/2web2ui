@@ -162,7 +162,7 @@ export const IncidentDetailsPage = ({
       title={`Blocklist Incident | ${resource || ''} | ${blacklist_name || ''}`}
       breadcrumbAction={{
         content: 'Blocklist Incidents',
-        to: '/blocklist/incidents',
+        to: '/signals/blocklist/incidents',
         component: PageLink,
       }}
     >

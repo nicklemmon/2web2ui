@@ -16,7 +16,7 @@ describe('The alerts list page', () => {
     cy.visit(PAGE_URL);
 
     cy.title().should('include', 'Alerts');
-    cy.get('main').within(() => cy.findByText('Alerts').should('be.visible'));
+    cy.get('main').within(() => cy.findByRole('heading', { name: 'Alerts' }).should('be.visible'));
   });
 
   it('renders with a link to the create page', () => {
