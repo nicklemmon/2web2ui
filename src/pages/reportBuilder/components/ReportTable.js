@@ -11,6 +11,7 @@ import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
 import { Panel, Table, Box } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
+import AddFilterLink from './AddFilterLink';
 
 import styles from './ReportTable.module.scss';
 
@@ -84,7 +85,7 @@ export const ReportTable = props => {
           ? getSubaccountFilter(filterKey)
           : { type: group.label, value: filterKey };
 
-      const primaryCol = newFilter.value;
+      const primaryCol = <AddFilterLink newFilter={newFilter} />;
       const metricCols = metrics.map(({ key, unit }) => (
         <Box textAlign="right" key={key}>
           <Unit value={row[key]} unit={unit} />

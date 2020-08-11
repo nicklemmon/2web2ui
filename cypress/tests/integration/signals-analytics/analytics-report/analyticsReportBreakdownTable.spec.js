@@ -369,5 +369,32 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
 
       cy.findByText('There is no data to display').should('be.visible');
     });
+
+    it('clicking on a resource adds it as a filter"', () => {
+      cy.clock(STABLE_UNIX_DATE);
+      cy.stubRequest({
+        url: '/api/v1/metrics/deliverability/template**/*',
+        fixture: 'metrics/deliverability/template/200.get.json',
+        requestAlias: 'getTemplate',
+      });
+      cy.visit(PAGE_URL);
+
+      cy.findByLabelText('Break Down By')
+        .scrollIntoView()
+        .select('Template', { force: true });
+
+      cy.wait('@getTemplate');
+
+      cy.get('table').within(() => {
+        cy.findByText('my-template-1').click();
+      });
+
+      cy.findByDataId('report-options').within(() => {
+        cy.findByText('Filters').should('be.visible');
+        cy.findByText('Template').should('be.visible');
+        cy.findByText('equals').should('be.visible');
+        cy.findByText('my-template-1').should('be.visible');
+      });
+    });
   });
 }
