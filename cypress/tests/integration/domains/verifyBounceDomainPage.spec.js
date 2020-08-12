@@ -1,4 +1,4 @@
-const PAGE_URL = '/domains/fake-domain.com/verify-bounce';
+const PAGE_URL = '/domains/details/fake-domain.com/verify-bounce';
 
 describe('The verify bounce domain page', () => {
   beforeEach(() => {

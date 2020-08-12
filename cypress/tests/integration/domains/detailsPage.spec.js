@@ -1,4 +1,4 @@
-const PAGE_URL = '/domains/fake-domain.com';
+const PAGE_URL = '/domains/details/fake-domain.com';
 
 describe('The domains details page', () => {
   beforeEach(() => {

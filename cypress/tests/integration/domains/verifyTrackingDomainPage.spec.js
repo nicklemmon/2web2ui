@@ -1,4 +1,4 @@
-const PAGE_URL = '/domains/fake-domain.com/verify-tracking';
+const PAGE_URL = '/domains/details/fake-domain.com/verify-tracking';
 
 describe('The verify tracking domain page', () => {
   beforeEach(() => {
