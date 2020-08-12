@@ -22,6 +22,7 @@ export const FeatureChangeProvider = ({
   }, [getSubscription]);
 
   const checkConditions = useCallback(() => {
+    updateActions({});
     getSubscription();
   }, [getSubscription]);
   useEffect(() => {
