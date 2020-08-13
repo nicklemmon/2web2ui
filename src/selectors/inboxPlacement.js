@@ -15,7 +15,7 @@ const getInboxPlacementByRegion = state => state.inboxPlacement.placementsByRegi
 const getInboxPlacementBySendingIp = state => state.inboxPlacement.placementsBySendingIp;
 
 export const selectReferenceSeed = createSelector([getSeeds], seeds =>
-  seeds.find(seed => endsWith(seed, '@seed.sparkpost.com')),
+  seeds.find(seed => endsWith(seed, 'seed.sparkpost.com')),
 );
 
 const getInboxPlacement = state => state.inboxPlacement;
