@@ -16,8 +16,8 @@ const ActionText = () => {
     <Bold>Send the email and jump into the Inbox Placement report to see the results.</Bold>
   ) : (
     <p>
-      Send the email and jump back the <PageLink to="/inbox-placement">Inbox Placement</PageLink>{' '}
-      report to see the results.
+      Send the email and jump back to <PageLink to="/inbox-placement">Inbox Placement</PageLink> to
+      see the results.
     </p>
   );
 };
