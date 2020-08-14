@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom';
 import { Page, Panel, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import useRouter from 'src/hooks/useRouter';
-import useTabs from 'src/hooks/useTabs';
 import { DomainsLayout } from './components';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
 
@@ -13,7 +12,7 @@ export default function DomainsPage() {
   // Additionally, the `role="tab"` works ideally with a button - so better to just do this so keyboard users
   // have some level of control over this UI. Unfortunately things are still a little funky with focus
   // handling with this component - we'll need to address this via Matchbox rather than the app!
-  const TABS = [
+  const tabs = [
     {
       content: 'Sending Domains',
       'data-to': SENDING_DOMAINS_URL, // Using a `data-` attribute to store the value to compare against since this ends up rendering to the DOM.
@@ -30,8 +29,7 @@ export default function DomainsPage() {
       onClick: () => history.push(TRACKING_DOMAINS_URL),
     },
   ];
-  const tabIndex = TABS.findIndex(tab => tab['data-to'] === location.pathname);
-  const [selectedTabIndex, tabs] = useTabs(TABS, tabIndex);
+  const selectedTabIndex = tabs.findIndex(tab => tab['data-to'] === location.pathname);
 
   return (
     <DomainsLayout>

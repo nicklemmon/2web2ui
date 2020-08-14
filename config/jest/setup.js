@@ -21,29 +21,6 @@ configure({
   testIdAttribute: 'data-id', // Overriding the default test ID used by `getByTestId` matcher - `data-testid` isn't used so we can also use these attributes for analytics tagging
 });
 
-// this is just a little hack to silence a warning that we'll get with React Testing Library get
-//  until we upgrade to React 16.9. See:
-// 1. https://github.com/facebook/react/pull/14853
-// 2. and from the official React Testing Library docs https://github.com/testing-library/react-testing-library#suppressing-unnecessary-warnings-on-react-dom-168
-const originalError = (console.error = message => {
-  // Fail tests on any warning
-  throw new Error(message);
-});
-
-beforeAll(() => {
-  console.error = (...args) => {
-    if (/Warning.*not wrapped in act/.test(args[0])) {
-      return;
-    }
-
-    originalError.call(console, ...args);
-  };
-});
-
-afterAll(() => {
-  console.error = originalError;
-});
-
 setupPortals();
 document.body.setAttribute('tabindex', '-1'); // Allows the <body/> to programmatically receive focus
 
