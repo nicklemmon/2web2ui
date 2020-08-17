@@ -36,12 +36,12 @@ describe('The blocklist incidents page', () => {
   it('sets the search in the url', () => {
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.search.json',
     });
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors/incidents*',
+      url: 'api/v1/blocklist-monitors/incidents*',
       statusCode: 200,
       fixture: 'blocklists/incident/200.get.json',
     });
@@ -72,12 +72,12 @@ describe('The blocklist incidents page', () => {
   it('searches through url param', () => {
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.search.json',
     });
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors/incidents*',
+      url: 'api/v1/blocklist-monitors/incidents*',
       statusCode: 200,
       fixture: 'blocklists/incident/200.get.json',
     });
@@ -98,12 +98,12 @@ describe('The blocklist incidents page', () => {
   it('changes the date range and makes the correct http call', () => {
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.search.json',
     });
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors/incidents*',
+      url: 'api/v1/blocklist-monitors/incidents*',
       statusCode: 200,
       fixture: 'blocklists/incident/200.get.json',
       requestAlias: 'getIncidents',
@@ -131,31 +131,31 @@ describe('The blocklist incidents page', () => {
       .match(utcFormatMatcher)[0];
 
     cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blacklist-monitors/incidents?from=' + thirty);
+      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
       cy.wrap(url).should('include', 'to=' + todaysDate);
     });
 
     cy.findByLabelText('Broad Date Range').select('Last 24 Hours');
     cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blacklist-monitors/incidents?from=' + lastTwentyFour);
+      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + lastTwentyFour);
       cy.wrap(url).should('include', 'to=' + todaysDate);
     });
 
     cy.findByLabelText('Broad Date Range').select('Last 7 Days');
     cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blacklist-monitors/incidents?from=' + seven);
+      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + seven);
       cy.wrap(url).should('include', 'to=' + todaysDate);
     });
 
     cy.findByLabelText('Broad Date Range').select('Last 30 Days');
     cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blacklist-monitors/incidents?from=' + thirty);
+      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
       cy.wrap(url).should('include', 'to=' + todaysDate);
     });
 
     cy.findByLabelText('Broad Date Range').select('Last 90 Days');
     cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blacklist-monitors/incidents?from=' + ninety);
+      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + ninety);
       cy.wrap(url).should('include', 'to=' + todaysDate);
     });
   });
@@ -163,12 +163,12 @@ describe('The blocklist incidents page', () => {
   it('sorts the table on resolved and listed', () => {
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.search.json',
     });
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors/incidents*',
+      url: 'api/v1/blocklist-monitors/incidents*',
       statusCode: 200,
       fixture: 'blocklists/incident/200.get.json',
     });
@@ -177,7 +177,7 @@ describe('The blocklist incidents page', () => {
 
     cy.get('tbody > tr:first-child').then(el => {
       cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
-      cy.findAllByText('blacklist.lashback.com', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
       cy.findAllByText(novTime, { container: el }).should('be.visible');
       cy.findAllByText('Active', { container: el }).should('be.visible');
     });
@@ -193,7 +193,7 @@ describe('The blocklist incidents page', () => {
 
     cy.get('tbody > tr:last-child').then(el => {
       cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
-      cy.findAllByText('blacklist.lashback.com', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
       cy.findAllByText(novTime, { container: el }).should('be.visible');
       cy.findAllByText('Active', { container: el }).should('be.visible');
     });
@@ -209,7 +209,7 @@ describe('The blocklist incidents page', () => {
 
     cy.get('tbody > tr:first-child').then(el => {
       cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
-      cy.findAllByText('blacklist.lashback.com', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
       cy.findAllByText(novTime, { container: el }).should('be.visible');
       cy.findAllByText('Active', { container: el }).should('be.visible');
     });
@@ -226,7 +226,7 @@ describe('The blocklist incidents page', () => {
 
     cy.get('tbody > tr:first-child').then(el => {
       cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
-      cy.findAllByText('blacklist.lashback.com', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
 
       cy.findAllByText(novTime, { container: el }).should('be.visible');
       cy.findAllByText('Active', { container: el }).should('be.visible');

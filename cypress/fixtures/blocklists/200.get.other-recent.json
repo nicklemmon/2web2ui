@@ -3,7 +3,7 @@
     {
       "id": "8",
       "resource": "sparkpost.io",
-      "blacklist_name": "new.spam.dnsbl.sorbs.net",
+      "blocklist_name": "new.spam.dnsbl.sorbs.net",
       "occurred_at": "2019-12-25T07:30:57.892Z",
       "resolved_at": null,
       "status": "flagged"
@@ -11,7 +11,7 @@
     {
       "id": "9",
       "resource": "127.0.0.2",
-      "blacklist_name": "abuseat.org (CBL)",
+      "blocklist_name": "abuseat.org (CBL)",
       "occurred_at": "2019-11-21T17:14:57.892Z",
       "resolved_at": null,
       "status": "flagged"
@@ -19,7 +19,7 @@
     {
       "id": "10",
       "resource": "123.123.123.1",
-      "blacklist_name": "abuseat.org (CBL)",
+      "blocklist_name": "abuseat.org (CBL)",
       "occurred_at": "2019-12-26T07:30:57.892Z",
       "resolved_at": "2019-12-26T09:30:57.892Z",
       "status": "resolved"

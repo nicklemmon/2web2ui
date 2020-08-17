@@ -18,7 +18,7 @@ const columns = [
 const getRowData = ({
   resource,
   id,
-  blacklist_name,
+  blocklist_name,
   occurred_at_formatted,
   occurred_at_timestamp,
   resolved_at_timestamp,
@@ -27,7 +27,7 @@ const getRowData = ({
   return [
     <PageLink to={`/signals/blocklist/incidents/${id}`}>
       <span className={styles.DetailsLink}>{resource}</span>
-      <span> on </span> <span className={styles.DetailsLink}>{blacklist_name}</span>
+      <span> on </span> <span className={styles.DetailsLink}>{blocklist_name}</span>
     </PageLink>,
     <DisplayDate timestamp={occurred_at_timestamp} formattedDate={occurred_at_formatted} />,
     !resolved_at_formatted ? (
@@ -81,9 +81,9 @@ export const IncidentsCollection = props => {
       pagination={true}
       filterBox={{
         show: true,
-        exampleModifiers: ['resource', 'blacklist_name', 'status'],
+        exampleModifiers: ['resource', 'blocklist_name', 'status'],
         initialValue: search,
-        itemToStringKeys: ['resource', 'blacklist_name', 'status'],
+        itemToStringKeys: ['resource', 'blocklist_name', 'status'],
         wrapper: props => <div className={styles.FilterBox}>{props}</div>,
         onBlur: value => updateTextField(value),
       }}

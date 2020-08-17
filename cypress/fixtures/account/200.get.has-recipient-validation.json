@@ -26,6 +26,7 @@
       "initial_open_pixel_tracking": true,
       "smtp_tracking_default": false,
       "blacklist_monitors": false,
+      "blocklist_monitors": false,
       "recipient_validation": true,
       "auto_verify_domains": false
     },

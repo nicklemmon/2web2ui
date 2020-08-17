@@ -3,7 +3,7 @@
     {
       "id": "114",
       "resource": "sparkpost.io",
-      "blacklist_name": "abuseat.org (CBL)",
+      "blocklist_name": "abuseat.org (CBL)",
       "occurred_at": "2019-11-21T17:14:58.933Z",
       "resolved_at": "2019-11-21T17:58:19.270Z",
       "status": "resolved"

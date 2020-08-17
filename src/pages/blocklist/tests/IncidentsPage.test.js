@@ -26,7 +26,7 @@ describe('IncidentsPage', () => {
     {
       id: 1,
       resource: '101.101',
-      blacklist_name: 'spammy mcspamface',
+      blocklist_name: 'spammy mcspamface',
       occurred_at_formatted: 'Dec 3 2019 at 10:00am',
       occurred_at_timestamp: 123456789,
     },
@@ -35,7 +35,7 @@ describe('IncidentsPage', () => {
   const monitors = [
     {
       resource: '101.101',
-      currently_blacklisted_on: [],
+      currently_blocklisted_on: [],
     },
   ];
 

@@ -8,7 +8,7 @@ describe('The blocklist watchlist page', () => {
 
   it('shows title and info', () => {
     cy.stubRequest({
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.watchlist.json',
     });
 
@@ -23,7 +23,7 @@ describe('The blocklist watchlist page', () => {
 
   it('sorts the table', () => {
     cy.stubRequest({
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.watchlist.json',
     });
 
@@ -82,7 +82,7 @@ describe('The blocklist watchlist page', () => {
 
   it('filters the result list down', () => {
     cy.stubRequest({
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.watchlist.json',
     });
 
@@ -95,13 +95,13 @@ describe('The blocklist watchlist page', () => {
 
   it('stops monitoring', () => {
     cy.stubRequest({
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.watchlist.json',
     });
     cy.stubRequest({
       method: 'DELETE',
       statusCode: 204,
-      url: '/api/v1/blacklist-monitors/*',
+      url: '/api/v1/blocklist-monitors/*',
       fixture: 'blocklists/incident/204.delete.json',
     });
 
@@ -133,13 +133,13 @@ describe('The blocklist watchlist page', () => {
 
   it('links to the blocklist/incidents?search= page', () => {
     cy.stubRequest({
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.watchlist.json',
     });
 
     cy.stubRequest({
       method: 'GET',
-      url: 'api/v1/blacklist-monitors',
+      url: 'api/v1/blocklist-monitors',
       fixture: 'blocklists/incident/200.get.search.json',
     });
 

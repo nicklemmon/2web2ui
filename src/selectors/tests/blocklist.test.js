@@ -15,7 +15,7 @@ describe('Blocklist Selectors: ', () => {
       {
         id: 'id-1',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-23T12:48:00.000Z',
         status: 'active',
       },
@@ -36,7 +36,7 @@ describe('Blocklist Selectors: ', () => {
     monitors = [
       {
         resource: 'foo',
-        currently_blacklisted_on: ['bar'],
+        currently_blocklisted_on: ['bar'],
         last_listed_at: '2019-07-23T12:48:00.000Z',
         watched_at: '2019-07-23T12:48:00.000Z',
         total_listing_count: 12,
@@ -94,7 +94,7 @@ describe('Blocklist Selectors: ', () => {
     const incident = {
       id: 'id-1',
       resource: 'foo',
-      blacklist_name: 'spamhaus-sbl',
+      blocklist_name: 'spamhaus-sbl',
       occurred_at: '2019-07-23T12:48:00.000Z',
     };
 
@@ -102,31 +102,31 @@ describe('Blocklist Selectors: ', () => {
       {
         id: 'id-1',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-2',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl 2',
+        blocklist_name: 'spamhaus-sbl 2',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-3',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl 3',
+        blocklist_name: 'spamhaus-sbl 3',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-4',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl 4',
+        blocklist_name: 'spamhaus-sbl 4',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-5',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl 5',
+        blocklist_name: 'spamhaus-sbl 5',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
     ];
@@ -156,7 +156,7 @@ describe('Blocklist Selectors: ', () => {
     const incident = {
       id: 'id-1',
       resource: 'foo',
-      blacklist_name: 'spamhaus-sbl',
+      blocklist_name: 'spamhaus-sbl',
       occurred_at: '2019-07-23T12:48:00.000Z',
     };
 
@@ -164,31 +164,31 @@ describe('Blocklist Selectors: ', () => {
       {
         id: 'id-1',
         resource: 'foo 1',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-2',
         resource: 'foo 2',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-3',
         resource: 'foo 3',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-4',
         resource: 'foo 4',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
       {
         id: 'id-5',
         resource: 'foo 5',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-23T12:48:00.000Z',
       },
     ];
@@ -218,7 +218,7 @@ describe('Blocklist Selectors: ', () => {
     const incident = {
       id: 'id-1',
       resource: 'foo',
-      blacklist_name: 'spamhaus-sbl',
+      blocklist_name: 'spamhaus-sbl',
       occurred_at: '2019-07-23T12:48:00.000Z',
     };
 
@@ -226,43 +226,43 @@ describe('Blocklist Selectors: ', () => {
       {
         id: 'id-1',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-22T12:48:00.000Z',
       },
       {
         id: 'id-2',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-21T12:48:00.000Z',
       },
       {
         id: 'id-3',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-20T12:48:00.000Z',
       },
       {
         id: 'id-4',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-19T12:48:00.000Z',
       },
       {
         id: 'id-5',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-18T12:48:00.000Z',
       },
       {
         id: 'id-6',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-17T12:48:00.000Z',
       },
       {
         id: 'id-7',
         resource: 'foo',
-        blacklist_name: 'spamhaus-sbl',
+        blocklist_name: 'spamhaus-sbl',
         occurred_at: '2019-07-16T12:48:00.000Z',
       },
     ];

@@ -5,7 +5,7 @@ export const listBlocklists = () =>
     type: 'LIST_BLOCKLISTS',
     meta: {
       method: 'GET',
-      url: '/v1/blacklist-monitors/blacklists',
+      url: '/v1/blocklist-monitors/blocklists',
     },
   });
 
@@ -14,7 +14,7 @@ export function listMonitors() {
     type: 'LIST_MONITORS',
     meta: {
       method: 'GET',
-      url: '/v1/blacklist-monitors',
+      url: '/v1/blocklist-monitors',
       showErrorAlert: false,
     },
   });
@@ -26,7 +26,7 @@ export function watchlistAdd(resource) {
       type: 'ADD_WATCHLIST',
       meta: {
         method: 'POST',
-        url: '/v1/blacklist-monitors',
+        url: '/v1/blocklist-monitors',
         showErrorAlert: false,
         data: {
           resource,
@@ -43,7 +43,7 @@ export function deleteMonitor(resource) {
     type: 'DELETE_MONITOR',
     meta: {
       method: 'DELETE',
-      url: `/v1/blacklist-monitors/${resource}`,
+      url: `/v1/blocklist-monitors/${resource}`,
       resource,
     },
   });
@@ -54,7 +54,7 @@ export function listIncidents(from, to) {
     type: 'LIST_INCIDENTS',
     meta: {
       method: 'GET',
-      url: '/v1/blacklist-monitors/incidents',
+      url: '/v1/blocklist-monitors/incidents',
       showErrorAlert: false,
       params: {
         from,
@@ -69,7 +69,7 @@ export function getIncident(incidentId) {
     type: 'GET_INCIDENT',
     meta: {
       method: 'GET',
-      url: `/v1/blacklist-monitors/incidents/${incidentId}`,
+      url: `/v1/blocklist-monitors/incidents/${incidentId}`,
       showErrorAlert: false,
     },
   });
@@ -80,7 +80,7 @@ export function listIncidentsForResource(resource, from = '2019-01-01') {
     type: 'LIST_INCIDENTS_FOR_RESOURCE',
     meta: {
       method: 'GET',
-      url: `/v1/blacklist-monitors/incidents`,
+      url: `/v1/blocklist-monitors/incidents`,
       showErrorAlert: false,
       params: {
         resources: resource,
@@ -90,15 +90,15 @@ export function listIncidentsForResource(resource, from = '2019-01-01') {
   });
 }
 
-export function listIncidentsForBlocklist(blacklists, from = '2019-01-01') {
+export function listIncidentsForBlocklist(blocklists, from = '2019-01-01') {
   return sparkpostApiRequest({
     type: 'LIST_INCIDENTS_FOR_BLOCKLIST',
     meta: {
       method: 'GET',
-      url: `/v1/blacklist-monitors/incidents`,
+      url: `/v1/blocklist-monitors/incidents`,
       showErrorAlert: false,
       params: {
-        blacklists,
+        blocklists,
         from,
       },
     },
@@ -106,7 +106,7 @@ export function listIncidentsForBlocklist(blacklists, from = '2019-01-01') {
 }
 
 export function listHistoricalResolvedIncidents(
-  blacklists,
+  blocklists,
   resource,
   from = '2019-01-01',
   limit = 7,
@@ -115,10 +115,10 @@ export function listHistoricalResolvedIncidents(
     type: 'LIST_HISTORICAL_INCIDENTS',
     meta: {
       method: 'GET',
-      url: `/v1/blacklist-monitors/${resource}/incidents`,
+      url: `/v1/blocklist-monitors/${resource}/incidents`,
       showErrorAlert: false,
       params: {
-        blacklists,
+        blocklists,
         limit,
         from,
         status: 'resolved',

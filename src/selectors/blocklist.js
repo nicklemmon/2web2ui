@@ -56,6 +56,7 @@ const sortActiveThenListedDate = (a, b) => {
   }
 };
 
+// todo, confirm thisis working
 export const selectRelatedIncidentsForResource = createSelector(
   [getIncidentsForResource, getIncident],
   (incidents, currentIncident) =>
@@ -63,7 +64,7 @@ export const selectRelatedIncidentsForResource = createSelector(
       .filter(
         incident =>
           incident.id !== currentIncident.id &&
-          incident.blacklist_name !== currentIncident.blacklist_name,
+          incident.blocklist_name !== currentIncident.blocklist_name,
       )
       .map(incident => enrichIncident(incident))
       .sort(sortActiveThenListedDate)

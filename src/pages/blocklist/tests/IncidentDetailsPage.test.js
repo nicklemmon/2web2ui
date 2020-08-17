@@ -14,7 +14,7 @@ RelatedIncidents.mockImplementation(() => <div className="mock-related-incidents
 const mockIncident = {
   id: '123',
   resource: '1.2.3.4',
-  blacklist_name: 'spamhaus.org - pbl',
+  blocklist_name: 'spamhaus.org - pbl',
   occurred_at: '2019-12-31T18:14:57.899Z',
   resolved_at: '2019-12-31T19:01:32.741Z',
   status: 'resolved',
@@ -24,7 +24,7 @@ const mockHistoricalIncidents = [
   {
     id: '1234',
     resource: '1.2.3.4',
-    blacklist_name: 'spamhaus.org - pbl',
+    blocklist_name: 'spamhaus.org - pbl',
     occurred_at: '2019-12-31T18:14:57.899Z',
     resolved_at: '2019-12-31T19:01:32.741Z',
     status: 'resolved',
@@ -35,7 +35,7 @@ const mockIncidentsForResource = [
   {
     id: '1234',
     resource: '1.2.3.4',
-    blacklist_name: 'spamhaus.org 2',
+    blocklist_name: 'spamhaus.org 2',
     occurred_at: '2019-12-31T18:14:57.899Z',
     resolved_at: '2019-12-31T19:01:32.741Z',
     status: 'resolved',
@@ -46,7 +46,7 @@ const mockIncidentsForBlocklist = [
   {
     id: '2345',
     resource: '2.3.4.5',
-    blacklist_name: 'spamhaus.org - pbl',
+    blocklist_name: 'spamhaus.org - pbl',
     occurred_at: '2019-12-31T18:14:57.899Z',
     resolved_at: '2019-12-31T19:01:32.741Z',
     status: 'resolved',
@@ -83,9 +83,9 @@ describe('IncidentDetailsPage', () => {
     wrapper.update();
     await mockGetIncident(mockIncident.id).then(() => {
       expect(mockListIncidentsForResource).toHaveBeenCalledWith(mockIncident.resource);
-      expect(mockListIncidentsForBlocklist).toHaveBeenCalledWith(mockIncident.blacklist_name);
+      expect(mockListIncidentsForBlocklist).toHaveBeenCalledWith(mockIncident.blocklist_name);
       expect(mockListHistoricalResolvedIncidents).toHaveBeenCalledWith(
-        mockIncident.blacklist_name,
+        mockIncident.blocklist_name,
         mockIncident.resource,
       );
     });

@@ -1,5 +1,5 @@
 const PAGE_URL = '/signals/blocklist/incidents/7';
-const BLOCKLIST_BASE_API_URL = '/api/v1/blacklist-monitors';
+const BLOCKLIST_BASE_API_URL = '/api/v1/blocklist-monitors';
 
 describe('Blocklist Incident Details Page', () => {
   beforeEach(() => {
@@ -106,7 +106,7 @@ describe('Blocklist Incident Details Page', () => {
   describe('Related Incidents (blocklist)', () => {
     it('displays alternative text when there are no other recent incidents', () => {
       cy.stubRequest({
-        url: `${BLOCKLIST_BASE_API_URL}/incidents?blacklists=**`,
+        url: `${BLOCKLIST_BASE_API_URL}/incidents?blocklists=**`,
         fixture: '/200.get.no-results.json',
         requestAlias: 'recentOtherIncidentsEmpty',
       });

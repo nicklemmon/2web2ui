@@ -10,7 +10,7 @@ describe('Action Creator: Blocklist', () => {
       type: 'LIST_INCIDENTS',
       meta: {
         method: 'GET',
-        url: '/v1/blacklist-monitors/incidents',
+        url: '/v1/blocklist-monitors/incidents',
         showErrorAlert: false,
         params: {
           from: '2019-12-01T10:10',
@@ -26,7 +26,7 @@ describe('Action Creator: Blocklist', () => {
       type: 'GET_INCIDENT',
       meta: {
         method: 'GET',
-        url: `/v1/blacklist-monitors/incidents/abc123`,
+        url: `/v1/blocklist-monitors/incidents/abc123`,
         showErrorAlert: false,
       },
     });
@@ -38,7 +38,7 @@ describe('Action Creator: Blocklist', () => {
       type: 'LIST_INCIDENTS_FOR_RESOURCE',
       meta: {
         method: 'GET',
-        url: `/v1/blacklist-monitors/incidents`,
+        url: `/v1/blocklist-monitors/incidents`,
         showErrorAlert: false,
         params: {
           resources: '123.123.123.1',
@@ -54,11 +54,11 @@ describe('Action Creator: Blocklist', () => {
       type: 'LIST_INCIDENTS_FOR_BLOCKLIST',
       meta: {
         method: 'GET',
-        url: `/v1/blacklist-monitors/incidents`,
+        url: `/v1/blocklist-monitors/incidents`,
         showErrorAlert: false,
         params: {
           from: '2019-01-01',
-          blacklists: 'spamhaus',
+          blocklists: 'spamhaus',
         },
       },
     });
@@ -70,11 +70,11 @@ describe('Action Creator: Blocklist', () => {
       type: 'LIST_HISTORICAL_INCIDENTS',
       meta: {
         method: 'GET',
-        url: `/v1/blacklist-monitors/123.123.123.1/incidents`,
+        url: `/v1/blocklist-monitors/123.123.123.1/incidents`,
         showErrorAlert: false,
         params: {
           from: '2019-01-01',
-          blacklists: 'spamhaus',
+          blocklists: 'spamhaus',
           limit: 7,
           status: 'resolved',
         },
@@ -88,7 +88,7 @@ describe('Action Creator: Blocklist', () => {
       type: 'ADD_WATCHLIST',
       meta: {
         method: 'POST',
-        url: '/v1/blacklist-monitors',
+        url: '/v1/blocklist-monitors',
         showErrorAlert: false,
         data: {
           resource: '192.168.0.1',
@@ -103,7 +103,7 @@ describe('Action Creator: Blocklist', () => {
       type: 'LIST_MONITORS',
       meta: {
         method: 'GET',
-        url: '/v1/blacklist-monitors',
+        url: '/v1/blocklist-monitors',
         showErrorAlert: false,
       },
     });
@@ -115,7 +115,7 @@ describe('Action Creator: Blocklist', () => {
       type: 'DELETE_MONITOR',
       meta: {
         method: 'DELETE',
-        url: '/v1/blacklist-monitors/test',
+        url: '/v1/blocklist-monitors/test',
         resource: 'test',
       },
     });
@@ -127,7 +127,7 @@ describe('Action Creator: Blocklist', () => {
       type: 'LIST_BLOCKLISTS',
       meta: {
         method: 'GET',
-        url: '/v1/blacklist-monitors/blacklists',
+        url: '/v1/blocklist-monitors/blocklists',
       },
     });
   });

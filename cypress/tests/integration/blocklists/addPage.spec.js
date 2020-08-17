@@ -5,7 +5,7 @@ describe('Blocklist - Add to Watchlist Page', () => {
 
     cy.stubRequest({
       method: 'POST',
-      url: '/api/v1/blacklist-monitors',
+      url: '/api/v1/blocklist-monitors',
       fixture: 'blocklists/200.post.json',
       requestAlias: 'addNewResource',
     });

@@ -7,7 +7,7 @@ describe('Blocklist Component: MonitorsCollection', () => {
   const monitors = [
     {
       resource: '1.2.3.4',
-      currently_blacklisted_on: ['SpamHaus-SBL', 'Invaluement-ivmSIP'],
+      currently_blocklisted_on: ['SpamHaus-SBL', 'Invaluement-ivmSIP'],
       last_listed_at: '2019-07-23T12:48:00.000Z',
       watched_at: '2019-07-23T12:48:00.000Z',
       total_listing_count: 12,

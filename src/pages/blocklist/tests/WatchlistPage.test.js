@@ -10,7 +10,7 @@ describe('WatchlistPage', () => {
   const monitors = [
     {
       resource: '101.101',
-      currently_blacklisted_on: [],
+      currently_blocklisted_on: [],
       total_listing_count: 2,
       active_listing_count: 2,
       watched_at: '2019-07-13T00:00:00.000Z',

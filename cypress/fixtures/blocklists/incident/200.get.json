@@ -1,84 +1,84 @@
 {
-	"results": [
-		{
-			"id": "42",
-			"resource": "127.0.0.2",
-			"blacklist_name": "blacklist.lashback.com",
-			"occurred_at": "2019-11-20T17:14:57.933Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "37",
-			"resource": "127.0.0.2",
-			"blacklist_name": "psbl.org",
-			"occurred_at": "2019-11-20T17:14:57.929Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "39",
-			"resource": "127.0.0.2",
-			"blacklist_name": "spamcop.net",
-			"occurred_at": "2019-11-20T17:14:57.925Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "41",
-			"resource": "127.0.0.2",
-			"blacklist_name": "barracudacentral.org",
-			"occurred_at": "2019-11-20T17:14:57.921Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "38",
-			"resource": "127.0.0.2",
-			"blacklist_name": "CSI ESP Reputation",
-			"occurred_at": "2019-11-20T17:14:57.914Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "36",
-			"resource": "127.0.0.2",
-			"blacklist_name": "spamhaus.org - sbl",
-			"occurred_at": "2019-11-20T17:14:57.906Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "43",
-			"resource": "127.0.0.2",
-			"blacklist_name": "spamhaus.org - pbl",
-			"occurred_at": "2019-11-20T17:14:57.904Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "40",
-			"resource": "127.0.0.2",
-			"blacklist_name": "new.spam.dnsbl.sorbs.net",
-			"occurred_at": "2019-11-20T17:14:57.899Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "35",
-			"resource": "127.0.0.2",
-			"blacklist_name": "abuseat.org (CBL)",
-			"occurred_at": "2019-11-20T17:14:57.892Z",
-			"resolved_at": null,
-			"status": "flagged"
-		},
-		{
-			"id": "1",
-			"resource": "2.2.8",
-			"blacklist_name": "new.spam.dnsbl.sorbs.net",
-			"occurred_at": "2019-09-09T00:00:00.000Z",
-			"resolved_at": null,
-			"status": "flagged"
-		}
-	]
+  "results": [
+    {
+      "id": "42",
+      "resource": "127.0.0.2",
+      "blocklist_name": "blocklist.lashback.com",
+      "occurred_at": "2019-11-20T17:14:57.933Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "37",
+      "resource": "127.0.0.2",
+      "blocklist_name": "psbl.org",
+      "occurred_at": "2019-11-20T17:14:57.929Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "39",
+      "resource": "127.0.0.2",
+      "blocklist_name": "spamcop.net",
+      "occurred_at": "2019-11-20T17:14:57.925Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "41",
+      "resource": "127.0.0.2",
+      "blocklist_name": "barracudacentral.org",
+      "occurred_at": "2019-11-20T17:14:57.921Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "38",
+      "resource": "127.0.0.2",
+      "blocklist_name": "CSI ESP Reputation",
+      "occurred_at": "2019-11-20T17:14:57.914Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "36",
+      "resource": "127.0.0.2",
+      "blocklist_name": "spamhaus.org - sbl",
+      "occurred_at": "2019-11-20T17:14:57.906Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "43",
+      "resource": "127.0.0.2",
+      "blocklist_name": "spamhaus.org - pbl",
+      "occurred_at": "2019-11-20T17:14:57.904Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "40",
+      "resource": "127.0.0.2",
+      "blocklist_name": "new.spam.dnsbl.sorbs.net",
+      "occurred_at": "2019-11-20T17:14:57.899Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "35",
+      "resource": "127.0.0.2",
+      "blocklist_name": "abuseat.org (CBL)",
+      "occurred_at": "2019-11-20T17:14:57.892Z",
+      "resolved_at": null,
+      "status": "flagged"
+    },
+    {
+      "id": "1",
+      "resource": "2.2.8",
+      "blocklist_name": "new.spam.dnsbl.sorbs.net",
+      "occurred_at": "2019-09-09T00:00:00.000Z",
+      "resolved_at": null,
+      "status": "flagged"
+    }
+  ]
 }
