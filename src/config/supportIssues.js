@@ -13,7 +13,8 @@ import { isAws } from 'src/helpers/conditions/account';
 import { isAdmin } from 'src/helpers/conditions/user';
 
 // types of support issues
-// @note These values must be configured in Desk before being used and they are case-sensitive
+// @note these values are used by our BizOps team in Salesforce Service Cloud to assign
+//   a specific ticket workflow, changes need to be coordinated with BizOps
 const BILLING = 'Billing';
 const COMPLIANCE = 'Compliance';
 const ERRORS = 'Errors';
@@ -27,16 +28,21 @@ const defaultCondition = all(hasProductOnSubscription('online_support'), hasStat
  * @example
  *   {
  *     // a snake cased string, used to reference a specific issue
+ *     // @note only used by our application
  *     id: 'example_issue',
  *
  *     // the label for the support form dropdown
+ *     // @note these values are used as a subject line in Salesforce Service Cloud, changes do not
+ *     //   need to be coordinated with BizOps because it is a free text field
  *     label: 'This is an example',
  *
  *     // the follow-up question for the support form (optional; to override default)
  *     messageLabel: 'Tell us more about your issue',
  *
+ *     // the issue category
+ *     // @note these values are used by our BizOps team in Salesforce Service Cloud to assign
+ *     //   a specific ticket workflow, changes need to be coordinated with BizOps
  *     type: 'Example',
- *
  *   }
  */
 const supportIssues = [
@@ -76,8 +82,8 @@ const supportIssues = [
     type: SUPPORT,
   },
   {
-    id: 'blacklisting',
-    label: 'IP blacklisting',
+    id: 'blocklisting',
+    label: 'IP blocklisting',
     type: COMPLIANCE,
   },
   {
