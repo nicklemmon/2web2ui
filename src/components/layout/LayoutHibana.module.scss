@@ -11,6 +11,7 @@
 
 // TODO: This CSS is horrible because of overrides...need to refactor when the OG theme is removed
 .content {
+  overflow: initial;
   padding: spacing(800) spacing(400);
   padding-bottom: sizing(900);
 

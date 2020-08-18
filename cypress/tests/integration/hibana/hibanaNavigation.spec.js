@@ -11,9 +11,12 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       cy.stubRequest({
         url: '/api/v1/account*',
         fixture: 'account/200.get.has-hibana-theme-controls.json',
+        requestAlias: 'accountReq',
       });
 
       cy.visit('/');
+
+      cy.wait('@accountReq');
     }
 
     function stubGrantsRequest({ role }) {
@@ -49,6 +52,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
           cy.verifyLink({ content: 'Content', href: '/templates' });
           cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
+          cy.verifyLink({ content: 'Configuration', href: '/account/sending-domains' });
         });
       });
 
@@ -162,6 +166,48 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
         cy.url().should('include', '/inbox-placement');
 
         cy.get(secondaryNavSelector).should('not.be.visible');
+      });
+
+      it('renders the subnav and routes to the sending domains when "Configuration" is active', () => {
+        commonBeforeSteps();
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Configuration').click();
+        });
+
+        cy.url().should('include', '/account/sending-domains');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Sending Domains', href: '/account/sending-domains' });
+          cy.verifyLink({ content: 'Tracking Domains', href: '/account/tracking-domains' });
+          cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
+          cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
+          cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
+          cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
+        });
+      });
+
+      it('renders the "Domains" link when the user\'s account has the "allow_domains_v2" flag enabled', () => {
+        cy.stubAuth();
+        cy.stubRequest({
+          url: '/api/v1/account*',
+          fixture: 'account/200.get.has-domains-v2.json',
+          requestAlias: 'accountDomainsV2Req',
+        });
+        cy.login({ isStubbed: true });
+        cy.visit('/');
+
+        cy.wait('@accountDomainsV2Req');
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Configuration').click();
+        });
+
+        cy.url().should('include', '/domains');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Domains', href: '/domains' });
+        });
       });
 
       it("renders the pending cancellation banner when the user's account is pending cancellation", () => {

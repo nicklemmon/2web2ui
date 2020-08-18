@@ -64,6 +64,34 @@ describe('The domains list page', () => {
         cy.findByText('Sending domains table goes here').should('be.visible');
       });
     });
+
+    describe('the filtering UI', () => {
+      it('renders with a "Filter Domains" text field', () => {
+        cy.visit(PAGE_URL);
+
+        cy.wait('@accountDomainsReq');
+
+        cy.findByLabelText('Filter Domains').should('be.visible');
+      });
+
+      it('renders with a "Domain Status" button that renders a popover when clicked', () => {
+        cy.visit(PAGE_URL);
+
+        cy.wait('@accountDomainsReq');
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByRole('checkbox', { name: 'Select All' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'Sending Domain' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'DKIM Signing' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'Bounce' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'SPF Valid' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'DMARC Compliant' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'Pending Verification' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'Failed Verification' }).should('be.visible');
+        cy.findByRole('checkbox', { name: 'Blocked' }).should('be.visible');
+        cy.findByRole('button', { name: 'Apply' }).should('be.visible');
+      });
+    });
   }
 
   if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {

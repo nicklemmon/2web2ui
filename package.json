@@ -41,7 +41,7 @@
       "eslint --fix",
       "git add"
     ],
-    "src/**/*.{js,css,scss}": [
+    "src/**/*.{js}": [
       "stylelint",
       "git add"
     ]
