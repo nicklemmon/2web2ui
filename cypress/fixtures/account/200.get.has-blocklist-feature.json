@@ -23,7 +23,6 @@
     },
     "options": {
       "ui": {},
-      "blacklist_monitors": true,
       "blocklist_monitors": true
     },
     "support": { "phone": false, "online": true },

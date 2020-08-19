@@ -141,7 +141,7 @@ export class DetailsPageComponent extends Component {
             renderPrimaryAreaComponent={renderComponentPrimaryArea}
           />
         )}
-        {alert.metric !== 'blacklist' && alert.metric !== 'blocklist' && (
+        {alert.metric !== 'blocklist' && (
           <AlertIncidents
             alert={alert}
             incidents={incidents}

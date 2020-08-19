@@ -211,7 +211,6 @@ describe('Alerts Selectors: ', () => {
     };
 
     expect(alertsSelectors.selectFeatureFlaggedAlerts(state)).toEqual({
-      blacklist: false,
       blocklist: true,
       injection_count: true,
     });

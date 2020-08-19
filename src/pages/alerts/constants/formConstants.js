@@ -11,7 +11,6 @@ export const METRICS = {
   hard_bounce_rate: 'Hard Bounce Rate',
   soft_bounce_rate: 'Soft Bounce Rate',
   injection_count: 'Injection Count',
-  blacklist: 'Blacklists',
   blocklist: 'Blocklists',
 };
 
@@ -22,8 +21,6 @@ export const FILTERS_FRIENDLY_NAMES = {
   sending_domain: 'Sending Domain',
   sending_ip: 'Sending IP',
   subaccount_id: 'Subaccounts',
-  blacklist_provider: 'Blacklists',
-  blacklist_resource: 'Domains or IPs',
   blocklist_provider: 'Blocklists',
   blocklist_resource: 'Domains or IPs',
 };

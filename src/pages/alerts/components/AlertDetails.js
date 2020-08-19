@@ -93,13 +93,8 @@ export const AlertDetails = ({
       undefined
     );
 
-    //Removes filter which contain string 'any'. Currently only appears on blocklist alerts
-    const blocklistFilters = [
-      'blacklist_provider',
-      'blacklist_resource',
-      'blocklist_provider',
-      'blocklist_resource',
-    ];
+    // Removes filter which contain string 'any'. Currently only appears on blocklist alerts
+    const blocklistFilters = ['blocklist_provider', 'blocklist_resource'];
     const cleanedFilters = filters.filter(
       ({ filter_values, filter_type }) =>
         !(blocklistFilters.includes(filter_type) && filter_values[0] === 'any'),
@@ -125,8 +120,8 @@ export const AlertDetails = ({
 
   const renderEvaluated = () => {
     // todo, there is a bug in the API that forces us to define a threshold_evaluator to create a
-    //   blacklist alert, when fixed this condition can be removed
-    if (metric === 'blacklist' || metric === 'blocklist' || _.isEmpty(threshold_evaluator)) {
+    //   blocklist alert, when fixed this condition can be removed
+    if (metric === 'blocklist' || _.isEmpty(threshold_evaluator)) {
       return null;
     }
 
