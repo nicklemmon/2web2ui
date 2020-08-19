@@ -74,6 +74,10 @@ exports[`Alert Form Component should render the alert form component correctly 1
                       "label": "Blacklists",
                       "value": "blacklist",
                     },
+                    Object {
+                      "label": "Blocklists",
+                      "value": "blocklist",
+                    },
                   ]
                 }
                 validate={[Function]}

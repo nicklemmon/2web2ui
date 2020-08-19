@@ -12,6 +12,7 @@ export const METRICS = {
   soft_bounce_rate: 'Soft Bounce Rate',
   injection_count: 'Injection Count',
   blacklist: 'Blacklists',
+  blocklist: 'Blocklists',
 };
 
 export const FILTERS_FRIENDLY_NAMES = {
@@ -23,6 +24,8 @@ export const FILTERS_FRIENDLY_NAMES = {
   subaccount_id: 'Subaccounts',
   blacklist_provider: 'Blacklists',
   blacklist_resource: 'Domains or IPs',
+  blocklist_provider: 'Blocklists',
+  blocklist_resource: 'Domains or IPs',
 };
 
 export const RECOMMENDED_METRIC_VALUE = {

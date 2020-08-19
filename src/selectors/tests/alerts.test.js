@@ -155,20 +155,20 @@ describe('Alerts Selectors: ', () => {
           },
         },
       },
-      'with blacklists and filters': {
+      'with blocklists and filters': {
         apiData: {
           ...apiData,
-          metric: 'blacklist',
+          metric: 'blocklist',
           filters: [
-            { filter_type: 'blacklist_resource', filter_values: ['any'] },
-            { filter_type: 'blacklist_provider', filter_values: ['a', 'b', 'c'] },
+            { filter_type: 'blocklist_resource', filter_values: ['any'] },
+            { filter_type: 'blocklist_provider', filter_values: ['a', 'b', 'c'] },
           ],
         },
         formData: {
           ...formData,
-          metric: 'blacklist',
-          blacklist_resource: [],
-          blacklist_provider: ['a', 'b', 'c'],
+          metric: 'blocklist',
+          blocklist_resource: [],
+          blocklist_provider: ['a', 'b', 'c'],
         },
       },
     };
@@ -202,7 +202,7 @@ describe('Alerts Selectors: ', () => {
     const state = {
       account: {
         options: {
-          blacklist_monitors: true,
+          blocklist_monitors: true,
           ui: {
             allow_injection_alerts: true,
           },
@@ -211,7 +211,8 @@ describe('Alerts Selectors: ', () => {
     };
 
     expect(alertsSelectors.selectFeatureFlaggedAlerts(state)).toEqual({
-      blacklist: true,
+      blacklist: false,
+      blocklist: true,
       injection_count: true,
     });
   });

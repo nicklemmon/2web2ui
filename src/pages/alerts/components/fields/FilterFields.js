@@ -55,6 +55,8 @@ export class FilterFields extends Component {
       sending_ip: sendingIps.map(({ external_ip }) => external_ip),
       blacklist_provider: blocklists.map(({ code }) => code),
       blacklist_resource: blocklistMonitors.map(({ resource }) => resource),
+      blocklist_provider: blocklists.map(({ code }) => code),
+      blocklist_resource: blocklistMonitors.map(({ resource }) => resource),
     };
 
     const extraProps = {
@@ -98,6 +100,14 @@ export class FilterFields extends Component {
         placeholder: 'Type To Search',
       },
       blacklist_resource: {
+        disabled: disabled || blocklistMonitorsPending || blocklistMonitors.length === 0,
+        placeholder: 'Type To Search',
+      },
+      blocklist_provider: {
+        disabled: disabled || blocklistsPending,
+        placeholder: 'Type To Search',
+      },
+      blocklist_resource: {
         disabled: disabled || blocklistMonitorsPending || blocklistMonitors.length === 0,
         placeholder: 'Type To Search',
       },

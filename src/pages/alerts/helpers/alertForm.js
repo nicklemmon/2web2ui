@@ -81,6 +81,22 @@ const metricToFormSpecMap = {
       { fieldName: 'subaccounts', fieldValue: [] },
     ],
   },
+  blocklist: {
+    hasFilters: true,
+    hideEvaluator: true,
+    hideSubaccountFilter: true,
+    filterType: 'multi',
+    filterOptions: getOptionsFromMap(
+      ['blocklist_provider', 'blocklist_resource'],
+      FILTERS_FRIENDLY_NAMES,
+    ),
+    sourceOptions: [],
+    defaultFieldValues: [
+      { fieldName: 'blocklist_provider', fieldValue: [] },
+      { fieldName: 'blocklist_resource', fieldValue: [] },
+      { fieldName: 'subaccounts', fieldValue: [] },
+    ],
+  },
 };
 
 export const getFormSpec = metric => {

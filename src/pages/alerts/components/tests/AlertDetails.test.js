@@ -79,8 +79,8 @@ describe('Alert Details Component', () => {
     expect(wrapper).not.toHaveTextContent('Condition:');
   });
 
-  it('should not render evaluator section for blacklist alerts', () => {
-    const wrapper = shallow(<AlertDetails {...props} alert={{ ...alert, metric: 'blacklist' }} />);
+  it('should not render evaluator section for blocklist alerts', () => {
+    const wrapper = shallow(<AlertDetails {...props} alert={{ ...alert, metric: 'blocklist' }} />);
     expect(wrapper).not.toHaveTextContent('Condition:');
   });
 });

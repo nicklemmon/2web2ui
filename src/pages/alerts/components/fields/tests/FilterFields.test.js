@@ -91,7 +91,7 @@ describe('Filter Fields Component', () => {
     const blockListFilters = (props = {}) =>
       subject({
         ...props,
-        metric: 'blacklist',
+        metric: 'blocklist',
         blocklists: [{ code: 'abuseat.org' }, { code: 'spamhaus.org' }],
         blocklistMonitors: [
           { resource: '0.0.0.0' },
@@ -103,7 +103,7 @@ describe('Filter Fields Component', () => {
 
     it('displays only blocklist codes', () => {
       const wrapper = blockListFilters();
-      expect(wrapper.find({ name: 'blacklist_provider' })).toHaveProp('results', [
+      expect(wrapper.find({ name: 'blocklist_provider' })).toHaveProp('results', [
         'abuseat.org',
         'spamhaus.org',
       ]);
@@ -111,7 +111,7 @@ describe('Filter Fields Component', () => {
 
     it('displays only blocklist resources', () => {
       const wrapper = blockListFilters();
-      expect(wrapper.find({ name: 'blacklist_resource' })).toHaveProp('results', [
+      expect(wrapper.find({ name: 'blocklist_resource' })).toHaveProp('results', [
         '0.0.0.0',
         '1.2.3.4',
         'example.com',
@@ -121,12 +121,12 @@ describe('Filter Fields Component', () => {
 
     it('disables provider field when loading options', () => {
       const wrapper = blockListFilters({ blocklistsPending: true });
-      expect(wrapper.find({ name: 'blacklist_provider' })).toHaveProp('disabled', true);
+      expect(wrapper.find({ name: 'blocklist_provider' })).toHaveProp('disabled', true);
     });
 
     it('disables resource field when loading options', () => {
       const wrapper = blockListFilters({ blocklistMonitorsPending: true });
-      expect(wrapper.find({ name: 'blacklist_resource' })).toHaveProp('disabled', true);
+      expect(wrapper.find({ name: 'blocklist_resource' })).toHaveProp('disabled', true);
     });
   });
 });

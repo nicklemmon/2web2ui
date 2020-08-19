@@ -93,12 +93,16 @@ export const AlertDetails = ({
       undefined
     );
 
-    //Removes filter which contain string 'any'. Currently only appears on blacklist alerts
-
-    const blacklistFilters = ['blacklist_provider', 'blacklist_resource'];
+    //Removes filter which contain string 'any'. Currently only appears on blocklist alerts
+    const blocklistFilters = [
+      'blacklist_provider',
+      'blacklist_resource',
+      'blocklist_provider',
+      'blocklist_resource',
+    ];
     const cleanedFilters = filters.filter(
       ({ filter_values, filter_type }) =>
-        !(blacklistFilters.includes(filter_type) && filter_values[0] === 'any'),
+        !(blocklistFilters.includes(filter_type) && filter_values[0] === 'any'),
     );
 
     //Only show 'and' if it's not the first filter or if there's a subaccounts filter (linebreak for Hibana)
@@ -122,7 +126,7 @@ export const AlertDetails = ({
   const renderEvaluated = () => {
     // todo, there is a bug in the API that forces us to define a threshold_evaluator to create a
     //   blacklist alert, when fixed this condition can be removed
-    if (metric === 'blacklist' || _.isEmpty(threshold_evaluator)) {
+    if (metric === 'blacklist' || metric === 'blocklist' || _.isEmpty(threshold_evaluator)) {
       return null;
     }
 

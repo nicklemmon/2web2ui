@@ -53,7 +53,7 @@ export const selectAlertFormValues = createSelector(
         const formFilters = {};
         filters.forEach(filter => {
           formFilters[filter.filter_type] =
-            metric === 'blacklist'
+            metric === 'blacklist' || metric === 'blocklist'
               ? filter.filter_values.filter(value => value !== 'any')
               : filter.filter_values;
         });
@@ -91,7 +91,8 @@ export const selectFeatureFlaggedAlerts = createSelector(
   [
     selectCondition(isAccountUiOptionSet('allow_injection_alerts')),
     selectCondition(hasAccountOptionEnabled('blacklist_monitors')),
+    selectCondition(hasAccountOptionEnabled('blocklist_monitors')),
     // add more alert metric feature flags here
   ],
-  (injection_count, blacklist) => ({ blacklist, injection_count }),
+  (injection_count, blacklist, blocklist) => ({ blacklist, blocklist, injection_count }),
 );
