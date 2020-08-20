@@ -44,7 +44,7 @@ function MobileNavigation(props) {
       {/* See: https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/ for more info on tab traps! */}
       <FocusLock disabled={!isOpen}>
         <div className={styles.Header}>
-          <Link to="/dashboard" onClick={() => setIsOpen(false)}>
+          <Link to="/landing" onClick={() => setIsOpen(false)}>
             {/* SVG label hidden from screen readers in favor of simpler ScreenReaderOnly content */}
             <SparkPost.Icon className={styles.Logo} aria-hidden="true" />
 

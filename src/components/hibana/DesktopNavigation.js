@@ -21,7 +21,7 @@ export default function DesktopNavigation(props) {
 
         <div className={styles.PrimaryNavLayout}>
           <div className={styles.LogoWrapper}>
-            <Link to="/dashboard">
+            <Link to="/landing">
               <SparkPost.Logo className={styles.Logo} />
             </Link>
           </div>
