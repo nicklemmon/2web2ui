@@ -64,7 +64,18 @@ exports[`AccountDropdown should render correctly 1`] = `
     actions={
       Array [
         Object {
-          "component": [Function],
+          "component": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "Link",
+            "propTypes": Object {
+              "innerRef": [Function],
+              "onClick": [Function],
+              "replace": [Function],
+              "target": [Function],
+              "to": [Function],
+            },
+            "render": [Function],
+          },
           "content": <React.Fragment>
             link
           </React.Fragment>,
@@ -97,7 +108,18 @@ exports[`AccountDropdown should render correctly 1`] = `
           "to": undefined,
         },
         Object {
-          "component": [Function],
+          "component": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "Link",
+            "propTypes": Object {
+              "innerRef": [Function],
+              "onClick": [Function],
+              "replace": [Function],
+              "target": [Function],
+              "to": [Function],
+            },
+            "render": [Function],
+          },
           "content": <React.Fragment>
             link4
             <div
@@ -115,7 +137,18 @@ exports[`AccountDropdown should render correctly 1`] = `
           "to": "link",
         },
         Object {
-          "component": [Function],
+          "component": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "Link",
+            "propTypes": Object {
+              "innerRef": [Function],
+              "onClick": [Function],
+              "replace": [Function],
+              "target": [Function],
+              "to": [Function],
+            },
+            "render": [Function],
+          },
           "content": <React.Fragment>
             link4
             <div
