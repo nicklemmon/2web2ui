@@ -10,7 +10,6 @@ exports[`Component: AccessControl should render correctly when no access and not
 
 exports[`Component: AccessControl should render correctly when no access and ready to redirect 1`] = `
 <Redirect
-  push={false}
   to="/some/path"
 />
 `;

@@ -131,14 +131,12 @@ exports[`Page: Users Edit should not render TFA disable button if tfa enabled bu
 
 exports[`Page: Users Edit should redirect after delete or if user does not exist 1`] = `
 <Redirect
-  push={false}
   to="/account/users"
 />
 `;
 
 exports[`Page: Users Edit should redirect on loadingError 1`] = `
 <Redirect
-  push={false}
   to="/account/users"
 />
 `;

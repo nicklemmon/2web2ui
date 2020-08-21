@@ -2,7 +2,6 @@
 
 exports[`Component: ProtectedRoute should redirect to auth if you are not logged in 1`] = `
 <Redirect
-  push={false}
   to={
     Object {
       "pathname": "/auth",

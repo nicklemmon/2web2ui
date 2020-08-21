@@ -62,7 +62,6 @@ exports[`Page: RegisterPage loading 1`] = `
 
 exports[`Page: RegisterPage no token 1`] = `
 <Redirect
-  push={false}
   to="/auth"
 />
 `;
