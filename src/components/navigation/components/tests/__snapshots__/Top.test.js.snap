@@ -19,7 +19,6 @@ exports[`Top should render close icon when open 1`] = `
   <Link
     className="MobileLogo"
     data-id="nav-link-mobilelogo"
-    replace={false}
     to="/landing"
   >
     <Logo
@@ -42,7 +41,6 @@ exports[`Top should render correctly on desktop 1`] = `
   <Link
     className="Logo"
     data-id="nav-link-logo"
-    replace={false}
     to="/landing"
   >
     <Logo
@@ -57,7 +55,6 @@ exports[`Top should render correctly on desktop 1`] = `
     >
       <Link
         className="UpgradePlanLink"
-        replace={false}
         to="/account/billing/plan"
       >
         <div
@@ -103,7 +100,6 @@ exports[`Top should render correctly on mobile 1`] = `
   <Link
     className="MobileLogo"
     data-id="nav-link-mobilelogo"
-    replace={false}
     to="/landing"
   >
     <Logo
