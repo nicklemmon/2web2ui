@@ -5,6 +5,14 @@ import getConfig from 'src/helpers/getConfig';
 
 jest.mock('src/helpers/getConfig');
 
+jest.mock('react-router-dom', () => ({
+  useHistory: () => ({
+    location: {
+      pathname: '/',
+    },
+  }),
+}));
+
 describe('Segment', () => {
   const subject = () => shallow(<Segment />);
 
