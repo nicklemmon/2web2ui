@@ -20,7 +20,7 @@
       "self_serve": true,
       "type": "default"
     },
-    "options": { "ui": { "hibana": { "hasThemeControls": true } } },
+    "options": { "ui": {} },
     "support": { "phone": false, "online": true },
     "pending_cancellation": {
       "effective_date": "2020-04-13T08:00:00.000Z",

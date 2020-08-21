@@ -1,62 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProfilePage renders correctly 1`] = `
-<Page
-  title="Profile"
->
-  <Panel>
-    <Panel.Section>
-      <LabelledValue
-        label="Username"
-        value="Lord Stark"
-      />
-      <LabelledValue
-        label="Email Address"
-        value="ned.stark@winterfell.biz"
-      />
-    </Panel.Section>
-  </Panel>
-  <AccessControl
-    condition={[Function]}
-  >
-    <Panel>
-      <Panel.Section>
-        <ThemeToggleForm
-          onChange={[Function]}
-        />
-      </Panel.Section>
-    </Panel>
-  </AccessControl>
-  <AccessControl
-    condition={[Function]}
-  >
-    <AccessControl
-      condition={[Function]}
-    >
-      <Connect(TfaManager) />
-    </AccessControl>
-    <Panel
-      title="Edit Profile"
-    >
-      <Connect(ReduxForm)
-        onSubmit={[Function]}
-      />
-    </Panel>
-    <AccessControl
-      condition={[Function]}
-    >
-      <Panel
-        title="Update Password"
-      >
-        <Connect(ReduxForm)
-          onSubmit={[Function]}
-        />
-      </Panel>
-    </AccessControl>
-  </AccessControl>
-</Page>
-`;
-
 exports[`ProfilePage renders with verify email banner 1`] = `
 <Page
   title="Profile"
@@ -74,17 +17,13 @@ exports[`ProfilePage renders with verify email banner 1`] = `
       />
     </Panel.Section>
   </Panel>
-  <AccessControl
-    condition={[Function]}
-  >
-    <Panel>
-      <Panel.Section>
-        <ThemeToggleForm
-          onChange={[Function]}
-        />
-      </Panel.Section>
-    </Panel>
-  </AccessControl>
+  <Panel>
+    <Panel.Section>
+      <ThemeToggleForm
+        onChange={[Function]}
+      />
+    </Panel.Section>
+  </Panel>
   <AccessControl
     condition={[Function]}
   >

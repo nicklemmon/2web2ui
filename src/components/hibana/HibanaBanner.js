@@ -10,7 +10,7 @@ import styles from './HibanaComponents.module.scss';
 const PROFILE_PAGE_PATH = '/account/profile';
 
 function HibanaBanner(props) {
-  const [{ isBannerVisible, hasThemeControls, dismissBanner }] = useHibana();
+  const [{ isCurrentUserPending, isBannerVisible, dismissBanner }] = useHibana();
   const { history, location } = props;
 
   const handleClick = () => {
@@ -18,7 +18,11 @@ function HibanaBanner(props) {
     dismissBanner();
   };
 
-  if (!hasThemeControls || isBannerVisible === false || location.pathname === PROFILE_PAGE_PATH) {
+  if (
+    isCurrentUserPending ||
+    isBannerVisible === false ||
+    location.pathname === PROFILE_PAGE_PATH
+  ) {
     return null;
   }
 
@@ -30,13 +34,10 @@ function HibanaBanner(props) {
 
       <div>
         <p className={styles.HibanaDescription}>
-          <span>
-            We&rsquo;ve been working hard redesigning the SparkPost app for a better
-            experience.&nbsp;
-          </span>
+          <span>Your voice matters! We want your feedback on our new app design.&nbsp;</span>
 
           <ButtonLink className={styles.HibanaLink} onClick={handleClick}>
-            Turn it on!
+            Turn it on to see our new look!
           </ButtonLink>
         </p>
 

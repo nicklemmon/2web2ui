@@ -1,7 +1,7 @@
 {
   "results": {
     "username": "mockuser",
-    "first_name": "Ulysses",
+    "first_name": "UpdateAppTest",
     "last_name": "TeamName",
     "email": "mockuser@example.com",
     "customer": 107,
@@ -13,12 +13,7 @@
     "access_level": "admin",
     "options": {
       "ui": {
-        "alerts": true,
-        "inbox_placement": true,
-        "customReports": false,
-        "notificationsLastSeenDate": "2019-12-09T21:51:49.488Z",
-        "recipient_validation": true,
-        "isHibanaBannerVisible": false,
+        "isHibanaBannerVisible": true,
         "isHibanaEnabled": false
       }
     },

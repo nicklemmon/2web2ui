@@ -3,7 +3,7 @@
 .CookieConsent {
   position: fixed;
   bottom: spacing(large);
-  z-index: z-index(overlay);
+  z-index: z-index(overlay) + 1;
   width: 100%;
   display: flex;
   justify-content: center;

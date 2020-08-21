@@ -8,7 +8,6 @@ import GoogleTagManager from 'src/components/googleTagManager/GoogleTagManager';
 import Pendo from 'src/components/pendo/Pendo';
 import Layout from 'src/components/layout/Layout';
 import AppRoutes from 'src/components/appRoutes';
-import { HibanaBanner } from 'src/components/hibana';
 import GlobalBanner from 'src/context/GlobalBanner';
 
 import config from 'src/config';
@@ -34,7 +33,6 @@ const App = ({ RouterComponent = BrowserRouter }) => (
       </GlobalBanner>
       <Support />
       <GlobalAlertWrapper />
-      <HibanaBanner />
     </div>
   </RouterComponent>
 );

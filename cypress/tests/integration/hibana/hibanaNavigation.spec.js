@@ -8,15 +8,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
     const accountPopoverTriggerSelector = '[data-id="desktop-navigation-account-popover-trigger"]';
 
     function commonBeforeSteps() {
-      cy.stubRequest({
-        url: '/api/v1/account*',
-        fixture: 'account/200.get.has-hibana-theme-controls.json',
-        requestAlias: 'accountReq',
-      });
-
       cy.visit('/');
-
-      cy.wait('@accountReq');
     }
 
     function stubGrantsRequest({ role }) {

@@ -6,7 +6,7 @@
   position: sticky;
   bottom: 0;
   right: 0;
-  z-index: 500;
+  z-index: z-index(overlay);
   padding: (spacing() * 0.75) spacing('large');
   border-top: 2px solid color(gray, 7);
   background-color: #fff;

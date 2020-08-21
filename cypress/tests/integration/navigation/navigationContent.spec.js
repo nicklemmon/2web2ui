@@ -14,7 +14,7 @@ function openAccountMenu() {
 
 function assertAllSignalsAnalyticsLinks() {
   // Signals Analytics section and subitems
-  cy.findByText('Signals Analytics').click();
+  cy.findByRole('button', { name: 'Signals Analytics' }).click();
 
   cy.verifyLink({
     content: 'Summary',
@@ -53,7 +53,7 @@ function assertAllSignalsAnalyticsLinks() {
     href: '/reports/engagement',
   });
 
-  cy.findByText('Signals Analytics').click();
+  cy.findByRole('button', { name: 'Signals Analytics' }).click({ force: true });
 }
 
 function stubGrantsRequest({ role }) {

@@ -48,10 +48,6 @@ const defaultProps = {
 const subject = props => shallow(<ProfilePage {...defaultProps} {...props} />);
 
 describe('ProfilePage', () => {
-  it('renders correctly', () => {
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('renders with verify email banner', () => {
     wrapper.setProps({ currentUser: { email_verified: false, verifyingEmail: true } });
     expect(wrapper).toMatchSnapshot();
@@ -77,7 +73,7 @@ describe('ProfilePage', () => {
     ({ is_sso, result }) => {
       const condition = wrapper
         .find(AccessControl)
-        .at(3)
+        .at(2)
         .prop('condition');
       expect(condition({ currentUser: { is_sso }, ready: true })).toEqual(result);
     },
@@ -92,7 +88,7 @@ describe('ProfilePage', () => {
     ({ access_level, result }) => {
       const condition = wrapper
         .find(AccessControl)
-        .at(1)
+        .at(0)
         .prop('condition');
 
       expect(condition({ currentUser: { access_level }, ready: true })).toEqual(result);

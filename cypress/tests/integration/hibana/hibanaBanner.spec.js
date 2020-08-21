@@ -1,14 +1,8 @@
 const PAGE_URL = '/';
-const API_URL = '/api/v1/account*';
 
 if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
   // Pulled out of `beforeEach()` as this is needed in most tests, but not all
   function beforeSteps() {
-    cy.stubRequest({
-      url: API_URL,
-      fixture: 'account/200.get.has-hibana-theme-controls.json',
-    });
-
     cy.stubRequest({
       url: 'api/v1/users/mockuser/two-factor',
       fixture: 'users/two-factor/200.get.json',
@@ -26,39 +20,6 @@ if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
       cy.login({ isStubbed: true });
     });
 
-    it('renders the Hibana UI when the user\'s account has the UI flag "hibana.hasThemeControls", but not on the profile page', () => {
-      beforeSteps();
-      cy.visit(PAGE_URL);
-
-      cy.findByDataId('hibana-controls').should('be.visible');
-
-      cy.visit('/account/profile');
-
-      cy.findByDataId('hibana-controls').should('not.be.visible');
-    });
-
-    it('does not render the Hibana UI when the user\'s account has the UI flag "hibana.hasThemeControls" set to `false`', () => {
-      beforeSteps();
-      cy.stubRequest({
-        url: API_URL,
-        fixture: 'account/200.get.does-not-have-hibana-theme-controls.json',
-      });
-      cy.visit(PAGE_URL);
-
-      cy.findByDataId('hibana-controls').should('not.be.visible');
-    });
-
-    it('does not render the Hibana UI when the user\'s account lacks the "hibana" UI flag entirely', () => {
-      beforeSteps();
-      cy.stubRequest({
-        url: API_URL,
-        fixture: 'account/200.get.no-ui-options.json',
-      });
-      cy.visit(PAGE_URL);
-
-      cy.findByDataId('hibana-controls').should('not.be.visible');
-    });
-
     it('does not render the Hibana banner if the user UI option "isHibanaBannerVisible" is false', () => {
       cy.stubRequest({
         url: '/api/v1/users/mockuser',
@@ -70,20 +31,15 @@ if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
       cy.findByDataId('hibana-controls').should('not.be.visible');
     });
 
-    it('does not render the UI toggling controls on the profile page when the user\'s account is missing the "hibana" UI flag', () => {
+    it('navigates the user to the profile page and dismisses the banner when clicking "Turn it on to see our new look!"', () => {
       beforeSteps();
       cy.stubRequest({
-        url: API_URL,
-        fixture: 'account/200.get.does-not-have-hibana-theme-controls.json',
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.hibana-banner-is-visible.json',
+        requestAlias: 'userReq',
       });
-      cy.visit('/account/profile');
-
-      cy.findByText('Use Redesigned Version of App').should('not.be.visible');
-    });
-
-    it('navigates the user to the profile page and dismisses the banner when clicking "Turn it on!"', () => {
-      beforeSteps();
       cy.visit(PAGE_URL);
+      cy.wait('@userReq');
 
       if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
         cy.stubRequest({
@@ -94,7 +50,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
         });
 
         cy.findByDataId('hibana-controls').within(() => {
-          cy.findByText('Turn it on!').click();
+          cy.findByText('Turn it on to see our new look!').click();
           cy.wait('@updateUIOptions').then(xhr => {
             expect(xhr.request.body).to.deep.equal({
               options: { ui: { isHibanaBannerVisible: false } },
@@ -110,7 +66,13 @@ if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
 
     it('dismisses the banner when the user clicks the dismiss button', () => {
       beforeSteps();
+      cy.stubRequest({
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.hibana-banner-is-visible.json',
+        requestAlias: 'userReq',
+      });
       cy.visit(PAGE_URL);
+      cy.wait('@userReq');
 
       if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
         cy.stubRequest({

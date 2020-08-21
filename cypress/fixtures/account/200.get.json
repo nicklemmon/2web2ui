@@ -69,6 +69,7 @@
       "blacklist_monitors": true,
       "blocklist_monitors": true,
       "recipient_validation": true,
+      "inbox_placement": true,
       "auto_verify_domains": false
     },
     "support": { "phone": false, "online": true },

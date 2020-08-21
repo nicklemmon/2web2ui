@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { updateUserUIOptions } from 'src/actions/currentUser';
 import { showAlert } from 'src/actions/globalAlert';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { selectCondition } from 'src/selectors/accessConditionState';
 
 const HibanaStateContext = createContext();
@@ -16,9 +15,9 @@ function Provider(props) {
 
 function mapStateToProps(state) {
   return {
+    isCurrentUserPending: state.currentUser.loading,
     isHibanaEnabled: selectCondition(isUserUiOptionSet('isHibanaEnabled'))(state),
     isBannerVisible: selectCondition(isUserUiOptionSet('isHibanaBannerVisible'))(state),
-    hasThemeControls: selectCondition(isAccountUiOptionSet('hibana.hasThemeControls'))(state),
   };
 }
 

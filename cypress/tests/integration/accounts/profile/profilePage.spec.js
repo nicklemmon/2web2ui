@@ -1,5 +1,4 @@
 const PAGE_URL = '/account/profile';
-const API_URL = '/api/v1/account*';
 
 // TODO: Need to flesh out tests for this page
 
@@ -19,35 +18,7 @@ describe('The profile page', () => {
   });
 
   if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
-    it('renders theme controls when the user has the "hibana" flag on their account', () => {
-      cy.stubRequest({
-        url: API_URL,
-        fixture: 'account/200.get.has-hibana-theme-controls.json',
-      });
-      cy.visit(PAGE_URL);
-
-      cy.findByText('Use Redesigned Version of App').should('be.visible');
-    });
-
-    it('does not render theme controls when the user does not have the "hibana" flag on their account', () => {
-      cy.stubRequest({
-        url: API_URL,
-        fixture: 'account/200.get.no-ui-options.json',
-      });
-      cy.visit(PAGE_URL);
-
-      cy.findByText('Use Redesigned Version of App').should('not.be.visible');
-    });
-
     it('turns the Hibana theme on when the user clicks on the theme toggle', () => {
-      cy.stubRequest({
-        url: API_URL,
-        fixture: 'account/200.get.has-hibana-theme-controls.json',
-      });
-      cy.stubRequest({
-        url: '/api/v1/users/mockuser',
-        fixture: 'users/200.get.hibana-banner-is-not-visible.json',
-      });
       cy.visit(PAGE_URL);
 
       cy.stubRequest({

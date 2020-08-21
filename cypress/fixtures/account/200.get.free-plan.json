@@ -20,7 +20,7 @@
       "self_serve": true,
       "type": "default"
     },
-    "options": { "ui": { "hibana": { "hasThemeControls": true } } },
+    "options": { "ui": {} },
     "support": { "phone": false, "online": true }
   }
 }

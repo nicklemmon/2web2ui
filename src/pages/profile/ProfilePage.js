@@ -15,7 +15,6 @@ import { AccessControl } from 'src/components/auth';
 import { LabelledValue } from 'src/components';
 import ErrorTracker from 'src/helpers/errorTracker';
 import { all, not } from 'src/helpers/conditions';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { isHeroku, isAzure, isSso } from 'src/helpers/conditions/user';
 
 export function ProfilePage(props) {
@@ -65,13 +64,11 @@ export function ProfilePage(props) {
         </Panel.Section>
       </Panel>
 
-      <AccessControl condition={isAccountUiOptionSet('hibana.hasThemeControls')}>
-        <Panel>
-          <Panel.Section>
-            <ThemeToggleForm onChange={updateTheme} />
-          </Panel.Section>
-        </Panel>
-      </AccessControl>
+      <Panel>
+        <Panel.Section>
+          <ThemeToggleForm onChange={updateTheme} />
+        </Panel.Section>
+      </Panel>
 
       <AccessControl condition={all(not(isAzure), not(isHeroku))}>
         <AccessControl condition={not(isSso)}>
