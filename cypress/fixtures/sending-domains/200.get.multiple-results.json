@@ -1,0 +1,113 @@
+{
+  "results": [
+    {
+      "creation_time": "2017-08-03T22:25:37+00:00",
+      "shared_with_subaccounts": false,
+      "status": {
+        "mx_status": "unverified",
+        "spf_status": "unverified",
+        "cname_status": "valid",
+        "ownership_verified": true,
+        "abuse_at_status": "unverified",
+        "compliance_status": "valid",
+        "verification_mailbox_status": "unverified",
+        "dkim_status": "invalid",
+        "postmaster_at_status": "unverified"
+      },
+      "domain": "default-bounce.com",
+      "is_default_bounce_domain": true
+    },
+    {
+      "creation_time": "2017-08-03T22:25:37+00:00",
+      "shared_with_subaccounts": false,
+      "status": {
+        "mx_status": "invalid",
+        "spf_status": "unverified",
+        "cname_status": "invalid",
+        "ownership_verified": true,
+        "abuse_at_status": "unverified",
+        "compliance_status": "valid",
+        "verification_mailbox_status": "unverified",
+        "dkim_status": "invalid",
+        "postmaster_at_status": "unverified"
+      },
+      "domain": "ready-for-sending.com",
+      "is_default_bounce_domain": false
+    },
+    {
+      "creation_time": "2017-08-03T22:25:37+00:00",
+      "shared_with_subaccounts": false,
+      "status": {
+        "mx_status": "invalid",
+        "spf_status": "unverified",
+        "cname_status": "invalid",
+        "ownership_verified": false,
+        "abuse_at_status": "unverified",
+        "compliance_status": "valid",
+        "verification_mailbox_status": "unverified",
+        "dkim_status": "invalid",
+        "postmaster_at_status": "unverified"
+      },
+      "domain": "failed-verification.com",
+      "is_default_bounce_domain": false
+    },
+    {
+      "creation_time": "2017-08-03T22:25:37+00:00",
+      "shared_with_subaccounts": false,
+      "status": {
+        "mx_status": "invalid",
+        "spf_status": "unverified",
+        "cname_status": "invalid",
+        "ownership_verified": true,
+        "abuse_at_status": "unverified",
+        "compliance_status": "valid",
+        "verification_mailbox_status": "unverified",
+        "dkim_status": "valid",
+        "postmaster_at_status": "unverified"
+      },
+      "domain": "dkim-signing.com",
+      "is_default_bounce_domain": false
+    },
+    {
+      "creation_time": "2017-08-03T22:25:37+00:00",
+      "shared_with_subaccounts": false,
+      "status": {
+        "mx_status": "invalid",
+        "spf_status": "valid",
+        "cname_status": "invalid",
+        "ownership_verified": true,
+        "abuse_at_status": "unverified",
+        "compliance_status": "valid",
+        "verification_mailbox_status": "unverified",
+        "dkim_status": "invalid",
+        "postmaster_at_status": "unverified"
+      },
+      "domain": "spf-valid.com",
+      "is_default_bounce_domain": false
+    },
+    {
+      "creation_time": "2017-08-03T22:25:37+00:00",
+      "shared_with_subaccounts": false,
+      "status": {
+        "mx_status": "invalid",
+        "spf_status": "valid",
+        "cname_status": "invalid",
+        "ownership_verified": true,
+        "abuse_at_status": "unverified",
+        "compliance_status": "blocked",
+        "verification_mailbox_status": "unverified",
+        "dkim_status": "invalid",
+        "postmaster_at_status": "unverified"
+      },
+      "domain": "blocked.com",
+      "is_default_bounce_domain": false
+    },
+    {
+      "creation_time": "2017-08-03T22:25:37+00:00",
+      "subaccount_id": 101,
+      "status": {},
+      "domain": "with-a-subaccount.com",
+      "is_default_bounce_domain": false
+    }
+  ]
+}

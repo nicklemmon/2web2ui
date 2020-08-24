@@ -1,7 +1,8 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { PAGE_URL, STABLE_UNIX_DATE } from './constants';
 import { stubDeliverability, stubTimeSeries } from './helpers';
 
-if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+if (IS_HIBANA_ENABLED) {
   describe('Analytics Report bounce and rejection tables', () => {
     beforeEach(() => {
       cy.stubAuth();

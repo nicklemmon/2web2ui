@@ -1,11 +1,11 @@
 import React from 'react';
 import { Page } from 'src/components/matchbox';
-import { DomainsLayout } from './components';
+import Domains from './components';
 
 export default function VerifySendingDomainsPage() {
   return (
-    <DomainsLayout>
+    <Domains.Container>
       <Page title="Verify Sending Domain"></Page>
-    </DomainsLayout>
+    </Domains.Container>
   );
 }

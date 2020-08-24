@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/dashboardV2';
 
 describe('Version 2 of the dashboard page', () => {
@@ -6,7 +8,7 @@ describe('Version 2 of the dashboard page', () => {
     cy.login({ isStubbed: true });
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+  if (IS_HIBANA_ENABLED) {
     it('renders with a relevant page title, relevant headings, and links when the `allow_dashboard_v2` account flag is enabled', () => {
       commonBeforeSteps();
       cy.title().should('include', 'Dashboard');
@@ -131,7 +133,7 @@ describe('Version 2 of the dashboard page', () => {
     });
   }
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+  if (!IS_HIBANA_ENABLED) {
     it('renders the 404 page when the user does not have Hibana enabled', () => {
       cy.visit(PAGE_URL);
 

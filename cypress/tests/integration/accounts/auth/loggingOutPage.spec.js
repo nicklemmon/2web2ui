@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 describe('logging out', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -15,7 +17,7 @@ describe('logging out', () => {
       status: 200,
     });
 
-    if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+    if (IS_HIBANA_ENABLED) {
       cy.findByText('UT').click();
       cy.get('[data-id="desktop-navigation-account-popover"]').within(() => {
         cy.findByText('Log Out').click();

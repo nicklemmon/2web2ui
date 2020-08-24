@@ -1,11 +1,11 @@
 import React from 'react';
 import { Page } from 'src/components/matchbox';
-import { DomainsLayout } from './components';
+import Domains from './components';
 
 export default function DetailsPage() {
   return (
-    <DomainsLayout>
+    <Domains.Container>
       <Page title="Domain Details"></Page>
-    </DomainsLayout>
+    </Domains.Container>
   );
 }

@@ -1,3 +1,4 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { PAGE_URL, STABLE_UNIX_DATE } from './constants';
 
 function verifyRow({ rowIndex, firstCell, secondCell, thirdCell, fourthCell, fifthCell }) {
@@ -26,7 +27,7 @@ function verifyRow({ rowIndex, firstCell, secondCell, thirdCell, fourthCell, fif
     });
 }
 
-if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+if (IS_HIBANA_ENABLED) {
   describe('Analytics Report breakdown table', () => {
     beforeEach(() => {
       cy.stubAuth();

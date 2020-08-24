@@ -129,6 +129,7 @@
     "@babel/core": "7.10.5",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@cypress/code-coverage": "^3.8.1",
+    "@cypress/webpack-preprocessor": "^5.4.3",
     "@sheerun/mutationobserver-shim": "^0.3.3",
     "@storybook/addon-docs": "^5.2.6",
     "@storybook/addon-links": "^5.2.6",

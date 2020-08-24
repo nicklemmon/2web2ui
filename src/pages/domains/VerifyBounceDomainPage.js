@@ -1,11 +1,11 @@
 import React from 'react';
 import { Page } from 'src/components/matchbox';
-import { DomainsLayout } from './components';
+import Domains from './components';
 
 export default function VerifyBounceDomainPage() {
   return (
-    <DomainsLayout>
+    <Domains.Container>
       <Page title="Verify Bounce Domain"></Page>
-    </DomainsLayout>
+    </Domains.Container>
   );
 }

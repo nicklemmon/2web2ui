@@ -1,6 +1,8 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/';
 
-if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+if (!IS_HIBANA_ENABLED) {
   // Pulled out of `beforeEach()` as this is needed in most tests, but not all
   function beforeSteps() {
     cy.stubRequest({
@@ -41,7 +43,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
       cy.visit(PAGE_URL);
       cy.wait('@userReq');
 
-      if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+      if (!IS_HIBANA_ENABLED) {
         cy.stubRequest({
           url: 'api/v1/users/mockuser',
           method: 'PUT',
@@ -74,7 +76,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
       cy.visit(PAGE_URL);
       cy.wait('@userReq');
 
-      if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+      if (!IS_HIBANA_ENABLED) {
         cy.stubRequest({
           url: 'api/v1/users/mockuser',
           method: 'PUT',

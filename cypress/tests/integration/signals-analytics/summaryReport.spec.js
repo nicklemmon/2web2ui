@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/reports/summary';
 
 describe('Summary Report page', () => {
@@ -42,7 +44,7 @@ describe('Summary Report page', () => {
 
   // Skip these tests since the feature is entirely different for Hibana.
   // A separate spec file would probably do the trick for that feature.
-  if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+  if (!IS_HIBANA_ENABLED) {
     it('handles changing the date range correctly', () => {
       const timestamp = 1580392800000; //01/30/2020 @ 2:00pm (UTC)
       const momentDateTime = Cypress.moment(timestamp);

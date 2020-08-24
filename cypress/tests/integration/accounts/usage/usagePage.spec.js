@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/usage';
 const BILLING_API_BASE_URL = '/api/v1/billing';
 
@@ -19,7 +21,7 @@ describe('The usage page', () => {
     });
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+  if (IS_HIBANA_ENABLED) {
     it('renders with a relevant page title ', () => {
       cy.stubRequest({
         url: '/api/v1/usage',

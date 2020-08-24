@@ -1,7 +1,8 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { PAGE_URL, METRICS } from './constants';
 import { stubDeliverability, stubTimeSeries, stubSubaccounts, commonBeforeSteps } from './helpers';
 
-if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+if (IS_HIBANA_ENABLED) {
   describe('Analytics Report', () => {
     beforeEach(() => {
       commonBeforeSteps();

@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/account/profile';
 
 // TODO: Need to flesh out tests for this page
@@ -17,7 +19,7 @@ describe('The profile page', () => {
     });
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+  if (!IS_HIBANA_ENABLED) {
     it('turns the Hibana theme on when the user clicks on the theme toggle', () => {
       cy.visit(PAGE_URL);
 
