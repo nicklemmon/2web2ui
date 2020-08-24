@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-export const coalesce = (...values) => values.find((value) => value !== undefined);
-export const isNumber = (value) => isNaN(parseFloat(value)) === false || isFinite(value) === true;
+export const coalesce = (...values) => values.find(value => value !== undefined);
+export const isNumber = value => isNaN(parseFloat(value)) === false || isFinite(value) === true;
 
 export function roundToPlaces(number, places) {
   const multiplier = Math.pow(10, places);
@@ -9,7 +9,7 @@ export function roundToPlaces(number, places) {
 }
 
 // Formats bytes into a readable size value
-export const formatBytes = _.memoize((value) => {
+export const formatBytes = _.memoize(value => {
   if (!isNumber(value)) {
     return value;
   }
@@ -19,11 +19,11 @@ export const formatBytes = _.memoize((value) => {
   let suffix = 'B';
 
   const formatters = {
-    'PB': Math.pow(2, 50),
-    'TB': Math.pow(2, 40),
-    'GB': Math.pow(2, 30),
-    'MB': Math.pow(2, 20),
-    'KB': Math.pow(2, 10)
+    PB: Math.pow(2, 50),
+    TB: Math.pow(2, 40),
+    GB: Math.pow(2, 30),
+    MB: Math.pow(2, 20),
+    KB: Math.pow(2, 10),
   };
 
   _.forEach(formatters, (unit, key) => {
@@ -34,11 +34,13 @@ export const formatBytes = _.memoize((value) => {
     }
   });
 
-  return `${roundToPlaces(formatted, 2).toLocaleString(undefined, { maximumSignificantDigits: 4 })}${suffix}`;
+  return `${roundToPlaces(formatted, 2).toLocaleString(undefined, {
+    maximumSignificantDigits: 4,
+  })}${suffix}`;
 });
 
 // Formats milliseconds into a readable duration value
-export const formatMilliseconds = _.memoize((value) => {
+export const formatMilliseconds = _.memoize(value => {
   if (!isNumber(value)) {
     return value;
   }
@@ -48,9 +50,9 @@ export const formatMilliseconds = _.memoize((value) => {
   let suffix = 'ms';
 
   const formatters = {
-    'h': 3.6e+6,
-    'm': 60000,
-    's': 1000
+    h: 3600000,
+    m: 60000,
+    s: 1000,
   };
 
   _.forEach(formatters, (unit, key) => {
@@ -65,7 +67,7 @@ export const formatMilliseconds = _.memoize((value) => {
 });
 
 // Formats number count into a abbreviated count
-export const formatNumber = _.memoize((value) => {
+export const formatNumber = _.memoize(value => {
   if (!isNumber(value)) {
     return value;
   }
@@ -75,9 +77,9 @@ export const formatNumber = _.memoize((value) => {
   let suffix = '';
 
   const formatters = {
-    'B': Math.pow(10, 9),
-    'M': Math.pow(10, 6),
-    'K': 1000
+    B: Math.pow(10, 9),
+    M: Math.pow(10, 6),
+    K: 1000,
   };
 
   _.forEach(formatters, (unit, key) => {
@@ -91,8 +93,8 @@ export const formatNumber = _.memoize((value) => {
   return `${roundToPlaces(formatted, 2).toLocaleString()}${suffix}`;
 });
 
-// Formats number count to sting with commas
-export const formatFullNumber = (value) => {
+// Formats number count to string with commas
+export const formatFullNumber = value => {
   if (!isNumber(value)) {
     return value;
   }
@@ -100,7 +102,7 @@ export const formatFullNumber = (value) => {
   return value.toLocaleString();
 };
 
-export const formatPercent = (value) => {
+export const formatPercent = value => {
   if (!isNumber(value)) {
     return value;
   }
@@ -118,7 +120,7 @@ export const formatPercent = (value) => {
   return formatted;
 };
 
-export const formatPrecisePercent = (value) => {
+export const formatPrecisePercent = value => {
   if (!isNumber(value)) {
     return value;
   }
@@ -126,4 +128,4 @@ export const formatPrecisePercent = (value) => {
   return `${roundToPlaces(value, 4)}%`;
 };
 
-export const formatCurrency = (value) => `$${value.toFixed(2)}`;
+export const formatCurrency = value => `$${value.toFixed(2)}`;

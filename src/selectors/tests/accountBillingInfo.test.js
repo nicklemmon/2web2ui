@@ -402,3 +402,70 @@ describe('getBundleTierByPlanCode', () => {
     expect(billingInfo.getBundleTierByPlanCode(state)).toEqual('');
   });
 });
+
+describe('currentPlanNameSelector', () => {
+  it('should return the name of the plan', () => {
+    expect(
+      billingInfo.currentPlanNameSelector({
+        ...initialState,
+        account: { subscription: { name: 'The Best Plan Available' } },
+      }),
+    ).toEqual('The Best Plan Available');
+  });
+});
+
+describe('selectMonthlyTransmissionUsage', () => {
+  it('returns monthly transmissions usage', () => {
+    const state = {
+      account: {
+        subscription: {
+          period: 'month',
+        },
+        usage: {
+          year: {
+            used: 111,
+          },
+          month: {
+            used: 222,
+          },
+        },
+      },
+    };
+
+    expect(billingInfo.selectMonthlyTransmissionsUsage(state)).toEqual(222);
+    expect(billingInfo.selectMonthlyTransmissionsUsage(state)).not.toEqual(111);
+  });
+});
+
+describe('selectEndOfBillingPeriod', () => {
+  it('returns the end of the billing period based on the subscription period', () => {
+    const state = {
+      account: {
+        subscription: {
+          period: 'month',
+        },
+        usage: {
+          month: {
+            end: '04-05-06',
+          },
+        },
+      },
+    };
+
+    expect(billingInfo.selectEndOfBillingPeriod(state)).toEqual('04-05-06');
+  });
+});
+
+describe('selectTransmissionsInPlan', () => {
+  it('returns the plan volume per period', () => {
+    const state = {
+      account: {
+        subscription: {
+          plan_volume_per_period: 1337,
+        },
+      },
+    };
+
+    expect(billingInfo.selectTransmissionsInPlan(state)).toEqual(1337);
+  });
+});

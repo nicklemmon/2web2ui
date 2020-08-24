@@ -33,6 +33,9 @@ const selectBillingSubscription = state => state.billing.subscription || {};
 const currentFreePlans = ['free500-1018', 'free15K-1018', 'free500-0419', 'free500-SPCEU-0419'];
 export const isManuallyBilled = state => _.get(state, 'billing.subscription.type') === 'manual';
 const getRecipientValidationUsage = state => _.get(state, 'account.rvUsage.recipient_validation');
+const getTransmissionsUsage = state => _.get(state, 'account.usage');
+const getSubscription = state => _.get(state, 'account.subscription');
+const getBillingPeriod = state => _.get(state, 'account.subscription.period');
 export const currentSubscriptionSelector = state => state.account.subscription;
 /**
  * Returns current subscription's code
@@ -42,6 +45,16 @@ export const currentSubscriptionSelector = state => state.account.subscription;
 export const currentPlanCodeSelector = createSelector(
   [currentSubscriptionSelector],
   (subscription = {}) => subscription.code,
+);
+
+/**
+ * Returns current subscription's name
+ * @param state
+ * @return plan name
+ */
+export const currentPlanNameSelector = createSelector(
+  [currentSubscriptionSelector],
+  (subscription = {}) => subscription.name,
 );
 
 /**
@@ -203,4 +216,20 @@ export const selectBillingInfo = createSelector(
 export const selectMonthlyRecipientValidationUsage = createSelector(
   getRecipientValidationUsage,
   usage => _.get(usage, 'month.used', 0),
+);
+
+export const selectMonthlyTransmissionsUsage = createSelector(getTransmissionsUsage, usage =>
+  _.get(usage, 'month.used', 0),
+);
+
+export const selectEndOfBillingPeriod = createSelector(
+  [getTransmissionsUsage, getBillingPeriod],
+  (usage, billingPeriod) => {
+    // IMPORTANT CAVEAT: This will not accurately return the billing period for annual plans due to an API limitation
+    return _.get(usage, `${billingPeriod}.end`);
+  },
+);
+
+export const selectTransmissionsInPlan = createSelector(getSubscription, subscription =>
+  _.get(subscription, 'plan_volume_per_period'),
 );
