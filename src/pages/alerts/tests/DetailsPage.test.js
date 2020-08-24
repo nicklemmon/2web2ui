@@ -64,6 +64,7 @@ describe('Page: Alert Details', () => {
         <DetailsPage {...props} />
       </TestApp>,
     );
+
     expect(queryByText('Are you sure you want to delete this alert?')).not.toBeInTheDocument();
     userEvent.click(queryByText('Delete'));
     expect(queryByText('Are you sure you want to delete this alert?')).toBeInTheDocument();
@@ -75,8 +76,8 @@ describe('Page: Alert Details', () => {
     expect(props.showUIAlert).toHaveBeenCalled();
   });
 
-  it('should not display alert incidents for blacklist alerts', () => {
-    wrapper.setProps({ alert: { name: 'My Blacklist Alert', metric: 'blacklist' } });
+  it('should not display alert incidents for blocklist alerts', () => {
+    wrapper.setProps({ alert: { name: 'My Blocklist Alert', metric: 'blocklist' } });
     expect(wrapper.find('AlertIncidents')).not.toExist();
   });
 });

@@ -10,8 +10,8 @@ export default function formatFormValues(values) {
     'operator',
     'sending_ip',
     'mailbox_provider',
-    'blacklist_provider',
-    'blacklist_resource',
+    'blocklist_provider',
+    'blocklist_resource',
     'sending_domain',
     'single_filter',
     ...NOTIFICATION_CHANNELS,
@@ -40,8 +40,8 @@ export default function formatFormValues(values) {
       filterOptions
         .map(
           ({ value: filter_type }) =>
-            // blacklist filters must always be present even if empty
-            (values[filter_type].length > 0 || metric === 'blacklist') && {
+            // blocklist filters must always be present even if empty
+            (values[filter_type].length > 0 || metric === 'blocklist') && {
               filter_type,
               filter_values: values[filter_type],
             },

@@ -65,7 +65,6 @@
       },
       "initial_open_pixel_tracking": true,
       "smtp_tracking_default": true,
-      "blacklist_monitors": true,
       "blocklist_monitors": true,
       "recipient_validation": true,
       "auto_verify_domains": false

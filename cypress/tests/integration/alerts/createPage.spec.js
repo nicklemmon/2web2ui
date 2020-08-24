@@ -64,12 +64,12 @@ describe('Alerts Page - Create', () => {
     cy.findByText('Filtered by').should('not.be.visible');
   });
 
-  it('Blacklist metric has filters by blacklist and domains/IP', () => {
-    cy.get('[name="metric"]').select('blacklist');
+  it('Blocklist metric has filters by blocklist and domains/IP', () => {
+    cy.get('[name="metric"]').select('blocklist');
 
     cy.get('[data-id="alert-filters"]').within(() => {
       cy.findByText('Filtered by').should('be.visible');
-      cy.findByText('Blacklists').should('be.visible');
+      cy.findByText('Blocklists').should('be.visible');
       cy.findByText('Domains or IPs').should('be.visible');
     });
   });
