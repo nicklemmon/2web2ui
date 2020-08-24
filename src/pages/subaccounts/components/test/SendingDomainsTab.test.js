@@ -3,40 +3,44 @@ import { shallow } from 'enzyme';
 import { SendingDomainsTab, getRowData } from '../SendingDomainsTab';
 
 describe('SendingDomainsTab', () => {
-  let wrapper;
+  const defaultProps = {
+    domains: [
+      {
+        domain: 'foo.com',
+      },
+      {
+        domain: 'bar.com',
+      },
+    ],
+    loading: false,
+  };
 
-  beforeEach(() => {
-    const props = {
-      domains: [
-        {
-          domain: 'foo.com'
-        },
-        {
-          domain: 'bar.com'
-        }
-      ],
-      loading: false
-    };
-
-    wrapper = shallow(<SendingDomainsTab {...props} />);
-  });
+  const subject = props => shallow(<SendingDomainsTab {...defaultProps} {...props} />);
 
   it('should load domains in tab', () => {
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = subject();
+
+    expect(wrapper).toHaveTextContent('Sending Domains assigned to this subaccount.');
+    expect(wrapper.find('TableCollection')).toHaveProp('rows', defaultProps.domains);
   });
 
   it('should show panel loading while loading domains', () => {
-    wrapper.setProps({ loading: true });
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = subject({ loading: true });
+
+    expect(wrapper.find('Loading')).toExist();
+    expect(wrapper.find('TableCollection')).not.toExist();
   });
 
   it('should show empty message when 0 domains exist', () => {
-    wrapper.setProps({ domains: []});
-    expect(wrapper).toMatchSnapshot();
+    const wrapper = subject({ domains: [] });
+
+    expect(wrapper).toHaveTextContent(
+      'This subaccount has no sending domains assigned to it. You can assign an existing one, or create a new one.',
+    );
+    expect(wrapper.find('PageLink')).toHaveProp('to', '/account/sending-domains');
   });
 
   it('getRowData', () => {
     expect(getRowData({ domain: 'foo.com' })).toMatchSnapshot();
   });
 });
-
