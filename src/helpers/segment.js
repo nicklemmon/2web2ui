@@ -9,9 +9,9 @@ export const EVENTS = {
   SENDING_DOMAIN_VERIFIED: 'Sending Domain Verified',
 };
 
-export const segmentIdentify = () => {
+export const segmentIdentify = (userID, traits) => {
   if (window.analytics && window.analytics.identify) {
-    window.analytics.identify();
+    window.analytics.identify(userID, traits);
   }
 };
 
@@ -20,3 +20,5 @@ export const segmentPage = () => {
     window.analytics.page();
   }
 };
+
+export const createUserIDHash = () => {};
