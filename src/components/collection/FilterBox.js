@@ -16,7 +16,7 @@ function CollectionFilterBox(props) {
     onChange,
     onBlur = () => {},
     maxWidth,
-    label,
+    label = 'Filter By',
   } = props;
   const placeholderText = placeholder || `Filter results e.g. ${getRandomExampleSearch(props)}`;
 
@@ -24,13 +24,13 @@ function CollectionFilterBox(props) {
     <>
       {!isHibanaEnabled && (
         <Label id="collection-filter-box" className={styles.FilterBoxLabel}>
-          <ScreenReaderOnly>Filter By</ScreenReaderOnly>
+          <ScreenReaderOnly>{label}</ScreenReaderOnly>
         </Label>
       )}
 
       <TextField
         labelHidden={!Boolean(label)}
-        label={isHibanaEnabled ? label || 'Filter By' : undefined}
+        label={isHibanaEnabled ? label : undefined}
         id="collection-filter-box"
         name="collection-filter-box"
         prefix={<Search />}

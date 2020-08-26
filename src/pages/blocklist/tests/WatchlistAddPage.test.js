@@ -65,7 +65,7 @@ describe('WatchlistAddPage', () => {
 
     expect(watchlistAdd).toBeCalledWith(resource);
     return promise.then(() => {
-      expect(mockHistory.push).toBeCalledWith('/signals/blocklist/watchlist');
+      expect(mockHistory.push).toBeCalledWith('/signals/blocklist/monitors');
       expect(mockShowAlert).toBeCalledWith({
         type: 'success',
         message: `Added ${resource} to Watchlist`,
@@ -86,7 +86,7 @@ describe('WatchlistAddPage', () => {
 
     expect(watchlistAdd).toBeCalledWith(resource);
     return promise.then(() => {
-      expect(mockHistory.push).not.toBeCalledWith('/signals/blocklist/watchlist');
+      expect(mockHistory.push).not.toBeCalledWith('/signals/blocklist/monitors');
       expect(mockShowAlert).toBeCalledWith({
         type: 'success',
         message: `Added ${resource} to Watchlist`,

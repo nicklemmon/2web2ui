@@ -19,6 +19,7 @@ const OGFilterSortCollection = ({
   rowComponent,
   getRowData,
   saveCsv = true,
+  sortLabel = 'Sort Select',
 }) => {
   const [sortColumn, setSortColumn] = useState(defaultSortColumn);
   const [sortDirection, setSortDirection] = useState(defaultSortDirection);
@@ -78,7 +79,7 @@ const OGFilterSortCollection = ({
                 </Grid.Column>
                 <Grid.Column xs={12} md={3}>
                   <label htmlFor="sortSelect">
-                    <ScreenReaderOnly>Sort Select</ScreenReaderOnly>
+                    <ScreenReaderOnly>{sortLabel}</ScreenReaderOnly>
                   </label>
                   <Select
                     id="sortSelect"
@@ -111,6 +112,7 @@ const HibanaFilterSortCollection = ({
   rowComponent,
   getRowData,
   saveCsv = true,
+  sortLabel,
 }) => {
   const [sortColumn, setSortColumn] = useState(defaultSortColumn);
   const [sortDirection, setSortDirection] = useState(defaultSortDirection);
@@ -164,11 +166,14 @@ const HibanaFilterSortCollection = ({
                   {filterBox}
                 </Grid.Column>
                 <Grid.Column xs={12} md={3}>
-                  <label htmlFor="sortSelect">
-                    <ScreenReaderOnly>Sort Select</ScreenReaderOnly>
-                  </label>
+                  {!sortLabel && (
+                    <label htmlFor="sortSelect">
+                      <ScreenReaderOnly>Sort Select</ScreenReaderOnly>
+                    </label>
+                  )}
                   <Select
                     id="sortSelect"
+                    label={sortLabel}
                     defaultValue={defaultSortColumn}
                     options={selectOptions}
                     onChange={sortOnChange}

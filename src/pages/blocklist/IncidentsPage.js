@@ -4,7 +4,6 @@ import moment from 'moment';
 import { ApiErrorBanner, Loading } from 'src/components';
 import { Users } from 'src/components/images';
 import { PageLink } from 'src/components/links';
-import { PageDescription } from 'src/components/text';
 import { Page } from 'src/components/matchbox';
 import { listMonitors, listIncidents } from 'src/actions/blocklist';
 import { selectIncidentsList } from 'src/selectors/blocklist';
@@ -113,18 +112,12 @@ export const IncidentsPage = props => {
       }}
       title="Blocklist Incidents"
       primaryAction={{
-        content: monitors.length === 0 ? 'Add to Watchlist' : 'View Watchlist',
+        content: monitors.length === 0 ? 'Add to Monitored List' : 'View Monitored List',
         to:
-          monitors.length === 0
-            ? '/signals/blocklist/watchlist/add'
-            : '/signals/blocklist/watchlist',
+          monitors.length === 0 ? '/signals/blocklist/monitors/add' : '/signals/blocklist/monitors',
         component: PageLink,
       }}
     >
-      <PageDescription>
-        Check the current status of blocklists and learn more about what actions you can take to
-        remedy and prevent future blocklisting.
-      </PageDescription>
       {renderContent()}
     </Page>
   );

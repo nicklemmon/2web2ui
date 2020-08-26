@@ -13,7 +13,7 @@ const blocklistRoutes = [
     category: 'Blocklist',
   },
   {
-    path: '/signals/blocklist/watchlist',
+    path: '/signals/blocklist/monitors',
     component: blocklist.WatchlistPage,
     layout: App,
     condition: hasAccountOptionEnabled('blocklist_monitors'),
@@ -22,7 +22,7 @@ const blocklistRoutes = [
     category: 'Blocklist',
   },
   {
-    path: '/signals/blocklist/watchlist/add',
+    path: '/signals/blocklist/monitors/add',
     component: blocklist.WatchlistAddPage,
     condition: hasAccountOptionEnabled('blocklist_monitors'),
     layout: App,
