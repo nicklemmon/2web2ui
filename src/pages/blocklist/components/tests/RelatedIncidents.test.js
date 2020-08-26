@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import TestApp from 'src/__testHelpers__/TestApp';
 import RelatedIncidents from '../RelatedIncidents';
+import { formatDateTime, formatDate } from 'src/helpers/date';
 
 const mixedIncidents = [
   {
@@ -9,15 +10,24 @@ const mixedIncidents = [
     resource: '1.2.3.4',
     blocklist_name: 'spamhaus.org - sbl',
     occurred_at: '2019-07-23T12:48:00.000Z',
+    occurred_at_timestamp: 1563886080,
     resolved_at: '2019-07-23T13:48:00.000Z',
+    resolved_at_timestamp: 1563889680,
     status: 'resolved',
+    occurred_at_formatted: formatDateTime('2019-07-23T12:48:00.000Z'),
+    occurred_at_formatted_date_only: formatDate('2019-07-23T12:48:00.000Z'),
+    resolved_at_formatted: formatDateTime('2019-07-23T13:48:00.000Z'),
+    resolved_at_formatted_date_only: formatDate('2019-07-23T13:48:00.000Z'),
   },
   {
     id: '2345',
     resource: '2.3.4.5',
     blocklist_name: 'spamhaus.org 2 - sbl',
     occurred_at: '2019-07-23T12:48:00.000Z',
+    occurred_at_timestamp: '2019-07-23T12:48:00.000Z',
     status: 'active',
+    occurred_at_formatted: formatDateTime('2019-07-23T12:48:00.000Z'),
+    occurred_at_formatted_date_only: formatDate('2019-07-23T12:48:00.000Z'),
   },
 ];
 
@@ -27,13 +37,16 @@ const activeIncidents = [
     resource: '2.3.4.5',
     blocklist_name: 'spamhaus.org 2 - sbl',
     occurred_at: '2019-07-23T12:48:00.000Z',
+    occurred_at_timestamp: '2019-07-23T12:48:00.000Z',
     status: 'active',
+    occurred_at_formatted: formatDateTime('2019-07-23T12:48:00.000Z'),
+    occurred_at_formatted_date_only: formatDate('2019-07-23T12:48:00.000Z'),
   },
 ];
 
 describe('Blocklist Component: RelatedIncidents', () => {
   const subject = props => {
-    const defaults = { incidents: [], header: '', type: 'blocklist' };
+    const defaults = { incidents: [], loading: false, name: '', type: 'blocklist' };
 
     return render(
       <TestApp>
@@ -42,9 +55,14 @@ describe('Blocklist Component: RelatedIncidents', () => {
     );
   };
 
-  it('renders the header in the table', () => {
-    const { queryByText } = subject({ header: 'Recent spamhaus.org - pbl Incidents' });
-    expect(queryByText('Recent spamhaus.org - pbl Incidents')).toBeInTheDocument();
+  it('renders correct empty statement when there are no incidents for blocklist', () => {
+    const { queryByText } = subject({ name: 'spamhaus.org - pbl' });
+    expect(queryByText('No other recent spamhaus.org - pbl incidents')).toBeInTheDocument();
+  });
+
+  it('renders correct empty statement when there are no incidents for history', () => {
+    const { queryByText } = subject({ name: 'spamhaus.org - pbl', type: 'history' });
+    expect(queryByText('No historical incidents for spamhaus.org - pbl')).toBeInTheDocument();
   });
 
   it('renders the resource name of incidents when type is blocklist', () => {
@@ -57,9 +75,11 @@ describe('Blocklist Component: RelatedIncidents', () => {
     expect(queryByText('spamhaus.org - sbl')).toBeInTheDocument();
   });
 
-  it('hides the resolved column when there are no incidents', () => {
-    const { queryByText } = subject();
-    expect(queryByText('Resolved')).not.toBeInTheDocument();
+  it('renders the historical incidents version of the table when type is history', () => {
+    const { queryByText } = subject({ incidents: mixedIncidents, type: 'history' });
+    expect(queryByText('Resource')).not.toBeInTheDocument();
+    expect(queryByText('Blocklist')).not.toBeInTheDocument();
+    expect(queryByText('Date Listed')).toBeInTheDocument();
   });
 
   it('renders the resolved column as active for active incident', () => {

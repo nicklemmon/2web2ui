@@ -165,6 +165,7 @@ if (IS_HIBANA_ENABLED) {
       it('renders the subnav and routes to the sending domains when "Configuration" is active', () => {
         commonBeforeSteps();
 
+        Cypress.currentTest.retries(2);
         cy.get(desktopNavSelector).within(() => {
           cy.findByText('Configuration').click();
         });

@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import TestApp from 'src/__testHelpers__/TestApp';
 import IncidentDetails from '../IncidentDetails';
+import { formatDateTime } from 'src/helpers/date';
 
 describe('Blocklist Component: RelatedIncidents', () => {
   const subject = props => {
@@ -24,13 +25,13 @@ describe('Blocklist Component: RelatedIncidents', () => {
   it('renders the listed date', () => {
     const { queryByText } = subject();
     expect(queryByText('Date Listed')).toBeInTheDocument();
-    expect(queryByText('May 23 2019')).toBeInTheDocument();
+    expect(queryByText(formatDateTime('2019-05-23T12:48:00.000Z'))).toBeInTheDocument();
   });
 
   it('renders the resolved date', () => {
     const { queryByText } = subject();
     expect(queryByText('Date Resolved')).toBeInTheDocument();
-    expect(queryByText('May 24 2019')).toBeInTheDocument();
+    expect(queryByText(formatDateTime('2019-05-24T13:48:00.000Z'))).toBeInTheDocument();
   });
 
   it('renders the days listed', () => {
@@ -39,26 +40,9 @@ describe('Blocklist Component: RelatedIncidents', () => {
     expect(queryByText('45')).toBeInTheDocument();
   });
 
-  it('renders the empty state of no historical listings', () => {
+  it('renders the resource name and blocklist name', () => {
     const { queryByText } = subject();
-    expect(queryByText('Historical Incidents')).toBeInTheDocument();
-    expect(
-      queryByText('No historical incidents for 1.2.3.4 on spamhaus.org - sbl'),
-    ).toBeInTheDocument();
-  });
-
-  it('renders the non-empty state of historical listings', () => {
-    const { queryByText } = subject({
-      historicalIncidents: [
-        {
-          id: 'abc',
-          occurred_at_formatted: 'Jan 1 2019, 5:35pm',
-          resolved_at_formatted: 'Jan 4 2019, 5:35pm',
-        },
-      ],
-    });
-    const anchor = queryByText('Listed Jan 1 2019, 5:35pm | Resolved Jan 4 2019, 5:35pm');
-    expect(anchor).toBeInTheDocument();
-    expect(anchor.getAttribute('href')).toBe('/signals/blocklist/incidents/abc');
+    expect(queryByText('1.2.3.4')).toBeInTheDocument();
+    expect(queryByText('spamhaus.org - sbl')).toBeInTheDocument();
   });
 });

@@ -75,7 +75,7 @@ export function ReportOptions(props) {
         report.query_string,
       );
       setReport(report);
-      refreshReportOptions({ ...reportOptions, filters: reportFilters });
+      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...filters] });
     } else {
       refreshReportOptions({ ...options, filters });
     }

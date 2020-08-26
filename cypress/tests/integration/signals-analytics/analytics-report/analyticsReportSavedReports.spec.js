@@ -13,6 +13,22 @@ if (IS_HIBANA_ENABLED) {
       cy.visit(PAGE_URL);
     });
 
+    it('loads a preset report with additional filters when given a report query param and filter param', () => {
+      cy.findByDataId('report-select').should('not.have.value', 'engagement'); //TODO: Remove
+      //cy.findByText('Engagement Report').should('not.be.visible');
+
+      cy.visit(`${PAGE_URL}&report=engagement`);
+      cy.findByDataId('report-select').should('have.value', 'engagement'); //TODO: Remove
+      //cy.findByText('Engagement Report').should('be.visible');
+      cy.findAllByText('Sent').should('be.visible');
+      cy.findAllByText('Accepted').should('be.visible');
+      cy.findAllByText('Clicks').should('be.visible');
+      cy.findAllByText('Open Rate').should('be.visible');
+
+      cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
+      cy.findAllByText('Christmas').should('be.visible');
+    });
+
     it('Selecting a preset report works correctly', () => {
       cy.withinMainContent(() => {
         // cy.findByLabelText('Report').type('Engagement');

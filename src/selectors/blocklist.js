@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { formatDateTime } from '../helpers/date';
+import { formatDate, formatDateTime } from '../helpers/date';
 import moment from 'moment';
 
 const getIncident = state => state.blocklist.incident || {};
@@ -30,8 +30,10 @@ const enrichIncident = incident => ({
   ...incident,
   occurred_at_timestamp: incident.occurred_at ? Date.parse(incident.occurred_at) : 0,
   occurred_at_formatted: incident.occurred_at ? formatDateTime(incident.occurred_at) : null,
+  occurred_at_formatted_date_only: incident.occurred_at ? formatDate(incident.occurred_at) : null,
   resolved_at_timestamp: incident.resolved_at ? Date.parse(incident.resolved_at) : 0,
   resolved_at_formatted: incident.resolved_at ? formatDateTime(incident.resolved_at) : null,
+  resolved_at_formatted_date_only: incident.resolved_at ? formatDate(incident.resolved_at) : null,
   days_listed: getDaysListed(incident.resolved_at, incident.occurred_at),
   status: incident.status === 'flagged' ? 'active' : 'resolved',
 });
@@ -68,7 +70,7 @@ export const selectRelatedIncidentsForResource = createSelector(
       )
       .map(incident => enrichIncident(incident))
       .sort(sortActiveThenListedDate)
-      .slice(0, 3),
+      .slice(0, 4),
 );
 
 export const selectRelatedIncidentsForBlocklist = createSelector(
@@ -81,7 +83,7 @@ export const selectRelatedIncidentsForBlocklist = createSelector(
       )
       .map(incident => enrichIncident(incident))
       .sort(sortActiveThenListedDate)
-      .slice(0, 3),
+      .slice(0, 4),
 );
 
 export const selectHistoricalIncidents = createSelector(

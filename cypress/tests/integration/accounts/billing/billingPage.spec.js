@@ -305,6 +305,8 @@ describe('Billing Page', () => {
       });
 
       it('closes the modal when clicking "Cancel"', () => {
+        Cypress.currentTest.retries(2);
+
         cy.withinModal(() => {
           cy.findAllByText('Update Payment Information').should('be.visible');
           cy.findByRole('button', { name: 'Cancel' }).click();

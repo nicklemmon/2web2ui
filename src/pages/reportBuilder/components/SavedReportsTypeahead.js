@@ -15,7 +15,7 @@ const SavedReportsTypeahead = props => {
         data-id="report-select"
         label="Report"
         options={options}
-        defaultValue={props.selectedItem}
+        value={props.selectedItem?.key}
         onChange={e => props.handleReportChange(e.target.value)}
       />
     </>
