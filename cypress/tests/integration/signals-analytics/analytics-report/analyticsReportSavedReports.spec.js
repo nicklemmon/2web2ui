@@ -6,6 +6,10 @@ if (IS_HIBANA_ENABLED) {
   describe('Analytics Report Saved Reports', () => {
     beforeEach(() => {
       commonBeforeSteps();
+      cy.stubRequest({
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.metrics-rollup.json',
+      });
       cy.visit(PAGE_URL);
     });
 
