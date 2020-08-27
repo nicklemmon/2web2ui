@@ -8,6 +8,7 @@ import { PageLink } from 'src/components/links';
 
 const ActionWrapper = styled.span`
   display: inline-flex;
+  align-items: center;
 `;
 
 const ActionIcon = styled.span`
