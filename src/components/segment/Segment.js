@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import getConfig from 'src/helpers/getConfig';
-import { segmentPage } from 'src/helpers/segment';
+import { segmentPage, TRAITS } from 'src/helpers/segment';
 import { segmentIdentify } from 'src/helpers/segment';
 import { usernameSelector } from 'src/selectors/currentUser';
 
@@ -11,21 +11,37 @@ const getScript = key => `!function(){var analytics=window.analytics=window.anal
 analytics.load("${key}");
 }}();`;
 
-const Segment = props => {
+export const Segment = props => {
   const enabled = getConfig('segment.enabled') || false;
   const history = useHistory();
   const prevPathname = useRef(history.location.pathname);
 
+  // dispatch is passed by connect, but we want the rest of the props as traits
+  const { dispatch, ...traits } = props;
+
+  // On URL path changes, inform segment via "PAGE" event
   useEffect(() => {
     const unlisten = history.listen(location => {
       if (enabled && prevPathname.current !== location.pathname) {
         prevPathname.current = location.pathname;
         segmentPage();
-        segmentIdentify(props.identity.user_id, props.identity);
       }
     });
     return () => unlisten();
-  }, [enabled, history, props.identity]);
+  }, [enabled, history]);
+
+  // Any time a trait changes, inform segment via "IDENTIFY" event
+  useEffect(() => {
+    segmentIdentify({
+      ...Object.values(TRAITS).reduce((allTraits, current) => {
+        if (traits[current]) {
+          allTraits[current] = traits[current];
+        }
+        return allTraits;
+      }, {}),
+      tenant: getConfig('tenantId'),
+    });
+  }, [traits]);
 
   if (enabled) {
     const key = getConfig('segment.publicKey');
@@ -42,17 +58,15 @@ const Segment = props => {
 };
 
 const mapStateToProps = state => ({
-  identity: {
-    user_id: usernameSelector(state),
-    email: state.currentUser.email,
-    createdAt: state.currentUser.created,
-    service_level: state.account.service_level,
-    plan: state.account.subscription.code,
-    user_role: state.currentUser.access_level,
-    company: state.account.company_name,
-    first_name: state.currentUser.first_name,
-    last_name: state.currentUser.last_name,
-  },
+  [TRAITS.USER_ID]: usernameSelector(state),
+  [TRAITS.EMAIL]: state.currentUser.email,
+  [TRAITS.CREATED_AT]: state.currentUser.created,
+  [TRAITS.SERVICE_LEVEL]: state.account.service_level,
+  [TRAITS.PLAN]: state.account?.subscription?.code,
+  [TRAITS.USER_ROLE]: state.currentUser.access_level,
+  [TRAITS.COMPANY]: state.account.company_name,
+  [TRAITS.FIRST_NAME]: state.currentUser.first_name,
+  [TRAITS.LAST_NAME]: state.currentUser.last_name,
 });
 
 export default connect(mapStateToProps)(Segment);
