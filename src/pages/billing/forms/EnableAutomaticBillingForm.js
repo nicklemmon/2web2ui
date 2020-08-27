@@ -46,30 +46,30 @@ export class EnableAutomaticBillingForm extends React.Component {
       <form onSubmit={handleSubmit(this.onSubmit)}>
         <Grid>
           <Grid.Column>
-            <Panel title="Add a Credit Card">
-              <Panel.Section>
+            <Panel.LEGACY title="Add a Credit Card">
+              <Panel.LEGACY.Section>
                 <PaymentForm formName={FORMNAME} disabled={submitting} />
-              </Panel.Section>
-              <Panel.Section>
+              </Panel.LEGACY.Section>
+              <Panel.LEGACY.Section>
                 <BillingAddressForm
                   formName={FORMNAME}
                   disabled={submitting}
                   countries={billingCountries}
                 />
-              </Panel.Section>
-            </Panel>
+              </Panel.LEGACY.Section>
+            </Panel.LEGACY>
           </Grid.Column>
           <Grid.Column xs={12} md={6}>
-            <Panel title="Your Plan">
-              <Panel.Section>
+            <Panel.LEGACY title="Your Plan">
+              <Panel.LEGACY.Section>
                 <PlanSummary plan={currentSubscription} />
-              </Panel.Section>
-              <Panel.Section>
+              </Panel.LEGACY.Section>
+              <Panel.LEGACY.Section>
                 <Button disabled={submitting} variant="primary" type="submit">
                   {submitting ? 'Loading...' : 'Enable Automatic Billing'}
                 </Button>
-              </Panel.Section>
-            </Panel>
+              </Panel.LEGACY.Section>
+            </Panel.LEGACY>
           </Grid.Column>
         </Grid>
       </form>

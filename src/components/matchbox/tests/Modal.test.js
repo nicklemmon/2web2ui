@@ -1,39 +1,101 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Modal from '../Modal';
-import { OGModal } from '../Modal';
 import { useHibana } from 'src/context/HibanaContext';
+import Modal from '../Modal';
 jest.mock('src/context/HibanaContext');
-describe('Modal', () => {
-  const props = {
-    open: true,
-    onClose: jest.fn(),
-  };
-  const subject = () => shallow(<Modal {...props} />);
 
-  it('should render OGModal when hibana is not enabled', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
-    const wrapper = subject();
-    expect(wrapper).toHaveDisplayName('OGModal');
+function mockHibanaIsEnabled() {
+  return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+}
+
+function mockHibanaIsDisabled() {
+  return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+}
+
+describe('Modal and Modal.LEGACY', () => {
+  describe('Modal', () => {
+    const subject = () => shallow(<Modal />);
+
+    it('renders with Hibana enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
+
+      expect(wrapper).toExist();
+    });
+
+    it('throws an error with Hibana disabled', () => {
+      mockHibanaIsDisabled();
+
+      expect(subject).toThrowError();
+    });
   });
 
-  it('should render HibanaModal when hibana is enabled', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
-    const wrapper = subject();
-    expect(wrapper).toHaveDisplayName('HibanaModal');
+  describe('Modal.Header', () => {
+    const subject = () => shallow(<Modal.Header />);
+
+    it('renders with Hibana enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
+
+      expect(wrapper).toExist();
+    });
+
+    it('throws an error with Hibana disabled', () => {
+      mockHibanaIsDisabled();
+
+      expect(subject).toThrowError();
+    });
   });
 
-  describe('OGModal', () => {
-    let wrapper;
+  describe('Modal.Content', () => {
+    const subject = () => shallow(<Modal.Content />);
 
-    const props = {
-      open: true,
-      onClose: jest.fn(),
-    };
+    it('renders with Hibana enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
 
-    it('should render correctly', () => {
-      wrapper = shallow(<OGModal {...props}>content</OGModal>);
-      expect(wrapper).toMatchSnapshot();
+      expect(wrapper).toExist();
+    });
+
+    it('throws an error with Hibana disabled', () => {
+      mockHibanaIsDisabled();
+
+      expect(subject).toThrowError();
+    });
+  });
+
+  describe('Modal.Footer', () => {
+    const subject = () => shallow(<Modal.Footer />);
+
+    it('renders with Hibana enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
+
+      expect(wrapper).toExist();
+    });
+
+    it('throws an error with Hibana disabled', () => {
+      mockHibanaIsDisabled();
+
+      expect(subject).toThrowError();
+    });
+  });
+
+  describe('Modal.LEGACY', () => {
+    const subject = () => shallow(<Modal.LEGACY />);
+
+    it('should render the Hibana version of the Modal when Hibana is enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
+
+      expect(wrapper).not.toHaveDisplayName('OGModal');
+    });
+
+    it('should render the OG version of the Modal when Hibana is disabled', () => {
+      mockHibanaIsDisabled();
+      const wrapper = subject();
+
+      expect(wrapper).toHaveDisplayName('OGModal');
     });
   });
 });

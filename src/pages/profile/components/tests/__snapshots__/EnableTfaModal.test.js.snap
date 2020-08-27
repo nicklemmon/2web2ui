@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EnableTfaModal tests should render correctly 1`] = `
-<Modal
+<Modal.LEGACY
   open={false}
 >
-  <Panel
+  <Panel.LEGACY
     title="Enable Two-Factor Authentication"
   >
     <Connect(EnableTfaForm)
       afterEnable={[MockFunction]}
       onClose={[MockFunction]}
     />
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

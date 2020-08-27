@@ -99,7 +99,7 @@ const EditSection = () => {
   }
 
   return (
-    <Panel className={styles.EditSection} mb="0">
+    <Panel.LEGACY className={styles.EditSection} mb="0">
       <div className={styles.TabsWrapper}>
         <Tabs
           disableResponsiveBehavior={true}
@@ -161,7 +161,7 @@ const EditSection = () => {
         onCancel={() => setAMPModalOpen(false)}
         onConfirm={handleAMPConfirmClick}
       />
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 

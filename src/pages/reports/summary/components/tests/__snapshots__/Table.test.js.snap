@@ -157,17 +157,17 @@ exports[`Summary Table should render with data 1`] = `
 `;
 
 exports[`Summary Table should render with no data 1`] = `
-<Panel>
-  <Panel.Section>
+<Panel.LEGACY>
+  <Panel.LEGACY.Section>
     <GroupByOption
       _getTableData={[MockFunction]}
       groupBy="domain"
       hasSubaccounts={false}
       tableLoading={false}
     />
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <Empty
     message="There is no data to display"
   />
-</Panel>
+</Panel.LEGACY>
 `;

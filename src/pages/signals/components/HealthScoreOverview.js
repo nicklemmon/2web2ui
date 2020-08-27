@@ -116,8 +116,8 @@ class HealthScoreOverview extends React.Component {
     const filteredData = _.filter(data, ({ sid }) => sid !== -1);
 
     return (
-      <Panel>
-        {header && <Panel.Section>{header}</Panel.Section>}
+      <Panel.LEGACY>
+        {header && <Panel.LEGACY.Section>{header}</Panel.LEGACY.Section>}
         <SummaryTable
           data={filteredData}
           empty={filteredData.length === 0}
@@ -216,7 +216,7 @@ class HealthScoreOverview extends React.Component {
             )}
           />
         </SummaryTable>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

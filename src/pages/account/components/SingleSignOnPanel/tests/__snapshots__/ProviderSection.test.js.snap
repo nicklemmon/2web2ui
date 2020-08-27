@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProviderSection renders when not provisioned 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -20,7 +20,7 @@ exports[`ProviderSection renders when not provisioned 1`] = `
       Not provisioned
     </h6>
   </LabelledValue>
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
     showCloseButton={true}
@@ -29,12 +29,12 @@ exports[`ProviderSection renders when not provisioned 1`] = `
       onCancel={[Function]}
       onSubmit={[Function]}
     />
-  </Modal>
-</Panel.Section>
+  </Modal.LEGACY>
+</Panel.LEGACY.Section>
 `;
 
 exports[`ProviderSection renders when provisioned 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -53,7 +53,7 @@ exports[`ProviderSection renders when provisioned 1`] = `
       https://sso.sparkpost.com/redirect
     </h6>
   </LabelledValue>
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
     showCloseButton={true}
@@ -62,6 +62,6 @@ exports[`ProviderSection renders when provisioned 1`] = `
       onCancel={[Function]}
       onSubmit={[Function]}
     />
-  </Modal>
-</Panel.Section>
+  </Modal.LEGACY>
+</Panel.LEGACY.Section>
 `;

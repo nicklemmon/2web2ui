@@ -58,8 +58,8 @@ export default function DomainsPage() {
         <Stack>
           <Tabs selected={tabIndex} tabs={TABS} />
 
-          <Panel mb="0" borderBottom="0">
-            <Panel.Section>
+          <Panel.LEGACY mb="0" borderBottom="0">
+            <Panel.LEGACY.Section>
               <Columns>
                 <Column>
                   {/* TODO: Replace with FilterBox UI as a part of FE-1154 */}
@@ -107,8 +107,8 @@ export default function DomainsPage() {
                   </Popover>
                 </Column>
               </Columns>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         </Stack>
 
         <Route

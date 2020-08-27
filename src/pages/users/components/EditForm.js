@@ -45,11 +45,11 @@ export const EditForm = ({
   );
 
   return (
-    <Panel>
+    <Panel.LEGACY>
       <form onSubmit={onSubmit}>
-        <Panel.Section>{roleSection}</Panel.Section>
+        <Panel.LEGACY.Section>{roleSection}</Panel.LEGACY.Section>
         {isAccountSingleSignOnEnabled && (
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Field
               component={CheckboxWrapper}
               helpText={ssoHelpText}
@@ -57,16 +57,16 @@ export const EditForm = ({
               name="is_sso"
               type="checkbox"
             />
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         )}
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button variant="primary" disabled={submitting || user.isCurrentUser} submit>
             Update User
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 

@@ -17,7 +17,7 @@ export class DataTable extends Component {
       <LongTextContainer text={reason} />,
       <AddFilterLink
         newFilter={{ type: 'Recipient Domain', value: domain }}
-        reportType={'rejections'}
+        reportType="rejections"
         content={domain}
       />,
       rejection_category_name,
@@ -30,9 +30,9 @@ export class DataTable extends Component {
 
     if (!list.length) {
       return (
-        <Panel>
-          <Empty message={'No rejection reasons to report'} />
-        </Panel>
+        <Panel.LEGACY>
+          <Empty message="No rejection reasons to report" />
+        </Panel.LEGACY>
       );
     }
 

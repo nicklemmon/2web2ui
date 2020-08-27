@@ -5,7 +5,7 @@ exports[`Signals Recommended Actions Component renders correctly 1`] = `
   <ChartHeader
     title="Recommendations – Dec 31 2017"
   />
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Action
       content="foo"
       key="0"
@@ -29,7 +29,7 @@ exports[`Signals Recommended Actions Component renders correctly 1`] = `
       linkText="View Internal Link"
       type="bad"
     />
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;
 

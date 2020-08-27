@@ -3,10 +3,10 @@
 exports[`Page: RegisterPage happy path render 1`] = `
 <div>
   <CenteredLogo />
-  <Panel
+  <Panel.LEGACY
     title="Set Password"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <p>
           <small>
@@ -19,9 +19,9 @@ exports[`Page: RegisterPage happy path render 1`] = `
           onSubmit={[Function]}
         />
       </Stack>
-    </Panel.Section>
-  </Panel>
-  <Panel.Footer
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY.Footer
     left={
       <small>
         <PageLink
@@ -38,15 +38,15 @@ exports[`Page: RegisterPage happy path render 1`] = `
 exports[`Page: RegisterPage loading 1`] = `
 <div>
   <CenteredLogo />
-  <Panel
+  <Panel.LEGACY
     title="Set Password"
   >
     <PanelLoading
       accent={false}
       minHeight="400px"
     />
-  </Panel>
-  <Panel.Footer
+  </Panel.LEGACY>
+  <Panel.LEGACY.Footer
     left={
       <small>
         <PageLink
@@ -70,16 +70,16 @@ exports[`Page: RegisterPage no token 1`] = `
 exports[`Page: RegisterPage token expired 1`] = `
 <div>
   <CenteredLogo />
-  <Panel
+  <Panel.LEGACY
     title="Set Password"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <p>
         This invite has expired, please ask your account administrator to re-send your invitation
       </p>
-    </Panel.Section>
-  </Panel>
-  <Panel.Footer
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY.Footer
     left={
       <small>
         <PageLink

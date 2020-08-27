@@ -2,8 +2,8 @@
 
 exports[`Component: TestDetails renders correctly 1`] = `
 <Fragment>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={6}
@@ -28,8 +28,8 @@ exports[`Component: TestDetails renders correctly 1`] = `
           <div />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -58,20 +58,20 @@ exports[`Component: TestDetails renders correctly 1`] = `
           </div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Bold>
         Test Name
       </Bold>
       <p>
         Baz
       </p>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <div
     className="FolderAuthenticationPanels"
   >
-    <Panel
+    <Panel.LEGACY
       className="FolderAuthenticationPanel"
       sectioned={true}
       title="Folder Placement"
@@ -79,19 +79,19 @@ exports[`Component: TestDetails renders correctly 1`] = `
       <FolderPlacementBarChart
         placements={Object {}}
       />
-    </Panel>
-    <Panel
+    </Panel.LEGACY>
+    <Panel.LEGACY
       className="FolderAuthenticationPanel"
       sectioned={true}
       title="Authentication"
     >
       <AuthenticationResults />
-    </Panel>
+    </Panel.LEGACY>
   </div>
-  <Panel
+  <Panel.LEGACY
     title="Placement Breakdown"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <div
         className="BreakdownFilters"
       >
@@ -126,22 +126,22 @@ exports[`Component: TestDetails renders correctly 1`] = `
           prefix={<Search />}
         />
       </div>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <PlacementBreakdown
       data={Array []}
       data-id="placement-breakdown-table"
       type="mailbox-provider"
     />
-  </Panel>
+  </Panel.LEGACY>
   <OGOnlyWrapper
     as="div"
     className="ClearSection"
   />
-  <Panel
+  <Panel.LEGACY
     sectioned={true}
     title="Time to Receive Mail"
   >
     <TimeToReceiveSection />
-  </Panel>
+  </Panel.LEGACY>
 </Fragment>
 `;

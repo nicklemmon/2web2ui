@@ -4,13 +4,13 @@ exports[`SearchForm should render correctly 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel
+  <Panel.LEGACY
     title="Advanced Filters"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <EventTypeFilters />
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <FieldArray
         component={[Function]}
         name="searchQuery"
@@ -18,8 +18,8 @@ exports[`SearchForm should render correctly 1`] = `
       <p>
         All filters accept comma-separated values.
       </p>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Inline>
         <Button
           submit={true}
@@ -35,7 +35,7 @@ exports[`SearchForm should render correctly 1`] = `
           Cancel
         </Button>
       </Inline>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </form>
 `;

@@ -39,9 +39,9 @@ const RecentActivity = props => {
                   className={styles.ListItem}
                   key={`recent-activity-template-${index}`}
                 >
-                  <Panel className={styles.Panel} accent>
+                  <Panel.LEGACY className={styles.Panel} accent>
                     <div className={styles.PanelContent}>
-                      <Panel.Section>
+                      <Panel.LEGACY.Section>
                         <OGOnlyWrapper as="div" className={styles.PanelStack}>
                           <Stack>
                             <div>
@@ -63,9 +63,9 @@ const RecentActivity = props => {
                             </PageLink>
                           </Stack>
                         </OGOnlyWrapper>
-                      </Panel.Section>
+                      </Panel.LEGACY.Section>
 
-                      <Panel.Section paddingTop="200" paddingBottom="200">
+                      <Panel.LEGACY.Section paddingTop="200" paddingBottom="200">
                         <div className={styles.Meta}>
                           <div className={styles.Date}>
                             <span>Updated&nbsp;</span>
@@ -90,9 +90,9 @@ const RecentActivity = props => {
                             </div>
                           )}
                         </div>
-                      </Panel.Section>
+                      </Panel.LEGACY.Section>
                     </div>
-                  </Panel>
+                  </Panel.LEGACY>
                 </div>
               );
             }

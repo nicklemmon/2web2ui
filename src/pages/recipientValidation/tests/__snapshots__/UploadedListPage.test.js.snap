@@ -25,7 +25,7 @@ exports[`UploadedListPage renders the list error when the job status is error 1`
     }
     title="Recipient Validation"
   >
-    <Panel>
+    <Panel.LEGACY>
       <OGOnlyWrapper
         as={[Function]}
       >
@@ -48,7 +48,7 @@ exports[`UploadedListPage renders the list error when the job status is error 1`
       >
         <ListError />
       </OGOnlyWrapper>
-    </Panel>
+    </Panel.LEGACY>
   </Page>
 </form>
 `;
@@ -66,7 +66,7 @@ exports[`UploadedListPage renders with list progress 1`] = `
     }
     title="Recipient Validation"
   >
-    <Panel>
+    <Panel.LEGACY>
       <OGOnlyWrapper
         as={[Function]}
       >
@@ -97,7 +97,7 @@ exports[`UploadedListPage renders with list progress 1`] = `
           }
         />
       </OGOnlyWrapper>
-    </Panel>
+    </Panel.LEGACY>
   </Page>
 </form>
 `;

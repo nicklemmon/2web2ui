@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FeatureComparisonModal:  ComparisonModal:  should render correctly 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
 >
-  <Panel>
+  <Panel.LEGACY>
     <div
       className="FeatureComparisonTable"
     >
@@ -58,8 +58,8 @@ exports[`FeatureComparisonModal:  ComparisonModal:  should render correctly 1`] 
         </tbody>
       </Table>
     </div>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`FeatureComparisonModal:  GroupHeading:  should render correctly 1`] = `

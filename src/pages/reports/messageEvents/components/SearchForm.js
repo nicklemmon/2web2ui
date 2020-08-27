@@ -24,15 +24,15 @@ export function SearchForm(props) {
   const { handleSubmit, handleApply, handleCancel, eventListing } = props;
   return (
     <form onSubmit={handleSubmit(handleApply)}>
-      <Panel title="Advanced Filters">
-        <Panel.Section>
+      <Panel.LEGACY title="Advanced Filters">
+        <Panel.LEGACY.Section>
           <EventTypeFilters eventTypeDocs={eventListing} />
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <FieldArray component={SearchQuery} name="searchQuery" />
           <p>All filters accept comma-separated values.</p>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Inline>
             <Button variant="primary" submit>
               Apply Filters
@@ -41,8 +41,8 @@ export function SearchForm(props) {
               Cancel
             </Button>
           </Inline>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </form>
   );
 }

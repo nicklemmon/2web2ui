@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HealthScoreOverview current injections column component renders current injection count 1`] = `
+exports[
+  `HealthScoreOverview current injections column component renders current injection count 1`
+] = `
 <NumericDataCell
   value={235000}
 />
@@ -13,7 +15,7 @@ exports[`HealthScoreOverview current score column component renders current scor
 `;
 
 exports[`HealthScoreOverview renders both subaccount and facet columns 1`] = `
-<Panel>
+<Panel.LEGACY>
   <Connect(SummaryTable)
     data={
       Array [
@@ -81,11 +83,11 @@ exports[`HealthScoreOverview renders both subaccount and facet columns 1`] = `
       width="15%"
     />
   </Connect(SummaryTable)>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`HealthScoreOverview renders injections column if after V2 release date 1`] = `
-<Panel>
+<Panel.LEGACY>
   <Connect(SummaryTable)
     data={
       Array [
@@ -161,11 +163,11 @@ exports[`HealthScoreOverview renders injections column if after V2 release date 
       width="12.5%"
     />
   </Connect(SummaryTable)>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`HealthScoreOverview renders overview panel with controls and table 1`] = `
-<Panel>
+<Panel.LEGACY>
   <Connect(SummaryTable)
     data={
       Array [
@@ -226,5 +228,5 @@ exports[`HealthScoreOverview renders overview panel with controls and table 1`] 
       width="15%"
     />
   </Connect(SummaryTable)>
-</Panel>
+</Panel.LEGACY>
 `;

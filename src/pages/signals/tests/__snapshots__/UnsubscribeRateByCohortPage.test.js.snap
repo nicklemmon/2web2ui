@@ -53,8 +53,8 @@ exports[`Signals Unsubscribe Rate Page renders correctly 1`] = `
   facetId="test.com"
   title="Unsubscribe Rate by Cohort"
 >
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -65,21 +65,21 @@ exports[`Signals Unsubscribe Rate Page renders correctly 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Grid>
     <Grid.Column
       md={7}
       sm={12}
     >
-      <Panel
+      <Panel.LEGACY
         data-id="unsubscribe-rate-chart"
       >
         <withRouter(Tabs)
           facet="sending-domain"
           facetId="test.com"
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <div
             className="LiftTooltip"
           >
@@ -247,8 +247,8 @@ exports[`Signals Unsubscribe Rate Page renders correctly 1`] = `
               tooltipContent={[Function]}
             />
           </div>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </Grid.Column>
     <Grid.Column
       md={5}
@@ -283,8 +283,8 @@ exports[`Signals Unsubscribe Rate Page renders correctly 1`] = `
 
 exports[`Signals Unsubscribe Rate Page renders empty correctly 1`] = `
 Array [
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -295,9 +295,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY
     data-id="unsubscribe-rate-chart"
   >
     <withRouter(Tabs)
@@ -307,14 +307,14 @@ Array [
     <Empty
       message="Insufficient data to populate this chart"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;
 
 exports[`Signals Unsubscribe Rate Page renders loading correctly 1`] = `
 Array [
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -325,9 +325,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY
     data-id="unsubscribe-rate-chart"
   >
     <withRouter(Tabs)
@@ -337,6 +337,6 @@ Array [
     <PanelSectionLoading
       minHeight="250px"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;

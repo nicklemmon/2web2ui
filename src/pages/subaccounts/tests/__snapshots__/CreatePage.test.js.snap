@@ -12,10 +12,10 @@ exports[`render 1`] = `
     }
     title="Create Subaccount"
   />
-  <Panel>
+  <Panel.LEGACY>
     <Connect(ReduxForm)
       onSubmit={[Function]}
     />
-  </Panel>
+  </Panel.LEGACY>
 </div>
 `;

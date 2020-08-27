@@ -4,13 +4,13 @@ exports[`Page: Smtp tests should render page correctly with defaults 1`] = `
 <Page
   title="SMTP Relay"
 >
-  <Panel
+  <Panel.LEGACY
     sectioned={true}
   >
     <SmtpDetails
       apiKey={null}
     />
-  </Panel>
+  </Panel.LEGACY>
   <Connect(ReduxForm)
     toggle={[Function]}
   />

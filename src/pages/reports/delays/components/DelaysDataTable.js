@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import styled from 'styled-components';
 import { Panel, Table } from 'src/components/matchbox';
 import { TableCollection, Empty, LongTextContainer } from 'src/components';
 import { Heading } from 'src/components/text';
 import { Percent } from 'src/components/formatters';
 import { safeRate } from 'src/helpers/math';
 import AddFilterLink from '../../components/AddFilterLink';
+
+const NoPadding = styled.div`
+  padding: 0;
+`;
 
 const columns = [
   { label: 'Reason', sortKey: 'reason', width: '45%' },
@@ -33,17 +38,17 @@ export class DelaysDataTable extends Component {
   };
 
   TableWrapper = props => (
-    <Panel>
-      <Panel.Section>
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section>
         <Heading as="h3" looksLike="h4">
           Delayed Messages
         </Heading>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
 
-      <Panel.Section style={{ padding: 0 }}>
+      <NoPadding as={Panel.LEGACY.Section}>
         <Table>{props.children}</Table>
-      </Panel.Section>
-    </Panel>
+      </NoPadding>
+    </Panel.LEGACY>
   );
 
   render() {
@@ -51,9 +56,9 @@ export class DelaysDataTable extends Component {
 
     if (_.isEmpty(rows)) {
       return (
-        <Panel>
+        <Panel.LEGACY>
           <Empty message="No delayed messages to report" />
-        </Panel>
+        </Panel.LEGACY>
       );
     }
 

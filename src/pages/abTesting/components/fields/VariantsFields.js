@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Field, FieldArray } from 'redux-form';
 import { RemoveCircle } from '@sparkpost/matchbox-icons';
+import styled from 'styled-components';
 import { Grid, Box, Button, Panel } from 'src/components/matchbox';
 import { OGOnlyWrapper } from 'src/components/hibana';
 import { Add } from '@sparkpost/matchbox-icons';
@@ -17,6 +18,11 @@ import {
 import OGStyles from './VariantsFields.module.scss';
 import HibanaStyles from './VariantsFieldsHibana.module.scss';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
+
+const RemoveIcon = styled.div`
+  margin-left: 2px;
+  margin-top: -1px; /* Helps address vertical centering problem */
+`;
 
 export const PercentField = ({ namespace, ...props }) => (
   <Field
@@ -47,12 +53,12 @@ export const SampleSizeField = ({ namespace, ...props }) => (
 export const RenderVariants = ({ fields, formValues, disabled, subaccountId }) => {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
-    <OGOnlyWrapper as={Panel}>
+    <OGOnlyWrapper as={Panel.LEGACY}>
       {fields.map((variant, i) => {
         const CountField =
           formValues.audience_selection === 'sample_size' ? SampleSizeField : PercentField;
         return (
-          <Panel.Section key={i}>
+          <Panel.LEGACY.Section key={i}>
             <div className={styles.RemoveWrapper}>
               <Button
                 flat
@@ -62,7 +68,7 @@ export const RenderVariants = ({ fields, formValues, disabled, subaccountId }) =
                 disabled={fields.length === 1}
               >
                 <span>Remove Variant</span>
-                <RemoveCircle style={{ marginLeft: '2px' }} />
+                <RemoveIcon as={RemoveCircle} />
               </Button>
             </div>
             <h6 className={styles.SmallHeader}>Variant {i + 1}</h6>
@@ -82,14 +88,14 @@ export const RenderVariants = ({ fields, formValues, disabled, subaccountId }) =
                 <CountField namespace={variant} disabled={disabled} />
               </Grid.Column>
             </Grid>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         );
       })}
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Button flat color="orange" onClick={() => fields.push()} disabled={fields.length >= 20}>
           <Add /> Add Another Variant
         </Button>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
   );
 };
@@ -100,9 +106,9 @@ const VariantsFields = ({ disabled, formValues, subaccountId }) => {
     formValues.audience_selection === 'sample_size' ? SampleSizeField : PercentField;
   return (
     <Fragment>
-      <Box as={Panel} mt="400">
-        <OGOnlyWrapper as={Panel}>
-          <Panel.Section>
+      <Box as={Panel.LEGACY} mt="400">
+        <OGOnlyWrapper as={Panel.LEGACY}>
+          <Panel.LEGACY.Section>
             <h6 className={styles.SmallHeader}>Default Template</h6>
             <Grid>
               <Grid.Column>
@@ -120,7 +126,7 @@ const VariantsFields = ({ disabled, formValues, subaccountId }) => {
                 <CountField namespace="default_template" disabled={disabled} />
               </Grid.Column>
             </Grid>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </OGOnlyWrapper>
 
         <FieldArray

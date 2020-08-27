@@ -37,9 +37,9 @@ export class CreatePage extends Component {
         breadcrumbAction={{ content: 'Back to A/B Tests', component: PageLink, to: '/ab-testing' }}
         title="Create a New A/B Test"
       >
-        <Panel>
+        <Panel.LEGACY>
           <AbTestCreateForm onSubmit={this.create} />
-        </Panel>
+        </Panel.LEGACY>
       </Page>
     );
   }

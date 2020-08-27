@@ -1,16 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component: BackupCodesModal should change button text to Generating... when submitting 1`] = `
-<Modal
+exports[
+  `Component: BackupCodesModal should change button text to Generating... when submitting 1`
+] = `
+<Modal.LEGACY
   open={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <Banner
             marginBottom="500"
@@ -48,8 +50,8 @@ exports[`Component: BackupCodesModal should change button text to Generating... 
             </Grid.Column>
           </Grid>
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button
             disabled={true}
@@ -66,23 +68,23 @@ exports[`Component: BackupCodesModal should change button text to Generating... 
             Cancel
           </Button>
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`Component: BackupCodesModal should render correctly 1`] = `
-<Modal
+<Modal.LEGACY
   open={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <Banner
             marginBottom="500"
@@ -120,8 +122,8 @@ exports[`Component: BackupCodesModal should render correctly 1`] = `
             </Grid.Column>
           </Grid>
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button
             disabled={false}
@@ -138,23 +140,23 @@ exports[`Component: BackupCodesModal should render correctly 1`] = `
             Cancel
           </Button>
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`Component: BackupCodesModal should show new codes when they exist 1`] = `
-<Modal
+<Modal.LEGACY
   open={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <p>
             Keep these single-use backup codes somewhere safe but accessible. They can be used if your authentication app is unavailable (
@@ -185,31 +187,31 @@ exports[`Component: BackupCodesModal should show new codes when they exist 1`] =
             </Grid.Column>
           </Grid>
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           onClick={[MockFunction]}
           variant="primary"
         >
           Close
         </Button>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`Component: BackupCodesModal should show password error when exists 1`] = `
-<Modal
+<Modal.LEGACY
   open={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Generate Two-factor Backup Codes"
   >
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <Banner
             marginBottom="500"
@@ -247,8 +249,8 @@ exports[`Component: BackupCodesModal should show password error when exists 1`] 
             </Grid.Column>
           </Grid>
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button
             disabled={false}
@@ -265,8 +267,8 @@ exports[`Component: BackupCodesModal should show password error when exists 1`] 
             Cancel
           </Button>
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

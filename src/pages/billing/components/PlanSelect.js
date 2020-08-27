@@ -32,7 +32,7 @@ export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }
   const { isShowing, toggle } = useModal(false);
   const { selectedPromo } = promoCodeObj;
   return (
-    <Panel
+    <Panel.LEGACY
       title="Your New Plan"
       actions={[
         {
@@ -47,7 +47,7 @@ export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }
       ]}
     >
       <FeatureComparisonModal open={isShowing} handleClose={toggle} />
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <div className={styles.SelectedPlan}>
           <div className={styles.tierLabel}>{PLAN_TIERS[tier]}</div>
           <div className={styles.PlanRow}>
@@ -61,9 +61,9 @@ export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }
             </div>
           </div>
         </div>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
       {price > 0 && (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <div className={styles.PlanRow}>
             <PromoCodeNew
               key={selectedPromo.promoCode || 'promocode'}
@@ -71,9 +71,9 @@ export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }
               handlePromoCode={handlePromoCode}
             />
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       )}
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 
@@ -92,7 +92,7 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
     PLAN_TIERS,
     (label, key) =>
       publicBundlesByTier[key] && (
-        <Panel.Section key={`tier_section_${key}`}>
+        <Panel.LEGACY.Section key={`tier_section_${key}`}>
           <div className={styles.tierLabel}>{label}</div>
           <div className={styles.tierPlans}>
             {publicBundlesByTier[key].map(bundle => {
@@ -123,12 +123,12 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
               );
             })}
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       ),
   );
 
   return (
-    <Panel
+    <Panel.LEGACY
       title="Select a Plan"
       actions={[
         {
@@ -144,6 +144,6 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
     >
       <FeatureComparisonModal open={isShowing} handleClose={toggle} />
       {planList}
-    </Panel>
+    </Panel.LEGACY>
   );
 }

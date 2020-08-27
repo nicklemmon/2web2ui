@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { Panel } from 'src/components/matchbox';
 import DuplicateTemplateModal from '../DuplicateTemplateModal';
 
 describe('DuplicateTemplateModal', () => {
@@ -26,7 +27,7 @@ describe('DuplicateTemplateModal', () => {
   it('has a `Panel` component with the title "Duplicate Template"', () => {
     const wrapper = subject();
 
-    expect(wrapper.find('Panel').props().title).toBe('Duplicate Template');
+    expect(wrapper.find(Panel.LEGACY).props().title).toBe('Duplicate Template');
   });
 
   it('has a two `TextField` components', () => {

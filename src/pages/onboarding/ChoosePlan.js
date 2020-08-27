@@ -135,10 +135,10 @@ export function OnboardingPlanPage({
       <CenteredLogo />
       <Grid>
         <Grid.Column>
-          <Panel>
-            <Panel.Section>
+          <Panel.LEGACY>
+            <Panel.LEGACY.Section>
               <Heading as="h3">Select A Plan</Heading>
-            </Panel.Section>
+            </Panel.LEGACY.Section>
             <PlanPicker
               selectedPromo={selectedPromo}
               disabled={disableSubmit}
@@ -146,21 +146,21 @@ export function OnboardingPlanPage({
               onChange={onPlanSelect}
             />
             {!isPlanFree && (
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <PromoCodeNew
                   key={selectedPromo.promoCode || 'promocode'}
                   promoCodeObj={promoCodeObj}
                   handlePromoCode={handlePromoCode}
                 />
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             )}
             <CreditCardSection billing={billing} submitting={submitting} isPlanFree={isPlanFree} />
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <Button disabled={disableSubmit} type="submit" variant="primary">
                 {buttonText}
               </Button>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         </Grid.Column>
       </Grid>
     </form>

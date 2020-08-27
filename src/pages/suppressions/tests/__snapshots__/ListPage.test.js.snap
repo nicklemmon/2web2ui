@@ -11,7 +11,7 @@ exports[`ListPage renders correctly 1`] = `
   }
   title="Suppressions"
 >
-  <Panel
+  <Panel.LEGACY
     className="FilterPanel"
     mb="0"
   >
@@ -33,10 +33,10 @@ exports[`ListPage renders correctly 1`] = `
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Connect(ReduxForm) />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Connect(Results)
     subaccounts={Array []}
   />
@@ -54,7 +54,7 @@ exports[`ListPage renders correctly with subaccounts 1`] = `
   }
   title="Suppressions"
 >
-  <Panel
+  <Panel.LEGACY
     className="FilterPanel"
     mb="0"
   >
@@ -76,10 +76,10 @@ exports[`ListPage renders correctly with subaccounts 1`] = `
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Connect(ReduxForm) />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Connect(Results)
     hasSubaccounts={true}
     subaccounts={Array []}
@@ -98,7 +98,7 @@ exports[`ListPage renders filter by email tab correctly when selected 1`] = `
   }
   title="Suppressions"
 >
-  <Panel
+  <Panel.LEGACY
     className="FilterPanel"
     mb="0"
   >
@@ -120,12 +120,12 @@ exports[`ListPage renders filter by email tab correctly when selected 1`] = `
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Connect(ReduxForm)
         onSubmit={[MockFunction]}
       />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Connect(Results)
     subaccounts={Array []}
   />

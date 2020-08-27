@@ -56,9 +56,9 @@ export class PoolForm extends Component {
     const helpText = editingDefault ? "You cannot change the default IP pool's name" : '';
 
     return (
-      <Panel>
+      <Panel.LEGACY>
         <form onSubmit={handleSubmit}>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Stack>
               <Field
                 name="name"
@@ -97,15 +97,15 @@ export class PoolForm extends Component {
                 />
               )}
             </Stack>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
 
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Button submit disabled={submitting || pristine} variant="primary">
               {submitting ? 'Saving' : submitText}
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </form>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

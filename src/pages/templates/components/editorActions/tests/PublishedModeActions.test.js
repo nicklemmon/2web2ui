@@ -29,10 +29,6 @@ describe('PublishedModeActions', () => {
     );
   };
 
-  it('renders draft actions', () => {
-    expect(subject().container).toMatchSnapshot();
-  });
-
   it('opens the popover when clicking "Open Menu"', () => {
     const { queryAllByText, queryByText } = subject();
 

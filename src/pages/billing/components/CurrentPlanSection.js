@@ -10,17 +10,17 @@ import useHibanaOverride from 'src/hooks/useHibanaOverride';
 const CurrentPlanSection = ({ currentPlan, isPlanSelected }) => {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
-    <Panel title="Current Plan">
-      <Panel.Section className={styles.currentPlan}>
+    <Panel.LEGACY title="Current Plan">
+      <Panel.LEGACY.Section className={styles.currentPlan}>
         <div className={styles.Title}>{PLAN_TIERS[currentPlan.tier]}</div>
         <div className={styles.Plan}>
           <Box marginLeft="400" marginTop="400">
             <PlanPrice showOverage showIp showCsm plan={currentPlan} />
           </Box>
         </div>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
       {isPlanSelected && currentPlan.status === 'deprecated' && (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <div className={styles.DeprecatedWarning}>
             <Warning size={28} />
             <div className={styles.content}>
@@ -28,9 +28,9 @@ const CurrentPlanSection = ({ currentPlan, isPlanSelected }) => {
               <strong>you won't be able to change back.</strong>
             </div>
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       )}
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 

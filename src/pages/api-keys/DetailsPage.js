@@ -62,9 +62,9 @@ export class ApiKeysDetailsPage extends Component {
         {isEmpty ? (
           this.renderNotFound()
         ) : (
-          <Panel>
+          <Panel.LEGACY>
             <ApiKeyForm onSubmit={_.noop} apiKey={apiKey} isReadOnly={true} />
-          </Panel>
+          </Panel.LEGACY>
         )}
       </Page>
     );

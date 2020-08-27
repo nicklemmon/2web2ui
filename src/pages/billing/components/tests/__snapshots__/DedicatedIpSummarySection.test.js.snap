@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DedicatedIpSummarySection renders count and cost for aws customers 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -33,11 +33,11 @@ exports[`DedicatedIpSummarySection renders count and cost for aws customers 1`] 
       />
     </h6>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`DedicatedIpSummarySection renders count and cost for aws customers with free ip 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -69,11 +69,11 @@ exports[`DedicatedIpSummarySection renders count and cost for aws customers with
       />
     </h6>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`DedicatedIpSummarySection renders count and zero cost 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -105,11 +105,13 @@ exports[`DedicatedIpSummarySection renders count and zero cost 1`] = `
       />
     </h6>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
-exports[`DedicatedIpSummarySection renders disabled add button, count, cost, and max plan notice 1`] = `
-<Panel.Section
+exports[
+  `DedicatedIpSummarySection renders disabled add button, count, cost, and max plan notice 1`
+] = `
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -144,11 +146,11 @@ exports[`DedicatedIpSummarySection renders disabled add button, count, cost, and
       You have reached the maximum allowed.
     </p>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`DedicatedIpSummarySection renders upgrade button and zero count 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -168,11 +170,11 @@ exports[`DedicatedIpSummarySection renders upgrade button and zero count 1`] = `
       0
     </h6>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`DedicatedIpSummarySection renders zero count and first is free notice 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
@@ -192,5 +194,5 @@ exports[`DedicatedIpSummarySection renders zero count and first is free notice 1
       0
     </h6>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;

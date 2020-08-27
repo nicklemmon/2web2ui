@@ -71,11 +71,11 @@ const Actions = ({ actions, date, empty }) => {
     <>
       <ChartHeader title={title} />
       {!empty && (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           {actions.map((props, i) => (
             <Action key={i} {...props} />
           ))}
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       )}
       {empty && <Empty minHeight="100px" message="No actions to display at this time." />}
     </>

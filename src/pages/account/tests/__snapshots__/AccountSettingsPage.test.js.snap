@@ -4,7 +4,7 @@ exports[`AccountSettingsPage renders 1`] = `
 <Page
   title="Account Settings"
 >
-  <Panel
+  <Panel.LEGACY
     sectioned={true}
   >
     <LabelledValue
@@ -12,7 +12,7 @@ exports[`AccountSettingsPage renders 1`] = `
     >
       123123
     </LabelledValue>
-  </Panel>
+  </Panel.LEGACY>
   <Connect(SingleSignOnPanel) />
   <Connect(EnforceTFAPanel) />
   <Connect(UIOptionsPanel) />

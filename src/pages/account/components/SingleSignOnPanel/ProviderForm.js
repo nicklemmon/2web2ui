@@ -48,8 +48,8 @@ export class ProviderForm extends React.Component {
 
     return (
       <Form onSubmit={handleSubmit(this.submit)}>
-        <Panel title="Provision Single Sign-On" accent>
-          <Panel.Section>
+        <Panel.LEGACY title="Provision Single Sign-On" accent>
+          <Panel.LEGACY.Section>
             <Stack>
               <Heading as="h3" looksLike="h6">
                 Step 1: Setup Callback URL
@@ -62,8 +62,8 @@ export class ProviderForm extends React.Component {
                 <CopyField value={`${config.apiBase}/v1/users/saml/consume`} />
               </div>
             </Stack>
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <Stack>
               <Heading as="h3" looksLike="h6">
                 Step 2: Upload your Security Assertion Markup Language (SAML)
@@ -88,8 +88,8 @@ export class ProviderForm extends React.Component {
                 />
               </div>
             </Stack>
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <ButtonWrapper>
               <Button variant="primary" disabled={submitting} type="submit">
                 Provision SSO
@@ -99,8 +99,8 @@ export class ProviderForm extends React.Component {
                 Cancel
               </Button>
             </ButtonWrapper>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
       </Form>
     );
   }

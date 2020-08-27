@@ -24,15 +24,15 @@ export class SpamTrapDashboard extends Component {
       <Page title="Spam Trap Monitoring">
         <PageDescription>{SPAM_TRAP_INFO}</PageDescription>
 
-        <Panel>
-          <Panel.Section>
+        <Panel.LEGACY>
+          <Panel.LEGACY.Section>
             <Grid>
               <Grid.Column xs={12} md={4}>
                 <DateFilter label="Date Range" />
               </Grid.Column>
             </Grid>
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <Grid>
               <Grid.Column md={4} xs={12}>
                 <SubaccountFilter label="Subaccount" />
@@ -40,8 +40,8 @@ export class SpamTrapDashboard extends Component {
               {/* eslint-disable-next-line */}
               <FacetFilter facets={_.reject(facets, facet => facet.key === 'mb_provider')} />
             </Grid>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
         <SpamTrapOverview defaults={{ perPage: 25 }} subaccounts={subaccounts} hideTitle />
       </Page>
     );

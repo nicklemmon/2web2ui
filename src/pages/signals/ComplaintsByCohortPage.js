@@ -109,10 +109,10 @@ export function ComplaintsByCohortPage(props) {
     return (
       <Grid>
         <Grid.Column sm={12} md={7}>
-          <Panel data-id="complaint-rate-chart">
+          <Panel.LEGACY data-id="complaint-rate-chart">
             <Tabs facet={facet} facetId={facetId} subaccountId={subaccountId} />
             {chartPanel || (
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <div className="LiftTooltip">
                   <LineChart
                     height={300}
@@ -138,14 +138,14 @@ export function ComplaintsByCohortPage(props) {
                     tooltipContent={label => ENGAGEMENT_RECENCY_COHORTS[label]}
                   />
                 </div>
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             )}
-          </Panel>
+          </Panel.LEGACY>
         </Grid.Column>
         <Grid.Column sm={12} md={5} mdOffset={0}>
           <div>
             {!chartPanel && (
-              <Box as={Panel}>
+              <Box as={Panel.LEGACY}>
                 <ComplaintsByCohortActions
                   complaintsByCohort={selectedComplaints}
                   recencyByCohort={selectedEngagementRecency}
@@ -173,15 +173,15 @@ export function ComplaintsByCohortPage(props) {
       facetId={facetId}
       subaccountId={subaccountId}
     >
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} md={4}>
               <DateFilter label="Date Range" />
             </Grid.Column>
           </Grid>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
       {renderContent()}
     </Page>
   );

@@ -84,10 +84,10 @@ export const GettingStartedGuide = ({
 
   return (
     <GuideContext.Provider value={values}>
-      <Panel title="Getting Started" sectioned>
+      <Panel.LEGACY title="Getting Started" sectioned>
         {canManageKeys && canManageSendingDomains && (
           <Expandable
-            title={'Start Sending with SparkPost'}
+            title="Start Sending with SparkPost"
             my="300"
             defaultOpen
             id="start_sending_expandable"
@@ -95,10 +95,10 @@ export const GettingStartedGuide = ({
             <LetsCodeStep />
           </Expandable>
         )}
-        <Expandable title={'SparkPost Analytics'} my="300" id="sparkpost_analytics">
+        <Expandable title="SparkPost Analytics" my="300" id="sparkpost_analytics">
           <ShowMeSparkpostStep canManageUsers={canManageUsers} />
         </Expandable>
-      </Panel>
+      </Panel.LEGACY>
     </GuideContext.Provider>
   );
 };

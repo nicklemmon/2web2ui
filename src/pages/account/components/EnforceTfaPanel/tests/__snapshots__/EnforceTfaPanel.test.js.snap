@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: EnforceTfaPanel renders fully after loading 1`] = `
-<Panel
+<Panel.LEGACY
   actions={
     Array [
       Object {
@@ -69,7 +69,7 @@ exports[`Component: EnforceTfaPanel renders fully after loading 1`] = `
     open={false}
     title="Are you sure you want to make two-factor authentication optional for this account?"
   />
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`Component: EnforceTfaPanel renders loading state 1`] = `
@@ -80,7 +80,7 @@ exports[`Component: EnforceTfaPanel renders loading state 1`] = `
 `;
 
 exports[`Component: EnforceTfaPanel renders with sso enabled 1`] = `
-<Panel
+<Panel.LEGACY
   actions={
     Array [
       Object {
@@ -93,11 +93,11 @@ exports[`Component: EnforceTfaPanel renders with sso enabled 1`] = `
   }
   title="Two-factor Authentication"
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <p>
       Mandatory two-factor authentication is not available while single sign-on is enabled.
     </p>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <TogglePanelSection
     readOnly={true}
     tfaRequired={false}
@@ -153,11 +153,11 @@ exports[`Component: EnforceTfaPanel renders with sso enabled 1`] = `
     open={false}
     title="Are you sure you want to make two-factor authentication optional for this account?"
   />
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`Component: EnforceTfaPanel renders with tfa enabled 1`] = `
-<Panel
+<Panel.LEGACY
   actions={
     Array [
       Object {
@@ -225,5 +225,5 @@ exports[`Component: EnforceTfaPanel renders with tfa enabled 1`] = `
     open={false}
     title="Are you sure you want to make two-factor authentication optional for this account?"
   />
-</Panel>
+</Panel.LEGACY>
 `;

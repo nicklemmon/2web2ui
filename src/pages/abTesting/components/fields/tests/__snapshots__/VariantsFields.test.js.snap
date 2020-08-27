@@ -4,7 +4,7 @@ exports[`Variants Fields Component Field Array should render 1 field with disabl
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section
+  <Panel.LEGACY.Section
     key="0"
   >
     <div
@@ -20,12 +20,8 @@ exports[`Variants Fields Component Field Array should render 1 field with disabl
         <span>
           Remove Variant
         </span>
-        <RemoveCircle
-          style={
-            Object {
-              "marginLeft": "2px",
-            }
-          }
+        <styled.div
+          as={[Function]}
         />
       </Button>
     </div>
@@ -53,8 +49,8 @@ exports[`Variants Fields Component Field Array should render 1 field with disabl
         />
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       color="orange"
       disabled={false}
@@ -64,7 +60,7 @@ exports[`Variants Fields Component Field Array should render 1 field with disabl
       <Add />
        Add Another Variant
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </OGOnlyWrapper>
 `;
 
@@ -72,7 +68,7 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section
+  <Panel.LEGACY.Section
     key="0"
   >
     <div
@@ -88,12 +84,8 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
         <span>
           Remove Variant
         </span>
-        <RemoveCircle
-          style={
-            Object {
-              "marginLeft": "2px",
-            }
-          }
+        <styled.div
+          as={[Function]}
         />
       </Button>
     </div>
@@ -121,8 +113,8 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
         />
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-  <Panel.Section
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section
     key="1"
   >
     <div
@@ -138,12 +130,8 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
         <span>
           Remove Variant
         </span>
-        <RemoveCircle
-          style={
-            Object {
-              "marginLeft": "2px",
-            }
-          }
+        <styled.div
+          as={[Function]}
         />
       </Button>
     </div>
@@ -171,8 +159,8 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
         />
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       color="orange"
       disabled={true}
@@ -182,7 +170,7 @@ exports[`Variants Fields Component Field Array should render 20 fields with disa
       <Add />
        Add Another Variant
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </OGOnlyWrapper>
 `;
 
@@ -190,7 +178,7 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section
+  <Panel.LEGACY.Section
     key="0"
   >
     <div
@@ -206,12 +194,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         <span>
           Remove Variant
         </span>
-        <RemoveCircle
-          style={
-            Object {
-              "marginLeft": "2px",
-            }
-          }
+        <styled.div
+          as={[Function]}
         />
       </Button>
     </div>
@@ -239,8 +223,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         />
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-  <Panel.Section
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section
     key="1"
   >
     <div
@@ -256,12 +240,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         <span>
           Remove Variant
         </span>
-        <RemoveCircle
-          style={
-            Object {
-              "marginLeft": "2px",
-            }
-          }
+        <styled.div
+          as={[Function]}
         />
       </Button>
     </div>
@@ -289,8 +269,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         />
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       color="orange"
       disabled={false}
@@ -300,7 +280,7 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
       <Add />
        Add Another Variant
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </OGOnlyWrapper>
 `;
 
@@ -308,7 +288,7 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section
+  <Panel.LEGACY.Section
     key="0"
   >
     <div
@@ -324,12 +304,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         <span>
           Remove Variant
         </span>
-        <RemoveCircle
-          style={
-            Object {
-              "marginLeft": "2px",
-            }
-          }
+        <styled.div
+          as={[Function]}
         />
       </Button>
     </div>
@@ -357,8 +333,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         />
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-  <Panel.Section
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section
     key="1"
   >
     <div
@@ -374,12 +350,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         <span>
           Remove Variant
         </span>
-        <RemoveCircle
-          style={
-            Object {
-              "marginLeft": "2px",
-            }
-          }
+        <styled.div
+          as={[Function]}
         />
       </Button>
     </div>
@@ -407,8 +379,8 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
         />
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       color="orange"
       disabled={false}
@@ -418,7 +390,7 @@ exports[`Variants Fields Component Field Array should render fields correctly wi
       <Add />
        Add Another Variant
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </OGOnlyWrapper>
 `;
 
@@ -467,7 +439,7 @@ exports[`Variants Fields Component should render percent audience selection corr
     <OGOnlyWrapper
       as={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <h6
           className="SmallHeader"
         >
@@ -489,7 +461,7 @@ exports[`Variants Fields Component should render percent audience selection corr
             />
           </Grid.Column>
         </Grid>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
     <FieldArray
       component={[Function]}
@@ -513,7 +485,7 @@ exports[`Variants Fields Component should render sample size audience selection 
     <OGOnlyWrapper
       as={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <h6
           className="SmallHeader"
         >
@@ -535,7 +507,7 @@ exports[`Variants Fields Component should render sample size audience selection 
             />
           </Grid.Column>
         </Grid>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
     <FieldArray
       component={[Function]}

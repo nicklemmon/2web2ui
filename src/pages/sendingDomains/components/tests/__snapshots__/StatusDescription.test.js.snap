@@ -1,8 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatusDescription component Shallow tests does not render subaccount details on master account domains 1`] = `
+exports[
+  `StatusDescription component Shallow tests does not render subaccount details on master account domains 1`
+] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label={<StatusTooltipHeader />}
     >
@@ -10,13 +12,13 @@ exports[`StatusDescription component Shallow tests does not render subaccount de
         status="unverified"
       />
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;
 
 exports[`StatusDescription component Shallow tests renders subaccount details 1`] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label={<StatusTooltipHeader />}
     >
@@ -24,8 +26,8 @@ exports[`StatusDescription component Shallow tests renders subaccount details 1`
         status="unverified"
       />
     </LabelledValue>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label="Subaccount"
     >
@@ -37,13 +39,15 @@ exports[`StatusDescription component Shallow tests renders subaccount details 1`
         receiveAll={false}
       />
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;
 
-exports[`StatusDescription component Shallow tests renders verification status correctly blocked 1`] = `
+exports[
+  `StatusDescription component Shallow tests renders verification status correctly blocked 1`
+] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label={<StatusTooltipHeader />}
     >
@@ -51,13 +55,15 @@ exports[`StatusDescription component Shallow tests renders verification status c
         status="blocked"
       />
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;
 
-exports[`StatusDescription component Shallow tests renders verification status correctly pending 1`] = `
+exports[
+  `StatusDescription component Shallow tests renders verification status correctly pending 1`
+] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label={<StatusTooltipHeader />}
     >
@@ -65,13 +71,15 @@ exports[`StatusDescription component Shallow tests renders verification status c
         status="pending"
       />
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;
 
-exports[`StatusDescription component Shallow tests renders verification status correctly unverified 1`] = `
+exports[
+  `StatusDescription component Shallow tests renders verification status correctly unverified 1`
+] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label={<StatusTooltipHeader />}
     >
@@ -79,13 +87,15 @@ exports[`StatusDescription component Shallow tests renders verification status c
         status="unverified"
       />
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;
 
-exports[`StatusDescription component Shallow tests renders verification status correctly verified 1`] = `
+exports[
+  `StatusDescription component Shallow tests renders verification status correctly verified 1`
+] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label={<StatusTooltipHeader />}
     >
@@ -101,6 +111,6 @@ exports[`StatusDescription component Shallow tests renders verification status c
         />
       </div>
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;

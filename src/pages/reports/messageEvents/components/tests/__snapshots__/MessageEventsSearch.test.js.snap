@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: MessageEventsSearch renders correctly 1`] = `
-<Panel
+<Panel.LEGACY
   className="Panel"
   mb="0"
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <div
       className="Filters"
     >
@@ -80,7 +80,7 @@ exports[`Component: MessageEventsSearch renders correctly 1`] = `
         />
       </div>
     </div>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <Connect(ActiveFilters) />
-</Panel>
+</Panel.LEGACY>
 `;

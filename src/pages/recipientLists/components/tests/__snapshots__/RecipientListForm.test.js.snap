@@ -3,8 +3,8 @@
 exports[`RecipientListForm defaults to create mode 1`] = `
 <div>
   <form>
-    <Panel>
-      <Panel.Section>
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section>
         <Stack
           space="400"
         >
@@ -68,8 +68,8 @@ exports[`RecipientListForm defaults to create mode 1`] = `
             }
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           disabled={true}
           submit={true}
@@ -78,8 +78,8 @@ exports[`RecipientListForm defaults to create mode 1`] = `
           Create
            Recipient List
         </Button>
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   </form>
 </div>
 `;
@@ -101,8 +101,8 @@ exports[`RecipientListForm renders CSV errors 1`] = `
     />
   </Banner>
   <form>
-    <Panel>
-      <Panel.Section>
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section>
         <Stack
           space="400"
         >
@@ -166,8 +166,8 @@ exports[`RecipientListForm renders CSV errors 1`] = `
             }
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           disabled={true}
           submit={true}
@@ -176,8 +176,8 @@ exports[`RecipientListForm renders CSV errors 1`] = `
           Create
            Recipient List
         </Button>
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   </form>
 </div>
 `;
@@ -185,8 +185,8 @@ exports[`RecipientListForm renders CSV errors 1`] = `
 exports[`RecipientListForm renders correctly in create mode 1`] = `
 <div>
   <form>
-    <Panel>
-      <Panel.Section>
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section>
         <Stack
           space="400"
         >
@@ -250,8 +250,8 @@ exports[`RecipientListForm renders correctly in create mode 1`] = `
             }
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           disabled={true}
           submit={true}
@@ -260,8 +260,8 @@ exports[`RecipientListForm renders correctly in create mode 1`] = `
           Create
            Recipient List
         </Button>
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   </form>
 </div>
 `;
@@ -269,8 +269,8 @@ exports[`RecipientListForm renders correctly in create mode 1`] = `
 exports[`RecipientListForm renders correctly in edit mode 1`] = `
 <div>
   <form>
-    <Panel>
-      <Panel.Section>
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section>
         <Stack
           space="400"
         >
@@ -318,8 +318,8 @@ exports[`RecipientListForm renders correctly in edit mode 1`] = `
             validate={Array []}
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           disabled={true}
           submit={true}
@@ -328,8 +328,8 @@ exports[`RecipientListForm renders correctly in edit mode 1`] = `
           Update
            Recipient List
         </Button>
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   </form>
 </div>
 `;
@@ -337,8 +337,8 @@ exports[`RecipientListForm renders correctly in edit mode 1`] = `
 exports[`RecipientListForm should disable form elements on submit 1`] = `
 <div>
   <form>
-    <Panel>
-      <Panel.Section>
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section>
         <Stack
           space="400"
         >
@@ -406,8 +406,8 @@ exports[`RecipientListForm should disable form elements on submit 1`] = `
             }
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           disabled={true}
           submit={true}
@@ -416,10 +416,12 @@ exports[`RecipientListForm should disable form elements on submit 1`] = `
           Create
            Recipient List
         </Button>
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   </form>
 </div>
 `;
 
-exports[`RecipientListForm should throw on submit if CSV parsing fails 1`] = `[SubmissionError: Submit Validation Failed]`;
+exports[
+  `RecipientListForm should throw on submit if CSV parsing fails 1`
+] = `[SubmissionError: Submit Validation Failed]`;

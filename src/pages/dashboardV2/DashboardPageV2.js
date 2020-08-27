@@ -48,7 +48,7 @@ export default function DashboardPageV2() {
               <Columns collapseBelow="md" space="500">
                 <Column>
                   <Dashboard.Panel>
-                    <Panel.Section>
+                    <Panel.LEGACY.Section>
                       <Panel.Headline>
                         <Panel.HeadlineIcon as={Code} />
 
@@ -56,13 +56,13 @@ export default function DashboardPageV2() {
                       </Panel.Headline>
 
                       <ExternalLink to="/">Integration Documentation</ExternalLink>
-                    </Panel.Section>
+                    </Panel.LEGACY.Section>
                   </Dashboard.Panel>
                 </Column>
 
                 <Column>
                   <Dashboard.Panel>
-                    <Panel.Section>
+                    <Panel.LEGACY.Section>
                       <Panel.Headline>
                         <Panel.HeadlineIcon as={ChatBubble} />
 
@@ -70,13 +70,13 @@ export default function DashboardPageV2() {
                       </Panel.Headline>
 
                       <SupportTicketLink>Contact our Support Team</SupportTicketLink>
-                    </Panel.Section>
+                    </Panel.LEGACY.Section>
                   </Dashboard.Panel>
                 </Column>
               </Columns>
 
               <Dashboard.Panel>
-                <Panel.Section>
+                <Panel.LEGACY.Section>
                   <Panel.Headline>
                     <Panel.HeadlineIcon as={LightbulbOutline} />
 
@@ -111,7 +111,7 @@ export default function DashboardPageV2() {
                       </Text>
                     </Dashboard.Shortcut>
                   </Columns>
-                </Panel.Section>
+                </Panel.LEGACY.Section>
               </Dashboard.Panel>
             </Stack>
           </Layout.Section>

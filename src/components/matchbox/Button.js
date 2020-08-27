@@ -5,10 +5,9 @@ import { Button as HibanaButton } from '@sparkpost/matchbox-hibana';
 import { useHibana } from 'src/context/HibanaContext';
 import { omitSystemProps } from 'src/helpers/hibana';
 
-const Button = props => {
+function Button({ variant, ...props }) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
-  const { variant } = props;
 
   if (!isHibanaEnabled) {
     return (
@@ -20,9 +19,9 @@ const Button = props => {
   }
 
   return <HibanaButton {...getVariantProps({ variant, isHibanaEnabled })} {...props} />;
-};
+}
 
-const Group = props => {
+function Group(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -31,7 +30,16 @@ const Group = props => {
   }
 
   return <HibanaButton.Group {...props} />;
-};
+}
+
+function Icon(props) {
+  const [state] = useHibana();
+  const { isHibanaEnabled } = state;
+
+  if (!isHibanaEnabled) throw new Error('Button.Icon can only be used with Hibana enabled.');
+
+  return <HibanaButton.Icon {...props} />;
+}
 
 // TODO:
 // 1. Remove `isHibanaEnabled` argument when the old theme is removed from the app
@@ -42,16 +50,17 @@ function getVariantProps({ variant, isHibanaEnabled }) {
       case 'primary':
         return {
           color: 'blue',
+          variant: 'filled',
         };
       case 'secondary':
         return {
           color: 'blue',
-          outlineBorder: true,
+          variant: 'outline',
         };
       case 'tertiary':
         return {
           color: 'blue',
-          flat: true,
+          variant: 'text',
         };
       case 'minimal':
         return {
@@ -69,7 +78,8 @@ function getVariantProps({ variant, isHibanaEnabled }) {
         };
       case 'destructive':
         return {
-          destructive: true,
+          color: 'red',
+          variant: 'filled',
         };
       // use when connecting a button to a TextField
       case 'connected':
@@ -109,9 +119,9 @@ function getVariantProps({ variant, isHibanaEnabled }) {
 }
 
 Group.displayName = 'Button.Group';
+Icon.displayName = Icon;
 Button.Group = Group;
-HibanaButton.displayName = 'HibanaButton';
-HibanaButton.Group.displayName = 'HibanaButton.Group';
+Button.Icon = Icon;
 
 Button.propTypes = {
   variant: PropTypes.string,

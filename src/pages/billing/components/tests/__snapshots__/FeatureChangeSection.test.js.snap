@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Feature Change Section should render features 1`] = `
-<Panel
+<Panel.LEGACY
   accent="green"
   title="Changes to Features"
 >
-  <Panel.Section
+  <Panel.LEGACY.Section
     name="feature-change-status"
   >
     <div
@@ -25,7 +25,7 @@ exports[`Feature Change Section should render features 1`] = `
         </span>
       </div>
     </div>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <Feature
     action={
       <button>
@@ -37,5 +37,5 @@ exports[`Feature Change Section should render features 1`] = `
     label="My Feature"
     value={false}
   />
-</Panel>
+</Panel.LEGACY>
 `;

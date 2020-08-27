@@ -13,19 +13,13 @@ Array [
     count={999}
     status="success"
   />,
-  <div
-    style={
-      Object {
-        "textAlign": "right",
-      }
-    }
-  >
+  <styled.div>
     <JobActionLink
       fileHref="https://example.com/rejects.csv"
       jobId="A1C1_D1_C1"
       status="success"
     />
-  </div>,
+  </styled.div>,
 ]
 `;
 

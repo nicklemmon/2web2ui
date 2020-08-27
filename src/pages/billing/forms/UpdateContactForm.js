@@ -29,15 +29,15 @@ export class UpdateContactForm extends Component {
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
-        <Panel title="Update Billing Contact">
-          <Panel.Section>
+        <Panel.LEGACY title="Update Billing Contact">
+          <Panel.LEGACY.Section>
             <BillingContactForm
               formName={FORMNAME}
               disabled={submitting}
               countries={this.props.billing.countries}
             />
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <ButtonWrapper>
               <Button type="submit" variant="primary" disabled={submitting}>
                 Update Billing Contact
@@ -46,8 +46,8 @@ export class UpdateContactForm extends Component {
                 Cancel
               </Button>
             </ButtonWrapper>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
       </form>
     );
   }

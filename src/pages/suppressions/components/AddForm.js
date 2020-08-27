@@ -42,7 +42,7 @@ export class AddForm extends Component {
     return (
       <>
         <form onSubmit={handleSubmit(this.onSubmit)}>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Stack>
               <Field
                 name="recipient"
@@ -74,13 +74,13 @@ export class AddForm extends Component {
               </Checkbox.Group>
               <Field name="description" component={TextFieldWrapper} label="Description" />
             </Stack>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
 
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Button variant="primary" disabled={pristine || submitting} type="submit">
               Add / Update
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </form>
       </>
     );

@@ -119,7 +119,7 @@ export class TrackingDomainRow extends Component {
     const { domain, subaccountId, status, isDefault, verifying } = this.props;
     return (
       <>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} md={8}>
               <span className={styles.DomainHeading}>{domain}</span>
@@ -159,7 +159,7 @@ export class TrackingDomainRow extends Component {
               />
             </Grid.Column>
           </Grid>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
         {this.renderModals()}
       </>

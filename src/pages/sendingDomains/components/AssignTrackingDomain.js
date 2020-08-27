@@ -48,9 +48,9 @@ export class AssignTrackingDomain extends Component {
     }
 
     return (
-      <Panel>
+      <Panel.LEGACY>
         <form onSubmit={this.props.handleSubmit(this.updateTrackingDomain)}>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Field
               component={SelectWrapper}
               name="trackingDomain"
@@ -59,14 +59,14 @@ export class AssignTrackingDomain extends Component {
               label="Linked Tracking Domain"
               helpText="Domains must be verified to be linked to a sending domain."
             />
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <Button variant="primary" submit disabled={submitting || pristine}>
               {submitting ? 'Updating...' : 'Update Tracking Domain'}
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </form>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 
@@ -77,7 +77,7 @@ export class AssignTrackingDomain extends Component {
           <SubduedText mt="300">
             <span>Link to a tracking domain to track opens, clicks, and unsubscribes.</span>
             <br />
-            <PageLink to={'/account/tracking-domains/create'}>Create a tracking domain.</PageLink>
+            <PageLink to="/account/tracking-domains/create">Create a tracking domain.</PageLink>
           </SubduedText>
         </SendingDomainSection.Left>
         <SendingDomainSection.Right>{this.renderTrackingDomains()}</SendingDomainSection.Right>

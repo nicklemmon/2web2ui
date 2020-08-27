@@ -10,8 +10,8 @@ exports[`Signals Spam Trap Dashboard Dashboard renders page 1`] = `
   excessive rate of spam trap hits is an indicator of poor list procurement and hygiene practices.
 
   </PageDescription>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -22,8 +22,8 @@ exports[`Signals Spam Trap Dashboard Dashboard renders page 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -52,8 +52,8 @@ exports[`Signals Spam Trap Dashboard Dashboard renders page 1`] = `
           }
         />
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Connect(withRouter(Connect(SpamTrapOverview)))
     defaults={
       Object {

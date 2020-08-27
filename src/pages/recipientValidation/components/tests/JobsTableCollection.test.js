@@ -3,9 +3,7 @@ import { shallow } from 'enzyme';
 import { JobsTableCollection } from '../JobsTableCollection';
 
 describe('JobsTableCollection', () => {
-  const subject = (props = {}) => shallow(
-    <JobsTableCollection {...props} jobs={[]} />
-  );
+  const subject = (props = {}) => shallow(<JobsTableCollection {...props} jobs={[]} />);
 
   it('renders a table of jobs', () => {
     expect(subject()).toMatchSnapshot();
@@ -22,9 +20,9 @@ describe('JobsTableCollection', () => {
         rejectedUrl="https://example.com/rejects.csv"
         status="success"
         uploadedAt="2013-02-04T22:44:30.652Z"
-      />
+      />,
     );
 
-    expect(rowWrapper.map((w) => w.dive())).toMatchSnapshot();
+    expect(rowWrapper.map(w => w.dive())).toMatchSnapshot();
   });
 });

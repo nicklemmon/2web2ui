@@ -2,30 +2,26 @@
 
 exports[`ApiKeysTab empty 1`] = `
 <Fragment>
-  <Panel>
-    <Panel.Section
-      style={
-        Object {
-          "textAlign": "center",
-        }
-      }
-    >
-      <Stack>
-        <p>
-          This subaccount has no API Keys assigned to it. You can assign an existing one, or create a new one.
-        </p>
-        <div>
-          <PageLink
-            as={[Function]}
-            to="/account/api-keys"
-            variant="secondary"
-          >
-            Manage API Keys
-          </PageLink>
-        </div>
-      </Stack>
-    </Panel.Section>
-  </Panel>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
+      <styled.div>
+        <Stack>
+          <p>
+            This subaccount has no API Keys assigned to it. You can assign an existing one, or create a new one.
+          </p>
+          <div>
+            <PageLink
+              as={[Function]}
+              to="/account/api-keys"
+              variant="secondary"
+            >
+              Manage API Keys
+            </PageLink>
+          </div>
+        </Stack>
+      </styled.div>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </Fragment>
 `;
 

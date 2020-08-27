@@ -131,17 +131,17 @@ export function Results(props) {
 
 function PlaceholderResults() {
   return (
-    <Panel>
+    <Panel.LEGACY>
       <Empty message="Choose some options to see your suppressions" />
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 
 function EmptyResults() {
   return (
-    <Panel>
+    <Panel.LEGACY>
       <Empty message="There are no results for your current query" />
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 

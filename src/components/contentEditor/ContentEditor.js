@@ -84,7 +84,7 @@ export class ContentEditorClass extends React.Component {
       <div className={styles.EditorSection}>
         <Box border="400">
           <Tabs selected={selectedTab} tabs={tabs} />
-          <Panel className={styles.EditorPanel}>
+          <Panel.LEGACY className={styles.EditorPanel}>
             <Field
               component={AceWrapper}
               mode={visibleFields[selectedTab].mode}
@@ -94,7 +94,7 @@ export class ContentEditorClass extends React.Component {
               syntaxValidation={visibleFields[selectedTab].syntaxValidation}
               validate={[this.requiredHtmlTextOrAmp, this.validTestDataJson]}
             />
-          </Panel>
+          </Panel.LEGACY>
         </Box>
       </div>
     );

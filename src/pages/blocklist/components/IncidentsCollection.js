@@ -107,10 +107,12 @@ export const IncidentsCollection = props => {
     >
       {({ filterBox, collection, pagination }) => (
         <>
-          <Panel>
-            <Panel.Section>{renderHeader({ textFieldComponent: filterBox })}</Panel.Section>
+          <Panel.LEGACY>
+            <Panel.LEGACY.Section>
+              {renderHeader({ textFieldComponent: filterBox })}
+            </Panel.LEGACY.Section>
             {collection}
-          </Panel>
+          </Panel.LEGACY>
           {pagination}
         </>
       )}

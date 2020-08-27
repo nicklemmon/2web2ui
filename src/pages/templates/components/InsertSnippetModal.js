@@ -13,9 +13,9 @@ const ModalWrapper = props => {
   const { open, onClose, children } = props;
 
   return (
-    <Modal open={open} onClose={onClose} showCloseButton={true}>
+    <Modal.LEGACY open={open} onClose={onClose} showCloseButton={true}>
       {children}
-    </Modal>
+    </Modal.LEGACY>
   );
 };
 
@@ -65,9 +65,9 @@ const InsertSnippetModal = props => {
 
   return (
     <ModalWrapper {...modalProps}>
-      <Panel title="Add a snippet">
+      <Panel.LEGACY title="Add a snippet">
         <form onSubmit={handleSubmit}>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Stack space="500">
               <p>
                 Snippets are a great way to manage sections like headers or footers that are used
@@ -107,15 +107,15 @@ const InsertSnippetModal = props => {
                 <CopyField id="snippet-copy-field" value={copyFieldValue} />
               </div>
             </Stack>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
 
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Button variant="primary" onClick={handleSubmit}>
               Copy Code
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </form>
-      </Panel>
+      </Panel.LEGACY>
     </ModalWrapper>
   );
 };

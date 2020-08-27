@@ -11,27 +11,27 @@ const searchCfg = config.support.algolia;
 
 export const OGSearchPanel = ({ defaultSearchText }) => (
   <InstantSearch appId={searchCfg.appID} apiKey={searchCfg.apiKey} indexName={searchCfg.index}>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <AlgoliaSearch defaultSearchText={defaultSearchText} />
-    </Panel.Section>
-    <Panel.Section className={styles.Results}>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section className={styles.Results}>
       <Hits hitComponent={AlgoliaResults} />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </InstantSearch>
 );
 
 const HibanaSearchPanel = ({ defaultSearchText }) => (
   <InstantSearch appId={searchCfg.appID} apiKey={searchCfg.apiKey} indexName={searchCfg.index}>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <AlgoliaSearch defaultSearchText={defaultSearchText} />
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <div className={styles.ResultsHibana}>
         <Box height="1100" overflowY="scroll">
           <Hits hitComponent={AlgoliaResults} />
         </Box>
       </div>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </InstantSearch>
 );
 

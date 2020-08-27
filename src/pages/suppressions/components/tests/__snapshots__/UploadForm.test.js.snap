@@ -3,7 +3,7 @@
 exports[`UploadForm tests should disable fields when submitting 1`] = `
 <Fragment>
   <form>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Field
           component={[Function]}
@@ -41,8 +41,8 @@ exports[`UploadForm tests should disable fields when submitting 1`] = `
           name="subaccount"
         />
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Button
         disabled={true}
         type="submit"
@@ -50,7 +50,7 @@ exports[`UploadForm tests should disable fields when submitting 1`] = `
       >
         Upload
       </Button>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </form>
 </Fragment>
 `;
@@ -58,7 +58,7 @@ exports[`UploadForm tests should disable fields when submitting 1`] = `
 exports[`UploadForm tests should render upload form 1`] = `
 <Fragment>
   <form>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Field
           component={[Function]}
@@ -96,8 +96,8 @@ exports[`UploadForm tests should render upload form 1`] = `
           name="subaccount"
         />
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Button
         disabled={false}
         type="submit"
@@ -105,7 +105,7 @@ exports[`UploadForm tests should render upload form 1`] = `
       >
         Upload
       </Button>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </form>
 </Fragment>
 `;

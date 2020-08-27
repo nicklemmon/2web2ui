@@ -2,16 +2,16 @@
 
 exports[`Form Container: Update Contact should render 1`] = `
 <form>
-  <Panel
+  <Panel.LEGACY
     title="Update Billing Contact"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Connect(BillingContactForm)
         countries={Array []}
         formName="updateContact"
       />
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <ButtonWrapper>
         <Button
           type="submit"
@@ -26,7 +26,7 @@ exports[`Form Container: Update Contact should render 1`] = `
           Cancel
         </Button>
       </ButtonWrapper>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </form>
 `;

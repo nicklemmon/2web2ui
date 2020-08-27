@@ -13,7 +13,7 @@ OGTable.Cell.displayName = 'OGTableCell';
 OGTable.HeaderCell.displayName = 'OGTableHeaderCell';
 OGTable.Row.displayName = 'OGTableRow';
 
-export function Table(props) {
+function Table(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -23,7 +23,7 @@ export function Table(props) {
   return <HibanaTable {...props} />;
 }
 
-export function Cell(props) {
+function Cell(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -33,7 +33,7 @@ export function Cell(props) {
   return <HibanaTable.Cell {...props} />;
 }
 
-export function HeaderCell(props) {
+function HeaderCell(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -43,7 +43,7 @@ export function HeaderCell(props) {
   return <HibanaTable.HeaderCell {...props} />;
 }
 
-export function Row(props) {
+function Row(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -53,12 +53,23 @@ export function Row(props) {
   return <HibanaTable.Row {...props} />;
 }
 
+function TotalsRow(props) {
+  const [state] = useHibana();
+  const { isHibanaEnabled } = state;
+
+  if (!isHibanaEnabled) throw new Error('Hibana must be enabled to use Table.TotalsRow');
+
+  return <HibanaTable.TotalsRow {...props} />;
+}
+
 Cell.displayName = 'Table.Cell';
 HeaderCell.displayName = 'Table.HeaderCell';
 Row.displayName = 'Table.Row';
+TotalsRow.displayName = 'Table.TotalsRow';
 
 Table.Cell = Cell;
 Table.HeaderCell = HeaderCell;
 Table.Row = Row;
+Table.TotalsRow = TotalsRow;
 
 export default Table;

@@ -95,7 +95,7 @@ export const AllMessagesPage = ({
     >
       <Grid>
         <Grid.Column xs={12} sm={12} md={7}>
-          <Panel title="Deliverability" sectioned>
+          <Panel.LEGACY title="Deliverability" sectioned>
             <Grid>
               <Grid.Column>
                 <Definition>
@@ -122,10 +122,10 @@ export const AllMessagesPage = ({
                 </Definition>
               </Grid.Column>
             </Grid>
-          </Panel>
+          </Panel.LEGACY>
         </Grid.Column>
         <Grid.Column xs={12} sm={12} md={5}>
-          <Panel title="Authentication" sectioned>
+          <Panel.LEGACY title="Authentication" sectioned>
             <Grid>
               <Grid.Column>
                 <Definition>
@@ -152,7 +152,7 @@ export const AllMessagesPage = ({
                 </Definition>
               </Grid.Column>
             </Grid>
-          </Panel>
+          </Panel.LEGACY>
         </Grid.Column>
       </Grid>
       <AllMessagesCollectionComponent data={messages} testId={id} />

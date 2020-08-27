@@ -150,21 +150,21 @@ export function ReportOptions(props) {
 
   return (
     <div data-id="report-options">
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <SavedReportsTypeahead
           selectedItem={selectedReport}
           handleReportChange={handleReportChange}
         />
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <DateTimeSection
           reportOptions={reportOptions}
           handleTimezoneSelect={handleTimezoneSelect}
           reportLoading={reportLoading}
           refreshReportOptions={refreshReportOptions}
         />
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Inline space="300">
           <Button {...getActivatorProps()} onClick={() => handleDrawerOpen(0)} variant="secondary">
             Add Metrics
@@ -186,17 +186,17 @@ export function ReportOptions(props) {
             </Tabs>
           </Drawer.Content>
         </Drawer>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
       {!isEmpty && (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Legend metrics={processedMetrics} removeMetric={handleRemoveMetric} />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       )}
       {!isEmpty &&
       Boolean(reportOptions.filters.length) && ( //Only show if there are active filters
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <ActiveFilters />
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         )}
     </div>
   );

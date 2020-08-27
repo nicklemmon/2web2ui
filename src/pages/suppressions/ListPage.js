@@ -50,7 +50,7 @@ export class ListPage extends Component {
           to: '/lists/suppressions/create',
         }}
       >
-        <Panel mb="0" className={styles.FilterPanel}>
+        <Panel.LEGACY mb="0" className={styles.FilterPanel}>
           <TabsWrapper>
             <Tabs
               selected={selectedTab}
@@ -61,14 +61,14 @@ export class ListPage extends Component {
               }))}
             />
           </TabsWrapper>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             {selectedTab === 1 ? (
               <EmailSearch onSubmit={searchRecipient} hasSubaccounts={hasSubaccounts} />
             ) : (
               <SuppressionSearch />
             )}
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
         <Results
           results={list}
           loading={loading}

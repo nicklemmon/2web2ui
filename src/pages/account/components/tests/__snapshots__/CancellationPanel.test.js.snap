@@ -2,10 +2,10 @@
 
 exports[`CancellationPanel renders 1`] = `
 <Fragment>
-  <Panel
+  <Panel.LEGACY
     title="Request Account Cancellation"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <p>
           If you choose to cancel your account, it will be cancelled at the end of your billing cycle. You can change your mind at any time until 8am UTC on the date of cancellation.
@@ -43,16 +43,16 @@ exports[`CancellationPanel renders 1`] = `
           </ul>
         </div>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Button
         onClick={[Function]}
         variant="destructive"
       >
         Cancel Account
       </Button>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <ConfirmationModal
     cancelVerb="Keep My Account"
     confirmVerb="Cancel My Account"

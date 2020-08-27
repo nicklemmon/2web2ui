@@ -60,7 +60,7 @@ export const Engagement = ({ variant, showRate }) => {
   }
 
   return (
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue label="Engagement Rate Achieved">
         <h6>
           <Tooltip dark content={metricMarkup}>
@@ -71,15 +71,15 @@ export const Engagement = ({ variant, showRate }) => {
           </Tooltip>
         </h6>
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   );
 };
 
 export const Variant = ({ variant = {}, title, showRate }) => {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section
         actions={[
           {
             content: (
@@ -102,7 +102,7 @@ export const Variant = ({ variant = {}, title, showRate }) => {
           <h6>{variant.template_id}</h6>
         </LabelledValue>
         <PercentOrSample variant={variant} />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
       <Engagement variant={variant} showRate={showRate} />
     </OGOnlyWrapper>
   );

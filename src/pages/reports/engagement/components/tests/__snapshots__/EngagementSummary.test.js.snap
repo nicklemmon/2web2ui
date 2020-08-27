@@ -8,7 +8,7 @@ exports[`EngagementSummary renders loading panel 1`] = `
 `;
 
 exports[`EngagementSummary renders metric summary 1`] = `
-<Panel
+<Panel.LEGACY
   className="EngagementSummary"
   data-id="summary-panel"
 >
@@ -98,11 +98,11 @@ exports[`EngagementSummary renders metric summary 1`] = `
       </Grid.Column>
     </Grid>
   </Box>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`EngagementSummary renders metric summary with custom time range 1`] = `
-<Panel
+<Panel.LEGACY
   className="EngagementSummary"
   data-id="summary-panel"
 >
@@ -197,7 +197,7 @@ exports[`EngagementSummary renders metric summary with custom time range 1`] = `
       </Grid.Column>
     </Grid>
   </Box>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`EngagementSummary returns null 1`] = `""`;

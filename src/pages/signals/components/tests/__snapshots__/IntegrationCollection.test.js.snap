@@ -40,9 +40,9 @@ exports[`IntegrationCollection renders Table 1`] = `
 `;
 
 exports[`IntegrationCollection renders no data found 1`] = `
-<Panel>
+<Panel.LEGACY>
   <Empty
     message="No Data Found!"
   />
-</Panel>
+</Panel.LEGACY>
 `;

@@ -19,9 +19,9 @@ export const TfaPage = ({ loggedIn, tfaEnabled }) => {
   return (
     <React.Fragment>
       <CenteredLogo />
-      <Panel sectioned title="Two-factor Authentication">
+      <Panel.LEGACY sectioned title="Two-factor Authentication">
         <TfaForm />
-      </Panel>
+      </Panel.LEGACY>
     </React.Fragment>
   );
 };

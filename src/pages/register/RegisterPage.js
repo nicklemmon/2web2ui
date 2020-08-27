@@ -52,24 +52,24 @@ export class RegisterPage extends Component {
 
     if (invite.error) {
       return (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <p>
             This invite has expired, please ask your account administrator to re-send your
             invitation
           </p>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       );
     }
 
     return (
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <p>
             <small>{invite.from} invited you to join their SparkPost account.</small>
           </p>
           <RegisterUserForm onSubmit={this.onSubmit} email={invite.email} />
         </Stack>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     );
   }
 
@@ -84,8 +84,8 @@ export class RegisterPage extends Component {
       <div>
         <CenteredLogo />
 
-        <Panel title="Set Password">{this.renderRegisterPanel()}</Panel>
-        <Panel.Footer
+        <Panel.LEGACY title="Set Password">{this.renderRegisterPanel()}</Panel.LEGACY>
+        <Panel.LEGACY.Footer
           left={
             <small>
               <PageLink to="/auth">Already signed up?</PageLink>

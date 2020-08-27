@@ -63,7 +63,7 @@ exports[`Support Form Component Form should render unauthorized message 1`] = `<
 
 exports[`Support Form Component Form should render with selected issue message label 1`] = `
 <form>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -103,8 +103,8 @@ exports[`Support Form Component Form should render with selected issue message l
         validate={[Function]}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         submit={true}
@@ -119,6 +119,6 @@ exports[`Support Form Component Form should render with selected issue message l
         Cancel
       </Button>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;

@@ -57,32 +57,32 @@ export function ProfilePage(props) {
     <Page title="Profile">
       {email_verified === false && <VerifyEmailBanner verifying={verifyingEmail} />}
 
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <LabelledValue label="Username" value={username} />
           <LabelledValue label="Email Address" value={email} />
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
 
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <ThemeToggleForm onChange={updateTheme} />
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
 
       <AccessControl condition={all(not(isAzure), not(isHeroku))}>
         <AccessControl condition={not(isSso)}>
           <TfaManager />
         </AccessControl>
 
-        <Panel title="Edit Profile">
+        <Panel.LEGACY title="Edit Profile">
           <NameForm onSubmit={updateProfile} />
-        </Panel>
+        </Panel.LEGACY>
 
         <AccessControl condition={not(isSso)}>
-          <Panel title="Update Password">
+          <Panel.LEGACY title="Update Password">
             <PasswordForm onSubmit={updatePassword} />
-          </Panel>
+          </Panel.LEGACY>
         </AccessControl>
       </AccessControl>
     </Page>

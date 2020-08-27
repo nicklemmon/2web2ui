@@ -64,7 +64,7 @@ export function CustomReports(props) {
   const saveDisabled = name === '' || loading;
 
   return (
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <div className={styles.Wrap}>
         <div className={styles.NameWrapper}>
           <TextField
@@ -97,7 +97,7 @@ export function CustomReports(props) {
           />
         </div>
       </div>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   );
 }
 

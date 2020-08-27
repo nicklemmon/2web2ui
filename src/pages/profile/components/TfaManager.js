@@ -105,7 +105,7 @@ export class TfaManager extends Component {
     ];
 
     return (
-      <Panel
+      <Panel.LEGACY
         sectioned
         title="Two-factor Authentication"
         actions={enabled ? enabledActions : disabledActions}
@@ -133,7 +133,7 @@ export class TfaManager extends Component {
           toggleError={this.props.toggleError}
           enabled={enabled}
         />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

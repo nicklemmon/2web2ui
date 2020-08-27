@@ -124,15 +124,15 @@ export function UploadedListPage(props) {
         title="Recipient Validation"
         breadcrumbAction={{ content: 'Back', component: PageLink, to: '/recipient-validation' }}
       >
-        <Panel>
-          <OGOnlyWrapper as={Panel.Section}>
+        <Panel.LEGACY>
+          <OGOnlyWrapper as={Panel.LEGACY.Section}>
             <div className={styles.dateHeader}>
               <strong>{formatDate(job.updatedAt)}</strong>
               <span> at </span>
               <strong>{formatTime(job.updatedAt)}</strong>
             </div>
           </OGOnlyWrapper>
-          <OGOnlyWrapper as={Panel.Section}>
+          <OGOnlyWrapper as={Panel.LEGACY.Section}>
             {job.status === 'queued_for_batch' && (
               <UploadedListForm job={job} onSubmit={handleSubmit} />
             )}
@@ -143,7 +143,7 @@ export function UploadedListPage(props) {
               <ListProgress job={job} />
             )}
           </OGOnlyWrapper>
-        </Panel>
+        </Panel.LEGACY>
         {job.status === 'queued_for_batch' && !billingLoading && (
           <ValidateSection
             credit_card={credit_card}

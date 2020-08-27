@@ -5,14 +5,14 @@ exports[`Alert Form Component should render the alert form component correctly 1
   <Form
     onSubmit={[MockFunction]}
   >
-    <Panel>
+    <Panel.LEGACY>
       <Grid>
         <Grid.Column
           lg={9}
           md={11}
           sm={12}
         >
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <label
               htmlFor="name"
             >
@@ -205,10 +205,10 @@ exports[`Alert Form Component should render the alert form component correctly 1
             >
               Create Alert
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </Grid.Column>
       </Grid>
-    </Panel>
+    </Panel.LEGACY>
   </Form>
 </Fragment>
 `;

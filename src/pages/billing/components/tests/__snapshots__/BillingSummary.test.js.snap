@@ -41,11 +41,11 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -68,7 +68,7 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={true}
       count={0}
@@ -80,7 +80,7 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -108,13 +108,13 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY
     data-id="billing-panel"
     title="Billing"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -128,8 +128,8 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
       <CardSummary
         label="Credit Card"
       />
-    </Panel.Section>
-    <Panel.Section
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -148,11 +148,11 @@ exports[`Component: Billing Summary should render correctly for a paid plan 1`] 
         </h6>
         <p />
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
   />
@@ -217,11 +217,11 @@ exports[`Component: Billing Summary should render correctly for a standard free 
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -244,7 +244,7 @@ exports[`Component: Billing Summary should render correctly for a standard free 
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={false}
       count={0}
@@ -256,7 +256,7 @@ exports[`Component: Billing Summary should render correctly for a standard free 
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -284,11 +284,11 @@ exports[`Component: Billing Summary should render correctly for a standard free 
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
   />
@@ -353,11 +353,11 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -380,7 +380,7 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={false}
       count={0}
@@ -392,7 +392,7 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -420,13 +420,13 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY
     data-id="billing-panel"
     title="Billing"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -440,8 +440,8 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
       <CardSummary
         label="Credit Card"
       />
-    </Panel.Section>
-    <Panel.Section
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -460,11 +460,11 @@ exports[`Component: Billing Summary should render correctly if you can't buy IPs
         </h6>
         <p />
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
   />
@@ -529,11 +529,11 @@ exports[`Component: Billing Summary should render correctly if you can't change 
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={Array []}
     >
       <LabelledValue
@@ -547,7 +547,7 @@ exports[`Component: Billing Summary should render correctly if you can't change 
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={true}
       count={0}
@@ -559,7 +559,7 @@ exports[`Component: Billing Summary should render correctly if you can't change 
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -587,13 +587,13 @@ exports[`Component: Billing Summary should render correctly if you can't change 
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY
     data-id="billing-panel"
     title="Billing"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -607,8 +607,8 @@ exports[`Component: Billing Summary should render correctly if you can't change 
       <CardSummary
         label="Credit Card"
       />
-    </Panel.Section>
-    <Panel.Section
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -627,11 +627,11 @@ exports[`Component: Billing Summary should render correctly if you can't change 
         </h6>
         <p />
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
   />
@@ -655,7 +655,9 @@ exports[`Component: Billing Summary should render correctly if you can't change 
 </div>
 `;
 
-exports[`Component: Billing Summary should render correctly if you can't update your billing info 1`] = `
+exports[
+  `Component: Billing Summary should render correctly if you can't update your billing info 1`
+] = `
 <div>
   <PendingPlanBanner
     account={
@@ -696,11 +698,11 @@ exports[`Component: Billing Summary should render correctly if you can't update 
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -723,7 +725,7 @@ exports[`Component: Billing Summary should render correctly if you can't update 
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={true}
       count={0}
@@ -735,7 +737,7 @@ exports[`Component: Billing Summary should render correctly if you can't update 
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -763,11 +765,11 @@ exports[`Component: Billing Summary should render correctly if you can't update 
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
   />
@@ -832,11 +834,11 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -859,7 +861,7 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={true}
       count={0}
@@ -871,7 +873,7 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -899,13 +901,13 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY
     data-id="billing-panel"
     title="Billing"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -919,8 +921,8 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
       <CardSummary
         label="Credit Card"
       />
-    </Panel.Section>
-    <Panel.Section
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -939,18 +941,18 @@ exports[`Component: Billing Summary should render with IP modal open 1`] = `
         </h6>
         <p />
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={true}
   >
     <AddIpsForm
       onClose={[Function]}
     />
-  </Modal>
+  </Modal.LEGACY>
   <OGOnlyWrapper
     as={[Function]}
     onClose={[Function]}
@@ -1012,11 +1014,11 @@ exports[`Component: Billing Summary should render with the billing contact modal
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1039,7 +1041,7 @@ exports[`Component: Billing Summary should render with the billing contact modal
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={true}
       count={0}
@@ -1051,7 +1053,7 @@ exports[`Component: Billing Summary should render with the billing contact modal
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -1079,13 +1081,13 @@ exports[`Component: Billing Summary should render with the billing contact modal
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY
     data-id="billing-panel"
     title="Billing"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1099,8 +1101,8 @@ exports[`Component: Billing Summary should render with the billing contact modal
       <CardSummary
         label="Credit Card"
       />
-    </Panel.Section>
-    <Panel.Section
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1119,18 +1121,18 @@ exports[`Component: Billing Summary should render with the billing contact modal
         </h6>
         <p />
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={true}
   >
     <UpdateContactForm
       onCancel={[Function]}
     />
-  </Modal>
+  </Modal.LEGACY>
   <OGOnlyWrapper
     as={[Function]}
     onClose={[Function]}
@@ -1192,11 +1194,11 @@ exports[`Component: Billing Summary should render with the payment info modal op
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1219,7 +1221,7 @@ exports[`Component: Billing Summary should render with the payment info modal op
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={true}
       count={0}
@@ -1231,7 +1233,7 @@ exports[`Component: Billing Summary should render with the payment info modal op
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -1259,13 +1261,13 @@ exports[`Component: Billing Summary should render with the payment info modal op
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY
     data-id="billing-panel"
     title="Billing"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1279,8 +1281,8 @@ exports[`Component: Billing Summary should render with the payment info modal op
       <CardSummary
         label="Credit Card"
       />
-    </Panel.Section>
-    <Panel.Section
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1299,18 +1301,18 @@ exports[`Component: Billing Summary should render with the payment info modal op
         </h6>
         <p />
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={true}
   >
     <UpdatePaymentForm
       onCancel={[Function]}
     />
-  </Modal>
+  </Modal.LEGACY>
   <OGOnlyWrapper
     as={[Function]}
     onClose={[Function]}
@@ -1372,11 +1374,11 @@ exports[`Component: Billing Summary should show the invoice history if there are
     }
     accountAgeInDays={5}
   />
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Plan Overview"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1399,7 +1401,7 @@ exports[`Component: Billing Summary should show the invoice history if there are
           }
         />
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <DedicatedIpSummarySection
       canPurchaseIps={true}
       count={0}
@@ -1411,7 +1413,7 @@ exports[`Component: Billing Summary should show the invoice history if there are
         }
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Recipient Validation"
       >
@@ -1439,13 +1441,13 @@ exports[`Component: Billing Summary should show the invoice history if there are
           How was this calculated?
         </ButtonLink>
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY
     data-id="billing-panel"
     title="Billing"
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1459,8 +1461,8 @@ exports[`Component: Billing Summary should show the invoice history if there are
       <CardSummary
         label="Credit Card"
       />
-    </Panel.Section>
-    <Panel.Section
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section
       actions={
         Array [
           Object {
@@ -1479,8 +1481,8 @@ exports[`Component: Billing Summary should show the invoice history if there are
         </h6>
         <p />
       </LabelledValue>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Connect(InvoiceHistory)
     invoices={
       Array [
@@ -1491,7 +1493,7 @@ exports[`Component: Billing Summary should show the invoice history if there are
   />
   <PremiumBanner />
   <EnterpriseBanner />
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
   />

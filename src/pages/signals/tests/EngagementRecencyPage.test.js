@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { Panel } from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
 import { EngagementRecencyPage } from '../EngagementRecencyPage';
 
@@ -41,7 +42,7 @@ describe('EngagementRecencyPage', () => {
   it('renders loading correctly', () => {
     const wrapper = subject({ loading: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find(Panel.LEGACY)).toMatchSnapshot();
   });
 
   it('does not render SpamTrapsPreview when facet is mb_provider', () => {
@@ -55,7 +56,7 @@ describe('EngagementRecencyPage', () => {
   it('renders empty correctly', () => {
     const wrapper = subject({ empty: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find(Panel.LEGACY)).toMatchSnapshot();
   });
 
   it('renders error correctly', () => {

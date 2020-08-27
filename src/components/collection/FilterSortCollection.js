@@ -66,11 +66,11 @@ const OGFilterSortCollection = ({
     >
       {({ collection, filterBox, pagination }) => (
         <>
-          <Panel>
+          <Panel.LEGACY>
             {title && (
-              <Panel.Section className={styles.Title}>
+              <Panel.LEGACY.Section className={styles.Title}>
                 <h3>{title}</h3>
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             )}
             <div className={styles.FilterPanel}>
               <Grid>
@@ -91,7 +91,7 @@ const OGFilterSortCollection = ({
               </Grid>
             </div>
             {collection}
-          </Panel>
+          </Panel.LEGACY>
           {pagination}
         </>
       )}
@@ -159,8 +159,8 @@ const HibanaFilterSortCollection = ({
     >
       {({ collection, filterBox, pagination }) => (
         <>
-          <Panel title={title}>
-            <Panel.Section>
+          <Panel.LEGACY title={title}>
+            <Panel.LEGACY.Section>
               <Grid>
                 <Grid.Column xs={12} md={9}>
                   {filterBox}
@@ -180,10 +180,10 @@ const HibanaFilterSortCollection = ({
                   />
                 </Grid.Column>
               </Grid>
-            </Panel.Section>
+            </Panel.LEGACY.Section>
 
             {collection}
-          </Panel>
+          </Panel.LEGACY>
           {pagination}
         </>
       )}

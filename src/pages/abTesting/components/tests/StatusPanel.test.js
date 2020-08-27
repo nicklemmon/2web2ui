@@ -12,12 +12,12 @@ describe('Status Panel Component', () => {
       test: {
         id: 'test_one',
         version: 4,
-        status: 'running'
+        status: 'running',
       },
       latest: 5,
       id: 'test_one',
       version: 4,
-      subaccountId: 101
+      subaccountId: 101,
     };
     wrapper = shallow(<StatusPanel {...props} />);
   });
@@ -33,14 +33,14 @@ describe('Status Panel Component', () => {
 
   it('should not render version selector if latest version is 1', () => {
     wrapper.setProps({ latest: 1 });
-    expect(wrapper.find(Panel.Section).prop('actions')).toEqual(null);
+    expect(wrapper.find(Panel.LEGACY.Section).prop('actions')).toEqual(null);
   });
 
   describe('version selector', () => {
     let versionSelector;
 
     beforeEach(() => {
-      versionSelector = shallow(wrapper.find(Panel.Section).prop('actions')[0].content);
+      versionSelector = shallow(wrapper.find(Panel.LEGACY.Section).prop('actions')[0].content);
     });
 
     it('should render correctly', () => {

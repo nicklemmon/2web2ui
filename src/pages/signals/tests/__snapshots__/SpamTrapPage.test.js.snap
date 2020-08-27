@@ -53,10 +53,10 @@ exports[`Signals Spam Trap Page renders correctly 1`] = `
   facetId="test.com"
   title="Spam Traps"
 >
-  <Panel
+  <Panel.LEGACY
     title="Spam Trap Monitoring"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -67,14 +67,14 @@ exports[`Signals Spam Trap Page renders correctly 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Grid>
     <Grid.Column
       md={7}
       sm={12}
     >
-      <Panel>
+      <Panel.LEGACY>
         <ChartHeader
           primaryArea={
             <Calculation
@@ -88,7 +88,7 @@ exports[`Signals Spam Trap Page renders correctly 1`] = `
   excessive rate of spam trap hits is an indicator of poor list procurement and hygiene practices.
 "
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <div
             className="LiftTooltip"
           >
@@ -216,8 +216,8 @@ exports[`Signals Spam Trap Page renders correctly 1`] = `
               tooltipContent={[Function]}
             />
           </div>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </Grid.Column>
     <Grid.Column
       md={5}
@@ -239,10 +239,10 @@ exports[`Signals Spam Trap Page renders correctly 1`] = `
 
 exports[`Signals Spam Trap Page renders empty correctly 1`] = `
 Array [
-  <Panel
+  <Panel.LEGACY
     title="Spam Trap Monitoring"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -253,9 +253,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY>
     <ChartHeader
       primaryArea={
         <Calculation
@@ -272,7 +272,7 @@ Array [
     <Empty
       message="Insufficient data to populate this chart"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;
 
@@ -289,10 +289,10 @@ exports[`Signals Spam Trap Page renders error correctly 1`] = `
   facetId="test.com"
   title="Spam Traps"
 >
-  <Panel
+  <Panel.LEGACY
     title="Spam Trap Monitoring"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -303,14 +303,14 @@ exports[`Signals Spam Trap Page renders error correctly 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Grid>
     <Grid.Column
       md={7}
       sm={12}
     >
-      <Panel>
+      <Panel.LEGACY>
         <ChartHeader
           primaryArea={
             <Calculation
@@ -327,7 +327,7 @@ exports[`Signals Spam Trap Page renders error correctly 1`] = `
         <Empty
           message="Unable to Load Data"
         />
-      </Panel>
+      </Panel.LEGACY>
     </Grid.Column>
     <Grid.Column
       md={5}
@@ -340,10 +340,10 @@ exports[`Signals Spam Trap Page renders error correctly 1`] = `
 
 exports[`Signals Spam Trap Page renders loading correctly 1`] = `
 Array [
-  <Panel
+  <Panel.LEGACY
     title="Spam Trap Monitoring"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -354,9 +354,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY>
     <ChartHeader
       primaryArea={
         <Calculation
@@ -373,6 +373,6 @@ Array [
     <PanelSectionLoading
       minHeight="225px"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;

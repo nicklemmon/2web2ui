@@ -3,7 +3,7 @@
 exports[`AddForm tests should disable fields when submitting 1`] = `
 <Fragment>
   <form>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Field
           component={[Function]}
@@ -47,8 +47,8 @@ exports[`AddForm tests should disable fields when submitting 1`] = `
           name="description"
         />
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Button
         disabled={true}
         type="submit"
@@ -56,7 +56,7 @@ exports[`AddForm tests should disable fields when submitting 1`] = `
       >
         Add / Update
       </Button>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </form>
 </Fragment>
 `;
@@ -64,7 +64,7 @@ exports[`AddForm tests should disable fields when submitting 1`] = `
 exports[`AddForm tests should make form submitable when dirty and not submitting 1`] = `
 <Fragment>
   <form>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Field
           component={[Function]}
@@ -108,8 +108,8 @@ exports[`AddForm tests should make form submitable when dirty and not submitting
           name="description"
         />
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Button
         disabled={false}
         type="submit"
@@ -117,7 +117,7 @@ exports[`AddForm tests should make form submitable when dirty and not submitting
       >
         Add / Update
       </Button>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </form>
 </Fragment>
 `;
@@ -125,7 +125,7 @@ exports[`AddForm tests should make form submitable when dirty and not submitting
 exports[`AddForm tests should render add form 1`] = `
 <Fragment>
   <form>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Field
           component={[Function]}
@@ -169,8 +169,8 @@ exports[`AddForm tests should render add form 1`] = `
           name="description"
         />
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Button
         disabled={true}
         type="submit"
@@ -178,7 +178,7 @@ exports[`AddForm tests should render add form 1`] = `
       >
         Add / Update
       </Button>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </form>
 </Fragment>
 `;

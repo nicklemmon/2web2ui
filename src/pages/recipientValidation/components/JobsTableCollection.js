@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { ScreenReaderOnly, Panel, Table } from 'src/components/matchbox';
 import { TableCollection } from 'src/components/collection';
 import { formatDateTime } from 'src/helpers/date';
@@ -8,6 +9,14 @@ import JobFileName from './JobFileName';
 import JobAddressCount from './JobAddressCount';
 import JobActionLink from './JobActionLink';
 import JobStatusTag from './JobStatusTag';
+
+const NoPadding = styled.div`
+  padding: 0;
+`;
+
+const RightAlignedText = styled.div`
+  text-align: 'right';
+`;
 
 export const JobsTableCollection = ({ jobs }) => {
   const columns = [
@@ -43,9 +52,9 @@ export const JobsTableCollection = ({ jobs }) => {
     },
     {
       dataCellComponent: ({ rejectedUrl, status, jobId }) => (
-        <div style={{ textAlign: 'right' }}>
+        <RightAlignedText>
           <JobActionLink fileHref={rejectedUrl} status={status} jobId={jobId} />
-        </div>
+        </RightAlignedText>
       ),
       header: {
         label: <ScreenReaderOnly>Actions</ScreenReaderOnly>,
@@ -54,17 +63,17 @@ export const JobsTableCollection = ({ jobs }) => {
   ];
 
   const TableWrapper = props => (
-    <Panel>
-      <Panel.Section>
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section>
         <Heading as="h3" looksLike="h4">
           Recent Validations
         </Heading>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
 
-      <Panel.Section style={{ padding: 0 }}>
+      <NoPadding as={Panel.LEGACY.Section}>
         <Table>{props.children}</Table>
-      </Panel.Section>
-    </Panel>
+      </NoPadding>
+    </Panel.LEGACY>
   );
 
   const renderRow = columns => props =>

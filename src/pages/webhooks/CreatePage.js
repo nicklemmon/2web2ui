@@ -94,9 +94,9 @@ export class WebhooksCreate extends Component {
         title="Create Webhook"
         breadcrumbAction={{ content: 'View All Webhooks', Component: PageLink, to: '/webhooks' }}
       >
-        <Panel>
+        <Panel.LEGACY>
           <WebhookForm newWebhook={true} onSubmit={this.create} />
-        </Panel>
+        </Panel.LEGACY>
       </Page>
     );
   }

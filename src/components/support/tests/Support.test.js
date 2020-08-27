@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-
+import { Modal } from 'src/components/matchbox';
 import { Support } from '../Support';
 import findRouteByPath from 'src/helpers/findRouteByPath';
 
@@ -70,7 +70,7 @@ describe('Support', () => {
 
   it('renders closed support panel', () => {
     wrapper.setProps({ showSupportPanel: false });
-    expect(wrapper.find('Modal').props()).toHaveProperty('open', false);
+    expect(wrapper.find(Modal.LEGACY).props()).toHaveProperty('open', false);
   });
 
   it('renders nothing when not logged in', () => {
@@ -79,7 +79,7 @@ describe('Support', () => {
   });
 
   it('calls closeSupportPanel when modal is closed', () => {
-    wrapper.find('Modal').simulate('close');
+    wrapper.find(Modal.LEGACY).simulate('close');
     expect(props.closeSupportPanel).toHaveBeenCalled();
   });
 

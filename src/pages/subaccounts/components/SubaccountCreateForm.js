@@ -24,7 +24,7 @@ export class SubaccountCreateForm extends Component {
 
     return (
       <form onSubmit={handleSubmit}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <NameField disabled={submitting} />
             <ApiKeyCheckBox disabled={submitting} createApiKey={createApiKey} />
@@ -41,8 +41,8 @@ export class SubaccountCreateForm extends Component {
               </Stack>
             )}
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <ButtonWrapper>
             <Button variant="primary" submit disabled={submitting || pristine}>
               {submitting ? 'Loading...' : 'Create Subaccount'}
@@ -57,7 +57,7 @@ export class SubaccountCreateForm extends Component {
               Cancel
             </PageLink>
           </ButtonWrapper>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

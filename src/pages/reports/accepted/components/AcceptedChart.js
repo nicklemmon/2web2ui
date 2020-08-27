@@ -122,14 +122,14 @@ export class AcceptedChartClassComponent extends Component {
 
     if (loading) {
       return (
-        <Panel title="Accepted Rates" sectioned className={styles.LoadingPanel}>
+        <Panel.LEGACY title="Accepted Rates" sectioned className={styles.LoadingPanel}>
           <Loading />
-        </Panel>
+        </Panel.LEGACY>
       );
     }
 
     return (
-      <Panel title="Accepted Rates" sectioned>
+      <Panel.LEGACY title="Accepted Rates" sectioned>
         <Grid>
           <Grid.Column xs={12} lg={5}>
             <div className={styles.ChartWrapper}>
@@ -154,7 +154,7 @@ export class AcceptedChartClassComponent extends Component {
             />
           </Grid.Column>
         </Grid>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

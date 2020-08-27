@@ -19,7 +19,7 @@ exports[`Page: Webhook Details should render happy path 1`] = `
   }
   title="My Hooky"
 >
-  <Panel>
+  <Panel.LEGACY>
     <Tabs
       selected={1}
       tabs={
@@ -55,7 +55,7 @@ exports[`Page: Webhook Details should render happy path 1`] = `
       path="/webhooks/details/my-id/batches"
       render={[Function]}
     />
-  </Panel>
+  </Panel.LEGACY>
   <DeleteModal
     content={
       <p>

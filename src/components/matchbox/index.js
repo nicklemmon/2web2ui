@@ -27,6 +27,7 @@ export { default as Popover } from './Popover';
 export { default as Portal } from './Portal';
 export { default as ProgressBar } from './ProgressBar';
 export { default as Radio } from './Radio';
+export { default as RadioCard } from './RadioCard';
 export { default as ScreenReaderOnly } from './ScreenReaderOnly';
 export { default as Select } from './Select';
 export { default as Slider } from './Slider';

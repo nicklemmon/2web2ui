@@ -28,7 +28,7 @@ describe('Feature Change Section', () => {
   });
 
   it('should render loading', () => {
-    expect(subject({ loading: true, features: ['not-empty'] }).find('Loading')).toExist();
+    expect(subject({ loading: true, features: ['not-empty'] }).find('PanelLoading')).toExist();
   });
 
   it('should render features', () => {

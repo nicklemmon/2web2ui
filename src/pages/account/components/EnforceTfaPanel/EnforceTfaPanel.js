@@ -57,7 +57,7 @@ export class EnforceTFAPanel extends React.Component {
     }
 
     return (
-      <Panel
+      <Panel.LEGACY
         title="Two-factor Authentication"
         actions={[
           {
@@ -69,11 +69,11 @@ export class EnforceTFAPanel extends React.Component {
         ]}
       >
         {ssoEnabled && (
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <p>
               Mandatory two-factor authentication is not available while single sign-on is enabled.
             </p>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         )}
         <TogglePanelSection
           readOnly={ssoEnabled}
@@ -126,7 +126,7 @@ export class EnforceTFAPanel extends React.Component {
           onCancel={this.onCancel}
           onConfirm={() => this.setTfaRequired(false)}
         />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

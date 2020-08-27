@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Page: Smtp tests should disable form when updateLoading is true 1`] = `
-<Panel
+<Panel.LEGACY
   sectioned={true}
   title="Engagement Tracking"
 >
@@ -18,11 +18,11 @@ exports[`Page: Smtp tests should disable form when updateLoading is true 1`] = `
       type="checkbox"
     />
   </Stack>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`Page: Smtp tests should render form correctly with defaults 1`] = `
-<Panel
+<Panel.LEGACY
   sectioned={true}
   title="Engagement Tracking"
 >
@@ -39,5 +39,5 @@ exports[`Page: Smtp tests should render form correctly with defaults 1`] = `
       type="checkbox"
     />
   </Stack>
-</Panel>
+</Panel.LEGACY>
 `;

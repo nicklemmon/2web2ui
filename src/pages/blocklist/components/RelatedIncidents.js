@@ -41,9 +41,9 @@ const RelatedIncidents = ({ incidents = [], loading, name = '', type = '' }) => 
         : `No other recent ${name} incidents`;
 
     return (
-      <Panel>
+      <Panel.LEGACY>
         <Empty message={message} />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 
@@ -94,7 +94,7 @@ const RelatedIncidents = ({ incidents = [], loading, name = '', type = '' }) => 
   };
 
   return (
-    <Panel data-id={`related-incidents-${type}`}>
+    <Panel.LEGACY data-id={`related-incidents-${type}`}>
       <TableCollection
         wrapperComponent={TableWrapper}
         columns={columns}
@@ -105,7 +105,7 @@ const RelatedIncidents = ({ incidents = [], loading, name = '', type = '' }) => 
         defaultSortDirection="desc"
         saveCsv={false}
       />
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: EnableTfaPage should render correctly 1`] = `
-<Panel
+<Panel.LEGACY
   sectioned={true}
   title="Enable Two Factor Authentication"
 >
@@ -13,5 +13,5 @@ exports[`Component: EnableTfaPage should render correctly 1`] = `
       afterEnable={[Function]}
     />
   </Stack>
-</Panel>
+</Panel.LEGACY>
 `;

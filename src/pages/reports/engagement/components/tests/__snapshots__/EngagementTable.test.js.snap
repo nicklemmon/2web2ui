@@ -8,11 +8,11 @@ exports[`EngagementTable when loading 1`] = `
 `;
 
 exports[`EngagementTable when no results 1`] = `
-<Panel>
+<Panel.LEGACY>
   <Empty
     message="No clicks to report"
   />
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`EngagementTable when renders table 1`] = `

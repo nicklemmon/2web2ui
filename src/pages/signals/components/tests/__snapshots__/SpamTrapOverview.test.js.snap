@@ -31,8 +31,8 @@ exports[`SpamTrapOverview history component renders relative sparkline 1`] = `
 `;
 
 exports[`SpamTrapOverview renders overview panel with controls and table 1`] = `
-<Panel>
-  <Panel.Section>
+<Panel.LEGACY>
+  <Panel.LEGACY.Section>
     <div
       className="Controls"
     >
@@ -41,7 +41,7 @@ exports[`SpamTrapOverview renders overview panel with controls and table 1`] = `
         onChange={[Function]}
       />
     </div>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <Connect(SummaryTable)
     data={
       Array [
@@ -101,5 +101,5 @@ exports[`SpamTrapOverview renders overview panel with controls and table 1`] = `
       width="15%"
     />
   </Connect(SummaryTable)>
-</Panel>
+</Panel.LEGACY>
 `;

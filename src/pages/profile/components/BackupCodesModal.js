@@ -62,10 +62,10 @@ export default class BackupCodesModal extends Component {
     const hasCodes = activeCount > 0;
 
     return (
-      <Modal open={open}>
-        <Panel title="Generate Two-factor Backup Codes">
+      <Modal.LEGACY open={open}>
+        <Panel.LEGACY title="Generate Two-factor Backup Codes">
           <form onSubmit={e => e.preventDefault()}>
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <Stack>
                 {!generatedCodes && hasCodes && (
                   <Banner status="warning" marginBottom="500">
@@ -98,11 +98,11 @@ export default class BackupCodesModal extends Component {
                   </Grid.Column>
                 </Grid>
               </Stack>
-            </Panel.Section>
-            <Panel.Section>{this.renderButtons()}</Panel.Section>
+            </Panel.LEGACY.Section>
+            <Panel.LEGACY.Section>{this.renderButtons()}</Panel.LEGACY.Section>
           </form>
-        </Panel>
-      </Modal>
+        </Panel.LEGACY>
+      </Modal.LEGACY>
     );
   }
 }

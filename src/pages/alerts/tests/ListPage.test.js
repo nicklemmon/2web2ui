@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import { Panel } from 'src/components/matchbox';
 import { ListPage } from '../ListPage';
 jest.mock('src/context/HibanaContext', () => ({
   useHibana: jest.fn().mockReturnValue([{ isHibanaEnabled: false }]),
@@ -82,7 +83,7 @@ describe('Page: Alerts List', () => {
     const panel = wrapper
       .find('AlertsPageComponent')
       .dive()
-      .find('Panel');
+      .find(Panel.LEGACY);
     expect(panel).toHaveLength(2);
     expect(panel.first().find('[data-id="link-alert-name"]')).toHaveTextContent(
       recentlyTriggeredAlerts[0].name,

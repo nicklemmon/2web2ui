@@ -25,8 +25,8 @@ export default function ConfirmationModal(props) {
   const renderContent = () => {
     return (
       <>
-        <Panel.Section>{content}</Panel.Section>
-        <Panel.Section>
+        <Panel.LEGACY.Section>{content}</Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <ButtonWrapper>
             <Button
               variant={confirmVariant}
@@ -40,7 +40,7 @@ export default function ConfirmationModal(props) {
               {cancelVerb}
             </Button>
           </ButtonWrapper>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </>
     );
   };
@@ -49,13 +49,17 @@ export default function ConfirmationModal(props) {
   const { isHibanaEnabled } = state;
 
   return (
-    <Modal open={open} onClose={onCancel} showCloseButton={isHibanaEnabled || showCloseButton}>
+    <Modal.LEGACY
+      open={open}
+      onClose={onCancel}
+      showCloseButton={isHibanaEnabled || showCloseButton}
+    >
       {isPending ? (
         <PanelLoading minHeight="200px" title={title} />
       ) : (
-        <Panel title={title}>{renderContent()}</Panel>
+        <Panel.LEGACY title={title}>{renderContent()}</Panel.LEGACY>
       )}
-    </Modal>
+    </Modal.LEGACY>
   );
 }
 

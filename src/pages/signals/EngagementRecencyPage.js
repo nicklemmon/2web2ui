@@ -93,10 +93,10 @@ export function EngagementRecencyPage(props) {
     return (
       <Grid>
         <Grid.Column sm={12} md={7}>
-          <Panel data-id="engagement-recency-cohorts-chart">
+          <Panel.LEGACY data-id="engagement-recency-cohorts-chart">
             <Tabs facet={facet} facetId={facetId} subaccountId={subaccountId} />
             {chartPanel || (
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <div className="LiftTooltip">
                   <BarChart
                     gap={gap}
@@ -129,14 +129,14 @@ export function EngagementRecencyPage(props) {
                     tooltipContent={label => ENGAGEMENT_RECENCY_COHORTS[label]}
                   />
                 </div>
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             )}
-          </Panel>
+          </Panel.LEGACY>
         </Grid.Column>
         <Grid.Column sm={12} md={5} mdOffset={0}>
           <div>
             {!chartPanel && (
-              <Box as={Panel}>
+              <Box as={Panel.LEGACY}>
                 <EngagementRecencyActions cohorts={selectedCohorts} date={selectedDate} />
               </Box>
             )}
@@ -165,15 +165,15 @@ export function EngagementRecencyPage(props) {
       facetId={facetId}
       subaccountId={subaccountId}
     >
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} md={4}>
               <DateFilter label="Date Range" />
             </Grid.Column>
           </Grid>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
       {renderContent()}
     </Page>
   );

@@ -17,7 +17,7 @@ Dashboard.Heading = ({ children }) => {
 };
 
 Dashboard.Panel = ({ children }) => {
-  return <Panel marginBottom="0">{children}</Panel>;
+  return <Panel.LEGACY marginBottom="0">{children}</Panel.LEGACY>;
 };
 
 Dashboard.Shortcut = ({ children }) => {

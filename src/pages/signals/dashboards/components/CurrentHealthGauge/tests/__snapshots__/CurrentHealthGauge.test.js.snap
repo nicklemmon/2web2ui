@@ -12,7 +12,7 @@ exports[`Signals Health Score Gauge Container renders error correctly 1`] = `
 `;
 
 exports[`Signals Health Score Gauge Container renders happy path correctly 1`] = `
-<Panel
+<Panel.LEGACY
   sectioned={true}
   title="Current Health Score"
 >
@@ -84,7 +84,7 @@ exports[`Signals Health Score Gauge Container renders happy path correctly 1`] =
       />
     </div>
   </div>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`Signals Health Score Gauge Container renders no current score correctly 1`] = `

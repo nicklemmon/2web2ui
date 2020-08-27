@@ -1,35 +1,34 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { useHibana } from 'src/context/HibanaContext';
-import Banner from '../Banner.js';
+import RadioCard from '../RadioCard';
 
 jest.mock('src/context/HibanaContext');
 
-describe('Banner', () => {
-  it('should only render hibana component when hibana is enabled', () => {
+describe('RadioCard', () => {
+  const subject = () => shallow(<RadioCard id="my-id" />);
+
+  it('renders when Hibana is enabled', () => {
     useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+    const wrapper = subject();
 
-    const wrapper = shallow(<Banner />);
-
-    expect(wrapper).toHaveDisplayName('HibanaBanner');
+    expect(wrapper).toBeTruthy();
   });
 
-  it('should only render matchbox component when hibana is not enabled', () => {
+  it('throws an error when Hibana is not enabled', () => {
     useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
 
-    const wrapper = shallow(<Banner />);
-
-    expect(wrapper).toHaveDisplayName('OGBanner');
+    expect(subject).toThrowError();
   });
 
-  describe('Banner.Action', () => {
-    const subject = () => shallow(<Banner.Action />);
+  describe('RadioCard.Group', () => {
+    const subject = () => shallow(<RadioCard.Group label="My Label" />);
 
     it('renders when Hibana is enabled', () => {
       useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
       const wrapper = subject();
 
-      expect(wrapper).toExist();
+      expect(wrapper).toBeTruthy();
     });
 
     it('throws an error when Hibana is not enabled', () => {

@@ -18,7 +18,7 @@ exports[`renders correctly in readonly mode 1`] = `
     ]
   }
 >
-  <Panel>
+  <Panel.LEGACY>
     <withRouter(Connect(ReduxForm))
       apiKey={
         Object {
@@ -29,7 +29,7 @@ exports[`renders correctly in readonly mode 1`] = `
       onSubmit={[Function]}
       readOnly={false}
     />
-  </Panel>
+  </Panel.LEGACY>
   <DeleteModal
     content={
       <p>
@@ -62,7 +62,7 @@ exports[`renders correctly with no subaccounts 1`] = `
     ]
   }
 >
-  <Panel>
+  <Panel.LEGACY>
     <withRouter(Connect(ReduxForm))
       apiKey={
         Object {
@@ -73,7 +73,7 @@ exports[`renders correctly with no subaccounts 1`] = `
       onSubmit={[Function]}
       readOnly={false}
     />
-  </Panel>
+  </Panel.LEGACY>
   <DeleteModal
     content={
       <p>

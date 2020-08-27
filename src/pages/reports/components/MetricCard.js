@@ -19,16 +19,16 @@ const MetricCard = ({ label, value, tooltipContent, ...rest }) => {
 
   return (
     <div className={styles.MetricCard}>
-      <Panel className={styles.Panel} {...rest}>
-        <Panel.Section className={styles.PanelSection}>
+      <Panel.LEGACY className={styles.Panel} {...rest}>
+        <Panel.LEGACY.Section className={styles.PanelSection}>
           <Heading as="h3" className={styles.Value}>
             {value}
           </Heading>
           <Heading as="h4" className={styles.Label}>
             {label} {tooltip}
           </Heading>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </div>
   );
 };

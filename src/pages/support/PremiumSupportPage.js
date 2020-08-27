@@ -40,14 +40,14 @@ export class PremiumSupportPage extends Component {
           content: 'Back to billing',
         }}
       >
-        <Panel title="Request Premium Support" sectioned accent>
+        <Panel.LEGACY title="Request Premium Support" sectioned accent>
           <form onSubmit={handleSubmit(this.handleTicketCreate)}>
             <PremiumSupportFields />
             <Button submit color="orange" disabled={submitting}>
               {submitting ? 'Submitting...' : 'Submit Request'}
             </Button>
           </form>
-        </Panel>
+        </Panel.LEGACY>
       </Page>
     );
   }

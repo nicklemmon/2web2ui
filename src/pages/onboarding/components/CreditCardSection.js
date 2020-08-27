@@ -7,7 +7,7 @@ import { FORMS } from 'src/constants';
 const CreditCardSection = ({ billing, submitting, isPlanFree }) => {
   if (isPlanFree) {
     return (
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <p>Full featured test account that includes:</p>
           <ul>
@@ -16,22 +16,22 @@ const CreditCardSection = ({ billing, submitting, isPlanFree }) => {
             <li>Free technical support to get you up and running.</li>
           </ul>
         </Stack>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     );
   }
 
   return (
     <>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <PaymentForm formName={FORMS.JOIN_PLAN} disabled={submitting} />
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <BillingAddressForm
           formName={FORMS.JOIN_PLAN}
           disabled={submitting}
           countries={billing.countries}
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </>
   );
 };

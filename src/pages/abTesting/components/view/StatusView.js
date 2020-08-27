@@ -25,28 +25,28 @@ const Winner = ({ test }) => {
   }
 
   return (
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <LabelledValue label="Winner">
           <h6>{test.winning_template_id}</h6>
           <p className={styles.HelpText}>{winningHelpText}</p>
         </LabelledValue>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
   );
 };
 
 const StatusView = ({ test }) => (
   <Fragment>
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <LabelledValue label="Start Date">
           <p>{formatDateTime(test.start_time)}</p>
         </LabelledValue>
         <LabelledValue label="End Date">
           <p>{formatDateTime(test.end_time)}</p>
         </LabelledValue>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
     <Winner test={test} />
   </Fragment>

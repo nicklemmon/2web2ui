@@ -21,15 +21,15 @@ export class EngagementRecencyDashboard extends Component {
     return (
       <Page title={<>Engagement Recency</>}>
         <PageDescription>{ENGAGEMENT_RECENCY_INFO}</PageDescription>
-        <Panel>
-          <Panel.Section>
+        <Panel.LEGACY>
+          <Panel.LEGACY.Section>
             <Grid>
               <Grid.Column xs={12} md={4}>
                 <DateFilter label="Date Range" />
               </Grid.Column>
             </Grid>
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <Grid>
               <Grid.Column md={4} xs={12}>
                 <SubaccountFilter label="Subaccount" />
@@ -37,8 +37,8 @@ export class EngagementRecencyDashboard extends Component {
               {/* eslint-disable-next-line */}
               <FacetFilter facets={facets} label="Breakdown" />
             </Grid>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
         <EngagementRecencyOverview defaults={{ perPage: 25 }} subaccounts={subaccounts} hideTitle />
       </Page>
     );

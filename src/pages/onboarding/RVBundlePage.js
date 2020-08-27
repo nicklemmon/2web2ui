@@ -15,15 +15,15 @@ import OGStyles from './RVBundlePage.module.scss';
 import HibanaStyles from './RVBundlePageHibana.module.scss';
 
 const RVPriceModal = ({ open, onClose }) => (
-  <Modal open={open} onClose={onClose} showCloseButton>
-    <Panel sectioned title="Pay-As-You-Go Pricing">
+  <Modal.LEGACY open={open} onClose={onClose} showCloseButton>
+    <Panel.LEGACY sectioned title="Pay-As-You-Go Pricing">
       <p>
         We have a monthly pay-as-you-go plan using tiered pricing. The more you validate, the less
         you pay per message.
       </p>
       <RecipientValidationPriceTable />
-    </Panel>
-  </Modal>
+    </Panel.LEGACY>
+  </Modal.LEGACY>
 );
 
 const RVBundlePage = () => {
@@ -44,8 +44,8 @@ const RVBundlePage = () => {
           </p>
         </Stack>
       </div>
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Stack>
             <p>
               Take a look at what's included in our Recipient Validation service and then start
@@ -99,13 +99,13 @@ const RVBundlePage = () => {
               </Card>
             </div>
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <PageLink as={Button} variant="primary" to="/recipient-validation">
             Start Validating
           </PageLink>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
       <RVPriceModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   );

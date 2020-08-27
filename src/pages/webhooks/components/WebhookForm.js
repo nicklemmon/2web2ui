@@ -76,39 +76,39 @@ export class WebhookForm extends Component {
 
     return (
       <form onSubmit={handleSubmit}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <NameField disabled={submitting} />
             <TargetField disabled={submitting} />
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         {hasSubaccounts ? (
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <SubaccountSection newWebhook={newWebhook} formName={formName} disabled={submitting} />
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         ) : null}
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <EventsRadioGroup disabled={submitting} />
             {showEvents && <EventCheckBoxes events={eventListing} disabled={submitting} />}
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <AuthDropDown disabled={submitting} />
             <AuthFields authType={auth} disabled={submitting} />
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         {newWebhook ? null : (
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <ActiveField disabled={submitting} />
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         )}
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button submit variant="primary" disabled={pristine || submitting}>
             {submitText}
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

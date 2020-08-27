@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { Panel } from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
 import { SpamTrapPage } from '../SpamTrapPage';
 
@@ -60,13 +61,13 @@ describe('Signals Spam Trap Page', () => {
   it('renders loading correctly', () => {
     const wrapper = subject({ loading: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find(Panel.LEGACY)).toMatchSnapshot();
   });
 
   it('renders empty correctly', () => {
     const wrapper = subject({ empty: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find(Panel.LEGACY)).toMatchSnapshot();
   });
 
   it('renders error correctly', () => {

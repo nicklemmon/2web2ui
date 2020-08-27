@@ -39,13 +39,13 @@ export function HealthScoreChart(props) {
 
   if (error) {
     return (
-      <Panel sectioned>
+      <Panel.LEGACY sectioned>
         <div className={styles.Content}>
           <div className={styles.ErrorMessage}>
             <Callout title="Unable to Load Data" height="auto" children={error.message} />
           </div>
         </div>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 
@@ -101,7 +101,7 @@ export function HealthScoreChart(props) {
   }
 
   return (
-    <Panel sectioned title={`${formatDate(filters.from)} – ${formatDate(filters.to)}`}>
+    <Panel.LEGACY sectioned title={`${formatDate(filters.from)} – ${formatDate(filters.to)}`}>
       <div className={styles.Content}>
         {noData && <Callout height="100%">Health Scores Not Available</Callout>}
 
@@ -155,7 +155,7 @@ export function HealthScoreChart(props) {
           )}
         </div>
       </div>
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 

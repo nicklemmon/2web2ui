@@ -90,7 +90,7 @@ export const IncidentDetailsPage = ({
       <>
         <Grid>
           <Grid.Column lg={6} xs={12}>
-            <Panel data-id="incident-details">
+            <Panel.LEGACY data-id="incident-details">
               <IncidentDetails
                 resourceName={resource}
                 blocklistName={blocklist_name}
@@ -99,7 +99,7 @@ export const IncidentDetailsPage = ({
                 daysListed={days_listed}
                 historicalIncidents={historicalIncidents}
               />
-            </Panel>
+            </Panel.LEGACY>
           </Grid.Column>
           <Grid.Column lg={6} xs={12}>
             {historicalIncidentsPending ? (
@@ -154,7 +154,7 @@ export const IncidentDetailsPage = ({
             {historicalIncidentsPending ? (
               <PanelLoading minHeight="150px" />
             ) : (
-              <Panel data-id="incident-details">
+              <Panel.LEGACY data-id="incident-details">
                 <IncidentDetails
                   resourceName={resource}
                   blocklistName={blocklist_name}
@@ -162,7 +162,7 @@ export const IncidentDetailsPage = ({
                   resolvedTimestamp={resolved_at_timestamp}
                   daysListed={days_listed}
                 />
-              </Panel>
+              </Panel.LEGACY>
             )}
           </Layout.Section>
         </Layout>

@@ -2,8 +2,8 @@
 
 exports[`Component: TestContent renders page correctly with defaults 1`] = `
 <Fragment>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={6}
@@ -30,17 +30,17 @@ exports[`Component: TestContent renders page correctly with defaults 1`] = `
           </div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Bold>
         Raw Message Size
       </Bold>
       <div>
         2.52KB
       </div>
-    </Panel.Section>
-  </Panel>
-  <Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Panel.LEGACY>
     <Tabs
       color="blue"
       selected={0}
@@ -69,11 +69,11 @@ exports[`Component: TestContent renders page correctly with defaults 1`] = `
         ]
       }
     />
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <CodeBlock
         code="The Raw message"
       />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </Fragment>
 `;

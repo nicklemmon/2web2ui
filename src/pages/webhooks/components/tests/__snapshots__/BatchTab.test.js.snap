@@ -2,7 +2,7 @@
 
 exports[`Webhook Component: Batch Status Tab should render batch status tab with table data 1`] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={false}
       onClick={[Function]}
@@ -10,7 +10,7 @@ exports[`Webhook Component: Batch Status Tab should render batch status tab with
     >
       Refresh Batches
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <PanelSectionTableCollection
     columns={
       Array [
@@ -64,9 +64,11 @@ exports[`Webhook Component: Batch Status Tab should render batch status tab with
 </Fragment>
 `;
 
-exports[`Webhook Component: Batch Status Tab should show button text as Refreshing while refreshing data 1`] = `
+exports[
+  `Webhook Component: Batch Status Tab should show button text as Refreshing while refreshing data 1`
+] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={true}
       onClick={[Function]}
@@ -74,7 +76,7 @@ exports[`Webhook Component: Batch Status Tab should show button text as Refreshi
     >
       Refreshing...
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <PanelSectionLoading
     minHeight="400px"
   />
@@ -83,7 +85,7 @@ exports[`Webhook Component: Batch Status Tab should show button text as Refreshi
 
 exports[`Webhook Component: Batch Status Tab should show empty message when no batches exist 1`] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={false}
       onClick={[Function]}
@@ -91,7 +93,7 @@ exports[`Webhook Component: Batch Status Tab should show empty message when no b
     >
       Refresh Batches
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <Empty
     message="There are no batches for your webhook"
   />

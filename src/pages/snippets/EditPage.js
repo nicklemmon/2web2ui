@@ -108,7 +108,7 @@ export default class EditPage extends React.Component {
         <Form onSubmit={this.submitSnippet}>
           <Grid>
             <Grid.Column xs={12} lg={4}>
-              <Panel sectioned>
+              <Panel.LEGACY sectioned>
                 <Stack>
                   <Field
                     name="name"
@@ -138,7 +138,7 @@ export default class EditPage extends React.Component {
                     value={`{{ render_snippet( "${id}" ) }}`}
                   />
                 </Stack>
-              </Panel>
+              </Panel.LEGACY>
             </Grid.Column>
             <Grid.Column xs={12} lg={8}>
               <ContentEditor contentOnly={true} readOnly={disabled} />

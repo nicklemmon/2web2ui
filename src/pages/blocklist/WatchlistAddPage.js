@@ -69,9 +69,9 @@ export const WatchlistAddPage = ({
         component: PageLink,
       }}
     >
-      <Panel>
+      <Panel.LEGACY>
         <form onSubmit={handleSubmit}>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <TextField
               id="watchlist-item-input"
               label="IP or Sending Domain"
@@ -80,8 +80,8 @@ export const WatchlistAddPage = ({
               error={errorMessage}
               value={resource}
             />
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <ButtonWrapper>
               <Button variant="primary" type="submit" disabled={submitPending || !resource}>
                 Save
@@ -95,9 +95,9 @@ export const WatchlistAddPage = ({
                 Save and Add Another
               </Button>
             </ButtonWrapper>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </form>
-      </Panel>
+      </Panel.LEGACY>
     </Page>
   );
 };

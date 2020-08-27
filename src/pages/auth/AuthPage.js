@@ -45,10 +45,10 @@ export class AuthPage extends React.Component {
     return (
       <React.Fragment>
         <CenteredLogo />
-        <Panel sectioned title="Log In">
+        <Panel.LEGACY sectioned title="Log In">
           <LoginForm onSubmit={this.loginSubmit} />
-        </Panel>
-        <Panel.Footer
+        </Panel.LEGACY>
+        <Panel.LEGACY.Footer
           left={
             hasSignup && (
               <div>

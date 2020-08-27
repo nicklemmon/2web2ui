@@ -60,7 +60,9 @@ Object {
 }
 `;
 
-exports[`Accepted ChartGroup:  should not do anything if clicking on an item without children 1`] = `
+exports[
+  `Accepted ChartGroup:  should not do anything if clicking on an item without children 1`
+] = `
 Object {
   "active": null,
   "hoveredItem": null,
@@ -68,7 +70,7 @@ Object {
 `;
 
 exports[`Accepted ChartGroup:  should render 1`] = `
-<Panel
+<Panel.LEGACY
   sectioned={true}
   title="Accepted Rates"
 >
@@ -164,7 +166,7 @@ exports[`Accepted ChartGroup:  should render 1`] = `
       />
     </Grid.Column>
   </Grid>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`Accepted ChartGroup:  should render correctly after click 1`] = `
@@ -239,11 +241,11 @@ exports[`Accepted ChartGroup:  should render label when hovering over a child 1`
 `;
 
 exports[`Accepted ChartGroup:  should render loading 1`] = `
-<Panel
+<Panel.LEGACY
   className="LoadingPanel"
   sectioned={true}
   title="Accepted Rates"
 >
   <Loading />
-</Panel>
+</Panel.LEGACY>
 `;

@@ -43,7 +43,7 @@ export function EngagementSummary({
     );
 
   return (
-    <Panel className={styles.EngagementSummary} data-id="summary-panel">
+    <Panel.LEGACY className={styles.EngagementSummary} data-id="summary-panel">
       <Box padding="400">
         <Grid>
           <Grid.Column xs={12} md={3} xl={2}>
@@ -69,7 +69,7 @@ export function EngagementSummary({
           </Grid.Column>
         </Grid>
       </Box>
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 

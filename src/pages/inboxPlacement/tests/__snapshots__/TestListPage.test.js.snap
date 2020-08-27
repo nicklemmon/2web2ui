@@ -26,10 +26,10 @@ exports[`Page: Test List renders page correctly with defaults 1`] = `
   >
     An Inbox Placement Test can tell you if you are actually landing in the recipients inbox. We can provide insight into what mailbox providers are doing with your email.
   </PageDescription>
-  <Panel
+  <Panel.LEGACY
     title="Inbox Placement Trends"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <TrendsFilters
         filters={
           Object {
@@ -44,7 +44,7 @@ exports[`Page: Test List renders page correctly with defaults 1`] = `
         updateFilters={[Function]}
         validateDate={[Function]}
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <Connect(TrendsChart)
       filters={
         Object {
@@ -57,7 +57,7 @@ exports[`Page: Test List renders page correctly with defaults 1`] = `
         }
       }
     />
-  </Panel>
+  </Panel.LEGACY>
   <FilterSortCollection
     defaultSortColumn="start_time"
     filterBoxConfig={
@@ -130,10 +130,10 @@ exports[`Page: Test List renders page with tests 1`] = `
   >
     An Inbox Placement Test can tell you if you are actually landing in the recipients inbox. We can provide insight into what mailbox providers are doing with your email.
   </PageDescription>
-  <Panel
+  <Panel.LEGACY
     title="Inbox Placement Trends"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <TrendsFilters
         filters={
           Object {
@@ -148,7 +148,7 @@ exports[`Page: Test List renders page with tests 1`] = `
         updateFilters={[Function]}
         validateDate={[Function]}
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <Connect(TrendsChart)
       filters={
         Object {
@@ -161,7 +161,7 @@ exports[`Page: Test List renders page with tests 1`] = `
         }
       }
     />
-  </Panel>
+  </Panel.LEGACY>
   <FilterSortCollection
     defaultSortColumn="start_time"
     filterBoxConfig={

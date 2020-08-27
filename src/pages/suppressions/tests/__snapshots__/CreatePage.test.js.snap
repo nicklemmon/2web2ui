@@ -15,7 +15,7 @@ exports[`CreatePage tests should display the error banner on parse error 1`] = `
     parseError={true}
     persistError={false}
   />
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         connectBelow={true}
@@ -35,7 +35,7 @@ exports[`CreatePage tests should display the error banner on parse error 1`] = `
       />
     </TabsWrapper>
     <withRouter(Connect(ReduxForm)) />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 
@@ -54,7 +54,7 @@ exports[`CreatePage tests should display the error banner on persist error 1`] =
     parseError={false}
     persistError={true}
   />
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         connectBelow={true}
@@ -74,7 +74,7 @@ exports[`CreatePage tests should display the error banner on persist error 1`] =
       />
     </TabsWrapper>
     <withRouter(Connect(ReduxForm)) />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 
@@ -89,7 +89,7 @@ exports[`CreatePage tests should render AddTab 1`] = `
   }
   title="Add Suppressions"
 >
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         connectBelow={true}
@@ -109,7 +109,7 @@ exports[`CreatePage tests should render AddTab 1`] = `
       />
     </TabsWrapper>
     <withRouter(Connect(ReduxForm)) />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 
@@ -124,7 +124,7 @@ exports[`CreatePage tests should render UploadTab 1`] = `
   }
   title="Add Suppressions"
 >
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         connectBelow={true}
@@ -144,6 +144,6 @@ exports[`CreatePage tests should render UploadTab 1`] = `
       />
     </TabsWrapper>
     <withRouter(Connect(ReduxForm)) />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;

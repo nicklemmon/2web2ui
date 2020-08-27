@@ -41,9 +41,9 @@ export class CreatePage extends Component {
     return (
       <div>
         <Page title="Create Subaccount" breadcrumbAction={breadcrumbAction} />
-        <Panel>
+        <Panel.LEGACY>
           <SubaccountCreateForm onSubmit={this.onSubmit} />
-        </Panel>
+        </Panel.LEGACY>
       </div>
     );
   }

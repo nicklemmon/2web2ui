@@ -21,11 +21,11 @@ exports[`Page: User Create Page should render correctly by default 1`] = `
   }
   title="Invite User"
 >
-  <Panel>
+  <Panel.LEGACY>
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <Field
             component={[Function]}
@@ -46,8 +46,8 @@ exports[`Page: User Create Page should render correctly by default 1`] = `
             name="access"
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           disabled={false}
           submit={true}
@@ -55,9 +55,9 @@ exports[`Page: User Create Page should render correctly by default 1`] = `
         >
           Add User
         </Button>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 

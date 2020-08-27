@@ -44,7 +44,7 @@ export class ListPage extends Component {
           rows={trackingDomains || []}
           rowComponent={props => <TrackingDomainRow {...props} verifying={verifying} />}
           rowKeyName="domain"
-          outerWrapper={Panel}
+          outerWrapper={Panel.LEGACY}
           pagination={true}
           filterBox={{
             show: true,

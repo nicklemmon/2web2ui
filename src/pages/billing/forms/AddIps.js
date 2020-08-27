@@ -88,8 +88,8 @@ export class AddIps extends Component {
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)} noValidate>
-        <Panel title="Add Dedicated IPs" actions={[action]}>
-          <Panel.Section>
+        <Panel.LEGACY title="Add Dedicated IPs" actions={[action]}>
+          <Panel.LEGACY.Section>
             <Stack>
               <p>
                 {'Dedicated IPs give you better control over your sending reputation. '}
@@ -125,8 +125,8 @@ export class AddIps extends Component {
               />
               <IpPoolSelect disabled={isDisabled} formName={FORM_NAME} />
             </Stack>
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <ButtonWrapper>
               <Button type="submit" variant="primary" disabled={isDisabled}>
                 Add Dedicated IPs
@@ -141,8 +141,8 @@ export class AddIps extends Component {
                 </div>
               )}
             </ButtonWrapper>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
       </form>
     );
   }

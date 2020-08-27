@@ -46,9 +46,9 @@ function CollectionFilterBox(props) {
   return wrapper ? (
     wrapper(text)
   ) : (
-    <Panel mb="0" className={styles.Panel} sectioned>
+    <Panel.LEGACY mb="0" className={styles.Panel} sectioned>
       {text}
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 

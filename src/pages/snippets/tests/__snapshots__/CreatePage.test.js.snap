@@ -102,7 +102,7 @@ exports[`CreatePage renders form 1`] = `
         lg={4}
         xs={12}
       >
-        <Panel
+        <Panel.LEGACY
           sectioned={true}
         >
           <Stack>
@@ -139,7 +139,7 @@ exports[`CreatePage renders form 1`] = `
               }
             />
           </Stack>
-        </Panel>
+        </Panel.LEGACY>
       </Grid.Column>
       <Grid.Column
         lg={8}

@@ -5,7 +5,7 @@ exports[`Settings Fields Component should disable fields correctly 1`] = `
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         disabled={true}
@@ -26,8 +26,8 @@ exports[`Settings Fields Component should disable fields correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         disabled={true}
@@ -37,12 +37,12 @@ exports[`Settings Fields Component should disable fields correctly 1`] = `
         type="number"
         validate={[Function]}
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         disabled={true}
@@ -81,12 +81,12 @@ exports[`Settings Fields Component should disable fields correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         bottomError={true}
         component={[Function]}
@@ -111,7 +111,7 @@ exports[`Settings Fields Component should disable fields correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
 </div>
 `;
@@ -121,7 +121,7 @@ exports[`Settings Fields Component should render correctly 1`] = `
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         label="Select a Test Mode"
@@ -141,8 +141,8 @@ exports[`Settings Fields Component should render correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         label="At what confidence level should we pick and start sending a winner?"
@@ -151,12 +151,12 @@ exports[`Settings Fields Component should render correctly 1`] = `
         type="number"
         validate={[Function]}
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         grid={
@@ -193,12 +193,12 @@ exports[`Settings Fields Component should render correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         bottomError={true}
         component={[Function]}
@@ -222,7 +222,7 @@ exports[`Settings Fields Component should render correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
 </div>
 `;

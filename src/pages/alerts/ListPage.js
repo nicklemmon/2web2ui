@@ -125,8 +125,8 @@ export const AlertsPageComponent = props => {
           <Grid>
             {recentlyTriggeredAlerts.map(alert => (
               <Grid.Column xs={12} md={6} lg={3} key={alert.id}>
-                <Panel accent mb="0">
-                  <Panel.Section className={styles.LastTriggeredCard}>
+                <Panel.LEGACY accent mb="0">
+                  <Panel.LEGACY.Section className={styles.LastTriggeredCard}>
                     <OGOnlyWrapper as="div" className={styles.PanelStack}>
                       <Stack>
                         {/* Extra <div> here prevents flex parent from stretching tag to full width */}
@@ -143,17 +143,17 @@ export const AlertsPageComponent = props => {
                         </PageLink>
                       </Stack>
                     </OGOnlyWrapper>
-                  </Panel.Section>
+                  </Panel.LEGACY.Section>
 
-                  <Panel.Section className={styles.Footer}>
+                  <Panel.LEGACY.Section className={styles.Footer}>
                     <Box color="gray.700" fontSize="200">
                       <DisplayDate
                         timestamp={alert.last_triggered_timestamp}
                         formattedDate={alert.last_triggered_formatted}
                       />
                     </Box>
-                  </Panel.Section>
-                </Panel>
+                  </Panel.LEGACY.Section>
+                </Panel.LEGACY>
               </Grid.Column>
             ))}
           </Grid>

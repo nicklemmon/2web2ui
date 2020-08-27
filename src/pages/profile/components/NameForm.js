@@ -11,7 +11,7 @@ export class NameForm extends Component {
 
     return (
       <form onSubmit={handleSubmit}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Field
               // for redux-form
@@ -33,13 +33,13 @@ export class NameForm extends Component {
               autoComplete="family-name"
             />
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button variant="primary" submit disabled={submitting || pristine}>
             {submitting ? 'Updating Profile' : 'Update Profile'}
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

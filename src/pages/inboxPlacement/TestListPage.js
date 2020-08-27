@@ -168,17 +168,17 @@ export const TestListPage = ({ tests, error, loading, listTests }) => {
             An Inbox Placement Test can tell you if you are actually landing in the recipients
             inbox. We can provide insight into what mailbox providers are doing with your email.
           </PageDescription>
-          <Panel title="Inbox Placement Trends">
-            <Panel.Section>
+          <Panel.LEGACY title="Inbox Placement Trends">
+            <Panel.LEGACY.Section>
               <TrendsFilters
                 filters={filters}
                 updateFilters={updateFilters}
                 validateDate={validateDate}
               />
-            </Panel.Section>
+            </Panel.LEGACY.Section>
 
             <TrendsChart filters={filters} />
-          </Panel>
+          </Panel.LEGACY>
           <FilterSortCollection
             title="Inbox Placement Tests"
             selectOptions={[

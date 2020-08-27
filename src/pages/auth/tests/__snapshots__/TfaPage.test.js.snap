@@ -3,11 +3,11 @@
 exports[`should render 1`] = `
 <Fragment>
   <CenteredLogo />
-  <Panel
+  <Panel.LEGACY
     sectioned={true}
     title="Two-factor Authentication"
   >
     <Connect(ReduxForm) />
-  </Panel>
+  </Panel.LEGACY>
 </Fragment>
 `;

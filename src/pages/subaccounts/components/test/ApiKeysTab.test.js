@@ -4,7 +4,7 @@ import { ApiKeysTab } from '../ApiKeysTab';
 
 const props = {
   loading: false,
-  keys: ['an array of keys']
+  keys: ['an array of keys'],
 };
 
 let wrapper;
@@ -24,11 +24,13 @@ describe('ApiKeysTab', () => {
   });
 
   test('empty', () => {
-    wrapper.setProps({ keys: []});
+    wrapper.setProps({ keys: [] });
     expect(wrapper).toMatchSnapshot();
   });
 });
 
 test('getRowData', () => {
-  expect(wrapper.instance().getRowData({ id: 12313, label: 'test', short_key: 'cdwa' })).toMatchSnapshot();
+  expect(
+    wrapper.instance().getRowData({ id: 12313, label: 'test', short_key: 'cdwa' }),
+  ).toMatchSnapshot();
 });

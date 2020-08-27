@@ -43,10 +43,10 @@ export class AdvancedFiltersModal extends Component {
         <Button onClick={this.toggleModal} variant="secondary">
           Add Filters
         </Button>
-        <Modal open={modalOpen} onClose={this.toggleModal} showCloseButton={true}>
+        <Modal.LEGACY open={modalOpen} onClose={this.toggleModal} showCloseButton={true}>
           <WindowEvent event="keydown" handler={this.handleKeyDown} />
           <SearchForm handleApply={this.handleApply} handleCancel={this.toggleModal} />
-        </Modal>
+        </Modal.LEGACY>
       </Fragment>
     );
   }

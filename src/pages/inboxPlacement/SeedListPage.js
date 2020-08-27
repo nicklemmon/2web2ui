@@ -26,7 +26,7 @@ export const InstructionsContent = ({ seeds, referenceSeed }) => {
   const csvData = seeds.map(address => ({ 'Seed Address': address }));
   return (
     <>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Grid>
           <Grid.Column sm={12} md={10} lg={8}>
             <p>
@@ -36,8 +36,8 @@ export const InstructionsContent = ({ seeds, referenceSeed }) => {
             </p>
           </Grid.Column>
         </Grid>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <Grid>
             <Grid.Column sm={12} md={10} lg={8}>
@@ -66,8 +66,8 @@ export const InstructionsContent = ({ seeds, referenceSeed }) => {
           </Grid>
           <CodeBlock code={seeds.join('\n')} />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <CopyToClipboard variant="primary" value={seeds.join(',')}>
             Copy List
@@ -80,7 +80,7 @@ export const InstructionsContent = ({ seeds, referenceSeed }) => {
             variant="secondary"
           />
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </>
   );
 };
@@ -100,17 +100,17 @@ export const SeedListPage = props => {
         <p>Configure inbox placement testing</p>
       </Layout.Section>
       <Layout.Section>
-        <Panel title="Seed Addresses">
+        <Panel.LEGACY title="Seed Addresses">
           <InstructionsContent seeds={seeds} referenceSeed={referenceSeed} />
-        </Panel>
+        </Panel.LEGACY>
       </Layout.Section>
     </Layout>
   );
 
   const renderOG = () => (
-    <Panel title="Seed Addresses">
+    <Panel.LEGACY title="Seed Addresses">
       <InstructionsContent seeds={seeds} referenceSeed={referenceSeed} />
-    </Panel>
+    </Panel.LEGACY>
   );
 
   if (pending) {

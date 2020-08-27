@@ -34,8 +34,8 @@ export function MetricsSummary(props) {
   };
 
   return (
-    <Panel className={styles.Panel}>
-      <Panel.Section>
+    <Panel.LEGACY className={styles.Panel}>
+      <Panel.LEGACY.Section>
         <Grid>
           <Grid.Column xs={12} md={3} xl={2}>
             <div className={styles.panelvertical}>
@@ -58,8 +58,8 @@ export function MetricsSummary(props) {
             </div>
           </Grid.Column>
         </Grid>
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   );
 }
 

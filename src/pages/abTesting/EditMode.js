@@ -137,7 +137,7 @@ export class EditMode extends Component {
               <StatusContent test={test} rescheduling={rescheduling} />
             </Section.Left>
             <Section.Right>
-              <Box as={Panel} marginTop="400">
+              <Box as={Panel.LEGACY} marginTop="400">
                 <StatusPanel
                   test={test}
                   subaccountId={subaccountId}
@@ -153,7 +153,7 @@ export class EditMode extends Component {
               <SettingsContent test={test} />
             </Section.Left>
             <Section.Right>
-              <Box as={Panel} marginTop="400">
+              <Box as={Panel.LEGACY} marginTop="400">
                 <SettingsFields formValues={formValues} disabled={submitting} />
               </Box>
             </Section.Right>

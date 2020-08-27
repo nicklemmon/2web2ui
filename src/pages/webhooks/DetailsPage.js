@@ -95,12 +95,12 @@ export class WebhooksDetails extends Component {
         secondaryActions={secondaryActions}
         breadcrumbAction={{ content: 'View All Webhooks', component: PageLink, to: '/webhooks/' }}
       >
-        <Panel>
+        <Panel.LEGACY>
           <Tabs selected={selectedTab} tabs={tabs} />
           <Route exact path={editPath} render={() => <EditTab webhook={webhook} />} />
           <Route path={testPath} render={() => <TestTab webhook={webhook} />} />
           <Route path={batchPath} render={() => <BatchTab webhook={webhook} />} />
-        </Panel>
+        </Panel.LEGACY>
         <DeleteModal
           open={this.state.showDelete}
           title="Are you sure you want to delete this webhook?"

@@ -27,7 +27,7 @@ exports[`HistoryTable Component should render with all props 1`] = `
 
 exports[`HistoryTable Component should render with no props 1`] = `
 <div>
-  <Panel
+  <Panel.LEGACY
     actions={
       Array [
         Object {
@@ -52,7 +52,7 @@ exports[`HistoryTable Component should render with no props 1`] = `
       rowComponent={[Function]}
       rows={Array []}
     />
-  </Panel>
+  </Panel.LEGACY>
   <small>
     Previous events may be outside our 10 day storage range.
   </small>

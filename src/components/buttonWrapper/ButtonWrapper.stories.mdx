@@ -15,33 +15,33 @@ between child components.
 ### Default
 
 <Preview>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <TextField id="first-name" name="firstName" label="First Name" type="text" />
       <TextField id="last-name" name="lastName" label="Last Name" type="text" />
       <ButtonWrapper>
         <Button variant="primary">Save</Button>
         <Button variant="secondary">Cancel</Button>
       </ButtonWrapper>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </Preview>
 
 ### With No Top Margin
 
 <Preview>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <TextField id="first-name" name="firstName" label="First Name" type="text" />
       <TextField id="last-name" name="lastName" label="Last Name" type="text" />
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <ButtonWrapper marginTop="0">
         <Button variant="primary">Save</Button>
         <Button variant="secondary">Cancel</Button>
       </ButtonWrapper>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </Preview>
 
 ## Usage
@@ -52,14 +52,14 @@ import { Button, Panel, TextField } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
 
 const MyComponent = () => (
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <TextField id="first-name" name="firstName" label="First Name" type="text" />
       <TextField id="last-name" name="lastName" label="Last Name" type="text" />
       <ButtonWrapper>
         <Button primary>Save</Button>
       </ButtonWrapper>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 );
 ```

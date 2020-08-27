@@ -10,9 +10,9 @@ export class CreateForm extends Component {
     const { submitting, handleSubmit } = this.props;
 
     return (
-      <Panel>
+      <Panel.LEGACY>
         <form onSubmit={handleSubmit}>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Stack>
               <Field
                 component={TextFieldWrapper}
@@ -29,15 +29,15 @@ export class CreateForm extends Component {
                 disabled={submitting}
               />
             </Stack>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
 
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Button submit variant="primary" disabled={submitting}>
               {submitting ? 'Submitting...' : 'Add Tracking Domain'}
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </form>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

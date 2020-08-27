@@ -21,7 +21,7 @@ exports[`renders ready only mode correctly 1`] = `
       .
     </p>
   </Banner>
-  <Panel>
+  <Panel.LEGACY>
     <withRouter(Connect(ReduxForm))
       apiKey={
         Object {
@@ -32,7 +32,7 @@ exports[`renders ready only mode correctly 1`] = `
       isReadOnly={true}
       onSubmit={[Function]}
     />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 

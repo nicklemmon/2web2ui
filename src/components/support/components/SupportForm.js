@@ -70,7 +70,7 @@ export class SupportForm extends Component {
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Field
               name="issueId"
@@ -115,8 +115,8 @@ export class SupportForm extends Component {
               validate={maxFileSize(config.support.maxAttachmentSizeBytes)}
             />
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <ButtonWrapper>
             <Button variant="primary" submit disabled={pristine || invalid || submitting}>
               {submitting ? 'Submitting' : 'Submit Ticket'}
@@ -126,7 +126,7 @@ export class SupportForm extends Component {
               Cancel
             </Button>
           </ButtonWrapper>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

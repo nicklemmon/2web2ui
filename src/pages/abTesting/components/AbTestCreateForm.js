@@ -35,9 +35,9 @@ export class AbTestCreateForm extends Component {
     const submitText = submitting ? 'Submitting...' : 'Continue';
     return (
       <form onSubmit={handleSubmit}>
-        <Box as={Panel.Section}>
+        <Box as={Panel.LEGACY.Section}>
           <Stack>
-            <OGOnlyWrapper as={Panel.Section}>
+            <OGOnlyWrapper as={Panel.LEGACY.Section}>
               <Grid>
                 <Grid.Column>
                   <Field
@@ -66,7 +66,7 @@ export class AbTestCreateForm extends Component {
             </OGOnlyWrapper>
 
             {hasSubaccounts ? (
-              <OGOnlyWrapper as={Panel.Section}>
+              <OGOnlyWrapper as={Panel.LEGACY.Section}>
                 <Grid>
                   <Grid.Column md={6}>
                     <Field
@@ -80,14 +80,14 @@ export class AbTestCreateForm extends Component {
                 </Grid>
               </OGOnlyWrapper>
             ) : null}
-            <OGOnlyWrapper as={Panel.Section}>
+            <OGOnlyWrapper as={Panel.LEGACY.Section}>
               <Grid>
                 <Grid.Column md={6}>
                   <Field
                     name="default_variant"
                     component={TemplateTypeaheadWrapper}
                     subaccountId={subaccountId}
-                    label={'Default template'}
+                    label="Default template"
                     placeholder="Type to search"
                     helpText={
                       templates.length > 0 ? (
@@ -113,11 +113,11 @@ export class AbTestCreateForm extends Component {
             </OGOnlyWrapper>
           </Stack>
         </Box>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button submit variant="primary" disabled={disabled}>
             {submitText}
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

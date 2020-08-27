@@ -53,7 +53,7 @@ export class ResetPasswordPage extends Component {
     return (
       <Fragment>
         <CenteredLogo />
-        <Panel sectioned title="Create a New Password">
+        <Panel.LEGACY sectioned title="Create a New Password">
           <form onSubmit={handleSubmit(this.handleResetPassword)}>
             <Stack>
               <Field
@@ -78,8 +78,8 @@ export class ResetPasswordPage extends Component {
               </Box>
             </Stack>
           </form>
-        </Panel>
-        <Panel.Footer
+        </Panel.LEGACY>
+        <Panel.LEGACY.Footer
           left={
             <small>
               Remember your password? <PageLink to="/auth">Log in</PageLink>.

@@ -90,9 +90,9 @@ const AlertIncidents = ({ incidents = [], alert, subaccountIdToString }) => {
   return (
     <>
       {incidents.length <= 0 ? (
-        <Panel>
+        <Panel.LEGACY>
           <Empty message="No incidents" />
-        </Panel>
+        </Panel.LEGACY>
       ) : (
         <TableCollection
           rows={incidents}

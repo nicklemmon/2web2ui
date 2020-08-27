@@ -30,9 +30,9 @@ export class EditTab extends Component {
     }
 
     return (
-      <Panel>
+      <Panel.LEGACY>
         <SubaccountEditForm subaccount={this.props.subaccount} onSubmit={this.onSubmit} />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }
