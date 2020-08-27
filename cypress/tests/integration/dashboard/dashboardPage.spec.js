@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/dashboard';
 
 describe('The dashboard page', () => {
@@ -6,7 +8,7 @@ describe('The dashboard page', () => {
     cy.login({ isStubbed: true });
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+  if (IS_HIBANA_ENABLED) {
     it('renders a footer with relevant external links', () => {
       cy.visit(PAGE_URL);
 

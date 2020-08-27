@@ -28,8 +28,8 @@ describe('The blocklist incidents page', () => {
     cy.visit(PAGE_BASE_URL);
 
     cy.verifyLink({
-      content: 'Add to Watchlist',
-      href: '/signals/blocklist/watchlist/add',
+      content: 'Add to Monitored List',
+      href: '/signals/blocklist/monitors/add',
     });
   });
 
@@ -50,12 +50,9 @@ describe('The blocklist incidents page', () => {
 
     cy.url().should('include', PAGE_BASE_URL);
     cy.findByText('Blocklist Incidents').should('be.visible');
-    cy.findByText('View Watchlist').should('be.visible');
-    cy.findByText(
-      'Check the current status of blocklists and learn more about what actions you can take to remedy and prevent future blocklisting.',
-    ).should('be.visible');
+    cy.findByText('View Monitored List').should('be.visible');
 
-    cy.findByLabelText('Filter By')
+    cy.findByLabelText('Filter Results')
       .should('be.visible')
       .type('2.2.8')
       .blur();
@@ -135,29 +132,68 @@ describe('The blocklist incidents page', () => {
       cy.wrap(url).should('include', 'to=' + todaysDate);
     });
 
-    cy.findByLabelText('Broad Date Range').select('Last 24 Hours');
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + lastTwentyFour);
-      cy.wrap(url).should('include', 'to=' + todaysDate);
-    });
+    if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+      const openDatePicker = () => {
+        cy.findByLabelText('Date Range').focus();
+        cy.findByLabelText('Date Range').click({ force: true });
+      };
 
-    cy.findByLabelText('Broad Date Range').select('Last 7 Days');
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + seven);
-      cy.wrap(url).should('include', 'to=' + todaysDate);
-    });
+      openDatePicker();
+      cy.findByText('Last 24 Hours').click({ force: true });
+      cy.findByText('Apply').click();
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + lastTwentyFour);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
 
-    cy.findByLabelText('Broad Date Range').select('Last 30 Days');
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
-      cy.wrap(url).should('include', 'to=' + todaysDate);
-    });
+      openDatePicker();
+      cy.findByText('Last 7 Days').click({ force: true });
+      cy.findByText('Apply').click();
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + seven);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
 
-    cy.findByLabelText('Broad Date Range').select('Last 90 Days');
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + ninety);
-      cy.wrap(url).should('include', 'to=' + todaysDate);
-    });
+      openDatePicker();
+      cy.findByText('Last 30 Days').click({ force: true });
+      cy.findByText('Apply').click();
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+
+      openDatePicker();
+      cy.findByText('Last 90 Days').click({ force: true });
+      cy.findByText('Apply').click();
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + ninety);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+    } else {
+      cy.findByLabelText('Broad Date Range').select('Last 24 Hours');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + lastTwentyFour);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+
+      cy.findByLabelText('Broad Date Range').select('Last 7 Days');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + seven);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+
+      cy.findByLabelText('Broad Date Range').select('Last 30 Days');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+
+      cy.findByLabelText('Broad Date Range').select('Last 90 Days');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + ninety);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+    }
   });
 
   it('sorts the table on resolved and listed', () => {
@@ -189,7 +225,7 @@ describe('The blocklist incidents page', () => {
       cy.findAllByText('Active', { container: el }).should('be.visible');
     });
 
-    cy.findByText('Listed').click();
+    cy.findByText('Date Listed').click();
 
     cy.get('tbody > tr:last-child').then(el => {
       cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
@@ -205,7 +241,7 @@ describe('The blocklist incidents page', () => {
       cy.findAllByText('Active', { container: el }).should('be.visible');
     });
 
-    cy.findByText('Resolved').click();
+    cy.findByText('Date Resolved').click();
 
     cy.get('tbody > tr:first-child').then(el => {
       cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
@@ -222,7 +258,7 @@ describe('The blocklist incidents page', () => {
       cy.findAllByText('Active', { container: el }).should('be.visible');
     });
 
-    cy.findByText('Resolved').click();
+    cy.findByText('Date Resolved').click();
 
     cy.get('tbody > tr:first-child').then(el => {
       cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');

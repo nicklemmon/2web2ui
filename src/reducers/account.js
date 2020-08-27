@@ -6,6 +6,7 @@ export const initialState = {
   subscription: {},
   updateLoading: false,
   createLoading: false,
+  usageLoading: false,
 };
 
 export default (state = initialState, { type, meta, payload }) => {

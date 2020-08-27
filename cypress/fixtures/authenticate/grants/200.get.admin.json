@@ -116,9 +116,6 @@
     },
     {
       "key": "inbox-placement/manage"
-    },
-    {
-      "key": "blacklist-monitors/manage"
     }
   ]
 }

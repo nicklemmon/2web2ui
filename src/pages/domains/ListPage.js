@@ -17,7 +17,7 @@ import {
 import { PageLink } from 'src/components/links';
 import { LabelSpacer } from 'src/components/labels';
 import useRouter from 'src/hooks/useRouter';
-import { DomainsLayout } from './components';
+import Domains from './components';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
 
 export default function DomainsPage() {
@@ -46,7 +46,7 @@ export default function DomainsPage() {
   const tabIndex = TABS.findIndex(tab => tab['data-to'] === location.pathname);
 
   return (
-    <DomainsLayout>
+    <Domains.Container>
       <Page
         title="Domains"
         primaryAction={{
@@ -58,7 +58,7 @@ export default function DomainsPage() {
         <Stack>
           <Tabs selected={tabIndex} tabs={TABS} />
 
-          <Panel mb="0">
+          <Panel mb="0" borderBottom="0">
             <Panel.Section>
               <Columns>
                 <Column>
@@ -109,35 +109,39 @@ export default function DomainsPage() {
               </Columns>
             </Panel.Section>
           </Panel>
-
-          <Route
-            path={SENDING_DOMAINS_URL}
-            render={() => (
-              <div role="tabpanel">
-                <h2>Sending domains table goes here</h2>
-              </div>
-            )}
-          />
-
-          <Route
-            path={TRACKING_DOMAINS_URL}
-            render={() => (
-              <div role="tabpanel">
-                <h2>Tracking domains table goes here</h2>
-              </div>
-            )}
-          />
-
-          <Route
-            path={BOUNCE_DOMAINS_URL}
-            render={() => (
-              <div role="tabpanel">
-                <h2>Bounce domains table goes here</h2>
-              </div>
-            )}
-          />
         </Stack>
+
+        <Route
+          path={SENDING_DOMAINS_URL}
+          render={() => (
+            <TabPanel>
+              <Domains.SendingDomainsTable />
+            </TabPanel>
+          )}
+        />
+
+        <Route
+          path={BOUNCE_DOMAINS_URL}
+          render={() => (
+            <TabPanel>
+              <Domains.SendingDomainsTable renderBounceOnly />
+            </TabPanel>
+          )}
+        />
+
+        <Route
+          path={TRACKING_DOMAINS_URL}
+          render={() => (
+            <TabPanel>
+              <Domains.TrackingDomainsTable />
+            </TabPanel>
+          )}
+        />
       </Page>
-    </DomainsLayout>
+    </Domains.Container>
   );
+}
+
+function TabPanel({ children }) {
+  return <div role="tabpanel">{children}</div>;
 }

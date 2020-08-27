@@ -100,13 +100,13 @@ const testCases = {
       },
     },
   },
-  'for blacklist alert': {
+  'for blocklist alert': {
     formData: {
       name: 'foo',
-      metric: 'blacklist',
+      metric: 'blocklist',
       subaccounts: [], // default
-      blacklist_provider: ['abuseat.org', 'new.spam.dnsbl.sorbs.net'],
-      blacklist_resource: ['1.2.3.4', 'example.com'],
+      blocklist_provider: ['abuseat.org', 'new.spam.dnsbl.sorbs.net'],
+      blocklist_resource: ['1.2.3.4', 'example.com'],
       emails,
       slack: '',
       webhook: '',
@@ -114,16 +114,16 @@ const testCases = {
     },
     apiData: {
       name: 'foo',
-      metric: 'blacklist',
+      metric: 'blocklist',
       any_subaccount: undefined,
       subaccounts: [-1],
       filters: [
         {
-          filter_type: 'blacklist_provider',
+          filter_type: 'blocklist_provider',
           filter_values: ['abuseat.org', 'new.spam.dnsbl.sorbs.net'],
         },
         {
-          filter_type: 'blacklist_resource',
+          filter_type: 'blocklist_resource',
           filter_values: ['1.2.3.4', 'example.com'],
         },
       ],
@@ -132,13 +132,13 @@ const testCases = {
       muted: false,
     },
   },
-  'for unfiltered blacklist alert': {
+  'for unfiltered blocklist alert': {
     formData: {
       name: 'foo',
-      metric: 'blacklist',
+      metric: 'blocklist',
       subaccounts: [], // default
-      blacklist_provider: [],
-      blacklist_resource: [],
+      blocklist_provider: [],
+      blocklist_resource: [],
       emails,
       slack: '',
       webhook: '',
@@ -146,16 +146,16 @@ const testCases = {
     },
     apiData: {
       name: 'foo',
-      metric: 'blacklist',
+      metric: 'blocklist',
       any_subaccount: undefined,
       subaccounts: [-1],
       filters: [
         {
-          filter_type: 'blacklist_provider',
+          filter_type: 'blocklist_provider',
           filter_values: [],
         },
         {
-          filter_type: 'blacklist_resource',
+          filter_type: 'blocklist_resource',
           filter_values: [],
         },
       ],

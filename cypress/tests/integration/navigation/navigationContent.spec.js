@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/dashboard';
 const accountDropdownSelector = '[data-id="nav-button-accounts"]';
 const navigationListSelector = '[data-id="navigation-list"]';
@@ -68,7 +70,7 @@ function stubGrantsRequest({ role }) {
   cy.wait('@stubbedAccountRequest'); // ...the request is made twice! So wait again for the second
 }
 
-if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+if (!IS_HIBANA_ENABLED) {
   describe('The navigation content as an admin', () => {
     beforeEach(() => {
       beforeSteps();

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { ApiErrorBanner, Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Page } from 'src/components/matchbox';
-import { PageDescription } from 'src/components/text';
 import { selectBlocklistedCount } from 'src/selectors/blocklist';
 import { listMonitors } from 'src/actions/blocklist';
 import MonitorsCollection from './components/MonitorsCollection';
@@ -31,7 +30,7 @@ export const WatchlistPage = props => {
       return (
         <div data-id="error-banner">
           <ApiErrorBanner
-            message="Sorry, we seem to have had some trouble loading your watched IPs and domains."
+            message="Sorry, we seem to have had some trouble loading your monitored IPs and domains."
             errorDetails={error.message}
             reload={() => {
               listMonitors();
@@ -55,10 +54,10 @@ export const WatchlistPage = props => {
 
   return (
     <Page
-      title="Watched IPs and Domains"
+      title="Monitored IPs and Domains"
       primaryAction={{
-        content: 'Add IP or Sending Domain',
-        to: '/signals/blocklist/watchlist/add',
+        content: 'Add IP or Domain to Monitor',
+        to: '/signals/blocklist/monitors/add',
         component: PageLink,
       }}
       breadcrumbAction={{
@@ -67,10 +66,6 @@ export const WatchlistPage = props => {
         component: PageLink,
       }}
     >
-      <PageDescription>
-        Below are your watched IP addresses and domains. Select any one below to learn more or make
-        updates.
-      </PageDescription>
       {renderContent()}
       <RemoveFromWatchlistModal monitorToDelete={monitorToDelete} closeModal={closeModal} />
     </Page>

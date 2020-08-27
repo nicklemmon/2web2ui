@@ -1,3 +1,4 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { commonBeforeSteps } from './helpers';
 
 const oldBouncePage = '/reports/bounce';
@@ -8,7 +9,7 @@ const oldDelayedPage = '/reports/delayed';
 const oldEngagementPage = '/reports/engagement';
 const signalsAnalyticsPage = '/signals/analytics';
 
-if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+if (IS_HIBANA_ENABLED) {
   describe('Analytics Report Redirects', () => {
     beforeEach(() => {
       commonBeforeSteps();

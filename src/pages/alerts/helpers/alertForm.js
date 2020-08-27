@@ -65,19 +65,19 @@ const metricToFormSpecMap = {
       { fieldName: 'value', fieldValue: 100000 },
     ],
   },
-  blacklist: {
+  blocklist: {
     hasFilters: true,
     hideEvaluator: true,
     hideSubaccountFilter: true,
     filterType: 'multi',
     filterOptions: getOptionsFromMap(
-      ['blacklist_provider', 'blacklist_resource'],
+      ['blocklist_provider', 'blocklist_resource'],
       FILTERS_FRIENDLY_NAMES,
     ),
     sourceOptions: [],
     defaultFieldValues: [
-      { fieldName: 'blacklist_provider', fieldValue: [] },
-      { fieldName: 'blacklist_resource', fieldValue: [] },
+      { fieldName: 'blocklist_provider', fieldValue: [] },
+      { fieldName: 'blocklist_resource', fieldValue: [] },
       { fieldName: 'subaccounts', fieldValue: [] },
     ],
   },

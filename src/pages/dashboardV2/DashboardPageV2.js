@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
 import {
-  Column,
   Columns,
+  Column,
   Layout,
   Panel,
   ScreenReaderOnly,
@@ -11,11 +11,22 @@ import {
 } from 'src/components/matchbox';
 import { Heading, TranslatableText } from 'src/components/text';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
+import { Loading } from 'src/components/loading';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
+import Sidebar from './components/Sidebar';
 
 export default function DashboardPageV2() {
-  const { currentUser } = useDashboardContext();
+  const { getAccount, listAlerts, getUsage, currentUser, pending } = useDashboardContext();
+
+  useEffect(() => {
+    getAccount({ include: 'usage' });
+    getUsage();
+    listAlerts();
+    // eslint-disable-next-line
+  }, []);
+
+  if (pending) return <Loading />;
 
   return (
     <Dashboard>
@@ -74,7 +85,7 @@ export default function DashboardPageV2() {
 
                   <Columns collapseBelow="md">
                     <Dashboard.Shortcut>
-                      <PageLink to="/api-keys/create">Generate an API Key</PageLink>
+                      <PageLink to="/account/api-keys/create">Generate an API Key</PageLink>
 
                       <Text>
                         Get up and sending quickly using our sample templates. AMP for email, Yes we
@@ -106,11 +117,11 @@ export default function DashboardPageV2() {
           </Layout.Section>
 
           <Layout.Section annotated>
-            <Stack>
-              <Layout.SectionTitle as="h3">Account Details</Layout.SectionTitle>
-
-              <Layout.SectionTitle as="h3">Billing/Usage Detail</Layout.SectionTitle>
-            </Stack>
+            <Sidebar>
+              <Sidebar.AccountDetails />
+              <Sidebar.BillingUsage />
+              <Sidebar.RecentAlerts />
+            </Sidebar>
           </Layout.Section>
         </Layout>
       </Stack>

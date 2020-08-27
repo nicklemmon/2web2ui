@@ -1,3 +1,4 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
 const PAGE_URL = '/reports/engagement';
 const DELIVERABILITY_API_URL = '/api/v1/metrics/deliverability**/**';
 const STABLE_UNIX_DATE = 1581087062000; // Stable unix timestamp (2/6/2020)
@@ -12,7 +13,7 @@ const STABLE_UNIX_DATE = 1581087062000; // Stable unix timestamp (2/6/2020)
 
 // Waiting on fix for: https://github.com/cypress-io/cypress/issues/4460 to re-introduce these tests
 
-if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+if (!IS_HIBANA_ENABLED) {
   describe('The engagement report page', () => {
     beforeEach(() => {
       cy.stubAuth();

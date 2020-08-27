@@ -1,16 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import _ from 'lodash';
+import styled from 'styled-components';
 import { Delete, ContentCopy } from '@sparkpost/matchbox-icons';
 import { DeleteModal, Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { TranslatableText } from 'src/components/text';
-import { Box, Button, Page } from 'src/components/matchbox';
+import { Button, Page } from 'src/components/matchbox';
 import withAlert from './containers/DetailsPage.container';
 import { AlertDetails } from './components/AlertDetails';
 import AlertIncidents from './components/AlertIncidents';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
 import { useHibana } from 'src/context/HibanaContext';
 import styles from './DetailsPage.module.scss';
-import _ from 'lodash';
+
+// note, this is one off that shouldn't be reused
+// todo, consider removing this wrapper and moving these buttons to AlertDetails as Panel.Action's when removing OG
+const FloatingButtons = styled.div`
+  float: right;
+  margin-right: ${props => props.theme.space['500']};
+`;
 
 export class DetailsPageComponent extends Component {
   state = {
@@ -19,8 +27,10 @@ export class DetailsPageComponent extends Component {
 
   componentDidMount() {
     const { id, getAlert, hasSubaccounts, listSubaccounts, getIncidents } = this.props;
+
     getAlert({ id });
     getIncidents({ id });
+
     if (hasSubaccounts) {
       listSubaccounts();
     }
@@ -58,10 +68,11 @@ export class DetailsPageComponent extends Component {
   };
 
   DuplicateDeleteAction = () => {
-    const { id } = this.props;
+    const { id, isHibanaEnabled } = this.props;
+    const Wrapper = isHibanaEnabled ? FloatingButtons : Fragment;
 
     return (
-      <Box style={{ float: 'right' }} marginRight="500">
+      <Wrapper>
         <PageLink as={Button} flat to={`/alerts/create/${id}`}>
           <TranslatableText>Duplicate</TranslatableText>
 
@@ -73,7 +84,7 @@ export class DetailsPageComponent extends Component {
 
           <Delete className={styles.Icon} />
         </Button>
-      </Box>
+      </Wrapper>
     );
   };
 
@@ -131,7 +142,7 @@ export class DetailsPageComponent extends Component {
             renderPrimaryAreaComponent={renderComponentPrimaryArea}
           />
         )}
-        {alert.metric !== 'blacklist' && (
+        {alert.metric !== 'blocklist' && (
           <AlertIncidents
             alert={alert}
             incidents={incidents}
@@ -143,8 +154,11 @@ export class DetailsPageComponent extends Component {
           title="Are you sure you want to delete this alert?"
           content={
             <p>
-              The alert "<strong>{name}</strong>" will be permanently removed. This cannot be
-              undone.
+              <TranslatableText>The alert "</TranslatableText>
+              <strong>{name}</strong>
+              <TranslatableText>
+                " will be permanently removed. This cannot be undone.
+              </TranslatableText>
             </p>
           }
           onDelete={this.handleDelete}
@@ -161,4 +175,5 @@ const DetailsPage = props => {
   const { isHibanaEnabled } = state;
   return <DetailsPageComponent isHibanaEnabled={isHibanaEnabled} {...props} />;
 };
+
 export default withAlert(DetailsPage);

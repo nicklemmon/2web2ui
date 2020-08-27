@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/lists/suppressions';
 const SUPPRESSION_LIST_API_URL = '/api/v1/suppression-list*';
 const DELETE_MODAL_CONTENT =
@@ -110,7 +112,7 @@ describe('The recipients suppressions list page', () => {
           .click({ force: true });
       });
 
-      if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+      if (IS_HIBANA_ENABLED) {
         cy.findAllByText('Delete')
           .first()
           .click();
@@ -134,7 +136,7 @@ describe('The recipients suppressions list page', () => {
           .first()
           .click({ force: true });
       });
-      if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+      if (IS_HIBANA_ENABLED) {
         cy.findAllByText('Delete')
           .first()
           .click();

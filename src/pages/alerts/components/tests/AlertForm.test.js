@@ -93,13 +93,13 @@ describe('Alert Form Component', () => {
     expect(wrapper.find('Error')).toExist();
   });
 
-  it('should hide evaluator for blacklist metric', () => {
-    wrapper.setProps({ metric: 'blacklist' });
+  it('should hide evaluator for blocklist metric', () => {
+    wrapper.setProps({ metric: 'blocklist' });
     expect(wrapper.find('.Evaluator')).not.toExist();
   });
 
-  it('should hide subaccount field for blacklist metric', () => {
-    wrapper.setProps({ metric: 'blacklist' });
+  it('should hide subaccount field for blocklist metric', () => {
+    wrapper.setProps({ metric: 'blocklist' });
     expect(wrapper.find('Connect(SubaccountsField)')).not.toExist();
   });
 

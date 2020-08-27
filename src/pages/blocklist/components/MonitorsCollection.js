@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 import { DoNotDisturbOn } from '@sparkpost/matchbox-icons';
 import classNames from 'classnames';
+import { DisplayDate } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Button } from 'src/components/matchbox';
+import { formatDateTime } from 'src/helpers/date';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import FilterSortCollection from 'src/components/collection/FilterSortCollection';
 import OGStyles from './MonitorsCollection.module.scss';
@@ -10,6 +12,7 @@ import hibanaStyles from './MonitorsCollectionHibana.module.scss';
 
 const filterBoxConfig = {
   show: true,
+  label: 'Filter Results',
   itemToStringKeys: ['resource'],
   placeholder: 'Search By: Sending Domain or IP',
   wrapper: props => <div>{props}</div>,
@@ -30,17 +33,27 @@ export const MonitorsCollection = props => {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
 
   const columns = [
-    { label: 'Watched' },
-    { label: 'Current Blocklistings', width: '15%', className: styles.ListingDetails },
-    { label: 'Historic Blocklistings', width: '15%', className: styles.ListingDetails },
+    { label: 'Resource / Last Incident' },
+    { label: 'Active Incidents', width: '15%', className: styles.ListingDetails },
+    { label: 'Historic Incidents', width: '15%', className: styles.ListingDetails },
     { label: '', width: '20%' },
   ];
 
   const getRowData = useCallback(
-    ({ resource, active_listing_count, total_listing_count }) => {
+    ({ resource, active_listing_count, total_listing_count, last_listed_at }) => {
+      const formattedDate = formatDateTime(last_listed_at);
       return [
         <div className={styles.NameDetails}>
-          <PageLink to={`/signals/blocklist/incidents?search=${resource}`}>{resource}</PageLink>
+          <div>
+            <PageLink to={`/signals/blocklist/incidents?search=${resource}`}>{resource}</PageLink>
+          </div>
+          {last_listed_at ? (
+            <div>
+              <DisplayDate timestamp={last_listed_at} formattedDate={formattedDate} />
+            </div>
+          ) : (
+            <div>No Incidents</div>
+          )}
         </div>,
         <div className={classNames(styles.ListingDetails, styles.ListingDetailsCell)}>
           {active_listing_count}
@@ -75,6 +88,7 @@ export const MonitorsCollection = props => {
       rows={monitors}
       getRowData={getRowData}
       saveCsv={false}
+      sortLabel="Sort"
     />
   );
 };

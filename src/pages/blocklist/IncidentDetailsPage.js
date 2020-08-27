@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { ApiErrorBanner, Loading, Empty, PanelLoading } from 'src/components';
+import { ApiErrorBanner, Loading, PanelLoading } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Grid, Page, Panel } from 'src/components/matchbox';
-
+import { Grid, Layout, Page, Panel, Stack, Text } from 'src/components/matchbox';
+import { useHibana } from 'src/context/HibanaContext';
 import {
   getIncident,
   listIncidentsForResource,
@@ -36,6 +36,9 @@ export const IncidentDetailsPage = ({
   incidentsForBlocklistPending,
   historicalIncidentsPending,
 }) => {
+  const [state] = useHibana();
+  const { isHibanaEnabled } = state;
+
   useEffect(() => {
     getIncident(id).then(incident => {
       listIncidentsForResource(incident.resource);
@@ -62,111 +65,178 @@ export const IncidentDetailsPage = ({
     occurred_at_timestamp,
   } = incident || {};
 
-  const renderContent = () => {
+  const renderError = () => (
+    <div data-id="error-banner">
+      <ApiErrorBanner
+        message="Sorry, we seem to have had some trouble loading your blocklist incidents."
+        errorDetails={error.message}
+        reload={() => {
+          getIncident(id).then(incident => {
+            listIncidentsForResource(incident.resource);
+            listIncidentsForBlocklist(incident.blocklist_name);
+            listHistoricalResolvedIncidents(incident.blocklist_name, incident.resource);
+          });
+        }}
+      />
+    </div>
+  );
+
+  const renderOGContent = () => {
     if (error) {
-      return (
-        <div data-id="error-banner">
-          <ApiErrorBanner
-            message="Sorry, we seem to have had some trouble loading your blocklist incidents."
-            errorDetails={error.message}
-            reload={() => {
-              getIncident(id).then(incident => {
-                listIncidentsForResource(incident.resource);
-                listIncidentsForBlocklist(incident.blocklist_name);
-                listHistoricalResolvedIncidents(incident.blocklist_name, incident.resource);
-              });
-            }}
-          />
-        </div>
-      );
+      return renderError();
     }
-
-    const renderRelatedIncidentsForBlocklist = () => {
-      if (incidentsForBlocklistPending) {
-        return <PanelLoading />;
-      }
-
-      if (!incidentsForBlocklist.length) {
-        return (
-          <Panel>
-            <Empty message={`No other recent ${blocklist_name} incidents`} />
-          </Panel>
-        );
-      }
-
-      return (
-        <Panel data-id="related-incidents-blocklist">
-          <RelatedIncidents
-            incident={{ ...incident, id }}
-            incidents={incidentsForBlocklist}
-            type="blocklist"
-            header={`Other Recent ${blocklist_name} Incidents`}
-          />
-        </Panel>
-      );
-    };
-
-    const renderRelatedIncidentsForResource = () => {
-      if (incidentsForResourcePending) {
-        return <PanelLoading />;
-      }
-      if (!incidentsForResource.length) {
-        return (
-          <Panel>
-            <Empty message={`No other recent ${resource} incidents`} />
-          </Panel>
-        );
-      }
-      return (
-        <Panel data-id="related-incidents-resource">
-          <RelatedIncidents
-            incident={{ ...incident, id }}
-            incidents={incidentsForResource}
-            header={`Other Recent ${resource} Incidents`}
-          />
-        </Panel>
-      );
-    };
 
     return (
       <>
-        {historicalIncidentsPending ? (
-          <PanelLoading minHeight="150px" />
-        ) : (
-          <Panel sectioned data-id="incident-details">
-            <IncidentDetails
-              resourceName={resource}
-              blocklistName={blocklist_name}
-              listedTimestamp={occurred_at_timestamp}
-              resolvedTimestamp={resolved_at_timestamp}
-              daysListed={days_listed}
-              historicalIncidents={historicalIncidents}
-            />
-          </Panel>
-        )}
-
         <Grid>
           <Grid.Column lg={6} xs={12}>
-            {renderRelatedIncidentsForBlocklist()}
+            <Panel data-id="incident-details">
+              <IncidentDetails
+                resourceName={resource}
+                blocklistName={blocklist_name}
+                listedTimestamp={occurred_at_timestamp}
+                resolvedTimestamp={resolved_at_timestamp}
+                daysListed={days_listed}
+                historicalIncidents={historicalIncidents}
+              />
+            </Panel>
           </Grid.Column>
           <Grid.Column lg={6} xs={12}>
-            {renderRelatedIncidentsForResource()}
+            {historicalIncidentsPending ? (
+              <PanelLoading minHeight="250px" />
+            ) : (
+              <RelatedIncidents
+                incident={{ ...incident, id }}
+                incidents={historicalIncidents}
+                loading={historicalIncidentsPending}
+                name={`${resource} on ${blocklist_name}`}
+                type="history"
+              />
+            )}
+          </Grid.Column>
+        </Grid>
+        <Grid>
+          <Grid.Column lg={6} xs={12}>
+            <RelatedIncidents
+              incident={{ ...incident, id }}
+              incidents={incidentsForBlocklist}
+              loading={incidentsForBlocklistPending}
+              name={blocklist_name}
+              type="blocklist"
+            />
+          </Grid.Column>
+          <Grid.Column lg={6} xs={12}>
+            <RelatedIncidents
+              incident={{ ...incident, id }}
+              incidents={incidentsForResource}
+              loading={incidentsForResourcePending}
+              name={resource}
+              type="resource"
+            />
           </Grid.Column>
         </Grid>
       </>
     );
   };
 
+  const renderHibanaContent = () => {
+    if (error) {
+      return renderError();
+    }
+
+    return (
+      <>
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Incident Details</Layout.SectionTitle>
+          </Layout.Section>
+          <Layout.Section>
+            {historicalIncidentsPending ? (
+              <PanelLoading minHeight="150px" />
+            ) : (
+              <Panel data-id="incident-details">
+                <IncidentDetails
+                  resourceName={resource}
+                  blocklistName={blocklist_name}
+                  listedTimestamp={occurred_at_timestamp}
+                  resolvedTimestamp={resolved_at_timestamp}
+                  daysListed={days_listed}
+                />
+              </Panel>
+            )}
+          </Layout.Section>
+        </Layout>
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Historic Incidents</Layout.SectionTitle>
+            Previous incidents involving {resource} and {blocklist_name}
+          </Layout.Section>
+          <Layout.Section>
+            <RelatedIncidents
+              incident={{ ...incident, id }}
+              incidents={historicalIncidents}
+              loading={historicalIncidentsPending}
+              name={`${resource} on ${blocklist_name}`}
+              type="history"
+            />
+          </Layout.Section>
+        </Layout>
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Other Incidents for this Resource</Layout.SectionTitle>
+            <Stack space="400">
+              <Text>Most recent incidents involving {resource}</Text>
+              <PageLink to={`/signals/blocklist/incidents?search=resource:${resource}`}>
+                View All Incidents for this Resource
+              </PageLink>
+            </Stack>
+          </Layout.Section>
+          <Layout.Section>
+            <RelatedIncidents
+              incident={{ ...incident, id }}
+              incidents={incidentsForResource}
+              loading={incidentsForResourcePending}
+              name={resource}
+              type="resource"
+            />
+          </Layout.Section>
+        </Layout>
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Other Incidents for this Blocklist</Layout.SectionTitle>
+            <Stack space="400">
+              <Text> Most recent incidents involving {blocklist_name}</Text>
+              <PageLink
+                to={`/signals/blocklist/incidents?search=bloacklist_name:${blocklist_name}`}
+              >
+                View All Incidents for this Blocklist
+              </PageLink>
+            </Stack>
+          </Layout.Section>
+          <Layout.Section>
+            <RelatedIncidents
+              incident={{ ...incident, id }}
+              incidents={incidentsForBlocklist}
+              loading={incidentsForResourcePending}
+              name={blocklist_name}
+              type="blocklist"
+            />
+          </Layout.Section>
+        </Layout>
+      </>
+    );
+  };
+
   return (
     <Page
-      title={`Blocklist Incident | ${resource || ''} | ${blocklist_name || ''}`}
+      title="Blocklist Incident"
       breadcrumbAction={{
         content: 'Blocklist Incidents',
         to: '/signals/blocklist/incidents',
         component: PageLink,
       }}
     >
-      {renderContent()}
+      {isHibanaEnabled ? renderHibanaContent() : renderOGContent()}
     </Page>
   );
 };

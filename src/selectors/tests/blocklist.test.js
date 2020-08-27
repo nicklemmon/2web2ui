@@ -25,8 +25,10 @@ describe('Blocklist Selectors: ', () => {
       {
         ...incidents[0],
         occurred_at_formatted: 'Jul 23 2019, 8:48am',
+        occurred_at_formatted_date_only: 'Jul 23 2019',
         occurred_at_timestamp: 1563886080000,
         resolved_at_formatted: null,
+        resolved_at_formatted_date_only: null,
         resolved_at_timestamp: 0,
         days_listed: 156,
         status: 'resolved',
@@ -67,6 +69,7 @@ describe('Blocklist Selectors: ', () => {
       ...formattedIncidents[0],
       resolved_at: '2019-07-25T12:48:00.000Z',
       resolved_at_formatted: 'Jul 25 2019, 8:48am',
+      resolved_at_formatted_date_only: 'Jul 25 2019',
       resolved_at_timestamp: 1564058880000,
       days_listed: 2,
     };
@@ -135,7 +138,7 @@ describe('Blocklist Selectors: ', () => {
       blocklistSelectors.selectRelatedIncidentsForResource({
         blocklist: { incidentsForResource, incident },
       }),
-    ).toHaveLength(3);
+    ).toHaveLength(4);
 
     // list of 3 where one is same id, so 2 total
     expect(
@@ -144,12 +147,12 @@ describe('Blocklist Selectors: ', () => {
       }),
     ).toHaveLength(2);
 
-    // list of 3 where none have current id, so 3 total
+    // list of 4 where none have current id, so 4 total
     expect(
       blocklistSelectors.selectRelatedIncidentsForResource({
         blocklist: { incidentsForResource: incidentsForResource.slice(1), incident },
       }),
-    ).toHaveLength(3);
+    ).toHaveLength(4);
   });
 
   it('selectRelatedIncidentsForBlocklist returns resources not including the current incident', () => {
@@ -197,7 +200,7 @@ describe('Blocklist Selectors: ', () => {
       blocklistSelectors.selectRelatedIncidentsForBlocklist({
         blocklist: { incidentsForBlocklist, incident },
       }),
-    ).toHaveLength(3);
+    ).toHaveLength(4);
 
     // list of 3 where one is same id, so 2 total
     expect(
@@ -206,12 +209,12 @@ describe('Blocklist Selectors: ', () => {
       }),
     ).toHaveLength(2);
 
-    // list of 3 where none have current id, so 3 total
+    // list of 4 where none have current id, so 4 total
     expect(
       blocklistSelectors.selectRelatedIncidentsForBlocklist({
         blocklist: { incidentsForBlocklist: incidentsForBlocklist.slice(1), incident },
       }),
-    ).toHaveLength(3);
+    ).toHaveLength(4);
   });
 
   it('selectHistoricalIncidents returns 3 resources not including the current incident', () => {

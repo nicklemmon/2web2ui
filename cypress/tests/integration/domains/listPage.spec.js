@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/domains';
 
 describe('The domains list page', () => {
@@ -12,7 +14,7 @@ describe('The domains list page', () => {
     });
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+  if (IS_HIBANA_ENABLED) {
     it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled and redirects to the sending domain view', () => {
       cy.visit(PAGE_URL);
 
@@ -44,25 +46,16 @@ describe('The domains list page', () => {
         .click()
         .should('have.attr', 'aria-selected', 'true');
       cy.url().should('include', `${PAGE_URL}/list/tracking`);
-      cy.findByRole('tabpanel').within(() => {
-        cy.findByText('Tracking domains table goes here').should('be.visible');
-      });
 
       cy.findByRole('tab', { name: 'Bounce Domains' })
         .click()
         .should('have.attr', 'aria-selected', 'true');
       cy.url().should('include', `${PAGE_URL}/list/bounce`);
-      cy.findByRole('tabpanel').within(() => {
-        cy.findByText('Bounce domains table goes here').should('be.visible');
-      });
 
       cy.findByRole('tab', { name: 'Sending Domains' })
         .click()
         .should('have.attr', 'aria-selected', 'true');
       cy.url().should('include', `${PAGE_URL}/list/sending`);
-      cy.findByRole('tabpanel').within(() => {
-        cy.findByText('Sending domains table goes here').should('be.visible');
-      });
     });
 
     describe('the filtering UI', () => {
@@ -92,9 +85,328 @@ describe('The domains list page', () => {
         cy.findByRole('button', { name: 'Apply' }).should('be.visible');
       });
     });
+
+    describe('sending domains table', () => {
+      function verifyTableRow({ rowIndex, domainName, creationDate, subaccount, statusTags }) {
+        cy.get('tbody tr')
+          .eq(rowIndex)
+          .within(() => {
+            cy.get('td')
+              .eq(0)
+              .within(() => {
+                cy.verifyLink({
+                  content: domainName,
+                  href: `/domains/details/${domainName}`,
+                });
+
+                if (creationDate) cy.findByText(creationDate).should('be.visible');
+
+                if (subaccount) cy.findByText(subaccount).should('be.visible');
+              });
+
+            cy.get('td')
+              .eq(1)
+              .within(() => {
+                statusTags.forEach(tag => cy.findByText(tag).should('be.visible'));
+              });
+          });
+
+        // Return the row to allow `.within()` chaining
+        return cy.get('tbody tr').eq(rowIndex);
+      }
+
+      it('renders a table after requesting sending domains', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('table').should('be.visible');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Sending', 'Bounce'],
+        }).within(() => {
+          cy.findByDataId('default-bounce-domain-tooltip').click();
+        });
+
+        cy.findAllByText('Default Bounce Domain').should('be.visible');
+
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Sending'],
+        });
+
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'failed-verification.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Failed Verification'],
+        });
+
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['SPF Valid'],
+        });
+
+        verifyTableRow({
+          rowIndex: 5,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Blocked'],
+        });
+
+        verifyTableRow({
+          rowIndex: 6,
+          domainName: 'with-a-subaccount.com',
+          creationDate: 'Aug 3, 2017',
+          subaccount: 'Fake...unt 1 (101)',
+          statusTags: ['Failed Verification'],
+        });
+      });
+
+      it('renders an empty state when no results are returned', () => {
+        cy.stubRequest({
+          url: '/api/v1/sending-domains',
+          fixture: '200.get.no-results.json',
+          requestAlias: 'sendingDomainsReq',
+        });
+        cy.visit(PAGE_URL);
+        cy.wait('@sendingDomainsReq');
+
+        cy.withinMainContent(() => {
+          cy.findByRole('table').should('not.be.visible');
+          cy.findByText('There is no data to display').should('be.visible');
+        });
+      });
+
+      it('renders an error message when an error is returned from the server', () => {
+        stubSendingDomains({ fixture: '400.json', statusCode: 400 });
+        cy.visit(PAGE_URL);
+        cy.wait('@sendingDomainsReq');
+
+        cy.withinSnackbar(() => {
+          cy.findByText('Something went wrong.').should('be.visible');
+        });
+
+        cy.withinMainContent(() => {
+          cy.findByRole('heading', { name: 'An error occurred' }).should('be.visible');
+          cy.findByText('Sorry, we seem to have had some trouble loading your domains.').should(
+            'be.visible',
+          );
+          cy.findByRole('button', { name: 'Show Error Details' }).click();
+          cy.findByText('This is an error').should('be.visible');
+          cy.findByRole('button', { name: 'Hide Error Details' }).click();
+          cy.findByText('This is an error').should('not.be.visible');
+        });
+
+        // Verifying that the list endpoint is re-requested, rendering the table successfully
+        stubSendingDomains();
+        cy.findByRole('button', { name: 'Try Again' }).click();
+        cy.wait('@sendingDomainsReq');
+
+        cy.findByRole('table').should('be.visible');
+      });
+    });
+
+    describe('bounce domains table', () => {
+      it('renders a table after requesting sending domains - and renders only bounce domains', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/bounce`);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.get('tbody tr')
+          .eq(0)
+          .within(() => {
+            cy.get('td')
+              .eq(0)
+              .within(() => {
+                cy.verifyLink({
+                  content: 'default-bounce.com',
+                  href: `${PAGE_URL}/details/default-bounce.com`,
+                });
+                cy.findByText('Aug 3, 2017');
+              });
+            cy.get('td')
+              .eq(1)
+              .within(() => {
+                cy.findByText('Sending').should('be.visible');
+                cy.findByText('Bounce').should('be.visible');
+              });
+          });
+      });
+
+      it('renders an empty state when no results are returned', () => {
+        stubSendingDomains({ fixture: '200.get.no-results.json' });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/bounce`);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.get('table').should('not.be.visible');
+        cy.findByText('There is no data to display').should('be.visible');
+      });
+
+      it('renders an error message when an error is returned from the server', () => {
+        stubSendingDomains({ fixture: '400.json', statusCode: 400 });
+        cy.visit(`${PAGE_URL}/list/bounce`);
+        cy.wait('@sendingDomainsReq');
+
+        cy.withinSnackbar(() => {
+          cy.findByText('Something went wrong.').should('be.visible');
+        });
+
+        cy.withinMainContent(() => {
+          cy.findByRole('heading', { name: 'An error occurred' }).should('be.visible');
+          cy.findByText('Sorry, we seem to have had some trouble loading your domains.').should(
+            'be.visible',
+          );
+          cy.findByRole('button', { name: 'Show Error Details' }).click();
+          cy.findByText('This is an error').should('be.visible');
+          cy.findByRole('button', { name: 'Hide Error Details' }).click();
+          cy.findByText('This is an error').should('not.be.visible');
+        });
+
+        // Verifying that the list endpoint is re-requested, rendering the table successfully
+        stubSendingDomains();
+        cy.findByRole('button', { name: 'Try Again' }).click();
+        cy.wait('@sendingDomainsReq');
+
+        cy.findByRole('table').should('be.visible');
+      });
+    });
+
+    describe('tracking domains table', () => {
+      function verifyTableRow({ rowIndex, domainName, subaccount, status }) {
+        cy.get('tbody tr')
+          .eq(rowIndex)
+          .within(() => {
+            cy.get('td')
+              .eq(0)
+              .within(() => {
+                cy.verifyLink({
+                  content: domainName,
+                  href: `/domains/details/${domainName}`,
+                });
+
+                if (subaccount) cy.findByText(subaccount).should('be.visible');
+              });
+
+            cy.get('td')
+              .eq(1)
+              .within(() => {
+                cy.findByText(status).should('be.visible');
+              });
+          });
+
+        // Return the row to allow `.within()` chaining
+        return cy.get('tbody tr').eq(rowIndex);
+      }
+
+      it('renders requested tracking domains data in a table', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.json',
+          requestAlias: 'trackingDomainsReq',
+        });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'unverified.com',
+          status: 'Failed Verification',
+        });
+
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'verified.com',
+          status: 'Tracking',
+        });
+
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'verified-and-default.com',
+          status: 'Tracking',
+        }).within(() => {
+          cy.findByDataId('default-tracking-domain-tooltip').click();
+        });
+        cy.findAllByText('Default Tracking Domain').should('be.visible');
+
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'blocked.com',
+          status: 'Blocked',
+        });
+
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+          subaccount: 'Subaccount 101',
+        });
+      });
+
+      it('renders an empty state when no results are returned', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: '200.get.no-results.json',
+          requestAlias: 'trackingDomainsReq',
+        });
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+
+        cy.withinMainContent(() => {
+          cy.findByRole('table').should('not.be.visible');
+          cy.findByText('There is no data to display').should('be.visible');
+        });
+      });
+
+      it('renders an error message when an error is returned from the server', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: '400.json',
+          statusCode: 400,
+          requestAlias: 'trackingDomainsReq',
+        });
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+
+        cy.withinMainContent(() => {
+          cy.findByRole('heading', { name: 'An error occurred' }).should('be.visible');
+          cy.findByText('Sorry, we seem to have had some trouble loading your domains.').should(
+            'be.visible',
+          );
+        });
+
+        // Verifying that the list endpoint is re-requested, rendering the table successfully
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.json',
+          requestAlias: 'trackingDomainsReq',
+        });
+        cy.findByRole('button', { name: 'Try Again' }).click();
+        cy.wait('@trackingDomainsReq');
+        cy.findByRole('table').should('be.visible');
+      });
+    });
   }
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+  if (!IS_HIBANA_ENABLED) {
     it('renders the 404 page when the user does not have Hibana enabled', () => {
       cy.visit(PAGE_URL);
 
@@ -103,3 +415,27 @@ describe('The domains list page', () => {
     });
   }
 });
+
+function stubSendingDomains({
+  fixture = 'sending-domains/200.get.json',
+  requestAlias = 'sendingDomainsReq',
+  statusCode = 200,
+} = {}) {
+  cy.stubRequest({
+    url: '/api/v1/sending-domains',
+    fixture,
+    requestAlias,
+    statusCode,
+  });
+}
+
+function stubSubaccounts({
+  fixture = 'subaccounts/200.get.json',
+  requestAlias = 'subaccountsReq',
+} = {}) {
+  cy.stubRequest({
+    url: '/api/v1/subaccounts',
+    fixture,
+    requestAlias,
+  });
+}

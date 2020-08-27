@@ -1,11 +1,11 @@
 import React from 'react';
 import { Page } from 'src/components/matchbox';
-import { DomainsLayout } from './components';
+import Domains from './components';
 
 export default function CreatePage() {
   return (
-    <DomainsLayout>
+    <Domains.Container>
       <Page title="Add a Domain"></Page>
-    </DomainsLayout>
+    </Domains.Container>
   );
 }

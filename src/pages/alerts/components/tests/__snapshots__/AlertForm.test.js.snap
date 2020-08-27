@@ -71,8 +71,8 @@ exports[`Alert Form Component should render the alert form component correctly 1
                       "value": "soft_bounce_rate",
                     },
                     Object {
-                      "label": "Blacklists",
-                      "value": "blacklist",
+                      "label": "Blocklists",
+                      "value": "blocklist",
                     },
                   ]
                 }

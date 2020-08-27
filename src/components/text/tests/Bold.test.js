@@ -12,4 +12,9 @@ describe('Bold', () => {
     const wrapper = shallow(<Bold id="test-id">Text</Bold>);
     expect(wrapper).toHaveProp('id', 'test-id');
   });
+
+  it('renders bold text with a passed in "data-id"', () => {
+    const wrapper = shallow(<Bold data-id="my-data-id">Text</Bold>);
+    expect(wrapper).toHaveProp('data-id', 'my-data-id');
+  });
 });

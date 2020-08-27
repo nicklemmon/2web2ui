@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const PAGE_URL = '/domains/details/fake-domain.com/verify-sending';
 
 describe('The verify sending domain page', () => {
@@ -6,7 +8,7 @@ describe('The verify sending domain page', () => {
     cy.login({ isStubbed: true });
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+  if (IS_HIBANA_ENABLED) {
     it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
       cy.stubRequest({
         url: '/api/v1/account',
@@ -23,7 +25,7 @@ describe('The verify sending domain page', () => {
     });
   }
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+  if (!IS_HIBANA_ENABLED) {
     it('renders the 404 page when the user does not have Hibana enabled', () => {
       cy.visit(PAGE_URL);
 

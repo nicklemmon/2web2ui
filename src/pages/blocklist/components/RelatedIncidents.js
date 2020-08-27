@@ -1,47 +1,116 @@
-import React from 'react';
-import { AccessTime } from '@sparkpost/matchbox-icons';
+import React, { useMemo } from 'react';
 import { PageLink } from 'src/components/links';
-import { Table, Tag, Text } from 'src/components/matchbox';
-import useHibanaOverride from 'src/hooks/useHibanaOverride';
-import OGStyles from './RelatedIncidents.module.scss';
-import hibanaStyles from './RelatedIncidentsHibana.module.scss';
+import { Panel, Table, Tag, Text } from 'src/components/matchbox';
+import PropTypes from 'prop-types';
+import { DisplayDate, Empty, PanelLoading, TableCollection } from 'src/components';
 
-export default ({ incidents = [], header = '', type = '' }) => {
-  const styles = useHibanaOverride(OGStyles, hibanaStyles);
+const TableWrapper = props => (
+  <>
+    <div>
+      <Table>{props.children}</Table>
+    </div>
+  </>
+);
+
+const RelatedIncidents = ({ incidents = [], loading, name = '', type = '' }) => {
+  const columns = useMemo(() => {
+    switch (type) {
+      case 'resource': {
+        return [{ label: 'Blocklist' }, { label: 'Date Listed' }, { label: 'Date Resolved' }];
+      }
+      case 'blocklist': {
+        return [{ label: 'Resource' }, { label: 'Date Listed' }, { label: 'Date Resolved' }];
+      }
+      case 'history': {
+        return [{ label: 'Date Listed' }, { label: 'Date Resolved' }];
+      }
+      default: {
+        return [];
+      }
+    }
+  }, [type]);
+
+  if (loading) {
+    return <PanelLoading minHeight="315px" />;
+  }
+
+  if (!incidents.length) {
+    const message =
+      type === 'history'
+        ? `No historical incidents for ${name}`
+        : `No other recent ${name} incidents`;
+
+    return (
+      <Panel>
+        <Empty message={message} />
+      </Panel>
+    );
+  }
+
+  const getRowData = ({
+    resource,
+    id,
+    blocklist_name,
+    occurred_at_timestamp,
+    occurred_at_formatted,
+    occurred_at_formatted_date_only,
+    resolved_at_timestamp,
+    resolved_at_formatted,
+    resolved_at_formatted_date_only,
+  }) => {
+    if (type === 'history') {
+      return [
+        <PageLink to={`/signals/blocklist/incidents/${id}`}>
+          <DisplayDate timestamp={occurred_at_timestamp} formattedDate={occurred_at_formatted} />
+        </PageLink>,
+        !resolved_at_formatted ? (
+          <Tag color="red">Active</Tag>
+        ) : (
+          <DisplayDate timestamp={resolved_at_timestamp} formattedDate={resolved_at_formatted} />
+        ),
+      ];
+    }
+    return [
+      <PageLink to={`/signals/blocklist/incidents/${id}`}>
+        <strong>
+          <Text as="span" fontWeight="normal">
+            {type === 'blocklist' ? resource : blocklist_name}
+          </Text>
+        </strong>
+      </PageLink>,
+      <DisplayDate
+        timestamp={occurred_at_timestamp}
+        formattedDate={occurred_at_formatted_date_only}
+      />,
+      !resolved_at_formatted ? (
+        <Tag color="red">Active</Tag>
+      ) : (
+        <DisplayDate
+          timestamp={resolved_at_timestamp}
+          formattedDate={resolved_at_formatted_date_only}
+        />
+      ),
+    ];
+  };
 
   return (
-    <Table>
-      <tbody>
-        <Table.Row>
-          <Table.HeaderCell>{header}</Table.HeaderCell>
-          {incidents.length > 0 && <Table.HeaderCell>Resolved</Table.HeaderCell>}
-        </Table.Row>
-
-        {incidents.map(incident => (
-          <Table.Row className={styles.Table} key={incident.id}>
-            <Table.Cell>
-              <div>
-                <PageLink to={`/signals/blocklist/incidents/${incident.id}`}>
-                  <strong>
-                    <Text as="span" fontWeight="normal">
-                      {type === 'blocklist' ? incident.resource : incident.blocklist_name}
-                    </Text>
-                  </strong>
-                </PageLink>
-                <div>
-                  <AccessTime className={styles.TimeIcon} />
-                  <span>{`Listed ${incident.occurred_at_formatted}`}</span>
-                </div>
-              </div>
-            </Table.Cell>
-            <Table.Cell className={styles.ResolvedCell}>
-              <div className={styles.Resolved}>
-                {incident.resolved_at_formatted || <Tag color="yellow">Active</Tag>}
-              </div>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </tbody>
-    </Table>
+    <Panel data-id={`related-incidents-${type}`}>
+      <TableCollection
+        wrapperComponent={TableWrapper}
+        columns={columns}
+        rows={incidents}
+        getRowData={getRowData}
+        pagination={true}
+        defaultSortColumn="resolved_at"
+        defaultSortDirection="desc"
+        saveCsv={false}
+      />
+    </Panel>
   );
+};
+
+export default RelatedIncidents;
+
+RelatedIncidents.propTypes = {
+  type: PropTypes.oneOf(['resource', 'blocklist', 'history']),
 };

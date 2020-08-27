@@ -1,19 +1,31 @@
 import React from 'react';
 import { FORMATS } from 'src/constants';
 import { OGOnlyWrapper } from 'src/components/hibana';
+import { ChevronRight } from '@sparkpost/matchbox-icons';
 import { TableCollection, DisplayDate } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Box, Grid, Panel, Table, Tag } from 'src/components/matchbox';
+import { Button, Box, Grid, Panel, Table, Tag } from 'src/components/matchbox';
 import styles from './IncidentsCollection.module.scss';
-import DatePicker from 'src/components/datePicker/DatePicker';
+import DatePicker from 'src/components/datePicker/DatePickerNew';
 
 const RELATIVE_DATE_OPTIONS = ['day', '7days', '30days', '90days', 'custom'];
 
 const columns = [
-  { label: 'Details' },
-  { label: 'Listed', sortKey: 'occurred_at' },
-  { label: 'Resolved', sortKey: 'resolved_at' },
+  { label: 'Resource', sortKey: 'resource' },
+  { label: 'Blocklist', sortKey: 'blocklist_name' },
+  { label: 'Date Listed', sortKey: 'occurred_at' },
+  { label: 'Date Resolved', sortKey: 'resolved_at' },
+  { label: '' },
 ];
+
+const ViewIncidentsButton = ({ to }) => {
+  return (
+    <PageLink as={Button} to={to} variant="minimal" size="small">
+      <span>Incident Details</span>
+      <ChevronRight />
+    </PageLink>
+  );
+};
 
 const getRowData = ({
   resource,
@@ -25,16 +37,16 @@ const getRowData = ({
   resolved_at_formatted,
 }) => {
   return [
-    <PageLink to={`/signals/blocklist/incidents/${id}`}>
-      <span className={styles.DetailsLink}>{resource}</span>
-      <span> on </span> <span className={styles.DetailsLink}>{blocklist_name}</span>
-    </PageLink>,
+    <strong>{resource}</strong>,
+    <strong>{blocklist_name}</strong>,
+
     <DisplayDate timestamp={occurred_at_timestamp} formattedDate={occurred_at_formatted} />,
     !resolved_at_formatted ? (
-      <Tag color="yellow">Active</Tag>
+      <Tag color="red">Active</Tag>
     ) : (
       <DisplayDate timestamp={resolved_at_timestamp} formattedDate={resolved_at_formatted} />
     ),
+    <ViewIncidentsButton to={`/signals/blocklist/incidents/${id}`} />,
   ];
 };
 
@@ -56,6 +68,7 @@ export const IncidentsCollection = props => {
           <div className={styles.DatePicker}>
             <DatePicker
               {...dateOptions}
+              label="Date Range"
               relativeDateOptions={RELATIVE_DATE_OPTIONS}
               onChange={updateDateRange}
               dateFieldFormat={FORMATS.DATE}
@@ -81,6 +94,7 @@ export const IncidentsCollection = props => {
       pagination={true}
       filterBox={{
         show: true,
+        label: 'Filter Results',
         exampleModifiers: ['resource', 'blocklist_name', 'status'],
         initialValue: search,
         itemToStringKeys: ['resource', 'blocklist_name', 'status'],

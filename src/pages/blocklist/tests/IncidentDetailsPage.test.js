@@ -91,7 +91,7 @@ describe('IncidentDetailsPage', () => {
     });
   });
 
-  it('renders the 3 panels once data has come back', () => {
+  it('renders the 4 panels once data has come back', () => {
     const wrapper = subject({
       loading: false,
       incident: mockIncident,
@@ -102,7 +102,7 @@ describe('IncidentDetailsPage', () => {
 
     wrapper.update();
 
-    expect(wrapper.find('.mock-related-incidents')).toHaveLength(2);
+    expect(wrapper.find('.mock-related-incidents')).toHaveLength(3);
     expect(wrapper.find('.mock-incident-details')).toHaveLength(1);
   });
 });

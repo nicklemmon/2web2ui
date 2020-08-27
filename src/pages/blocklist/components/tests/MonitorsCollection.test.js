@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import TestApp from 'src/__testHelpers__/TestApp';
-import MonitorssCollection from '../MonitorsCollection';
+import MonitorsCollection from '../MonitorsCollection';
 
 describe('Blocklist Component: MonitorsCollection', () => {
   const monitors = [
@@ -19,7 +19,7 @@ describe('Blocklist Component: MonitorsCollection', () => {
 
     return render(
       <TestApp>
-        <MonitorssCollection {...defaults} {...props} />
+        <MonitorsCollection {...defaults} {...props} />
       </TestApp>,
     );
   };
@@ -31,10 +31,10 @@ describe('Blocklist Component: MonitorsCollection', () => {
     expect(queryByText('12')).toBeInTheDocument();
     expect(queryByText('2')).toBeInTheDocument();
 
-    //headers
-    expect(queryByText('Watched')).toBeInTheDocument();
-    expect(queryByText('Current Blocklistings')).toBeInTheDocument();
-    expect(queryByText('Historic Blocklistings')).toBeInTheDocument();
+    //Sort Options
+    expect(queryByText('Resource / Last Incident')).toBeInTheDocument();
+    expect(queryByText('Active Incidents')).toBeInTheDocument();
+    expect(queryByText('Historic Incidents')).toBeInTheDocument();
   });
 
   it('links each item to the incidents page filtered by the resource', () => {

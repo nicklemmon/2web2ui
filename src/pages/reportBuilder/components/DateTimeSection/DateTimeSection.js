@@ -8,6 +8,9 @@ import config from 'src/config';
 import styles from '../ReportOptions.module.scss';
 import _ from 'lodash';
 
+import { connect } from 'react-redux';
+import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
+
 const { metricsRollupPrecisionMap } = config;
 const RELATIVE_DATE_OPTIONS = ['hour', 'day', '7days', '30days', '90days', 'custom'];
 const PRECISION_OPTIONS = metricsRollupPrecisionMap.map(({ value }) => ({
@@ -15,11 +18,12 @@ const PRECISION_OPTIONS = metricsRollupPrecisionMap.map(({ value }) => ({
   label: _.startCase(_.words(value).join(' ')),
 }));
 
-const DateTimeSection = ({
+export const DateTimeSection = ({
   reportOptions,
   reportLoading,
   handleTimezoneSelect,
   refreshReportOptions,
+  useMetricsRollup,
 }) => {
   const [shownPrecision, setShownPrecision] = useState('');
 
@@ -35,7 +39,8 @@ const DateTimeSection = ({
 
   const isShownForcedUTC = shownPrecision && isForcedUTCRollupPrecision(shownPrecision);
 
-  const timezoneDisabled = reportLoading || (isForcedUTC && shownPrecision === '');
+  const timezoneDisabled =
+    !useMetricsRollup || reportLoading || (isForcedUTC && shownPrecision === '');
 
   return (
     <Grid>
@@ -77,7 +82,7 @@ const DateTimeSection = ({
             to={reportOptions.to}
             selectedPrecision={reportOptions.precision}
             changeTime={refreshReportOptions}
-            disabled={reportLoading}
+            disabled={reportLoading || !useMetricsRollup}
           />
         ) : (
           <Select
@@ -94,4 +99,8 @@ const DateTimeSection = ({
   );
 };
 
-export default DateTimeSection;
+const mapStateToProps = state => ({
+  useMetricsRollup: selectFeatureFlaggedMetrics(state).useMetricsRollup,
+});
+
+export default connect(mapStateToProps)(DateTimeSection);

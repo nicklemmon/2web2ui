@@ -1,4 +1,6 @@
-if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
+if (IS_HIBANA_ENABLED) {
   describe('the Hibana navigation', () => {
     const desktopNavSelector = '[data-id="desktop-navigation"]';
     const secondaryNavSelector = '[data-id="secondary-navigation"]';
@@ -163,6 +165,7 @@ if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
       it('renders the subnav and routes to the sending domains when "Configuration" is active', () => {
         commonBeforeSteps();
 
+        Cypress.currentTest.retries(2);
         cy.get(desktopNavSelector).within(() => {
           cy.findByText('Configuration').click();
         });

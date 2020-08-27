@@ -53,8 +53,8 @@ export class FilterFields extends Component {
       mailbox_provider: Object.keys(MAILBOX_PROVIDERS),
       sending_domain: sendingDomains.map(({ domain }) => domain),
       sending_ip: sendingIps.map(({ external_ip }) => external_ip),
-      blacklist_provider: blocklists.map(({ code }) => code),
-      blacklist_resource: blocklistMonitors.map(({ resource }) => resource),
+      blocklist_provider: blocklists.map(({ code }) => code),
+      blocklist_resource: blocklistMonitors.map(({ resource }) => resource),
     };
 
     const extraProps = {
@@ -93,11 +93,11 @@ export class FilterFields extends Component {
         disabled,
         placeholder: 'Type To Search',
       },
-      blacklist_provider: {
+      blocklist_provider: {
         disabled: disabled || blocklistsPending,
         placeholder: 'Type To Search',
       },
-      blacklist_resource: {
+      blocklist_resource: {
         disabled: disabled || blocklistMonitorsPending || blocklistMonitors.length === 0,
         placeholder: 'Type To Search',
       },

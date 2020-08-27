@@ -305,6 +305,8 @@ describe('Billing Page', () => {
       });
 
       it('closes the modal when clicking "Cancel"', () => {
+        Cypress.currentTest.retries(2);
+
         cy.withinModal(() => {
           cy.findAllByText('Update Payment Information').should('be.visible');
           cy.findByRole('button', { name: 'Cancel' }).click();
@@ -447,6 +449,7 @@ describe('Billing Page', () => {
             method: 'POST',
             url: `${BILLING_API_BASE_URL}/cors-data*`,
             fixture: 'billing/cors-data/200.post.json',
+            requestAlias: 'corsDataPost',
           });
 
           cy.stubRequest({
@@ -454,18 +457,21 @@ describe('Billing Page', () => {
             statusCode: 400,
             url: '/v1/payment-methods/credit-cards',
             fixture: 'zuora/payment-method/credit-cards/400.post.json',
+            requestAlias: 'zuoraPost',
           });
 
           cy.stubRequest({
             method: 'POST',
             url: `${ACCOUNT_API_BASE_URL}/subscription/check`,
             fixture: 'account/subscription/check/200.post.json',
+            requestAlias: 'accountSubscriptionPost',
           });
 
           cy.stubRequest({
             method: 'POST',
             url: `${BILLING_API_BASE_URL}/subscription/check`,
             fixture: 'billing/subscription/check/200.post.json',
+            requestAlias: 'billingSubscriptionPost',
           });
 
           cy.stubRequest({
@@ -473,12 +479,15 @@ describe('Billing Page', () => {
             statusCode: 400,
             url: `${BILLING_API_BASE_URL}/collect`,
             fixture: 'billing/collect/400.post.json',
+            requestAlias: 'collectPost',
           });
 
           fillOutForm();
           cy.withinModal(() => {
             cy.findByRole('button', { name: 'Update Payment Information' }).click();
           });
+
+          cy.wait(['@corsDataPost', '@zuoraPost']);
 
           cy.findByText('An error occurred while contacting the billing service').should(
             'be.visible',
@@ -499,6 +508,8 @@ describe('Billing Page', () => {
       });
 
       it('closes the modal when clicking "Cancel"', () => {
+        Cypress.currentTest.retries(2);
+
         cy.withinModal(() => {
           cy.findByLabelText('First Name').should('be.visible');
           cy.findByRole('button', { name: 'Cancel' }).click({ force: true });

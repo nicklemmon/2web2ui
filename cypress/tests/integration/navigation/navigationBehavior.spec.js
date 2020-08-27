@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 // TODO: Add testing for subaccount reporting user role
 
 const PAGE_URL = '/dashboard';
@@ -34,7 +36,7 @@ function assertAccountMenuIsNotVisible() {
   cy.get(accountDropdownListSelector).should('not.be.visible');
 }
 
-if (Cypress.env('DEFAULT_TO_HIBANA') !== true) {
+if (!IS_HIBANA_ENABLED) {
   describe('The navigation behavior', () => {
     beforeEach(() => {
       cy.viewport(500, 1000);

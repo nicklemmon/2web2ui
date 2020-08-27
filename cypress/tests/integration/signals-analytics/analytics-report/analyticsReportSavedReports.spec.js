@@ -1,11 +1,32 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { PAGE_URL } from './constants';
 import { commonBeforeSteps } from './helpers';
 
-if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+if (IS_HIBANA_ENABLED) {
   describe('Analytics Report Saved Reports', () => {
     beforeEach(() => {
       commonBeforeSteps();
+      cy.stubRequest({
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.metrics-rollup.json',
+      });
       cy.visit(PAGE_URL);
+    });
+
+    it('loads a preset report with additional filters when given a report query param and filter param', () => {
+      cy.findByDataId('report-select').should('not.have.value', 'engagement'); //TODO: Remove
+      //cy.findByText('Engagement Report').should('not.be.visible');
+
+      cy.visit(`${PAGE_URL}&report=engagement`);
+      cy.findByDataId('report-select').should('have.value', 'engagement'); //TODO: Remove
+      //cy.findByText('Engagement Report').should('be.visible');
+      cy.findAllByText('Sent').should('be.visible');
+      cy.findAllByText('Accepted').should('be.visible');
+      cy.findAllByText('Clicks').should('be.visible');
+      cy.findAllByText('Open Rate').should('be.visible');
+
+      cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
+      cy.findAllByText('Christmas').should('be.visible');
     });
 
     it('Selecting a preset report works correctly', () => {
