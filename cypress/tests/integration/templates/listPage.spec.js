@@ -51,7 +51,7 @@ describe('The templates list page', () => {
     cy.findByText('Manage your email templates').should('be.visible');
     cy.verifyLink({
       content: 'Create Template',
-      href: 'templates/create',
+      href: '/templates/create',
     });
   });
 
@@ -393,7 +393,7 @@ describe('The templates list page', () => {
 
     cy.verifyLink({
       content: 'Create Template',
-      href: 'templates/create',
+      href: '/templates/create',
     });
   });
 });
