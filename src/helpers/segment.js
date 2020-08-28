@@ -1,10 +1,10 @@
 /**
- * These EVENTS and TRAITS can be found in the Segment UI at
+ * These SEGMENT_EVENTS and SEGMENT_TRAITS can be found in the Segment UI at
  * https://app.segment.com/sparkpost-daniel-chalef/protocols/tracking-plans/rs_1fgfDp0I1luTRlc3XpeQ6EpPwxx
  * as part of the protocols feature.
  */
 
-export const EVENTS = {
+export const SEGMENT_EVENTS = {
   ACCOUNT_CANCELLED: 'Account Cancelled',
   ACCOUNT_CREATED: 'Account Created',
   ACCOUNT_DOWNGRADED: 'Account Downgraded',
@@ -15,7 +15,7 @@ export const EVENTS = {
   SENDING_DOMAIN_VERIFIED: 'Sending Domain Verified',
 };
 
-export const TRAITS = {
+export const SEGMENT_TRAITS = {
   COMPANY: 'company',
   CREATED_AT: 'createdAt',
   EMAIL: 'email',
@@ -31,16 +31,26 @@ export const TRAITS = {
 /**
  * Helper to identify a user, partial updates are supported but must
  * always include the username and email
- * @param {} traits must include TRAITS.USER_ID and TRAITS.EMAIL
+ * @param {} traits must include SEGMENT_TRAITS.USER_ID and SEGMENT_TRAITS.EMAIL
  */
 export const segmentIdentify = traits => {
   if (
     window.analytics &&
     window.analytics.identify &&
-    traits[TRAITS.USER_ID] &&
-    traits[TRAITS.EMAIL]
+    traits[SEGMENT_TRAITS.USER_ID] &&
+    traits[SEGMENT_TRAITS.EMAIL]
   ) {
-    window.analytics.identify(`${traits[TRAITS.USER_ID]}//${traits[TRAITS.EMAIL]}`, traits);
+    const filteredTraits = Object.values(SEGMENT_TRAITS).reduce((filtered, key) => {
+      if (traits[key]) {
+        filtered[key] = traits[key];
+      }
+      return filtered;
+    }, {});
+
+    window.analytics.identify(
+      `${filteredTraits[SEGMENT_TRAITS.USER_ID]}//${traits[SEGMENT_TRAITS.EMAIL]}`,
+      filteredTraits,
+    );
   }
 };
 
