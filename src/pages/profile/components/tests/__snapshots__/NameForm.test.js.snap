@@ -2,7 +2,7 @@
 
 exports[`Component: NameForm should render correctly 1`] = `
 <form>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         autoComplete="given-name"
@@ -21,21 +21,21 @@ exports[`Component: NameForm should render correctly 1`] = `
         validate={[Function]}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       submit={true}
       variant="primary"
     >
       Update Profile
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
 exports[`Component: NameForm should render correctly when updating 1`] = `
 <form>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         autoComplete="given-name"
@@ -54,8 +54,8 @@ exports[`Component: NameForm should render correctly when updating 1`] = `
         validate={[Function]}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={true}
       submit={true}
@@ -63,6 +63,6 @@ exports[`Component: NameForm should render correctly when updating 1`] = `
     >
       Updating Profile
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;

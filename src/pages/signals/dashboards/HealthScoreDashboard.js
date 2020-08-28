@@ -84,15 +84,15 @@ export function HealthScoreDashboard(props) {
   return (
     <Page title="Health Score">
       <PageDescription>{HEALTH_SCORE_INFO}</PageDescription>
-      <Panel title="Health Score Trends">
-        <Panel.Section>
+      <Panel.LEGACY title="Health Score Trends">
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} md={5}>
               <DateFilter label="Date Range" />
             </Grid.Column>
           </Grid>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
 
       <Grid>
         <Grid.Column xs={12} lg={5} xl={4}>

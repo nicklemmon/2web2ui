@@ -47,10 +47,10 @@ export class SsoAuthPage extends React.Component {
     return (
       <React.Fragment>
         <CenteredLogo />
-        <Panel sectioned title="Single Sign-On">
+        <Panel.LEGACY sectioned title="Single Sign-On">
           <SsoLoginForm loginError={loginError} onSubmit={this.loginSubmit} />
-        </Panel>
-        <Panel.Footer
+        </Panel.LEGACY>
+        <Panel.LEGACY.Footer
           left={
             <small>
               <PageLink to={AUTH_ROUTE}>Not looking for single sign-on?</PageLink>

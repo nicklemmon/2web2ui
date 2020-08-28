@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Bar, Rectangle } from 'recharts';
 import moment from 'moment';
 import { tokens } from '@sparkpost/design-tokens-hibana';
+import styled from 'styled-components';
 import { Panel } from 'src/components/matchbox';
 import BarChart from 'src/components/charts/BarChart';
 import Legend from 'src/components/charts/Legend';
@@ -14,6 +15,16 @@ import { selectTrends } from 'src/selectors/inboxPlacement';
 import { Empty } from 'src/components';
 import { formatApiDate } from 'src/helpers/date';
 import { PanelSectionLoading } from 'src/components/loading';
+
+const NoTransition = styled.div`
+  transition: 0s;
+`;
+
+// TODO: Replace with <Box /> when the OG theme is removed
+const RightAligned = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const yKeys = [
   {
@@ -96,7 +107,7 @@ export const TrendsChart = props => {
   const barShape = props => {
     const isActiveDate = props.date === hoveredDate;
     const isOpaque = hoveredDate && !isActiveDate;
-    return <Rectangle {...props} style={{ transition: '0s' }} opacity={isOpaque ? 0.5 : 1} />;
+    return <NoTransition as={Rectangle} {...props} opacity={isOpaque ? 0.5 : 1} />;
   };
 
   const renderBars = yKeys.map(({ key, fill }) => (
@@ -126,11 +137,11 @@ export const TrendsChart = props => {
       {hasNoData ? (
         <Empty message="Inbox Placement Trends Not Available" />
       ) : (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           {/* float:right doesn't work for some reason. Causes tooltip to not show when hovering bottom of chart */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <RightAligned>
             <Legend items={legend} />
-          </div>
+          </RightAligned>
           <div className="LiftTooltip" onMouseOut={resetDateHover}>
             <BarChart
               gap={1}
@@ -147,7 +158,7 @@ export const TrendsChart = props => {
               {renderBars}
             </BarChart>
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       )}
     </>
   );

@@ -18,7 +18,7 @@ const SetupInstructionPanel = ({
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
 
   return (
-    <Panel
+    <Panel.LEGACY
       actions={[
         !isAutoVerified && {
           color: 'orange',
@@ -42,8 +42,8 @@ const SetupInstructionPanel = ({
       {/* TODO: Remove once the `Panel` can support a border below the `title` */}
       <Box mt="400" as="hr" />
 
-      <Panel.Section>{children}</Panel.Section>
-    </Panel>
+      <Panel.LEGACY.Section>{children}</Panel.LEGACY.Section>
+    </Panel.LEGACY>
   );
 };
 

@@ -1,7 +1,7 @@
 import { reports, signals } from 'src/pages';
 import App from 'src/components/layout/App';
 import { hasGrants } from 'src/helpers/conditions';
-import { hasAccountOptionEnabled, isAccountUiOptionSet } from 'src/helpers/conditions/account';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
 const reportsRoutes = [
   {
@@ -178,16 +178,6 @@ const signalsRoutes = [
     condition: hasGrants('signals/manage'),
     layout: App,
     title: 'Subaccount | Health Score | Signals Analytics',
-    supportDocSearch: 'signals',
-    category: 'Signals Analytics',
-    subcategory: 'Health Score',
-  },
-  {
-    path: '/signals/health-scoreV3/:facet/:facetId',
-    component: signals.HealthScorePageV3,
-    condition: isAccountUiOptionSet('allow_health_score_v3'),
-    layout: App,
-    title: 'Health Score | Signals Analytics',
     supportDocSearch: 'signals',
     category: 'Signals Analytics',
     subcategory: 'Health Score',

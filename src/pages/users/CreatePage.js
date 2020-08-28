@@ -41,9 +41,9 @@ export class CreatePage extends Component {
 
     return (
       <Page title="Invite User" breadcrumbAction={breadcrumbAction}>
-        <Panel>
+        <Panel.LEGACY>
           <form onSubmit={handleSubmit(this.handleSubmit)}>
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <Stack>
                 <Field
                   name="email"
@@ -60,15 +60,15 @@ export class CreatePage extends Component {
                   allowSubaccountAssignment={isSubaccountReportingLive}
                 />
               </Stack>
-            </Panel.Section>
+            </Panel.LEGACY.Section>
 
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <Button variant="primary" submit disabled={submitting || pristine}>
                 {submitting ? 'Loading' : 'Add User'}
               </Button>
-            </Panel.Section>
+            </Panel.LEGACY.Section>
           </form>
-        </Panel>
+        </Panel.LEGACY>
       </Page>
     );
   }

@@ -1,6 +1,11 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Grid, Panel, Toggle } from 'src/components/matchbox';
 import LabelledValue from 'src/components/labelledValue/LabelledValue';
+
+const RightAlignedText = styled.div`
+  text-align: right;
+`;
 
 export const TogglePanelSection = ({ readOnly, tfaRequired, toggleTfaRequired }) => {
   const tfaRequiredMsg = tfaRequired
@@ -8,7 +13,7 @@ export const TogglePanelSection = ({ readOnly, tfaRequired, toggleTfaRequired })
     : 'Each user can manage their own two-factor authentication settings.';
 
   return (
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column xs={12} md={10}>
           <LabelledValue label="Status">
@@ -16,16 +21,18 @@ export const TogglePanelSection = ({ readOnly, tfaRequired, toggleTfaRequired })
             <p>{tfaRequiredMsg}</p>
           </LabelledValue>
         </Grid.Column>
-        <Grid.Column xs={12} md={2} style={{ textAlign: 'right' }}>
-          <Toggle
-            id="enforceTfa"
-            disabled={readOnly}
-            checked={tfaRequired}
-            onChange={toggleTfaRequired}
-          />
+        <Grid.Column xs={12} md={2}>
+          <RightAlignedText>
+            <Toggle
+              id="enforceTfa"
+              disabled={readOnly}
+              checked={tfaRequired}
+              onChange={toggleTfaRequired}
+            />
+          </RightAlignedText>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   );
 };
 

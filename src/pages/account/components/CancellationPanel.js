@@ -47,8 +47,8 @@ export function CancellationPanel(props) {
 
   if (pending_cancellation) {
     return (
-      <Panel title="Pending Account Cancellation">
-        <Panel.Section>
+      <Panel.LEGACY title="Pending Account Cancellation">
+        <Panel.LEGACY.Section>
           <Stack>
             <Heading as="h3" looksLike="h6">
               Account is set to cancel {formatDate(pending_cancellation.effective_date)}
@@ -59,21 +59,21 @@ export function CancellationPanel(props) {
               cancel date. We hope you decide to stay!
             </p>
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button variant="primary" disabled={cancelLoading} onClick={onRenewAccount}>
             Don't cancel my account!
           </Button>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     );
   }
 
   return (
     <>
-      <Panel title="Request Account Cancellation">
-        <Panel.Section>
+      <Panel.LEGACY title="Request Account Cancellation">
+        <Panel.LEGACY.Section>
           <Stack>
             <p>
               If you choose to cancel your account, it will be cancelled at the end of your billing
@@ -101,13 +101,13 @@ export function CancellationPanel(props) {
               </ul>
             </div>
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Button variant="destructive" onClick={handleCancelAccount}>
             Cancel Account
           </Button>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
       <ConfirmationModal
         open={showCancelAccountModal}
         title="Are you sure you want to cancel your account?"

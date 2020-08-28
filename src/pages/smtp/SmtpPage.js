@@ -31,9 +31,9 @@ export class SmtpPage extends Component {
   render() {
     return (
       <Page title="SMTP Relay">
-        <Panel sectioned>
+        <Panel.LEGACY sectioned>
           <SmtpDetails />
-        </Panel>
+        </Panel.LEGACY>
         <DefaultTrackingForm toggle={this.toggleTracking} />
       </Page>
     );

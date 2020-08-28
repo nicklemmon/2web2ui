@@ -379,6 +379,8 @@ describe('Billing Page', () => {
       });
 
       it('renders an error when the server returns an error when updating payment information', () => {
+        Cypress.currentTest.retries(2);
+
         cy.stubRequest({
           method: 'POST',
           statusCode: 400,

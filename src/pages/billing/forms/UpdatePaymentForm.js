@@ -33,18 +33,18 @@ export class UpdatePaymentForm extends Component {
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
-        <Panel title="Update Payment Information">
-          <Panel.Section>
+        <Panel.LEGACY title="Update Payment Information">
+          <Panel.LEGACY.Section>
             <PaymentForm formName={FORMNAME} disabled={submitting} />
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <BillingAddressForm
               formName={FORMNAME}
               disabled={submitting}
               countries={this.props.billing.countries}
             />
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <ButtonWrapper>
               <Button type="submit" variant="primary" disabled={submitting}>
                 Update Payment Information
@@ -55,8 +55,8 @@ export class UpdatePaymentForm extends Component {
                 </Button>
               )}
             </ButtonWrapper>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
       </form>
     );
   }

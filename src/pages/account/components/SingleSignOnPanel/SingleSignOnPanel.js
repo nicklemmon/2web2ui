@@ -51,12 +51,12 @@ export function SingleSignOnPanel(props) {
     return (
       <>
         {tfaRequired && (
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <p>
               Single sign-on is not available while two-factor authentication is required on this
               account.
             </p>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         )}
         <ProviderSection readOnly={tfaRequired} provider={provider} />
         <StatusSection readOnly={tfaRequired} {...props} />
@@ -81,7 +81,7 @@ export function SingleSignOnPanel(props) {
   }
 
   return (
-    <Panel
+    <Panel.LEGACY
       title="Single Sign-On"
       actions={[
         {
@@ -93,7 +93,7 @@ export function SingleSignOnPanel(props) {
       ]}
     >
       {renderContent()}
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 

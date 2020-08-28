@@ -6,27 +6,19 @@ const uiOptions = [
   {
     key: 'hideTerminatedSubaccounts',
     label: 'Hide Subaccounts',
-    description: 'Hide terminated subacounts. Resources associated with terminated subaccounts can still be accessed.',
-    value: false
-  }
+    description:
+      'Hide terminated subacounts. Resources associated with terminated subaccounts can still be accessed.',
+    value: false,
+  },
 ];
 
-const subject = (props = {}) => shallow(
-  <UIOptionsPanel
-    uiOptions={uiOptions}
-    setAccountOption={() => {}}
-    {...props}
-  />
-);
+const subject = (props = {}) =>
+  shallow(<UIOptionsPanel uiOptions={uiOptions} setAccountOption={() => {}} {...props} />);
 
 describe('UIOptionsPanel', () => {
-  it('renders', () => {
-    expect(subject()).toMatchSnapshot();
-  });
-
   it('renders toggle correctly if option enabled', () => {
     const uiOption = uiOptions[0];
-    const wrapper = subject({ uiOptions: [{ ...uiOption, value: true }]});
+    const wrapper = subject({ uiOptions: [{ ...uiOption, value: true }] });
     expect(wrapper.find('Toggle')).toHaveProp('checked', true);
   });
 

@@ -72,8 +72,8 @@ export class RecipientListForm extends Component {
       <div>
         {error && this.renderCsvErrors()}
         <form onSubmit={handleSubmit(this.preSubmit)}>
-          <Panel>
-            <Panel.Section>
+          <Panel.LEGACY>
+            <Panel.LEGACY.Section>
               <Stack space="400">
                 <Field
                   name="name"
@@ -120,14 +120,14 @@ export class RecipientListForm extends Component {
                   validate={uploadValidators}
                 />
               </Stack>
-            </Panel.Section>
+            </Panel.LEGACY.Section>
 
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <Button variant="primary" submit disabled={submitDisabled}>
                 {actionText} Recipient List
               </Button>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         </form>
       </div>
     );

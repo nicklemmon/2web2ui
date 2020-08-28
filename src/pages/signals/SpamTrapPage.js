@@ -121,7 +121,7 @@ export function SpamTrapPage(props) {
     return (
       <Grid>
         <Grid.Column sm={12} md={7}>
-          <Panel>
+          <Panel.LEGACY>
             <ChartHeader
               title="Spam Trap Monitoring"
               primaryArea={
@@ -130,7 +130,7 @@ export function SpamTrapPage(props) {
               tooltipContent={SPAM_TRAP_INFO}
             />
             {chartPanel || (
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <div className="LiftTooltip">
                   <BarChart
                     gap={gap}
@@ -160,13 +160,13 @@ export function SpamTrapPage(props) {
                     tooltipContent={label => spamTrapHitTypesByLabel[label].description}
                   />
                 </div>
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             )}
-          </Panel>
+          </Panel.LEGACY>
         </Grid.Column>
         <Grid.Column sm={12} md={5} mdOffset={0}>
           {!loading && !chartPanel && (
-            <Box as={Panel}>
+            <Box as={Panel.LEGACY}>
               {!chartPanel && (
                 <SpamTrapActions
                   percent={selectedSpamTrapHits.relative_trap_hits}
@@ -194,15 +194,15 @@ export function SpamTrapPage(props) {
       facetId={facetId}
       subaccountId={subaccountId}
     >
-      <Panel title="Spam Trap Monitoring">
-        <Panel.Section>
+      <Panel.LEGACY title="Spam Trap Monitoring">
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} md={4}>
               <DateFilter label="Date Range" />
             </Grid.Column>
           </Grid>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
       {renderContent()}
     </Page>
   );

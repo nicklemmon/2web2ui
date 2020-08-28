@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BouncePage:  should display loading panel on top level metrics when aggregates are loading 1`] = `
+exports[
+  `BouncePage:  should display loading panel on top level metrics when aggregates are loading 1`
+] = `
 <Page
   title="Bounce Report"
 >
@@ -12,7 +14,7 @@ exports[`BouncePage:  should display loading panel on top level metrics when agg
     accent={false}
     minHeight="115px"
   />
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         selected={0}
@@ -30,7 +32,7 @@ exports[`BouncePage:  should display loading panel on top level metrics when agg
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <BounceChart
         aggregates={
           Object {
@@ -42,8 +44,8 @@ exports[`BouncePage:  should display loading panel on top level metrics when agg
         loading={true}
         tab={0}
       />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <hr />
   <TableCollection
     columns={
@@ -140,7 +142,7 @@ exports[`BouncePage:  should render 1`] = `
     </strong>
      sent messages bounced
   </Connect(MetricsSummary)>
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         selected={0}
@@ -158,7 +160,7 @@ exports[`BouncePage:  should render 1`] = `
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <BounceChart
         aggregates={
           Object {
@@ -169,8 +171,8 @@ exports[`BouncePage:  should render 1`] = `
         }
         tab={0}
       />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <hr />
   <TableCollection
     columns={
@@ -247,7 +249,7 @@ exports[`BouncePage:  should render correctly with no bounces 1`] = `
   <withRouter(Connect(ReportOptions))
     searchOptions={Object {}}
   />
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         selected={0}
@@ -268,7 +270,7 @@ exports[`BouncePage:  should render correctly with no bounces 1`] = `
     <Empty
       message="No bounces to report"
     />
-  </Panel>
+  </Panel.LEGACY>
   <hr />
   <TableCollection
     columns={
@@ -400,7 +402,9 @@ Array [
 ]
 `;
 
-exports[`BouncePage:  should show empty reasons table when there are no admin reasons when on admin bounce tab 1`] = `
+exports[
+  `BouncePage:  should show empty reasons table when there are no admin reasons when on admin bounce tab 1`
+] = `
 <Page
   title="Bounce Report"
 >
@@ -427,7 +431,7 @@ exports[`BouncePage:  should show empty reasons table when there are no admin re
     </strong>
      sent messages bounced
   </Connect(MetricsSummary)>
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         selected={1}
@@ -445,7 +449,7 @@ exports[`BouncePage:  should show empty reasons table when there are no admin re
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <BounceChart
         aggregates={
           Object {
@@ -456,18 +460,20 @@ exports[`BouncePage:  should show empty reasons table when there are no admin re
         }
         tab={1}
       />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <hr />
-  <Panel>
+  <Panel.LEGACY>
     <Empty
       message="No bounce reasons to report"
     />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 
-exports[`BouncePage:  should show empty reasons table when there are no reasons when on regular bounce tab 1`] = `
+exports[
+  `BouncePage:  should show empty reasons table when there are no reasons when on regular bounce tab 1`
+] = `
 <Page
   title="Bounce Report"
 >
@@ -494,7 +500,7 @@ exports[`BouncePage:  should show empty reasons table when there are no reasons 
     </strong>
      sent messages bounced
   </Connect(MetricsSummary)>
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         selected={0}
@@ -512,7 +518,7 @@ exports[`BouncePage:  should show empty reasons table when there are no reasons 
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <BounceChart
         aggregates={
           Object {
@@ -523,14 +529,14 @@ exports[`BouncePage:  should show empty reasons table when there are no reasons 
         }
         tab={0}
       />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <hr />
-  <Panel>
+  <Panel.LEGACY>
     <Empty
       message="No bounce reasons to report"
     />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 
@@ -561,7 +567,7 @@ exports[`BouncePage:  should show loading panel when table is loading 1`] = `
     </strong>
      sent messages bounced
   </Connect(MetricsSummary)>
-  <Panel>
+  <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
         selected={0}
@@ -579,7 +585,7 @@ exports[`BouncePage:  should show loading panel when table is loading 1`] = `
         }
       />
     </TabsWrapper>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <BounceChart
         aggregates={
           Object {
@@ -590,8 +596,8 @@ exports[`BouncePage:  should show loading panel when table is loading 1`] = `
         }
         tab={0}
       />
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <hr />
   <PanelLoading
     accent={false}

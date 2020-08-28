@@ -10,8 +10,8 @@ exports[`Page: SummaryPage should render correctly 1`] = `
   <div
     data-id="summary-chart"
   >
-    <Panel>
-      <Panel.Section
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section
         className="ChartSection"
       >
         <ChartHeader
@@ -38,8 +38,8 @@ exports[`Page: SummaryPage should render correctly 1`] = `
           }
           yScale="linear"
         />
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   </div>
   <div
     data-id="summary-table"
@@ -72,8 +72,8 @@ exports[`Page: SummaryPage should render when loading 1`] = `
   <div
     data-id="summary-chart"
   >
-    <Panel>
-      <Panel.Section
+    <Panel.LEGACY>
+      <Panel.LEGACY.Section
         className="ChartSection pending"
       >
         <ChartHeader
@@ -101,13 +101,13 @@ exports[`Page: SummaryPage should render when loading 1`] = `
           }
           yScale="linear"
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
       <div
         className="Loading"
       >
         <Loading />
       </div>
-    </Panel>
+    </Panel.LEGACY>
   </div>
   <div
     data-id="summary-table"

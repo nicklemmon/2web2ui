@@ -50,279 +50,6 @@ exports[`EngagementRateByCohortPage bar chart props renders tooltip content 1`] 
 </Stack>
 `;
 
-exports[`EngagementRateByCohortPage renders correctly 1`] = `
-<SignalsPage
-  breadcrumbAction={
-    Object {
-      "component": [Function],
-      "content": "Back to Engagement Recency Overview",
-      "to": "/signals/engagement",
-    }
-  }
-  facet="sending-domain"
-  facetId="test.com"
-  title="Engagement Rate by Cohort"
->
-  <Panel>
-    <Panel.Section>
-      <Grid>
-        <Grid.Column
-          md={4}
-          xs={12}
-        >
-          <Connect(DateFilter)
-            label="Date Range"
-          />
-        </Grid.Column>
-      </Grid>
-    </Panel.Section>
-  </Panel>
-  <Grid>
-    <Grid.Column
-      md={7}
-      sm={12}
-    >
-      <Panel
-        data-id="engagement-rate-chart"
-      >
-        <withRouter(Tabs)
-          facet="sending-domain"
-          facetId="test.com"
-        />
-        <Panel.Section>
-          <div
-            className="LiftTooltip"
-          >
-            <LineChart
-              height={300}
-              lineType="linear"
-              lines={
-                Array [
-                  Object {
-                    "c_total": 1,
-                    "date": "2017-01-01",
-                  },
-                  Object {
-                    "c_total": 10,
-                    "date": "2017-01-02",
-                  },
-                ]
-              }
-              margin={
-                Object {
-                  "bottom": 5,
-                  "left": 18,
-                  "right": 0,
-                  "top": 12,
-                }
-              }
-              onClick={[MockFunction]}
-              selected="2017-01-02"
-              shouldHighlightSelected={false}
-              stroke="#000"
-              tooltipContent={[Function]}
-              tooltipWidth="250px"
-              width="99%"
-              xAxisProps={
-                Object {
-                  "tickFormatter": [Function],
-                  "ticks": Array [
-                    1,
-                    2,
-                  ],
-                }
-              }
-              xKey="date"
-              yAxisProps={
-                Object {
-                  "domain": Array [
-                    0,
-                    1,
-                  ],
-                  "tickFormatter": [Function],
-                }
-              }
-              yKey="value"
-              yKeys={
-                Array [
-                  Object {
-                    "OGFill": "#88E2E7",
-                    "OGStroke": "#88E2E7",
-                    "description": "Never engaged, first email in last 7 days",
-                    "fill": "#88E2E7",
-                    "hibanaFill": "#78b6ff",
-                    "hibanaStroke": "#78b6ff",
-                    "key": "p_new_eng",
-                    "label": "New",
-                    "stroke": "#88E2E7",
-                  },
-                  Object {
-                    "OGFill": "#50CFDA",
-                    "OGStroke": "#50CFDA",
-                    "description": "365+ days since last engagement",
-                    "fill": "#50CFDA",
-                    "hibanaFill": "#429bff",
-                    "hibanaStroke": "#429bff",
-                    "key": "p_uneng_eng",
-                    "label": "Never Engaged",
-                    "stroke": "#50CFDA",
-                  },
-                  Object {
-                    "OGFill": "#29B9C7",
-                    "OGStroke": "#29B9C7",
-                    "description": "90-365 days since last engagement",
-                    "fill": "#29B9C7",
-                    "hibanaFill": "#1273e6",
-                    "hibanaStroke": "#1273e6",
-                    "key": "p_365d_eng",
-                    "label": "Not Recently Engaged",
-                    "stroke": "#29B9C7",
-                  },
-                  Object {
-                    "OGFill": "#219EA8",
-                    "OGStroke": "#219EA8",
-                    "description": "14-90 days since last engagement",
-                    "fill": "#219EA8",
-                    "hibanaFill": "#0060cc",
-                    "hibanaStroke": "#0060cc",
-                    "key": "p_90d_eng",
-                    "label": "Semi Recently Engaged",
-                    "stroke": "#219EA8",
-                  },
-                  Object {
-                    "OGFill": "#1A838B",
-                    "OGStroke": "#1A838B",
-                    "description": "0-14 days since last engagement",
-                    "fill": "#1A838B",
-                    "hibanaFill": "#1a497d",
-                    "hibanaStroke": "#1a497d",
-                    "key": "p_14d_eng",
-                    "label": "Recently Engaged",
-                    "stroke": "#1A838B",
-                  },
-                ]
-              }
-              yRange={
-                Array [
-                  "auto",
-                  "auto",
-                ]
-              }
-            />
-            <Legend
-              items={
-                Array [
-                  Object {
-                    "OGFill": "#88E2E7",
-                    "OGStroke": "#88E2E7",
-                    "description": "Never engaged, first email in last 7 days",
-                    "hibanaFill": "#78b6ff",
-                    "hibanaStroke": "#78b6ff",
-                    "label": "New",
-                  },
-                  Object {
-                    "OGFill": "#50CFDA",
-                    "OGStroke": "#50CFDA",
-                    "description": "365+ days since last engagement",
-                    "hibanaFill": "#429bff",
-                    "hibanaStroke": "#429bff",
-                    "label": "Never Engaged",
-                  },
-                  Object {
-                    "OGFill": "#29B9C7",
-                    "OGStroke": "#29B9C7",
-                    "description": "90-365 days since last engagement",
-                    "hibanaFill": "#1273e6",
-                    "hibanaStroke": "#1273e6",
-                    "label": "Not Recently Engaged",
-                  },
-                  Object {
-                    "OGFill": "#219EA8",
-                    "OGStroke": "#219EA8",
-                    "description": "14-90 days since last engagement",
-                    "hibanaFill": "#0060cc",
-                    "hibanaStroke": "#0060cc",
-                    "label": "Semi Recently Engaged",
-                  },
-                  Object {
-                    "OGFill": "#1A838B",
-                    "OGStroke": "#1A838B",
-                    "description": "0-14 days since last engagement",
-                    "hibanaFill": "#1a497d",
-                    "hibanaStroke": "#1a497d",
-                    "label": "Recently Engaged",
-                  },
-                ]
-              }
-              tooltipContent={[Function]}
-            />
-          </div>
-        </Panel.Section>
-      </Panel>
-    </Grid.Column>
-    <Grid.Column
-      md={5}
-      mdOffset={0}
-      sm={12}
-    >
-      <div>
-        <Box
-          as={[Function]}
-        >
-          <EngagementRateByCohortActions
-            date="2017-01-02"
-            engagementByCohort={
-              Object {
-                "c_total": 10,
-                "date": "2017-01-02",
-              }
-            }
-            facet="sending-domain"
-            facetId="test.com"
-            recencyByCohort={
-              Object {
-                "c_uneng": 0.5,
-                "date": "2017-01-02",
-              }
-            }
-          />
-        </Box>
-      </div>
-    </Grid.Column>
-  </Grid>
-</SignalsPage>
-`;
-
-exports[`EngagementRateByCohortPage renders empty correctly 1`] = `
-Array [
-  <Panel>
-    <Panel.Section>
-      <Grid>
-        <Grid.Column
-          md={4}
-          xs={12}
-        >
-          <Connect(DateFilter)
-            label="Date Range"
-          />
-        </Grid.Column>
-      </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
-    data-id="engagement-rate-chart"
-  >
-    <withRouter(Tabs)
-      facet="sending-domain"
-      facetId="test.com"
-    />
-    <Empty
-      message="Insufficient data to populate this chart"
-    />
-  </Panel>,
-]
-`;
-
 exports[`EngagementRateByCohortPage renders error correctly 1`] = `
 <SignalsPage
   breadcrumbAction={
@@ -336,8 +63,8 @@ exports[`EngagementRateByCohortPage renders error correctly 1`] = `
   facetId="test.com"
   title="Engagement Rate by Cohort"
 >
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -348,14 +75,14 @@ exports[`EngagementRateByCohortPage renders error correctly 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Grid>
     <Grid.Column
       md={7}
       sm={12}
     >
-      <Panel
+      <Panel.LEGACY
         data-id="engagement-rate-chart"
       >
         <withRouter(Tabs)
@@ -365,7 +92,7 @@ exports[`EngagementRateByCohortPage renders error correctly 1`] = `
         <Empty
           message="Unable to Load Data"
         />
-      </Panel>
+      </Panel.LEGACY>
     </Grid.Column>
     <Grid.Column
       md={5}
@@ -376,34 +103,4 @@ exports[`EngagementRateByCohortPage renders error correctly 1`] = `
     </Grid.Column>
   </Grid>
 </SignalsPage>
-`;
-
-exports[`EngagementRateByCohortPage renders loading correctly 1`] = `
-Array [
-  <Panel>
-    <Panel.Section>
-      <Grid>
-        <Grid.Column
-          md={4}
-          xs={12}
-        >
-          <Connect(DateFilter)
-            label="Date Range"
-          />
-        </Grid.Column>
-      </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
-    data-id="engagement-rate-chart"
-  >
-    <withRouter(Tabs)
-      facet="sending-domain"
-      facetId="test.com"
-    />
-    <PanelSectionLoading
-      minHeight="250px"
-    />
-  </Panel>,
-]
 `;

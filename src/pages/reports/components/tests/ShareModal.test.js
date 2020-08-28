@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { Modal } from 'src/components/matchbox';
 import { ShareModal } from '../ShareModal';
 import * as dateHelpersMock from 'src/helpers/date';
 import { WindowEvent } from 'src/components/matchbox';
@@ -29,7 +30,7 @@ describe('Component: ShareModal', () => {
   });
 
   it('should render correctly when not open', () => {
-    expect(wrapper.find('Modal').props().open).toBe(false);
+    expect(wrapper.find(Modal.LEGACY).props().open).toBe(false);
     expect(testProps.history.replace).toHaveBeenCalledWith({
       pathname: '/route',
       search: 'range=valid&recipients=one%40test.com&recipients=two%2B2%40test.com',

@@ -87,9 +87,9 @@ exports[`Rejection Data Table:  renders correctly 1`] = `
 `;
 
 exports[`Rejection Data Table:  renders correctly with no rejections 1`] = `
-<Panel>
+<Panel.LEGACY>
   <Empty
     message="No rejection reasons to report"
   />
-</Panel>
+</Panel.LEGACY>
 `;

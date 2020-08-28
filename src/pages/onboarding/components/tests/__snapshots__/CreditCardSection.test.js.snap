@@ -2,24 +2,24 @@
 
 exports[`creditCardSection should render correctly 1`] = `
 <Fragment>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Connect(PaymentForm)
       disabled={false}
       formName="joinPlanForm"
     />
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Connect(BillingAddressForm)
       countries={Array []}
       disabled={false}
       formName="joinPlanForm"
     />
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </Fragment>
 `;
 
 exports[`creditCardSection should render correctly when selectedPlan is Free 1`] = `
-<Panel.Section>
+<Panel.LEGACY.Section>
   <Stack>
     <p>
       Full featured test account that includes:
@@ -36,5 +36,5 @@ exports[`creditCardSection should render correctly when selectedPlan is Free 1`]
       </li>
     </ul>
   </Stack>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;

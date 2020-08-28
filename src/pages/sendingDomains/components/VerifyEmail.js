@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import { Grid, Button, Modal, Panel, Stack, TextField } from 'src/components/matchbox';
 import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
 
@@ -9,6 +10,11 @@ import { required } from 'src/helpers/validation';
 // actions
 import { showAlert } from 'src/actions/globalAlert';
 import * as sendingDomainsActions from 'src/actions/sendingDomains';
+
+// TODO: Remove when OG theme is removed and replace with a <Box/>
+const StyledButtonWrapper = styled.div`
+  text-align: 'right';
+`;
 
 export class VerifyEmail extends Component {
   state = {
@@ -51,7 +57,7 @@ export class VerifyEmail extends Component {
 
     return (
       <>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <p>
               Start sending email from this domain by sending a verification email to any mailbox on
@@ -73,11 +79,11 @@ export class VerifyEmail extends Component {
               </Grid.Column>
             </Grid>
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <VerifyButton onClick={this.verifyWithCustom} submitting={submitting} />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </>
     );
   };
@@ -97,46 +103,50 @@ export class VerifyEmail extends Component {
 
     return (
       <>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <p>
             Start sending email from this domain by sending a verification email to one of the
             addresses below.
           </p>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Grid middle="xs">
             <Grid.Column xs={6}>
               <p>
                 <strong>{`postmaster@${id}`}</strong>
               </p>
             </Grid.Column>
-            <Grid.Column xs={6} style={{ textAlign: 'right' }}>
-              <VerifyButton
-                onClick={this.verifyWithPostmaster}
-                variant="secondary"
-                submitting={submitting}
-              />
+            <Grid.Column xs={6}>
+              <StyledButtonWrapper>
+                <VerifyButton
+                  onClick={this.verifyWithPostmaster}
+                  variant="secondary"
+                  submitting={submitting}
+                />
+              </StyledButtonWrapper>
             </Grid.Column>
           </Grid>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Grid middle="xs">
             <Grid.Column xs={6}>
               <p>
                 <strong>{`abuse@${id}`}</strong>
               </p>
             </Grid.Column>
-            <Grid.Column xs={6} style={{ textAlign: 'right' }}>
-              <VerifyButton
-                onClick={this.verifyWithAbuse}
-                variant="secondary"
-                submitting={submitting}
-              />
+            <Grid.Column xs={6}>
+              <StyledButtonWrapper>
+                <VerifyButton
+                  onClick={this.verifyWithAbuse}
+                  variant="secondary"
+                  submitting={submitting}
+                />
+              </StyledButtonWrapper>
             </Grid.Column>
           </Grid>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </>
     );
   };
@@ -148,9 +158,9 @@ export class VerifyEmail extends Component {
       : this.renderAllowMailboxVerification();
 
     return (
-      <Modal open={open} onClose={onCancel} showCloseButton>
-        <Panel title="Verify through Email">{renderVerification}</Panel>
-      </Modal>
+      <Modal.LEGACY open={open} onClose={onCancel} showCloseButton>
+        <Panel.LEGACY title="Verify through Email">{renderVerification}</Panel.LEGACY>
+      </Modal.LEGACY>
     );
   }
 }

@@ -5,7 +5,7 @@ import { Heading } from 'src/components/text';
 
 const ApiDetailsTab = ({ history }) => (
   <>
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Heading as="h3" looksLike="h5">
           Integrate Now
@@ -18,13 +18,13 @@ const ApiDetailsTab = ({ history }) => (
           </ExternalLink>
         </p>
       </Stack>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
 
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Button variant="primary" onClick={() => history.push(`/account/api-keys/create`)}>
-        {'Generate key'}
+        Generate key
       </Button>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </>
 );
 

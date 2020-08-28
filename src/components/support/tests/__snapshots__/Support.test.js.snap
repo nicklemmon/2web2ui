@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Support renders search panel by default 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     className="Support"
   >
     <Tabs
@@ -31,17 +31,17 @@ exports[`Support renders search panel by default 1`] = `
       }
     />
     <SearchPanel />
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`Support renders search panel with current page search term 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     className="Support"
   >
     <Tabs
@@ -68,31 +68,31 @@ exports[`Support renders search panel with current page search term 1`] = `
     <SearchPanel
       defaultSearchText="exampleKeyword"
     />
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`Support renders search panel without tabs 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     className="Support"
   >
     <SearchPanel />
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`Support renders support contact panel 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     className="Support"
   >
     <Tabs
@@ -128,17 +128,17 @@ exports[`Support renders support contact panel 1`] = `
         +1 (415) 751-0928
       </UnstyledLink>
     </div>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`Support renders support form 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     className="Support"
   >
     <Tabs
@@ -165,6 +165,6 @@ exports[`Support renders support form 1`] = `
     <Connect(ReduxForm)
       onClose={[MockFunction]}
     />
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

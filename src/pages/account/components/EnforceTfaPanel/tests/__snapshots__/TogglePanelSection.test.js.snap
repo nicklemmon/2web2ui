@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: TogglePanel should render 1`] = `
-<Panel.Section>
+<Panel.LEGACY.Section>
   <Grid>
     <Grid.Column
       md={10}
@@ -20,19 +20,16 @@ exports[`Component: TogglePanel should render 1`] = `
     </Grid.Column>
     <Grid.Column
       md={2}
-      style={
-        Object {
-          "textAlign": "right",
-        }
-      }
       xs={12}
     >
-      <Toggle
-        checked={false}
-        id="enforceTfa"
-        onChange={[Function]}
-      />
+      <styled.div>
+        <Toggle
+          checked={false}
+          id="enforceTfa"
+          onChange={[Function]}
+        />
+      </styled.div>
     </Grid.Column>
   </Grid>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;

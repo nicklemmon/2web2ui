@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Plan Select: should render correctly 1`] = `
-<Panel
+<Panel.LEGACY
   actions={
     Array [
       Object {
@@ -20,7 +20,7 @@ exports[`Plan Select: should render correctly 1`] = `
     handleClose={[Function]}
     open={false}
   />
-  <Panel.Section
+  <Panel.LEGACY.Section
     key="tier_section_test"
   >
     <div
@@ -70,8 +70,8 @@ exports[`Plan Select: should render correctly 1`] = `
         </div>
       </div>
     </div>
-  </Panel.Section>
-  <Panel.Section
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section
     key="tier_section_starter"
   >
     <div
@@ -116,8 +116,8 @@ exports[`Plan Select: should render correctly 1`] = `
         </div>
       </div>
     </div>
-  </Panel.Section>
-  <Panel.Section
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section
     key="tier_section_premier"
   >
     <div
@@ -163,6 +163,6 @@ exports[`Plan Select: should render correctly 1`] = `
         </div>
       </div>
     </div>
-  </Panel.Section>
-</Panel>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;

@@ -36,7 +36,7 @@ export default ({
 
   return (
     <>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Grid>
           <Grid.Column sm={3}>
             <Definition>
@@ -51,8 +51,8 @@ export default ({
             </Definition>
           </Grid.Column>
         </Grid>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Grid>
           <Grid.Column sm={3}>
             <Definition>
@@ -92,7 +92,7 @@ export default ({
             </PageLink>
           </Grid.Column>
         </Grid>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </>
   );
 };

@@ -97,7 +97,7 @@ export function MultipleRecipientsTab({
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Field
               component={RadioGroup}
@@ -129,9 +129,9 @@ export function MultipleRecipientsTab({
               />
             )}
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <ButtonWrapper>
             <Button variant="primary" type="submit">
               Submit Request
@@ -141,25 +141,29 @@ export function MultipleRecipientsTab({
               Clear
             </Button>
           </ButtonWrapper>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
 
-      <Modal open={Boolean(dataPrivacyRequestError)} showCloseButton onClose={resetDataPrivacy}>
-        <Panel title="Upload Error">
-          <Panel.Section>
+      <Modal.LEGACY
+        open={Boolean(dataPrivacyRequestError)}
+        showCloseButton
+        onClose={resetDataPrivacy}
+      >
+        <Panel.LEGACY title="Upload Error">
+          <Panel.LEGACY.Section>
             <p>
               We couldn’t process some of the addresses in your list. Download a list of the errors,
               update your list, and please upload again.
             </p>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
 
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Button onClick={downloadErrorCSV} variant="primary">
               Download List
             </Button>
-          </Panel.Section>
-        </Panel>
-      </Modal>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
+      </Modal.LEGACY>
     </>
   );
 }

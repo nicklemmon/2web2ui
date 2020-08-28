@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EngagementChart renders empty panel 1`] = `
-<Panel>
+<Panel.LEGACY>
   <Empty
     message="No engagement to report"
   />
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`EngagementChart renders engagement chart 1`] = `
-<Panel
+<Panel.LEGACY
   sectioned={true}
 >
   <div
@@ -195,7 +195,7 @@ exports[`EngagementChart renders engagement chart 1`] = `
       </BarChart>
     </ResponsiveContainer>
   </div>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`EngagementChart renders loading 1`] = `

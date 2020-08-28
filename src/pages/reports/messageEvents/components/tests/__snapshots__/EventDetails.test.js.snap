@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EventDetails Component should render with all props 1`] = `
-<Panel
+<Panel.LEGACY
   title="Event Details"
 >
   <Box
     borderBottom="400"
     paddingTop="500"
   />
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       key="key1"
       label={
@@ -21,67 +21,55 @@ exports[`EventDetails Component should render with all props 1`] = `
       }
       value="val1"
     />
-    <LabelledValue
+    <styled.div
+      as={[Function]}
       key="key2"
       label="key2"
-      style={
-        Object {
-          "alignItems": "center",
-        }
-      }
     >
       <CopyField
         hideCopy={true}
         value="[\\"an\\",\\"arrray\\"]"
       />
-    </LabelledValue>
+    </styled.div>
     <LabelledValue
       key="type"
       label="type"
       value="bounce"
     />
-  </Panel.Section>
-  <Panel.Section>
-    <LabelledValue
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
+    <styled.div
+      as={[Function]}
       label="Raw Json"
-      style={
-        Object {
-          "alignItems": "center",
-        }
-      }
     >
       <CopyField
         hideCopy={false}
         value="{\\"key1\\":\\"val1\\",\\"key2\\":[\\"an\\",\\"arrray\\"],\\"type\\":\\"bounce\\"}"
       />
-    </LabelledValue>
-  </Panel.Section>
-</Panel>
+    </styled.div>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;
 
 exports[`EventDetails Component should render with no props 1`] = `
-<Panel
+<Panel.LEGACY
   title="Event Details"
 >
   <Box
     borderBottom="400"
     paddingTop="500"
   />
-  <Panel.Section />
-  <Panel.Section>
-    <LabelledValue
+  <Panel.LEGACY.Section />
+  <Panel.LEGACY.Section>
+    <styled.div
+      as={[Function]}
       label="Raw Json"
-      style={
-        Object {
-          "alignItems": "center",
-        }
-      }
     >
       <CopyField
         hideCopy={false}
         value="{}"
       />
-    </LabelledValue>
-  </Panel.Section>
-</Panel>
+    </styled.div>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;

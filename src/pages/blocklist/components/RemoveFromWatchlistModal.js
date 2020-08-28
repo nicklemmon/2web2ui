@@ -29,16 +29,16 @@ export const RemoveFromWatchlistModal = ({
     }
     return (
       <>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <p>
             {`Removing ${
               monitorToDelete.match(domainRegex) ? 'domain' : 'IP'
             } ${monitorToDelete} from your watchlist means you won't get notified of changes, but don't
           worry you can always add it again later.`}
           </p>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <ButtonWrapper>
             <Button variant="destructive" disabled={isPending} onClick={confirmAction}>
               Remove from Watchlist
@@ -48,19 +48,19 @@ export const RemoveFromWatchlistModal = ({
               Cancel
             </Button>
           </ButtonWrapper>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </>
     );
   };
 
   return (
-    <Modal open={Boolean(monitorToDelete)} onClose={closeModal} showCloseButton={true}>
+    <Modal.LEGACY open={Boolean(monitorToDelete)} onClose={closeModal} showCloseButton={true}>
       {isPending ? (
         <PanelLoading minHeight="175px" />
       ) : (
-        <Panel title="Remove from Watchlist">{renderContent()}</Panel>
+        <Panel.LEGACY title="Remove from Watchlist">{renderContent()}</Panel.LEGACY>
       )}
-    </Modal>
+    </Modal.LEGACY>
   );
 };
 

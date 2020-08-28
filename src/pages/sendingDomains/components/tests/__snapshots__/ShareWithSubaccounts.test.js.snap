@@ -3,7 +3,7 @@
 exports[`ShareWithSubaccounts component does not render for subaccount domains 1`] = `""`;
 
 exports[`ShareWithSubaccounts component renders correctly 1`] = `
-<Panel.Section>
+<Panel.LEGACY.Section>
   <ToggleBlock
     checked={false}
     input={
@@ -14,11 +14,11 @@ exports[`ShareWithSubaccounts component renders correctly 1`] = `
     label="Share this domain with all subaccounts?"
     onChange={[MockFunction]}
   />
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`ShareWithSubaccounts component renders subaccount sharing state 1`] = `
-<Panel.Section>
+<Panel.LEGACY.Section>
   <ToggleBlock
     checked={true}
     input={
@@ -29,5 +29,5 @@ exports[`ShareWithSubaccounts component renders subaccount sharing state 1`] = `
     label="Share this domain with all subaccounts?"
     onChange={[MockFunction]}
   />
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;

@@ -41,7 +41,7 @@ export const AlertDetails = ({
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
-  const SectionComponent = isHibanaEnabled ? Box : Panel.Section;
+  const SectionComponent = isHibanaEnabled ? Box : Panel.LEGACY.Section;
   const FilteredByComponent = isHibanaEnabled
     ? ({ children }) => <div>{children}</div>
     : ({ children }) => <span>{children}</span>;
@@ -207,7 +207,7 @@ export const AlertDetails = ({
     });
 
   return (
-    <Panel data-id="alert-details-panel">
+    <Panel.LEGACY data-id="alert-details-panel">
       <SectionComponent paddingLeft="500" paddingTop="400" width="100%">
         <Heading as="h3" className={styles.Title}>
           Alert Details
@@ -216,6 +216,6 @@ export const AlertDetails = ({
         {renderPrimaryAreaComponent()}
       </SectionComponent>
       {renderAlertDetails()}
-    </Panel>
+    </Panel.LEGACY>
   );
 };

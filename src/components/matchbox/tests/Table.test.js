@@ -66,6 +66,7 @@ describe('Table Matchbox component wrapper', () => {
       expect(wrapper).toHaveDisplayName('OGTableHeaderCell');
     });
   });
+
   describe('Table.Row', () => {
     const subject = () => {
       return shallow(<Table.Row>table content is here</Table.Row>);
@@ -84,6 +85,23 @@ describe('Table Matchbox component wrapper', () => {
       const wrapper = subject();
 
       expect(wrapper).toHaveDisplayName('OGTableRow');
+    });
+  });
+
+  describe('Table.TotalsRow', () => {
+    const subject = () => shallow(<Table.TotalsRow />);
+
+    it('renders when Hibana is enabled', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject();
+
+      expect(wrapper).toExist();
+    });
+
+    it('throws an error when Hibana is not enabled', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+
+      expect(subject).toThrowError();
     });
   });
 });

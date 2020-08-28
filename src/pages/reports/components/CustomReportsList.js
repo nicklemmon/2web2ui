@@ -8,7 +8,7 @@ export function CustomReportsList({ deleting, handleLoad, onDelete, reports }) {
 
   const reportList = React.useMemo(() => {
     if (!reports.length) {
-      return <Panel.Section>You do not have any saved reports.</Panel.Section>;
+      return <Panel.LEGACY.Section>You do not have any saved reports.</Panel.LEGACY.Section>;
     }
 
     return reports.map((report, i) => {
@@ -34,9 +34,9 @@ export function CustomReportsList({ deleting, handleLoad, onDelete, reports }) {
       <Button flat color="orange" size="small" onClick={() => setOpen(!open)}>
         Saved Reports
       </Button>
-      <Modal open={open} onClose={() => setOpen(false)} showCloseButton>
-        <Panel title="Saved Reports">{reportList}</Panel>
-      </Modal>
+      <Modal.LEGACY open={open} onClose={() => setOpen(false)} showCloseButton>
+        <Panel.LEGACY title="Saved Reports">{reportList}</Panel.LEGACY>
+      </Modal.LEGACY>
     </>
   );
 }

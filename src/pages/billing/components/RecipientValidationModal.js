@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Box, Grid, Panel, Stack, Text } from 'src/components/matchbox';
 import { OGOnlyWrapper } from 'src/components/hibana';
 import { Close } from '@sparkpost/matchbox-icons';
@@ -7,6 +8,16 @@ import styles from './RecipientValidationModal.module.scss';
 import cx from 'classnames';
 import { RECIPIENT_VALIDATION_TIERS } from 'src/constants';
 import totalRecipientValidationCost from 'src/helpers/recipientValidation';
+
+// TODO: Replace with <Box /> when OG theme is removed
+const CenteredText = styled.div`
+  text-align: 'center';
+`;
+
+// TODO: Replace with <Box /> when OG theme is removed
+const RightAlignedText = styled.div`
+  text-align: 'right';
+`;
 
 export default ({ onClose, volumeUsed }) => {
   const TierRows = RECIPIENT_VALIDATION_TIERS.map(({ volumeMax, volumeMin, cost }) => {
@@ -32,13 +43,17 @@ export default ({ onClose, volumeUsed }) => {
           <span className={styles.Bold}>${cost} per email</span>
         </Grid.Column>
         {!tierEmpty && (
-          <Grid.Column xs={1} style={{ textAlign: 'center' }}>
-            <span>=</span>
+          <Grid.Column xs={1}>
+            <CenteredText>
+              <span>=</span>
+            </CenteredText>
           </Grid.Column>
         )}
         {!tierEmpty && (
-          <Grid.Column xs={2} style={{ textAlign: 'right' }}>
-            <span className={styles.Bold}>{formatCurrency(tierCost)}</span>
+          <Grid.Column xs={2}>
+            <RightAlignedText>
+              <span className={styles.Bold}>{formatCurrency(tierCost)}</span>
+            </RightAlignedText>
           </Grid.Column>
         )}
       </Grid>
@@ -47,13 +62,13 @@ export default ({ onClose, volumeUsed }) => {
 
   return (
     <OGOnlyWrapper
-      as={Panel}
+      as={Panel.LEGACY}
       actions={[{ content: <Close />, onClick: onClose }]}
       className={styles.modalContainer}
       title="How was this calculated?"
     >
-      <Box as={Panel} title="How was this calculated?">
-        <Panel.Section>
+      <Box as={Panel.LEGACY} title="How was this calculated?">
+        <Panel.LEGACY.Section>
           <Stack space="200">
             <Stack space="200">{TierRows}</Stack>
             <Box borderTop="1px solid" paddingTop="400" borderColor="gray.400">
@@ -61,15 +76,17 @@ export default ({ onClose, volumeUsed }) => {
                 <Grid.Column xs={3} xsOffset={6}>
                   Total:
                 </Grid.Column>
-                <Grid.Column style={{ textAlign: 'right' }} xs={3}>
-                  <Text color="gray.900" fontWeight="600">
-                    {totalRecipientValidationCost(volumeUsed)}
-                  </Text>
+                <Grid.Column xs={3}>
+                  <RightAlignedText>
+                    <Text color="gray.900" fontWeight="600">
+                      {totalRecipientValidationCost(volumeUsed)}
+                    </Text>
+                  </RightAlignedText>
                 </Grid.Column>
               </Grid>
             </Box>
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </Box>
     </OGOnlyWrapper>
   );

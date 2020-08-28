@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`VerifyEmail component should disable the send button while sending 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -26,22 +26,19 @@ exports[`VerifyEmail component should disable the send button while sending 1`] 
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            submitting={true}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              submitting={true}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -55,33 +52,30 @@ exports[`VerifyEmail component should disable the send button while sending 1`] 
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            submitting={true}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              submitting={true}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`VerifyEmail component should error if custom mailbox field is invalid 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <p>
           Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
@@ -109,29 +103,29 @@ exports[`VerifyEmail component should error if custom mailbox field is invalid 1
           </Grid.Column>
         </Grid>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <VerifyButton
         onClick={[Function]}
       />
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`VerifyEmail component should render success message 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -145,21 +139,18 @@ exports[`VerifyEmail component should render success message 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -173,32 +164,29 @@ exports[`VerifyEmail component should render success message 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`VerifyEmail component should render with mailbox verification 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <p>
           Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
@@ -225,29 +213,29 @@ exports[`VerifyEmail component should render with mailbox verification 1`] = `
           </Grid.Column>
         </Grid>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <VerifyButton
         onClick={[Function]}
       />
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`VerifyEmail component should render with postmaster and abuse email verification 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -261,21 +249,18 @@ exports[`VerifyEmail component should render with postmaster and abuse email ver
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -289,37 +274,34 @@ exports[`VerifyEmail component should render with postmaster and abuse email ver
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`VerifyEmail component should send abuse-at email 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -333,21 +315,18 @@ exports[`VerifyEmail component should send abuse-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -361,32 +340,29 @@ exports[`VerifyEmail component should send abuse-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`VerifyEmail component should send custom mailbox email 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <p>
           Start sending email from this domain by sending a verification email to any mailbox on your domain using the form below.
@@ -413,29 +389,29 @@ exports[`VerifyEmail component should send custom mailbox email 1`] = `
           </Grid.Column>
         </Grid>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <VerifyButton
         onClick={[Function]}
       />
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`VerifyEmail component should send postmaster-at email 1`] = `
-<Modal
+<Modal.LEGACY
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     title="Verify through Email"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <p>
         Start sending email from this domain by sending a verification email to one of the addresses below.
       </p>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -449,21 +425,18 @@ exports[`VerifyEmail component should send postmaster-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid
         middle="xs"
       >
@@ -477,20 +450,17 @@ exports[`VerifyEmail component should send postmaster-at email 1`] = `
           </p>
         </Grid.Column>
         <Grid.Column
-          style={
-            Object {
-              "textAlign": "right",
-            }
-          }
           xs={6}
         >
-          <VerifyButton
-            onClick={[Function]}
-            variant="secondary"
-          />
+          <styled.div>
+            <VerifyButton
+              onClick={[Function]}
+              variant="secondary"
+            />
+          </styled.div>
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

@@ -1,29 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StatusSection disables buttons when updating 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
         "color": "orange",
-        "content": <span
-          style={
-            Object {
-              "display": "inline-flex",
-            }
-          }
-        >
+        "content": <ForwardRef(styled.span)>
           <span>
             Enable SSO
           </span>
-          <PowerSettingsNew
-            style={
-              Object {
-                "marginLeft": "3px",
-              }
-            }
+          <ForwardRef(styled.span)
+            as={[Function]}
           />
-        </span>,
+        </ForwardRef(styled.span)>,
         "disabled": true,
         "onClick": [Function],
       },
@@ -50,33 +40,23 @@ exports[`StatusSection disables buttons when updating 1`] = `
     open={false}
     title="Are you sure you want to disable Single Sign-On?"
   />
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`StatusSection renders when disabled 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
         "color": "orange",
-        "content": <span
-          style={
-            Object {
-              "display": "inline-flex",
-            }
-          }
-        >
+        "content": <ForwardRef(styled.span)>
           <span>
             Enable SSO
           </span>
-          <PowerSettingsNew
-            style={
-              Object {
-                "marginLeft": "3px",
-              }
-            }
+          <ForwardRef(styled.span)
+            as={[Function]}
           />
-        </span>,
+        </ForwardRef(styled.span)>,
         "disabled": false,
         "onClick": [Function],
       },
@@ -102,33 +82,23 @@ exports[`StatusSection renders when disabled 1`] = `
     open={false}
     title="Are you sure you want to disable Single Sign-On?"
   />
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`StatusSection renders when enabled 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
         "color": "orange",
-        "content": <span
-          style={
-            Object {
-              "display": "inline-flex",
-            }
-          }
-        >
+        "content": <ForwardRef(styled.span)>
           <span>
             Disable SSO
           </span>
-          <PowerSettingsNew
-            style={
-              Object {
-                "marginLeft": "3px",
-              }
-            }
+          <ForwardRef(styled.span)
+            as={[Function]}
           />
-        </span>,
+        </ForwardRef(styled.span)>,
         "disabled": false,
         "onClick": [Function],
       },
@@ -162,33 +132,23 @@ exports[`StatusSection renders when enabled 1`] = `
     open={false}
     title="Are you sure you want to disable Single Sign-On?"
   />
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`StatusSection renders when readOnly 1`] = `
-<Panel.Section
+<Panel.LEGACY.Section
   actions={
     Array [
       Object {
         "color": "orange",
-        "content": <span
-          style={
-            Object {
-              "display": "inline-flex",
-            }
-          }
-        >
+        "content": <ForwardRef(styled.span)>
           <span>
             Enable SSO
           </span>
-          <PowerSettingsNew
-            style={
-              Object {
-                "marginLeft": "3px",
-              }
-            }
+          <ForwardRef(styled.span)
+            as={[Function]}
           />
-        </span>,
+        </ForwardRef(styled.span)>,
         "disabled": true,
         "onClick": [Function],
       },
@@ -214,5 +174,5 @@ exports[`StatusSection renders when readOnly 1`] = `
     open={false}
     title="Are you sure you want to disable Single Sign-On?"
   />
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;

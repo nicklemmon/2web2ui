@@ -5,7 +5,7 @@ exports[`Status Fields Component should disable fields correctly 1`] = `
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         disabled={true}
@@ -19,12 +19,12 @@ exports[`Status Fields Component should disable fields correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         datePickerProps={
@@ -58,7 +58,7 @@ exports[`Status Fields Component should disable fields correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
 </Fragment>
 `;
@@ -68,7 +68,7 @@ exports[`Status Fields Component should render correctly 1`] = `
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         label="Test Name"
@@ -81,12 +81,12 @@ exports[`Status Fields Component should render correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Field
         component={[Function]}
         datePickerProps={
@@ -119,7 +119,7 @@ exports[`Status Fields Component should render correctly 1`] = `
           ]
         }
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
 </Fragment>
 `;

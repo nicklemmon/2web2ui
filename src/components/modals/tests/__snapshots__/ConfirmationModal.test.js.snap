@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: ConfirmationModal should render correctly with basic props 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
 >
-  <Panel>
-    <Panel.Section />
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section />
+    <Panel.LEGACY.Section>
       <ButtonWrapper>
         <Button
           name="confirmation-modal-confirm-button"
@@ -22,7 +22,7 @@ exports[`Component: ConfirmationModal should render correctly with basic props 1
           Cancel
         </Button>
       </ButtonWrapper>
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

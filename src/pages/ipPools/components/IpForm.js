@@ -64,9 +64,9 @@ export const IpForm = props => {
   };
 
   return (
-    <Panel title="Sending IP Details">
+    <Panel.LEGACY title="Sending IP Details">
       <form onSubmit={handleSubmit}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <div className={styles.FieldGroup}>
             {/* NOTE: This should not be using the HTML <label> element - just a <div> with the same styles. This is a limitation of the existing component */}
             <Label label="Hostname" />
@@ -93,7 +93,7 @@ export const IpForm = props => {
               type="radio"
               parse={val => (val === 'true' ? true : false)}
               value={isAutoWarmupEnabled ? 'true' : 'false'}
-              label={'Auto IP Warmup'}
+              label="Auto IP Warmup"
               options={[
                 {
                   label: <strong>Auto IP Warmup</strong>,
@@ -162,9 +162,9 @@ export const IpForm = props => {
               />
             </div>
           )}
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button
             variant="primary"
             disabled={submitting || pristine}
@@ -172,7 +172,7 @@ export const IpForm = props => {
           >
             {submitting ? 'Saving' : 'Update Sending IP'}
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
 
       <ConfirmationModal
@@ -203,7 +203,7 @@ export const IpForm = props => {
             : 'Yes, I want to turn OFF Auto IP Warmup'
         }
       />
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 

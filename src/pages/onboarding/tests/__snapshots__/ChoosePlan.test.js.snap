@@ -5,14 +5,14 @@ exports[`ChoosePlan page tests should disable submit and plan picker when submit
   <CenteredLogo />
   <Grid>
     <Grid.Column>
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Heading
             as="h3"
           >
             Select A Plan
           </Heading>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <_default
           bundles={
             Array [
@@ -28,7 +28,7 @@ exports[`ChoosePlan page tests should disable submit and plan picker when submit
           onChange={[Function]}
           selectedPromo={Object {}}
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <PromoCodeNew
             handlePromoCode={
               Object {
@@ -45,7 +45,7 @@ exports[`ChoosePlan page tests should disable submit and plan picker when submit
               }
             }
           />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <CreditCardSection
           billing={
             Object {
@@ -57,7 +57,7 @@ exports[`ChoosePlan page tests should disable submit and plan picker when submit
           isPlanFree={false}
           submitting={true}
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button
             disabled={true}
             type="submit"
@@ -65,8 +65,8 @@ exports[`ChoosePlan page tests should disable submit and plan picker when submit
           >
             Updating Subscription...
           </Button>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </Grid.Column>
   </Grid>
 </form>
@@ -77,14 +77,14 @@ exports[`ChoosePlan page tests should render correctly 1`] = `
   <CenteredLogo />
   <Grid>
     <Grid.Column>
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Heading
             as="h3"
           >
             Select A Plan
           </Heading>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <_default
           bundles={
             Array [
@@ -100,7 +100,7 @@ exports[`ChoosePlan page tests should render correctly 1`] = `
           onChange={[Function]}
           selectedPromo={Object {}}
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <PromoCodeNew
             handlePromoCode={
               Object {
@@ -117,7 +117,7 @@ exports[`ChoosePlan page tests should render correctly 1`] = `
               }
             }
           />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <CreditCardSection
           billing={
             Object {
@@ -129,7 +129,7 @@ exports[`ChoosePlan page tests should render correctly 1`] = `
           isPlanFree={false}
           submitting={false}
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button
             disabled={false}
             type="submit"
@@ -137,8 +137,8 @@ exports[`ChoosePlan page tests should render correctly 1`] = `
           >
             Get Started
           </Button>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </Grid.Column>
   </Grid>
 </form>
@@ -149,14 +149,14 @@ exports[`ChoosePlan page tests should show free bullets when isFree is selected 
   <CenteredLogo />
   <Grid>
     <Grid.Column>
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Heading
             as="h3"
           >
             Select A Plan
           </Heading>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <_default
           bundles={
             Array [
@@ -172,7 +172,7 @@ exports[`ChoosePlan page tests should show free bullets when isFree is selected 
           onChange={[Function]}
           selectedPromo={Object {}}
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <PromoCodeNew
             handlePromoCode={
               Object {
@@ -189,7 +189,7 @@ exports[`ChoosePlan page tests should show free bullets when isFree is selected 
               }
             }
           />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <CreditCardSection
           billing={
             Object {
@@ -201,7 +201,7 @@ exports[`ChoosePlan page tests should show free bullets when isFree is selected 
           isPlanFree={false}
           submitting={false}
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button
             disabled={false}
             type="submit"
@@ -209,8 +209,8 @@ exports[`ChoosePlan page tests should show free bullets when isFree is selected 
           >
             Get Started
           </Button>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </Grid.Column>
   </Grid>
 </form>

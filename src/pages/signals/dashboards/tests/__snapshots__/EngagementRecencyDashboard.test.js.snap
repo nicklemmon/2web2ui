@@ -14,8 +14,8 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
   opened messages or clicked links during several defined time periods.
 
   </PageDescription>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -26,8 +26,8 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -61,8 +61,8 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
           label="Breakdown"
         />
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Connect(withRouter(Connect(EngagementRecencyOverview)))
     defaults={
       Object {

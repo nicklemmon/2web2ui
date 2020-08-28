@@ -28,36 +28,24 @@ const data = [
   { sending_domain: 'w.com', current: '999', percentage: '99' },
   { sending_domain: 'x.com', current: '999', percentage: '99' },
   { sending_domain: 'y.com', current: '999', percentage: '99' },
-  { sending_domain: 'z.com', current: '999', percentage: '99' }
+  { sending_domain: 'z.com', current: '999', percentage: '99' },
 ];
 
 const SummaryPanel = ({ title }) => (
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <h5>{title}</h5>
-    </Panel.Section>
-    <SummaryTable
-      data={data}
-      tableName={title}
-      totalCount={data.length}
-    >
-      <Column
-        dataKey="sending_domain"
-        label="Sending Domains"
-        width="75%"
-      />
-      <Column
-        dataKey="current"
-        label="Current"
-        sortable
-      />
+    </Panel.LEGACY.Section>
+    <SummaryTable data={data} tableName={title} totalCount={data.length}>
+      <Column dataKey="sending_domain" label="Sending Domains" width="75%" />
+      <Column dataKey="current" label="Current" sortable />
       <Column
         dataKey="percentage"
         label="Percentage"
         component={({ percentage }) => `${percentage}%`}
       />
     </SummaryTable>
-  </Panel>
+  </Panel.LEGACY>
 );
 
 export default SummaryPanel;

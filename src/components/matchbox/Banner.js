@@ -8,9 +8,6 @@ import { omitSystemProps } from 'src/helpers/hibana';
 import OGStyles from './Banner.module.scss';
 import hibanaStyles from './BannerHibana.module.scss';
 
-OGBanner.displayName = 'OGBanner';
-HibanaBanner.displayName = 'HibanaBanner';
-
 function Banner(props) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
@@ -60,8 +57,21 @@ function Actions(props) {
   );
 }
 
+function Action(props) {
+  const [state] = useHibana();
+  const { isHibanaEnabled } = state;
+
+  if (!isHibanaEnabled) throw new Error('Banner.Action can only be used when Hibana is enabled.');
+
+  return <HibanaBanner.Action {...props} />;
+}
+
+OGBanner.displayName = 'OGBanner';
+HibanaBanner.displayName = 'HibanaBanner';
 Actions.displayName = 'Banner.Actions';
+Action.displayName = 'Banner.Action';
 
 Banner.Actions = Actions;
+Banner.Action = Action;
 
 export default Banner;

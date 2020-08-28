@@ -48,14 +48,10 @@ describe('EngagementRateByCohortPage', () => {
     return shallow(<EngagementRateByCohortPage {...defaultProps} {...props} />);
   };
 
-  it('renders correctly', () => {
-    expect(subject()).toMatchSnapshot();
-  });
-
   it('renders loading correctly', () => {
     const wrapper = subject({ loading: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find('PanelSectionLoading')).toExist();
   });
 
   it('does not render SpamTrapsPreview when facet is mb_provider', () => {
@@ -69,7 +65,7 @@ describe('EngagementRateByCohortPage', () => {
   it('renders empty correctly', () => {
     const wrapper = subject({ empty: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find('Empty')).toExist();
   });
 
   it('renders error correctly', () => {

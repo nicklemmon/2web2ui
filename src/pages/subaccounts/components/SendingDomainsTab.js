@@ -8,8 +8,7 @@ import { Loading } from 'src/components';
 import { TableCollection, DomainStatusCell, StatusTooltipHeader } from 'src/components';
 import { selectSendingDomainsForSubaccount } from 'src/selectors/sendingDomains';
 
-// TODO: Could be accomplished using `<Box/>` or `<Text/>` when OG theme is removed
-const CenteredText = styled.div`
+const StyledPanelContent = styled.div`
   text-align: center;
 `;
 
@@ -29,11 +28,11 @@ export class SendingDomainsTab extends Component {
 
     return (
       <>
-        <Panel marginBottom="0" borderBottom="0">
-          <Panel.Section>
+        <Panel.LEGACY marginBottom="0" borderBottom="0">
+          <Panel.LEGACY.Section>
             <p>Sending Domains assigned to this subaccount.</p>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
 
         <TableCollection
           columns={columns}
@@ -47,9 +46,9 @@ export class SendingDomainsTab extends Component {
 
   renderEmpty() {
     return (
-      <Panel>
-        <Panel.Section>
-          <CenteredText>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
+          <StyledPanelContent>
             <Stack>
               <p>
                 This subaccount has no sending domains assigned to it. You can assign an existing
@@ -62,9 +61,9 @@ export class SendingDomainsTab extends Component {
                 </PageLink>
               </div>
             </Stack>
-          </CenteredText>
-        </Panel.Section>
-      </Panel>
+          </StyledPanelContent>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     );
   }
 

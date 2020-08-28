@@ -58,12 +58,12 @@ export function ActiveFilters(props) {
   }
 
   return (
-    <Panel.Section
+    <Panel.LEGACY.Section
       actions={[{ content: 'Clear All Filters', onClick: handleRemoveAll, color: 'blue' }]}
     >
       <small>Filters: </small>
       {renderTags()}
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   );
 }
 

@@ -4,120 +4,117 @@ import { shallow } from 'enzyme';
 import { useHibana } from 'src/context/HibanaContext';
 jest.mock('src/context/HibanaContext');
 
-/* eslint-disable jest/expect-expect */
+function mockHibanaIsEnabled() {
+  return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+}
+
+function mockHibanaIsDisabled() {
+  return useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+}
+
 describe('Panel Matchbox component wrapper: ', () => {
-  const subject = (Component, props) => {
-    return shallow(<Component {...props}>Children...</Component>);
-  };
-
-  const checkHibana = ({ wrapper, componentName, props }) => {
-    expect(wrapper.find(`Hibana${componentName}`)).toExist();
-    expect(wrapper.find(`OG${componentName}`)).not.toExist();
-
-    Object.keys(props).forEach(key => {
-      expect(wrapper.find(`Hibana${componentName}`)).toHaveProp(key, props[key]);
-    });
-    expect(wrapper).toHaveTextContent('Children...');
-  };
-
-  const checkOG = ({ wrapper, componentName, pickedProps, omittedProps }) => {
-    expect(wrapper.find(`Hibana${componentName}`)).not.toExist();
-    expect(wrapper.find(`OG${componentName}`)).toExist();
-
-    Object.keys(pickedProps).forEach(key => {
-      expect(wrapper.find(`OG${componentName}`)).toHaveProp(key, pickedProps[key]);
-    });
-    Object.keys(omittedProps).forEach(key => {
-      expect(wrapper.find(`OG${componentName}`)).not.toHaveProp(key, omittedProps[key]);
-    });
-    expect(wrapper).toHaveTextContent('Children...');
-  };
-
   describe('Panel', () => {
-    const defaultProps = {
-      accent: true,
-    };
-    const systemProps = {
-      my: '100',
-    };
-    const mergedProps = { ...systemProps, ...defaultProps };
+    const subject = () => shallow(<Panel />);
 
-    it('renders the Hibana Panel component correctly when hibana is enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+    it('renders when Hibana is enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
 
-      const wrapper = subject(Panel, mergedProps);
-      checkHibana({ wrapper, componentName: 'Panel', props: mergedProps });
+      expect(wrapper.find('Panel')).toExist();
     });
 
-    it('renders the OG Panel component correctly when hibana is not enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+    it('throws an error when Hibana is not enabled', () => {
+      mockHibanaIsDisabled();
 
-      const wrapper = subject(Panel, mergedProps);
-      checkOG({
-        wrapper,
-        componentName: 'Panel',
-        pickedProps: defaultProps,
-        omittedProps: systemProps,
-      });
+      expect(subject).toThrowError();
     });
   });
 
   describe('Panel.Section', () => {
-    const defaultProps = {};
+    const subject = () => shallow(<Panel.Section />);
 
-    const systemProps = {
-      my: '100',
-    };
-    const mergedProps = { ...systemProps, ...defaultProps };
+    it('renders when Hibana is enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
 
-    it('renders the Hibana Panel component correctly when hibana is enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
-
-      const wrapper = subject(Panel.Section, mergedProps);
-      checkHibana({ wrapper, componentName: 'PanelSection', props: mergedProps });
+      expect(wrapper).toHaveDisplayName('Panel.Section');
     });
 
-    it('renders the OG Panel component correctly when hibana is not enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+    it('throws an error when Hibana is not enabled', () => {
+      mockHibanaIsDisabled();
 
-      const wrapper = subject(Panel.Section, mergedProps);
-      checkOG({
-        wrapper,
-        componentName: 'PanelSection',
-        pickedProps: defaultProps,
-        omittedProps: systemProps,
-      });
+      expect(subject).toThrowError();
     });
   });
 
-  describe('Panel.Footer', () => {
-    const defaultProps = {
-      left: 'foo',
-      right: 'bar',
-    };
+  describe('Panel.Action', () => {
+    const subject = () => shallow(<Panel.Action />);
 
-    const systemProps = {
-      my: '100',
-    };
-    const mergedProps = { ...systemProps, ...defaultProps };
+    it('renders when Hibana is enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
 
-    it('renders the Hibana Panel component correctly when hibana is enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
-
-      const wrapper = subject(Panel.Footer, mergedProps);
-      checkHibana({ wrapper, componentName: 'PanelFooter', props: mergedProps });
+      expect(wrapper).toHaveDisplayName('Panel.Action');
     });
 
-    it('renders the OG Panel component correctly when hibana is not enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+    it('throws an error when Hibana is not enabled', () => {
+      mockHibanaIsDisabled();
 
-      const wrapper = subject(Panel.Footer, mergedProps);
-      checkOG({
-        wrapper,
-        componentName: 'PanelFooter',
-        pickedProps: defaultProps,
-        omittedProps: systemProps,
-      });
+      expect(subject).toThrowError();
+    });
+  });
+
+  describe('Panel.LEGACY', () => {
+    const subject = () => shallow(<Panel.LEGACY />);
+
+    it('renders the OG version of Panel.LEGACY when Hibana is not enabled', () => {
+      mockHibanaIsDisabled();
+      const wrapper = subject();
+
+      expect(wrapper).toHaveDisplayName('Panel');
+    });
+
+    it('renders the Hibana version of Panel.LEGACY when Hibana is enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
+
+      expect(wrapper).toHaveDisplayName('Panel.LEGACY');
+    });
+  });
+
+  describe('Panel.LEGACY.Section', () => {
+    const subject = () => shallow(<Panel.LEGACY.Section />);
+
+    it('renders the OG version of Panel.LEGACY.Section when Hibana is not enabled', () => {
+      mockHibanaIsDisabled();
+      const wrapper = subject();
+
+      expect(wrapper).toHaveDisplayName('Panel.Section');
+    });
+
+    it('renders the Hibana version of Panel.LEGACY.Section when Hibana is enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
+
+      expect(wrapper).toHaveDisplayName('Panel.LEGACY.Section');
+    });
+  });
+
+  describe('Panel.LEGACY.Footer', () => {
+    const subject = () => shallow(<Panel.LEGACY.Footer />);
+
+    it('renders the OG version of Panel.LEGACY.Footer when Hibana is not enabled', () => {
+      mockHibanaIsDisabled();
+      const wrapper = subject();
+
+      expect(wrapper).toHaveDisplayName('Panel.Footer');
+    });
+
+    it('renders the Hibana version of Panel.LEGACY.Footer when Hibana is enabled', () => {
+      mockHibanaIsEnabled();
+      const wrapper = subject();
+
+      expect(wrapper).toHaveDisplayName('Panel.LEGACY.Footer');
     });
   });
 
@@ -125,28 +122,28 @@ describe('Panel Matchbox component wrapper: ', () => {
     const subject = props => shallow(<Panel.Headline {...props} />);
 
     it('renders with passed in children', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      mockHibanaIsEnabled();
       const wrapper = subject({ children: 'Hello!' });
 
       expect(wrapper).toHaveTextContent('Hello!');
     });
 
     it('renders with the default "as" value of "h3"', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      mockHibanaIsEnabled();
       const wrapper = subject();
 
       expect(wrapper.find('Heading')).toHaveProp('as', 'h3');
     });
 
     it('renders with the passed in "as" prop', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      mockHibanaIsEnabled();
       const wrapper = subject({ as: 'h4' });
 
       expect(wrapper.find('Heading')).toHaveProp('as', 'h4');
     });
 
     it('throws an error when Hibana is not enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+      mockHibanaIsDisabled();
 
       expect(subject).toThrowError();
     });
@@ -164,7 +161,7 @@ describe('Panel Matchbox component wrapper: ', () => {
     });
 
     it('throws an error when Hibana is not enabled', () => {
-      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+      mockHibanaIsDisabled();
 
       expect(subject).toThrowError();
     });

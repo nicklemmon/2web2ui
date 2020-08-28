@@ -29,14 +29,14 @@ export class EnableTfaPage extends React.Component {
     }
 
     return (
-      <Panel sectioned title="Enable Two Factor Authentication">
+      <Panel.LEGACY sectioned title="Enable Two Factor Authentication">
         <Stack>
           <p>
             Your administrator requires all users on this account to use two factor authentication.
           </p>
           <EnableTfaForm afterEnable={this.afterEnable} />
         </Stack>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

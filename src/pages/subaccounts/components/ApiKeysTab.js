@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import styled from 'styled-components';
 import { TableCollection, Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Button, Panel, Stack } from 'src/components/matchbox';
 import { filterBoxConfig } from 'src/pages/api-keys/tableConfig';
 import { getSubaccountApiKeys } from 'src/selectors/api-keys';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
+
+const StyledPanelContent = styled.div`
+  text-align: center;
+`;
 
 const columns = [
   { label: 'Name', width: '40%', sortKey: 'label' },
@@ -40,22 +45,24 @@ export class ApiKeysTab extends Component {
 
   renderEmpty() {
     return (
-      <Panel>
-        <Panel.Section style={{ textAlign: 'center' }}>
-          <Stack>
-            <p>
-              This subaccount has no API Keys assigned to it. You can assign an existing one, or
-              create a new one.
-            </p>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
+          <StyledPanelContent>
+            <Stack>
+              <p>
+                This subaccount has no API Keys assigned to it. You can assign an existing one, or
+                create a new one.
+              </p>
 
-            <div>
-              <PageLink as={Button} variant="secondary" to="/account/api-keys">
-                Manage API Keys
-              </PageLink>
-            </div>
-          </Stack>
-        </Panel.Section>
-      </Panel>
+              <div>
+                <PageLink as={Button} variant="secondary" to="/account/api-keys">
+                  Manage API Keys
+                </PageLink>
+              </div>
+            </Stack>
+          </StyledPanelContent>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     );
   }
 

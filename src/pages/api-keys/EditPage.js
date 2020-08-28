@@ -85,9 +85,9 @@ export class ApiKeyEditPage extends Component {
         breadcrumbAction={breadcrumbAction}
         secondaryActions={[{ content: 'Delete', onClick: this.onToggleDelete }]}
       >
-        <Panel>
+        <Panel.LEGACY>
           <ApiKeyForm apiKey={apiKey} onSubmit={this.onSubmit} readOnly={false} />
-        </Panel>
+        </Panel.LEGACY>
         <DeleteModal
           open={this.state.showDeleteModal}
           title="Are you sure you want to delete this key?"

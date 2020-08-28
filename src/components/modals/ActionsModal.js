@@ -15,16 +15,16 @@ const ActionsModal = ({
   onCancel,
   title,
 }) => (
-  <Modal open={isOpen} onClose={onCancel}>
-    <Panel title={title}>
+  <Modal.LEGACY open={isOpen} onClose={onCancel}>
+    <Panel.LEGACY title={title}>
       {isLoading ? (
-        <Panel.Section className={styles.Loading}>
+        <Panel.LEGACY.Section className={styles.Loading}>
           <Loading />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       ) : (
         <>
-          <Panel.Section>{content}</Panel.Section>
-          <Panel.Section>
+          <Panel.LEGACY.Section>{content}</Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <div className={styles.Buttons}>
               <div>
                 {actions.map(({ content, ...action }, index) => (
@@ -45,11 +45,11 @@ const ActionsModal = ({
                 </Button>
               )}
             </div>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </>
       )}
-    </Panel>
-  </Modal>
+    </Panel.LEGACY>
+  </Modal.LEGACY>
 );
 
 ActionsModal.propTypes = {

@@ -65,8 +65,8 @@ export class SummaryReportPage extends Component {
           customReportsEnabled={enhancementsEnabled}
         />
         <div data-id="summary-chart">
-          <Panel>
-            <Panel.Section
+          <Panel.LEGACY>
+            <Panel.LEGACY.Section
               className={classnames(styles.ChartSection, chart.chartLoading && styles.pending)}
             >
               <ChartHeader
@@ -78,10 +78,10 @@ export class SummaryReportPage extends Component {
                 onMetricsToggle={this.handleMetricsModal}
               />
               <ChartGroup {...chart} to={to} yScale={scale} />
-            </Panel.Section>
+            </Panel.LEGACY.Section>
 
             {this.renderLoading()}
-          </Panel>
+          </Panel.LEGACY>
         </div>
         <div data-id="summary-table">
           <Table />

@@ -105,19 +105,19 @@ export function HibanaShowMeSparkpostStep(props) {
 export function OGShowMeSparkpostStep(props) {
   return (
     <>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <SendTestEmailItem />
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ExploreAnalyticsItem />
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ViewEventsItem />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
       {props.canManageUsers && (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <InviteCollaboratorItem />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       )}
     </>
   );

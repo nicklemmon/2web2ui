@@ -2,7 +2,7 @@
 
 exports[`renders correctly - new and no subaccounts 1`] = `
 <form>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -18,8 +18,8 @@ exports[`renders correctly - new and no subaccounts 1`] = `
         name="subaccount"
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -69,21 +69,21 @@ exports[`renders correctly - new and no subaccounts 1`] = `
         validate={[Function]}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       submit={true}
       variant="primary"
     >
       Create API Key
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
 exports[`renders correctly - readonly mode 1`] = `
 <form>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -99,8 +99,8 @@ exports[`renders correctly - readonly mode 1`] = `
         name="subaccount"
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -150,13 +150,13 @@ exports[`renders correctly - readonly mode 1`] = `
         validate={[Function]}
       />
     </Stack>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
 exports[`renders correctly - update and subaccounts 1`] = `
 <form>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -172,8 +172,8 @@ exports[`renders correctly - update and subaccounts 1`] = `
         name="subaccount"
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -217,21 +217,21 @@ exports[`renders correctly - update and subaccounts 1`] = `
         validate={[Function]}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       submit={true}
       variant="primary"
     >
       Update API Key
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
 exports[`submits correctly 1`] = `
 <form>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -247,8 +247,8 @@ exports[`submits correctly 1`] = `
         name="subaccount"
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Field
         component={[Function]}
@@ -298,8 +298,8 @@ exports[`submits correctly 1`] = `
         validate={[Function]}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={true}
       submit={true}
@@ -307,6 +307,6 @@ exports[`submits correctly 1`] = `
     >
       Loading...
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;

@@ -104,10 +104,10 @@ export class HealthScorePage extends Component {
     return (
       <OGOnlyWrapper as={Grid}>
         <OGOnlyWrapper as={Grid.Column} sm={12} md={7}>
-          <Panel data-id="health-score-panel">
+          <Panel.LEGACY data-id="health-score-panel">
             <ChartHeader title="Health Score" tooltipContent={HEALTH_SCORE_INFO} />
             {panelContent || (
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <BarChart
                   margin={newModelMarginsHealthScore}
                   gap={gap}
@@ -193,16 +193,16 @@ export class HealthScorePage extends Component {
                     />
                   </>
                 )}
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             )}
-          </Panel>
+          </Panel.LEGACY>
         </OGOnlyWrapper>
         <OGOnlyWrapper as={Grid.Column} sm={12} md={5} mdOffset={0}>
           {!loading && (
             <div data-id="health-score-components">
               <Box as={Grid}>
                 <Box as={Grid.Column} xs={12} md={7}>
-                  <Box as={Panel}>
+                  <Box as={Panel.LEGACY}>
                     <ChartHeader
                       title="Health Score Components"
                       date={selectedDate}
@@ -213,7 +213,7 @@ export class HealthScorePage extends Component {
                       <Empty message="Insufficient data to populate this chart" />
                     )}
                     {!panelContent && !selectedWeightsAreEmpty && (
-                      <Panel.Section>
+                      <Panel.LEGACY.Section>
                         <DivergingBar
                           barHeight={280 / (selectedWeights.length || 1)}
                           data={selectedWeights}
@@ -226,13 +226,13 @@ export class HealthScorePage extends Component {
                           onClick={this.handleComponentSelect}
                           selected={selectedComponent}
                         />
-                      </Panel.Section>
+                      </Panel.LEGACY.Section>
                     )}
                   </Box>
                 </Box>
                 <Box as={Grid.Column} xs={12} md={5}>
                   {!panelContent && (
-                    <Box as={Panel}>
+                    <Box as={Panel.LEGACY}>
                       <HealthScoreActions weights={selectedWeights} date={selectedDate} />
                     </Box>
                   )}
@@ -260,15 +260,15 @@ export class HealthScorePage extends Component {
         facetId={facetId}
         subaccountId={subaccountId}
       >
-        <Panel title="Health Score Trends">
-          <Panel.Section>
+        <Panel.LEGACY title="Health Score Trends">
+          <Panel.LEGACY.Section>
             <Grid>
               <Grid.Column xs={12} md={5}>
                 <DateFilter label="Date Range" />
               </Grid.Column>
             </Grid>
-          </Panel.Section>
-        </Panel>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
         {this.renderContent()}
       </Page>
     );

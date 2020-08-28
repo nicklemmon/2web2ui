@@ -85,8 +85,8 @@ export class UsageReport extends Component {
     const hasMonthlyLimit = usage.month.limit > 0;
 
     return (
-      <Panel title="Your Usage Report" actions={actions}>
-        <Panel.Section>
+      <Panel.LEGACY title="Your Usage Report" actions={actions}>
+        <Panel.LEGACY.Section>
           <ProgressLabel
             title="Today"
             secondaryTitle={`Since ${formatDateTime(usage.day.start)}`}
@@ -99,8 +99,8 @@ export class UsageReport extends Component {
             <DisplayNumber label="Daily Limit" content={usage.day.limit.toLocaleString()} />
           )}
           <SendMoreCTA hasSendingLimits={hasDailyLimit || hasMonthlyLimit} />
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <ProgressLabel
             title="This Month"
             secondaryTitle={`Billing cycle: ${formatDate(usage.month.start)} - ${formatDate(
@@ -118,8 +118,8 @@ export class UsageReport extends Component {
           {hasMonthlyLimit && (
             <DisplayNumber label="Monthly limit" content={usage.month.limit.toLocaleString()} />
           )}
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     );
   }
 }

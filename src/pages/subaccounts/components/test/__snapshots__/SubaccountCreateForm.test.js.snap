@@ -4,7 +4,7 @@ exports[`api key form 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <NameField />
       <ApiKeyCheckBox
@@ -20,8 +20,8 @@ exports[`api key form 1`] = `
         showGrants={false}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         submit={true}
@@ -37,7 +37,7 @@ exports[`api key form 1`] = `
         Cancel
       </PageLink>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -45,7 +45,7 @@ exports[`base case 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <NameField />
       <ApiKeyCheckBox
@@ -61,8 +61,8 @@ exports[`base case 1`] = `
         showGrants={false}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         submit={true}
@@ -78,7 +78,7 @@ exports[`base case 1`] = `
         Cancel
       </PageLink>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -86,7 +86,7 @@ exports[`has ip pools 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <NameField />
       <ApiKeyCheckBox
@@ -105,8 +105,8 @@ exports[`has ip pools 1`] = `
         <RestrictToIpPoolCheckbox />
       </Stack>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         submit={true}
@@ -122,7 +122,7 @@ exports[`has ip pools 1`] = `
         Cancel
       </PageLink>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -130,7 +130,7 @@ exports[`has ip pools and checked checkbox 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <NameField />
       <ApiKeyCheckBox
@@ -156,8 +156,8 @@ exports[`has ip pools and checked checkbox 1`] = `
         />
       </Stack>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         submit={true}
@@ -173,7 +173,7 @@ exports[`has ip pools and checked checkbox 1`] = `
         Cancel
       </PageLink>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -188,7 +188,7 @@ exports[`submits correctly 1`] = `
     }
   }
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <NameField
         disabled={true}
@@ -208,8 +208,8 @@ exports[`submits correctly 1`] = `
         submitting={true}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         disabled={true}
@@ -227,6 +227,6 @@ exports[`submits correctly 1`] = `
         Cancel
       </PageLink>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;

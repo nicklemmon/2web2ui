@@ -28,10 +28,6 @@ describe('Inbox Placement Trends Chart', () => {
 
   const subject = (options = {}) => shallow(<TrendsChart {...props} {...options} />);
 
-  it('renders happy path correctly', () => {
-    expect(subject()).toMatchSnapshot();
-  });
-
   it('renders loading correctly', () => {
     const wrapper = subject({ loading: true });
     expect(wrapper.find('PanelSectionLoading')).toExist();

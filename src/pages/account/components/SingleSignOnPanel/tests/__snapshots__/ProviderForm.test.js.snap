@@ -4,11 +4,11 @@ exports[`ProviderForm disables fields and buttons when submitting 1`] = `
 <Form
   onSubmit={[Function]}
 >
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Provision Single Sign-On"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Heading
           as="h3"
@@ -26,8 +26,8 @@ exports[`ProviderForm disables fields and buttons when submitting 1`] = `
           />
         </div>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Heading
           as="h3"
@@ -59,8 +59,8 @@ exports[`ProviderForm disables fields and buttons when submitting 1`] = `
           />
         </div>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <ButtonWrapper>
         <Button
           disabled={true}
@@ -76,8 +76,8 @@ exports[`ProviderForm disables fields and buttons when submitting 1`] = `
           Cancel
         </Button>
       </ButtonWrapper>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </Form>
 `;
 
@@ -85,11 +85,11 @@ exports[`ProviderForm renders form 1`] = `
 <Form
   onSubmit={[Function]}
 >
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Provision Single Sign-On"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Heading
           as="h3"
@@ -107,8 +107,8 @@ exports[`ProviderForm renders form 1`] = `
           />
         </div>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Heading
           as="h3"
@@ -139,8 +139,8 @@ exports[`ProviderForm renders form 1`] = `
           />
         </div>
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <ButtonWrapper>
         <Button
           type="submit"
@@ -155,7 +155,7 @@ exports[`ProviderForm renders form 1`] = `
           Cancel
         </Button>
       </ButtonWrapper>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </Form>
 `;

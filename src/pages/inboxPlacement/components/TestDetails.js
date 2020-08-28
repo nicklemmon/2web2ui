@@ -83,8 +83,8 @@ const TestDetails = ({
 
   return (
     <>
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} sm={6} md={6}>
               <Bold>Subject Line</Bold>
@@ -95,8 +95,8 @@ const TestDetails = ({
               <div>{details.from_address}</div>
             </Grid.Column>
           </Grid>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} sm={4} md={4}>
               <Bold>Started</Bold>
@@ -113,22 +113,26 @@ const TestDetails = ({
               </div>
             </Grid.Column>
           </Grid>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Bold>Test Name</Bold>
           <p>{details.test_name || 'None'}</p>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
       <div className={styles.FolderAuthenticationPanels}>
-        <Panel sectioned title="Folder Placement" className={styles.FolderAuthenticationPanel}>
+        <Panel.LEGACY
+          sectioned
+          title="Folder Placement"
+          className={styles.FolderAuthenticationPanel}
+        >
           <FolderPlacementBarChart placements={placements} />
-        </Panel>
-        <Panel sectioned title="Authentication" className={styles.FolderAuthenticationPanel}>
+        </Panel.LEGACY>
+        <Panel.LEGACY sectioned title="Authentication" className={styles.FolderAuthenticationPanel}>
           <AuthenticationResults data={details.authentication} />
-        </Panel>
+        </Panel.LEGACY>
       </div>
-      <Panel title="Placement Breakdown">
-        <Panel.Section>
+      <Panel.LEGACY title="Placement Breakdown">
+        <Panel.LEGACY.Section>
           <div className={styles.BreakdownFilters}>
             <Select
               id="select-placement-type"
@@ -146,17 +150,17 @@ const TestDetails = ({
               placeholder={textFieldPlaceholder}
             />
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <PlacementBreakdown
           data-id="placement-breakdown-table"
           type={breakdownType}
           data={breakdownData}
         />
-      </Panel>
+      </Panel.LEGACY>
       <OGOnlyWrapper as="div" className={styles.ClearSection} />
-      <Panel sectioned title="Time to Receive Mail">
+      <Panel.LEGACY sectioned title="Time to Receive Mail">
         <TimeToReceiveSection data={details.time_to_receive} />
-      </Panel>
+      </Panel.LEGACY>
     </>
   );
 };

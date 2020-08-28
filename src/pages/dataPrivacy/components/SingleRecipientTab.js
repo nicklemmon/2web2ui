@@ -34,7 +34,7 @@ export function SingleRecipientTab(props) {
 
   return (
     <form onSubmit={props.handleSubmit(onSubmit)}>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <Field
             component={RadioGroup}
@@ -46,10 +46,9 @@ export function SingleRecipientTab(props) {
           />
           <Field
             name="email"
-            style={{ width: '60%' }}
             component={TextFieldWrapper}
-            placeholder={'email@example.com'}
-            label={'Recipient Email Address'}
+            placeholder="email@example.com"
+            label="Recipient Email Address"
             disabled={props.dataPrivacyRequestPending}
             validate={[required, email, maxLength(254)]}
             normalize={(value = '') => value.trim()}
@@ -63,9 +62,9 @@ export function SingleRecipientTab(props) {
             />
           )}
         </Stack>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
 
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button variant="primary" type="submit" disabled={props.dataPrivacyRequestPending}>
             Submit Request
@@ -78,7 +77,7 @@ export function SingleRecipientTab(props) {
             Clear
           </Button>
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
   );
 }

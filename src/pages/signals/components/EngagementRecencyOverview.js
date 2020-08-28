@@ -113,12 +113,12 @@ class EngagementRecencyOverview extends React.Component {
     const isCustomRange = signalOptions.relativeRange === 'custom';
 
     return (
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <div className={styles.Controls}>
             <Calculation initialSelected={calculation} onChange={this.handleCalculationChange} />
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <SummaryTable
           data={data}
           empty={data.length === 0}
@@ -208,7 +208,7 @@ class EngagementRecencyOverview extends React.Component {
             component={({ current_c_total }) => <NumericDataCell value={current_c_total} />}
           />
         </SummaryTable>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

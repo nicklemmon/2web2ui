@@ -55,8 +55,8 @@ export const StatusPanel = ({ test, version, id, subaccountId, latest, subaccoun
   }
 
   return (
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section actions={panelActions}>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section actions={panelActions}>
         <LabelledValue label="Status">
           <StatusTag status={test.status} />
         </LabelledValue>
@@ -66,7 +66,7 @@ export const StatusPanel = ({ test, version, id, subaccountId, latest, subaccoun
             <Subaccount id={subaccountId} name={subaccountName} />
           </LabelledValue>
         )}
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
   );
 };

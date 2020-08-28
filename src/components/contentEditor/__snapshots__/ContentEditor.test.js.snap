@@ -28,7 +28,7 @@ exports[`ContentEditor should render 1`] = `
         ]
       }
     />
-    <Panel>
+    <Panel.LEGACY>
       <Field
         component={[Function]}
         mode="html"
@@ -42,7 +42,7 @@ exports[`ContentEditor should render 1`] = `
           ]
         }
       />
-    </Panel>
+    </Panel.LEGACY>
   </Box>
 </div>
 `;
@@ -71,7 +71,7 @@ exports[`ContentEditor should render without test data tab 1`] = `
         ]
       }
     />
-    <Panel>
+    <Panel.LEGACY>
       <Field
         component={[Function]}
         mode="html"
@@ -85,7 +85,7 @@ exports[`ContentEditor should render without test data tab 1`] = `
           ]
         }
       />
-    </Panel>
+    </Panel.LEGACY>
   </Box>
 </div>
 `;

@@ -7,7 +7,9 @@ Object {
 }
 `;
 
-exports[`Signals Health Score Page bar chart props renders tooltip content for component weights 1`] = `
+exports[
+  `Signals Health Score Page bar chart props renders tooltip content for component weights 1`
+] = `
 "
       Other Bounces are defined as the share of attempted email injections that bounce for a variety
       of miscellaneous technical reasons.
@@ -22,7 +24,9 @@ exports[`Signals Health Score Page bar chart props renders tooltip content for h
 />
 `;
 
-exports[`Signals Health Score Page bar chart props renders tooltip content for hovered component 1`] = `""`;
+exports[
+  `Signals Health Score Page bar chart props renders tooltip content for hovered component 1`
+] = `""`;
 
 exports[`Signals Health Score Page bar chart props renders tooltip content for injections 1`] = `
 <TooltipMetric
@@ -31,14 +35,18 @@ exports[`Signals Health Score Page bar chart props renders tooltip content for i
 />
 `;
 
-exports[`Signals Health Score Page bar chart props renders tooltip content for selected component 1`] = `
+exports[
+  `Signals Health Score Page bar chart props renders tooltip content for selected component 1`
+] = `
 <TooltipMetric
   label="Engaged Recipients"
   value="0.1235%"
 />
 `;
 
-exports[`Signals Health Score Page bar chart props renders y label content for component weights 1`] = `"Engaged Recipients"`;
+exports[
+  `Signals Health Score Page bar chart props renders y label content for component weights 1`
+] = `"Engaged Recipients"`;
 
 exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
 <SignalsPage
@@ -53,10 +61,10 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
   facetId="test.com"
   title="Health Score"
 >
-  <Panel
+  <Panel.LEGACY
     title="Health Score Trends"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={5}
@@ -67,8 +75,8 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <OGOnlyWrapper
     as={[Function]}
   >
@@ -77,7 +85,7 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
       md={7}
       sm={12}
     >
-      <Panel
+      <Panel.LEGACY
         data-id="health-score-panel"
       >
         <ChartHeader
@@ -88,7 +96,7 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
   including bounces, spam trap hits, and engagement across our entire network.
 "
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <BarChart
             disableHover={false}
             gap={0.25}
@@ -348,8 +356,8 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
               ]
             }
           />
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </OGOnlyWrapper>
     <OGOnlyWrapper
       as={[Function]}
@@ -380,7 +388,7 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
   engagement, and others.
 "
               />
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <DivergingBar
                   barHeight={140}
                   data={
@@ -413,7 +421,7 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
                   yKey="weight_type"
                   yLabel={[Function]}
                 />
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             </Box>
           </Box>
           <Box
@@ -452,10 +460,10 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
 
 exports[`Signals Health Score Page renders empty correctly 1`] = `
 Array [
-  <Panel
+  <Panel.LEGACY
     title="Health Score Trends"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={5}
@@ -466,9 +474,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY
     data-id="health-score-panel"
   >
     <ChartHeader
@@ -482,7 +490,7 @@ Array [
     <Empty
       message="Insufficient data to populate this chart"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;
 
@@ -499,10 +507,10 @@ exports[`Signals Health Score Page renders empty weights 1`] = `
   facetId="test.com"
   title="Health Score"
 >
-  <Panel
+  <Panel.LEGACY
     title="Health Score Trends"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={5}
@@ -513,8 +521,8 @@ exports[`Signals Health Score Page renders empty weights 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <OGOnlyWrapper
     as={[Function]}
   >
@@ -523,7 +531,7 @@ exports[`Signals Health Score Page renders empty weights 1`] = `
       md={7}
       sm={12}
     >
-      <Panel
+      <Panel.LEGACY
         data-id="health-score-panel"
       >
         <ChartHeader
@@ -534,7 +542,7 @@ exports[`Signals Health Score Page renders empty weights 1`] = `
   including bounces, spam trap hits, and engagement across our entire network.
 "
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <BarChart
             disableHover={false}
             gap={0.25}
@@ -678,8 +686,8 @@ exports[`Signals Health Score Page renders empty weights 1`] = `
               ]
             }
           />
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </OGOnlyWrapper>
     <OGOnlyWrapper
       as={[Function]}
@@ -749,10 +757,10 @@ exports[`Signals Health Score Page renders error correctly 1`] = `
   facetId="test.com"
   title="Health Score"
 >
-  <Panel
+  <Panel.LEGACY
     title="Health Score Trends"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={5}
@@ -763,8 +771,8 @@ exports[`Signals Health Score Page renders error correctly 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <OGOnlyWrapper
     as={[Function]}
   >
@@ -773,7 +781,7 @@ exports[`Signals Health Score Page renders error correctly 1`] = `
       md={7}
       sm={12}
     >
-      <Panel
+      <Panel.LEGACY
         data-id="health-score-panel"
       >
         <ChartHeader
@@ -787,7 +795,7 @@ exports[`Signals Health Score Page renders error correctly 1`] = `
         <Empty
           message="Unable to Load Data"
         />
-      </Panel>
+      </Panel.LEGACY>
     </OGOnlyWrapper>
     <OGOnlyWrapper
       as={[Function]}
@@ -834,10 +842,10 @@ exports[`Signals Health Score Page renders error correctly 1`] = `
 
 exports[`Signals Health Score Page renders loading correctly 1`] = `
 Array [
-  <Panel
+  <Panel.LEGACY
     title="Health Score Trends"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={5}
@@ -848,9 +856,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY
     data-id="health-score-panel"
   >
     <ChartHeader
@@ -864,6 +872,6 @@ Array [
     <PanelSectionLoading
       minHeight="225px"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;

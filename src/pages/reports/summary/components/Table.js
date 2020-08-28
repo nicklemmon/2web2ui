@@ -17,7 +17,6 @@ import _ from 'lodash';
 import styles from './Table.module.scss';
 
 export class Table extends Component {
-
   getColumnHeaders() {
     const { metrics, groupBy } = this.props;
     const isAggColumn = groupBy === 'aggregate';
@@ -25,22 +24,22 @@ export class Table extends Component {
     const primaryCol = isAggColumn
       ? null
       : {
-        label: GROUP_CONFIG[groupBy].label,
-        className: styles.HeaderCell,
-        sortKey: GROUP_CONFIG[groupBy].keyName
-      };
+          label: GROUP_CONFIG[groupBy].label,
+          className: styles.HeaderCell,
+          sortKey: GROUP_CONFIG[groupBy].keyName,
+        };
 
     const metricCols = metrics.map(({ label, key }) => ({
       key,
       label: <div className={styles.RightAlign}>{label}</div>,
       className: cx(styles.HeaderCell, styles.NumericalHeader),
-      sortKey: isAggColumn ? null : key
+      sortKey: isAggColumn ? null : key,
     }));
 
     return [primaryCol, ...metricCols];
   }
 
-  getSubaccountFilter = (subaccountId) => {
+  getSubaccountFilter = subaccountId => {
     const { typeaheadCache } = this.props;
 
     if (subaccountId === 0) {
@@ -56,34 +55,40 @@ export class Table extends Component {
     const { metrics, groupBy } = this.props;
     const group = GROUP_CONFIG[groupBy];
 
-    return (row) => {
+    return row => {
       const filterKey = row[group.keyName];
-      const newFilter = (group.label === 'Subaccount')
-        ? this.getSubaccountFilter(filterKey)
-        : { type: group.label, value: filterKey };
+      const newFilter =
+        group.label === 'Subaccount'
+          ? this.getSubaccountFilter(filterKey)
+          : { type: group.label, value: filterKey };
 
-      const primaryCol = groupBy === 'aggregate' ? 'Aggregate Total' : <AddFilterLink newFilter={newFilter} reportType={'summary'} content={newFilter.value}/>;
-      const metricCols = metrics.map((metric) => (
+      const primaryCol =
+        groupBy === 'aggregate' ? (
+          'Aggregate Total'
+        ) : (
+          <AddFilterLink newFilter={newFilter} reportType="summary" content={newFilter.value} />
+        );
+      const metricCols = metrics.map(metric => (
         <div className={styles.RightAlign}>
-          <Unit value={row[metric.key]} unit={metric.unit}/>
+          <Unit value={row[metric.key]} unit={metric.unit} />
         </div>
       ));
 
       return [primaryCol, ...metricCols];
     };
-  }
+  };
 
   getDefaultSortColumn = () => {
     const { metrics } = this.props;
     return metrics[0].key;
-  }
+  };
 
   renderAggregateTable() {
     const { tableData } = this.props;
 
     return (
       <TableCollection
-        headerComponent={() => <TableHeader columns={this.getColumnHeaders()}/>}
+        headerComponent={() => <TableHeader columns={this.getColumnHeaders()} />}
         getRowData={this.getRowData()}
         rows={tableData}
       />
@@ -103,7 +108,7 @@ export class Table extends Component {
         defaultPerPage={10}
         rows={tableData}
         defaultSortColumn={this.getDefaultSortColumn()}
-        defaultSortDirection='desc'
+        defaultSortDirection="desc"
       />
     );
   }
@@ -114,42 +119,41 @@ export class Table extends Component {
     if (tableLoading) {
       return (
         <div className={styles.LoadingSection}>
-          <div className={styles.Loading}><Loading /></div>
+          <div className={styles.Loading}>
+            <Loading />
+          </div>
         </div>
       );
     }
 
     if (!tableData.length) {
-      return <Empty message='There is no data to display' />;
+      return <Empty message="There is no data to display" />;
     }
 
-    return (
-      groupBy === 'aggregate'
-        ? this.renderAggregateTable()
-        : this.renderGroupByTable()
-    );
+    return groupBy === 'aggregate' ? this.renderAggregateTable() : this.renderGroupByTable();
   }
 
   render() {
     const { groupBy, hasSubaccounts, tableLoading, _getTableData } = this.props;
     return (
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <GroupByOption
             _getTableData={_getTableData}
             groupBy={groupBy}
             hasSubaccounts={hasSubaccounts}
-            tableLoading={tableLoading} />
-        </Panel.Section>
+            tableLoading={tableLoading}
+          />
+        </Panel.LEGACY.Section>
         {this.renderTable()}
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   typeaheadCache: typeaheadCacheSelector(state),
   hasSubaccounts: hasSubaccounts(state),
-  ...state.summaryChart
+  ...state.summaryChart,
 });
 export default connect(mapStateToProps, { _getTableData })(Table);

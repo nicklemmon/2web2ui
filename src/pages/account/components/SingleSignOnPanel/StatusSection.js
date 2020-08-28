@@ -1,9 +1,19 @@
 import React from 'react';
+import styled from 'styled-components';
 import { Panel } from 'src/components/matchbox';
 import { ArrowForward, PowerSettingsNew } from '@sparkpost/matchbox-icons';
 import { ConfirmationModal } from 'src/components/modals';
 import LabelledValue from 'src/components/labelledValue/LabelledValue';
 import { PageLink } from 'src/components/links';
+
+const ActionWrapper = styled.span`
+  display: inline-flex;
+  align-items: center;
+`;
+
+const ActionIcon = styled.span`
+  margin-left: 3px;
+`;
 
 export class StatusSection extends React.Component {
   state = {
@@ -76,22 +86,22 @@ export class StatusSection extends React.Component {
     }
 
     return (
-      <Panel.Section
+      <Panel.LEGACY.Section
         actions={[
           {
             color: 'orange',
             content: enabled ? (
-              <span style={{ display: 'inline-flex' }}>
+              <ActionWrapper>
                 <span>Disable SSO</span>
 
-                <PowerSettingsNew style={{ marginLeft: '3px' }} />
-              </span>
+                <ActionIcon as={PowerSettingsNew} />
+              </ActionWrapper>
             ) : (
-              <span style={{ display: 'inline-flex' }}>
+              <ActionWrapper>
                 <span>Enable SSO</span>
 
-                <PowerSettingsNew style={{ marginLeft: '3px' }} />
-              </span>
+                <ActionIcon as={PowerSettingsNew} />
+              </ActionWrapper>
             ),
             disabled: updating || readOnly,
             onClick: this.toggle,
@@ -99,7 +109,7 @@ export class StatusSection extends React.Component {
         ]}
       >
         {this.renderControls()}
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     );
   }
 }

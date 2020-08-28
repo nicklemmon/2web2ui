@@ -80,7 +80,7 @@ export default function SettingsForm(props) {
 
   return (
     <form onSubmit={handleSubmit(updateSettings)}>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           {isPublishedMode && renderPublishedIntro()}
 
@@ -188,13 +188,13 @@ export default function SettingsForm(props) {
             maxWidth="100%"
           />
         </Stack>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
 
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Button variant="primary" type="submit" disabled={isSubmissionDisabled}>
           Update Settings
         </Button>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
   );
 }

@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DisableTfaModal tests should render correctly 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
 >
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Disable Two-Factor Authentication"
   >
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <p>
           Enter your SparkPost password to disable two-factor authentication.
         </p>
@@ -34,8 +34,8 @@ exports[`DisableTfaModal tests should render correctly 1`] = `
             />
           </Grid.Column>
         </Grid>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button
             disabled={false}
@@ -53,25 +53,25 @@ exports[`DisableTfaModal tests should render correctly 1`] = `
             Cancel
           </Button>
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
 exports[`DisableTfaModal tests should show disabling as button text when togglePending 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
 >
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Disable Two-Factor Authentication"
   >
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <p>
           Enter your SparkPost password to disable two-factor authentication.
         </p>
@@ -93,8 +93,8 @@ exports[`DisableTfaModal tests should show disabling as button text when toggleP
             />
           </Grid.Column>
         </Grid>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button
             disabled={true}
@@ -112,25 +112,27 @@ exports[`DisableTfaModal tests should show disabling as button text when toggleP
             Cancel
           </Button>
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;
 
-exports[`DisableTfaModal tests should show error on TextField when toggleError and showErrors 1`] = `
-<Modal
+exports[
+  `DisableTfaModal tests should show error on TextField when toggleError and showErrors 1`
+] = `
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
 >
-  <Panel
+  <Panel.LEGACY
     accent={true}
     title="Disable Two-Factor Authentication"
   >
     <form
       onSubmit={[Function]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <p>
           Enter your SparkPost password to disable two-factor authentication.
         </p>
@@ -152,8 +154,8 @@ exports[`DisableTfaModal tests should show error on TextField when toggleError a
             />
           </Grid.Column>
         </Grid>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button
             disabled={false}
@@ -171,8 +173,8 @@ exports[`DisableTfaModal tests should show error on TextField when toggleError a
             Cancel
           </Button>
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

@@ -33,10 +33,10 @@ export default class DisableTfaModal extends Component {
     const { open, onClose, togglePending, toggleError } = this.props;
 
     return (
-      <Modal open={open} onClose={onClose}>
-        <Panel title="Disable Two-Factor Authentication" accent>
+      <Modal.LEGACY open={open} onClose={onClose}>
+        <Panel.LEGACY title="Disable Two-Factor Authentication" accent>
           <form onSubmit={e => e.preventDefault()}>
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <p>Enter your SparkPost password to disable two-factor authentication.</p>
               <p>
                 If two-factor authentication is required on this account, you will be logged out
@@ -54,8 +54,8 @@ export default class DisableTfaModal extends Component {
                   />
                 </Grid.Column>
               </Grid>
-            </Panel.Section>
-            <Panel.Section>
+            </Panel.LEGACY.Section>
+            <Panel.LEGACY.Section>
               <ButtonWrapper>
                 <Button
                   type="submit"
@@ -70,10 +70,10 @@ export default class DisableTfaModal extends Component {
                   Cancel
                 </Button>
               </ButtonWrapper>
-            </Panel.Section>
+            </Panel.LEGACY.Section>
           </form>
-        </Panel>
-      </Modal>
+        </Panel.LEGACY>
+      </Modal.LEGACY>
     );
   }
 }

@@ -3,15 +3,15 @@
 exports[`AuthPage tests renders correctly 1`] = `
 <Fragment>
   <CenteredLogo />
-  <Panel
+  <Panel.LEGACY
     sectioned={true}
     title="Log In"
   >
     <Connect(ReduxForm)
       onSubmit={[Function]}
     />
-  </Panel>
-  <Panel.Footer
+  </Panel.LEGACY>
+  <Panel.LEGACY.Footer
     left={false}
     right={
       <small>
@@ -43,15 +43,15 @@ exports[`AuthPage tests should redirect to enable-tfa iff required 1`] = `
 exports[`AuthPage tests should show link to join when has_signup feature flag exists 1`] = `
 <Fragment>
   <CenteredLogo />
-  <Panel
+  <Panel.LEGACY
     sectioned={true}
     title="Log In"
   >
     <Connect(ReduxForm)
       onSubmit={[Function]}
     />
-  </Panel>
-  <Panel.Footer
+  </Panel.LEGACY>
+  <Panel.LEGACY.Footer
     left={
       <div>
         <small>

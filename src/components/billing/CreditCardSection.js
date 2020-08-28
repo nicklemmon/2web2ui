@@ -21,26 +21,26 @@ function CreditCardSection({
 
   if (!credit_card || Boolean(defaultToggleState))
     return (
-      <Panel title="Add a Credit Card" actions={savedPaymentAction}>
-        <Panel.Section>
+      <Panel.LEGACY title="Add a Credit Card" actions={savedPaymentAction}>
+        <Panel.LEGACY.Section>
           <PaymentForm formName={FORMNAME} disabled={submitting} />
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <BillingAddressForm formName={FORMNAME} disabled={submitting} countries={countries} />
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     );
   return (
-    <Panel
+    <Panel.LEGACY
       title="Pay With Saved Payment Method"
       actions={[
         { content: 'Use Another Credit Card', onClick: handleUseAnotherCC, color: 'orange' },
       ]}
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <CardSummary credit_card={credit_card} />
-      </Panel.Section>
-    </Panel>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
   );
 }
 

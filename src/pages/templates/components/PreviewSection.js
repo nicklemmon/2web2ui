@@ -33,7 +33,7 @@ const PreviewSection = () => {
   };
 
   return (
-    <Panel className={styles.PreviewSection} mb="0">
+    <Panel.LEGACY className={styles.PreviewSection} mb="0">
       <PreviewControlBar />
 
       <PreviewContainer>
@@ -52,7 +52,7 @@ const PreviewSection = () => {
           </>
         )}
       </PreviewContainer>
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 

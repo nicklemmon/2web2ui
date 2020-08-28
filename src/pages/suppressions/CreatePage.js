@@ -44,7 +44,7 @@ export class CreatePage extends Component {
         {(parseError || persistError) && (
           <ErrorBanner parseError={parseError} persistError={persistError} />
         )}
-        <Panel>
+        <Panel.LEGACY>
           <TabsWrapper>
             <Tabs
               selected={selectedTab}
@@ -56,7 +56,7 @@ export class CreatePage extends Component {
             />
           </TabsWrapper>
           {selectedTab === 1 ? <UploadForm /> : <AddForm />}
-        </Panel>
+        </Panel.LEGACY>
       </Page>
     );
   }

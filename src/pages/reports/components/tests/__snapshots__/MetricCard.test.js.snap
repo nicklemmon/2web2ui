@@ -4,11 +4,11 @@ exports[`MetricCard Component:  should render correctly with all props 1`] = `
 <div
   className="MetricCard"
 >
-  <Panel
+  <Panel.LEGACY
     className="Panel"
     primary={true}
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       className="PanelSection"
     >
       <Heading
@@ -34,8 +34,8 @@ exports[`MetricCard Component:  should render correctly with all props 1`] = `
           />
         </Tooltip>
       </Heading>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </div>
 `;
 
@@ -43,11 +43,11 @@ exports[`MetricCard Component:  should render without tooltip 1`] = `
 <div
   className="MetricCard"
 >
-  <Panel
+  <Panel.LEGACY
     className="Panel"
     primary={true}
   >
-    <Panel.Section
+    <Panel.LEGACY.Section
       className="PanelSection"
     >
       <Heading
@@ -63,7 +63,7 @@ exports[`MetricCard Component:  should render without tooltip 1`] = `
         Card Label
          
       </Heading>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </div>
 `;

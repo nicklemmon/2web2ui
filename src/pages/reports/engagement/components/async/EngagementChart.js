@@ -53,14 +53,14 @@ export default function EngagementChart({
   // sent should always be the largest number, so if it is zero all others should be zero
   if (sent === 0) {
     return (
-      <Panel>
+      <Panel.LEGACY>
         <Empty message="No engagement to report" />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 
   return (
-    <Panel sectioned>
+    <Panel.LEGACY sectioned>
       <div className={styles.EngagementChart}>
         <ResponsiveContainer {...DIMENSIONS}>
           <BarChart barCategoryGap="35%" data={data} margin={MARGINS}>
@@ -99,6 +99,6 @@ export default function EngagementChart({
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </Panel>
+    </Panel.LEGACY>
   );
 }

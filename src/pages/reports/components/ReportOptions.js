@@ -54,7 +54,7 @@ export class ReportOptionsClassComponent extends Component {
     const { reportOptions, styles } = this.props;
 
     return reportOptions.filters.length ? (
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <small>Filters:</small>
         {reportOptions.filters.map((item, index) => (
           <Tag
@@ -65,7 +65,7 @@ export class ReportOptionsClassComponent extends Component {
             {item.type}: {item.value}
           </Tag>
         ))}
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     ) : null;
   };
 
@@ -114,7 +114,7 @@ export class ReportOptionsClassComponent extends Component {
 
       return (
         <>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Grid>
               <Grid.Column xs={9} md={6}>
                 <Typeahead
@@ -130,8 +130,8 @@ export class ReportOptionsClassComponent extends Component {
                 <ShareModal disabled={reportLoading} searchOptions={searchOptions} />
               </Grid.Column>
             </Grid>
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <Grid>
               <Grid.Column xs={12} md={6}>
                 <div className={styles.FieldWrapperMetricsRollup}>
@@ -179,13 +179,13 @@ export class ReportOptionsClassComponent extends Component {
                 )}
               </Grid.Column>
             </Grid>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </>
       );
     }
 
     return (
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Grid>
           <Grid.Column xs={12} md={6}>
             <div className={styles.FieldWrapper}>
@@ -211,7 +211,7 @@ export class ReportOptionsClassComponent extends Component {
             <ShareModal disabled={reportLoading} searchOptions={searchOptions} />
           </Grid.Column>
         </Grid>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     );
   };
 
@@ -220,11 +220,11 @@ export class ReportOptionsClassComponent extends Component {
 
     return (
       <div data-id="report-options">
-        <Panel>
+        <Panel.LEGACY>
           {customReportsEnabled && <CustomReports searchOptions={searchOptions} />}
           {this.getPanelContent()}
           {this.renderActiveFilters()}
-        </Panel>
+        </Panel.LEGACY>
       </div>
     );
   }

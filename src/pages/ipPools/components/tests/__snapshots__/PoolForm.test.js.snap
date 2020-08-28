@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PoolForm should render form 1`] = `
-<Panel>
+<Panel.LEGACY>
   <form
     onSubmit={[MockFunction]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack>
         <Field
           component={[Function]}
@@ -46,8 +46,8 @@ exports[`PoolForm should render form 1`] = `
           }
         />
       </Stack>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <Button
         disabled={true}
         submit={true}
@@ -55,7 +55,7 @@ exports[`PoolForm should render form 1`] = `
       >
         Update IP Pool
       </Button>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </form>
-</Panel>
+</Panel.LEGACY>
 `;

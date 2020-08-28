@@ -58,11 +58,11 @@ export default function DedicatedIpSummarySection({
     );
 
   return (
-    <Panel.Section actions={actions.filter(action => action.visible)}>
+    <Panel.LEGACY.Section actions={actions.filter(action => action.visible)}>
       <LabelledValue label="Dedicated IPs">
         {summary}
         {hasReachedMax && <p>You have reached the maximum allowed.</p>}
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   );
 }

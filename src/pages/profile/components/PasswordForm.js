@@ -16,7 +16,7 @@ export class PasswordForm extends Component {
 
     return (
       <form onSubmit={handleSubmit}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Field
               type="password"
@@ -38,9 +38,9 @@ export class PasswordForm extends Component {
               validate={[required, minLength(12), this.validatePasswords]}
             />
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button
             variant="primary"
             submit
@@ -54,7 +54,7 @@ export class PasswordForm extends Component {
           >
             {submitting ? 'Updating Password' : 'Update Password'}
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

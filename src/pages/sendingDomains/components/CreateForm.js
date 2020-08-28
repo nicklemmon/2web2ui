@@ -16,7 +16,7 @@ export class CreateForm extends Component {
 
     return (
       <form onSubmit={handleSubmit}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Box maxWidth="1200">
               <p>
@@ -38,9 +38,9 @@ export class CreateForm extends Component {
 
             {hasSubaccounts && <SubaccountForm formName={FORM_NAME} />}
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
 
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <ButtonWrapper>
             <Button variant="primary" submit disabled={submitting}>
               {submitting ? 'Submitting...' : 'Add a Domain'}
@@ -55,7 +55,7 @@ export class CreateForm extends Component {
               Cancel
             </PageLink>
           </ButtonWrapper>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

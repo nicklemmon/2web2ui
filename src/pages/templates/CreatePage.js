@@ -54,12 +54,12 @@ export default class CreatePage extends Component {
     return (
       <Page breadcrumbAction={backAction} title="Create Template">
         <form onSubmit={handleSubmit(this.handleCreate)}>
-          <Panel>
-            <Panel.Section>
+          <Panel.LEGACY>
+            <Panel.LEGACY.Section>
               <CreateForm formName={formName} />
-            </Panel.Section>
+            </Panel.LEGACY.Section>
 
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <ButtonWrapper>
                 <Button type="submit" variant="primary" disabled={submitting || pristine || !valid}>
                   Create and View
@@ -69,8 +69,8 @@ export default class CreatePage extends Component {
                   Cancel
                 </PageLink>
               </ButtonWrapper>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         </form>
       </Page>
     );

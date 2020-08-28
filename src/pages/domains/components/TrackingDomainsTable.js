@@ -43,9 +43,9 @@ export default function TrackingDomainsTable() {
 
   if (isEmpty) {
     return (
-      <Panel>
+      <Panel.LEGACY>
         <Empty message="There is no data to display" />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 

@@ -65,11 +65,11 @@ export class BatchTab extends Component {
 
     return (
       <>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Button variant="primary" disabled={batchesLoading} onClick={this.refreshBatches}>
             {buttonText}
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         {this.renderBatches()}
       </>
     );

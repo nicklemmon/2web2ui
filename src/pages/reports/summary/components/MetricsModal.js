@@ -74,14 +74,14 @@ export default class MetricsModal extends Component {
     const selectedCount = this.getSelectedMetrics().length;
 
     return (
-      <Modal open={open} onClose={onCancel}>
+      <Modal.LEGACY open={open} onClose={onCancel}>
         <WindowEvent event="keydown" handler={this.handleKeyDown} />
-        <Panel>
-          <Panel.Section>
+        <Panel.LEGACY>
+          <Panel.LEGACY.Section>
             <h5>Select up to 5 metrics</h5>
             <div>{this.renderMetrics()}</div>
-          </Panel.Section>
-          <Panel.Section>
+          </Panel.LEGACY.Section>
+          <Panel.LEGACY.Section>
             <Button
               onClick={this.handleApply}
               primary
@@ -93,9 +93,9 @@ export default class MetricsModal extends Component {
             <Button onClick={onCancel} className={styles.Cancel}>
               Cancel
             </Button>
-          </Panel.Section>
-        </Panel>
-      </Modal>
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
+      </Modal.LEGACY>
     );
   }
 }

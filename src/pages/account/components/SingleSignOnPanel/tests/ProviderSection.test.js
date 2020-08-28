@@ -17,14 +17,18 @@ describe('ProviderSection', () => {
 
   it('renders when provisioned', () => {
     const wrapper = subject({
-      provider: 'https://sso.sparkpost.com/redirect'
+      provider: 'https://sso.sparkpost.com/redirect',
     });
 
     expect(wrapper).toMatchSnapshot();
   });
 
   it('obeys readOnly', () => {
-    expect(subject({ readOnly: true }).find(Panel.Section).prop('actions')[0].disabled).toEqual(true);
+    expect(
+      subject({ readOnly: true })
+        .find(Panel.LEGACY.Section)
+        .prop('actions')[0].disabled,
+    ).toEqual(true);
   });
 
   it('opens modal when action button is clicked', () => {

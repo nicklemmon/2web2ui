@@ -83,8 +83,8 @@ export class MessageEventsSearchComponent extends Component {
     const { recipients } = ALL_EVENTS_FILTERS;
 
     return (
-      <Panel mb="0" className={styles.Panel}>
-        <Panel.Section>
+      <Panel.LEGACY mb="0" className={styles.Panel}>
+        <Panel.LEGACY.Section>
           <div className={styles.Filters}>
             <div className={styles.DateFilter}>
               <DatePicker
@@ -125,9 +125,9 @@ export class MessageEventsSearchComponent extends Component {
               <ShareModal disabled={loading} searchOptions={searchOptions} />
             </div>
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <ActiveFilters />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

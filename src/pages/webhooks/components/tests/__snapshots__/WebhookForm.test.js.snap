@@ -89,7 +89,7 @@ exports[`Webhooks Form Component should render correctly 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <NameField
         disabled={false}
@@ -98,15 +98,15 @@ exports[`Webhooks Form Component should render correctly 1`] = `
         disabled={false}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <EventsRadioGroup
         disabled={false}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <AuthDropDown
         disabled={false}
@@ -116,13 +116,13 @@ exports[`Webhooks Form Component should render correctly 1`] = `
         disabled={false}
       />
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ActiveField
       disabled={false}
     />
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={true}
       submit={true}
@@ -130,7 +130,7 @@ exports[`Webhooks Form Component should render correctly 1`] = `
     >
       Update Webhook
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 

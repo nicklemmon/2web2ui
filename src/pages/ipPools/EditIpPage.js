@@ -131,15 +131,15 @@ function DeliveryHistoryPanel({ isLoading, error, chartData, handleReloadAfterEr
       ) : (
         <>
           {!_.isEmpty(chartData) && (
-            <Panel title="Delivery History">
-              <Panel.Section className={styles.LineChartSection}>
+            <Panel.LEGACY title="Delivery History">
+              <Panel.LEGACY.Section className={styles.LineChartSection}>
                 <Heading as="h3" looksLike="h5">
                   Last 10 Days
                 </Heading>
 
                 <DeliveryHistoryLineChart data={chartData} />
-              </Panel.Section>
-            </Panel>
+              </Panel.LEGACY.Section>
+            </Panel.LEGACY>
           )}
         </>
       )}

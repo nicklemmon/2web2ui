@@ -42,9 +42,9 @@ export class CreatePage extends React.Component {
 
     return (
       <Page title="Create API Key" breadcrumbAction={breadcrumbAction}>
-        <Panel>
+        <Panel.LEGACY>
           <ApiKeyForm onSubmit={this.onSubmit} isReadOnly={false} />
-        </Panel>
+        </Panel.LEGACY>
       </Page>
     );
   }

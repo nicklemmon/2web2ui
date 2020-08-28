@@ -64,7 +64,7 @@ export class ApiKeyForm extends Component {
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Field
               name="label"
@@ -84,8 +84,8 @@ export class ApiKeyForm extends Component {
               disabled={!isNew}
             />
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Field
               name="grantsRadio"
@@ -112,13 +112,13 @@ export class ApiKeyForm extends Component {
               disabled={isReadOnly}
             />
           </Stack>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         {!isReadOnly && (
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Button submit variant="primary" disabled={submitting || pristine}>
               {submitting ? 'Loading...' : submitText}
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         )}
       </form>
     );

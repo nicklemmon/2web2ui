@@ -8,19 +8,19 @@ import styles from './TableCollection.module.scss';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 
 const OGTableWrapper = props => (
-  <Panel>
+  <Panel.LEGACY>
     <div className={styles.TableWrapper}>
       <Table>{props.children}</Table>
     </div>
-  </Panel>
+  </Panel.LEGACY>
 );
 
 const HibanaTableWrapper = props => (
-  <Panel>
+  <Panel.LEGACY>
     <div>
       <Table>{props.children}</Table>
     </div>
-  </Panel>
+  </Panel.LEGACY>
 );
 
 const TableWrapper = props => {

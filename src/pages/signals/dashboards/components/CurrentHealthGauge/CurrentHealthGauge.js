@@ -25,7 +25,7 @@ export function CurrentHealthGauge(props) {
 
   if (props.error) {
     return (
-      <Panel sectioned>
+      <Panel.LEGACY sectioned>
         <div className={styles.Content}>
           <div className={styles.ErrorMessage}>
             <Callout
@@ -35,7 +35,7 @@ export function CurrentHealthGauge(props) {
             />
           </div>
         </div>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 
@@ -60,7 +60,7 @@ export function CurrentHealthGauge(props) {
       : 'Current Health Score';
 
   return (
-    <Panel sectioned title={title}>
+    <Panel.LEGACY sectioned title={title}>
       <div className={styles.Content}>
         {noData && <Callout height="100%">Current Health Score Not Available</Callout>}
 
@@ -68,11 +68,14 @@ export function CurrentHealthGauge(props) {
           <>
             <Gauge score={props.current_health_score} threshold={threshold} />
             <div className={styles.Description}>
+              {/* eslint-disable react/forbid-component-props */}
               <DescriptionIcon
                 className={styles.DescriptionIcon}
                 size={25}
                 style={{ fill: threshold.color }}
               />
+              {/* eslint-enable react/forbid-component-props */}
+
               <p className={styles.DescriptionContent}>{threshold.description}</p>
             </div>
           </>
@@ -90,7 +93,7 @@ export function CurrentHealthGauge(props) {
           />
         </div>
       </div>
-    </Panel>
+    </Panel.LEGACY>
   );
 }
 

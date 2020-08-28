@@ -15,16 +15,16 @@ exports[`SearchPanel renders search panel 1`] = `
     }
   }
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <AlgoliaSearchBox(AlgoliaSearch) />
-  </Panel.Section>
-  <Panel.Section
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section
     className="Results"
   >
     <AlgoliaHits(Hits)
       hitComponent={[Function]}
     />
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </CreateInstantSearch>
 `;
 
@@ -43,17 +43,17 @@ exports[`SearchPanel renders search panel with default search text 1`] = `
     }
   }
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <AlgoliaSearchBox(AlgoliaSearch)
       defaultSearchText="example"
     />
-  </Panel.Section>
-  <Panel.Section
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section
     className="Results"
   >
     <AlgoliaHits(Hits)
       hitComponent={[Function]}
     />
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </CreateInstantSearch>
 `;

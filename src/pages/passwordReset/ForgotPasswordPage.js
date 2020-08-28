@@ -43,7 +43,7 @@ export class ForgotPasswordPage extends Component {
     return (
       <Fragment>
         <CenteredLogo />
-        <Panel sectioned title="Reset Your Password">
+        <Panel.LEGACY sectioned title="Reset Your Password">
           <form onSubmit={handleSubmit(sendPasswordResetEmail)}>
             <Stack>
               <p>Provide your username or email and we'll send an email to reset your password.</p>
@@ -61,8 +61,8 @@ export class ForgotPasswordPage extends Component {
               </Box>
             </Stack>
           </form>
-        </Panel>
-        <Panel.Footer
+        </Panel.LEGACY>
+        <Panel.LEGACY.Footer
           left={
             <small>
               Remember your password? <PageLink to="/auth">Log in</PageLink>.

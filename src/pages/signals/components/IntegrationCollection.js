@@ -16,9 +16,9 @@ const IntegrationCollection = ({ events = [], loadingStatus, onRetry }) => {
 
   if (events.length === 0) {
     return (
-      <Panel>
+      <Panel.LEGACY>
         <Empty message="No Data Found!" />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 

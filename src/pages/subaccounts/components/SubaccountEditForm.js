@@ -24,7 +24,7 @@ export class SubaccountEditForm extends Component {
 
     return (
       <form onSubmit={handleSubmit}>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <Box maxWidth={tokens.sizing_1200}>
               <NameField disabled={submitting || compliance} />
@@ -43,8 +43,8 @@ export class SubaccountEditForm extends Component {
               </Stack>
             )}
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <ButtonWrapper>
             <Button variant="primary" submit disabled={pristine || submitting || compliance}>
               {submitting ? 'Updating...' : 'Update Subaccount'}
@@ -55,7 +55,7 @@ export class SubaccountEditForm extends Component {
               </Button>
             )}
           </ButtonWrapper>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
     );
   }

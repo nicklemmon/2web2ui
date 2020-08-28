@@ -4,8 +4,8 @@ exports[`Component: Report Options should mount and render correctly 1`] = `
 <div
   data-id="report-options"
 >
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={6}
@@ -73,8 +73,8 @@ exports[`Component: Report Options should mount and render correctly 1`] = `
           <withRouter(Connect(ShareModal)) />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </div>
 `;
 
@@ -82,8 +82,8 @@ exports[`Component: Report Options with active filters should render 1`] = `
 <div
   data-id="report-options"
 >
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={6}
@@ -194,8 +194,8 @@ exports[`Component: Report Options with active filters should render 1`] = `
           <withRouter(Connect(ShareModal)) />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <small>
         Filters:
       </small>
@@ -226,7 +226,7 @@ exports[`Component: Report Options with active filters should render 1`] = `
         : 
         ccc
       </Tag>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </div>
 `;

@@ -6,7 +6,7 @@ describe('StatusSection', () => {
   const subject = (props = {}) => {
     const baseProps = {
       provider: 'https://sso.sparkpost.com/redirect',
-      readOnly: false
+      readOnly: false,
     };
     return shallow(<StatusSection {...baseProps} {...props} />);
   };
@@ -37,7 +37,7 @@ describe('StatusSection', () => {
       cert: 'abc==',
       enabled: false,
       provider: 'https://sso.sparkpost.com/redirect',
-      updateAccountSingleSignOn
+      updateAccountSingleSignOn,
     });
 
     wrapper.prop('actions')[0].onClick();
@@ -45,7 +45,7 @@ describe('StatusSection', () => {
     expect(updateAccountSingleSignOn).toHaveBeenCalledWith({
       cert: 'abc==',
       enabled: true,
-      provider: 'https://sso.sparkpost.com/redirect'
+      provider: 'https://sso.sparkpost.com/redirect',
     });
   });
 
@@ -61,7 +61,7 @@ describe('StatusSection', () => {
       cert: 'abc==',
       enabled: true,
       provider: 'https://sso.sparkpost.com/redirect',
-      updateAccountSingleSignOn
+      updateAccountSingleSignOn,
     });
 
     wrapper.find('ConfirmationModal').simulate('confirm');
@@ -69,7 +69,7 @@ describe('StatusSection', () => {
     expect(updateAccountSingleSignOn).toHaveBeenCalledWith({
       cert: 'abc==',
       enabled: false,
-      provider: 'https://sso.sparkpost.com/redirect'
+      provider: 'https://sso.sparkpost.com/redirect',
     });
   });
 

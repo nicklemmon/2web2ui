@@ -136,10 +136,10 @@ export class EditPage extends Component {
     ) : null;
 
     return (
-      <OGOnlyWrapper as={Panel} title="Sending IPs">
-        <OGOnlyWrapper as={Panel.Section}>
+      <OGOnlyWrapper as={Panel.LEGACY} title="Sending IPs">
+        <OGOnlyWrapper as={Panel.LEGACY.Section}>
           <Box
-            as={Panel}
+            as={Panel.LEGACY}
             className={classNames(ips && ips.length > 0 && styles.NoBottomBorder)}
             title="Sending IPs"
             sectioned

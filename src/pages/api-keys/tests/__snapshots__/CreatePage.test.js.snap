@@ -11,12 +11,12 @@ exports[`renders correctly with no subaccounts 1`] = `
   }
   title="Create API Key"
 >
-  <Panel>
+  <Panel.LEGACY>
     <withRouter(Connect(ReduxForm))
       isReadOnly={false}
       onSubmit={[Function]}
     />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 

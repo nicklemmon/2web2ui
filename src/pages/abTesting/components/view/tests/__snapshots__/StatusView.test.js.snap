@@ -4,7 +4,7 @@ exports[`Status View Component should render a default winning template correctl
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label="Winner"
     >
@@ -17,7 +17,7 @@ exports[`Status View Component should render a default winning template correctl
         No winner was found.
       </p>
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </OGOnlyWrapper>
 `;
 
@@ -26,7 +26,7 @@ exports[`Status View Component should render correctly 1`] = `
   <OGOnlyWrapper
     as={[Function]}
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <LabelledValue
         label="Start Date"
       >
@@ -41,7 +41,7 @@ exports[`Status View Component should render correctly 1`] = `
           2018-05-55T12:00:00.000Z
         </p>
       </LabelledValue>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </OGOnlyWrapper>
   <Winner
     test={
@@ -63,7 +63,7 @@ exports[`Status View Component should render winning template in bayesian mode c
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label="Winner"
     >
@@ -76,7 +76,7 @@ exports[`Status View Component should render winning template in bayesian mode c
         This variant is now being sent by default.
       </p>
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </OGOnlyWrapper>
 `;
 
@@ -84,7 +84,7 @@ exports[`Status View Component should render winning template in learning mode c
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <LabelledValue
       label="Winner"
     >
@@ -95,6 +95,6 @@ exports[`Status View Component should render winning template in learning mode c
         className="HelpText"
       />
     </LabelledValue>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </OGOnlyWrapper>
 `;

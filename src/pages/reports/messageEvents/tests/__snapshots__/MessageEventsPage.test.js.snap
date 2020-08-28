@@ -177,15 +177,17 @@ exports[`Page: Message Events tests should render page correctly 1`] = `
 </Page>
 `;
 
-exports[`Page: Message Events tests should render the empty message when 0 results are returned 1`] = `
+exports[
+  `Page: Message Events tests should render the empty message when 0 results are returned 1`
+] = `
 <Page
   title="Events Search"
 >
   <withRouter(Connect(MessageEventsSearch)) />
-  <Panel>
+  <Panel.LEGACY>
     <Empty
       message="There are no message events for your current query"
     />
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;

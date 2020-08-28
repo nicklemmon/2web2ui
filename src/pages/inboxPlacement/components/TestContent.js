@@ -18,8 +18,8 @@ const TestContent = ({ content, details }) => {
 
   return (
     <>
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <Grid>
             <Grid.Column xs={12} sm={6} md={6}>
               <Bold>Subject Line</Bold>
@@ -30,18 +30,18 @@ const TestContent = ({ content, details }) => {
               <div>{details.from_address}</div>
             </Grid.Column>
           </Grid>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Bold>Raw Message Size</Bold>
           <div>{formatBytes(details.message_size)}</div>
-        </Panel.Section>
-      </Panel>
-      <Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
+      <Panel.LEGACY>
         <Tabs selected={selectedTabIndex} tabs={tabs} color="blue" />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <CodeBlock code={content[selectedTabKey] || ''} />
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </>
   );
 };

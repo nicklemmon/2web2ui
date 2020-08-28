@@ -296,6 +296,7 @@ export function DatePicker(props) {
     return {
       content: label,
       highlighted: state.relativeRange === value,
+      is: 'button',
       onClick: () => handleSelectRange(value),
     };
   });

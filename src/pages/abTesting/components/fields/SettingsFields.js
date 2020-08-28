@@ -7,8 +7,8 @@ import { numberBetween, integer, minNumber } from 'src/helpers/validation';
 
 const SettingsFields = ({ disabled, formValues = {} }) => (
   <div>
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <Field
           name="test_mode"
           component={RadioGroup}
@@ -29,9 +29,9 @@ const SettingsFields = ({ disabled, formValues = {} }) => (
             },
           ]}
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
       {formValues.test_mode === 'bayesian' && (
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Field
             name="confidence_level"
             component={TextFieldWrapper}
@@ -41,11 +41,11 @@ const SettingsFields = ({ disabled, formValues = {} }) => (
             validate={numberBetween(0, 1)}
             disabled={disabled}
           />
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       )}
     </OGOnlyWrapper>
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <Field
           name="metric"
           grid={{ xs: 6 }}
@@ -67,10 +67,10 @@ const SettingsFields = ({ disabled, formValues = {} }) => (
           validate={[integer, minNumber(1)]}
           disabled={disabled}
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <Field
           name="audience_selection"
           grid={{ xs: 6 }}
@@ -83,7 +83,7 @@ const SettingsFields = ({ disabled, formValues = {} }) => (
           bottomError={true}
           disabled={disabled}
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
   </div>
 );

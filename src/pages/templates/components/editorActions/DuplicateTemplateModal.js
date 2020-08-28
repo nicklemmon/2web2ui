@@ -7,9 +7,9 @@ const ModalWrapper = props => {
   const { open, onClose, children } = props;
 
   return (
-    <Modal open={open} onClose={onClose} showCloseButton={true}>
+    <Modal.LEGACY open={open} onClose={onClose} showCloseButton={true}>
       {children}
-    </Modal>
+    </Modal.LEGACY>
   );
 };
 
@@ -95,9 +95,9 @@ const DuplicateTemplateModal = props => {
 
   return (
     <ModalWrapper {...modalProps}>
-      <Panel title="Duplicate Template">
+      <Panel.LEGACY title="Duplicate Template">
         <form onSubmit={e => handleSubmit(e)}>
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Stack>
               <TextField
                 id="template-name"
@@ -121,15 +121,15 @@ const DuplicateTemplateModal = props => {
                 data-id="textfield-template-id"
               />
             </Stack>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
 
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Button variant="primary" submit data-id="button-duplicate">
               Duplicate
             </Button>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         </form>
-      </Panel>
+      </Panel.LEGACY>
     </ModalWrapper>
   );
 };

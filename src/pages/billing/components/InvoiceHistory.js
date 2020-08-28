@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Panel } from 'src/components/matchbox';
 import { FileDownload } from '@sparkpost/matchbox-icons';
+import styled from 'styled-components';
 import { Heading, SubduedText } from 'src/components/text';
 import { formatDate } from 'src/helpers/date';
 import { get as getInvoice } from 'src/actions/invoices';
@@ -10,6 +11,10 @@ import _ from 'lodash';
 import { formatCurrency } from 'src/helpers/units';
 import { download } from 'src/helpers/downloading';
 import { PanelSectionTableCollection } from 'src/components/collection';
+
+const RightAlignedText = styled.div`
+  text-align: 'right';
+`;
 
 const columns = ['Date', 'Amount', 'Invoice Number', { label: null, width: 150 }];
 
@@ -21,7 +26,7 @@ export class InvoiceHistory extends Component {
       formatDate(invoiceDate),
       formatCurrency(amount),
       invoiceNumber,
-      <div style={{ textAlign: 'right' }}>
+      <RightAlignedText>
         <Button
           plain
           size="small"
@@ -37,7 +42,7 @@ export class InvoiceHistory extends Component {
             </>
           )}
         </Button>
-      </div>,
+      </RightAlignedText>,
     ];
   };
 
@@ -63,7 +68,7 @@ export class InvoiceHistory extends Component {
 
     const maxWarning =
       invoices.length >= 20 ? (
-        <Panel.Footer
+        <Panel.LEGACY.Footer
           left={
             <SubduedText>
               <small>Only your last 20 invoices are available to be viewed</small>
@@ -74,18 +79,18 @@ export class InvoiceHistory extends Component {
 
     return (
       <>
-        <Panel>
-          <Panel.Section>
+        <Panel.LEGACY borderBottom="0">
+          <Panel.LEGACY.Section>
             <Heading as="h2" looksLike="h4">
               Invoice History
             </Heading>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
           <PanelSectionTableCollection
             rows={invoices}
             columns={columns}
             getRowData={this.getRowData}
           />
-        </Panel>
+        </Panel.LEGACY>
         {maxWarning}
       </>
     );

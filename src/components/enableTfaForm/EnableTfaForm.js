@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { VpnKey } from '@sparkpost/matchbox-icons';
 import { QRCode } from 'react-qr-svg';
+import styled from 'styled-components';
 import ButtonWrapper from 'src/components/buttonWrapper';
 import { Button, Grid, Panel, Stack, TextField } from 'src/components/matchbox';
 import { Loading } from 'src/components/loading/Loading';
@@ -10,6 +11,14 @@ import { showAlert } from 'src/actions/globalAlert';
 import EnableTfaFormPropTypes from './EnableTfaForm.propTypes';
 import { usernameSelector } from 'src/selectors/currentUser';
 import styles from './EnableTfaForm.module.scss';
+
+const RightAlignedText = styled.div`
+  text-align: 'right';
+`;
+
+const QRIcon = styled.div`
+  width: 230px;
+`;
 
 export class EnableTfaForm extends React.Component {
   state = {
@@ -78,7 +87,7 @@ export const RenderedForm = props => {
 
   return (
     <form onSubmit={e => e.preventDefault()}>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack space="600">
           <Grid>
             <Grid.Column xs={12} md={7}>
@@ -99,14 +108,10 @@ export const RenderedForm = props => {
                 </p>
               </Stack>
             </Grid.Column>
-            <Grid.Column xs={12} md={5} style={{ textAlign: 'center' }}>
-              <QRCode
-                bgColor="#FFFFFF"
-                fgColor="#000000"
-                level="Q"
-                style={{ width: 230 }}
-                value={qrData}
-              />
+            <Grid.Column xs={12} md={5}>
+              <RightAlignedText>
+                <QRIcon as={QRCode} bgColor="#FFFFFF" fgColor="#000000" level="Q" value={qrData} />
+              </RightAlignedText>
             </Grid.Column>
           </Grid>
           <Grid>
@@ -131,9 +136,9 @@ export const RenderedForm = props => {
             </Grid.Column>
           </Grid>
         </Stack>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
 
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <ButtonWrapper>
           <Button type="submit" variant="primary" disabled={togglePending} onClick={onEnable}>
             {togglePending ? 'Verifying Code...' : 'Enable 2FA'}
@@ -144,7 +149,7 @@ export const RenderedForm = props => {
             </Button>
           )}
         </ButtonWrapper>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </form>
   );
 };

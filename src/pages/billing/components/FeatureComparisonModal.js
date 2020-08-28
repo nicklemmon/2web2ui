@@ -84,8 +84,8 @@ export function RenderCell({ cellValue }) {
 function ComparisonModal({ open, handleClose }) {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
-    <Modal open={open} showCloseButton={true} onClose={handleClose}>
-      <Panel>
+    <Modal.LEGACY open={open} showCloseButton={true} onClose={handleClose}>
+      <Panel.LEGACY>
         <div className={styles.FeatureComparisonTable}>
           <Table>
             <tbody>
@@ -103,8 +103,8 @@ function ComparisonModal({ open, handleClose }) {
             </Table>
           ))}
         </div>
-      </Panel>
-    </Modal>
+      </Panel.LEGACY>
+    </Modal.LEGACY>
   );
 }
 export default ComparisonModal;

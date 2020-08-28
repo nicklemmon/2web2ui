@@ -86,7 +86,7 @@ export class ViewMode extends Component {
               <StatusContent test={test} />
             </Section.Left>
             <Section.Right variant="viewmode">
-              <Box as={Panel}>
+              <Box as={Panel.LEGACY}>
                 <StatusPanel
                   test={test}
                   subaccountId={subaccountId}
@@ -102,7 +102,7 @@ export class ViewMode extends Component {
               <SettingsContent test={test} />
             </Section.Left>
             <Section.Right variant="viewmode">
-              <Box as={Panel}>
+              <Box as={Panel.LEGACY}>
                 <SettingsView test={test} />
               </Box>
             </Section.Right>
@@ -113,7 +113,7 @@ export class ViewMode extends Component {
               <VariantsContent test={test} />
             </Section.Left>
             <Section.Right variant="viewmode">
-              <Box as={Panel}>
+              <Box as={Panel.LEGACY}>
                 <VariantsView test={test} subaccountId={subaccountId} />
               </Box>
             </Section.Right>

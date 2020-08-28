@@ -30,7 +30,7 @@ const IntegrationPageFilter = ({ disabled, initialValues = {}, onChange }) => {
   }, [batchIds, onChange]);
 
   return (
-    <Panel sectioned marginBottom="-1px" borderBottom="0">
+    <Panel.LEGACY sectioned marginBottom="-1px" borderBottom="0">
       <Grid>
         <Grid.Column xs={12} md={4}>
           <Select
@@ -61,7 +61,7 @@ const IntegrationPageFilter = ({ disabled, initialValues = {}, onChange }) => {
           />
         </Grid.Column>
       </Grid>
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 

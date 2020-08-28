@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { Grid, Panel, Toggle } from 'src/components/matchbox';
 import LabelledValue from 'src/components/labelledValue/LabelledValue';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { setAccountOption } from 'src/actions/account';
 import { connect } from 'react-redux';
+
+// TODO: Replace with <Box /> when OG theme is removed
+const RightAlignedText = styled.div`
+  text-align: right;
+`;
 
 const OPTIONS = [
   {
@@ -24,25 +30,27 @@ export class UIOptionsPanel extends Component {
     const { loading, uiOptions } = this.props;
 
     return (
-      <Panel title="Account Options">
-        <Panel.Section>
+      <Panel.LEGACY title="Account Options">
+        <Panel.LEGACY.Section>
           {uiOptions.map(({ label, description, value, key }) => (
             <Grid key={`ui-option-${key}`}>
               <Grid.Column xs={12} md={10}>
                 <LabelledValue label={label}>{description}</LabelledValue>
               </Grid.Column>
-              <Grid.Column xs={12} md={2} style={{ textAlign: 'right' }}>
-                <Toggle
-                  id={key}
-                  checked={value}
-                  disabled={loading}
-                  onChange={() => this.setUIOption(key, !value)}
-                />
+              <Grid.Column xs={12} md={2}>
+                <RightAlignedText>
+                  <Toggle
+                    id={key}
+                    checked={value}
+                    disabled={loading}
+                    onChange={() => this.setUIOption(key, !value)}
+                  />
+                </RightAlignedText>
               </Grid.Column>
             </Grid>
           ))}
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     );
   }
 }

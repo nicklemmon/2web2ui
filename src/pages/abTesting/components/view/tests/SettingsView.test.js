@@ -32,6 +32,6 @@ describe('Settings View Component', () => {
 
   it('should render learning mode correctly', () => {
     wrapper = subject({ test: { ...defaultProps.test, test_mode: 'learning' } });
-    expect(wrapper.find(Panel.Section).first()).toMatchSnapshot();
+    expect(wrapper.find(Panel.LEGACY.Section).first()).toMatchSnapshot();
   });
 });

@@ -76,8 +76,8 @@ export class Support extends Component {
     }
 
     return (
-      <Modal open={showSupportPanel} onClose={closeSupportPanel} showCloseButton={true}>
-        <Panel className={styles.Support}>
+      <Modal.LEGACY open={showSupportPanel} onClose={closeSupportPanel} showCloseButton={true}>
+        <Panel.LEGACY className={styles.Support}>
           {visibleTabs.length > 1 && (
             <Tabs
               connectBelow={true}
@@ -94,8 +94,8 @@ export class Support extends Component {
               <UnstyledLink to="tel:1-415-751-0928">+1 (415) 751-0928</UnstyledLink>
             </div>
           )}
-        </Panel>
-      </Modal>
+        </Panel.LEGACY>
+      </Modal.LEGACY>
     );
   }
 }

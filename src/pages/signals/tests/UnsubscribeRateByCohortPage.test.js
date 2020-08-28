@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { useHibana } from 'src/context/HibanaContext';
+import { Panel } from 'src/components/matchbox';
 import { UnsubscribeRateByCohortPage } from '../UnsubscribeRateByCohortPage';
 
 jest.mock('src/context/HibanaContext');
@@ -55,7 +56,7 @@ describe('Signals Unsubscribe Rate Page', () => {
   it('renders loading correctly', () => {
     const wrapper = subject({ loading: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find(Panel.LEGACY)).toMatchSnapshot();
   });
 
   it('does not render SpamTrapsPreview when facet is mb_provider', () => {
@@ -69,7 +70,7 @@ describe('Signals Unsubscribe Rate Page', () => {
   it('renders empty correctly', () => {
     const wrapper = subject({ empty: true });
 
-    expect(wrapper.find('Panel')).toMatchSnapshot();
+    expect(wrapper.find(Panel.LEGACY)).toMatchSnapshot();
   });
 
   it('renders error correctly', () => {

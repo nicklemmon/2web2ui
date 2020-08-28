@@ -14,10 +14,10 @@ const PanelSectionTableCollection = props => {
     <TableCollection {...props} wrapperComponent={Table}>
       {({ collection, filterBox, heading, pagination }) => (
         <>
-          {heading && <Panel.Section>{heading}</Panel.Section>}
-          {filterBox && <Panel.Section>{filterBox}</Panel.Section>}
+          {heading && <Panel.LEGACY.Section>{heading}</Panel.LEGACY.Section>}
+          {filterBox && <Panel.LEGACY.Section>{filterBox}</Panel.LEGACY.Section>}
           <Box borderBottom="400">{collection}</Box>
-          {pagination && <Panel.Section>{pagination}</Panel.Section>}
+          {pagination && <Panel.LEGACY.Section>{pagination}</Panel.LEGACY.Section>}
         </>
       )}
     </TableCollection>

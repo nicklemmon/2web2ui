@@ -166,7 +166,7 @@ export function RecipientValidationPage(props) {
           problems, including syntax errors and non-existent mailboxes, to drive better
           deliverability, cut down on fraud, and capture every opportunity.
         </PageDescription>
-        <Panel>
+        <Panel.LEGACY>
           <div className={styles.TabsWrapper}>
             <Tabs
               selected={selectedTab}
@@ -189,8 +189,8 @@ export function RecipientValidationPage(props) {
               </div>
             )}
           </div>
-          <Panel.Section>{renderTabContent(selectedTab)}</Panel.Section>
-        </Panel>
+          <Panel.LEGACY.Section>{renderTabContent(selectedTab)}</Panel.LEGACY.Section>
+        </Panel.LEGACY>
         {selectedTab === 0 && <JobsTableCollection />}
         {(selectedTab === 1 || selectedTab === 2) && !billingLoading && (
           <ValidateSection

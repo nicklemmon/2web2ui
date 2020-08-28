@@ -105,7 +105,7 @@ export function ReportBuilder({
 
   return (
     <Page title="Analytics Report">
-      <Panel>
+      <Panel.LEGACY>
         <ReportOptions reportLoading={chart.chartLoading} searchOptions={summarySearchOptions} />
         {isEmpty ? (
           <Empty
@@ -123,9 +123,9 @@ export function ReportBuilder({
             <div data-id="summary-chart">
               <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
                 <Tabs.Item>
-                  <Panel.Section className={styles.ChartSection}>
+                  <Panel.LEGACY.Section className={styles.ChartSection}>
                     <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
-                  </Panel.Section>
+                  </Panel.LEGACY.Section>
                   <Box padding="400" backgroundColor={tokens.color_gray_1000}>
                     <Grid>
                       <Grid.Column sm={3}>
@@ -182,7 +182,7 @@ export function ReportBuilder({
             </div>
           </>
         )}
-      </Panel>
+      </Panel.LEGACY>
       {showTable && (
         <div data-id="summary-table">
           <ReportTable />

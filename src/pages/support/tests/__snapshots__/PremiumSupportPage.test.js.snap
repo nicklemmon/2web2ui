@@ -10,7 +10,7 @@ exports[`PremiumSupportPage default state 1`] = `
     }
   }
 >
-  <Panel
+  <Panel.LEGACY
     accent={true}
     sectioned={true}
     title="Request Premium Support"
@@ -27,7 +27,7 @@ exports[`PremiumSupportPage default state 1`] = `
         Submit Request
       </Button>
     </form>
-  </Panel>
+  </Panel.LEGACY>
 </Page>
 `;
 

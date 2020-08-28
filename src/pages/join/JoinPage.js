@@ -98,11 +98,11 @@ export class JoinPage extends Component {
       <div>
         {loadScript({ url: LINKS.RECAPTCHA_LIB_URL })}
         <CenteredLogo showAwsLogo={this.props.isAWSsignUp} />
-        <Panel>
+        <Panel.LEGACY>
           {brand && (
             <SignUpTabs brand={brand} isSPCEU={this.props.isSPCEU} location={this.props.location} />
           )}
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Stack>
               <h3>Sign Up for SparkPost{this.props.isSPCEU ? ' EU' : ''}</h3>
               {createError && (
@@ -112,9 +112,9 @@ export class JoinPage extends Component {
               )}
               <JoinForm onSubmit={this.registerSubmit} />
             </Stack>
-          </Panel.Section>
-        </Panel>
-        <Panel.Footer
+          </Panel.LEGACY.Section>
+        </Panel.LEGACY>
+        <Panel.LEGACY.Footer
           left={
             <small>
               Already have an account? <PageLink to="/auth">Log In</PageLink>.

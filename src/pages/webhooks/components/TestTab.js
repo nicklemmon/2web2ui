@@ -83,26 +83,26 @@ export class TestTab extends Component {
 
     return (
       <>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Stack>
             <p>
               The test sends the following request to this webhook's target URL ({webhook.target})
             </p>
             <CodeBlock code={this.state.sampleEvent || 'generating...'} height={300} />
           </Stack>
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Button variant="primary" disabled={testLoading} onClick={this.testWebhook}>
             {buttonText}
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         {!testLoading && testSent && testResponse && testResponse.status <= 299 && (
-          <Panel.Section>
+          <Panel.LEGACY.Section>
             <Stack>
               <p>The server responded like this:</p>
               <CodeBlock code={JSON.stringify(testResponse, null, '  ')} height={300} />
             </Stack>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
         )}
       </>
     );

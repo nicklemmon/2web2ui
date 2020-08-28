@@ -73,8 +73,8 @@ export default function SCIMTokenSection(props) {
     switch (name) {
       case 'Override Token':
         return (
-          <Panel title="Generate SCIM Token">
-            <Panel.Section>
+          <Panel.LEGACY title="Generate SCIM Token">
+            <Panel.LEGACY.Section>
               <Stack>
                 <p>
                   <Text as="span" fontWeight="medium">
@@ -88,8 +88,8 @@ export default function SCIMTokenSection(props) {
                   </Text>
                 </p>
               </Stack>
-            </Panel.Section>
-            <Panel.Section>
+            </Panel.LEGACY.Section>
+            <Panel.LEGACY.Section>
               <ButtonWrapper>
                 <Button
                   variant="primary"
@@ -104,13 +104,13 @@ export default function SCIMTokenSection(props) {
                   Cancel
                 </Button>
               </ButtonWrapper>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         );
       case 'Delete Token':
         return (
-          <Panel title="Delete SCIM Token">
-            <Panel.Section>
+          <Panel.LEGACY title="Delete SCIM Token">
+            <Panel.LEGACY.Section>
               <Stack>
                 <p>
                   <Text as="span">
@@ -118,8 +118,8 @@ export default function SCIMTokenSection(props) {
                   </Text>
                 </p>
               </Stack>
-            </Panel.Section>
-            <Panel.Section>
+            </Panel.LEGACY.Section>
+            <Panel.LEGACY.Section>
               <ButtonWrapper>
                 <Button
                   variant="destructive"
@@ -133,15 +133,15 @@ export default function SCIMTokenSection(props) {
                   Cancel
                 </Button>
               </ButtonWrapper>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         );
 
       default:
       case 'Generate SCIM Token':
         return (
-          <Panel title="Generate SCIM Token">
-            <Panel.Section>
+          <Panel.LEGACY title="Generate SCIM Token">
+            <Panel.LEGACY.Section>
               <Stack>
                 <p>Copy this token!</p>
                 <p>
@@ -152,18 +152,18 @@ export default function SCIMTokenSection(props) {
                 </p>
                 <CopyField value={newScimToken} />
               </Stack>
-            </Panel.Section>
-            <Panel.Section>
+            </Panel.LEGACY.Section>
+            <Panel.LEGACY.Section>
               <Button variant="primary" onClick={() => closeModal()}>
                 Continue
               </Button>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         );
     }
   };
   return (
-    <Panel.Section title="SCIM Token" actions={getActions}>
+    <Panel.LEGACY.Section title="SCIM Token" actions={getActions}>
       <LabelledValue label="SCIM Token">
         <Heading as="h6">
           {scimTokenList.length > 0 ? (
@@ -174,10 +174,10 @@ export default function SCIMTokenSection(props) {
         </Heading>
       </LabelledValue>
       {!error && (
-        <Modal open={isModalOpen} onClose={() => closeModal()} showCloseButton>
+        <Modal.LEGACY open={isModalOpen} onClose={() => closeModal()} showCloseButton>
           {isModalOpen && renderModalByName(name)}
-        </Modal>
+        </Modal.LEGACY>
       )}
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   );
 }

@@ -10,7 +10,7 @@ exports[`Component: ShareModal should render correctly when open 1`] = `
   >
     Share
   </Button>
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={true}
     showCloseButton={true}
@@ -19,10 +19,10 @@ exports[`Component: ShareModal should render correctly when open 1`] = `
       event="keydown"
       handler={[Function]}
     />
-    <Panel
+    <Panel.LEGACY
       title="Share this report"
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <CopyField
             hideCopy={false}
@@ -36,17 +36,17 @@ exports[`Component: ShareModal should render correctly when open 1`] = `
             onChange={[Function]}
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           onClick={[Function]}
           variant="primary"
         >
           Done
         </Button>
-      </Panel.Section>
-    </Panel>
-  </Modal>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
+  </Modal.LEGACY>
 </Fragment>
 `;
 
@@ -60,15 +60,15 @@ exports[`Component: ShareModal should render with a valid relative range 1`] = `
   >
     Share
   </Button>
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
     showCloseButton={true}
   >
-    <Panel
+    <Panel.LEGACY
       title="Share this report"
     >
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <Stack>
           <CopyField
             hideCopy={false}
@@ -82,20 +82,24 @@ exports[`Component: ShareModal should render with a valid relative range 1`] = `
             onChange={[Function]}
           />
         </Stack>
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <Button
           onClick={[Function]}
           variant="primary"
         >
           Done
         </Button>
-      </Panel.Section>
-    </Panel>
-  </Modal>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
+  </Modal.LEGACY>
 </Fragment>
 `;
 
-exports[`Component: ShareModal should unpin when clicking the checkbox 1`] = `"http://phoenix.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"`;
+exports[
+  `Component: ShareModal should unpin when clicking the checkbox 1`
+] = `"http://phoenix.test/?range=custom&recipients=one%40test.com&recipients=two%2B2%40test.com"`;
 
-exports[`Component: ShareModal should unpin when clicking the checkbox 2`] = `"http://phoenix.test/?range=valid&recipients=one%40test.com&recipients=two%2B2%40test.com"`;
+exports[
+  `Component: ShareModal should unpin when clicking the checkbox 2`
+] = `"http://phoenix.test/?range=valid&recipients=one%40test.com&recipients=two%2B2%40test.com"`;

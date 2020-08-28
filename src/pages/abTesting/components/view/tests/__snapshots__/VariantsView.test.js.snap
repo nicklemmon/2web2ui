@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Variants View Component: Engagement Component: should render clicks correctly 1`] = `
-<Panel.Section>
+<Panel.LEGACY.Section>
   <LabelledValue
     label="Engagement Rate Achieved"
   >
@@ -31,11 +31,11 @@ exports[`Variants View Component: Engagement Component: should render clicks cor
       </Tooltip>
     </h6>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`Variants View Component: Engagement Component: should render opens correctly 1`] = `
-<Panel.Section>
+<Panel.LEGACY.Section>
   <LabelledValue
     label="Engagement Rate Achieved"
   >
@@ -65,7 +65,7 @@ exports[`Variants View Component: Engagement Component: should render opens corr
       </Tooltip>
     </h6>
   </LabelledValue>
-</Panel.Section>
+</Panel.LEGACY.Section>
 `;
 
 exports[`Variants View Component: PercentOrSample Component: should render percent correctly 1`] = `
@@ -81,7 +81,9 @@ exports[`Variants View Component: PercentOrSample Component: should render perce
 </LabelledValue>
 `;
 
-exports[`Variants View Component: PercentOrSample Component: should render sample size correctly 1`] = `
+exports[
+  `Variants View Component: PercentOrSample Component: should render sample size correctly 1`
+] = `
 <LabelledValue
   label="Sample Size"
 >
@@ -127,7 +129,7 @@ exports[`Variants View Component: Variant Component: should render correctly 1`]
 <OGOnlyWrapper
   as={[Function]}
 >
-  <Panel.Section
+  <Panel.LEGACY.Section
     actions={
       Array [
         Object {
@@ -161,7 +163,7 @@ exports[`Variants View Component: Variant Component: should render correctly 1`]
         }
       }
     />
-  </Panel.Section>
+  </Panel.LEGACY.Section>
   <Engagement
     variant={
       Object {

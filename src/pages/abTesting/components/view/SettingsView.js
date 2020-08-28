@@ -11,8 +11,8 @@ import HibanaStyles from './ViewHibana.module.scss';
 const SettingsView = ({ test }) => {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <LabelledValue label="Test Mode">
           <h6>{snakeToFriendly(test.test_mode)}</h6>
           {test.test_mode === 'bayesian' && (
@@ -33,8 +33,8 @@ const SettingsView = ({ test }) => {
             <p>{test.confidence_level}</p>
           </LabelledValue>
         )}
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <LabelledValue label="Metric">
           <p>
             {test.metric === 'count_unique_confirmed_opened'
@@ -55,7 +55,7 @@ const SettingsView = ({ test }) => {
             <p>{test.total_sample_size.toLocaleString()}</p>
           </LabelledValue>
         )}
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
   );
 };

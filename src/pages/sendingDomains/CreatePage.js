@@ -26,9 +26,9 @@ export class CreatePage extends Component {
         }}
         title="Add a Domain"
       >
-        <Panel>
+        <Panel.LEGACY>
           <CreateForm onSubmit={this.handleCreate} />
-        </Panel>
+        </Panel.LEGACY>
       </Page>
     );
   }

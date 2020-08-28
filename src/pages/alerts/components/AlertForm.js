@@ -121,10 +121,10 @@ export const AlertForm = props => {
     const columnProps = isHibanaEnabled ? { sm: 12 } : { sm: 12, md: 11, lg: 9 };
     return (
       <Form onSubmit={handleSubmit}>
-        <Panel>
+        <Panel.LEGACY>
           <Grid>
             <Grid.Column {...columnProps}>
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <label htmlFor="name">Alert Name</label>
                 <Field
                   name="name"
@@ -190,10 +190,10 @@ export const AlertForm = props => {
                 >
                   {submitText}
                 </Button>
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             </Grid.Column>
           </Grid>
-        </Panel>
+        </Panel.LEGACY>
       </Form>
     );
   };

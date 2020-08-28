@@ -37,7 +37,7 @@ export const DataPrivacyPage = props => {
         return <ApiDetailsTab history={props.history} />;
 
       default:
-        return <Panel.Section></Panel.Section>;
+        return <Panel.LEGACY.Section></Panel.LEGACY.Section>;
     }
   };
 
@@ -48,7 +48,7 @@ export const DataPrivacyPage = props => {
         of recipient's personal information. Your request will be completed within 30 days.
       </PageDescription>
 
-      <Panel>
+      <Panel.LEGACY>
         <TabsWrapper>
           <Tabs
             selected={tabIndex}
@@ -60,7 +60,7 @@ export const DataPrivacyPage = props => {
           />
           {renderTabs(tabIndex)}
         </TabsWrapper>
-      </Panel>
+      </Panel.LEGACY>
     </Page>
   );
 };

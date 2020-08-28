@@ -1,16 +1,24 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import FeedbackButton from '../FeedbackButton';
+import { ThemeProvider } from 'src/components/matchbox';
 import { GUIDE_IDS } from 'src/constants';
-import { useHibana } from 'src/context/HibanaContext';
+import FeedbackButton from '../FeedbackButton';
 
-jest.mock('src/context/HibanaContext');
-useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+let mockIsHibanaEnabled;
+
+jest.mock('src/context/HibanaContext', () => ({
+  useHibana: () => [{ isHibanaEnabled: mockIsHibanaEnabled }],
+}));
 
 describe('FeedbackButton', () => {
   const mockShowGuideById = jest.fn();
+
   const renderSubject = () => {
-    render(<FeedbackButton />);
+    return render(
+      <ThemeProvider>
+        <FeedbackButton />
+      </ThemeProvider>,
+    );
   };
 
   beforeEach(() => {
@@ -19,7 +27,7 @@ describe('FeedbackButton', () => {
   });
 
   it('invokes `window.pendo.showGuideById` when clicked', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+    mockIsHibanaEnabled = true;
     renderSubject();
 
     screen.getByText('Give Feedback').click();
@@ -27,7 +35,7 @@ describe('FeedbackButton', () => {
   });
 
   it('does not render when window.pendo is undefined', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+    mockIsHibanaEnabled = true;
     delete window.pendo;
     renderSubject();
 
@@ -35,7 +43,7 @@ describe('FeedbackButton', () => {
   });
 
   it('does not render when Hibana is not enabled', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]);
+    mockIsHibanaEnabled = false;
     renderSubject();
 
     expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument();

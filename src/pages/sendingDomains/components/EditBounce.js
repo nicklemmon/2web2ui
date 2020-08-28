@@ -108,7 +108,7 @@ export class EditBounce extends Component {
           {this.renderRootDomainWarning()}
           <BounceSetupInstructionContainer domain={domain} />
           {showDefaultBounceToggle && (
-            <Panel sectioned>
+            <Panel.LEGACY sectioned>
               <Field
                 name="is_default_bounce_domain"
                 component={ToggleBlock}
@@ -118,7 +118,7 @@ export class EditBounce extends Component {
                 disabled={updateLoading}
                 onChange={this.toggleDefaultBounce}
               />
-            </Panel>
+            </Panel.LEGACY>
           )}
         </SendingDomainSection.Right>
       </Fragment>

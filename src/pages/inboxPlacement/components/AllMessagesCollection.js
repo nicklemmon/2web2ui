@@ -105,22 +105,22 @@ export const AllMessagesCollection = ({
         defaultSortDirection="asc"
         filterBox={false}
       />
-      <Modal open={isModalOpen} onClose={() => closeModal()} showCloseButton>
+      <Modal.LEGACY open={isModalOpen} onClose={() => closeModal()} showCloseButton>
         {isModalOpen && (
           <>
             {!message || message.status !== 'loaded' ? (
               <PanelLoading />
             ) : (
-              <Panel title="Email Header" sectioned>
+              <Panel.LEGACY title="Email Header" sectioned>
                 <Stack>
                   <p>{message.email_address}</p>
                   <CodeBlock code={message.headers || ''} />
                 </Stack>
-              </Panel>
+              </Panel.LEGACY>
             )}
           </>
         )}
-      </Modal>
+      </Modal.LEGACY>
     </>
   );
 };

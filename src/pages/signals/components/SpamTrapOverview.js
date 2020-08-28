@@ -118,12 +118,12 @@ class SpamTrapOverview extends React.Component {
     const isCustomRange = signalOptions.relativeRange === 'custom';
 
     return (
-      <Panel>
-        <Panel.Section>
+      <Panel.LEGACY>
+        <Panel.LEGACY.Section>
           <div className={styles.Controls}>
             <Calculation initialSelected={calculation} onChange={this.handleCalculationChange} />
           </div>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
         <SummaryTable
           data={data}
           empty={data.length === 0}
@@ -206,7 +206,7 @@ class SpamTrapOverview extends React.Component {
             component={({ total_injections }) => <NumericDataCell value={total_injections} />}
           />
         </SummaryTable>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

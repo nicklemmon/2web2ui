@@ -12,8 +12,8 @@ controls that render with labels.
 ## Examples
 
 <Preview>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Inline>
         <TextField label="Filter By" />
         <div>
@@ -21,8 +21,8 @@ controls that render with labels.
           <Button variant="secondary">Share</Button>
         </div>
       </Inline>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 </Preview>
 
 ## Usage
@@ -32,8 +32,8 @@ import { Button, Panel, TextField } from 'src/components/matchbox';
 import { LabelSpacer } from 'src/components/labels';
 
 const MyComponent = () => (
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Inline>
         <TextField label="Filter By" />
         <div>
@@ -41,7 +41,7 @@ const MyComponent = () => (
           <Button variant="secondary">Share</Button>
         </div>
       </Inline>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
 );
 ```

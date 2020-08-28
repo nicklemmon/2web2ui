@@ -9,16 +9,16 @@ export default function RVPriceModal({ isOpen, handleOpen }) {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
 
   return (
-    <Modal open={isOpen} onClose={() => handleOpen(false)} showCloseButton>
-      <Panel title="How was this calculated?">
-        <Panel.Section>
+    <Modal.LEGACY open={isOpen} onClose={() => handleOpen(false)} showCloseButton>
+      <Panel.LEGACY title="How was this calculated?">
+        <Panel.LEGACY.Section>
           <RecipientValidationPriceTable
             cellProps={{
               className: styles.rvModalCell,
             }}
           />
-        </Panel.Section>
-      </Panel>
-    </Modal>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
+    </Modal.LEGACY>
   );
 }

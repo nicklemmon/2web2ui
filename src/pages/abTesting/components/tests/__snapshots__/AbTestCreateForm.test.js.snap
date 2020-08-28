@@ -87,7 +87,7 @@ exports[`A/B Test Create Form Component should render correctly 1`] = `
       </OGOnlyWrapper>
     </Stack>
   </Box>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={true}
       submit={true}
@@ -95,11 +95,13 @@ exports[`A/B Test Create Form Component should render correctly 1`] = `
     >
       Continue
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
-exports[`A/B Test Create Form Component should render subaccount section if subaccounts exist 1`] = `
+exports[
+  `A/B Test Create Form Component should render subaccount section if subaccounts exist 1`
+] = `
 <Field
   component={[Function]}
   helpText="Leaving this field blank will permanently assign the A/B test to the master account."
@@ -196,7 +198,7 @@ exports[`A/B Test Create Form Component should render when no available template
       </OGOnlyWrapper>
     </Stack>
   </Box>
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Button
       disabled={true}
       submit={true}
@@ -204,6 +206,6 @@ exports[`A/B Test Create Form Component should render when no available template
     >
       Continue
     </Button>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;

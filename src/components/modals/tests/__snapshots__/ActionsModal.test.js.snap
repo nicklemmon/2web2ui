@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionsModal renders hidden modal 1`] = `
-<Modal>
-  <Panel
+<Modal.LEGACY>
+  <Panel.LEGACY
     title="Modal Title"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       Modal Content
-    </Panel.Section>
-    <Panel.Section>
+    </Panel.LEGACY.Section>
+    <Panel.LEGACY.Section>
       <div
         className="Buttons"
       >
@@ -29,7 +29,7 @@ exports[`ActionsModal renders hidden modal 1`] = `
           Cancel
         </Button>
       </div>
-    </Panel.Section>
-  </Panel>
-</Modal>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

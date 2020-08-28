@@ -33,7 +33,7 @@ class HistoryTable extends Component {
 
     return (
       <div>
-        <Panel
+        <Panel.LEGACY
           title="Message History"
           actions={[
             { content: <RefreshAction />, onClick: this.props.handleRefresh, color: 'orange' },
@@ -48,7 +48,7 @@ class HistoryTable extends Component {
             rows={rows}
             pagination={false}
           />
-        </Panel>
+        </Panel.LEGACY>
         {disclaimer}
       </div>
     );

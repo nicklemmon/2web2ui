@@ -70,15 +70,15 @@ const ViewDeveloperDocsItem = () => {
 export function OGLetsCodeStep() {
   return (
     <>
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <AddSendingDomainItem />
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <GenerateApiKeyItem />
-      </Panel.Section>
-      <Panel.Section>
+      </Panel.LEGACY.Section>
+      <Panel.LEGACY.Section>
         <ViewDeveloperDocsItem />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </>
   );
 }

@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { Send } from '@sparkpost/matchbox-icons';
 import { Button, Modal, Panel, Stack, TextField } from 'src/components/matchbox';
 import { PanelLoading } from 'src/components/loading';
 import MultiEmailField, { useMultiEmailField } from 'src/components/multiEmailField';
 import useEditorContext from '../hooks/useEditorContext';
+
+// TODO: This can be removed when the OG theme is removed and replaced with styled-system props or the <Inline /> component
+const StyledButtonContent = styled.span`
+  margin-right: 4px;
+`;
 
 const SendTestEmailButton = () => {
   const {
@@ -123,12 +129,12 @@ const SendTestEmailButton = () => {
         onClick={handleModalOpen}
         data-id="button-send-a-test"
       >
-        <span style={{ marginRight: '4px' }}>Send a Test</span>
+        <StyledButtonContent>Send a Test</StyledButtonContent>
 
         <Send />
       </Button>
 
-      <Modal
+      <Modal.LEGACY
         open={isModalOpen}
         showCloseButton={true}
         onClose={handleModalClose}
@@ -137,9 +143,9 @@ const SendTestEmailButton = () => {
         {isModalLoading && <PanelLoading />}
 
         {!isModalLoading && (
-          <Panel title="Send a Test">
+          <Panel.LEGACY title="Send a Test">
             <form onSubmit={handleSubmit}>
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <Stack>
                   <p>Verify your email renders as expected in the inbox by sending a quick test.</p>
 
@@ -175,17 +181,17 @@ const SendTestEmailButton = () => {
                     data-id="textfield-from-email"
                   />
                 </Stack>
-              </Panel.Section>
+              </Panel.LEGACY.Section>
 
-              <Panel.Section>
+              <Panel.LEGACY.Section>
                 <Button variant="primary" type="submit" data-id="button-send-email">
                   Send Email
                 </Button>
-              </Panel.Section>
+              </Panel.LEGACY.Section>
             </form>
-          </Panel>
+          </Panel.LEGACY>
         )}
-      </Modal>
+      </Modal.LEGACY>
     </>
   );
 };

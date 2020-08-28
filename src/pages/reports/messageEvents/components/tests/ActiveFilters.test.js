@@ -48,7 +48,7 @@ describe('Component: ActiveFilters', () => {
     const events = ['bounce', 'click', 'spam_complaint'];
     wrapper.setProps({ search: { ...props.search, events } });
     wrapper
-      .find(Panel.Section)
+      .find(Panel.LEGACY.Section)
       .prop('actions')[0]
       .onClick();
 

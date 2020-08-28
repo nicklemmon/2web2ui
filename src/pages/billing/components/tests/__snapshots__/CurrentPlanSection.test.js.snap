@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CurrentPlanSection renders correctly 1`] = `
-<Panel
+<Panel.LEGACY
   title="Current Plan"
 >
-  <Panel.Section
+  <Panel.LEGACY.Section
     className="currentPlan"
   >
     <div
@@ -36,6 +36,6 @@ exports[`CurrentPlanSection renders correctly 1`] = `
         />
       </Box>
     </div>
-  </Panel.Section>
-</Panel>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;

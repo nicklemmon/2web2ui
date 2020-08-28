@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MetricsSummary:  should render custom date 1`] = `
-<Panel
+<Panel.LEGACY
   className="Panel"
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Grid>
       <Grid.Column
         md={3}
@@ -56,15 +56,15 @@ exports[`MetricsSummary:  should render custom date 1`] = `
         </div>
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-</Panel>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;
 
 exports[`MetricsSummary:  should render relative range 1`] = `
-<Panel
+<Panel.LEGACY
   className="Panel"
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Grid>
       <Grid.Column
         md={3}
@@ -112,15 +112,15 @@ exports[`MetricsSummary:  should render relative range 1`] = `
         </div>
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-</Panel>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;
 
 exports[`MetricsSummary:  should render secondary message 1`] = `
-<Panel
+<Panel.LEGACY
   className="Panel"
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Grid>
       <Grid.Column
         md={3}
@@ -177,6 +177,6 @@ exports[`MetricsSummary:  should render secondary message 1`] = `
         </div>
       </Grid.Column>
     </Grid>
-  </Panel.Section>
-</Panel>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;

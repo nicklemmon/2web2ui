@@ -10,9 +10,9 @@ import UIOptionsPanel from './components/UIOptionsPanel';
 export function AccountSettingsPage({ currentUser }) {
   return (
     <Page title="Account Settings">
-      <Panel sectioned>
+      <Panel.LEGACY sectioned>
         <LabelledValue label="Account ID">{currentUser.customer}</LabelledValue>
-      </Panel>
+      </Panel.LEGACY>
       <SingleSignOnPanel />
       <EnforceTfaPanel />
       <UIOptionsPanel />

@@ -55,7 +55,7 @@ export class BouncePage extends Component {
       <LongTextContainer text={reason} />,
       <AddFilterLink
         newFilter={{ type: 'Recipient Domain', value: domain }}
-        reportType={'bounce'}
+        reportType="bounce"
         content={domain}
       />,
       bounce_category_name,
@@ -83,7 +83,7 @@ export class BouncePage extends Component {
     }
 
     return (
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <BounceChart
           loading={chartLoading}
           aggregates={aggregates}
@@ -92,7 +92,7 @@ export class BouncePage extends Component {
           admin={adminCategories}
           tab={this.state.tab}
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     );
   }
 
@@ -106,9 +106,9 @@ export class BouncePage extends Component {
 
     if (!reasons.length) {
       return (
-        <Panel>
-          <Empty message={'No bounce reasons to report'} />
-        </Panel>
+        <Panel.LEGACY>
+          <Empty message="No bounce reasons to report" />
+        </Panel.LEGACY>
       );
     }
 
@@ -189,11 +189,11 @@ export class BouncePage extends Component {
         <ReportOptions reportLoading={chartLoading} searchOptions={bounceSearchOptions} />
         {this.renderTopLevelMetrics()}
 
-        <Panel>
+        <Panel.LEGACY>
           <TabsWrapper>{this.renderTabs()}</TabsWrapper>
 
           {this.renderChart()}
-        </Panel>
+        </Panel.LEGACY>
         <hr />
         {this.renderCollection()}
       </Page>

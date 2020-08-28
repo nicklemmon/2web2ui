@@ -17,9 +17,9 @@ import styles from './ReportTable.module.scss';
 
 const tableWrapper = props => {
   return (
-    <Panel borderTop="0">
+    <Panel.LEGACY borderTop="0">
       <Table freezeFirstColumn>{props.children}</Table>
-    </Panel>
+    </Panel.LEGACY>
   );
 };
 
@@ -110,9 +110,9 @@ export const ReportTable = props => {
 
     if (!tableData.length) {
       return (
-        <Panel>
+        <Panel.LEGACY>
           <Empty message="There is no data to display" />
-        </Panel>
+        </Panel.LEGACY>
       );
     }
 
@@ -134,16 +134,16 @@ export const ReportTable = props => {
 
   return (
     <>
-      <Panel marginBottom="-1px">
-        <Panel.Section>
+      <Panel.LEGACY marginBottom="-1px">
+        <Panel.LEGACY.Section>
           <GroupByOption
             _getTableData={_getTableData}
             groupBy={groupBy}
             hasSubaccounts={hasSubaccounts}
             tableLoading={tableLoading}
           />
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
       <div data-id="summary-table">{renderTable()}</div>
     </>
   );

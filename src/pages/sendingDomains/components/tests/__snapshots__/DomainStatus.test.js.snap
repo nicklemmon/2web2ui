@@ -10,7 +10,7 @@ exports[`DomainStatus renders section 1`] = `
     />
   </Left>
   <Right>
-    <Panel>
+    <Panel.LEGACY>
       <StatusDescription
         domain={
           Object {
@@ -72,7 +72,7 @@ exports[`DomainStatus renders section 1`] = `
         }
         onChange={[Function]}
       />
-    </Panel>
+    </Panel.LEGACY>
   </Right>
 </SendingDomainSection>
 `;

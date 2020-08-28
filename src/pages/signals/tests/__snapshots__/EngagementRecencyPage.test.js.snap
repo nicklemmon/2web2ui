@@ -73,8 +73,8 @@ exports[`EngagementRecencyPage renders correctly 1`] = `
     </React.Fragment>
   }
 >
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -85,21 +85,21 @@ exports[`EngagementRecencyPage renders correctly 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Grid>
     <Grid.Column
       md={7}
       sm={12}
     >
-      <Panel
+      <Panel.LEGACY
         data-id="engagement-recency-cohorts-chart"
       >
         <withRouter(Tabs)
           facet="sending-domain"
           facetId="test.com"
         />
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <div
             className="LiftTooltip"
           >
@@ -275,8 +275,8 @@ exports[`EngagementRecencyPage renders correctly 1`] = `
               tooltipContent={[Function]}
             />
           </div>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     </Grid.Column>
     <Grid.Column
       md={5}
@@ -305,8 +305,8 @@ exports[`EngagementRecencyPage renders correctly 1`] = `
 
 exports[`EngagementRecencyPage renders empty correctly 1`] = `
 Array [
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -317,9 +317,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY
     data-id="engagement-recency-cohorts-chart"
   >
     <withRouter(Tabs)
@@ -329,7 +329,7 @@ Array [
     <Empty
       message="Insufficient data to populate this chart"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;
 
@@ -356,8 +356,8 @@ exports[`EngagementRecencyPage renders error correctly 1`] = `
     </React.Fragment>
   }
 >
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -368,14 +368,14 @@ exports[`EngagementRecencyPage renders error correctly 1`] = `
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>
   <Grid>
     <Grid.Column
       md={7}
       sm={12}
     >
-      <Panel
+      <Panel.LEGACY
         data-id="engagement-recency-cohorts-chart"
       >
         <withRouter(Tabs)
@@ -385,7 +385,7 @@ exports[`EngagementRecencyPage renders error correctly 1`] = `
         <Empty
           message="Unable to Load Data"
         />
-      </Panel>
+      </Panel.LEGACY>
     </Grid.Column>
     <Grid.Column
       md={5}
@@ -400,8 +400,8 @@ exports[`EngagementRecencyPage renders error correctly 1`] = `
 
 exports[`EngagementRecencyPage renders loading correctly 1`] = `
 Array [
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY>
+    <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
           md={4}
@@ -412,9 +412,9 @@ Array [
           />
         </Grid.Column>
       </Grid>
-    </Panel.Section>
-  </Panel>,
-  <Panel
+    </Panel.LEGACY.Section>
+  </Panel.LEGACY>,
+  <Panel.LEGACY
     data-id="engagement-recency-cohorts-chart"
   >
     <withRouter(Tabs)
@@ -425,6 +425,6 @@ Array [
       height="250px"
       minHeight="400px"
     />
-  </Panel>,
+  </Panel.LEGACY>,
 ]
 `;

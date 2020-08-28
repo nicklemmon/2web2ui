@@ -10,7 +10,7 @@ exports[`Signals Health Score Chart renders error correctly 1`] = `
 `;
 
 exports[`Signals Health Score Chart renders happy path correctly 1`] = `
-<Panel
+<Panel.LEGACY
   sectioned={true}
   title="Dec 1 2014 – Feb 1 2015"
 >
@@ -147,7 +147,7 @@ exports[`Signals Health Score Chart renders happy path correctly 1`] = `
       />
     </div>
   </div>
-</Panel>
+</Panel.LEGACY>
 `;
 
 exports[`Signals Health Score Chart renders metric displays 1`] = `

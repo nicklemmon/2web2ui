@@ -61,7 +61,7 @@ exports[`EditPage renders disabled form when submitting 1`] = `
         lg={4}
         xs={12}
       >
-        <Panel
+        <Panel.LEGACY
           sectioned={true}
         >
           <Stack>
@@ -102,7 +102,7 @@ exports[`EditPage renders disabled form when submitting 1`] = `
               value="{{ render_snippet( \\"test-snippet\\" ) }}"
             />
           </Stack>
-        </Panel>
+        </Panel.LEGACY>
       </Grid.Column>
       <Grid.Column
         lg={8}
@@ -118,7 +118,9 @@ exports[`EditPage renders disabled form when submitting 1`] = `
 </Page>
 `;
 
-exports[`EditPage renders disabled form when user does not have authorization to modify snippets 1`] = `
+exports[
+  `EditPage renders disabled form when user does not have authorization to modify snippets 1`
+] = `
 <Page
   breadcrumbAction={
     Object {
@@ -146,7 +148,7 @@ exports[`EditPage renders disabled form when user does not have authorization to
         lg={4}
         xs={12}
       >
-        <Panel
+        <Panel.LEGACY
           sectioned={true}
         >
           <Stack>
@@ -187,7 +189,7 @@ exports[`EditPage renders disabled form when user does not have authorization to
               value="{{ render_snippet( \\"test-snippet\\" ) }}"
             />
           </Stack>
-        </Panel>
+        </Panel.LEGACY>
       </Grid.Column>
       <Grid.Column
         lg={8}
@@ -252,7 +254,7 @@ exports[`EditPage renders edit form 1`] = `
         lg={4}
         xs={12}
       >
-        <Panel
+        <Panel.LEGACY
           sectioned={true}
         >
           <Stack>
@@ -291,7 +293,7 @@ exports[`EditPage renders edit form 1`] = `
               value="{{ render_snippet( \\"test-snippet\\" ) }}"
             />
           </Stack>
-        </Panel>
+        </Panel.LEGACY>
       </Grid.Column>
       <Grid.Column
         lg={8}

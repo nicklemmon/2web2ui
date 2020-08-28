@@ -1,13 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: Invoice History should change the text of the download button in the row of the downloading invoice 1`] = `
-<div
-  style={
-    Object {
-      "textAlign": "right",
-    }
-  }
->
+<ForwardRef(styled.div)>
   <Button
     color="orange"
     disabled={true}
@@ -17,17 +11,11 @@ exports[`Component: Invoice History should change the text of the download butto
   >
     Downloading...
   </Button>
-</div>
+</ForwardRef(styled.div)>
 `;
 
 exports[`Component: Invoice History should deactivate download buttons while an invoice is downloading 1`] = `
-<div
-  style={
-    Object {
-      "textAlign": "right",
-    }
-  }
->
+<ForwardRef(styled.div)>
   <Button
     color="orange"
     disabled={true}
@@ -40,20 +28,22 @@ exports[`Component: Invoice History should deactivate download buttons while an 
       <FileDownload />
     </React.Fragment>
   </Button>
-</div>
+</ForwardRef(styled.div)>
 `;
 
 exports[`Component: Invoice History should show a list of invoices 1`] = `
 <Fragment>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY
+    borderBottom="0"
+  >
+    <Panel.LEGACY.Section>
       <Heading
         as="h2"
         looksLike="h4"
       >
         Invoice History
       </Heading>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <PanelSectionTableCollection
       columns={
         Array [
@@ -108,21 +98,23 @@ exports[`Component: Invoice History should show a list of invoices 1`] = `
         ]
       }
     />
-  </Panel>
+  </Panel.LEGACY>
 </Fragment>
 `;
 
 exports[`Component: Invoice History should show a message that only 20 invoices are available if there are 20 invoices 1`] = `
 <Fragment>
-  <Panel>
-    <Panel.Section>
+  <Panel.LEGACY
+    borderBottom="0"
+  >
+    <Panel.LEGACY.Section>
       <Heading
         as="h2"
         looksLike="h4"
       >
         Invoice History
       </Heading>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
     <PanelSectionTableCollection
       columns={
         Array [
@@ -281,8 +273,8 @@ exports[`Component: Invoice History should show a message that only 20 invoices 
         ]
       }
     />
-  </Panel>
-  <Panel.Footer
+  </Panel.LEGACY>
+  <Panel.LEGACY.Footer
     left={
       <SubduedText
         as="p"
@@ -303,13 +295,7 @@ Array [
   "May 4 2018",
   "$3.34",
   "no0",
-  <div
-    style={
-      Object {
-        "textAlign": "right",
-      }
-    }
-  >
+  <ForwardRef(styled.div)>
     <Button
       color="orange"
       disabled={false}
@@ -322,6 +308,6 @@ Array [
         <FileDownload />
       </React.Fragment>
     </Button>
-  </div>,
+  </ForwardRef(styled.div)>,
 ]
 `;

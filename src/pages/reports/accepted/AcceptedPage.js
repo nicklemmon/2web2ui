@@ -38,9 +38,9 @@ export class AcceptedPage extends Component {
 
     if (!loading && _.isEmpty(aggregates)) {
       return (
-        <Panel>
+        <Panel.LEGACY>
           <Empty message="No accepted messages to report" />
-        </Panel>
+        </Panel.LEGACY>
       );
     }
 

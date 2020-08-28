@@ -4,7 +4,7 @@ exports[`base case 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Box
         maxWidth="45rem"
@@ -27,8 +27,8 @@ exports[`base case 1`] = `
         />
       </Stack>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         disabled={true}
@@ -38,7 +38,7 @@ exports[`base case 1`] = `
         Update Subaccount
       </Button>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -46,7 +46,7 @@ exports[`cancel button 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Box
         maxWidth="45rem"
@@ -69,8 +69,8 @@ exports[`cancel button 1`] = `
         />
       </Stack>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         disabled={false}
@@ -86,7 +86,7 @@ exports[`cancel button 1`] = `
         Cancel
       </Button>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -94,7 +94,7 @@ exports[`no ip pools 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Box
         maxWidth="45rem"
@@ -112,8 +112,8 @@ exports[`no ip pools 1`] = `
         />
       </Box>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         disabled={true}
@@ -123,7 +123,7 @@ exports[`no ip pools 1`] = `
         Update Subaccount
       </Button>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -131,7 +131,7 @@ exports[`should disable all fields when compliance is true 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Box
         maxWidth="45rem"
@@ -154,8 +154,8 @@ exports[`should disable all fields when compliance is true 1`] = `
         />
       </Stack>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         disabled={true}
@@ -165,7 +165,7 @@ exports[`should disable all fields when compliance is true 1`] = `
         Update Subaccount
       </Button>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -180,7 +180,7 @@ exports[`submits correctly 1`] = `
     }
   }
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Box
         maxWidth="45rem"
@@ -203,8 +203,8 @@ exports[`submits correctly 1`] = `
         />
       </Stack>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         disabled={true}
@@ -214,7 +214,7 @@ exports[`submits correctly 1`] = `
         Updating...
       </Button>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;
 
@@ -222,7 +222,7 @@ exports[`with an assigned ip pool 1`] = `
 <form
   onSubmit={[MockFunction]}
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <Stack>
       <Box
         maxWidth="45rem"
@@ -253,8 +253,8 @@ exports[`with an assigned ip pool 1`] = `
         />
       </Stack>
     </Stack>
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ButtonWrapper>
       <Button
         disabled={true}
@@ -264,6 +264,6 @@ exports[`with an assigned ip pool 1`] = `
         Update Subaccount
       </Button>
     </ButtonWrapper>
-  </Panel.Section>
+  </Panel.LEGACY.Section>
 </form>
 `;

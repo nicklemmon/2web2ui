@@ -46,8 +46,8 @@ export default class BillingSummary extends Component {
     const { account } = this.props;
     const { billing } = account;
     return (
-      <Panel title="Billing" data-id="billing-panel">
-        <Panel.Section
+      <Panel.LEGACY title="Billing" data-id="billing-panel">
+        <Panel.LEGACY.Section
           actions={[
             {
               content: 'Update Payment Information',
@@ -57,8 +57,8 @@ export default class BillingSummary extends Component {
           ]}
         >
           <CardSummary label="Credit Card" credit_card={billing.credit_card} />
-        </Panel.Section>
-        <Panel.Section
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section
           actions={[
             {
               content: 'Update Billing Contact',
@@ -73,8 +73,8 @@ export default class BillingSummary extends Component {
             </h6>
             <p>{billing.email}</p>
           </LabelledValue>
-        </Panel.Section>
-      </Panel>
+        </Panel.LEGACY.Section>
+      </Panel.LEGACY>
     );
   };
 
@@ -92,7 +92,7 @@ export default class BillingSummary extends Component {
     const volumeUsed = _.get(rvUsage, 'recipient_validation.month.used', 0);
     const recipientValidationDate = _.get(rvUsage, 'recipient_validation.timestamp');
     return (
-      <Panel.Section>
+      <Panel.LEGACY.Section>
         <LabelledValue label="Recipient Validation">
           <h6>
             <Text fontSize="300" as="span">
@@ -105,7 +105,7 @@ export default class BillingSummary extends Component {
           </h6>
           <ButtonLink onClick={this.handleRvModal}>How was this calculated?</ButtonLink>
         </LabelledValue>
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     );
   };
 
@@ -142,15 +142,15 @@ export default class BillingSummary extends Component {
       <div>
         <PendingPlanBanner account={account} subscription={billingSubscription} />
         <FreePlanWarningBanner account={account} accountAgeInDays={accountAgeInDays} />
-        <Panel accent title="Plan Overview">
-          <Panel.Section actions={changePlanActions}>
+        <Panel.LEGACY accent title="Plan Overview">
+          <Panel.LEGACY.Section actions={changePlanActions}>
             <LabelledValue label="Your Plan">
               <PlanSummary plan={account.subscription} pendingCancellation={pending_cancellation} />
             </LabelledValue>
-          </Panel.Section>
+          </Panel.LEGACY.Section>
           {this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
-        </Panel>
+        </Panel.LEGACY>
 
         {canUpdateBillingInfo && this.renderSummary()}
 
@@ -159,14 +159,14 @@ export default class BillingSummary extends Component {
         <PremiumBanner />
         <EnterpriseBanner />
 
-        <Modal open={!!show} onClose={this.handleModal}>
+        <Modal.LEGACY open={!!show} onClose={this.handleModal}>
           {show === PAYMENT_MODAL && <UpdatePaymentForm onCancel={this.handleModal} />}
           {show === CONTACT_MODAL && <UpdateContactForm onCancel={this.handleModal} />}
           {show === IP_MODAL && <AddIps onClose={this.handleModal} />}
-        </Modal>
-        <OGOnlyWrapper as={Modal} open={show === RV_MODAL} onClose={this.handleModal}>
+        </Modal.LEGACY>
+        <OGOnlyWrapper as={Modal.LEGACY} open={show === RV_MODAL} onClose={this.handleModal}>
           <Box
-            as={Modal}
+            as={Modal.LEGACY}
             open={show === RV_MODAL}
             onClose={this.handleModal}
             showCloseButton={true}

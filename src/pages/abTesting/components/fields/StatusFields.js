@@ -14,8 +14,8 @@ import {
 
 const StatusFields = ({ disabled }) => (
   <>
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <Field
           name="name"
           component={TextFieldWrapper}
@@ -23,10 +23,10 @@ const StatusFields = ({ disabled }) => (
           disabled={disabled}
           validate={[required, minLength(1), maxLength(64)]}
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
-    <OGOnlyWrapper as={Panel}>
-      <Panel.Section>
+    <OGOnlyWrapper as={Panel.LEGACY}>
+      <Panel.LEGACY.Section>
         <Field
           component={DatePickerWrapper}
           disabled={disabled}
@@ -49,7 +49,7 @@ const StatusFields = ({ disabled }) => (
             fromMonth: new Date(),
           }}
         />
-      </Panel.Section>
+      </Panel.LEGACY.Section>
     </OGOnlyWrapper>
   </>
 );

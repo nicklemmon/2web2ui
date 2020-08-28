@@ -66,7 +66,7 @@ export default class CreatePage extends React.Component {
         <Form onSubmit={this.submitSnippet}>
           <Grid>
             <Grid.Column xs={12} lg={4}>
-              <Panel sectioned>
+              <Panel.LEGACY sectioned>
                 <Stack>
                   <Field
                     name="name"
@@ -91,7 +91,7 @@ export default class CreatePage extends React.Component {
                   />
                   {hasSubaccounts && <SubaccountSection newTemplate={true} disabled={submitting} />}
                 </Stack>
-              </Panel>
+              </Panel.LEGACY>
             </Grid.Column>
             <Grid.Column xs={12} lg={8}>
               <ContentEditor contentOnly={true} />

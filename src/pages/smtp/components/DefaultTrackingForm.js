@@ -8,7 +8,7 @@ export class DefaultTrackingForm extends Component {
   render() {
     const { updateLoading, toggle } = this.props;
     return (
-      <Panel sectioned title="Engagement Tracking">
+      <Panel.LEGACY sectioned title="Engagement Tracking">
         <Stack>
           <p>
             Engagement tracking allows the ability to show how many recipients opened messages or
@@ -24,7 +24,7 @@ export class DefaultTrackingForm extends Component {
             onChange={toggle}
           />
         </Stack>
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 }

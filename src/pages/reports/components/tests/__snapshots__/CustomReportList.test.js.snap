@@ -10,12 +10,12 @@ exports[`Component: CustomReportsList should render 1`] = `
   >
     Saved Reports
   </Button>
-  <Modal
+  <Modal.LEGACY
     onClose={[Function]}
     open={false}
     showCloseButton={true}
   >
-    <Panel
+    <Panel.LEGACY
       title="Saved Reports"
     >
       <ReportRow
@@ -34,7 +34,7 @@ exports[`Component: CustomReportsList should render 1`] = `
         onLoad={[Function]}
         url="report2url"
       />
-    </Panel>
-  </Modal>
+    </Panel.LEGACY>
+  </Modal.LEGACY>
 </Fragment>
 `;

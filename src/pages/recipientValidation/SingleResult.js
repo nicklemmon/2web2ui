@@ -64,7 +64,7 @@ export function SingleResult(props) {
       subtitle="Results"
       breadcrumbAction={{ content: 'Back', to: SINGLE_RV_LINK, component: PageLink }}
     >
-      <Panel>
+      <Panel.LEGACY>
         <Grid>
           <Grid.Column xs={12} md={7}>
             <div className={styles.SubSection}>
@@ -106,7 +106,7 @@ export function SingleResult(props) {
             </CodeBlock>
           </Grid.Column>
         </Grid>
-      </Panel>
+      </Panel.LEGACY>
     </Page>
   );
 }

@@ -1,12 +1,18 @@
-import _ from 'lodash';
 import React from 'react';
-import { Box, Panel, Tooltip } from 'src/components/matchbox';
+import _ from 'lodash';
+import styled from 'styled-components';
 import { InfoOutline } from '@sparkpost/matchbox-icons';
+import { Box, Panel, Tooltip } from 'src/components/matchbox';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Empty, PanelLoading, TableCollection } from 'src/components';
 import { map as metrics } from 'src/config/metrics';
 import { formatNumber, formatPercent } from 'src/helpers/units';
 import { safeRate } from 'src/helpers/math';
+
+const StyledTooltipIcon = styled.div`
+  margin-left: 5px;
+  transform: translateY(-1px);
+`;
 
 const COLUMNS = [
   {
@@ -53,9 +59,9 @@ export default function EngagementTable({ data, loading }) {
 
   if (data.length === 0) {
     return (
-      <Panel>
+      <Panel.LEGACY>
         <Empty message="No clicks to report" />
-      </Panel>
+      </Panel.LEGACY>
     );
   }
 
@@ -89,7 +95,7 @@ function HeaderTooltip({ children, tooltipContent }) {
       {children}
       <Tooltip id={id} dark top content={tooltipContent}>
         <Box as="span" color="blue.700">
-          <InfoOutline style={{ marginLeft: '5px', transform: 'translateY(-1px)' }} />
+          <StyledTooltipIcon as={InfoOutline} />
         </Box>
       </Tooltip>
     </span>

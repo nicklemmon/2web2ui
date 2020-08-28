@@ -18,7 +18,7 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
     as={[Function]}
     title="How was this calculated?"
   >
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <Stack
         space="200"
       >
@@ -59,30 +59,24 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
               </span>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "center",
-                }
-              }
               xs={1}
             >
-              <span>
-                =
-              </span>
+              <styled.div>
+                <span>
+                  =
+                </span>
+              </styled.div>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "right",
-                }
-              }
               xs={2}
             >
-              <span
-                className="Bold"
-              >
-                $50.00
-              </span>
+              <styled.div>
+                <span
+                  className="Bold"
+                >
+                  $50.00
+                </span>
+              </styled.div>
             </Grid.Column>
           </Grid>
           <Grid
@@ -119,30 +113,24 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
               </span>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "center",
-                }
-              }
               xs={1}
             >
-              <span>
-                =
-              </span>
+              <styled.div>
+                <span>
+                  =
+                </span>
+              </styled.div>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "right",
-                }
-              }
               xs={2}
             >
-              <span
-                className="Bold"
-              >
-                $40.00
-              </span>
+              <styled.div>
+                <span
+                  className="Bold"
+                >
+                  $40.00
+                </span>
+              </styled.div>
             </Grid.Column>
           </Grid>
           <Grid
@@ -179,30 +167,24 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
               </span>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "center",
-                }
-              }
               xs={1}
             >
-              <span>
-                =
-              </span>
+              <styled.div>
+                <span>
+                  =
+                </span>
+              </styled.div>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "right",
-                }
-              }
               xs={2}
             >
-              <span
-                className="Bold"
-              >
-                $240.00
-              </span>
+              <styled.div>
+                <span
+                  className="Bold"
+                >
+                  $240.00
+                </span>
+              </styled.div>
             </Grid.Column>
           </Grid>
           <Grid
@@ -239,30 +221,24 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
               </span>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "center",
-                }
-              }
               xs={1}
             >
-              <span>
-                =
-              </span>
+              <styled.div>
+                <span>
+                  =
+                </span>
+              </styled.div>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "right",
-                }
-              }
               xs={2}
             >
-              <span
-                className="Bold"
-              >
-                $200.00
-              </span>
+              <styled.div>
+                <span
+                  className="Bold"
+                >
+                  $200.00
+                </span>
+              </styled.div>
             </Grid.Column>
           </Grid>
           <Grid
@@ -299,30 +275,24 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
               </span>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "center",
-                }
-              }
               xs={1}
             >
-              <span>
-                =
-              </span>
+              <styled.div>
+                <span>
+                  =
+                </span>
+              </styled.div>
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "right",
-                }
-              }
               xs={2}
             >
-              <span
-                className="Bold"
-              >
-                $69.37
-              </span>
+              <styled.div>
+                <span
+                  className="Bold"
+                >
+                  $69.37
+                </span>
+              </styled.div>
             </Grid.Column>
           </Grid>
           <Grid
@@ -443,24 +413,21 @@ exports[`Component: RecipientValidationModal should render properly 1`] = `
               Total:
             </Grid.Column>
             <Grid.Column
-              style={
-                Object {
-                  "textAlign": "right",
-                }
-              }
               xs={3}
             >
-              <Text
-                color="gray.900"
-                fontWeight="600"
-              >
-                $599.37
-              </Text>
+              <styled.div>
+                <Text
+                  color="gray.900"
+                  fontWeight="600"
+                >
+                  $599.37
+                </Text>
+              </styled.div>
             </Grid.Column>
           </Grid>
         </Box>
       </Stack>
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   </Box>
 </OGOnlyWrapper>
 `;

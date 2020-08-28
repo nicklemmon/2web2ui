@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Detail renders data correctly 1`] = `
-<Modal
+<Modal.LEGACY
   onClose={[MockFunction]}
   open={true}
   showCloseButton={true}
 >
-  <Panel
+  <Panel.LEGACY
     sectioned={true}
     title="Suppression Details"
   >
@@ -56,6 +56,6 @@ exports[`Detail renders data correctly 1`] = `
         />
       </Box>
     </div>
-  </Panel>
-</Modal>
+  </Panel.LEGACY>
+</Modal.LEGACY>
 `;

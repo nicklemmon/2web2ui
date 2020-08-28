@@ -8,7 +8,7 @@ exports[`UsageReport Component should render null without props 1`] = `
 `;
 
 exports[`UsageReport Component should render with overages 1`] = `
-<Panel
+<Panel.LEGACY
   actions={
     Array [
       Object {
@@ -21,7 +21,7 @@ exports[`UsageReport Component should render with overages 1`] = `
   }
   title="Your Usage Report"
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <ProgressLabel
       secondaryTitle="Since Aug 29 2017, 8:00pm"
       title="Today"
@@ -42,8 +42,8 @@ exports[`UsageReport Component should render with overages 1`] = `
     <SendMoreCTA
       hasSendingLimits={true}
     />
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ProgressLabel
       secondaryTitle="Billing cycle: Aug 1 2017 - Aug 31 2017"
       title="This Month"
@@ -69,12 +69,12 @@ exports[`UsageReport Component should render with overages 1`] = `
       content="50,000"
       label="Monthly limit"
     />
-  </Panel.Section>
-</Panel>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;
 
 exports[`UsageReport Component should render with regular usage 1`] = `
-<Panel
+<Panel.LEGACY
   actions={
     Array [
       Object {
@@ -87,7 +87,7 @@ exports[`UsageReport Component should render with regular usage 1`] = `
   }
   title="Your Usage Report"
 >
-  <Panel.Section>
+  <Panel.LEGACY.Section>
     <ProgressLabel
       secondaryTitle="Since Aug 29 2017, 8:00pm"
       title="Today"
@@ -108,8 +108,8 @@ exports[`UsageReport Component should render with regular usage 1`] = `
     <SendMoreCTA
       hasSendingLimits={true}
     />
-  </Panel.Section>
-  <Panel.Section>
+  </Panel.LEGACY.Section>
+  <Panel.LEGACY.Section>
     <ProgressLabel
       secondaryTitle="Billing cycle: Aug 1 2017 - Aug 31 2017"
       title="This Month"
@@ -131,8 +131,8 @@ exports[`UsageReport Component should render with regular usage 1`] = `
       content="50,000"
       label="Monthly limit"
     />
-  </Panel.Section>
-</Panel>
+  </Panel.LEGACY.Section>
+</Panel.LEGACY>
 `;
 
 exports[`UsageReport Component should render with regular usage 2`] = `

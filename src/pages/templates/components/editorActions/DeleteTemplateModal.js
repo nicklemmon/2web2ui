@@ -35,21 +35,21 @@ const DeleteTemplateModal = props => {
         />
       )}
 
-      <Modal open={open} showCloseButton onClose={onClose}>
+      <Modal.LEGACY open={open} showCloseButton onClose={onClose}>
         {isLoading ? (
           <PanelLoading minHeight="190px" />
         ) : (
-          <Panel title="Are you sure you want to delete your template?">
-            <Panel.Section>
+          <Panel.LEGACY title="Are you sure you want to delete your template?">
+            <Panel.LEGACY.Section>
               {/* The <span>s are used here to avoid the bare JSX string problem */}
               <p>
                 <span>If so, the </span>
                 <strong className={styles.WarningText}>published version and any drafts</strong>
                 <span> will all be deleted.</span>
               </p>
-            </Panel.Section>
+            </Panel.LEGACY.Section>
 
-            <Panel.Section>
+            <Panel.LEGACY.Section>
               <ButtonWrapper>
                 <Button variant="destructive" onClick={handleDelete}>
                   Delete All Versions
@@ -59,10 +59,10 @@ const DeleteTemplateModal = props => {
                   Cancel
                 </Button>
               </ButtonWrapper>
-            </Panel.Section>
-          </Panel>
+            </Panel.LEGACY.Section>
+          </Panel.LEGACY>
         )}
-      </Modal>
+      </Modal.LEGACY>
     </>
   );
 };

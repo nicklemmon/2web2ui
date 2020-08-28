@@ -12,14 +12,14 @@ const ShareWithSubaccounts = ({ domain, onChange }) => {
   }
 
   return (
-    <Panel.Section>
+    <Panel.LEGACY.Section>
       <ToggleBlock
         input={{ name: 'shareWithSubaccounts' }}
         label="Share this domain with all subaccounts?"
         checked={domain.shared_with_subaccounts}
         onChange={onChange}
       />
-    </Panel.Section>
+    </Panel.LEGACY.Section>
   );
 };
 

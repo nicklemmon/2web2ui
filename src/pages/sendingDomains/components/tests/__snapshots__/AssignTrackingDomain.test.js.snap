@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component: AssignTrackingDomain form should have button disabled when form is pristine 1`] = `
+exports[
+  `Component: AssignTrackingDomain form should have button disabled when form is pristine 1`
+] = `
 <SendingDomainSection
   title="Select a Tracking Domain"
 >
@@ -23,9 +25,9 @@ exports[`Component: AssignTrackingDomain form should have button disabled when f
     </SubduedText>
   </Left>
   <Right>
-    <Panel>
+    <Panel.LEGACY>
       <form>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Field
             component={[Function]}
             disabled={false}
@@ -45,8 +47,8 @@ exports[`Component: AssignTrackingDomain form should have button disabled when f
               ]
             }
           />
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Button
             disabled={true}
             submit={true}
@@ -54,9 +56,9 @@ exports[`Component: AssignTrackingDomain form should have button disabled when f
           >
             Update Tracking Domain
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
-    </Panel>
+    </Panel.LEGACY>
   </Right>
 </SendingDomainSection>
 `;
@@ -84,9 +86,9 @@ exports[`Component: AssignTrackingDomain form should have button disabled when s
     </SubduedText>
   </Left>
   <Right>
-    <Panel>
+    <Panel.LEGACY>
       <form>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Field
             component={[Function]}
             disabled={true}
@@ -106,8 +108,8 @@ exports[`Component: AssignTrackingDomain form should have button disabled when s
               ]
             }
           />
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Button
             disabled={true}
             submit={true}
@@ -115,9 +117,9 @@ exports[`Component: AssignTrackingDomain form should have button disabled when s
           >
             Updating...
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
-    </Panel>
+    </Panel.LEGACY>
   </Right>
 </SendingDomainSection>
 `;
@@ -145,9 +147,9 @@ exports[`Component: AssignTrackingDomain form should render form with initial va
     </SubduedText>
   </Left>
   <Right>
-    <Panel>
+    <Panel.LEGACY>
       <form>
-        <Panel.Section>
+        <Panel.LEGACY.Section>
           <Field
             component={[Function]}
             disabled={false}
@@ -167,8 +169,8 @@ exports[`Component: AssignTrackingDomain form should render form with initial va
               ]
             }
           />
-        </Panel.Section>
-        <Panel.Section>
+        </Panel.LEGACY.Section>
+        <Panel.LEGACY.Section>
           <Button
             disabled={false}
             submit={true}
@@ -176,14 +178,16 @@ exports[`Component: AssignTrackingDomain form should render form with initial va
           >
             Update Tracking Domain
           </Button>
-        </Panel.Section>
+        </Panel.LEGACY.Section>
       </form>
-    </Panel>
+    </Panel.LEGACY>
   </Right>
 </SendingDomainSection>
 `;
 
-exports[`Component: AssignTrackingDomain form should render panel loading component when data is loading 1`] = `
+exports[
+  `Component: AssignTrackingDomain form should render panel loading component when data is loading 1`
+] = `
 <SendingDomainSection
   title="Select a Tracking Domain"
 >

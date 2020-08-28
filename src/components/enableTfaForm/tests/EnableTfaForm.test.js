@@ -48,7 +48,10 @@ describe('Component: EnableTfaForm', () => {
   });
 
   it('should show form after loading', () => {
-    expect(pageSubject({ secret: 'sauce' }).dive()).toMatchSnapshot();
+    const wrapper = pageSubject({ secret: 'sauce' }).dive();
+
+    expect(wrapper).toHaveTextContent('Step 1: Configure your 2FA app');
+    expect(wrapper).toHaveTextContent('Step 2: Enter a 2FA code');
   });
 
   it('should call afterEnable after toggling', () => {
