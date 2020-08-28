@@ -23,6 +23,7 @@ export const TRAITS = {
   LAST_NAME: 'last_name',
   PLAN: 'plan',
   SERVICE_LEVEL: 'service_level',
+  TENANT: 'tenant',
   USER_ID: 'user_id',
   USER_ROLE: 'user_role',
 };
