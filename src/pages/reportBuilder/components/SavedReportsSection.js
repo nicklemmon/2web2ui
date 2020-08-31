@@ -17,12 +17,6 @@ const StyledButton = styled(Button)`
   top: 40%;
 `;
 
-const StyledIconWrapper = styled('span')`
-  position: relative;
-  bottom: 2px;
-  left: ${props => props.theme.space['200']};
-`;
-
 const SavedReportsSection = props => {
   /* eslint-disable no-unused-vars */
   const [modalStatus, setModalStatus] = useState('');
@@ -41,23 +35,17 @@ const SavedReportsSection = props => {
       </Grid.Column>
       {props.isSavedReportsEnabled && (
         <Grid.Column lg={5} sm={12} xs={12}>
-          <StyledButton flat variant="primary" onClick={() => setModalStatus('edit')}>
+          <StyledButton flat onClick={() => setModalStatus('edit')}>
             Edit Details
-            <StyledIconWrapper>
-              <Edit />
-            </StyledIconWrapper>
+            <Button.Icon as={Edit} ml="200" />
           </StyledButton>
-          <StyledButton flat variant="primary" onClick={() => setModalStatus('save')}>
+          <StyledButton flat onClick={() => setModalStatus('save')}>
             Save Changes
-            <StyledIconWrapper>
-              <Save />
-            </StyledIconWrapper>
+            <Button.Icon as={Save} ml="200" />
           </StyledButton>
-          <StyledButton flat variant="primary" onClick={() => setModalStatus('view')}>
+          <StyledButton flat onClick={() => setModalStatus('view')}>
             View All Reports
-            <StyledIconWrapper>
-              <FolderOpen />
-            </StyledIconWrapper>
+            <Button.Icon as={FolderOpen} ml="200" />
           </StyledButton>
         </Grid.Column>
       )}
