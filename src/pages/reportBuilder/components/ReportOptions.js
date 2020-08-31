@@ -13,7 +13,7 @@ import MetricsDrawer from './MetricsDrawer';
 import { Legend } from './index';
 import _ from 'lodash';
 import AddFiltersSection from './AddFiltersSection';
-import SavedReportsTypeahead from './SavedReportsTypeahead';
+import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
 import { PRESET_REPORT_CONFIGS } from '../constants/presetReport';
@@ -151,7 +151,7 @@ export function ReportOptions(props) {
   return (
     <div data-id="report-options">
       <Panel.LEGACY.Section>
-        <SavedReportsTypeahead
+        <SavedReportsSection
           selectedItem={selectedReport}
           handleReportChange={handleReportChange}
         />

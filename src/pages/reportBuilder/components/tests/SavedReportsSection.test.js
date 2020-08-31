@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import SavedReportsTypeahead from '../SavedReportsTypeahead';
+import SavedReportsSection from '../SavedReportsSection';
 //TODO: Skip until typeahead replaced
-describe.skip('Saved Reports Typeahead', () => {
+describe.skip('Saved Reports Section', () => {
   const defaultProps = {
     handleReportChange: jest.fn(),
     selectedReport: {
@@ -13,7 +13,7 @@ describe.skip('Saved Reports Typeahead', () => {
   };
 
   const subject = props => {
-    return shallow(<SavedReportsTypeahead {...defaultProps} {...props} />);
+    return shallow(<SavedReportsSection {...defaultProps} {...props} />);
   };
 
   it('updates reportOptions when a new report is selected', () => {
