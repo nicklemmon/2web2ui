@@ -18,6 +18,7 @@ export const SEGMENT_EVENTS = {
 export const SEGMENT_TRAITS = {
   COMPANY: 'company',
   CREATED_AT: 'createdAt',
+  CUSTOMER_ID: 'customer_id',
   EMAIL: 'email',
   FIRST_NAME: 'first_name',
   LAST_NAME: 'last_name',
@@ -31,12 +32,13 @@ export const SEGMENT_TRAITS = {
 /**
  * Helper to identify a user, partial updates are supported but must
  * always include the username and email
- * @param {} traits must include SEGMENT_TRAITS.USER_ID and SEGMENT_TRAITS.EMAIL
+ * @param {} traits must include SEGMENT_TRAITS.USER_ID, SEGMENT_TRAITS.CUSTOMER_ID, and SEGMENT_TRAITS.EMAIL
  */
 export const segmentIdentify = traits => {
   if (
     window.analytics &&
     window.analytics.identify &&
+    traits[SEGMENT_TRAITS.CUSTOMER_ID] &&
     traits[SEGMENT_TRAITS.USER_ID] &&
     traits[SEGMENT_TRAITS.EMAIL]
   ) {
@@ -48,7 +50,7 @@ export const segmentIdentify = traits => {
     }, {});
 
     window.analytics.identify(
-      `${filteredTraits[SEGMENT_TRAITS.USER_ID]}//${traits[SEGMENT_TRAITS.EMAIL]}`,
+      `${filteredTraits[SEGMENT_TRAITS.EMAIL]}//${traits[SEGMENT_TRAITS.CUSTOMER_ID]}`,
       filteredTraits,
     );
   }

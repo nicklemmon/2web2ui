@@ -20,6 +20,7 @@ export const SegmentIdentify = ({ accessControlReady, ...traits }) => {
 
 const mapStateToProps = state => ({
   accessControlReady: state.accessControlReady,
+  [SEGMENT_TRAITS.CUSTOMER_ID]: state.account.customer_id,
   [SEGMENT_TRAITS.USER_ID]: usernameSelector(state),
   [SEGMENT_TRAITS.EMAIL]: state.currentUser.email,
   [SEGMENT_TRAITS.CREATED_AT]: state.currentUser.created,

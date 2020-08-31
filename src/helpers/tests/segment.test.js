@@ -9,12 +9,14 @@ describe('segment helpers', () => {
 
     it('does not pass invalid traits to segment', () => {
       const traits = {
+        [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
         [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
         [SEGMENT_TRAITS.USER_ID]: 'username',
         'invalid-trait': 'this-is-invalid',
       };
       segmentIdentify(traits);
-      expect(window.analytics.identify).toBeCalledWith('username//email@abc.com', {
+      expect(window.analytics.identify).toBeCalledWith('email@abc.com//123', {
+        [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
         [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
         [SEGMENT_TRAITS.USER_ID]: 'username',
       });
@@ -22,6 +24,7 @@ describe('segment helpers', () => {
 
     it('does not call window.analytics.identify without user id/email', () => {
       const traits = {
+        [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
         [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
         [SEGMENT_TRAITS.TENANT]: 'test-tenant',
       };
@@ -31,13 +34,14 @@ describe('segment helpers', () => {
 
     it('calls window.analytics.identify with the correct id', () => {
       const traits = {
+        [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
         [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
         [SEGMENT_TRAITS.USER_ID]: 'username',
         [SEGMENT_TRAITS.TENANT]: 'test-tenant',
       };
 
       segmentIdentify(traits);
-      expect(window.analytics.identify).toBeCalledWith('username//email@abc.com', traits);
+      expect(window.analytics.identify).toBeCalledWith('email@abc.com//123', traits);
     });
   });
 
