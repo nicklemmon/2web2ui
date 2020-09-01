@@ -3,7 +3,8 @@ import { shallow } from 'enzyme';
 import cases from 'jest-in-case';
 import { CreatePage } from '../CreatePage';
 import { ROLES } from 'src/constants';
-
+import * as segmentHelpers from 'src/helpers/segment';
+segmentHelpers.segmentTrack = jest.fn();
 describe('Page: User Create Page', () => {
   let baseProps;
   let values;
@@ -12,18 +13,18 @@ describe('Page: User Create Page', () => {
     baseProps = {
       submitting: false,
       pristine: false,
-      handleSubmit: jest.fn((fn) => fn),
+      handleSubmit: jest.fn(fn => fn),
       inviteUser: jest.fn(() => Promise.resolve()),
       showAlert: jest.fn(),
       history: {
-        push: jest.fn()
+        push: jest.fn(),
       },
-      isSubaccountReportingLive: false
+      isSubaccountReportingLive: false,
     };
     values = { email: 'email', access: 'access', useSubaccount: false, subaccount: undefined };
   });
 
-  const subject = (props) => shallow(<CreatePage {...baseProps} {...props} />);
+  const subject = props => shallow(<CreatePage {...baseProps} {...props} />);
 
   const submit = (wrapper, values) => wrapper.find('form').prop('onSubmit')(values);
 
@@ -45,13 +46,13 @@ describe('Page: User Create Page', () => {
       expect(
         subject({ isSubaccountReportingLive })
           .find('Field[name="access"]')
-          .prop('allowSubaccountAssignment')
+          .prop('allowSubaccountAssignment'),
       ).toBe(isSubaccountReportingLive);
     },
     {
       enabled: { isSubaccountReportingLive: true },
-      disabled: { isSubaccountReportingLive: false }
-    }
+      disabled: { isSubaccountReportingLive: false },
+    },
   );
 
   it('should invite a user on submit', async () => {
@@ -61,11 +62,11 @@ describe('Page: User Create Page', () => {
     expect(baseProps.inviteUser).toHaveBeenCalledWith(
       values.email,
       values.access,
-      values.subaccount
+      values.subaccount,
     );
     expect(baseProps.showAlert).toHaveBeenCalledWith({
       type: 'success',
-      message: `Invitation sent to ${values.email}`
+      message: `Invitation sent to ${values.email}`,
     });
     expect(baseProps.history.push).toHaveBeenCalledWith('/account/users');
   });
@@ -75,15 +76,19 @@ describe('Page: User Create Page', () => {
       email: values.email,
       access: ROLES.REPORTING,
       useSubaccount: true,
-      subaccount: 101
+      subaccount: 101,
     };
     const wrapper = subject();
     await submit(wrapper, subaccountValues);
     expect(baseProps.inviteUser).toHaveBeenCalledWith(
       subaccountValues.email,
       ROLES.SUBACCOUNT_REPORTING,
-      subaccountValues.subaccount
+      subaccountValues.subaccount,
     );
     expect(baseProps.history.push).toHaveBeenCalledWith('/account/users');
+    expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+      segmentHelpers.SEGMENT_EVENTS.INVITE_SENT,
+      { invitee_email: 'email', invitee_role: 'subaccount_reporting' },
+    );
   });
 });

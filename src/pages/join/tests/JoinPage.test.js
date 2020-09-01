@@ -7,6 +7,7 @@ import { AFTER_JOIN_REDIRECT_ROUTE } from 'src/constants';
 import * as constants from 'src/constants';
 import * as analytics from 'src/helpers/analytics';
 import config from '../../../config';
+import * as segmentHelpers from 'src/helpers/segment';
 
 const username = 'foo_bar';
 let props;
@@ -16,6 +17,7 @@ let formValues;
 
 jest.mock('js-cookie');
 jest.mock('src/helpers/analytics');
+segmentHelpers.segmentTrack = jest.fn();
 
 describe('JoinPage', () => {
   beforeEach(() => {
@@ -93,6 +95,10 @@ describe('JoinPage', () => {
       await instance.registerSubmit(formValues);
       expect(props.register).toHaveBeenCalledTimes(1);
       expect(props.register.mock.calls).toMatchSnapshot();
+      expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+        segmentHelpers.SEGMENT_EVENTS.ACCOUNT_CREATED,
+        { company_name: undefined },
+      );
     });
 
     it('negates email_opt_in properly', async () => {
