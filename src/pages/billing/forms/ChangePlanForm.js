@@ -4,7 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { reduxForm } from 'redux-form';
 import qs from 'query-string';
 import _ from 'lodash';
-import { verifyPromoCode, clearPromoCode, updateSubscription } from 'src/actions/billing';
+import {
+  verifyPromoCode,
+  clearPromoCode,
+  updateSubscription,
+  getSubscription,
+} from 'src/actions/billing';
 import billingCreate from 'src/actions/billingCreate';
 import billingUpdate from 'src/actions/billingUpdate';
 import { showAlert } from 'src/actions/globalAlert';
@@ -25,6 +30,7 @@ import { useChangePlanContext } from '../context/ChangePlanContext';
 import { FeatureChangeContextProvider } from '../context/FeatureChangeContext';
 import OGStyles from './ChangePlanForm.module.scss';
 import HibanaStyles from './ChangePlanFormHibana.module.scss';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 export const ChangePlanForm = ({
   location,
@@ -39,6 +45,7 @@ export const ChangePlanForm = ({
   verifyPromoCode,
   promoCodeObj,
   clearPromoCode,
+  getSubscription,
   updateSubscription,
   billingUpdate,
   billingCreate,
@@ -89,7 +96,7 @@ export const ChangePlanForm = ({
     const newCode = selectedBundleCode;
     const { selectedPromo } = promoCodeObj;
     const billingId = _.get(selectedBundle, 'messaging.billing_id');
-
+    const isADowngrade = _.get(currentPlan, 'price') > _.get(selectedBundle, 'messaging.price');
     const cardValues =
       values.card && !isDowngradeToFree
         ? { ...values, card: prepareCardInfo(values.card) }
@@ -131,6 +138,15 @@ export const ChangePlanForm = ({
       })
       .then(() => clearPromoCode()) //TODO: Consolidate state of promocode between redux form and hook on PromoCodeNew
       .then(() => history.push('/account/billing'))
+      .then(() => {
+        getSubscription().then(result => {
+          let eventType = SEGMENT_EVENTS.ACCOUNT_UPGRADED;
+          if (isADowngrade) eventType = SEGMENT_EVENTS.ACCOUNT_DOWNGRADED;
+          segmentTrack(eventType, {
+            subscription: result,
+          });
+        });
+      })
       .then(() => showAlert({ type: 'success', message: 'Subscription Updated' }));
   };
 
@@ -208,6 +224,7 @@ export default withRouter(
   connect(mapStateToProps, {
     verifyPromoCode,
     clearPromoCode,
+    getSubscription,
     updateSubscription,
     billingUpdate,
     billingCreate,
