@@ -11,6 +11,8 @@ import ApiKeyForm from './components/ApiKeyForm';
 import { Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Page, Panel } from 'src/components/matchbox';
+import { segmentTrack } from 'src/helpers/segment';
+import { SEGMENT_EVENTS } from '../../helpers/segment';
 
 const breadcrumbAction = {
   content: 'API Keys',
@@ -32,6 +34,7 @@ export class CreatePage extends React.Component {
     return createApiKey(values).then(() => {
       showAlert({ type: 'success', message: 'API key created' });
       history.push('/account/api-keys');
+      segmentTrack(SEGMENT_EVENTS.API_KEY_CREATED);
     });
   };
 
