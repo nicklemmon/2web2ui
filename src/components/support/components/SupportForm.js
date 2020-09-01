@@ -7,6 +7,7 @@ import { Button, Panel, Stack } from 'src/components/matchbox';
 import { ButtonWrapper } from 'src/components';
 import * as supportActions from 'src/actions/support';
 import { SelectWrapper, TextFieldWrapper } from 'src/components';
+import { Heading } from 'src/components/text';
 import FileFieldWrapper from 'src/components/reduxFormWrappers/FileFieldWrapper';
 import config from 'src/config';
 import { isAws } from 'src/helpers/conditions/account';
@@ -41,12 +42,19 @@ export class SupportForm extends Component {
 
     return (
       <div className={styles.SupportContainer}>
-        <h6>Your Ticket Has Been Submitted</h6>
-        <p>Ticket #{ticketId}</p>
-        <p>Please check your email for updates on your support ticket.</p>
-        <Button variant="primary" onClick={onClose}>
-          Continue
-        </Button>
+        <Stack>
+          <Heading as="h6">Your Ticket Has Been Submitted</Heading>
+
+          <p>{`Ticket #${ticketId}`}</p>
+
+          <p>Please check your email for updates on your support ticket.</p>
+
+          <div>
+            <Button variant="primary" onClick={onClose}>
+              Continue
+            </Button>
+          </div>
+        </Stack>
       </div>
     );
   }

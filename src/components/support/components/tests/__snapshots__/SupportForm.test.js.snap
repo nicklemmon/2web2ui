@@ -41,21 +41,26 @@ exports[`Support Form Component Form should render successfully created ticket m
 <div
   className="SupportContainer"
 >
-  <h6>
-    Your Ticket Has Been Submitted
-  </h6>
-  <p>
-    Ticket #
-    123
-  </p>
-  <p>
-    Please check your email for updates on your support ticket.
-  </p>
-  <Button
-    variant="primary"
-  >
-    Continue
-  </Button>
+  <Stack>
+    <Heading
+      as="h6"
+    >
+      Your Ticket Has Been Submitted
+    </Heading>
+    <p>
+      Ticket #123
+    </p>
+    <p>
+      Please check your email for updates on your support ticket.
+    </p>
+    <div>
+      <Button
+        variant="primary"
+      >
+        Continue
+      </Button>
+    </div>
+  </Stack>
 </div>
 `;
 
