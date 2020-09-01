@@ -6,6 +6,7 @@ import { Loading } from 'src/components';
 import { RedirectAndAlert } from 'src/components/globalAlert';
 import { PageLink } from 'src/components/links';
 import { Page } from 'src/components/matchbox';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 export class CreatePage extends Component {
   componentDidMount() {
@@ -22,6 +23,7 @@ export class CreatePage extends Component {
     }).then(({ id }) => {
       showUIAlert({ type: 'success', message: 'Alert created' });
       history.push(`/alerts/details/${id}`);
+      segmentTrack(SEGMENT_EVENTS.ALERT_CREATED);
     });
   };
 
