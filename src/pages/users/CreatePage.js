@@ -11,7 +11,7 @@ import { showAlert } from 'src/actions/globalAlert';
 import { trimWhitespaces } from 'src/helpers/string';
 import { FORMS, ROLES } from 'src/constants';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 import RoleRadioGroup from './components/RoleRadioGroup';
 
 const breadcrumbAction = {
@@ -33,6 +33,10 @@ export class CreatePage extends Component {
         message: `Invitation sent to ${email}`,
       });
       history.push('/account/users');
+      segmentTrack(SEGMENT_EVENTS.INVITE_SENT, {
+        invitee_email: email,
+        invitee_role: access_level,
+      });
     });
   };
 
