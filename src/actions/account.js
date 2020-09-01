@@ -1,4 +1,5 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 export function fetch({ meta = {}, ...params } = {}) {
   return sparkpostApiRequest({
@@ -84,13 +85,23 @@ export function emailRequest(data) {
 }
 
 export function cancelAccount() {
-  return sparkpostApiRequest({
-    type: 'CANCEL_ACCOUNT',
-    meta: {
-      method: 'POST',
-      url: '/v1/account/cancellation-request',
-    },
-  });
+  return (dispatch, getState) => {
+    const state = getState();
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'CANCEL_ACCOUNT',
+        meta: {
+          method: 'POST',
+          url: '/v1/account/cancellation-request',
+          onSuccess: () => {
+            segmentTrack(SEGMENT_EVENTS.ACCOUNT_CANCELLED, {
+              customer_id: state.account.customer_id,
+            });
+          },
+        },
+      }),
+    );
+  };
 }
 
 export function renewAccount() {

@@ -11,8 +11,7 @@ import ApiKeyForm from './components/ApiKeyForm';
 import { Loading } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { Page, Panel } from 'src/components/matchbox';
-import { segmentTrack } from 'src/helpers/segment';
-import { SEGMENT_EVENTS } from '../../helpers/segment';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 const breadcrumbAction = {
   content: 'API Keys',
