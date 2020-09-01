@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Transition } from 'react-transition-group';
 import FocusLock from 'react-focus-lock';
+import styled from 'styled-components';
 import { ChevronRight } from '@sparkpost/matchbox-icons';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { ScreenReaderOnly, WindowEvent } from 'src/components/matchbox';
@@ -114,6 +115,7 @@ function MobileNavigation(props) {
                   to={item.to}
                   action={item.action}
                   key={`mobile-account-item-${index}`}
+                  external={item.external}
                 >
                   {item.label}
                 </Menu.Item>
@@ -163,12 +165,19 @@ function Wrapper(props) {
 }
 
 function Item(props) {
-  const { children, id, to, variant, onClick, action } = props;
+  const { children, id, to, variant, onClick, action, external } = props;
   const [isExpanded, setIsExpanded] = useState(false);
   const itemClassNames = classNames(styles.MenuItem, styles[variant]);
   const contentClassNames = styles.MenuItemContent;
 
   if (to) {
+    if (external) {
+      return (
+        <a className={itemClassNames} href={to}>
+          <div className={contentClassNames}>{children}</div>
+        </a>
+      );
+    }
     return (
       <Link onClick={onClick} className={itemClassNames} to={to}>
         <div className={contentClassNames}>{children}</div>
@@ -269,17 +278,17 @@ function ExpandableButton(props) {
   );
 }
 
+const StyledExpandableContent = styled.div`
+  display: ${props => (props.isExpanded ? 'block' : 'none')};
+`;
+
 function ExpandableContent(props) {
   const { id, children, isExpanded } = props;
 
   return (
-    <div
-      className={styles.ExpandableContent}
-      id={`${id}-mobile-menu-expandable-content`}
-      style={{ display: isExpanded ? 'block' : 'none' }}
-    >
+    <StyledExpandableContent id={`${id}-mobile-menu-expandable-content`} isExpanded={isExpanded}>
       {children}
-    </div>
+    </StyledExpandableContent>
   );
 }
 
