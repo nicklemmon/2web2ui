@@ -3,8 +3,10 @@ import React from 'react';
 import { CreatePage } from '../CreatePage';
 import formatFormValues from '../helpers/formatFormValues';
 import AlertForm from '../components/AlertForm';
+import * as segmentHelpers from 'src/helpers/segment';
 
 jest.mock('../helpers/formatFormValues');
+segmentHelpers.segmentTrack = jest.fn();
 
 describe('Page: Alerts Create', () => {
   const props = {
@@ -12,14 +14,14 @@ describe('Page: Alerts Create', () => {
     showUIAlert: jest.fn(),
     error: null,
     history: {
-      push: jest.fn()
+      push: jest.fn(),
     },
     loading: false,
     getAlert: jest.fn(),
     getError: undefined,
     getLoading: undefined,
     idToDuplicate: undefined,
-    alert: {}
+    alert: {},
   };
 
   let wrapper;
@@ -54,9 +56,12 @@ describe('Page: Alerts Create', () => {
   });
 
   it('should handle submit', async () => {
-    formatFormValues.mockImplementationOnce((a) => a);
+    formatFormValues.mockImplementationOnce(a => a);
     await wrapper.find(AlertForm).simulate('submit', { value: 'mock value' });
-    expect(props.createAlert).toHaveBeenCalledWith({ data: { value: 'mock value' }});
+    expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+      segmentHelpers.SEGMENT_EVENTS.ALERT_CREATED,
+    );
+    expect(props.createAlert).toHaveBeenCalledWith({ data: { value: 'mock value' } });
     expect(props.showUIAlert).toHaveBeenCalled();
     expect(props.history.push).toHaveBeenCalledWith('/alerts/details/mock-id');
   });
