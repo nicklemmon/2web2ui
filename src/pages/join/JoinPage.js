@@ -76,9 +76,7 @@ export class JoinPage extends Component {
         analytics.trackFormSuccess(ANALYTICS_CREATE_ACCOUNT, {
           form_type: ANALYTICS_CREATE_ACCOUNT,
         });
-        segmentTrack(SEGMENT_EVENTS.ACCOUNT_CREATED, {
-          company_name: values.company_name,
-        });
+        segmentTrack(SEGMENT_EVENTS.ACCOUNT_CREATED);
         return authenticate(accountData.username, values.password);
       })
       .then(() => {

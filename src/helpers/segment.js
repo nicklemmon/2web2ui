@@ -62,7 +62,7 @@ export const segmentPage = () => {
   }
 };
 
-export const segmentTrack = (eventType, traits) => {
+export const segmentTrack = (eventType, traits = {}) => {
   if (window.analytics && window.analytics.track) {
     window.analytics.track(eventType, traits);
   }
