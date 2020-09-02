@@ -61,3 +61,9 @@ export const segmentPage = () => {
     window.analytics.page();
   }
 };
+
+export const segmentTrack = (eventType, traits = {}) => {
+  if (window.analytics && window.analytics.track) {
+    window.analytics.track(eventType, traits);
+  }
+};

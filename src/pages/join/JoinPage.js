@@ -25,6 +25,7 @@ import {
   ANALYTICS_CREATE_ACCOUNT,
   CROSS_LINK_MAP,
 } from 'src/constants';
+import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
 
 export class JoinPage extends Component {
   state = {
@@ -75,6 +76,7 @@ export class JoinPage extends Component {
         analytics.trackFormSuccess(ANALYTICS_CREATE_ACCOUNT, {
           form_type: ANALYTICS_CREATE_ACCOUNT,
         });
+        segmentTrack(SEGMENT_EVENTS.ACCOUNT_CREATED);
         return authenticate(accountData.username, values.password);
       })
       .then(() => {
