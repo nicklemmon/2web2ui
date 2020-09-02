@@ -1,8 +1,11 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import * as segmentHelpers from 'src/helpers/segment';
 
 import { CreatePage } from '../CreatePage';
 let wrapper;
+
+segmentHelpers.segmentTrack = jest.fn();
 
 beforeEach(() => {
   const props = {
@@ -12,7 +15,7 @@ beforeEach(() => {
     listSubaccountGrants: jest.fn(),
     createApiKey: jest.fn(() => Promise.resolve()),
     history: { push: jest.fn() },
-    showAlert: jest.fn()
+    showAlert: jest.fn(),
   };
 
   wrapper = shallow(<CreatePage {...props} />);
@@ -39,9 +42,15 @@ it('should show loading component while loading', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-it('submits correctly', async() => {
+it('submits correctly', async () => {
   await wrapper.instance().onSubmit('test');
   expect(wrapper.instance().props.createApiKey).toHaveBeenCalledWith('test');
-  expect(wrapper.instance().props.showAlert).toHaveBeenCalledWith({ type: 'success', message: 'API key created' });
+  expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+    segmentHelpers.SEGMENT_EVENTS.API_KEY_CREATED,
+  );
+  expect(wrapper.instance().props.showAlert).toHaveBeenCalledWith({
+    type: 'success',
+    message: 'API key created',
+  });
   expect(wrapper.instance().props.history.push).toHaveBeenCalledWith('/account/api-keys');
 });
