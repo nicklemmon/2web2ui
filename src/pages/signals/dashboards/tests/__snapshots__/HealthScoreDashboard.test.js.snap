@@ -51,14 +51,6 @@ exports[`Signals Health Score Dashboard renders page 1`] = `
     }
     header={
       <Grid>
-        <Grid.Column
-          md={5}
-          xs={12}
-        >
-          <Connect(Connect(SubaccountFilter))
-            label="Subaccount"
-          />
-        </Grid.Column>
         <Connect(FacetFilter)
           facets={
             Array [

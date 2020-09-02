@@ -18,12 +18,14 @@ import useRouter from 'src/hooks/useRouter';
 import facets from '../constants/facets';
 import { HEALTH_SCORE_INFO } from '../constants/info';
 import { PageDescription } from 'src/components/text';
+import { hasSubaccounts } from 'src/selectors/subaccounts';
 
 export function HealthScoreDashboard(props) {
   const {
     from,
     getCurrentHealthScore,
     getSubaccounts,
+    hasSubaccounts,
     relativeRange,
     subaccounts,
     to,
@@ -108,9 +110,11 @@ export function HealthScoreDashboard(props) {
         hideTitle
         header={
           <Grid>
-            <Grid.Column md={5} xs={12}>
-              <SubaccountFilter label="Subaccount" />
-            </Grid.Column>
+            {hasSubaccounts && (
+              <Grid.Column md={5} xs={12}>
+                <SubaccountFilter label="Subaccount" />
+              </Grid.Column>
+            )}
             <FacetFilter facets={facets} />
           </Grid>
         }
@@ -123,6 +127,7 @@ const mapStateToProps = state => ({
   facet: state.signalOptions.facet,
   from: state.signalOptions.from,
   subaccounts: state.subaccounts.list,
+  hasSubaccounts: hasSubaccounts(state),
   relativeRange: state.signalOptions.relativeRange,
   to: state.signalOptions.to,
 });

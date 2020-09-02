@@ -11,6 +11,7 @@ import facets from '../constants/facets';
 import _ from 'lodash';
 import { SPAM_TRAP_INFO } from '../constants/info';
 import { PageDescription } from 'src/components/text';
+import { hasSubaccounts } from 'src/selectors/subaccounts';
 
 export class SpamTrapDashboard extends Component {
   componentDidMount() {
@@ -18,7 +19,7 @@ export class SpamTrapDashboard extends Component {
   }
 
   render() {
-    const { subaccounts } = this.props;
+    const { subaccounts, hasSubaccounts } = this.props;
 
     return (
       <Page title="Spam Trap Monitoring">
@@ -34,9 +35,11 @@ export class SpamTrapDashboard extends Component {
           </Panel.LEGACY.Section>
           <Panel.LEGACY.Section>
             <Grid>
-              <Grid.Column md={4} xs={12}>
-                <SubaccountFilter label="Subaccount" />
-              </Grid.Column>
+              {hasSubaccounts && (
+                <Grid.Column md={4} xs={12}>
+                  <SubaccountFilter label="Subaccount" />
+                </Grid.Column>
+              )}
               {/* eslint-disable-next-line */}
               <FacetFilter facets={_.reject(facets, facet => facet.key === 'mb_provider')} />
             </Grid>
@@ -50,6 +53,7 @@ export class SpamTrapDashboard extends Component {
 
 const mapStateToProps = state => ({
   subaccounts: state.subaccounts.list,
+  hasSubaccounts: hasSubaccounts(state),
 });
 
 const mapDispatchToProps = {

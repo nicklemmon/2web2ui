@@ -10,13 +10,14 @@ import SubaccountFilter from '../components/filters/SubaccountFilter';
 import facets from '../constants/facets';
 import { ENGAGEMENT_RECENCY_INFO } from '../constants/info';
 import { PageDescription } from 'src/components/text';
+import { hasSubaccounts } from 'src/selectors/subaccounts';
 export class EngagementRecencyDashboard extends Component {
   componentDidMount() {
     this.props.getSubaccounts();
   }
 
   render() {
-    const { subaccounts } = this.props;
+    const { subaccounts, hasSubaccounts } = this.props;
 
     return (
       <Page title={<>Engagement Recency</>}>
@@ -31,9 +32,11 @@ export class EngagementRecencyDashboard extends Component {
           </Panel.LEGACY.Section>
           <Panel.LEGACY.Section>
             <Grid>
-              <Grid.Column md={4} xs={12}>
-                <SubaccountFilter label="Subaccount" />
-              </Grid.Column>
+              {hasSubaccounts && (
+                <Grid.Column md={4} xs={12}>
+                  <SubaccountFilter label="Subaccount" />
+                </Grid.Column>
+              )}
               {/* eslint-disable-next-line */}
               <FacetFilter facets={facets} label="Breakdown" />
             </Grid>
@@ -47,6 +50,7 @@ export class EngagementRecencyDashboard extends Component {
 
 const mapStateToProps = state => ({
   subaccounts: state.subaccounts.list,
+  hasSubaccounts: hasSubaccounts(state),
 });
 
 const mapDispatchToProps = {

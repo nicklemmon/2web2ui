@@ -25,14 +25,6 @@ exports[`Signals Spam Trap Dashboard Dashboard renders page 1`] = `
     </Panel.LEGACY.Section>
     <Panel.LEGACY.Section>
       <Grid>
-        <Grid.Column
-          md={4}
-          xs={12}
-        >
-          <Connect(Connect(SubaccountFilter))
-            label="Subaccount"
-          />
-        </Grid.Column>
         <Connect(FacetFilter)
           facets={
             Array [
