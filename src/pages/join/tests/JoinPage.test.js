@@ -97,7 +97,6 @@ describe('JoinPage', () => {
       expect(props.register.mock.calls).toMatchSnapshot();
       expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
         segmentHelpers.SEGMENT_EVENTS.ACCOUNT_CREATED,
-        { company_name: undefined },
       );
     });
 
