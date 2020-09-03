@@ -62,7 +62,7 @@ export const ReportTable = props => {
 
   const getSubaccountFilter = subaccountId => {
     if (subaccountId === 0) {
-      return { type: 'Subaccount', value: 'Master Account (ID 0)', id: 0 };
+      return { type: 'Subaccount', value: 'Primary Account (ID 0)', id: 0 };
     }
 
     const subaccount = subaccounts.find(({ id }) => {

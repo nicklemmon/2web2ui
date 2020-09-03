@@ -30,8 +30,8 @@ export class SubaccountSection extends Component {
     const { assignTo, disabled } = this.props;
 
     const createOptions = [
-      { label: 'Master and all subaccounts', value: 'all', disabled },
-      { label: 'Master account only', value: 'master', disabled },
+      { label: 'Primary and all subaccounts', value: 'all', disabled },
+      { label: 'Primary account only', value: 'master', disabled },
       { label: 'Single Subaccount', value: 'subaccount', disabled },
     ];
 

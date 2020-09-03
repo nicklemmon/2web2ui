@@ -7,7 +7,7 @@ const Subaccount = ({ id, name, all, receiveAll, master, isDefault }) => {
   let defaultContent = null;
 
   if (id) {
-    content = name ? `${shrinkToFit(name,12)} (${id})` : `Subaccount ${id}`;
+    content = name ? `${shrinkToFit(name, 12)} (${id})` : `Subaccount ${id}`;
   }
 
   if (isDefault) {
@@ -23,14 +23,19 @@ const Subaccount = ({ id, name, all, receiveAll, master, isDefault }) => {
   }
 
   if (master) {
-    content = 'Master Account';
+    content = 'Primary Account';
   }
 
   if (!content && !defaultContent) {
     return null;
   }
 
-  return <>{content}{defaultContent}</>;
+  return (
+    <>
+      {content}
+      {defaultContent}
+    </>
+  );
 };
 
 Subaccount.propTypes = {
@@ -40,14 +45,14 @@ Subaccount.propTypes = {
   // 'Shared with all'
   all: PropTypes.bool,
 
-  // 'Master account'
+  // 'Primary account'
   master: PropTypes.bool,
 
   // 'All'
   receiveAll: PropTypes.bool,
 
   // Makes the tag orange and appends '(Default)'
-  isDefault: PropTypes.bool
+  isDefault: PropTypes.bool,
 };
 
 Subaccount.defaultProps = {
@@ -55,7 +60,7 @@ Subaccount.defaultProps = {
   all: false,
   master: false,
   isDefault: false,
-  receiveAll: false
+  receiveAll: false,
 };
 
 export default Subaccount;
