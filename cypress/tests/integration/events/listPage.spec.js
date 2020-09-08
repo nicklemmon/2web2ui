@@ -84,15 +84,17 @@ describe('The events page', () => {
     cy.findByText('An error occurred').should('not.be.visible');
   });
 
-  it('renders the "Share this report" modal when clicking on the "Share" button', () => {
-    Cypress.currentTest.retries(2);
+  it(
+    'renders the "Share this report" modal when clicking on the "Share" button',
+    { retries: 2 },
+    () => {
+      cy.visit(PAGE_URL);
 
-    cy.visit(PAGE_URL);
+      cy.findByText('Share').click();
 
-    cy.findByText('Share').click();
-
-    cy.findByText('Share this report').should('be.visible');
-  });
+      cy.findByText('Share this report').should('be.visible');
+    },
+  );
 
   describe('filtering', () => {
     describe('by date', () => {

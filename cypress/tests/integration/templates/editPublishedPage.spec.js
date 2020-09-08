@@ -118,36 +118,39 @@ describe('The templates published template page', () => {
       cy.findByText('Hello, world').should('be.visible');
     });
 
-    it("saves the user's test data entry to local storage as the user edits test data", () => {
-      Cypress.currentTest.retries(2);
-      cy.visit(PAGE_URL);
+    it(
+      "saves the user's test data entry to local storage as the user edits test data",
+      { retries: 2 },
+      () => {
+        cy.visit(PAGE_URL);
 
-      cy.findByText('Test Data').click();
+        cy.findByText('Test Data').click();
 
-      cy.clearLocalStorage().then(() => {
-        // localStorage must be accessed asynchronously!
-        // See: https://github.com/cypress-io/cypress/issues/2722
-        typeInEditor('{"substitution_data": "THIS IS SOME TEST DATA"}').should(() => {
-          // Trying arbitrary wait to see if this helps with flakiness
-          /* eslint-disable-next-line */
-          cy.wait(1000);
+        cy.clearLocalStorage().then(() => {
+          // localStorage must be accessed asynchronously!
+          // See: https://github.com/cypress-io/cypress/issues/2722
+          typeInEditor('{"substitution_data": "THIS IS SOME TEST DATA"}').should(() => {
+            // Trying arbitrary wait to see if this helps with flakiness
+            /* eslint-disable-next-line */
+            cy.wait(1000);
 
-          expect(localStorage.getItem('tpldata/mockuser/stubbed-template-1/p')).to.eq(
-            '{"substitution_data":"THIS IS SOME TEST DATA"}',
-          );
+            expect(localStorage.getItem('tpldata/mockuser/stubbed-template-1/p')).to.eq(
+              '{"substitution_data":"THIS IS SOME TEST DATA"}',
+            );
+          });
+
+          typeInEditor('{"substitution_data": "THIS IS SOME DIFFERENT DATA"}').should(() => {
+            // Trying arbitrary wait to see if this helps with flakiness
+            /* eslint-disable-next-line */
+            cy.wait(1000);
+
+            expect(localStorage.getItem('tpldata/mockuser/stubbed-template-1/p')).to.eq(
+              '{"substitution_data":"THIS IS SOME DIFFERENT DATA"}',
+            );
+          });
         });
-
-        typeInEditor('{"substitution_data": "THIS IS SOME DIFFERENT DATA"}').should(() => {
-          // Trying arbitrary wait to see if this helps with flakiness
-          /* eslint-disable-next-line */
-          cy.wait(1000);
-
-          expect(localStorage.getItem('tpldata/mockuser/stubbed-template-1/p')).to.eq(
-            '{"substitution_data":"THIS IS SOME DIFFERENT DATA"}',
-          );
-        });
-      });
-    });
+      },
+    );
   });
 
   it('the "Edit Draft" button re-routes the user to the draft version of the template on click', () => {
