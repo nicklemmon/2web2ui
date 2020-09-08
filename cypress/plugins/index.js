@@ -52,7 +52,7 @@ module.exports = (on, config) => {
   });
 
   // Configuration options that do not change between environments
-  config.blacklistHosts = [
+  config.blockHosts = [
     'api.sparkpost.test',
     'api-staging.sparkpost.com',
     '*google-analytics.com',
