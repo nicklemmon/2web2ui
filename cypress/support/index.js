@@ -14,7 +14,6 @@
 // ***********************************************************
 
 import './commands';
-import 'cypress-plugin-retries';
 import '@cypress/code-coverage/support';
 
 // Used to help log `cy.log()` invocations to the console during headless runs.

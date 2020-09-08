@@ -28,7 +28,6 @@ const WEBPACK_OPTIONS = {
 
 module.exports = (on, config) => {
   const webpackPreprocessor = require('@cypress/webpack-preprocessor');
-  require('cypress-plugin-retries/lib/plugin')(on);
   require('@cypress/code-coverage/task')(on, config);
 
   // Allows for custom webpack configuration for Cypress tests.
