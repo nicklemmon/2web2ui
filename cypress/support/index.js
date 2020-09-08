@@ -22,5 +22,5 @@ import '@cypress/code-coverage/support';
 Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Cookies.defaults({
-  whitelist: ['website_auth', '__ssid', 'auth'], // Preserves signed-in state between route changes
+  preserve: ['website_auth', '__ssid', 'auth'], // Preserves signed-in state between route changes
 });
