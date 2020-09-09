@@ -235,17 +235,25 @@ describe('The events page', () => {
         cy.findByText('Add Filters').click();
       });
 
-      it('renders documentation about each event type when hovering over a check box label', () => {
-        cy.findByText('Delay').trigger('mouseover');
-        cy.findAllByText('Remote MTA has temporarily rejected a message.').should('be.visible');
-        cy.findByText('Delay').trigger('mouseout');
-        cy.findAllByText('Remote MTA has temporarily rejected a message.').should('not.be.visible');
+      it(
+        'renders documentation about each event type when hovering over a check box label',
+        { retries: 2 },
+        () => {
+          cy.findByText('Delay').trigger('mouseover');
+          cy.findAllByText('Remote MTA has temporarily rejected a message.').should('be.visible');
+          cy.findByText('Delay').trigger('mouseout');
+          cy.findAllByText('Remote MTA has temporarily rejected a message.').should(
+            'not.be.visible',
+          );
 
-        cy.findByText('SMS Status').trigger('mouseover');
-        cy.findAllByText('SMPP/SMS message produced a status log output').should('be.visible');
-        cy.findByText('SMS Status').trigger('mouseout');
-        cy.findAllByText('SMPP/SMS message produced a status log output').should('not.be.visible');
-      });
+          cy.findByText('SMS Status').trigger('mouseover');
+          cy.findAllByText('SMPP/SMS message produced a status log output').should('be.visible');
+          cy.findByText('SMS Status').trigger('mouseout');
+          cy.findAllByText('SMPP/SMS message produced a status log output').should(
+            'not.be.visible',
+          );
+        },
+      );
 
       it('allows the addition and removal of other filters via the "Add Filter" and "Remove" buttons', () => {
         const selectLabel = 'Filter By';

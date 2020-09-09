@@ -29,7 +29,7 @@ if (IS_HIBANA_ENABLED) {
       cy.findAllByText('Christmas').should('be.visible');
     });
 
-    it('Selecting a preset report works correctly', () => {
+    it('Selecting a preset report works correctly', { retries: 2 }, () => {
       cy.withinMainContent(() => {
         // cy.findByLabelText('Report').type('Engagement');
         cy.findByDataId('report-select').select('engagement'); //TODO: Remove
