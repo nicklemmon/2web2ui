@@ -80,7 +80,7 @@ describe('The templates list page', () => {
     cy.findAllByText('Stubbed Template 1')
       .should('be.visible')
       .its('length')
-      .should('be', 2);
+      .should('be.eq', 2);
     cy.findAllByText('Stubbed Template 2').should('be.visible');
     cy.findAllByText('Stubbed Template 3').should('be.visible');
   });
