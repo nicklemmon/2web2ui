@@ -26,7 +26,7 @@ const SavedReportsSection = props => {
       <Grid.Column lg={7} sm={12} xs={12}>
         <Select
           placeholder="Select a Report"
-          data-id="report-select"
+          id="report-select"
           label="Report"
           options={options}
           value={props.selectedItem?.key}

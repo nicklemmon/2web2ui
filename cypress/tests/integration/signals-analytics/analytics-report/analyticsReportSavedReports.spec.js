@@ -14,11 +14,11 @@ if (IS_HIBANA_ENABLED) {
     });
 
     it('loads a preset report with additional filters when given a report query param and filter param', () => {
-      cy.findByDataId('report-select').should('not.have.value', 'engagement'); //TODO: Remove
+      cy.findByLabelText('Report').should('not.have.value', 'engagement'); //TODO: Remove
       //cy.findByText('Engagement Report').should('not.be.visible');
 
       cy.visit(`${PAGE_URL}&report=engagement`);
-      cy.findByDataId('report-select').should('have.value', 'engagement'); //TODO: Remove
+      cy.findByLabelText('Report').should('have.value', 'engagement'); //TODO: Remove
       //cy.findByText('Engagement Report').should('be.visible');
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
@@ -31,10 +31,7 @@ if (IS_HIBANA_ENABLED) {
 
     it('Selecting a preset report works correctly', () => {
       cy.withinMainContent(() => {
-        // cy.findByLabelText('Report').type('Engagement');
-        cy.findByDataId('report-select').select('engagement'); //TODO: Remove
-        cy.findByText('Engagement Report').should('be.visible');
-        cy.findByText('Engagement Report').click({ force: true });
+        cy.findByLabelText('Report').select('engagement');
         cy.wait(['@getTimeSeries', '@getDeliverability']);
 
         cy.findAllByText('Sent').should('be.visible');
@@ -84,8 +81,7 @@ if (IS_HIBANA_ENABLED) {
         assertions();
 
         //Change to engagement report
-        // cy.findByLabelText('Report').type('Engagement');
-        cy.findByDataId('report-select').select('engagement'); //TODO: Remove
+        cy.findByLabelText('Report').select('engagement'); //TODO: Remove
 
         // cy.findByText('Engagement Report').click({ force: true });
         assertions();
@@ -95,7 +91,7 @@ if (IS_HIBANA_ENABLED) {
         // cy.findByLabelText('Report')
         //   .clear()
         //   .type('Summary');
-        cy.findByDataId('report-select').select('summary'); //TODO: Remove
+        cy.findByLabelText('Report').select('summary'); //TODO: Remove
         // cy.findByText('Summary Report').click({ force: true });
         cy.wait(['@getUTCTimeSeries', '@getUTCDeliverability']);
         assertions();

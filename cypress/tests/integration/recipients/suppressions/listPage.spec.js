@@ -94,66 +94,68 @@ describe('The recipients suppressions list page', () => {
       cy.findByText('There are no results for your current query').should('be.visible');
     });
 
-    it('renders a delete modal when clicking the "Delete" button within a table row', () => {
-      Cypress.currentTest.retries(2);
+    it(
+      'renders a delete modal when clicking the "Delete" button within a table row',
+      { retries: 2 },
+      () => {
+        cy.stubRequest({
+          method: 'DELETE',
+          url: '/api/v1/suppression-list/fake-email@gmail.com',
+          fixture: 'suppression-list/200.delete.json',
+        });
 
-      cy.stubRequest({
-        method: 'DELETE',
-        url: '/api/v1/suppression-list/fake-email@gmail.com',
-        fixture: 'suppression-list/200.delete.json',
-      });
+        cy.visit(PAGE_URL);
 
-      cy.visit(PAGE_URL);
+        // Testing cancellation within the modal
+        cy.get('table').within(() => {
+          cy.findAllByText('Open Menu')
+            .first()
+            .click({ force: true });
+        });
 
-      // Testing cancellation within the modal
-      cy.get('table').within(() => {
-        cy.findAllByText('Open Menu')
-          .first()
-          .click({ force: true });
-      });
+        if (IS_HIBANA_ENABLED) {
+          cy.findAllByText('Delete')
+            .first()
+            .click();
+        } else {
+          cy.findAllByText('Delete')
+            .last()
+            .click();
+        }
 
-      if (IS_HIBANA_ENABLED) {
-        cy.findAllByText('Delete')
-          .first()
-          .click();
-      } else {
-        cy.findAllByText('Delete')
-          .last()
-          .click();
-      }
+        cy.findByText(DELETE_MODAL_CONTENT).should('be.visible');
 
-      cy.findByText(DELETE_MODAL_CONTENT).should('be.visible');
+        cy.withinModal(() => {
+          cy.findByText('Cancel').click();
+        });
 
-      cy.withinModal(() => {
-        cy.findByText('Cancel').click();
-      });
+        cy.findByText(DELETE_MODAL_CONTENT).should('not.be.visible');
 
-      cy.findByText(DELETE_MODAL_CONTENT).should('not.be.visible');
+        // Testing deletion within the modal
+        cy.get('table').within(() => {
+          cy.findAllByText('Open Menu')
+            .first()
+            .click({ force: true });
+        });
+        if (IS_HIBANA_ENABLED) {
+          cy.findAllByText('Delete')
+            .first()
+            .click();
+        } else {
+          cy.findAllByText('Delete')
+            .last()
+            .click();
+        }
 
-      // Testing deletion within the modal
-      cy.get('table').within(() => {
-        cy.findAllByText('Open Menu')
-          .first()
-          .click({ force: true });
-      });
-      if (IS_HIBANA_ENABLED) {
-        cy.findAllByText('Delete')
-          .first()
-          .click();
-      } else {
-        cy.findAllByText('Delete')
-          .last()
-          .click();
-      }
+        cy.withinModal(() => {
+          cy.findByText('Delete').click();
+        });
 
-      cy.withinModal(() => {
-        cy.findByText('Delete').click();
-      });
-
-      cy.findByText(
-        'fake-email@gmail.com was successfully deleted from the suppression list',
-      ).should('be.visible');
-    });
+        cy.findByText(
+          'fake-email@gmail.com was successfully deleted from the suppression list',
+        ).should('be.visible');
+      },
+    );
 
     it('renders an error and keeps the modal open when suppression deletion fails', () => {
       cy.stubRequest({

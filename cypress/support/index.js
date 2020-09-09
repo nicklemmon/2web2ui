@@ -14,7 +14,6 @@
 // ***********************************************************
 
 import './commands';
-import 'cypress-plugin-retries';
 import '@cypress/code-coverage/support';
 
 // Used to help log `cy.log()` invocations to the console during headless runs.
@@ -22,5 +21,5 @@ import '@cypress/code-coverage/support';
 Cypress.Commands.overwrite('log', (subject, message) => cy.task('log', message));
 
 Cypress.Cookies.defaults({
-  whitelist: ['website_auth', '__ssid', 'auth'], // Preserves signed-in state between route changes
+  preserve: ['website_auth', '__ssid', 'auth'], // Preserves signed-in state between route changes
 });

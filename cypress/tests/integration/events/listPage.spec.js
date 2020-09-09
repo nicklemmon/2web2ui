@@ -84,15 +84,17 @@ describe('The events page', () => {
     cy.findByText('An error occurred').should('not.be.visible');
   });
 
-  it('renders the "Share this report" modal when clicking on the "Share" button', () => {
-    Cypress.currentTest.retries(2);
+  it(
+    'renders the "Share this report" modal when clicking on the "Share" button',
+    { retries: 2 },
+    () => {
+      cy.visit(PAGE_URL);
 
-    cy.visit(PAGE_URL);
+      cy.findByText('Share').click();
 
-    cy.findByText('Share').click();
-
-    cy.findByText('Share this report').should('be.visible');
-  });
+      cy.findByText('Share this report').should('be.visible');
+    },
+  );
 
   describe('filtering', () => {
     describe('by date', () => {
@@ -238,11 +240,6 @@ describe('The events page', () => {
         cy.findAllByText('Remote MTA has temporarily rejected a message.').should('be.visible');
         cy.findByText('Delay').trigger('mouseout');
         cy.findAllByText('Remote MTA has temporarily rejected a message.').should('not.be.visible');
-
-        cy.findByText('SMS Status').trigger('mouseover');
-        cy.findAllByText('SMPP/SMS message produced a status log output').should('be.visible');
-        cy.findByText('SMS Status').trigger('mouseout');
-        cy.findAllByText('SMPP/SMS message produced a status log output').should('not.be.visible');
       });
 
       it('allows the addition and removal of other filters via the "Add Filter" and "Remove" buttons', () => {
