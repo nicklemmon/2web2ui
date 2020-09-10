@@ -48,6 +48,7 @@ function BillingUsage() {
     transmissionsInPlan,
     validationsThisMonth,
     hasUpgradeLink,
+    hasUsageSection,
   } = useDashboardContext();
 
   return (
@@ -67,38 +68,42 @@ function BillingUsage() {
 
             <SidebarParagraph>{`${currentPlanName} Plan`}</SidebarParagraph>
 
-            {transmissionsThisMonth && transmissionsInPlan ? (
-              <SidebarParagraph>
-                <Bold data-id="sidebar-transmissions-this-month">
-                  {formatFullNumber(transmissionsThisMonth)}
-                </Bold>
+            {hasUsageSection && transmissionsThisMonth && transmissionsInPlan ? (
+              <div data-id="transmissions-usage-section">
+                <SidebarParagraph>
+                  <Bold data-id="sidebar-transmissions-this-month">
+                    {formatFullNumber(transmissionsThisMonth)}
+                  </Bold>
 
-                <TranslatableText>&nbsp;of&nbsp;</TranslatableText>
+                  <TranslatableText>&nbsp;of&nbsp;</TranslatableText>
 
-                <Bold data-id="sidebar-transmissions-in-plan">
-                  {formatFullNumber(transmissionsInPlan)}
-                </Bold>
+                  <Bold data-id="sidebar-transmissions-in-plan">
+                    {formatFullNumber(transmissionsInPlan)}
+                  </Bold>
 
-                <TranslatableText>&nbsp;this month</TranslatableText>
-              </SidebarParagraph>
+                  <TranslatableText>&nbsp;this month</TranslatableText>
+                </SidebarParagraph>
+              </div>
             ) : null}
           </SidebarStack>
         ) : null}
 
-        {validationsThisMonth ? (
-          <SidebarStack>
-            <Heading as="h4" looksLike="h5">
-              Recipient Validation
-            </Heading>
+        {hasUsageSection && validationsThisMonth ? (
+          <div data-id="validations-usage-section">
+            <SidebarStack>
+              <Heading as="h4" looksLike="h5">
+                Recipient Validation
+              </Heading>
 
-            <SidebarParagraph>
-              <Bold data-id="sidebar-validations-this-month">
-                {formatFullNumber(validationsThisMonth)}
-              </Bold>
+              <SidebarParagraph>
+                <Bold data-id="sidebar-validations-this-month">
+                  {formatFullNumber(validationsThisMonth)}
+                </Bold>
 
-              <TranslatableText>&nbsp;address validations this month</TranslatableText>
-            </SidebarParagraph>
-          </SidebarStack>
+                <TranslatableText>&nbsp;address validations this month</TranslatableText>
+              </SidebarParagraph>
+            </SidebarStack>
+          </div>
         ) : null}
 
         <div>

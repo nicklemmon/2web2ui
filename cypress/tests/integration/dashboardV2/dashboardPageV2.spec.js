@@ -74,7 +74,7 @@ describe('Version 2 of the dashboard page', () => {
       });
     });
 
-    it('does not render the "Setup Documentation" panel when the user is not an admin, developer, or super user', () => {
+    it('does not render the "Setup Documentation" or the usage section panel when the user is not an admin, developer, or super user', () => {
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.reporting.json',
@@ -85,6 +85,8 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.findByRole('heading', { name: 'Setup Documentation' }).should('not.be.visible');
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
+      cy.findByDataId('transmissions-usage-section').should('not.be.visible');
+      cy.findByDataId('validations-usage-section').should('not.be.visible');
     });
 
     it('renders the 404 page if the user has Hibana enabled but does not have the `allow_dashboard_v2` account flag', () => {
