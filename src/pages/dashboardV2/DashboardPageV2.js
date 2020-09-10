@@ -3,7 +3,6 @@ import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
 import ConfigurationImgWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
 import ConfigurationImg from '@sparkpost/matchbox-media/images/Configuration@small.jpg';
 import { Loading, Picture } from 'src/components';
-
 import {
   Box,
   Columns,
@@ -15,7 +14,6 @@ import {
   Text,
 } from 'src/components/matchbox';
 import { Heading, TranslatableText } from 'src/components/text';
-import Picture from 'src/components/picture';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
