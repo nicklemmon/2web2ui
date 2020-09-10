@@ -57,77 +57,6 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              <Columns collapseBelow="md" space="500">
-                {hasSetupDocumentationPanel && (
-                  <Column>
-                    <Dashboard.Panel>
-                      <Panel.Section>
-                        <Panel.Headline>
-                          <Panel.HeadlineIcon as={Code} />
-
-                          <TranslatableText>Setup Documentation</TranslatableText>
-                        </Panel.Headline>
-
-                        <ExternalLink to="/">Integration Documentation</ExternalLink>
-                      </Panel.Section>
-                    </Dashboard.Panel>
-                  </Column>
-                )}
-
-                <Column>
-                  <Dashboard.Panel>
-                    <Panel.Section>
-                      <Panel.Headline>
-                        <Panel.HeadlineIcon as={ChatBubble} />
-
-                        <TranslatableText>Need Help?</TranslatableText>
-                      </Panel.Headline>
-
-                      <SupportTicketLink>Contact our Support Team</SupportTicketLink>
-                    </Panel.Section>
-                  </Dashboard.Panel>
-                </Column>
-              </Columns>
-
-              <Dashboard.Panel>
-                <Panel.Section>
-                  <Panel.Headline>
-                    <Panel.HeadlineIcon as={LightbulbOutline} />
-
-                    <TranslatableText>Helpful Shortcuts</TranslatableText>
-                  </Panel.Headline>
-
-                  <Columns collapseBelow="md">
-                    <Dashboard.Tip>
-                      <PageLink to="/account/api-keys/create">Generate an API Key</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      <PageLink to="/">DKIM Authentication</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      <PageLink to="/alerts/create">Create an Alert</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-                  </Columns>
-                </Panel.Section>
-              </Dashboard.Panel>
-
               <Dashboard.Panel>
                 <ScreenReaderOnly>
                   <Heading as="h3">Next Steps</Heading>
@@ -165,6 +94,80 @@ export default function DashboardPageV2() {
                   </Column>
                 </Columns>
               </Dashboard.Panel>
+
+              <Dashboard.Panel>
+                <Panel.Section>
+                  <Panel.Headline>
+                    <Panel.HeadlineIcon as={LightbulbOutline} />
+
+                    <TranslatableText>Helpful Shortcuts</TranslatableText>
+                  </Panel.Headline>
+
+                  <Columns collapseBelow="md">
+                    <Dashboard.Tip>
+                      <PageLink to="/templates">Templates</PageLink>
+
+                      {/* TODO: Replace placeholder content */}
+                      <Text>
+                        Get up and sending quickly using our sample templates. AMP for email, Yes we
+                        have it.
+                      </Text>
+                    </Dashboard.Tip>
+
+                    <Dashboard.Tip>
+                      {/* TODO: Where does this go? */}
+                      <PageLink to="/">DKIM Authentication</PageLink>
+
+                      <Text>
+                        Get up and sending quickly using our sample templates. AMP for email, Yes we
+                        have it.
+                      </Text>
+                    </Dashboard.Tip>
+
+                    <Dashboard.Tip>
+                      {/* TODO: Where does this go? */}
+                      <PageLink to="/">SMTP Set-up</PageLink>
+
+                      <Text>
+                        Get up and sending quickly using our sample templates. AMP for email, Yes we
+                        have it.
+                      </Text>
+                    </Dashboard.Tip>
+                  </Columns>
+                </Panel.Section>
+              </Dashboard.Panel>
+
+              <Columns collapseBelow="md" space="500">
+                {hasSetupDocumentationPanel && (
+                  <Column>
+                    <Dashboard.Panel>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <Panel.HeadlineIcon as={Code} />
+
+                          <TranslatableText>Setup Documentation</TranslatableText>
+                        </Panel.Headline>
+
+                        <ExternalLink to="/">Integration Documentation</ExternalLink>
+                      </Panel.Section>
+                    </Dashboard.Panel>
+                  </Column>
+                )}
+
+                <Column>
+                  <Dashboard.Panel>
+                    <Panel.Section>
+                      <Panel.Headline>
+                        <Panel.HeadlineIcon as={ChatBubble} />
+
+                        <TranslatableText>Need Help?</TranslatableText>
+                      </Panel.Headline>
+
+                      <SupportTicketLink>Contact our Support Team</SupportTicketLink>
+                    </Panel.Section>
+                  </Dashboard.Panel>
+                </Column>
+              </Columns>
             </Stack>
           </Layout.Section>
 

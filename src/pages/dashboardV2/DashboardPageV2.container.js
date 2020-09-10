@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ROLES } from 'src/constants';
+import hasGrants from 'src/helpers/conditions/hasGrants';
 import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { listAlerts } from 'src/actions/alerts';
 import { selectRecentlyTriggeredAlerts } from 'src/selectors/alerts';
@@ -17,6 +18,8 @@ import DashboardPageV2 from './DashboardPageV2';
 function mapStateToProps(state) {
   const isPending = state.account.loading || state.account.usageLoading || state.alerts.listPending;
   const userRole = state.currentUser.access_level;
+  const hasSetupDocumentationPanel =
+    userRole === ROLES.SUPER_USER || userRole === ROLES.ADMIN || userRole === ROLES.DEVELOPER;
 
   return {
     currentUser: state.currentUser,
@@ -27,10 +30,10 @@ function mapStateToProps(state) {
     validationsThisMonth: selectMonthlyRecipientValidationUsage(state),
     endOfBillingPeriod: selectEndOfBillingPeriod(state),
     pending: isPending,
-    hasSetupDocumentationPanel: userRole === ROLES.ADMIN || userRole === ROLES.DEVELOPER,
-    hasAddSendingDomainLink: userRole === ROLES.ADMIN || userRole === ROLES.DEVELOPER, // TODO: Replace with grants
-    hasGenerateApiKeyLink: userRole === ROLES.ADMIN || userRole === ROLES.DEVELOPER, // TODO: Replace with grants
-    hasUpgradeLink: userRole === ROLES.ADMIN, // TODO: Replace with grants
+    hasSetupDocumentationPanel,
+    hasAddSendingDomainLink: hasGrants('sending_domains/manage')(state),
+    hasGenerateApiKeyLink: hasGrants('api_keys/manage')(state),
+    hasUpgradeLink: hasGrants('account/manage')(state),
   };
 }
 
