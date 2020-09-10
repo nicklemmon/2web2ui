@@ -24,25 +24,6 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('button', { name: 'Contact our Support Team' }).click();
       cy.withinModal(() => cy.findByRole('button', { name: 'Close' }).click());
 
-      // "Helpful Shortcuts" Panel
-      cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
-      cy.findAllByRole('link', { name: 'Generate an API Key' }).should(
-        'have.attr',
-        'href',
-        '/account/api-keys/create',
-      );
-      cy.findByRole('heading', { name: 'Account Details' }).should('be.visible');
-      cy.verifyLink({
-        content: 'DKIM Authentication',
-        href: '/',
-      });
-      cy.findByRole('heading', { name: 'Billing/Usage Detail' }).should('be.visible');
-      cy.findAllByRole('link', { name: 'Create an Alert' }).should(
-        'have.attr',
-        'href',
-        '/alerts/create',
-      );
-
       // "Next Steps" Panel (the one with the artwork!);
       cy.findByRole('heading', { name: 'Next Steps' }).should('exist'); // Screen reader only heading
       cy.verifyLink({
@@ -50,8 +31,46 @@ describe('Version 2 of the dashboard page', () => {
         href: '/account/sending-domains/create',
       });
       cy.verifyLink({
+        content: 'Generate an API Key',
+        href: '/account/api-keys/create',
+      });
+      cy.verifyLink({
         content: 'Analyze your Data',
         href: '/signals/analytics',
+      });
+      cy.verifyLink({
+        content: 'Create an Alert',
+        href: '/alerts/create',
+      });
+    });
+
+    it('does not render certain links when grants are not available for a user', () => {
+      commonBeforeSteps();
+      cy.stubRequest({
+        url: '/api/v1/authenticate/grants*',
+        fixture: 'authenticate/grants/200.get.reporting.json',
+        requestAlias: 'getGrants',
+      });
+      cy.visit(PAGE_URL);
+      cy.wait('@getGrants');
+
+      // The user cannot manage sending domains
+      cy.findByRole('link', { name: 'Add a Sending Domain' }).should('not.be.visible');
+
+      // The user cannot manage API keys
+      cy.findByRole('link', { name: 'Generate an API Key' }).should('not.be.visible');
+
+      // The user cannot manage the account
+      cy.findByRole('link', { name: 'Upgrade' }).should('not.be.visible');
+
+      // Some links always render
+      cy.verifyLink({
+        content: 'Analyze your Data',
+        href: '/signals/analytics',
+      });
+      cy.verifyLink({
+        content: 'Create an Alert',
+        href: '/alerts/create',
       });
     });
 
