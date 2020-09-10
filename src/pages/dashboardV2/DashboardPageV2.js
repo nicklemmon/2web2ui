@@ -74,23 +74,30 @@ export default function DashboardPageV2() {
                   </Box>
 
                   <Column>
-                    {hasAddSendingDomainLink && (
-                      <Dashboard.Shortcut to="/account/sending-domains/create">
-                        Add a Sending Domain
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="center"
+                      height="100%"
+                    >
+                      {hasAddSendingDomainLink && (
+                        <Dashboard.Shortcut to="/account/sending-domains/create">
+                          Add a Sending Domain
+                        </Dashboard.Shortcut>
+                      )}
+
+                      {hasGenerateApiKeyLink && (
+                        <Dashboard.Shortcut to="/account/api-keys/create">
+                          Generate an API Key
+                        </Dashboard.Shortcut>
+                      )}
+
+                      <Dashboard.Shortcut to="/signals/analytics">
+                        Analyze your Data
                       </Dashboard.Shortcut>
-                    )}
 
-                    {hasGenerateApiKeyLink && (
-                      <Dashboard.Shortcut to="/account/api-keys/create">
-                        Generate an API Key
-                      </Dashboard.Shortcut>
-                    )}
-
-                    <Dashboard.Shortcut to="/signals/analytics">
-                      Analyze your Data
-                    </Dashboard.Shortcut>
-
-                    <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
+                      <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
+                    </Box>
                   </Column>
                 </Columns>
               </Dashboard.Panel>
