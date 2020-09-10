@@ -20,7 +20,16 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 
 export default function DashboardPageV2() {
-  const { getAccount, listAlerts, getUsage, currentUser, pending } = useDashboardContext();
+  const {
+    getAccount,
+    listAlerts,
+    getUsage,
+    currentUser,
+    pending,
+    hasSetupDocumentationPanel,
+    hasAddSendingDomainLink,
+    hasGenerateApiKeyLink,
+  } = useDashboardContext();
 
   useEffect(() => {
     getAccount({ include: 'usage' });
@@ -49,19 +58,21 @@ export default function DashboardPageV2() {
           <Layout.Section>
             <Stack>
               <Columns collapseBelow="md" space="500">
-                <Column>
-                  <Dashboard.Panel>
-                    <Panel.Section>
-                      <Panel.Headline>
-                        <Panel.HeadlineIcon as={Code} />
+                {hasSetupDocumentationPanel && (
+                  <Column>
+                    <Dashboard.Panel>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <Panel.HeadlineIcon as={Code} />
 
-                        <TranslatableText>Setup Documentation</TranslatableText>
-                      </Panel.Headline>
+                          <TranslatableText>Setup Documentation</TranslatableText>
+                        </Panel.Headline>
 
-                      <ExternalLink to="/">Integration Documentation</ExternalLink>
-                    </Panel.Section>
-                  </Dashboard.Panel>
-                </Column>
+                        <ExternalLink to="/">Integration Documentation</ExternalLink>
+                      </Panel.Section>
+                    </Dashboard.Panel>
+                  </Column>
+                )}
 
                 <Column>
                   <Dashboard.Panel>
@@ -134,13 +145,17 @@ export default function DashboardPageV2() {
                   </Box>
 
                   <Column>
-                    <Dashboard.Shortcut to="/account/sending-domains/create">
-                      Add a Sending Domain
-                    </Dashboard.Shortcut>
+                    {hasAddSendingDomainLink && (
+                      <Dashboard.Shortcut to="/account/sending-domains/create">
+                        Add a Sending Domain
+                      </Dashboard.Shortcut>
+                    )}
 
-                    <Dashboard.Shortcut to="/account/api-keys/create">
-                      Generate an API Key
-                    </Dashboard.Shortcut>
+                    {hasGenerateApiKeyLink && (
+                      <Dashboard.Shortcut to="/account/api-keys/create">
+                        Generate an API Key
+                      </Dashboard.Shortcut>
+                    )}
 
                     <Dashboard.Shortcut to="/signals/analytics">
                       Analyze your Data

@@ -47,6 +47,7 @@ function BillingUsage() {
     transmissionsThisMonth,
     transmissionsInPlan,
     validationsThisMonth,
+    hasUpgradeLink,
   } = useDashboardContext();
 
   return (
@@ -61,8 +62,7 @@ function BillingUsage() {
                 <TranslatableText>Sending Plan</TranslatableText>
               </Heading>
 
-              {/* TODO: Need to incorporate rocket ship icon when available from Matchbox */}
-              <UpgradeLink to="/account/billing/plan">Upgrade</UpgradeLink>
+              {hasUpgradeLink && <UpgradeLink to="/account/billing/plan">Upgrade</UpgradeLink>}
             </Box>
 
             <SidebarParagraph>{`${currentPlanName} Plan`}</SidebarParagraph>
