@@ -174,6 +174,9 @@ export default function DashboardPageV2() {
                     </Panel.Section>
                   </Dashboard.Panel>
                 </Column>
+
+                {/* Used to shift the "Need Help?" Panel to align left */}
+                {!hasSetupDocumentationPanel && <Column />}
               </Columns>
             </Stack>
           </Layout.Section>
