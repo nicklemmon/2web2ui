@@ -36,21 +36,15 @@ export const GettingStartedGuide = ({
     switch (action) {
       case 'Send Test Email':
         setOnboardingAccountOption({ send_test_email_completed: true });
-        history.push(`/templates?pendo=${GUIDE_IDS.SEND_TEST_EMAIL}`);
+        history.push(`/templates?appcue=${GUIDE_IDS.SEND_TEST_EMAIL}`);
         break;
       case 'Explore Analytics':
         setOnboardingAccountOption({ explore_analytics_completed: true });
-        if (window.pendo.showGuideById(GUIDE_IDS.EXPLORE_ANALYTICS)) {
-          window.pendo.onGuideAdvanced(1);
-        }
-        history.push(`/reports/summary`);
+        history.push(`/reports/summary`, { triggerGuide: true });
         break;
       case 'Check Out Events':
         setOnboardingAccountOption({ check_events_completed: true });
-        if (window.pendo.showGuideById(GUIDE_IDS.CHECKOUT_EVENTS)) {
-          window.pendo.onGuideAdvanced(1);
-        }
-        history.push(`/reports/message-events`);
+        history.push(`/reports/message-events`, { triggerGuide: true });
         break;
       case 'Invite a Collaborator':
         setOnboardingAccountOption({ invite_collaborator_completed: true });
@@ -63,7 +57,7 @@ export const GettingStartedGuide = ({
         history.push('/account/api-keys');
         break;
       case 'Add Sending Domain':
-        history.push(`/account/sending-domains`);
+        history.push(`/account/sending-domains`, { triggerGuide: true });
         break;
       default:
         break;

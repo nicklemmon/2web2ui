@@ -106,7 +106,10 @@ export class ListPage extends Component {
     const primaryAction = {
       content: 'Add a Domain',
       Component: PageLink,
-      to: '/account/sending-domains/create',
+      to: {
+        pathname: '/account/sending-domains/create',
+        state: { triggerGuide: this.props.location?.state?.triggerGuide },
+      },
     };
 
     return (

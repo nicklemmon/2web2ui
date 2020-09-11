@@ -18,7 +18,7 @@ import AssignTrackingDomain from './components/AssignTrackingDomain';
 import EditBounce from './components/EditBounce';
 import SetupSending from './components/SetupSending';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
-
+import { GUIDE_IDS } from 'src/constants';
 import { DomainStatus } from './components/DomainStatus';
 
 const breadcrumbAction = {
@@ -70,6 +70,12 @@ export class EditPage extends Component {
 
   componentWillUnmount() {
     this.props.clearSendingDomain();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location?.state?.triggerGuide) {
+      window.Appcues.show(GUIDE_IDS.VERIFY_SENDING_DOMAIN);
+    }
   }
 
   render() {
