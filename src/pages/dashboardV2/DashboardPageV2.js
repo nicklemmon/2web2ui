@@ -74,12 +74,7 @@ export default function DashboardPageV2() {
                   </Box>
 
                   <Column>
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                      height="100%"
-                    >
+                    <Box display="flex" flexDirection="column" height="100%">
                       {hasAddSendingDomainLink && (
                         <Dashboard.Shortcut to="/account/sending-domains/create">
                           Add a Sending Domain
@@ -96,7 +91,9 @@ export default function DashboardPageV2() {
                         Analyze your Data
                       </Dashboard.Shortcut>
 
-                      <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
+                      <Dashboard.Shortcut to="/signals/analytics">
+                        Analyze your Data
+                      </Dashboard.Shortcut>
                     </Box>
                   </Column>
                 </Columns>

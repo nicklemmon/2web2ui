@@ -16,7 +16,7 @@ const StyledPicture = styled.picture`
 const StyledImg = styled.img`
   width: 100%; /* Contains <img /> within parent */
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   mix-blend-mode: ${props =>
     props.seeThrough === true ? 'multiply' : 'unset'}; /* applies a sort of faux transparency */
 `;

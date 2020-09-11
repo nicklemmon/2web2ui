@@ -12,7 +12,9 @@ const ShortcutLink = styled(PageLink)`
   justify-content: space-between;
   padding: ${props => props.theme.space['500']};
   text-decoration: none;
+  background-color: #fff;
   border-bottom: 1px solid ${props => props.theme.colors.gray['400']};
+  box-shadow: 0 1px ${props => props.theme.colors.gray['400']}; /* This is a hacky-ish way to address bottom borders when the container isn't full */
   transition-property: background-color;
   transition-duration: ${tokens.motionDuration_fast}; /* TODO: These should be supplied by the theme through props but aren't - filed ticket -> https://github.com/SparkPost/matchbox/issues/608 */
 
