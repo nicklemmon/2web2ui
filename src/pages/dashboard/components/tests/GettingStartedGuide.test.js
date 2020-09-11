@@ -61,7 +61,7 @@ describe('GettingStartedGuide full', () => {
     const { queryByText } = subject({ onboarding: { active_step: 'Show Me SparkPost' } });
     userEvent.click(queryByText('Send Test Email'));
     expect(defaultProps.history.push).toHaveBeenCalledWith(
-      `/templates?pendo=${GUIDE_IDS.SEND_TEST_EMAIL}`,
+      `/templates?appcue=${GUIDE_IDS.SEND_TEST_EMAIL}`,
     );
   });
 
@@ -69,7 +69,9 @@ describe('GettingStartedGuide full', () => {
     const { getAllByText } = subject({ onboarding: { active_step: 'Show Me SparkPost' } });
     userEvent.click(getAllByText('Explore Analytics')[1]);
 
-    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/summary`);
+    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/summary`, {
+      triggerGuide: true,
+    });
     expect(window.Appcues.show).toHaveBeenCalledWith(GUIDE_IDS.EXPLORE_ANALYTICS);
   });
 
@@ -77,7 +79,9 @@ describe('GettingStartedGuide full', () => {
     const { getAllByText } = subject({ onboarding: { active_step: 'Show Me SparkPost' } });
     userEvent.click(getAllByText('Check Out Events')[1]);
 
-    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/message-events`);
+    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/message-events`, {
+      triggerGuide: true,
+    });
     expect(window.Appcues.show).toHaveBeenCalledWith(GUIDE_IDS.CHECKOUT_EVENTS);
   });
 
@@ -110,6 +114,8 @@ describe('GettingStartedGuide full', () => {
   it('should navigate to sending domains page when Add Sending Domain is clicked', () => {
     const { queryByText } = subject({ onboarding: { active_step: "Let's Code" } });
     userEvent.click(queryByText('Add Sending Domain'));
-    expect(defaultProps.history.push).toHaveBeenCalledWith(`/account/sending-domains`);
+    expect(defaultProps.history.push).toHaveBeenCalledWith(`/account/sending-domains`, {
+      triggerGuide: true,
+    });
   });
 });

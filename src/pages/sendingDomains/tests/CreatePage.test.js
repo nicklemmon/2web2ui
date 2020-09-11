@@ -9,9 +9,9 @@ describe('Sending Domains Create Page', () => {
     const props = {
       showAlert: jest.fn(),
       createDomain: jest.fn(() => Promise.resolve()),
-      history: { push: jest.fn() }
+      history: { push: jest.fn() },
     };
-    wrapper = shallow(<CreatePage {...props}/>);
+    wrapper = shallow(<CreatePage {...props} />);
   });
 
   afterEach(() => {
@@ -22,9 +22,11 @@ describe('Sending Domains Create Page', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('on success - calls the create action and redirects', async() => {
+  it('on success - calls the create action and redirects', async () => {
     await wrapper.instance().handleCreate({ domain: 'domain.com' });
     expect(wrapper.instance().props.createDomain).toHaveBeenCalledWith({ domain: 'domain.com' });
-    expect(wrapper.instance().props.history.push).toHaveBeenCalledWith('/account/sending-domains/edit/domain.com');
+    expect(
+      wrapper.instance().props.history.push,
+    ).toHaveBeenCalledWith('/account/sending-domains/edit/domain.com', { triggerGuide: undefined });
   });
 });
