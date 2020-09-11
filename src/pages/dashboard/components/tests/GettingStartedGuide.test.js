@@ -46,10 +46,6 @@ describe('GettingStartedGuide shallow', () => {
 });
 
 describe('GettingStartedGuide full', () => {
-  window.Appcues = {
-    show: jest.fn(),
-  };
-
   const subject = (props, renderFn = render) =>
     renderFn(
       <TestApp>
@@ -72,7 +68,6 @@ describe('GettingStartedGuide full', () => {
     expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/summary`, {
       triggerGuide: true,
     });
-    expect(window.Appcues.show).toHaveBeenCalledWith(GUIDE_IDS.EXPLORE_ANALYTICS);
   });
 
   it('should navigate to events page when Check Out Events button is clicked', () => {
@@ -82,7 +77,6 @@ describe('GettingStartedGuide full', () => {
     expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/message-events`, {
       triggerGuide: true,
     });
-    expect(window.Appcues.show).toHaveBeenCalledWith(GUIDE_IDS.CHECKOUT_EVENTS);
   });
 
   it('should navigate to users page when Invite a Collaborator is clicked', () => {
