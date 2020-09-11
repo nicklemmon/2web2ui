@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
+import ConfigurationImgWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
+import ConfigurationImg from '@sparkpost/matchbox-media/images/Configuration@small.jpg';
+import { Loading, Picture } from 'src/components';
 import {
+  Box,
   Columns,
   Column,
   Layout,
@@ -11,7 +15,6 @@ import {
 } from 'src/components/matchbox';
 import { Heading, TranslatableText } from 'src/components/text';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
-import { Loading } from 'src/components/loading';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
@@ -48,7 +51,7 @@ export default function DashboardPageV2() {
               <Columns collapseBelow="md" space="500">
                 <Column>
                   <Dashboard.Panel>
-                    <Panel.LEGACY.Section>
+                    <Panel.Section>
                       <Panel.Headline>
                         <Panel.HeadlineIcon as={Code} />
 
@@ -56,13 +59,13 @@ export default function DashboardPageV2() {
                       </Panel.Headline>
 
                       <ExternalLink to="/">Integration Documentation</ExternalLink>
-                    </Panel.LEGACY.Section>
+                    </Panel.Section>
                   </Dashboard.Panel>
                 </Column>
 
                 <Column>
                   <Dashboard.Panel>
-                    <Panel.LEGACY.Section>
+                    <Panel.Section>
                       <Panel.Headline>
                         <Panel.HeadlineIcon as={ChatBubble} />
 
@@ -70,13 +73,13 @@ export default function DashboardPageV2() {
                       </Panel.Headline>
 
                       <SupportTicketLink>Contact our Support Team</SupportTicketLink>
-                    </Panel.LEGACY.Section>
+                    </Panel.Section>
                   </Dashboard.Panel>
                 </Column>
               </Columns>
 
               <Dashboard.Panel>
-                <Panel.LEGACY.Section>
+                <Panel.Section>
                   <Panel.Headline>
                     <Panel.HeadlineIcon as={LightbulbOutline} />
 
@@ -84,34 +87,68 @@ export default function DashboardPageV2() {
                   </Panel.Headline>
 
                   <Columns collapseBelow="md">
-                    <Dashboard.Shortcut>
+                    <Dashboard.Tip>
                       <PageLink to="/account/api-keys/create">Generate an API Key</PageLink>
 
                       <Text>
                         Get up and sending quickly using our sample templates. AMP for email, Yes we
                         have it.
                       </Text>
-                    </Dashboard.Shortcut>
+                    </Dashboard.Tip>
 
-                    <Dashboard.Shortcut>
+                    <Dashboard.Tip>
                       <PageLink to="/">DKIM Authentication</PageLink>
 
                       <Text>
                         Get up and sending quickly using our sample templates. AMP for email, Yes we
                         have it.
                       </Text>
-                    </Dashboard.Shortcut>
+                    </Dashboard.Tip>
 
-                    <Dashboard.Shortcut>
+                    <Dashboard.Tip>
                       <PageLink to="/alerts/create">Create an Alert</PageLink>
 
                       <Text>
                         Get up and sending quickly using our sample templates. AMP for email, Yes we
                         have it.
                       </Text>
-                    </Dashboard.Shortcut>
+                    </Dashboard.Tip>
                   </Columns>
-                </Panel.LEGACY.Section>
+                </Panel.Section>
+              </Dashboard.Panel>
+
+              <Dashboard.Panel>
+                <ScreenReaderOnly>
+                  <Heading as="h3">Next Steps</Heading>
+                </ScreenReaderOnly>
+
+                <Columns space="0">
+                  <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.55]}>
+                    <Box backgroundColor="gray.100" height="100%" borderRight="400">
+                      <Picture role="presentation">
+                        <Picture.Source srcSet={ConfigurationImgWebp} type="image/webp" />
+
+                        <Picture.Img src={ConfigurationImg} alt="" seeThrough />
+                      </Picture>
+                    </Box>
+                  </Box>
+
+                  <Column>
+                    <Dashboard.Shortcut to="/account/sending-domains/create">
+                      Add a Sending Domain
+                    </Dashboard.Shortcut>
+
+                    <Dashboard.Shortcut to="/account/api-keys/create">
+                      Generate an API Key
+                    </Dashboard.Shortcut>
+
+                    <Dashboard.Shortcut to="/signals/analytics">
+                      Analyze your Data
+                    </Dashboard.Shortcut>
+
+                    <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
+                  </Column>
+                </Columns>
               </Dashboard.Panel>
             </Stack>
           </Layout.Section>

@@ -13,6 +13,14 @@ module.exports = {
   module: {
     rules: [
       {
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.webp$/],
+        loader: require.resolve('url-loader'),
+        options: {
+          limit: 10000,
+          name: 'static/media/[name].[hash:8].[ext]',
+        },
+      },
+      {
         test: sassRegex,
         exclude: sassModuleRegex,
         use: ['style-loader', 'css-loader', 'sass-loader'],

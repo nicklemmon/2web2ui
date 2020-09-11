@@ -1,0 +1,73 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
+import AccountsImgWebp from '@sparkpost/matchbox-media/images/Accounts.webp';
+import AccountsImg from '@sparkpost/matchbox-media/images/Accounts.jpg';
+import { Panel } from 'src/components/matchbox';
+import Picture from './Picture';
+
+<Meta title="Misc|Picture" component={Picture} />
+
+# Picture
+
+The `<Picture/>` is used to render images in the app.
+
+## Props
+
+<Props of={Picture} />
+<Props of={Picture.Img} />
+
+## Examples
+
+### Default
+
+When an image is meaningful and communicates a concept to an end user, _be sure to pass in a value
+via the `alt` prop_. For more on writing effective alt text, see
+[Alternative Text from WebAIM](https://webaim.org/techniques/alttext/#basics).
+
+<Preview>
+  <Story name="default">
+    <Picture>
+      <Picture.Img src={AccountsImg} alt="Sparky with a floating login form" />
+    </Picture>
+  </Story>
+</Preview>
+
+### With a Fallback Image
+
+When using image formats that aren't yet universally supported, use the `<Picture.Source />` component.
+
+<Preview>
+  <Story name="with a fallback image">
+    <Picture>
+      <Picture.Source srcSet={AccountsImgWebp} type="image/webp" />
+      <Picture.Img src={AccountsImg} alt="Sparky with a floating login form" />
+    </Picture>
+  </Story>
+</Preview>
+
+### Decorative Image
+
+When an image does not offer any semantic meaning, pass in `role="presentation"` to the `<Picture />`
+component and `alt=""` to the `<Picture.Img/>` component. This is particularly useful when using an
+image as a background, or as complementary to surrounding text.
+
+<Preview>
+  <Story name="decorative image">
+    <Picture role="presentation">
+      <Picture.Img alt="" src={AccountsImg} />
+    </Picture>
+  </Story>
+</Preview>
+
+### See Through
+
+In order for a background color to be applied, use the `seeThroug` prop on `<Picture.Img />`.
+
+<Preview>
+  <Story name="see through">
+    <div style={{ backgroundColor: '#F7F7F7' }}>
+      <Picture role="presentation">
+        <Picture.Img alt="" src={AccountsImg} seeThrough />
+      </Picture>
+    </div>
+  </Story>
+</Preview>

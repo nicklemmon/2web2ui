@@ -6,7 +6,6 @@ if (IS_HIBANA_ENABLED) {
     const secondaryNavSelector = '[data-id="secondary-navigation"]';
     const mobileNavSelector = '[data-id="mobile-navigation"]';
     const accountActionlistSelector = '[data-id="desktop-navigation-account-actionlist"]';
-    const accountPopoverSelector = '[data-id="desktop-navigation-account-popover"]';
     const accountPopoverTriggerSelector = '[data-id="desktop-navigation-account-popover-trigger"]';
 
     function commonBeforeSteps() {
@@ -448,7 +447,7 @@ if (IS_HIBANA_ENABLED) {
         commonBeforeSteps();
         toggleAccountMenu();
 
-        cy.get(accountPopoverSelector).within(() => {
+        cy.findByDataId('popover-content').within(() => {
           cy.findByText('mockuser@example.com').should('be.visible');
           cy.findByText('107').should('be.visible'); // The user's Customer ID
         });
@@ -467,7 +466,7 @@ if (IS_HIBANA_ENABLED) {
         commonBeforeSteps();
         toggleAccountMenu();
 
-        cy.get(accountPopoverSelector).within(() => {
+        cy.findByDataId('popover-content').within(() => {
           cy.findByText('mockuser@example.com').should('be.visible');
           cy.findByText('107').should('be.visible'); // The user's Customer ID
         });
@@ -486,7 +485,7 @@ if (IS_HIBANA_ENABLED) {
         commonBeforeSteps();
         toggleAccountMenu();
 
-        cy.get(accountPopoverSelector).within(() => {
+        cy.findByDataId('popover-content').within(() => {
           cy.findByText('mockuser@example.com').should('be.visible');
           cy.findByText('107').should('be.visible'); // The user's Customer ID
         });

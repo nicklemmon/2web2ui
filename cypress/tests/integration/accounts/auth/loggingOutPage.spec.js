@@ -19,8 +19,8 @@ describe('logging out', () => {
 
     if (IS_HIBANA_ENABLED) {
       cy.findByText('UT').click();
-      cy.get('[data-id="desktop-navigation-account-popover"]').within(() => {
-        cy.findByText('Log Out').click();
+      cy.get('[data-id="desktop-navigation-account-actionlist"]').within(() => {
+        cy.findByRole('link', { name: 'Log Out' }).click();
       });
     } else {
       cy.findByText('mockuser@example.com').click();

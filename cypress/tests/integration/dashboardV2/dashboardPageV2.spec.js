@@ -24,22 +24,34 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('button', { name: 'Contact our Support Team' }).click();
       cy.withinModal(() => cy.findByRole('button', { name: 'Close' }).click());
 
+      // "Helpful Shortcuts" Panel
       cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
-      cy.verifyLink({
-        content: 'Generate an API Key',
-        href: '/account/api-keys/create',
-      });
-
+      cy.findAllByRole('link', { name: 'Generate an API Key' }).should(
+        'have.attr',
+        'href',
+        '/account/api-keys/create',
+      );
       cy.findByRole('heading', { name: 'Account Details' }).should('be.visible');
       cy.verifyLink({
         content: 'DKIM Authentication',
         href: '/',
       });
-
       cy.findByRole('heading', { name: 'Billing/Usage Detail' }).should('be.visible');
+      cy.findAllByRole('link', { name: 'Create an Alert' }).should(
+        'have.attr',
+        'href',
+        '/alerts/create',
+      );
+
+      // "Next Steps" Panel (the one with the artwork!);
+      cy.findByRole('heading', { name: 'Next Steps' }).should('exist'); // Screen reader only heading
       cy.verifyLink({
-        content: 'Create an Alert',
-        href: '/alerts/create',
+        content: 'Add a Sending Domain',
+        href: '/account/sending-domains/create',
+      });
+      cy.verifyLink({
+        content: 'Analyze your Data',
+        href: '/signals/analytics',
       });
     });
 
