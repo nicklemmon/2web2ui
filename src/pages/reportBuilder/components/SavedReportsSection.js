@@ -35,15 +35,15 @@ const SavedReportsSection = props => {
       </Grid.Column>
       {props.isSavedReportsEnabled && (
         <Grid.Column lg={5} sm={12} xs={12}>
-          <StyledButton flat onClick={() => setModalStatus('edit')}>
+          <StyledButton variant="tertiary" onClick={() => setModalStatus('edit')}>
             Edit Details
             <Button.Icon as={Edit} ml="200" />
           </StyledButton>
-          <StyledButton flat onClick={() => setModalStatus('save')}>
+          <StyledButton variant="tertiary" onClick={() => setModalStatus('save')}>
             Save Changes
             <Button.Icon as={Save} ml="200" />
           </StyledButton>
-          <StyledButton flat onClick={() => setModalStatus('view')}>
+          <StyledButton variant="tertiary" onClick={() => setModalStatus('view')}>
             View All Reports
             <Button.Icon as={FolderOpen} ml="200" />
           </StyledButton>

@@ -28,6 +28,7 @@ import passwordReset from './passwordReset';
 import recipientLists from './recipientLists';
 import recipientValidation from './recipientValidation';
 import reportOptions from './reportOptions';
+import reports from './reports';
 import scimToken from './scimToken';
 import sendingDomains from './sendingDomains';
 import sendingIps from './sendingIps';
@@ -79,6 +80,7 @@ const appReducer = combineReducers({
   messageEvents,
   passwordReset,
   reportOptions,
+  reports,
   recipientLists,
   recipientValidation,
   rejectionReport,

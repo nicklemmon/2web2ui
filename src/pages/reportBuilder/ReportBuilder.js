@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { refreshSummaryReport } from 'src/actions/summaryChart';
 import { Page, Panel } from 'src/components/matchbox';
 import { Empty, Loading, Unit, LegendCircle } from 'src/components';
 import { Box, Grid, Inline } from 'src/components/matchbox';
 import { Definition } from 'src/components/text';
-import { ReportOptions, ReportTable } from './components';
+import { ReportOptions, ReportTable, SaveNewReportModal } from './components';
 import Charts from './components/Charts';
-
 import {
   bounceTabMetrics,
   rejectionTabMetrics,
@@ -26,8 +26,9 @@ import {
   LinksTable,
   RejectionReasonsTable,
 } from './components/tabs';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import styles from './ReportBuilder.module.scss';
-import moment from 'moment';
 
 const MetricDefinition = ({ label, children }) => {
   return (
@@ -44,12 +45,14 @@ const MetricDefinition = ({ label, children }) => {
 
 export function ReportBuilder({
   chart,
+  isSavedReportsEnabled,
   processedMetrics,
   reportOptions,
   summarySearchOptions = {},
   refreshSummaryReport,
 }) {
   const [showTable, setShowTable] = useState(true);
+  const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false);
 
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
@@ -104,7 +107,17 @@ export function ReportBuilder({
   const dateValue = `${moment(from).format('MMM Do')} - ${moment(to).format('MMM Do, YYYY')}`;
 
   return (
-    <Page title="Analytics Report">
+    <Page
+      title="Analytics Report"
+      primaryAction={
+        isSavedReportsEnabled
+          ? {
+              content: 'Save New Report',
+              onClick: () => setShowSaveNewReportModal(true),
+            }
+          : undefined
+      }
+    >
       <Panel.LEGACY>
         <ReportOptions reportLoading={chart.chartLoading} searchOptions={summarySearchOptions} />
         {isEmpty ? (
@@ -188,6 +201,12 @@ export function ReportBuilder({
           <ReportTable />
         </div>
       )}
+      {isSavedReportsEnabled && (
+        <SaveNewReportModal
+          open={showSaveNewReportModal}
+          onCancel={() => setShowSaveNewReportModal(false)}
+        />
+      )}
     </Page>
   );
 }
@@ -198,6 +217,7 @@ const mapStateToProps = state => ({
   reportOptions: state.reportOptions,
   processedMetrics: selectSummaryMetricsProcessed(state),
   summarySearchOptions: selectSummaryChartSearchOptions(state),
+  isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
 });
 
 const mapDispatchToProps = {

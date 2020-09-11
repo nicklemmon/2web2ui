@@ -8,7 +8,7 @@ if (IS_HIBANA_ENABLED) {
       commonBeforeSteps();
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.metrics-rollup.json',
+        fixture: 'users/200.get.metrics-rollup-and-saved-reports.json',
       });
       cy.visit(PAGE_URL);
     });
@@ -97,6 +97,34 @@ if (IS_HIBANA_ENABLED) {
         assertions();
         cy.findAllByText('Targeted').should('be.visible');
       });
+    });
+
+    it('Saves a new report', () => {
+      cy.stubRequest({
+        method: 'POST',
+        url: '/api/v1/reports',
+        fixture: 'reports/200.post.json',
+        requestAlias: 'saveNewReport',
+      });
+
+      cy.findByRole('button', { name: 'Save New Report' }).click();
+
+      cy.withinModal(() => {
+        cy.findByText('Save New Report').should('be.visible');
+
+        //Check validation
+        //TODO Try to replace with actual button click later. CircleCI for some reason doesn't show the buttons...
+        cy.get('form').submit();
+        cy.findAllByText('Required').should('have.length', 2);
+
+        //Check submission
+        cy.get('[name="name"]').type('Hello There');
+        cy.get('[name="description"]').type('General Kenobi');
+        cy.get('[name="is_editable"]').check({ force: true });
+        cy.get('form').submit();
+      });
+      cy.wait('@saveNewReport');
+      cy.findByText('You have successfully saved Hello There').click();
     });
   });
 }
