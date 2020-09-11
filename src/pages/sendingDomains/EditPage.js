@@ -74,7 +74,9 @@ export class EditPage extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.location?.state?.triggerGuide) {
-      window.Appcues.show(GUIDE_IDS.VERIFY_SENDING_DOMAIN);
+      if (window.Appcues) {
+        window.Appcues.show(GUIDE_IDS.VERIFY_SENDING_DOMAIN);
+      }
     }
   }
 

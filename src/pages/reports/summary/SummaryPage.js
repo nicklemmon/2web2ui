@@ -25,7 +25,9 @@ export class SummaryReportPage extends Component {
     }
 
     if (prevProps.location?.state?.triggerGuide) {
-      window.Appcues.show(GUIDE_IDS.EXPLORE_ANALYTICS);
+      if (window.Appcues) {
+        window.Appcues.show(GUIDE_IDS.EXPLORE_ANALYTICS);
+      }
     }
   }
 

@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { snakeToFriendly } from 'src/helpers/string';
@@ -218,7 +217,9 @@ const MessageEventsPage = props => {
 
   useEffect(() => {
     if (props.location?.state?.triggerGuide) {
-      window.Appcues.show(GUIDE_IDS.CHECKOUT_EVENTS);
+      if (window.Appcues) {
+        window.Appcues.show(GUIDE_IDS.CHECKOUT_EVENTS);
+      }
     }
   }, [props.location]);
 
