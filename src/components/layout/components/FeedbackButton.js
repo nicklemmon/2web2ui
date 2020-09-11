@@ -7,11 +7,11 @@ import styles from './FeedbackButton.module.scss';
 export default function FeedbackButton() {
   const [{ isHibanaEnabled }] = useHibana();
 
-  if (!window.pendo || !isHibanaEnabled) return null;
+  if (!window.Appcues || !isHibanaEnabled) return null;
 
   const handleClick = () => {
-    if (window.pendo) {
-      window.pendo.showGuideById(GUIDE_IDS.GIVE_HIBANA_FEEDBACK);
+    if (window.Appcues) {
+      window.Appcues.show(GUIDE_IDS.GIVE_HIBANA_FEEDBACK);
     }
   };
 

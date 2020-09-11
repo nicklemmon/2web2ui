@@ -46,9 +46,8 @@ describe('GettingStartedGuide shallow', () => {
 });
 
 describe('GettingStartedGuide full', () => {
-  window.pendo = {
-    showGuideById: jest.fn(() => true),
-    onGuideAdvanced: jest.fn(),
+  window.Appcues = {
+    show: jest.fn(),
   };
 
   const subject = (props, renderFn = render) =>
@@ -71,8 +70,7 @@ describe('GettingStartedGuide full', () => {
     userEvent.click(getAllByText('Explore Analytics')[1]);
 
     expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/summary`);
-    expect(window.pendo.showGuideById).toHaveBeenCalledWith(GUIDE_IDS.EXPLORE_ANALYTICS);
-    expect(window.pendo.onGuideAdvanced).toHaveBeenCalledWith(1);
+    expect(window.Appcues.show).toHaveBeenCalledWith(GUIDE_IDS.EXPLORE_ANALYTICS);
   });
 
   it('should navigate to events page when Check Out Events button is clicked', () => {
@@ -80,8 +78,7 @@ describe('GettingStartedGuide full', () => {
     userEvent.click(getAllByText('Check Out Events')[1]);
 
     expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/message-events`);
-    expect(window.pendo.showGuideById).toHaveBeenCalledWith(GUIDE_IDS.CHECKOUT_EVENTS);
-    expect(window.pendo.onGuideAdvanced).toHaveBeenCalledWith(1);
+    expect(window.Appcues.show).toHaveBeenCalledWith(GUIDE_IDS.CHECKOUT_EVENTS);
   });
 
   it('should navigate to users page when Invite a Collaborator is clicked', () => {

@@ -25,7 +25,7 @@ export function CancellationPanel(props) {
     try {
       window.Appcues.show(GUIDE_IDS.CANCEL_ACCOUNT);
     } catch (error) {
-      ErrorTracker.report('account-cancellation-pendo-guide-warning', error, {
+      ErrorTracker.report('account-cancellation-guide-warning', error, {
         level: 'warning',
       });
       setShowCancelAccountModal(true);
