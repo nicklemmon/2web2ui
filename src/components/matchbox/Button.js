@@ -118,6 +118,7 @@ function getVariantProps({ variant, isHibanaEnabled }) {
   }
 }
 
+Button.displayName = 'Button';
 Group.displayName = 'Button.Group';
 Icon.displayName = Icon;
 Button.Group = Group;

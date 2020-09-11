@@ -113,15 +113,14 @@ if (IS_HIBANA_ENABLED) {
         cy.findByText('Save New Report').should('be.visible');
 
         //Check validation
-        //TODO Try to replace with actual button click later. CircleCI for some reason doesn't show the buttons...
-        cy.get('form').submit();
+        cy.findByRole('button', { name: 'Save Report' }).click();
         cy.findAllByText('Required').should('have.length', 2);
 
         //Check submission
         cy.get('[name="name"]').type('Hello There');
         cy.get('[name="description"]').type('General Kenobi');
         cy.get('[name="is_editable"]').check({ force: true });
-        cy.get('form').submit();
+        cy.findByRole('button', { name: 'Save Report' }).click();
       });
       cy.wait('@saveNewReport');
       cy.findByText('You have successfully saved Hello There').click();

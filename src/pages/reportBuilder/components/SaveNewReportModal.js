@@ -7,7 +7,6 @@ import { Loading } from 'src/components';
 import useRouter from 'src/hooks/useRouter';
 import { createReport } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
-
 export function SaveNewReportModal(props) {
   const { open, onCancel, createReport, loading, showAlert } = props;
   const { handleSubmit, control, errors, setValue } = useForm({
