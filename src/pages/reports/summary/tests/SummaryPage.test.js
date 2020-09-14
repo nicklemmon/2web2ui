@@ -3,27 +3,30 @@ import { shallow } from 'enzyme';
 import { SummaryReportPage } from '../SummaryPage';
 import * as reportHelpers from 'src/helpers/reports';
 import { MetricsModal, ChartHeader } from '../components';
-
+import { GUIDE_IDS } from 'src/constants';
 jest.mock('src/helpers/reports');
 
 describe('Page: SummaryPage', () => {
-
   let wrapper;
   let testProps;
+  const mockshow = jest.fn();
 
   beforeEach(() => {
     reportHelpers.getFilterSearchOptions = jest.fn(() => ({}));
-    reportHelpers.parseSearch = jest.fn(() => ({ options: {}}));
+    reportHelpers.parseSearch = jest.fn(() => ({ options: {} }));
     testProps = {
       reportOptions: [],
       chart: {
-        metrics: [1, 2, 3]
+        metrics: [1, 2, 3],
       },
       refreshSummaryReport: jest.fn(),
       refreshReportOptions: jest.fn(),
-      addFilters: jest.fn()
+      addFilters: jest.fn(),
+      location: { state: { triggerGuide: true } },
     };
     wrapper = shallow(<SummaryReportPage {...testProps} />);
+    window.Appcues = {};
+    window.Appcues = { show: mockshow };
   });
 
   it('should render correctly', () => {
@@ -35,6 +38,13 @@ describe('Page: SummaryPage', () => {
     expect(testProps.refreshSummaryReport).not.toHaveBeenCalled();
     wrapper.setProps({ reportOptions: newReportOptions });
     expect(testProps.refreshSummaryReport).toHaveBeenCalledWith(newReportOptions);
+  });
+
+  it('should trigger guide when location state has triggerGuide set to true', () => {
+    const location = { state: { triggerGuide: true } };
+    expect(mockshow).not.toHaveBeenCalled();
+    wrapper.setProps({ location: location });
+    expect(mockshow).toHaveBeenCalledWith(GUIDE_IDS.EXPLORE_ANALYTICS);
   });
 
   it('should render when loading', () => {
@@ -81,5 +91,4 @@ describe('Page: SummaryPage', () => {
     header.simulate('timeClick', 'test-time');
     expect(wrapper.state('eventTime')).toEqual('test-time');
   });
-
 });

@@ -1,10 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-
-import { MessageEventsPageComponent as MessageEventsPage } from '../MessageEventsPage';
+import { render } from '@testing-library/react';
+import MessageEventsPage, { MessageEventsPageComponent } from '../MessageEventsPage';
 import { CursorPaging } from 'src/components/collection/CursorPaging';
 import * as downloading from 'src/helpers/downloading';
 import styles from './MessageEventsPage.module.scss';
+import { GUIDE_IDS } from 'src/constants';
+import TestApp from 'src/__testHelpers__/TestApp';
 
 let wrapper;
 let instance;
@@ -38,6 +40,9 @@ describe('Page: Message Events tests', () => {
     history: {
       push: jest.fn(),
     },
+    location: {
+      state: { triggerGuide: true },
+    },
     search: {
       dateOptions: {},
       recipients: [],
@@ -51,9 +56,12 @@ describe('Page: Message Events tests', () => {
     styles,
     isHibanaEnabled: false,
   };
+  const mockshow = jest.fn();
+  window.Appcues = {};
+  window.Appcues = { show: mockshow };
 
   beforeEach(() => {
-    wrapper = shallow(<MessageEventsPage {...props} />);
+    wrapper = shallow(<MessageEventsPageComponent {...props} />);
     instance = wrapper.instance();
     wrapper.setState({
       currentPage: 2,
@@ -169,5 +177,15 @@ describe('Page: Message Events tests', () => {
     it('renders correctly', () => {
       expect(instance.getRowData(event)).toMatchSnapshot();
     });
+  });
+
+  it('should trigger guide when location state has triggerGuide set to true', () => {
+    wrapper = render(
+      <TestApp>
+        <MessageEventsPage {...props} />
+      </TestApp>,
+    );
+
+    expect(mockshow).toHaveBeenCalledWith(GUIDE_IDS.CHECKOUT_EVENTS);
   });
 });
