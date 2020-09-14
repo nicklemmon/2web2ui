@@ -11,9 +11,13 @@ export const SEGMENT_EVENTS = {
   ACCOUNT_UPGRADED: 'Account Upgraded',
   ALERT_CREATED: 'Alert Created',
   API_KEY_CREATED: 'API Key Created',
+  HIBANA_TOGGLED_ON: 'Hibana Toggled On',
+  HIBANA_TOGGLED_OFF: 'Hibana Toggled Off',
   INVITE_SENT: 'Invite Sent',
   SENDING_DOMAIN_VERIFIED: 'Sending Domain Verified',
 };
+
+const UX_EVENTS = [SEGMENT_EVENTS.HIBANA_TOGGLED_ON, SEGMENT_EVENTS.HIBANA_TOGGLED_OFF];
 
 export const SEGMENT_TRAITS = {
   COMPANY: 'company',
@@ -64,6 +68,10 @@ export const segmentPage = () => {
 
 export const segmentTrack = (eventType, traits = {}) => {
   if (window.analytics && window.analytics.track) {
-    window.analytics.track(eventType, traits);
+    if (UX_EVENTS.includes(eventType)) {
+      window.analytics.track(eventType, { ...traits, ux: true });
+    } else {
+      window.analytics.track(eventType, traits);
+    }
   }
 };
