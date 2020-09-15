@@ -46,11 +46,6 @@ describe('GettingStartedGuide shallow', () => {
 });
 
 describe('GettingStartedGuide full', () => {
-  window.pendo = {
-    showGuideById: jest.fn(() => true),
-    onGuideAdvanced: jest.fn(),
-  };
-
   const subject = (props, renderFn = render) =>
     renderFn(
       <TestApp>
@@ -62,7 +57,7 @@ describe('GettingStartedGuide full', () => {
     const { queryByText } = subject({ onboarding: { active_step: 'Show Me SparkPost' } });
     userEvent.click(queryByText('Send Test Email'));
     expect(defaultProps.history.push).toHaveBeenCalledWith(
-      `/templates?pendo=${GUIDE_IDS.SEND_TEST_EMAIL}`,
+      `/templates?appcue=${GUIDE_IDS.SEND_TEST_EMAIL}`,
     );
   });
 
@@ -70,18 +65,18 @@ describe('GettingStartedGuide full', () => {
     const { getAllByText } = subject({ onboarding: { active_step: 'Show Me SparkPost' } });
     userEvent.click(getAllByText('Explore Analytics')[1]);
 
-    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/summary`);
-    expect(window.pendo.showGuideById).toHaveBeenCalledWith(GUIDE_IDS.EXPLORE_ANALYTICS);
-    expect(window.pendo.onGuideAdvanced).toHaveBeenCalledWith(1);
+    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/summary`, {
+      triggerGuide: true,
+    });
   });
 
   it('should navigate to events page when Check Out Events button is clicked', () => {
     const { getAllByText } = subject({ onboarding: { active_step: 'Show Me SparkPost' } });
     userEvent.click(getAllByText('Check Out Events')[1]);
 
-    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/message-events`);
-    expect(window.pendo.showGuideById).toHaveBeenCalledWith(GUIDE_IDS.CHECKOUT_EVENTS);
-    expect(window.pendo.onGuideAdvanced).toHaveBeenCalledWith(1);
+    expect(defaultProps.history.push).toHaveBeenCalledWith(`/reports/message-events`, {
+      triggerGuide: true,
+    });
   });
 
   it('should navigate to users page when Invite a Collaborator is clicked', () => {
@@ -113,6 +108,8 @@ describe('GettingStartedGuide full', () => {
   it('should navigate to sending domains page when Add Sending Domain is clicked', () => {
     const { queryByText } = subject({ onboarding: { active_step: "Let's Code" } });
     userEvent.click(queryByText('Add Sending Domain'));
-    expect(defaultProps.history.push).toHaveBeenCalledWith(`/account/sending-domains`);
+    expect(defaultProps.history.push).toHaveBeenCalledWith(`/account/sending-domains`, {
+      triggerGuide: true,
+    });
   });
 });

@@ -10,6 +10,7 @@ import { Table, MetricsModal, ChartGroup, ChartHeader } from './components';
 import { selectSummaryChartSearchOptions } from 'src/selectors/reportSearchOptions';
 import { selectReportsEnhancementsEnabled } from 'src/selectors/customReports';
 import styles from './SummaryPage.module.scss';
+import { GUIDE_IDS } from 'src/constants';
 
 export class SummaryReportPage extends Component {
   state = {
@@ -21,6 +22,12 @@ export class SummaryReportPage extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.reportOptions !== this.props.reportOptions) {
       this.props.refreshSummaryReport(this.props.reportOptions);
+    }
+
+    if (prevProps.location?.state?.triggerGuide) {
+      if (window.Appcues) {
+        window.Appcues.show(GUIDE_IDS.EXPLORE_ANALYTICS);
+      }
     }
   }
 

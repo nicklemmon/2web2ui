@@ -23,11 +23,9 @@ export function CancellationPanel(props) {
 
   const handleCancelAccount = () => {
     try {
-      if (!window.pendo.showGuideById(GUIDE_IDS.CANCEL_ACCOUNT)) {
-        setShowCancelAccountModal(true);
-      }
+      window.Appcues.show(GUIDE_IDS.CANCEL_ACCOUNT);
     } catch (error) {
-      ErrorTracker.report('account-cancellation-pendo-guide-warning', error, {
+      ErrorTracker.report('account-cancellation-guide-warning', error, {
         level: 'warning',
       });
       setShowCancelAccountModal(true);

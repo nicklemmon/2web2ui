@@ -1,5 +1,4 @@
-/* eslint-disable max-lines */
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { snakeToFriendly } from 'src/helpers/string';
 import { Box, Button, Page, Panel, ScreenReaderOnly } from 'src/components/matchbox';
@@ -22,7 +21,7 @@ import {
 } from 'src/actions/messageEvents';
 import { selectMessageEvents, selectMessageEventsCSV } from 'src/selectors/messageEvents';
 import { formatToCsv, download } from 'src/helpers/downloading';
-import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
+import { DEFAULT_PER_PAGE_BUTTONS, GUIDE_IDS } from 'src/constants';
 import OGStyles from './MessageEventsPage.module.scss';
 import hibanaStyles from './MessageEventsPage.module.scss';
 import { useHibana } from 'src/context/HibanaContext';
@@ -215,6 +214,14 @@ const MessageEventsPage = props => {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
+
+  useEffect(() => {
+    if (props.location?.state?.triggerGuide) {
+      if (window.Appcues) {
+        window.Appcues.show(GUIDE_IDS.CHECKOUT_EVENTS);
+      }
+    }
+  }, [props.location]);
 
   return (
     <MessageEventsPageComponent {...props} styles={styles} isHibanaEnabled={isHibanaEnabled} />

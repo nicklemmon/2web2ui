@@ -11,7 +11,7 @@ jest.mock('src/context/HibanaContext', () => ({
 }));
 
 describe('FeedbackButton', () => {
-  const mockShowGuideById = jest.fn();
+  const mockshow = jest.fn();
 
   const renderSubject = () => {
     return render(
@@ -22,21 +22,21 @@ describe('FeedbackButton', () => {
   };
 
   beforeEach(() => {
-    window.pendo = {};
-    window.pendo.showGuideById = mockShowGuideById;
+    window.Appcues = {};
+    window.Appcues.show = mockshow;
   });
 
-  it('invokes `window.pendo.showGuideById` when clicked', () => {
+  it('invokes `window.Appcues.show` when clicked', () => {
     mockIsHibanaEnabled = true;
     renderSubject();
 
     screen.getByText('Give Feedback').click();
-    expect(mockShowGuideById).toHaveBeenCalledWith(GUIDE_IDS.GIVE_HIBANA_FEEDBACK);
+    expect(mockshow).toHaveBeenCalledWith(GUIDE_IDS.GIVE_HIBANA_FEEDBACK);
   });
 
-  it('does not render when window.pendo is undefined', () => {
+  it('does not render when window.Appcues is undefined', () => {
     mockIsHibanaEnabled = true;
-    delete window.pendo;
+    delete window.Appcues;
     renderSubject();
 
     expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument();

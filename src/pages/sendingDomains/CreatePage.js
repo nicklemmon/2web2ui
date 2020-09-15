@@ -12,7 +12,9 @@ export class CreatePage extends Component {
     const { createDomain, history } = this.props;
 
     return createDomain(values).then(() => {
-      history.push(`/account/sending-domains/edit/${values.domain}`);
+      history.push(`/account/sending-domains/edit/${values.domain}`, {
+        triggerGuide: this.props.location?.state?.triggerGuide,
+      });
     });
   };
 
