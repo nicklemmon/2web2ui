@@ -91,9 +91,7 @@ export default function DashboardPageV2() {
                         Analyze your Data
                       </Dashboard.Shortcut>
 
-                      <Dashboard.Shortcut to="/signals/analytics">
-                        Analyze your Data
-                      </Dashboard.Shortcut>
+                      <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
                     </Box>
                   </Column>
                 </Columns>
