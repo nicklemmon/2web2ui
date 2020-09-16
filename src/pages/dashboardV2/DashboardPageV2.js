@@ -29,12 +29,15 @@ export default function DashboardPageV2() {
     hasSetupDocumentationPanel,
     hasAddSendingDomainLink,
     hasGenerateApiKeyLink,
+    hasUsageSection,
   } = useDashboardContext();
 
   useEffect(() => {
     getAccount({ include: 'usage' });
-    getUsage();
     listAlerts();
+    if (hasUsageSection) {
+      getUsage(); // this is needed to display the rv usage section which should only be visible to admins
+    }
     // eslint-disable-next-line
   }, []);
 
