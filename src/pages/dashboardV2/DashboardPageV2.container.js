@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { ROLES } from 'src/constants';
+import hasGrants from 'src/helpers/conditions/hasGrants';
+import { hasRole, isAdmin } from 'src/helpers/conditions/user';
 import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { listAlerts } from 'src/actions/alerts';
 import { selectRecentlyTriggeredAlerts } from 'src/selectors/alerts';
@@ -25,6 +28,11 @@ function mapStateToProps(state) {
     validationsThisMonth: selectMonthlyRecipientValidationUsage(state),
     endOfBillingPeriod: selectEndOfBillingPeriod(state),
     pending: isPending,
+    hasSetupDocumentationPanel: isAdmin(state) || hasRole(ROLES.DEVELOPER)(state),
+    hasAddSendingDomainLink: hasGrants('sending_domains/manage')(state),
+    hasGenerateApiKeyLink: hasGrants('api_keys/manage')(state),
+    hasUpgradeLink: hasGrants('account/manage')(state),
+    hasUsageSection: isAdmin(state),
   };
 }
 

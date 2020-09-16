@@ -47,6 +47,8 @@ function BillingUsage() {
     transmissionsThisMonth,
     transmissionsInPlan,
     validationsThisMonth,
+    hasUpgradeLink,
+    hasUsageSection,
   } = useDashboardContext();
 
   return (
@@ -61,59 +63,64 @@ function BillingUsage() {
                 <TranslatableText>Sending Plan</TranslatableText>
               </Heading>
 
-              {/* TODO: Need to incorporate rocket ship icon when available from Matchbox */}
-              <UpgradeLink to="/account/billing/plan">Upgrade</UpgradeLink>
+              {hasUpgradeLink && <UpgradeLink to="/account/billing/plan">Upgrade</UpgradeLink>}
             </Box>
 
             <SidebarParagraph>{`${currentPlanName} Plan`}</SidebarParagraph>
 
-            {transmissionsThisMonth && transmissionsInPlan ? (
-              <SidebarParagraph>
-                <Bold data-id="sidebar-transmissions-this-month">
-                  {formatFullNumber(transmissionsThisMonth)}
-                </Bold>
+            {hasUsageSection && transmissionsThisMonth && transmissionsInPlan ? (
+              <div data-id="transmissions-usage-section">
+                <SidebarParagraph>
+                  <Bold data-id="sidebar-transmissions-this-month">
+                    {formatFullNumber(transmissionsThisMonth)}
+                  </Bold>
 
-                <TranslatableText>&nbsp;of&nbsp;</TranslatableText>
+                  <TranslatableText>&nbsp;of&nbsp;</TranslatableText>
 
-                <Bold data-id="sidebar-transmissions-in-plan">
-                  {formatFullNumber(transmissionsInPlan)}
-                </Bold>
+                  <Bold data-id="sidebar-transmissions-in-plan">
+                    {formatFullNumber(transmissionsInPlan)}
+                  </Bold>
 
-                <TranslatableText>&nbsp;this month</TranslatableText>
-              </SidebarParagraph>
+                  <TranslatableText>&nbsp;this month</TranslatableText>
+                </SidebarParagraph>
+              </div>
             ) : null}
           </SidebarStack>
         ) : null}
 
-        {validationsThisMonth ? (
-          <SidebarStack>
-            <Heading as="h4" looksLike="h5">
-              Recipient Validation
-            </Heading>
+        {hasUsageSection && validationsThisMonth ? (
+          <div data-id="validations-usage-section">
+            <SidebarStack>
+              <Heading as="h4" looksLike="h5">
+                Recipient Validation
+              </Heading>
 
-            <SidebarParagraph>
-              <Bold data-id="sidebar-validations-this-month">
-                {formatFullNumber(validationsThisMonth)}
-              </Bold>
+              <SidebarParagraph>
+                <Bold data-id="sidebar-validations-this-month">
+                  {formatFullNumber(validationsThisMonth)}
+                </Bold>
 
-              <TranslatableText>&nbsp;address validations this month</TranslatableText>
-            </SidebarParagraph>
-          </SidebarStack>
+                <TranslatableText>&nbsp;address validations this month</TranslatableText>
+              </SidebarParagraph>
+            </SidebarStack>
+          </div>
         ) : null}
 
-        <div>
-          {endOfBillingPeriod ? (
-            <SubduedText>
-              <TranslatableText>Your billing period ends </TranslatableText>
+        {hasUsageSection ? (
+          <div>
+            {endOfBillingPeriod ? (
+              <SubduedText>
+                <TranslatableText>Your billing period ends </TranslatableText>
 
-              <span data-id="sidebar-validations-end-of-billing-period">
-                {formatDate(endOfBillingPeriod, config.dateFormatWithComma)}
-              </span>
-            </SubduedText>
-          ) : null}
+                <span data-id="sidebar-validations-end-of-billing-period">
+                  {formatDate(endOfBillingPeriod, config.dateFormatWithComma)}
+                </span>
+              </SubduedText>
+            ) : null}
 
-          <PageLink to="/usage">View Usage Numbers</PageLink>
-        </div>
+            <PageLink to="/usage">View Usage Numbers</PageLink>
+          </div>
+        ) : null}
       </Stack>
     </div>
   );

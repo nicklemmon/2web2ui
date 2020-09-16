@@ -20,12 +20,24 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 
 export default function DashboardPageV2() {
-  const { getAccount, listAlerts, getUsage, currentUser, pending } = useDashboardContext();
+  const {
+    getAccount,
+    listAlerts,
+    getUsage,
+    currentUser,
+    pending,
+    hasSetupDocumentationPanel,
+    hasAddSendingDomainLink,
+    hasGenerateApiKeyLink,
+    hasUsageSection,
+  } = useDashboardContext();
 
   useEffect(() => {
     getAccount({ include: 'usage' });
-    getUsage();
     listAlerts();
+    if (hasUsageSection) {
+      getUsage(); // this is needed to display the rv usage section which should only be visible to admins
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -48,75 +60,6 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              <Columns collapseBelow="md" space="500">
-                <Column>
-                  <Dashboard.Panel>
-                    <Panel.Section>
-                      <Panel.Headline>
-                        <Panel.HeadlineIcon as={Code} />
-
-                        <TranslatableText>Setup Documentation</TranslatableText>
-                      </Panel.Headline>
-
-                      <ExternalLink to="/">Integration Documentation</ExternalLink>
-                    </Panel.Section>
-                  </Dashboard.Panel>
-                </Column>
-
-                <Column>
-                  <Dashboard.Panel>
-                    <Panel.Section>
-                      <Panel.Headline>
-                        <Panel.HeadlineIcon as={ChatBubble} />
-
-                        <TranslatableText>Need Help?</TranslatableText>
-                      </Panel.Headline>
-
-                      <SupportTicketLink>Contact our Support Team</SupportTicketLink>
-                    </Panel.Section>
-                  </Dashboard.Panel>
-                </Column>
-              </Columns>
-
-              <Dashboard.Panel>
-                <Panel.Section>
-                  <Panel.Headline>
-                    <Panel.HeadlineIcon as={LightbulbOutline} />
-
-                    <TranslatableText>Helpful Shortcuts</TranslatableText>
-                  </Panel.Headline>
-
-                  <Columns collapseBelow="md">
-                    <Dashboard.Tip>
-                      <PageLink to="/account/api-keys/create">Generate an API Key</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      <PageLink to="/">DKIM Authentication</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      <PageLink to="/alerts/create">Create an Alert</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-                  </Columns>
-                </Panel.Section>
-              </Dashboard.Panel>
-
               <Dashboard.Panel>
                 <ScreenReaderOnly>
                   <Heading as="h3">Next Steps</Heading>
@@ -134,22 +77,105 @@ export default function DashboardPageV2() {
                   </Box>
 
                   <Column>
-                    <Dashboard.Shortcut to="/account/sending-domains/create">
-                      Add a Sending Domain
-                    </Dashboard.Shortcut>
+                    <Box display="flex" flexDirection="column" height="100%">
+                      {hasAddSendingDomainLink && (
+                        <Dashboard.Shortcut to="/account/sending-domains/create">
+                          Add a Sending Domain
+                        </Dashboard.Shortcut>
+                      )}
 
-                    <Dashboard.Shortcut to="/account/api-keys/create">
-                      Generate an API Key
-                    </Dashboard.Shortcut>
+                      {hasGenerateApiKeyLink && (
+                        <Dashboard.Shortcut to="/account/api-keys/create">
+                          Generate an API Key
+                        </Dashboard.Shortcut>
+                      )}
 
-                    <Dashboard.Shortcut to="/signals/analytics">
-                      Analyze your Data
-                    </Dashboard.Shortcut>
+                      <Dashboard.Shortcut to="/signals/analytics">
+                        Analyze your Data
+                      </Dashboard.Shortcut>
 
-                    <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
+                      <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
+                    </Box>
                   </Column>
                 </Columns>
               </Dashboard.Panel>
+
+              <Dashboard.Panel>
+                <Panel.Section>
+                  <Panel.Headline>
+                    <Panel.HeadlineIcon as={LightbulbOutline} />
+
+                    <TranslatableText>Helpful Shortcuts</TranslatableText>
+                  </Panel.Headline>
+
+                  <Columns collapseBelow="md">
+                    <Dashboard.Tip>
+                      <PageLink to="/templates">Templates</PageLink>
+
+                      {/* TODO: Replace placeholder content */}
+                      <Text>
+                        Get up and sending quickly using our sample templates. AMP for email, Yes we
+                        have it.
+                      </Text>
+                    </Dashboard.Tip>
+
+                    <Dashboard.Tip>
+                      {/* TODO: Where does this go? */}
+                      <PageLink to="/">DKIM Authentication</PageLink>
+
+                      <Text>
+                        Get up and sending quickly using our sample templates. AMP for email, Yes we
+                        have it.
+                      </Text>
+                    </Dashboard.Tip>
+
+                    <Dashboard.Tip>
+                      {/* TODO: Where does this go? */}
+                      <PageLink to="/">SMTP Set-up</PageLink>
+
+                      <Text>
+                        Get up and sending quickly using our sample templates. AMP for email, Yes we
+                        have it.
+                      </Text>
+                    </Dashboard.Tip>
+                  </Columns>
+                </Panel.Section>
+              </Dashboard.Panel>
+
+              <Columns collapseBelow="md" space="500">
+                {hasSetupDocumentationPanel && (
+                  <Column>
+                    <Dashboard.Panel>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <Panel.HeadlineIcon as={Code} />
+
+                          <TranslatableText>Setup Documentation</TranslatableText>
+                        </Panel.Headline>
+
+                        <ExternalLink to="/">Integration Documentation</ExternalLink>
+                      </Panel.Section>
+                    </Dashboard.Panel>
+                  </Column>
+                )}
+
+                <Column>
+                  <Dashboard.Panel>
+                    <Panel.Section>
+                      <Panel.Headline>
+                        <Panel.HeadlineIcon as={ChatBubble} />
+
+                        <TranslatableText>Need Help?</TranslatableText>
+                      </Panel.Headline>
+
+                      <SupportTicketLink>Contact our Support Team</SupportTicketLink>
+                    </Panel.Section>
+                  </Dashboard.Panel>
+                </Column>
+
+                {/* Used to shift the "Need Help?" Panel to align to the left */}
+                {!hasSetupDocumentationPanel && <Column />}
+              </Columns>
             </Stack>
           </Layout.Section>
 
