@@ -28,8 +28,7 @@ function mapStateToProps(state) {
     validationsThisMonth: selectMonthlyRecipientValidationUsage(state),
     endOfBillingPeriod: selectEndOfBillingPeriod(state),
     pending: isPending,
-    hasSetupDocumentationPanel:
-      isAdmin(state) || hasRole(ROLES.SUPER_USER)(state) || hasRole(ROLES.DEVELOPER)(state),
+    hasSetupDocumentationPanel: isAdmin(state) || hasRole(ROLES.DEVELOPER)(state),
     hasAddSendingDomainLink: hasGrants('sending_domains/manage')(state),
     hasGenerateApiKeyLink: hasGrants('api_keys/manage')(state),
     hasUpgradeLink: hasGrants('account/manage')(state),
