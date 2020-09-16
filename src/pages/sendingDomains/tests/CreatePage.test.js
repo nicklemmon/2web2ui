@@ -1,6 +1,9 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import { CreatePage } from '../CreatePage';
+import * as segmentHelpers from 'src/helpers/segment';
+
+segmentHelpers.segmentTrack = jest.fn();
 
 describe('Sending Domains Create Page', () => {
   let wrapper;
@@ -28,5 +31,8 @@ describe('Sending Domains Create Page', () => {
     expect(
       wrapper.instance().props.history.push,
     ).toHaveBeenCalledWith('/account/sending-domains/edit/domain.com', { triggerGuide: undefined });
+    expect(segmentHelpers.segmentTrack).toHaveBeenCalledWith(
+      segmentHelpers.SEGMENT_EVENTS.SENDING_DOMAIN_ADDED,
+    );
   });
 });
