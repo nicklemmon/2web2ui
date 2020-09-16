@@ -106,19 +106,21 @@ function BillingUsage() {
           </div>
         ) : null}
 
-        <div>
-          {endOfBillingPeriod ? (
-            <SubduedText>
-              <TranslatableText>Your billing period ends </TranslatableText>
+        {hasUsageSection ? (
+          <div>
+            {endOfBillingPeriod ? (
+              <SubduedText>
+                <TranslatableText>Your billing period ends </TranslatableText>
 
-              <span data-id="sidebar-validations-end-of-billing-period">
-                {formatDate(endOfBillingPeriod, config.dateFormatWithComma)}
-              </span>
-            </SubduedText>
-          ) : null}
+                <span data-id="sidebar-validations-end-of-billing-period">
+                  {formatDate(endOfBillingPeriod, config.dateFormatWithComma)}
+                </span>
+              </SubduedText>
+            ) : null}
 
-          <PageLink to="/usage">View Usage Numbers</PageLink>
-        </div>
+            <PageLink to="/usage">View Usage Numbers</PageLink>
+          </div>
+        ) : null}
       </Stack>
     </div>
   );
