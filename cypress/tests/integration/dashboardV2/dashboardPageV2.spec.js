@@ -80,8 +80,10 @@ describe('Version 2 of the dashboard page', () => {
         fixture: 'users/200.get.reporting.json',
         requestAlias: 'userReq',
       });
-      commonBeforeSteps();
-      cy.wait('@userReq');
+      stubAccountsReq();
+      stubAlertsReq();
+      cy.visit(PAGE_URL);
+      cy.wait(['@accountReq', '@alertsReq', '@userReq']);
 
       cy.findByRole('heading', { name: 'Setup Documentation' }).should('not.be.visible');
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
