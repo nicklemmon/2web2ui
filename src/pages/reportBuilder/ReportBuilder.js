@@ -121,15 +121,7 @@ export function ReportBuilder({
       <Panel.LEGACY>
         <ReportOptions reportLoading={chart.chartLoading} searchOptions={summarySearchOptions} />
         {isEmpty ? (
-          <Empty
-            message={
-              <>
-                <span>No Data</span>
-                <br />
-                <span>Must select at least one metric.</span>
-              </>
-            }
-          />
+          <Empty message="No Data" description="Must select at least one metric." />
         ) : (
           <>
             <hr className={styles.Line} />

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import { Heading } from 'src/components/text';
-import { Box, Text } from 'src/components/matchbox';
+import { Box, Stack, Text } from 'src/components/matchbox';
 import styles from './Empty.module.scss';
 
 function OGEmpty({ message }) {
@@ -13,7 +13,7 @@ function OGEmpty({ message }) {
   );
 }
 
-function HibanaEmpty({ message }) {
+function HibanaEmpty({ description, message }) {
   return (
     <Box
       paddingTop="800"
@@ -27,9 +27,16 @@ function HibanaEmpty({ message }) {
       justifyContent="center"
       size="100%"
     >
-      <Text color="gray.900" fontSize="400" fontWeight="500">
-        {message}
-      </Text>
+      <Stack space="0">
+        <Text color="gray.900" fontSize="400" fontWeight="500">
+          {message}
+        </Text>
+        {description && (
+          <Text color="gray.900" fontSize="400" fontWeight="500">
+            {description}
+          </Text>
+        )}
+      </Stack>
     </Box>
   );
 }
@@ -40,6 +47,7 @@ function Empty(props) {
 
 Empty.propTypes = {
   message: PropTypes.string.isRequired,
+  description: PropTypes.string,
 };
 
 export default Empty;

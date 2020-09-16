@@ -1,75 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import { PRESET_REPORT_CONFIGS } from '../constants/presetReport';
-// import { Typeahead, TypeaheadItem } from 'src/components/typeahead/Typeahead';
-import { Button, Grid, Select } from 'src/components/matchbox';
+import TypeSelect from 'src/components/typeahead/TypeSelect';
+import { Button, Column, Columns } from 'src/components/matchbox';
+import { TranslatableText } from 'src/components/text';
 import { Edit, FolderOpen, Save } from '@sparkpost/matchbox-icons';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
-
-const options = PRESET_REPORT_CONFIGS.map(report => {
-  return { label: report.name, value: report.key };
-});
-
-const StyledButton = styled(Button)`
-  position: relative;
-  top: 40%;
-`;
+import { getReports } from 'src/actions/reports';
 
 const SavedReportsSection = props => {
   /* eslint-disable no-unused-vars */
   const [modalStatus, setModalStatus] = useState('');
+  const reports = props.reports.map(report => ({ ...report, key: report.id }));
+
+  useEffect(() => {
+    if (props.isSavedReportsEnabled) {
+      props.getReports();
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
-    <Grid>
-      <Grid.Column lg={7} sm={12} xs={12}>
-        <Select
-          placeholder="Select a Report"
-          id="report-select"
+    <Columns
+      alignY="bottom" // pull buttons to bottom when side by side
+      collapseBelow="md"
+    >
+      <Column>
+        <TypeSelect
           label="Report"
-          options={options}
-          value={props.selectedItem?.key}
-          onChange={e => props.handleReportChange(e.target.value)}
+          disabled={props.status === 'loading'}
+          id="report-typeahead"
+          itemToString={report => (report ? report.name : '')} // return empty string when nothing is selected
+          label="Report"
+          onChange={props.handleReportChange}
+          placeholder="Select a Report"
+          renderItem={report => (
+            <TypeSelect.Item label={report.name} meta={report.creator || 'Default'} />
+          )}
+          results={[
+            ...reports.filter(({ creator }) => creator === props.currentUser.username),
+            ...reports.filter(({ creator }) => creator !== props.currentUser.username),
+            ...PRESET_REPORT_CONFIGS,
+          ]}
+          selectedItem={props.selectedItem}
         />
-      </Grid.Column>
+      </Column>
       {props.isSavedReportsEnabled && (
-        <Grid.Column lg={5} sm={12} xs={12}>
-          <StyledButton variant="tertiary" onClick={() => setModalStatus('edit')}>
-            Edit Details
-            <Button.Icon as={Edit} ml="200" />
-          </StyledButton>
-          <StyledButton variant="tertiary" onClick={() => setModalStatus('save')}>
-            Save Changes
-            <Button.Icon as={Save} ml="200" />
-          </StyledButton>
-          <StyledButton variant="tertiary" onClick={() => setModalStatus('view')}>
-            View All Reports
-            <Button.Icon as={FolderOpen} ml="200" />
-          </StyledButton>
-        </Grid.Column>
+        <Column width="content">
+          <Button variant="tertiary" onClick={() => setModalStatus('edit')}>
+            <TranslatableText>Edit Details</TranslatableText>
+            <Button.Icon as={Edit} marginLeft="100" />
+          </Button>
+          <Button variant="tertiary" onClick={() => setModalStatus('save')}>
+            <TranslatableText>Save Changes</TranslatableText>
+            <Button.Icon as={Save} marginLeft="100" />
+          </Button>
+          <Button variant="tertiary" onClick={() => setModalStatus('view')}>
+            <TranslatableText>View All Reports</TranslatableText>
+            <Button.Icon as={FolderOpen} marginLeft="100" />
+          </Button>
+        </Column>
       )}
-    </Grid>
+    </Columns>
   );
-
-  // TODO: refactor typeahead to be able to have new behavior
-  // return (
-  //   <Typeahead
-  //     renderItem={item => <TypeaheadItem label={item.name} />}
-  //     canChange
-  //     label="Report"
-  //     itemToString={report => (report ? report.name : '')}
-  //     name="ReportTypeahead"
-  //     placeholder="Select a Report"
-  //     onChange={props.handleReportChange}
-  //     selectedItem={props.selectedItem}
-  //     results={PRESET_REPORT_CONFIGS}
-  //   />
-  // );
 };
 
 const mapStateToProps = state => ({
+  currentUser: state.currentUser,
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
+  reports: state.reports.list,
+  status: state.reports.status,
 });
 
-export default connect(mapStateToProps)(SavedReportsSection);
+export default connect(mapStateToProps, { getReports })(SavedReportsSection);

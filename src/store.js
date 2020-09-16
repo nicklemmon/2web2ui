@@ -4,17 +4,20 @@ import rootReducer from './reducers';
 import ErrorTracker from './helpers/errorTracker';
 import analyticsMiddleware from './helpers/analytics/middleware';
 
-const configureStore = () => {
+const configureStore = initialState => {
   // necessary for redux devtools in development mode only
-  const composeEnhancers = process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line no-mixed-operators
+  const composeEnhancers =
+    (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+    compose; // eslint-disable-line no-mixed-operators
 
   const store = createStore(
     rootReducer,
+    initialState,
     composeEnhancers(
       applyMiddleware(thunk),
       applyMiddleware(ErrorTracker.middleware),
-      applyMiddleware(analyticsMiddleware)
-    )
+      applyMiddleware(analyticsMiddleware),
+    ),
   );
 
   // Hot module replacement

@@ -10,3 +10,13 @@ export function createReport(data) {
     },
   });
 }
+
+export function getReports() {
+  return sparkpostApiRequest({
+    type: 'GET_REPORTS',
+    meta: {
+      method: 'GET',
+      url: '/v1/reports',
+    },
+  });
+}

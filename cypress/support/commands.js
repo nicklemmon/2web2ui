@@ -244,9 +244,21 @@ Cypress.Commands.add('findByAriaLabelledByText', text =>
 );
 
 // todo, replace with findByAriaLabelledByText when Panel sets the correct aria attributes
-Cypress.Commands.add('findByPanelTitle', title =>
+Cypress.Commands.add('findByPanelTitle', text =>
   cy
-    .findByText(title)
+    .findByText(text)
     .parent({ log: false })
     .parent({ log: false }),
+);
+
+Cypress.Commands.add('findListBoxByLabelText', text =>
+  cy.findByLabelText(text).then($input => {
+    const id = $input.attr('aria-controls');
+
+    if (!id) {
+      throw new Error(`Unable to find listbox id for label with '${text}' text`);
+    }
+
+    return cy.get(`#${id}[role=listbox]`);
+  }),
 );

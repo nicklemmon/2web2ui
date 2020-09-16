@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "created": "2020-01-01T01:01Z",
+      "creator": "appteam",
+      "current_user_can_edit": true,
+      "description": "",
+      "id": "d50d8475-d4e8-4df0-950f-b142f77df0bf",
+      "is_editable": true,
+      "modified": "2020-01-01T01:01Z",
+      "name": "My Bounce Report",
+      "query_string": "from=2020-01-01T01%3A01%3A00Z&to=2020-01-02T01%3A01%3A00Z&range=7days&timezone=America%2FNew_York&precision=hour&metrics=count_bounce",
+      "subaccount_id": 0
+    },
+    {
+      "created": "2020-01-01T01:01Z",
+      "creator": "sally-sender",
+      "current_user_can_edit": false,
+      "description": "",
+      "id": "d50d8475-d4e8-4df0-950f-b142f77df0bz",
+      "is_editable": true,
+      "modified": "2020-01-01T01:01Z",
+      "name": "Your Sending Report",
+      "query_string": "from=2020-01-01T01%3A01%3A00Z&to=2020-01-02T01%3A01%3A00Z&range=7days&timezone=America%2FNew_York&precision=hour&metrics=count_sent",
+      "subaccount_id": 0
+    }
+  ]
+}

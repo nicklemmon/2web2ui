@@ -10,16 +10,19 @@ if (IS_HIBANA_ENABLED) {
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.metrics-rollup-and-saved-reports.json',
       });
-      cy.visit(PAGE_URL);
+
+      cy.stubRequest({
+        url: '/api/v1/reports',
+        fixture: '200.get.no-results',
+      });
     });
 
     it('loads a preset report with additional filters when given a report query param and filter param', () => {
-      cy.findByLabelText('Report').should('not.have.value', 'engagement'); //TODO: Remove
-      //cy.findByText('Engagement Report').should('not.be.visible');
+      cy.visit(PAGE_URL);
+      cy.findByText('Engagement Report').should('not.be.visible');
 
       cy.visit(`${PAGE_URL}&report=engagement`);
-      cy.findByLabelText('Report').should('have.value', 'engagement'); //TODO: Remove
-      //cy.findByText('Engagement Report').should('be.visible');
+      cy.findByText('Engagement Report').should('be.visible');
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
       cy.findAllByText('Clicks').should('be.visible');
@@ -30,8 +33,11 @@ if (IS_HIBANA_ENABLED) {
     });
 
     it('Selecting a preset report works correctly', () => {
+      cy.visit(PAGE_URL);
       cy.withinMainContent(() => {
-        cy.findByLabelText('Report').select('engagement');
+        cy.findByLabelText('Report').type('engagement');
+        cy.findByText('Engagement Report').should('be.visible');
+        cy.findByText('Engagement Report').click({ force: true });
         cy.wait(['@getTimeSeries', '@getDeliverability']);
 
         cy.findAllByText('Sent').should('be.visible');
@@ -42,6 +48,7 @@ if (IS_HIBANA_ENABLED) {
     });
 
     it('Changing from a preset/initial report to a preset report keeps existing time range and filters', () => {
+      cy.visit(PAGE_URL);
       const assertions = () => {
         cy.findByDataId('report-options').within(() => {
           cy.findByLabelText('Precision').should('have.value', 'day');
@@ -81,18 +88,16 @@ if (IS_HIBANA_ENABLED) {
         assertions();
 
         //Change to engagement report
-        cy.findByLabelText('Report').select('engagement'); //TODO: Remove
-
-        // cy.findByText('Engagement Report').click({ force: true });
+        cy.findByLabelText('Report').type('Engagement');
+        cy.findByText('Engagement Report').click({ force: true });
         assertions();
         cy.findAllByText('Sent').should('be.visible');
 
         //Change to summary report
-        // cy.findByLabelText('Report')
-        //   .clear()
-        //   .type('Summary');
-        cy.findByLabelText('Report').select('summary'); //TODO: Remove
-        // cy.findByText('Summary Report').click({ force: true });
+        cy.findByLabelText('Report')
+          .clear()
+          .type('Summary');
+        cy.findByText('Summary Report').click({ force: true });
         cy.wait(['@getUTCTimeSeries', '@getUTCDeliverability']);
         assertions();
         cy.findAllByText('Targeted').should('be.visible');
@@ -106,6 +111,8 @@ if (IS_HIBANA_ENABLED) {
         fixture: 'reports/200.post.json',
         requestAlias: 'saveNewReport',
       });
+
+      cy.visit(PAGE_URL);
 
       cy.findByRole('button', { name: 'Save New Report' }).click();
 
@@ -124,6 +131,61 @@ if (IS_HIBANA_ENABLED) {
       });
       cy.wait('@saveNewReport');
       cy.findByText('You have successfully saved Hello There').click();
+    });
+
+    describe('with save reports', () => {
+      beforeEach(() => {
+        cy.stubRequest({
+          url: '/api/v1/reports',
+          fixture: 'reports/200.get',
+          requestAlias: 'getSavedReports',
+        });
+      });
+
+      it('loads saved reports', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.findByLabelText('Report').focus();
+
+        cy.findListBoxByLabelText('Report').within(() => {
+          cy.get(`a[role="option"]`)
+            .eq(0)
+            .should('have.contain', 'My Bounce Report')
+            .should('have.contain', 'appteam');
+
+          cy.get(`a[role="option"]`)
+            .eq(1)
+            .should('have.contain', 'Your Sending Report')
+            .should('have.contain', 'sally-sender');
+
+          cy.get(`a[role="option"]`)
+            .eq(2)
+            .should('have.contain', 'Summary Report')
+            .should('have.contain', 'Default');
+        });
+      });
+
+      it('loads a saved report', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.findByLabelText('Report').focus(); // open typeahead
+
+        cy.findListBoxByLabelText('Report').within(() => {
+          cy.get(`a[role="option"]`)
+            .eq(0)
+            .should('have.contain', 'My Bounce Report')
+            .click();
+        });
+
+        cy.findByLabelText('Report').should('have.value', 'My Bounce Report');
+        cy.findByLabelText('Time Zone').should('have.value', '(UTC-04:00) America/New York');
+        cy.findByLabelText('Precision').should('have.value', 'hour');
+
+        cy.get('[data-id="metric-tag"]')
+          .should('have.length', 1)
+          .eq(0)
+          .should('have.contain', 'Bounces');
+      });
     });
   });
 }

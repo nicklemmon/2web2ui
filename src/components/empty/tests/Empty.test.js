@@ -1,20 +1,30 @@
 import React from 'react';
+import { render } from '@testing-library/react';
+import TestApp from 'src/__testHelpers__/TestApp';
 import { Empty } from 'src/components';
-import { useHibana } from 'src/context/HibanaContext';
-import { shallow } from 'enzyme';
-
-jest.mock('src/context/HibanaContext');
 
 describe('Empty: ', () => {
-  beforeEach(() => useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: false }]));
+  it('renders a message', () => {
+    const { getByText, queryByText } = render(
+      <TestApp>
+        <Empty message="nothing here to see" description="so go away" />
+      </TestApp>,
+    );
 
-  const subject = props => {
-    return shallow(<Empty title="Empty Title" message="nothing here to see" {...props} />);
-  };
+    expect(getByText('nothing here to see')).toBeInTheDocument();
+    expect(queryByText('so go away')).not.toBeInTheDocument();
+  });
 
-  it('should render', () => {
-    const wrapper = subject();
-    expect(wrapper).toHaveTextContent('Empty Title');
-    expect(wrapper).toHaveTextContent('nothing here to see');
+  describe('with hibana enabled', () => {
+    it('renders a message and a description', () => {
+      const { getByText } = render(
+        <TestApp isHibanaEnabled={true}>
+          <Empty message="nothing here to see" description="so go away" />
+        </TestApp>,
+      );
+
+      expect(getByText('nothing here to see')).toBeInTheDocument();
+      expect(getByText('so go away')).toBeInTheDocument();
+    });
   });
 });
