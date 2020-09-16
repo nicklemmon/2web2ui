@@ -12,6 +12,7 @@ export const SEGMENT_EVENTS = {
   ALERT_CREATED: 'Alert Created',
   API_KEY_CREATED: 'API Key Created',
   INVITE_SENT: 'Invite Sent',
+  SENDING_DOMAIN_ADDED: 'Sending Domain Added',
   SENDING_DOMAIN_VERIFIED: 'Sending Domain Verified',
 };
 
