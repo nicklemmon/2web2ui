@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  create as createSendingDomain,
   list as listSendingDomains,
+  update as updateSendingDomain,
+  create as createSendingDomain,
 } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { showAlert } from 'src/actions/globalAlert';
@@ -33,6 +34,7 @@ const mapDispatchToProps = {
   createSendingDomain,
   createTrackingDomain,
   listSendingDomains,
+  updateSendingDomain,
   listSubaccounts,
   listTrackingDomains,
   showAlert,
