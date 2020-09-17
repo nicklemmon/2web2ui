@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
-import { Bookmark } from '@sparkpost/matchbox-icons';
 import config from 'src/config';
 import { ApiErrorBanner, Empty, PanelLoading, Subaccount, TableCollection } from 'src/components';
 import { PageLink } from 'src/components/links';
 import { TranslatableText } from 'src/components/text';
-import { Box, Inline, Panel, ScreenReaderOnly, Stack, Tag, Tooltip } from 'src/components/matchbox';
-import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
+import { Panel, ScreenReaderOnly, Stack } from 'src/components/matchbox';
 import { formatDate } from 'src/helpers/date';
-import useUniqueId from 'src/hooks/useUniqueId';
 import useDomains from '../hooks/useDomains';
 import { DETAILS_BASE_URL, API_ERROR_MESSAGE } from '../constants';
+import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
 
 export default function SendingDomainsTable({ renderBounceOnly = false }) {
   const {
@@ -99,44 +97,5 @@ function MainCell({ domain }) {
         </div>
       ) : null}
     </Stack>
-  );
-}
-
-function StatusCell({ domain }) {
-  const tooltipId = useUniqueId('default-bounce-domain');
-  const resolvedStatus = resolveStatus(domain.status);
-  const readyFor = resolveReadyFor(domain.status);
-  const { is_default_bounce_domain, status } = domain;
-
-  if (resolvedStatus === 'blocked') return <Tag color="red">Blocked</Tag>;
-
-  return (
-    <Inline space="100">
-      {resolvedStatus === 'unverified' && <Tag color="yellow">Failed Verification</Tag>}
-
-      {readyFor?.sending && <Tag>Sending</Tag>}
-
-      {readyFor?.bounce && (
-        <Tag>
-          <Inline space="100">
-            <TranslatableText>Bounce</TranslatableText>
-
-            {is_default_bounce_domain && (
-              <Box color="green.700">
-                <Tooltip content="Default Bounce Domain" id={tooltipId}>
-                  <div tabIndex="0" data-id="default-bounce-domain-tooltip">
-                    <Bookmark />
-                  </div>
-                </Tooltip>
-              </Box>
-            )}
-          </Inline>
-        </Tag>
-      )}
-
-      {readyFor?.dkim && <Tag color="green">DKIM Signing</Tag>}
-
-      {status?.spf_status === 'valid' && <Tag color="green">SPF Valid</Tag>}
-    </Inline>
   );
 }
