@@ -27,11 +27,11 @@ const mapDispatchToProps = {
   setIsHibanaEnabled: bool => {
     if (window.pendo && window.pendo.track) {
       window.pendo.track(`Hibana Toggle - ${Boolean(bool) ? 'On' : 'Off'}`);
-      if (bool) {
-        segmentTrack(SEGMENT_EVENTS.HIBANA_TOGGLED_ON);
-      } else {
-        segmentTrack(SEGMENT_EVENTS.HIBANA_TOGGLED_OFF);
-      }
+    }
+    if (bool) {
+      segmentTrack(SEGMENT_EVENTS.HIBANA_TOGGLED_ON);
+    } else {
+      segmentTrack(SEGMENT_EVENTS.HIBANA_TOGGLED_OFF);
     }
 
     // Always dismiss the banner when the user toggles their theme
