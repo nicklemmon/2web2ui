@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { Button, Box, Page, Layout, Stack, Text } from 'src/components/matchbox';
-import { Checkbox, Columns, Column, Panel, TextField, Tag } from 'src/components/matchbox';
+import { Button, Page, Layout, Stack, Text } from 'src/components/matchbox';
+import { Checkbox, Columns, Column, Panel } from 'src/components/matchbox';
 import { Heading, SubduedText } from 'src/components/text';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { SendingDomainStatusCell as StatusCell } from './components/SendingDomainStatusCell';
 import { connect } from 'react-redux';
-import { Bookmark, ChevronRight, Send } from '@sparkpost/matchbox-icons';
+import { Bookmark, Send } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
 import {
   selectAllowDefaultBounceDomains,
@@ -17,11 +17,6 @@ import { ExternalLink, PageLink } from 'src/components/links';
 import { selectDomain } from 'src/selectors/sendingDomains';
 import styled from 'styled-components';
 import { CopyField } from 'src/components';
-
-const StyledText = styled(Text)`
-  float: right;
-  color: #c5ced6;
-`;
 
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
@@ -50,9 +45,10 @@ function DetailsPage(props) {
             allowSubaccountDefault
           />
         </Layout>
-        <Layout>
+        {/* <Layout>
           <DNSDetailsSection domain={props.domain} id={props.match.params.id} />
-        </Layout>
+        </Layout> */}
+        {/* this section is a placeholder */}
         <Layout>
           <SetupForSending domain={props.domain} id={props.match.params.id} />
         </Layout>
@@ -73,73 +69,76 @@ export default connect(
   { getDomain },
 )(DetailsPage);
 
-function DNSDetailsSection(props) {
-  return (
-    <>
-      <Layout.Section annotated>
-        <Layout.SectionTitle as="h2">DNS Details</Layout.SectionTitle>
-        <Stack>
-          <SubduedText>
-            Something about these records being successfully placed in Go-Daddy?
-          </SubduedText>
-          <ExternalLink>Documentation</ExternalLink>
-          <SubduedText>
-            We've noticed this domain is not SPF authenticated. We think you should do this because
-            it is super important. Please add the info on the right to your DNS platform.
-          </SubduedText>
-        </Stack>
-      </Layout.Section>
-      <Layout.Section>
-        <Panel>
-          <Panel.Section>
-            Below is the{' '}
-            <Text as="span" fontWeight="semibold">
-              CNAME{' '}
-            </Text>{' '}
-            record for the Hostname and Value for this domain hosted at{' '}
-            <PageLink>Go-Daddy</PageLink>
-          </Panel.Section>
-          <Panel.Section>
-            <Stack>
-              <TextField
-                id="dns-hostname"
-                label="Hostname"
-                value={props.domain.dkimHostname} //not sure what these values should be
-                readOnly
-              />
-              <TextField id="dns-hostname" label="Value" value={props.domain.dkimValue} readOnly />{' '}
-              {/*Not sure what this value is */}
-            </Stack>
-          </Panel.Section>
-          <Panel.Section>
-            <Stack>
-              <Box>
-                <Text as="span" fontSize="400" fontWeight="semibold">
-                  Add SPF Record <Tag color="green">Recommended</Tag>
-                </Text>
-                <StyledText as="span" fontSize="400" color="gray.400">
-                  Optional
-                </StyledText>
-              </Box>
-              <CopyField label="Hostname" value={props.domain.dkimHostname}></CopyField>
-              <CopyField label="Value" value={props.domain.dkimValue}></CopyField>
-              <Checkbox
-                id="add-txt-to-godaddy"
-                label={<>I've added TXT record to Go-Daddy</>}
-                checked={false}
-                onClick={() => {}}
-              />
-            </Stack>
-          </Panel.Section>
-          <Panel.Section>
-            <Button variant="primary">Authenticate for SPF</Button>
-            {/* Functionality not available */}
-          </Panel.Section>
-        </Panel>
-      </Layout.Section>
-    </>
-  );
+{
+  /* this section is a placeholder */
 }
+// function DNSDetailsSection(props) {
+//   return (
+//     <>
+//       <Layout.Section annotated>
+//         <Layout.SectionTitle as="h2">DNS Details</Layout.SectionTitle>
+//         <Stack>
+//           <SubduedText>
+//             Something about these records being successfully placed in Go-Daddy?
+//           </SubduedText>
+//           <ExternalLink>Documentation</ExternalLink>
+//           <SubduedText>
+//             We've noticed this domain is not SPF authenticated. We think you should do this because
+//             it is super important. Please add the info on the right to your DNS platform.
+//           </SubduedText>
+//         </Stack>
+//       </Layout.Section>
+//       <Layout.Section>
+//         <Panel>
+//           <Panel.Section>
+//             Below is the{' '}
+//             <Text as="span" fontWeight="semibold">
+//               CNAME{' '}
+//             </Text>{' '}
+//             record for the Hostname and Value for this domain hosted at{' '}
+//             <PageLink>Go-Daddy</PageLink>
+//           </Panel.Section>
+//           <Panel.Section>
+//             <Stack>
+//               <TextField
+//                 id="dns-hostname"
+//                 label="Hostname"
+//                 value={props.domain.dkimHostname} //not sure what these values should be
+//                 readOnly
+//               />
+//               <TextField id="dns-hostname" label="Value" value={props.domain.dkimValue} readOnly />{' '}
+//               {/*Not sure what this value is */}
+//             </Stack>
+//           </Panel.Section>
+//           <Panel.Section>
+//             <Stack>
+//               <Box>
+//                 <Text as="span" fontSize="400" fontWeight="semibold">
+//                   Add SPF Record <Tag color="green">Recommended</Tag>
+//                 </Text>
+//                 <StyledText as="span" fontSize="400" color="gray.400">
+//                   Optional
+//                 </StyledText>
+//               </Box>
+//               <CopyField label="Hostname" value={props.domain.dkimHostname}></CopyField>
+//               <CopyField label="Value" value={props.domain.dkimValue}></CopyField>
+//               <Checkbox
+//                 id="add-txt-to-godaddy"
+//                 label={<>I've added TXT record to Go-Daddy</>}
+//                 checked={false}
+//                 onClick={() => {}}
+//               />
+//             </Stack>
+//           </Panel.Section>
+//           <Panel.Section>
+//             <Button variant="primary">Authenticate for SPF</Button>
+//             {/* Functionality not available */}
+//           </Panel.Section>
+//         </Panel>
+//       </Layout.Section>
+//     </>
+//   );
+// }
 
 function SetupForSending(props) {
   return (
@@ -166,14 +165,6 @@ function SetupForSending(props) {
 
           <Panel.Section>
             <Stack>
-              <Box>
-                <Text as="span" fontSize="400" fontWeight="semibold">
-                  Add SPF Record <Tag color="green">Recommended</Tag>
-                </Text>
-                <StyledText as="span" fontSize="400" color="gray.400">
-                  Optional
-                </StyledText>
-              </Box>
               <CopyField label="Hostname" value={props.domain.dkimHostname}></CopyField>
               <CopyField label="Value" value={props.domain.dkimValue}></CopyField>
               <Checkbox
@@ -275,9 +266,9 @@ function DomainStatusSection(props) {
                 Subaccount Assignment
               </Heading>
               <Text as="p">Subaccount {domain.subaccount_id}</Text>
-              <Panel.Action>
-                Change Assignment <ChevronRight /> {/* We don't have API to support this */}
-              </Panel.Action>
+              {/* <Panel.Action>
+                Change Assignment <ChevronRight /> // We don't have API to support this 
+              </Panel.Action> */}
             </Panel.Section>
           ) : (
             <Panel.Section>
