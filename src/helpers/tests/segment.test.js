@@ -47,7 +47,7 @@ describe('segment helpers', () => {
 
       segmentIdentify(traits);
       expect(window.analytics.identify).toBeCalledWith('email@abc.com//123', traits);
-      expect(window.analytics.group).toBeCalledWith('test-tenant//123', traits);
+      expect(window.analytics.group).toBeCalledWith('test-tenant//123');
     });
   });
 
