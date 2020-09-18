@@ -35,17 +35,18 @@ export const SEGMENT_TRAITS = {
 };
 
 /**
- * Helper to identify a user, partial updates are supported but must
- * always include the username and email
+ * Helper to identify and group a user, partial updates are supported
  * @param {} traits must include SEGMENT_TRAITS.USER_ID, SEGMENT_TRAITS.CUSTOMER_ID, and SEGMENT_TRAITS.EMAIL
  */
 export const segmentIdentify = traits => {
   if (
     window.analytics &&
     window.analytics.identify &&
+    window.analytics.group &&
     traits[SEGMENT_TRAITS.CUSTOMER_ID] &&
     traits[SEGMENT_TRAITS.USER_ID] &&
-    traits[SEGMENT_TRAITS.EMAIL]
+    traits[SEGMENT_TRAITS.EMAIL] &&
+    traits[SEGMENT_TRAITS.TENANT]
   ) {
     const filteredTraits = Object.values(SEGMENT_TRAITS).reduce((filtered, key) => {
       if (traits[key]) {
@@ -57,6 +58,9 @@ export const segmentIdentify = traits => {
     window.analytics.identify(
       `${filteredTraits[SEGMENT_TRAITS.EMAIL]}//${traits[SEGMENT_TRAITS.CUSTOMER_ID]}`,
       filteredTraits,
+    );
+    window.analytics.group(
+      `${filteredTraits[SEGMENT_TRAITS.TENANT]}//${traits[SEGMENT_TRAITS.CUSTOMER_ID]}`,
     );
   }
 };

@@ -5,6 +5,7 @@ describe('segment helpers', () => {
     beforeEach(() => {
       window.analytics = {};
       window.analytics.identify = jest.fn();
+      window.analytics.group = jest.fn();
     });
 
     it('does not pass invalid traits to segment', () => {
@@ -12,6 +13,7 @@ describe('segment helpers', () => {
         [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
         [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
         [SEGMENT_TRAITS.USER_ID]: 'username',
+        [SEGMENT_TRAITS.TENANT]: 'tenant',
         'invalid-trait': 'this-is-invalid',
       };
       segmentIdentify(traits);
@@ -20,6 +22,7 @@ describe('segment helpers', () => {
         [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
         [SEGMENT_TRAITS.USER_ID]: 'username',
       });
+      expect(window.analytics.group).toBeCalledWith('tenant//123');
     });
 
     it('does not call window.analytics.identify without user id/email', () => {
@@ -30,6 +33,7 @@ describe('segment helpers', () => {
       };
       segmentIdentify(traits);
       expect(window.analytics.identify).toBeCalledTimes(0);
+      expect(window.analytics.group).toBeCalledTimes(0);
     });
 
     it('calls window.analytics.identify with the correct id', () => {
@@ -42,6 +46,7 @@ describe('segment helpers', () => {
 
       segmentIdentify(traits);
       expect(window.analytics.identify).toBeCalledWith('email@abc.com//123', traits);
+      expect(window.analytics.group).toBeCalledWith('test-tenant//123', traits);
     });
   });
 
