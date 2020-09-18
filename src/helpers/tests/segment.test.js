@@ -21,6 +21,7 @@ describe('segment helpers', () => {
         [SEGMENT_TRAITS.CUSTOMER_ID]: 123,
         [SEGMENT_TRAITS.EMAIL]: 'email@abc.com',
         [SEGMENT_TRAITS.USER_ID]: 'username',
+        [SEGMENT_TRAITS.TENANT]: 'tenant',
       });
       expect(window.analytics.group).toBeCalledWith('tenant//123');
     });
