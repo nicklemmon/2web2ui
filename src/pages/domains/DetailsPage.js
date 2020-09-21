@@ -1,26 +1,13 @@
 import React, { useEffect } from 'react';
-import { Button, Page, Layout, Stack, Text } from 'src/components/matchbox';
-import { Checkbox, Columns, Column, Panel } from 'src/components/matchbox';
-import { Heading, SubduedText } from 'src/components/text';
+import { Page, Layout } from 'src/components/matchbox';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
-import { SendingDomainStatusCell as StatusCell } from './components/SendingDomainStatusCell';
 import { connect } from 'react-redux';
-import { Bookmark, Send } from '@sparkpost/matchbox-icons';
-import { resolveReadyFor } from 'src/helpers/domains';
 import {
   selectAllowDefaultBounceDomains,
   selectAllSubaccountDefaultBounceDomains,
 } from 'src/selectors/account';
-import useDomains from './hooks/useDomains';
-import { ExternalLink, PageLink } from 'src/components/links';
 import { selectDomain } from 'src/selectors/sendingDomains';
-import styled from 'styled-components';
-import { CopyField, ToggleBlock } from 'src/components';
-
-const PlaneIcon = styled(Send)`
-  transform: translate(0, -25%) rotate(-45deg);
-`;
 
 function DetailsPage(props) {
   useEffect(() => {
@@ -38,7 +25,7 @@ function DetailsPage(props) {
         }}
       >
         <Layout>
-          <DomainStatusSection
+          <Domains.DomainStatusSection
             domain={props.domain}
             id={props.match.params.id}
             allowDefault
@@ -46,10 +33,10 @@ function DetailsPage(props) {
           />
         </Layout>
         <Layout>
-          <SetupForSending domain={props.domain} id={props.match.params.id} />
+          <Domains.SetupForSending domain={props.domain} id={props.match.params.id} />
         </Layout>
         <Layout>
-          <DeleteDomainSection {...props} />
+          <Domains.DeleteDomainSection {...props} />
         </Layout>
       </Page>
     </Domains.Container>
@@ -64,227 +51,3 @@ export default connect(
   }),
   { getDomain },
 )(DetailsPage);
-
-function SetupForSending(props) {
-  const { verifyDkim, showAlert } = useDomains();
-
-  const handleVerifyDkim = () => {
-    const {
-      domain: { id, subaccount_id: subaccount },
-    } = props;
-
-    return verifyDkim({ id, subaccount }).then(results => {
-      const readyFor = resolveReadyFor(results);
-
-      if (readyFor.dkim) {
-        showAlert({
-          type: 'success',
-          message: `You have successfully verified DKIM record of ${id}`,
-        });
-      } else {
-        showAlert({
-          type: 'error',
-          message: `Unable to verify DKIM record of ${id}. ${results.dns.dkim_error}`,
-        });
-      }
-    });
-  };
-  return (
-    <>
-      <Layout.Section annotated>
-        <Layout.SectionTitle as="h2">Set up for Sending</Layout.SectionTitle>
-        <Stack>
-          <SubduedText>
-            This will make this domain ready for sending and DKIM-signing, verifying ownership and
-            at the same time resulting in better DKIM alignment.
-          </SubduedText>
-          <ExternalLink>Documentation</ExternalLink>
-        </Stack>
-      </Layout.Section>
-      <Layout.Section>
-        <Panel>
-          <Panel.Section>
-            Install these records, Hostnames and Values for this domain in the DNS settings at{' '}
-            <PageLink>Go-Daddy</PageLink>
-            <Panel.Action>
-              Forward to Collegue <PlaneIcon />
-            </Panel.Action>
-          </Panel.Section>
-
-          <Panel.Section>
-            <Stack>
-              <CopyField label="Hostname" value={props.domain.dkimHostname}></CopyField>
-              <CopyField label="Value" value={props.domain.dkimValue}></CopyField>
-              {/* <Checkbox
-                id="add-txt-to-godaddy"
-                label={<>I've added TXT record to Go-Daddy</>}
-                checked={false}
-                onClick={() => {}}
-              /> API doesn't support it*/}
-            </Stack>
-          </Panel.Section>
-          <Panel.Section>
-            <Button variant="primary" onClick={handleVerifyDkim}>
-              Verify Domain
-            </Button>
-            {/* Functionality not available */}
-          </Panel.Section>
-        </Panel>
-      </Layout.Section>
-    </>
-  );
-}
-
-function DomainStatusSection(props) {
-  const { allowDefault, allowSubaccountDefault, domain } = props;
-  const readyFor = resolveReadyFor(domain.status);
-  const showDefaultBounceSubaccount =
-    !domain.subaccount_id || (domain.subaccount_id && allowSubaccountDefault);
-  const showDefaultBounceToggle =
-    allowDefault && readyFor.sending && readyFor.bounce && showDefaultBounceSubaccount;
-  const { updateSendingDomain } = useDomains();
-
-  const toggleDefaultBounce = () => {
-    const { id } = props;
-
-    return updateSendingDomain({
-      id,
-      subaccount: domain.subaccount_id,
-      is_default_bounce_domain: !domain.is_default_bounce_domain,
-    }).catch(err => {
-      throw err; // for error reporting
-    });
-  };
-
-  const toggleShareWithSubaccounts = () => {
-    const { id } = props;
-
-    return updateSendingDomain({
-      id,
-      subaccount: domain.subaccount_id,
-      shared_with_subaccounts: !domain.shared_with_subaccounts,
-    }).catch(err => {
-      throw err; // for error reporting
-    });
-  };
-
-  return (
-    <>
-      <Layout.Section annotated>
-        <Stack>
-          <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
-          <ExternalLink>Documentation</ExternalLink>
-        </Stack>
-      </Layout.Section>
-      <Layout.Section>
-        <Panel>
-          <Panel.Section>
-            <Columns space="100">
-              <Column>
-                <Heading as="h3" looksLike="h5">
-                  Domain
-                </Heading>
-                <Text as="p">{domain.dkim?.signing_domain}</Text>
-              </Column>
-              <Column>
-                <Heading as="h3" looksLike="h5">
-                  Status
-                </Heading>
-                <StatusCell domain={domain} />
-              </Column>
-              {domain.creation_time ? (
-                <Column>
-                  <Heading as="h3" looksLike="h5">
-                    Date Added
-                  </Heading>
-                  <Text as="p">
-                    {new Date(domain.creation_time).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </Text>
-                </Column>
-              ) : (
-                <Column />
-              )}
-            </Columns>
-          </Panel.Section>
-          {domain.subaccount_id ? (
-            <Panel.Section>
-              <Heading as="h3" looksLike="h5">
-                Subaccount Assignment
-              </Heading>
-              <Text as="p">Subaccount {domain.subaccount_id}</Text>
-            </Panel.Section>
-          ) : (
-            <Panel.Section>
-              <ToggleBlock
-                input={{
-                  name: 'share-with-all-subaccounts',
-                  checked: domain.shared_with_subaccounts,
-                  onChange: toggleShareWithSubaccounts,
-                }}
-                label="Share this domain with all subaccounts"
-              />
-            </Panel.Section>
-          )}
-          {showDefaultBounceToggle && (
-            <>
-              <Panel.Section>
-                <Checkbox
-                  id="set-as-default-domain"
-                  label={
-                    <>
-                      Set as Default Bounce Domain <Bookmark color="green" />
-                    </>
-                  }
-                  checked={domain.is_default_bounce_domain}
-                  onClick={toggleDefaultBounce}
-                />
-              </Panel.Section>
-            </>
-          )}
-        </Panel>
-      </Layout.Section>
-    </>
-  );
-}
-
-function DeleteDomainSection(props) {
-  const { deleteDomain, showAlert } = useDomains();
-  const handleDeleteDomain = () => {
-    const {
-      domain: { id, subaccount_id: subaccount },
-    } = props;
-
-    return deleteDomain({ id, subaccount }).then(() => {
-      showAlert({
-        type: 'success',
-        message: `Domain ${id} deleted.`,
-      });
-      props.history.push('/domains/list/sending');
-    });
-  };
-  return (
-    <>
-      <Layout.Section annotated>
-        <Layout.SectionTitle as="h2">Delete Domain</Layout.SectionTitle>
-      </Layout.Section>
-      <Layout.Section>
-        <Panel accent="red">
-          <Panel.Section>
-            If you delete this domain its FINAL..... something else here
-          </Panel.Section>
-
-          <Panel.Section>
-            <Button variant="destructive" onClick={handleDeleteDomain}>
-              Delete Domain
-            </Button>
-            {/* Functionality not available */}
-          </Panel.Section>
-        </Panel>
-      </Layout.Section>
-    </>
-  );
-}
