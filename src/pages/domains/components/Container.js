@@ -4,6 +4,8 @@ import {
   list as listSendingDomains,
   update as updateSendingDomain,
   create as createSendingDomain,
+  remove as deleteDomain,
+  verifyDkim,
 } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { showAlert } from 'src/actions/globalAlert';
@@ -37,7 +39,9 @@ const mapDispatchToProps = {
   updateSendingDomain,
   listSubaccounts,
   listTrackingDomains,
+  verifyDkim,
   showAlert,
+  deleteDomain,
 };
 
 export default connect(

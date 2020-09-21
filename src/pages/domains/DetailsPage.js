@@ -16,7 +16,7 @@ import useDomains from './hooks/useDomains';
 import { ExternalLink, PageLink } from 'src/components/links';
 import { selectDomain } from 'src/selectors/sendingDomains';
 import styled from 'styled-components';
-import { CopyField } from 'src/components';
+import { CopyField, ToggleBlock } from 'src/components';
 
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
@@ -49,7 +49,7 @@ function DetailsPage(props) {
           <SetupForSending domain={props.domain} id={props.match.params.id} />
         </Layout>
         <Layout>
-          <DeleteDomainSection />
+          <DeleteDomainSection {...props} />
         </Layout>
       </Page>
     </Domains.Container>
@@ -66,6 +66,29 @@ export default connect(
 )(DetailsPage);
 
 function SetupForSending(props) {
+  const { verifyDkim, showAlert } = useDomains();
+
+  const handleVerifyDkim = () => {
+    const {
+      domain: { id, subaccount_id: subaccount },
+    } = props;
+
+    return verifyDkim({ id, subaccount }).then(results => {
+      const readyFor = resolveReadyFor(results);
+
+      if (readyFor.dkim) {
+        showAlert({
+          type: 'success',
+          message: `You have successfully verified DKIM record of ${id}`,
+        });
+      } else {
+        showAlert({
+          type: 'error',
+          message: `Unable to verify DKIM record of ${id}. ${results.dns.dkim_error}`,
+        });
+      }
+    });
+  };
   return (
     <>
       <Layout.Section annotated>
@@ -92,16 +115,18 @@ function SetupForSending(props) {
             <Stack>
               <CopyField label="Hostname" value={props.domain.dkimHostname}></CopyField>
               <CopyField label="Value" value={props.domain.dkimValue}></CopyField>
-              <Checkbox
+              {/* <Checkbox
                 id="add-txt-to-godaddy"
                 label={<>I've added TXT record to Go-Daddy</>}
                 checked={false}
                 onClick={() => {}}
-              />
+              /> API doesn't support it*/}
             </Stack>
           </Panel.Section>
           <Panel.Section>
-            <Button variant="primary">Verify Domain</Button>
+            <Button variant="primary" onClick={handleVerifyDkim}>
+              Verify Domain
+            </Button>
             {/* Functionality not available */}
           </Panel.Section>
         </Panel>
@@ -194,11 +219,13 @@ function DomainStatusSection(props) {
             </Panel.Section>
           ) : (
             <Panel.Section>
-              <Checkbox
-                id="share-with-all-subaccounts"
-                label={<>Share this domain with all subaccounts</>}
-                checked={domain.shared_with_subaccounts}
-                onClick={toggleShareWithSubaccounts}
+              <ToggleBlock
+                input={{
+                  name: 'share-with-all-subaccounts',
+                  checked: domain.shared_with_subaccounts,
+                  onChange: toggleShareWithSubaccounts,
+                }}
+                label="Share this domain with all subaccounts"
               />
             </Panel.Section>
           )}
@@ -224,7 +251,21 @@ function DomainStatusSection(props) {
   );
 }
 
-function DeleteDomainSection() {
+function DeleteDomainSection(props) {
+  const { deleteDomain, showAlert } = useDomains();
+  const handleDeleteDomain = () => {
+    const {
+      domain: { id, subaccount_id: subaccount },
+    } = props;
+
+    return deleteDomain({ id, subaccount }).then(() => {
+      showAlert({
+        type: 'success',
+        message: `Domain ${id} deleted.`,
+      });
+      props.history.push('/domains/list/sending');
+    });
+  };
   return (
     <>
       <Layout.Section annotated>
@@ -237,7 +278,9 @@ function DeleteDomainSection() {
           </Panel.Section>
 
           <Panel.Section>
-            <Button variant="destructive">Delete Domain</Button>
+            <Button variant="destructive" onClick={handleDeleteDomain}>
+              Delete Domain
+            </Button>
             {/* Functionality not available */}
           </Panel.Section>
         </Panel>
