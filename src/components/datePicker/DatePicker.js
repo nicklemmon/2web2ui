@@ -198,7 +198,7 @@ export class DatePickerClassComponent extends Component {
       relativeRange: 'custom',
       precision:
         this.state.selectedPrecision ||
-        getPrecision(moment(selectedDates.from), moment(selectedDates.to)),
+        getPrecision({ from: moment(selectedDates.from), to: moment(selectedDates.to) }),
     });
   };
 

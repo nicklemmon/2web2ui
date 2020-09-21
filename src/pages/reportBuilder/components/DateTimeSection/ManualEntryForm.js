@@ -5,7 +5,7 @@ import { Grid, TextField } from 'src/components/matchbox';
 import { formatInputDate, formatInputTime, parseDatetime } from 'src/helpers/date';
 import {
   getValidDateRange,
-  getPrecision,
+  getPrecision as getRawPrecision,
   getRollupPrecision,
   getMomentPrecisionByDate,
 } from 'src/helpers/metrics';
@@ -48,6 +48,9 @@ export function ManualEntryForm(props) {
     }
   }, initialState);
 
+  //default precision should only be set for the datepicker for metrics rollup
+  const getPrecision = props.defaultPrecision ? getRollupPrecision : getRawPrecision;
+
   const syncPropsToState = useCallback(({ to, from }) => {
     dispatch({
       type: actionTypes.syncProps,
@@ -87,7 +90,7 @@ export function ManualEntryForm(props) {
     // allow for prop-level override of "now" (DI, etc.)
     const { now, roundToPrecision, preventFuture, defaultPrecision } = props;
     try {
-      const precision = getRollupPrecision({ from, to, precision: defaultPrecision });
+      const precision = getPrecision({ from, to, precision: defaultPrecision });
       const { to: roundedTo, from: roundedFrom } = getValidDateRange({
         from,
         to,
@@ -132,7 +135,7 @@ export function ManualEntryForm(props) {
         precision: selectedPrecision,
       });
 
-      precisionLabelValue = getPrecision(validatedFrom, validatedTo);
+      precisionLabelValue = getPrecision({ from: validatedFrom, to: validatedTo });
       shouldDisableTime = selectedPrecision
         ? ['day', 'week', 'month'].includes(selectedPrecision)
         : getMomentPrecisionByDate(validatedFrom, validatedTo) === 'days';

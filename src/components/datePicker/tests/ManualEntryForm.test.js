@@ -174,6 +174,7 @@ describe('Component: DatePicker ManualEntryForm', () => {
         {
           from: mockFrom.toDate(),
           to: mockTo.toDate(),
+          precision: 'hour',
         },
         expect.any(Function),
       );
@@ -193,6 +194,7 @@ describe('Component: DatePicker ManualEntryForm', () => {
         {
           from: mockFrom.toDate(),
           to: mockTo.toDate(),
+          precision: 'hour',
         },
         expect.any(Function),
       );

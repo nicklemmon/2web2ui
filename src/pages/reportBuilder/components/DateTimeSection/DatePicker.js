@@ -12,7 +12,11 @@ import {
   getNextHour,
   isSameDate,
 } from 'src/helpers/date';
-import { roundBoundaries, getRollupPrecision, getPrecision } from 'src/helpers/metrics';
+import {
+  roundBoundaries,
+  getRollupPrecision,
+  getPrecision as getRawPrecision,
+} from 'src/helpers/metrics';
 import {
   ActionList,
   Box,
@@ -75,6 +79,8 @@ const datePickerReducer = (state, { type, payload }) => {
 };
 export function DatePicker(props) {
   const [state, dispatch] = useReducer(datePickerReducer, initialState);
+
+  const getPrecision = props.useMetricsRollup ? getRollupPrecision : getRawPrecision;
 
   const syncTimeToState = useCallback(
     ({ from, to, precision, relativeRange }) => {
@@ -160,7 +166,7 @@ export function DatePicker(props) {
         validationError: null,
         selectedPrecision:
           selectPrecision &&
-          getRollupPrecision({ from: dates.from, to: dates.to, precision: props.precision }),
+          getPrecision({ from: dates.from, to: dates.to, precision: props.precision }),
       },
     });
   };
@@ -248,7 +254,7 @@ export function DatePicker(props) {
       relativeRange: state.relativeRange,
       precision:
         state.selectedPrecision ||
-        getPrecision(moment(selectedDates.from), moment(selectedDates.to)),
+        getPrecision({ from: moment(selectedDates.from), to: moment(selectedDates.to) }),
     });
   };
 

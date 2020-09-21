@@ -13,9 +13,8 @@ import { list as listSendingDomains } from './sendingDomains';
 import { getRelativeDates } from 'src/helpers/date';
 import {
   getQueryFromOptions,
-  getPrecision,
+  getPrecision as getRawPrecision,
   getRollupPrecision,
-  getRecommendedRollupPrecision,
 } from 'src/helpers/metrics';
 import { isSameDate, getLocalTimezone } from 'src/helpers/date';
 import { dedupeFilters } from 'src/helpers/reports';
@@ -136,9 +135,10 @@ export function refreshReportOptions(payload) {
     const { reportOptions } = getState();
     let update = { ...reportOptions, ...payload };
     const { useMetricsRollup } = selectFeatureFlaggedMetrics(getState());
+    const getPrecision = useMetricsRollup ? getRollupPrecision : getRawPrecision;
     const isHibanaEnabled = isUserUiOptionSet('isHibanaEnabled')(getState());
 
-    if (!update.timezone) {
+    if (!update.timezone || !useMetricsRollup) {
       update.timezone = getLocalTimezone();
     }
 
@@ -156,45 +156,24 @@ export function refreshReportOptions(payload) {
       update.relativeRange = isHibanaEnabled ? '7days' : 'day'; //Default relative range
     }
 
-    if (isHibanaEnabled) {
-      // explicit update of range, new dates, try to preserve precision
-      let updateFrom = update.from;
-      let updateTo = update.to;
-      let updatePrecision = update.precision;
-      if (update.relativeRange !== 'custom') {
-        //regardless, update the dates
-        const { from, to } = getRelativeDates(update.relativeRange, {
-          precision: updatePrecision,
-        });
-        updateFrom = from;
-        updateTo = to;
-      }
-      const precision =
-        getRollupPrecision({ from: updateFrom, to: updateTo, precision: updatePrecision }) ||
-        getRecommendedRollupPrecision(updateFrom, moment(updateTo));
-      update = { ...update, from: updateFrom, to: updateTo, precision };
+    //old version of update
+
+    const rollupPrecision = useMetricsRollup && update.precision;
+    if (update.relativeRange !== 'custom') {
+      const { from, to } = getRelativeDates(update.relativeRange, {
+        precision: rollupPrecision,
+      });
+      //for metrics rollup, when using the relative dates, get the precision, else use the given precision
+      //If precision is not in the URL, get the recommended precision.
+      const precision = getPrecision({ from, to, precision: rollupPrecision });
+      update = { ...update, from, to, precision };
     } else {
-      //old version of update
-
-      const rollupPrecision = useMetricsRollup && update.precision;
-
-      if (update.relativeRange !== 'custom') {
-        const { from, to } = getRelativeDates(update.relativeRange, {
-          precision: rollupPrecision,
-        });
-        //for metrics rollup, when using the relative dates, get the precision, else use the given precision
-        //If precision is not in the URL, get the recommended precision.
-        const precision = useMetricsRollup
-          ? getRollupPrecision({ from, to, precision: rollupPrecision }) ||
-            getRecommendedRollupPrecision(from, moment(to))
-          : getPrecision(from, moment(to));
-        update = { ...update, from, to, precision };
-      } else {
-        const precision = useMetricsRollup
-          ? rollupPrecision || getRecommendedRollupPrecision(update.from, moment(update.to))
-          : getPrecision(update.from, moment(update.to));
-        update = { ...update, precision };
-      }
+      const precision = getPrecision({
+        from: update.from,
+        to: moment(update.to),
+        precision: rollupPrecision,
+      });
+      update = { ...update, precision };
     }
 
     return dispatch({

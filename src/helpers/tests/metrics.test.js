@@ -70,38 +70,36 @@ describe('metrics helpers', () => {
     const from = moment('2016-12-18T00:00').utc();
     const to = moment('2016-12-18T00:30').utc();
 
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('1min');
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('1min');
 
     to.add(1, 'hours');
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('5min');
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('5min');
 
     to.add(2, 'hours');
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('15min');
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('15min');
 
     to.add(5, 'hours');
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('hour');
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('hour');
 
     to.add(6, 'days');
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('day'); // 12hr precision makes for an odd x-axis, use day here
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('day'); // 12hr precision makes for an odd x-axis, use day here
 
     to.add(25, 'days');
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('day');
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('day');
 
     to.add(30, 'days');
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('week');
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('week');
 
     to.add(200, 'days');
-    expect(metricsHelpers.getPrecision(from, to)).toEqual('month');
+    expect(metricsHelpers.getPrecision({ from, to })).toEqual('month');
   });
 
   describe('getRollupPrecision', () => {
     const from = moment('2016-12-18T00:00').utc();
     const to = moment('2016-12-18T04:30').utc();
 
-    it('should return undefined when no precision is given', () => {
-      expect(metricsHelpers.getRollupPrecision({ from, to, precision: undefined })).toEqual(
-        undefined,
-      );
+    it('should return recommended precision when no precision is given', () => {
+      expect(metricsHelpers.getRollupPrecision({ from, to, precision: undefined })).toEqual('5min');
     });
     it('should return correct precision', () => {
       expect(metricsHelpers.getRollupPrecision({ from, to, precision: 'month' })).toEqual('5min');

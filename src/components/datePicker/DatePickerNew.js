@@ -266,7 +266,7 @@ export function DatePicker(props) {
       relativeRange: state.relativeRange,
       precision:
         state.selectedPrecision ||
-        getPrecision(moment(selectedDates.from), moment(selectedDates.to)),
+        getPrecision({ from: moment(selectedDates.from), to: moment(selectedDates.to) }),
     });
   };
 

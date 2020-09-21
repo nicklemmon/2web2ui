@@ -35,9 +35,12 @@ export const DateTimeSection = ({
   );
 
   const isForcedUTC =
-    reportOptions.precision && isForcedUTCRollupPrecision(reportOptions.precision);
+    useMetricsRollup &&
+    reportOptions.precision &&
+    isForcedUTCRollupPrecision(reportOptions.precision);
 
-  const isShownForcedUTC = shownPrecision && isForcedUTCRollupPrecision(shownPrecision);
+  const isShownForcedUTC =
+    useMetricsRollup && shownPrecision && isForcedUTCRollupPrecision(shownPrecision);
 
   const timezoneDisabled =
     !useMetricsRollup || reportLoading || (isForcedUTC && shownPrecision === '');
@@ -53,6 +56,7 @@ export const DateTimeSection = ({
           roundToPrecision={true}
           selectPrecision={true}
           label="Date Range"
+          useMetricsRollup={useMetricsRollup}
           updateShownPrecision={updateShownPrecision}
         />
       </Grid.Column>
