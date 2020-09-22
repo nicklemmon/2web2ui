@@ -20,7 +20,6 @@ function DetailsPage(props) {
         title="Domain Details"
         breadcrumbAction={{
           content: 'All Domains',
-          //TODO - should differ based on what the previous link was
           onClick: () => props.history.push('/domains/list/sending'),
         }}
       >
