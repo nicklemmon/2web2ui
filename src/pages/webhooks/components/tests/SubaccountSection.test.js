@@ -9,13 +9,13 @@ describe('Webhooks SubaccountSection', () => {
 
   describe('on create', () => {
     it('should render radio group', () => {
-      wrapper = shallow(<SubaccountSection assignTo='master' disabled={false} newWebhook />);
+      wrapper = shallow(<SubaccountSection assignTo="master" disabled={false} newWebhook />);
       expect(wrapper).toMatchSnapshot();
       expect(wrapper.find(Field).props().component).toEqual(RadioGroup);
     });
 
     it('should render subaccount typeahead', () => {
-      wrapper = shallow(<SubaccountSection assignTo='subaccount' disabled={false} newWebhook />);
+      wrapper = shallow(<SubaccountSection assignTo="subaccount" disabled={false} newWebhook />);
 
       // Second Field rendered under RadioGroup
       const typeahead = wrapper.find(Field).at(1);
@@ -29,7 +29,7 @@ describe('Webhooks SubaccountSection', () => {
         newWebhook: true,
         formName: 'webhook-create',
         change: jest.fn(),
-        disabled: false
+        disabled: false,
       };
 
       wrapper = shallow(<SubaccountSection {...props} />);
@@ -54,7 +54,7 @@ describe('Webhooks SubaccountSection', () => {
     });
 
     it('should render toggle block if subaccount is a string', () => {
-      wrapper = shallow(<SubaccountSection subaccount='Master and all subaccounts'/>);
+      wrapper = shallow(<SubaccountSection subaccount="Primary and all subaccounts" />);
       expect(wrapper).toMatchSnapshot();
       expect(wrapper.find(Field).props().component).toEqual(TextFieldWrapper);
     });

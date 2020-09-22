@@ -66,7 +66,7 @@ describe('Summary Table', () => {
     const tableContent = queryByTestId('summary-table');
     expect(within(tableContent).queryByText('Subaccount')).toBeInTheDocument();
     expect(within(tableContent).queryByText('Metric 1')).toBeInTheDocument();
-    expect(within(tableContent).queryByText('Master Account (ID 0)')).toBeInTheDocument();
+    expect(within(tableContent).queryByText('Primary Account (ID 0)')).toBeInTheDocument();
     expect(within(tableContent).queryByText('sub 1 name (ID 555)')).toBeInTheDocument();
     expect(within(tableContent).queryByText('Subaccount 1010')).toBeInTheDocument();
     expect(within(tableContent).queryAllByText('123')).not.toHaveLength(0);

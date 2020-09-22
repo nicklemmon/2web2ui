@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Subaccount from '../Subaccount';
 
 describe('Component: Subaccount', () => {
-  const subject = (props) => shallow(<Subaccount {...props}/>);
+  const subject = props => shallow(<Subaccount {...props} />);
 
   it('should render subaccount name and id in Name(id) format', () => {
     expect(subject({ id: 12, name: 'ABCName' }).text()).toEqual('ABCName (12)');
@@ -23,6 +23,6 @@ describe('Component: Subaccount', () => {
   });
 
   it('should render a master account tag', () => {
-    expect(subject({ master: true }).text()).toEqual('Master Account');
+    expect(subject({ master: true }).text()).toEqual('Primary Account');
   });
 });

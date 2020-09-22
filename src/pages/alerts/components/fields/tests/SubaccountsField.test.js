@@ -58,9 +58,9 @@ describe('Subaccount Field', () => {
     const itemToString = wrapper.prop('itemToString');
 
     it('returns only the name for master, master&all, and any', () => {
-      expect(itemToString(-1)).toEqual('Master and all subaccounts');
+      expect(itemToString(-1)).toEqual('Primary and all subaccounts');
       expect(itemToString(-2)).toEqual('Any subaccount');
-      expect(itemToString(0)).toEqual('Master account');
+      expect(itemToString(0)).toEqual('Primary account');
     });
 
     it('returns false for subaccount ids > 0', () => {

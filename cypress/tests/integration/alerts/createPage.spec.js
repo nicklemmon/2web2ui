@@ -79,7 +79,7 @@ describe('Alerts Page - Create', () => {
 
     cy.get('[data-id="alert-filters"]').within(() => {
       cy.findByLabelText('Subaccounts').type('subaccount');
-      cy.findByText('Master and all subaccounts').click({ force: true });
+      cy.findByText('Primary and all subaccounts').click({ force: true });
       cy.findByLabelText('Subaccounts').should('have.attr', 'readonly');
     });
   });
@@ -89,11 +89,11 @@ describe('Alerts Page - Create', () => {
 
     cy.get('[data-id="alert-filters"]').within(() => {
       cy.findByLabelText('Subaccounts').type('subaccount');
-      cy.findByText('Master and all subaccounts').should('be.visible');
+      cy.findByText('Primary and all subaccounts').should('be.visible');
 
       cy.findByText('Fake Subaccount 1 (101)').click({ force: true });
-      cy.findByText('Master and all subaccounts').should('not.be.visible');
-      cy.findByText('Master account').should('be.visible');
+      cy.findByText('Primary and all subaccounts').should('not.be.visible');
+      cy.findByText('Primary account').should('be.visible');
     });
   });
 

@@ -81,7 +81,7 @@ describe('HealthScoreOverview', () => {
     const wrapper = subject({
       signalOptions: {
         id: undefined,
-        name: 'Master & All Subaccounts',
+        name: 'Primary & All Subaccounts',
       },
     });
 
@@ -187,7 +187,7 @@ describe('HealthScoreOverview', () => {
       relativeRange: '14days',
       subaccount: {
         id: undefined,
-        name: 'Master & All Subaccounts',
+        name: 'Primary & All Subaccounts',
       },
     };
     const summaryTable = {

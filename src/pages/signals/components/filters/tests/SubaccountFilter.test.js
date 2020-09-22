@@ -112,7 +112,7 @@ describe('SubaccountFilter Component', () => {
     wrapper.find('Connect(SubaccountTypeahead)').simulate('change', null);
 
     expect(changeSignalOptions).toHaveBeenCalledWith({
-      subaccount: { id: undefined, name: 'Master & All Subaccounts' },
+      subaccount: { id: undefined, name: 'Primary & All Subaccounts' },
     });
   });
 
