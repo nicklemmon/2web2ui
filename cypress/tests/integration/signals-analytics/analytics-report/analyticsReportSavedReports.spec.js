@@ -151,7 +151,7 @@ if (IS_HIBANA_ENABLED) {
           cy.get(`a[role="option"]`)
             .eq(0)
             .should('have.contain', 'My Bounce Report')
-            .should('have.contain', 'appteam');
+            .should('have.contain', 'mockuser');
 
           cy.get(`a[role="option"]`)
             .eq(1)
@@ -185,6 +185,27 @@ if (IS_HIBANA_ENABLED) {
           .should('have.length', 1)
           .eq(0)
           .should('have.contain', 'Bounces');
+      });
+      it('opens saved reports modal', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.findByRole('button', { name: 'View All Reports' }).click();
+
+        cy.withinModal(() => {
+          //Check that it only shows my reports
+          cy.findByText('My Bounce Report').should('be.visible');
+          cy.findByText('Your Sending Report').should('not.be.visible');
+          //Check that it shows all reports
+          cy.findByRole('tab', { name: 'All Reports' }).click();
+          cy.findAllByText('My Bounce Report').should('have.length', 2); //For both tabs
+          cy.findAllByText('My Bounce Report')
+            .first()
+            .should('be.hidden');
+          cy.findAllByText('My Bounce Report')
+            .last()
+            .should('be.visible');
+          cy.findByText('Your Sending Report').should('be.visible');
+        });
       });
     });
   });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { PRESET_REPORT_CONFIGS } from '../constants/presetReport';
+import { PRESET_REPORT_CONFIGS } from '../../constants/presetReport';
 import TypeSelect from 'src/components/typeahead/TypeSelect';
 import { Button, Column, Columns } from 'src/components/matchbox';
 import { TranslatableText } from 'src/components/text';
@@ -8,6 +8,7 @@ import { Edit, FolderOpen, Save } from '@sparkpost/matchbox-icons';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { getReports } from 'src/actions/reports';
+import ReportsListModal from './ReportsListModal';
 
 const SavedReportsSection = props => {
   /* eslint-disable no-unused-vars */
@@ -28,7 +29,6 @@ const SavedReportsSection = props => {
     >
       <Column>
         <TypeSelect
-          label="Report"
           disabled={props.status === 'loading'}
           id="report-typeahead"
           itemToString={report => (report ? report.name : '')} // return empty string when nothing is selected
@@ -62,6 +62,14 @@ const SavedReportsSection = props => {
           </Button>
         </Column>
       )}
+      <ReportsListModal
+        open={modalStatus === 'view'}
+        onClose={() => {
+          setModalStatus('');
+        }}
+        handleReportChange={props.handleReportChange}
+        reports={reports}
+      />
     </Columns>
   );
 };
