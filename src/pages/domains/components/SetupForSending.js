@@ -49,7 +49,7 @@ export default function SetupForSending(props) {
             a DKIM record published for all sending domains before they can be verified and used, in
             order to ensure DKIM checks are passed.
           </SubduedText>
-          <ExternalLink>Documentation</ExternalLink>
+          <ExternalLink to="/">Documentation</ExternalLink>
         </Stack>
       </Layout.Section>
       <Layout.Section>
@@ -79,9 +79,8 @@ export default function SetupForSending(props) {
               <Checkbox
                 id="add-txt-to-godaddy"
                 label={<>The TXT record has been added to the DNS provider</>}
-                onClick={() => {}}
               />
-              {/*API doesn't support it*/}
+              {/*API doesn't support it; Do we want to store this in ui option*/}
             </Stack>
           </Panel.Section>
           <Panel.Section>

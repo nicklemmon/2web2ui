@@ -47,7 +47,7 @@ export default function DomainStatusSection(props) {
       <Layout.Section annotated>
         <Stack>
           <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
-          <ExternalLink>Documentation</ExternalLink>
+          <ExternalLink to="/">Documentation</ExternalLink>
         </Stack>
       </Layout.Section>
       <Layout.Section>

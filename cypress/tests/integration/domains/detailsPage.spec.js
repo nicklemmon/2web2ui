@@ -23,6 +23,11 @@ describe('The domains details page', () => {
       cy.title().should('include', 'Domain Details');
       cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
     });
+    it('renders the Sections with relevant titles', () => {
+      cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
+      cy.findByRole('heading', { name: 'Sending' }).should('be.visible');
+      cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
+    });
   }
 
   if (!IS_HIBANA_ENABLED) {
