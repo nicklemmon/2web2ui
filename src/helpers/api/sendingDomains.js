@@ -3,7 +3,7 @@ export function listSendingDomains() {
 }
 
 export function getSendingDomain(domain) {
-  return [`/v1/sending-domains/${domain}`, { method: 'GET' }];
+  return () => [`/v1/sending-domains/${domain}`, { method: 'GET' }];
 }
 
 export function createSendingDomain() {}

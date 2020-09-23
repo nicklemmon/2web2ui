@@ -1,15 +1,11 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect } from 'react';
 import _ from 'lodash';
 import { useSparkPostQuery } from 'src/hooks';
-// import { useSendingDomains } from 'src/hooks/api';
 import { listSendingDomains, getSendingDomain } from 'src/helpers/api';
 
 export default function ReactQueryDemo() {
-  const { status, data } = useSparkPostQuery(listSendingDomains);
-  // const { data } = useSparkPostQuery(() => getSendingDomain('josezamora.info'));
-
-  console.log('data', data);
+  const { status, data } = useSparkPostQuery(getSendingDomain('hello-2.com'));
 
   if (status === 'loading') return 'Loading...';
 
