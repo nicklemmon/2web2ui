@@ -18,6 +18,7 @@ import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links'
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
+import ReactQueryDemo from './components/ReactQueryDemo';
 
 export default function DashboardPageV2() {
   const {
@@ -48,6 +49,8 @@ export default function DashboardPageV2() {
       <ScreenReaderOnly>
         <Heading as="h1">Dashboard</Heading>
       </ScreenReaderOnly>
+
+      <ReactQueryDemo />
 
       <Stack>
         {currentUser?.first_name && (
