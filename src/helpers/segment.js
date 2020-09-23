@@ -62,9 +62,9 @@ export const segmentIdentify = traits => {
 };
 
 const getUTMsFromURL = () => {
-  var queryString = window.location.search;
-  var urlParams = new URLSearchParams(queryString);
-  var utms = {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const utms = {
     utm_campaign: urlParams.get('utm_campaign'),
     utm_medium: urlParams.get('utm_medium'),
     utm_source: urlParams.get('utm_source'),
