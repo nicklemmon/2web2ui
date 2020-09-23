@@ -2,10 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { tokens } from '@sparkpost/design-tokens-hibana';
+import { Error } from '@sparkpost/matchbox-icons';
 import { refreshSummaryReport } from 'src/actions/summaryChart';
 import { Page, Panel } from 'src/components/matchbox';
 import { Empty, Loading, Unit, LegendCircle } from 'src/components';
-import { Box, Grid, Inline } from 'src/components/matchbox';
+import { Button, Box, Grid, Inline, Tooltip } from 'src/components/matchbox';
 import { Definition } from 'src/components/text';
 import { ReportOptions, ReportTable, SaveNewReportModal } from './components';
 import Charts from './components/Charts';
@@ -29,6 +30,7 @@ import {
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import styles from './ReportBuilder.module.scss';
+import { getSubscription } from 'src/actions/billing';
 
 const MetricDefinition = ({ label, children }) => {
   return (
@@ -50,6 +52,8 @@ export function ReportBuilder({
   reportOptions,
   summarySearchOptions = {},
   refreshSummaryReport,
+  getSubscription,
+  subscription,
 }) {
   const [showTable, setShowTable] = useState(true);
   const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false);
@@ -63,6 +67,20 @@ export function ReportBuilder({
       refreshSummaryReport(reportOptions);
     }
   }, [refreshSummaryReport, reportOptions, isEmpty]);
+
+  useEffect(() => {
+    getSubscription();
+  }, [getSubscription]);
+
+  const isMaxReports = useMemo(() => {
+    const reportsProduct = subscription?.products?.find(({ product }) => product === 'reports');
+
+    if (!reportsProduct) {
+      return true;
+    }
+    const { limit, quantity = 0 } = reportsProduct;
+    return quantity >= limit;
+  }, [subscription]);
 
   const hasBounceTab = processedMetrics.some(({ key }) => {
     return bounceTabMetrics.map(({ key }) => key).includes(key);
@@ -109,13 +127,29 @@ export function ReportBuilder({
   return (
     <Page
       title="Analytics Report"
-      primaryAction={
-        isSavedReportsEnabled
-          ? {
-              content: 'Save New Report',
-              onClick: () => setShowSaveNewReportModal(true),
-            }
-          : undefined
+      primaryArea={
+        isSavedReportsEnabled && (
+          <Box display="flex" alignItems="center">
+            {isMaxReports && (
+              <Tooltip
+                id="reports_limit_tooltip"
+                content="Your account has reached its limit on custom saved reports. You either need to delete a report or upgrade your plan."
+              >
+                <div tabIndex="0" data-id="reports-limit-tooltip-icon">
+                  <Error color="gray.700" />
+                </div>
+              </Tooltip>
+            )}
+            <Button
+              ml="300"
+              disabled={isMaxReports}
+              variant="primary"
+              onClick={() => setShowSaveNewReportModal(true)}
+            >
+              Save New Report
+            </Button>
+          </Box>
+        )
       }
     >
       <Panel.LEGACY>
@@ -210,10 +244,12 @@ const mapStateToProps = state => ({
   processedMetrics: selectSummaryMetricsProcessed(state),
   summarySearchOptions: selectSummaryChartSearchOptions(state),
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
+  subscription: state.billing.subscription,
 });
 
 const mapDispatchToProps = {
   refreshSummaryReport,
+  getSubscription,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReportBuilder);

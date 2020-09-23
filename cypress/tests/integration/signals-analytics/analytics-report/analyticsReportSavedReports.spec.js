@@ -15,6 +15,12 @@ if (IS_HIBANA_ENABLED) {
         url: '/api/v1/reports',
         fixture: '200.get.no-results',
       });
+
+      cy.stubRequest({
+        url: '/api/v1/billing/subscription',
+        fixture: 'billing/subscription/200.get',
+        requestAlias: 'getBillingSubscription',
+      });
     });
 
     it('loads a preset report with additional filters when given a report query param and filter param', () => {
@@ -186,6 +192,7 @@ if (IS_HIBANA_ENABLED) {
           .eq(0)
           .should('have.contain', 'Bounces');
       });
+
       it('opens saved reports modal', () => {
         cy.visit(PAGE_URL);
         cy.wait('@getSavedReports');
@@ -206,6 +213,18 @@ if (IS_HIBANA_ENABLED) {
             .should('be.visible');
           cy.findByText('Your Sending Report').should('be.visible');
         });
+      });
+
+      it('disabled creating new reports when limit is reached', () => {
+        cy.stubRequest({
+          url: '/api/v1/billing/subscription',
+          fixture: 'billing/subscription/200.get.reports-limited',
+          requestAlias: 'getBillingSubscription',
+        });
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.findByRole('button', { name: 'Save New Report' }).should('be.disabled');
+        cy.findByDataId('reports-limit-tooltip-icon').should('exist');
       });
     });
   });

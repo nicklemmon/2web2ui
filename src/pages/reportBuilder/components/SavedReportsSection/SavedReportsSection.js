@@ -22,6 +22,13 @@ const SavedReportsSection = props => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (props.isSavedReportsEnabled) {
+      props.getReports();
+    }
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Columns
       alignY="bottom" // pull buttons to bottom when side by side
@@ -30,9 +37,9 @@ const SavedReportsSection = props => {
       <Column>
         <TypeSelect
           disabled={props.status === 'loading'}
+          label="Report"
           id="report-typeahead"
           itemToString={report => (report ? report.name : '')} // return empty string when nothing is selected
-          label="Report"
           onChange={props.handleReportChange}
           placeholder="Select a Report"
           renderItem={report => (

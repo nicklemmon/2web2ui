@@ -36,7 +36,8 @@
       {
         "plan": "reports",
         "product": "reports",
-        "limit": 100
+        "limit": 1,
+        "quantity": 1
       }
     ],
     "type": "active"
