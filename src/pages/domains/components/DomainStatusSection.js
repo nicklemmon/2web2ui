@@ -1,10 +1,10 @@
 import React from 'react';
 import { Layout, Stack, Text } from 'src/components/matchbox';
 import { Checkbox, Columns, Column, Panel } from 'src/components/matchbox';
-import { Heading } from 'src/components/text';
+import { Heading, SubduedText } from 'src/components/text';
 import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
 import { Bookmark } from '@sparkpost/matchbox-icons';
-import { resolveReadyFor } from 'src/helpers/domains';
+import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
 import { ExternalLink } from 'src/components/links';
 import { ToggleBlock } from 'src/components';
@@ -12,6 +12,7 @@ import { ToggleBlock } from 'src/components';
 export default function DomainStatusSection(props) {
   const { allowDefault, allowSubaccountDefault, domain } = props;
   const readyFor = resolveReadyFor(domain.status);
+  const resolvedStatus = resolveStatus(domain.status);
   const showDefaultBounceSubaccount =
     !domain.subaccount_id || (domain.subaccount_id && allowSubaccountDefault);
   const showDefaultBounceToggle =
@@ -47,6 +48,13 @@ export default function DomainStatusSection(props) {
       <Layout.Section annotated>
         <Stack>
           <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
+          {resolvedStatus === 'unverified' && (
+            <SubduedText>
+              This domain failed authentication. It can take 24 to 48 hours for the DNS record to
+              propogate. For other reasons why this ay have happenedchek out our domain
+              authentication documentation.
+            </SubduedText>
+          )}
           <ExternalLink to="/">Documentation</ExternalLink>
         </Stack>
       </Layout.Section>
