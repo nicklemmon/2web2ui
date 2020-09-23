@@ -10,6 +10,9 @@ import {
 import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveStatus } from 'src/helpers/domains';
 import { ExternalLink } from 'src/components/links';
+import { selectTrackingDomainsOptions } from 'src/selectors/trackingDomains';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 
 function DetailsPage(props) {
   const resolvedStatus = resolveStatus(props.domain.status);
@@ -51,6 +54,12 @@ function DetailsPage(props) {
           <Domains.SetupForSending domain={props.domain} id={props.match.params.id} />
         </Layout>
         <Layout>
+          <Domains.SetupBounceDomainSection {...props} />
+        </Layout>
+        <Layout>
+          <Domains.LinkTrackingDomainSection {...props} />
+        </Layout>
+        <Layout>
           <Domains.DeleteDomainSection {...props} />
         </Layout>
       </Page>
@@ -63,6 +72,8 @@ export default connect(
     domain: selectDomain(state),
     allowDefault: selectAllowDefaultBounceDomains(state),
     allowSubaccountDefault: selectAllSubaccountDefaultBounceDomains(state),
+    trackingDomains: selectTrackingDomainsOptions(state),
+    isByoipAccount: selectCondition(hasAccountOptionEnabled('byoip_customer'))(state),
   }),
   { getDomain },
 )(DetailsPage);

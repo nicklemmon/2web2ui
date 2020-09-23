@@ -1,0 +1,74 @@
+import React, { useEffect } from 'react';
+import { Button, Layout, Stack } from 'src/components/matchbox';
+import { Panel } from 'src/components/matchbox';
+import { SubduedText } from 'src/components/text';
+import { ExternalLink } from 'src/components/links';
+import { useForm, Controller } from 'react-hook-form';
+import { Select } from 'src/components/matchbox';
+import useDomains from '../hooks/useDomains';
+
+export default function LinkTrackingDomainSection({ domain, trackingDomains }) {
+  const { control, handleSubmit } = useForm();
+
+  const { listTrackingDomains, updateSendingDomain, showAlert } = useDomains();
+
+  useEffect(() => {
+    listTrackingDomains();
+  }, [listTrackingDomains]);
+
+  const onSubmit = ({ trackingDomain }) => {
+    const { id, subaccount_id: subaccount } = domain;
+    updateSendingDomain({ id, subaccount, tracking_domain: trackingDomain })
+      .then(() =>
+        showAlert({
+          type: 'success',
+          message: 'Tracking domain assignment updated.',
+        }),
+      )
+      .catch(err =>
+        showAlert({
+          type: 'error',
+          message: 'Could not update tracking domain assignment.',
+          details: err.message,
+        }),
+      );
+  };
+  return (
+    <>
+      <Layout.Section annotated>
+        <Layout.SectionTitle as="h2">Link Tracking Domain</Layout.SectionTitle>
+        <Stack>
+          <SubduedText>Assign a tracking domain?</SubduedText>
+          <ExternalLink to="/">Documentation</ExternalLink>
+        </Stack>
+      </Layout.Section>
+      <Layout.Section>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Panel>
+            <Panel.Section>
+              <Controller
+                name="trackingDomain"
+                render={({ value, onChange }) => (
+                  <Select
+                    onChange={onChange}
+                    value={value || domain.tracking_domain}
+                    options={trackingDomains || []}
+                    label="Linked Tracking Domain"
+                    helpText="Domains must be verified to be linked to a sending domain."
+                  />
+                )}
+                control={control}
+              />
+            </Panel.Section>
+            <Panel.Section>
+              <Button variant="primary" type="submit">
+                Update Tracking Domain
+              </Button>
+              {/* Functionality not available */}
+            </Panel.Section>
+          </Panel>
+        </form>
+      </Layout.Section>
+    </>
+  );
+}
