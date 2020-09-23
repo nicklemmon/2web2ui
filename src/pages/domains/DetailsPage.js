@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Page, Layout, Banner } from 'src/components/matchbox';
+import { Page, Layout, Banner, Button } from 'src/components/matchbox';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import {
 } from 'src/selectors/account';
 import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveStatus } from 'src/helpers/domains';
-import { ExternalLink } from 'src/components/links';
+import { ExternalLink, SupportTicketLink } from 'src/components/links';
 import { selectTrackingDomainsOptions } from 'src/selectors/trackingDomains';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
@@ -41,6 +41,15 @@ function DetailsPage(props) {
             </Banner.Actions>
           </Banner>
         )}
+        {resolvedStatus === 'blocked' && (
+          <Banner status="danger" title="This domain has been blocked by SparkPost" mb="500">
+            It can take 24 to 48 hours for the DNS records to propogate and verify the domain.
+            <Banner.Actions>
+              <SupportTicketLink as={Button}>Create Support ticket</SupportTicketLink>
+              <ExternalLink to="/">Domains Documentation</ExternalLink>
+            </Banner.Actions>
+          </Banner>
+        )}
 
         <Layout>
           <Domains.DomainStatusSection
@@ -50,15 +59,19 @@ function DetailsPage(props) {
             allowSubaccountDefault
           />
         </Layout>
-        <Layout>
-          <Domains.SetupForSending domain={props.domain} id={props.match.params.id} />
-        </Layout>
-        <Layout>
-          <Domains.SetupBounceDomainSection {...props} />
-        </Layout>
-        <Layout>
-          <Domains.LinkTrackingDomainSection {...props} />
-        </Layout>
+        {resolvedStatus !== 'blocked' && (
+          <>
+            <Layout>
+              <Domains.SetupForSending domain={props.domain} id={props.match.params.id} />
+            </Layout>
+            <Layout>
+              <Domains.SetupBounceDomainSection {...props} />
+            </Layout>
+            <Layout>
+              <Domains.LinkTrackingDomainSection {...props} />
+            </Layout>
+          </>
+        )}
         <Layout>
           <Domains.DeleteDomainSection {...props} />
         </Layout>

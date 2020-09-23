@@ -92,39 +92,43 @@ export default function DomainStatusSection(props) {
               )}
             </Columns>
           </Panel.Section>
-          {domain.subaccount_id ? (
-            <Panel.Section>
-              <Heading as="h3" looksLike="h5">
-                Subaccount Assignment
-              </Heading>
-              <Text as="p">Subaccount {domain.subaccount_id}</Text>
-            </Panel.Section>
-          ) : (
-            <Panel.Section>
-              <ToggleBlock
-                input={{
-                  name: 'share-with-all-subaccounts',
-                  checked: domain.shared_with_subaccounts,
-                  onChange: toggleShareWithSubaccounts,
-                }}
-                label="Share this domain with all subaccounts"
-              />
-            </Panel.Section>
-          )}
-          {showDefaultBounceToggle && (
+          {resolvedStatus !== 'blocked' && (
             <>
-              <Panel.Section>
-                <Checkbox
-                  id="set-as-default-domain"
-                  label={
-                    <>
-                      Set as Default Bounce Domain <Bookmark color="green" />
-                    </>
-                  }
-                  checked={domain.is_default_bounce_domain}
-                  onClick={toggleDefaultBounce}
-                />
-              </Panel.Section>
+              {domain.subaccount_id ? (
+                <Panel.Section>
+                  <Heading as="h3" looksLike="h5">
+                    Subaccount Assignment
+                  </Heading>
+                  <Text as="p">Subaccount {domain.subaccount_id}</Text>
+                </Panel.Section>
+              ) : (
+                <Panel.Section>
+                  <ToggleBlock
+                    input={{
+                      name: 'share-with-all-subaccounts',
+                      checked: domain.shared_with_subaccounts,
+                      onChange: toggleShareWithSubaccounts,
+                    }}
+                    label="Share this domain with all subaccounts"
+                  />
+                </Panel.Section>
+              )}
+              {showDefaultBounceToggle && (
+                <>
+                  <Panel.Section>
+                    <Checkbox
+                      id="set-as-default-domain"
+                      label={
+                        <>
+                          Set as Default Bounce Domain <Bookmark color="green" />
+                        </>
+                      }
+                      checked={domain.is_default_bounce_domain}
+                      onClick={toggleDefaultBounce}
+                    />
+                  </Panel.Section>
+                </>
+              )}
             </>
           )}
         </Panel>
