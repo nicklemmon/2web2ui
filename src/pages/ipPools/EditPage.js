@@ -47,7 +47,8 @@ export class EditPage extends Component {
       pool: { id },
     } = this.props;
 
-    // if signing_domain is not set, then we want to clear it out to empty string.
+    // if these values are not set, then we want to clear it out to empty string.
+    values.auto_warmup_overflow_pool = values.auto_warmup_overflow_pool || '';
     values.signing_domain = values.signing_domain || '';
 
     if (isDefaultPool(id)) {

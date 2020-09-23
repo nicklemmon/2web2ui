@@ -98,6 +98,7 @@ describe('IP Pools Edit Page', () => {
         message: 'Updated IP pool my-pool.',
       });
       expect(props.updatePool).toHaveBeenCalledWith('my-pool', {
+        auto_warmup_overflow_pool: '',
         name: 'my_pool',
         signing_domain: 'my-domain.sparkpost.com',
       });
@@ -114,6 +115,7 @@ describe('IP Pools Edit Page', () => {
         message: 'Updated IP pool my-pool.',
       });
       expect(props.updatePool).toHaveBeenCalledWith('my-pool', {
+        auto_warmup_overflow_pool: '',
         name: 'my_pool',
         signing_domain: '',
       });
