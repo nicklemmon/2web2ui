@@ -61,9 +61,33 @@ export const segmentIdentify = traits => {
   }
 };
 
+const getUTMsFromURL = () => {
+  var queryString = window.location.search;
+  var urlParams = new URLSearchParams(queryString);
+  var utms = {
+    utm_campaign: urlParams.get('utm_campaign'),
+    utm_medium: urlParams.get('utm_medium'),
+    utm_source: urlParams.get('utm_source'),
+    utm_content: urlParams.get('utm_content'),
+    utm_term: urlParams.get('utm_term'),
+  };
+
+  return Object.keys(utms).reduce((clean, key) => {
+    if (utms[key] !== null) {
+      clean[key] = utms[key];
+    }
+    return clean;
+  }, {});
+};
+
 export const segmentPage = () => {
   if (window.analytics && window.analytics.page) {
-    window.analytics.page();
+    const UTMs = getUTMsFromURL();
+    if (UTMs) {
+      window.analytics.page(undefined, UTMs);
+    } else {
+      window.analytics.page();
+    }
   }
 };
 
