@@ -12,6 +12,7 @@ jest.mock('src/context/HibanaContext', () => ({
 
 const mockOnCancel = jest.fn();
 const mockCreateReport = jest.fn(() => Promise.resolve());
+const mockGetReports = jest.fn(() => Promise.resolve());
 const mockShowAlert = jest.fn();
 
 describe('SaveNewReportModal', () => {
@@ -20,6 +21,7 @@ describe('SaveNewReportModal', () => {
       open: true,
       onCancel: mockOnCancel,
       createReport: mockCreateReport,
+      getReports: mockGetReports,
       showAlert: mockShowAlert,
       loading: false,
     };
@@ -53,5 +55,6 @@ describe('SaveNewReportModal', () => {
     expect(mockCreateReport).toHaveBeenCalled();
     expect(mockShowAlert).toHaveBeenCalled();
     expect(mockOnCancel).toHaveBeenCalled();
+    expect(mockGetReports).toHaveBeenCalled();
   });
 });

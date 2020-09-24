@@ -5,10 +5,10 @@ import { useForm, Controller } from 'react-hook-form';
 import { CheckboxWrapper } from 'src/components/reactHookFormWrapper';
 import { Loading } from 'src/components';
 import useRouter from 'src/hooks/useRouter';
-import { createReport } from 'src/actions/reports';
+import { createReport, getReports } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
 export function SaveNewReportModal(props) {
-  const { open, onCancel, createReport, loading, showAlert } = props;
+  const { open, onCancel, createReport, getReports, loading, showAlert } = props;
   const { handleSubmit, control, errors, setValue } = useForm({
     defaultValues: {
       name: '',
@@ -25,6 +25,7 @@ export function SaveNewReportModal(props) {
     return createReport({ ...data, query_string }).then(() => {
       showAlert({ type: 'success', message: `You have successfully saved ${data.name}` });
       onCancel();
+      getReports();
     });
   };
 
@@ -32,6 +33,7 @@ export function SaveNewReportModal(props) {
     if (loading) {
       return <Loading />;
     }
+    //TODO look into use ref={register}, Matchbox can forward refs after 4.2.1
     return (
       <form onSubmit={handleSubmit(onSubmit)} id="newReportForm">
         <Stack>
@@ -88,4 +90,6 @@ export function SaveNewReportModal(props) {
 const mapStateToProps = state => ({
   loading: state.reports.createPending,
 });
-export default connect(mapStateToProps, { createReport, showAlert })(SaveNewReportModal);
+const mapDispatchToProps = { createReport, getReports, showAlert };
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveNewReportModal);

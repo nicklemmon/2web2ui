@@ -215,6 +215,28 @@ if (IS_HIBANA_ENABLED) {
         });
       });
 
+      it('deletes a saved report', () => {
+        cy.stubRequest({
+          method: 'DELETE',
+          url: '/api/v1/reports/d50d8475-d4e8-4df0-950f-b142f77df0bf',
+          fixture: 'blank.json',
+          requestAlias: 'deleteReport',
+        });
+
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.findByRole('button', { name: 'View All Reports' }).click();
+        cy.findByText('Open Menu').click({ force: true }); // The content is visually hidden (intentionally!), so `force: true` is needed here
+        cy.findByText('Delete').click({ force: true });
+
+        cy.withinModal(() => {
+          cy.findByText('Delete').click({ force: true });
+        });
+        cy.wait('@deleteReport');
+        cy.wait('@getSavedReports');
+        cy.findByText('You have successfully deleted My Bounce Report').should('be.visible');
+      });
+
       it('disabled creating new reports when limit is reached', () => {
         cy.stubRequest({
           url: '/api/v1/billing/subscription',

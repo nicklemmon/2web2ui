@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { MoreHoriz } from '@sparkpost/matchbox-icons';
 import { Tabs, TableCollection, Subaccount } from 'src/components';
-import { Box, Button, Modal, Table, Tag } from 'src/components/matchbox';
+import {
+  ActionList,
+  Box,
+  Button,
+  Modal,
+  Popover,
+  ScreenReaderOnly,
+  Table,
+  Tag,
+} from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
 import { ButtonLink } from 'src/components/links';
 
 const allReportsColumns = [
   { label: 'Name', sortKey: 'name' },
   { label: 'Last Modification', sortKey: 'modified' },
-  { label: 'Created By', sortKey: 'created' },
+  { label: 'Created By', sortKey: 'creator' },
   {},
   {},
 ];
@@ -27,16 +36,42 @@ const FilterBoxWrapper = props => (
 );
 
 export function ReportsListModal(props) {
-  const { reports, open, onClose, currentUser } = props;
+  const { reports, open, onClose, currentUser, handleDelete } = props;
   const handleReportChange = report => {
     props.handleReportChange(report);
     onClose();
   };
 
+  const getActions = useCallback(
+    (reportType, id, name) => {
+      return (
+        <Popover
+          left
+          id={`popover-${reportType}-${id}`}
+          trigger={
+            <Button
+              variant="minimal"
+              aria-controls={`popover-${reportType}-${id}`}
+              data-id={`${reportType}-${id}`}
+            >
+              <Button.Icon as={MoreHoriz} />
+              <ScreenReaderOnly>Open Menu</ScreenReaderOnly>
+            </Button>
+          }
+        >
+          <ActionList>
+            <ActionList.Action content="Delete" onClick={() => handleDelete({ id, name })} />
+          </ActionList>
+        </Popover>
+      );
+    },
+    [handleDelete],
+  );
+
   const myReports = reports.filter(({ creator }) => creator === currentUser);
 
   const myReportsRows = report => {
-    const { name, modified } = report;
+    const { id, name, modified } = report;
     return [
       <ButtonLink
         onClick={() => {
@@ -46,14 +81,15 @@ export function ReportsListModal(props) {
         {name}
       </ButtonLink>,
       <div>{formatDateTime(modified)}</div>,
-      <Button variant="minimal">
-        <Button.Icon as={MoreHoriz} />
-      </Button>,
+      getActions('myReports', id, name),
     ];
   };
 
   const allReportsRows = report => {
-    const { name, modified, creator, subaccount_id } = report;
+    const { id, name, modified, creator, subaccount_id, current_user_can_edit } = report;
+    //conditionally render the actionlist
+    const action = current_user_can_edit ? getActions('allReports', id, name) : '';
+
     return [
       <ButtonLink
         onClick={() => {
@@ -67,9 +103,7 @@ export function ReportsListModal(props) {
       <Tag>
         <Subaccount id={subaccount_id} master={subaccount_id === 0} />
       </Tag>,
-      <Button variant="minimal">
-        <Button.Icon as={MoreHoriz} />
-      </Button>,
+      action,
     ];
   };
 
@@ -77,7 +111,6 @@ export function ReportsListModal(props) {
     <Modal open={open} onClose={onClose} showCloseButton maxWidth="1300">
       <Modal.Header>Saved Reports</Modal.Header>
       <Modal.Content p="0">
-        {' '}
         {/* Use p instead of padding due to bug in matchbox 4.3.1*/}
         <Tabs tabs={[{ content: 'My Reports' }, { content: 'All Reports' }]} forceRender fitted>
           <Tabs.Item>

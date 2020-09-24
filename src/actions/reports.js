@@ -20,3 +20,13 @@ export function getReports() {
     },
   });
 }
+
+export function deleteReport(id) {
+  return sparkpostApiRequest({
+    type: 'DELETE_REPORT',
+    meta: {
+      method: 'DELETE',
+      url: `/v1/reports/${id}`,
+    },
+  });
+}
