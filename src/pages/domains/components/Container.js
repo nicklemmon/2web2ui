@@ -20,11 +20,8 @@ function mapStateToProps(state) {
     sendingDomains: selectSendingDomains(state),
     sendingDomainsListError: state.sendingDomains.listError,
     bounceDomains: selectReadyForBounce(state),
-    pending:
-      state.sendingDomains.listLoading ||
-      state.sendingDomains.createLoading ||
-      state.trackingDomains.listLoading ||
-      state.trackingDomains.createLoading,
+    listPending: state.sendingDomains.listLoading || state.trackingDomains.listLoading,
+    createPending: state.sendingDomains.createLoading || state.trackingDomains.createLoading,
     hasSubaccounts: hasSubaccounts(state),
     subaccounts: state.subaccounts.list,
     trackingDomains: selectTrackingDomainsList(state),

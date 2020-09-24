@@ -24,7 +24,7 @@ export default function CreateForm() {
     createSendingDomain,
     createTrackingDomain,
     hasSubaccounts,
-    pending,
+    createPending,
     showAlert,
   } = useDomains();
   const { control, register, handleSubmit, errors, watch, setValue } = useForm({
@@ -43,6 +43,7 @@ export default function CreateForm() {
 
   const onSubmit = data => {
     const { assignTo, domain, primaryUse, subaccount } = data;
+
     if (primaryUse === 'tracking') {
       return createTrackingDomain({
         domain,
@@ -86,7 +87,7 @@ export default function CreateForm() {
               <RadioCard.Group label="Primary Use for Domain">
                 <RadioCard
                   ref={register}
-                  disabled={pending}
+                  disabled={createPending}
                   label="Sending Domain"
                   id="primary-use-sending-domain"
                   value="sending"
@@ -115,7 +116,7 @@ export default function CreateForm() {
 
                 <RadioCard
                   ref={register}
-                  disabled={pending}
+                  disabled={createPending}
                   label="Tracking Domain"
                   id="primary-use-tracking-domain"
                   value="tracking"
@@ -144,7 +145,7 @@ export default function CreateForm() {
             <Panel.Section>
               <TextField
                 ref={register({ required: 'A valid domain is required.' })}
-                disabled={pending}
+                disabled={createPending}
                 label="Domain"
                 control={control}
                 name="domain"
@@ -161,7 +162,7 @@ export default function CreateForm() {
                     {watchedPrimaryUse === 'sending' && (
                       <Radio
                         ref={register}
-                        disabled={pending}
+                        disabled={createPending}
                         label="Principal and all Subaccounts"
                         id="assign-to-shared"
                         value="shared"
@@ -171,7 +172,7 @@ export default function CreateForm() {
 
                     <Radio
                       ref={register}
-                      disabled={pending}
+                      disabled={createPending}
                       label="Principal Account only"
                       id="assign-to-principal-only"
                       value="principalOnly"
@@ -180,7 +181,7 @@ export default function CreateForm() {
 
                     <Radio
                       ref={register}
-                      disabled={pending}
+                      disabled={createPending}
                       label="Single Subaccount"
                       id="assign-to-subaccount"
                       value="singleSubaccount"
@@ -189,7 +190,11 @@ export default function CreateForm() {
                   </Radio.Group>
 
                   {/* See https://react-hook-form.com/api#useWatch */}
-                  <IsolatedSubaccountsField control={control} errors={errors} pending={pending} />
+                  <IsolatedSubaccountsField
+                    control={control}
+                    errors={errors}
+                    createPending={createPending}
+                  />
                 </Stack>
               </Panel.Section>
             )}
@@ -201,7 +206,7 @@ export default function CreateForm() {
         <Layout.Section annotated />
 
         <Layout.Section>
-          <Button loading={pending} variant="primary" type="submit">
+          <Button loading={createPending} variant="primary" type="submit">
             Save and Continue
           </Button>
         </Layout.Section>
@@ -210,7 +215,7 @@ export default function CreateForm() {
   );
 }
 
-function IsolatedSubaccountsField({ control, errors, pending }) {
+function IsolatedSubaccountsField({ control, errors, createPending }) {
   const assignTo = useWatch({
     control,
     name: 'assignTo',
@@ -230,9 +235,14 @@ function IsolatedSubaccountsField({ control, errors, pending }) {
           return (
             <SubaccountTypeahead
               name={name}
-              disabled={pending}
+              disabled={createPending}
               onChange={item => {
-                if (item) onChange(item.id);
+                if (item) {
+                  return onChange(item.id);
+                }
+
+                // Handles clear button
+                return onChange(undefined);
               }}
               error={errors.subaccount?.message}
               placeholder="e.g. samplesubaccount"

@@ -20,7 +20,7 @@ export default function SendingDomainsTable({ renderBounceOnly = false }) {
     hasSubaccounts,
     listSubaccounts,
     subaccounts,
-    pending,
+    listPending,
   } = useDomains();
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
   const isEmpty = domains.length === 0;
@@ -34,7 +34,7 @@ export default function SendingDomainsTable({ renderBounceOnly = false }) {
     // eslint-disable-next-line
   }, []);
 
-  if (pending) return <PanelLoading />;
+  if (listPending) return <PanelLoading />;
 
   if (sendingDomainsListError) {
     return (

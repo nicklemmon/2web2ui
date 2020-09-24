@@ -11,7 +11,7 @@ import { DETAILS_BASE_URL, API_ERROR_MESSAGE } from '../constants';
 export default function TrackingDomainsTable() {
   const {
     listTrackingDomains,
-    pending,
+    listPending,
     hasSubaccounts,
     listSubaccounts,
     subaccounts,
@@ -29,7 +29,7 @@ export default function TrackingDomainsTable() {
     // eslint-disable-next-line
   }, []);
 
-  if (pending) return <PanelLoading />;
+  if (listPending) return <PanelLoading />;
 
   if (trackingDomainsListError) {
     return (
