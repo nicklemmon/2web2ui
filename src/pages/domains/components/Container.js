@@ -1,8 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { list as listSendingDomains } from 'src/actions/sendingDomains';
+import {
+  create as createSendingDomain,
+  list as listSendingDomains,
+} from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
-import { listTrackingDomains } from 'src/actions/trackingDomains';
+import { showAlert } from 'src/actions/globalAlert';
+import { createTrackingDomain, listTrackingDomains } from 'src/actions/trackingDomains';
 import {
   selectDomains as selectSendingDomains,
   selectReadyForBounce,
@@ -16,7 +20,11 @@ function mapStateToProps(state) {
     sendingDomains: selectSendingDomains(state),
     sendingDomainsListError: state.sendingDomains.listError,
     bounceDomains: selectReadyForBounce(state),
-    pending: state.sendingDomains.listLoading || state.trackingDomains.listLoading,
+    pending:
+      state.sendingDomains.listLoading ||
+      state.sendingDomains.createLoading ||
+      state.trackingDomains.listLoading ||
+      state.trackingDomains.createLoading,
     hasSubaccounts: hasSubaccounts(state),
     subaccounts: state.subaccounts.list,
     trackingDomains: selectTrackingDomainsList(state),
@@ -25,9 +33,12 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
+  createSendingDomain,
+  createTrackingDomain,
   listSendingDomains,
   listSubaccounts,
   listTrackingDomains,
+  showAlert,
 };
 
 export default connect(

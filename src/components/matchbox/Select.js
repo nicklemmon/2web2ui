@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select as OGSelect } from '@sparkpost/matchbox';
 import { Select as HibanaSelect } from '@sparkpost/matchbox-hibana';
 import { Box } from 'src/components/matchbox';
 import { useHibana } from 'src/context/HibanaContext';
 import { omitSystemProps } from 'src/helpers/hibana';
 
-function Select(props) {
+const Select = forwardRef((props, ref) => {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -14,14 +14,15 @@ function Select(props) {
 
     return (
       <Box maxWidth={maxWidth ? maxWidth : '1200'}>
-        <HibanaSelect {...rest} />
+        <HibanaSelect ref={ref} {...rest} />
       </Box>
     );
   }
 
-  return <OGSelect {...omitSystemProps(props)} />;
-}
+  return <OGSelect ref={ref} {...omitSystemProps(props)} />;
+});
 
+Select.displayName = 'Select';
 HibanaSelect.displayName = 'HibanaSelect';
 
 export default Select;

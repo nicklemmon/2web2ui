@@ -1,7 +1,7 @@
 const initialDomainState = {
-  domain: { dkim: {}, status: {}},
+  domain: { dkim: {}, status: {} },
   getError: null,
-  getLoading: false
+  getLoading: false,
 };
 
 const initialState = {
@@ -10,12 +10,17 @@ const initialState = {
   listError: null,
   verifyError: null,
   verifyTokenStatus: null,
-  verifyTokenError: null
+  verifyTokenError: null,
 };
 
 export default (state = initialState, { type, payload, meta }) => {
-
   switch (type) {
+    case 'CREATE_SENDING_DOMAIN_PENDING':
+      return { ...state, createLoading: true };
+
+    case 'CREATE_SENDING_DOMAIN_SUCCESS':
+    case 'CREATE_SENDING_DOMAIN_FAIL':
+      return { ...state, createLoading: false };
 
     case 'LIST_SENDING_DOMAINS_PENDING':
       return { ...state, listLoading: true, listError: null };
@@ -45,7 +50,7 @@ export default (state = initialState, { type, payload, meta }) => {
     case 'VERIFY_SENDING_DOMAIN_CNAME_SUCCESS':
     case 'VERIFY_SENDING_DOMAIN_MX_SUCCESS':
       // augment current domain's status property
-      return { ...state, verifyBounceLoading: false, domain: { ...state.domain, status: payload }};
+      return { ...state, verifyBounceLoading: false, domain: { ...state.domain, status: payload } };
 
     case 'VERIFY_SENDING_DOMAIN_CNAME_FAIL':
     case 'VERIFY_SENDING_DOMAIN_MX_FAIL':
@@ -56,7 +61,7 @@ export default (state = initialState, { type, payload, meta }) => {
 
     case 'VERIFY_SENDING_DOMAIN_DKIM_SUCCESS':
       // augment current domain's status property
-      return { ...state, verifyDkimLoading: false, domain: { ...state.domain, status: payload }};
+      return { ...state, verifyDkimLoading: false, domain: { ...state.domain, status: payload } };
 
     case 'VERIFY_SENDING_DOMAIN_DKIM_FAIL':
       return { ...state, verifyDkimLoading: false, verifyDkimError: payload };
@@ -70,7 +75,7 @@ export default (state = initialState, { type, payload, meta }) => {
     case 'VERIFY_SENDING_DOMAIN_POSTMASTER_AT_SUCCESS':
     case 'VERIFY_SENDING_DOMAIN_VERIFICATION_MAILBOX_SUCCESS':
       // augment current domain's status property
-      return { ...state, verifyEmailLoading: false, domain: { ...state.domain, status: payload }};
+      return { ...state, verifyEmailLoading: false, domain: { ...state.domain, status: payload } };
 
     case 'VERIFY_SENDING_DOMAIN_ABUSE_AT_FAIL':
     case 'VERIFY_SENDING_DOMAIN_POSTMASTER_AT_FAIL':
@@ -81,17 +86,26 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, updateLoading: true, updateError: null };
 
     case 'UPDATE_SENDING_DOMAIN_SUCCESS':
-    // augment current domain property with update values
-      return { ...state, updateLoading: false, domain: { ...state.domain, ...meta.data }};
+      // augment current domain property with update values
+      return { ...state, updateLoading: false, domain: { ...state.domain, ...meta.data } };
 
     case 'UPDATE_SENDING_DOMAIN_FAIL':
       return { ...state, updateLoading: false, updateError: payload };
 
     case 'VERIFY_TOKEN_PENDING':
-      return { ...state, verifyTokenLoading: false, verifyTokenStatus: null, verifyTokenError: null };
+      return {
+        ...state,
+        verifyTokenLoading: false,
+        verifyTokenStatus: null,
+        verifyTokenError: null,
+      };
 
     case 'VERIFY_TOKEN_SUCCESS':
-      return { ...state, verifyTokenLoading: false, verifyTokenStatus: { ...payload, type: meta.type, domain: meta.domain }};
+      return {
+        ...state,
+        verifyTokenLoading: false,
+        verifyTokenStatus: { ...payload, type: meta.type, domain: meta.domain },
+      };
 
     case 'VERIFY_TOKEN_FAIL':
       return { ...state, verifyTokenLoading: false, verifyTokenError: payload };

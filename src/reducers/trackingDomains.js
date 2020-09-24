@@ -1,11 +1,18 @@
 const initialState = {
   error: null,
   listLoading: false,
-  verifying: []
+  verifying: [],
 };
 
 export default (state = initialState, { type, payload, meta }) => {
   switch (type) {
+    case 'CREATE_TRACKING_DOMAIN_PENDING':
+      return { ...state, createLoading: true };
+
+    case 'CREATE_TRACKING_DOMAIN_SUCCESS':
+    case 'CREATE_TRACKING_DOMAIN_FAIL':
+      return { ...state, createLoading: false };
+
     case 'LIST_TRACKING_DOMAINS_PENDING':
       return { ...state, listLoading: true, error: null };
 
@@ -13,7 +20,12 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, listLoading: false, list: payload };
 
     case 'LIST_TRACKING_DOMAINS_FAIL':
-      return { ...state, list: state.list || [], listLoading: false, error: { payload, meta, resource: 'tracking domains' }};
+      return {
+        ...state,
+        list: state.list || [],
+        listLoading: false,
+        error: { payload, meta, resource: 'tracking domains' },
+      };
 
     case 'DELETE_TRACKING_DOMAIN_PENDING':
       return { ...state, deleting: meta.domain, deleteError: null };
@@ -22,7 +34,7 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, deleting: false, deleteError: payload };
 
     case 'DELETE_TRACKING_DOMAIN_SUCCESS':
-      return { ...state, deleting: false, list: state.list.filter((d) => d.domain !== meta.domain) };
+      return { ...state, deleting: false, list: state.list.filter(d => d.domain !== meta.domain) };
 
     case 'UPDATE_TRACKING_DOMAIN_PENDING':
       return { ...state, updating: meta.domain, updateError: null };
@@ -34,16 +46,16 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, updating: false };
 
     case 'VERIFY_TRACKING_DOMAIN_PENDING':
-      return { ...state, verifying: [...state.verifying, meta.domain]};
+      return { ...state, verifying: [...state.verifying, meta.domain] };
 
     case 'VERIFY_TRACKING_DOMAIN_FAIL':
-      return { ...state, verifying: state.verifying.filter((domain) => domain !== meta.domain) };
+      return { ...state, verifying: state.verifying.filter(domain => domain !== meta.domain) };
 
     case 'VERIFY_TRACKING_DOMAIN_SUCCESS':
       return {
         ...state,
-        verifying: state.verifying.filter((domain) => domain !== meta.domain),
-        list: state.list.map((d) => d.domain === meta.domain ? { ...d, status: payload } : d)
+        verifying: state.verifying.filter(domain => domain !== meta.domain),
+        list: state.list.map(d => (d.domain === meta.domain ? { ...d, status: payload } : d)),
       };
 
     default:

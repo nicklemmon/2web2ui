@@ -27,13 +27,14 @@ describe('Component: FilterDropdown', () => {
     wrapper = shallow(<FilterDropdown {...props} />);
   });
 
-  it('renders correctly', () => {
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('renders selected correctly', () => {
     wrapper.setProps({ values: { suspended: true } });
-    expect(wrapper).toMatchSnapshot();
+    expect(
+      wrapper
+        .find('ActionList')
+        .props('actions')
+        .actions.find(action => action.name === 'suspended'),
+    ).toHaveProperty('selected', true);
   });
 
   it('handles click', () => {
