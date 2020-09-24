@@ -68,6 +68,61 @@ Array [
 ]
 `;
 
+exports[`Selectors: Tracking Domains selectTrackingDomainsRows maps data to flat structure for use within tracking domains tables 1`] = `
+Array [
+  Object {
+    "blocked": false,
+    "defaultTrackingDomain": true,
+    "domainName": "0.com",
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": 101,
+    "subaccountName": undefined,
+    "unverified": false,
+    "verified": true,
+  },
+  Object {
+    "blocked": false,
+    "defaultTrackingDomain": undefined,
+    "domainName": "1.com",
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": undefined,
+    "unverified": false,
+    "verified": true,
+  },
+  Object {
+    "blocked": true,
+    "defaultTrackingDomain": undefined,
+    "domainName": "2.com",
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": undefined,
+    "unverified": false,
+    "verified": false,
+  },
+  Object {
+    "blocked": false,
+    "defaultTrackingDomain": undefined,
+    "domainName": "3.com",
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": undefined,
+    "unverified": true,
+    "verified": false,
+  },
+  Object {
+    "blocked": false,
+    "defaultTrackingDomain": true,
+    "domainName": "4.com",
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": undefined,
+    "unverified": false,
+    "verified": true,
+  },
+]
+`;
+
 exports[`Selectors: Tracking Domains selectUnverifiedTrackingDomains should return a list of unverified domains 1`] = `
 Array [
   Object {

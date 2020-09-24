@@ -1,5 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Selectors: sendingDomains maps data to flat structure for use within sending domains tables 1`] = `
+Array [
+  Object {
+    "blocked": false,
+    "creationTime": undefined,
+    "defaultBounceDomain": undefined,
+    "domainName": "owner-verified.test",
+    "readyForBounce": false,
+    "readyForDKIM": false,
+    "readyForSending": true,
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": null,
+    "unverified": false,
+    "validSPF": false,
+  },
+  Object {
+    "blocked": false,
+    "creationTime": undefined,
+    "defaultBounceDomain": undefined,
+    "domainName": "dkim-verified.test",
+    "readyForBounce": true,
+    "readyForDKIM": true,
+    "readyForSending": false,
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": null,
+    "unverified": true,
+    "validSPF": false,
+  },
+  Object {
+    "blocked": false,
+    "creationTime": undefined,
+    "defaultBounceDomain": undefined,
+    "domainName": "compliance-verified.test",
+    "readyForBounce": true,
+    "readyForDKIM": false,
+    "readyForSending": true,
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": null,
+    "unverified": false,
+    "validSPF": false,
+  },
+  Object {
+    "blocked": true,
+    "creationTime": undefined,
+    "defaultBounceDomain": undefined,
+    "domainName": "verified-but-blocked.test",
+    "readyForBounce": true,
+    "readyForDKIM": true,
+    "readyForSending": true,
+    "sharedWithSubaccounts": undefined,
+    "subaccountId": undefined,
+    "subaccountName": null,
+    "unverified": false,
+    "validSPF": false,
+  },
+]
+`;
+
 exports[`Selectors: sendingDomains should append DKIM keys to domain object 1`] = `
 Object {
   "dkim": Object {

@@ -28,7 +28,7 @@ export function TestCollection(props) {
       { label: 'Status', sortKey: 'status' },
       { label: 'Template', sortKey: i => i.winning_template_id || i.default_template.template_id },
       { label: 'Last Modified', sortKey: 'updated_at' },
-      { label: <ScreenReaderOnly>Actons</ScreenReaderOnly> },
+      { label: <ScreenReaderOnly>Actions</ScreenReaderOnly> },
     ];
 
     return columns;

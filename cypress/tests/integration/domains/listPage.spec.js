@@ -43,47 +43,19 @@ describe('The domains list page', () => {
 
       // Going right to left since the first tab is already active!
       cy.findByRole('tab', { name: 'Tracking Domains' })
-        .click()
+        .click({ force: true })
         .should('have.attr', 'aria-selected', 'true');
       cy.url().should('include', `${PAGE_URL}/list/tracking`);
 
       cy.findByRole('tab', { name: 'Bounce Domains' })
-        .click()
+        .click({ force: true })
         .should('have.attr', 'aria-selected', 'true');
       cy.url().should('include', `${PAGE_URL}/list/bounce`);
 
       cy.findByRole('tab', { name: 'Sending Domains' })
-        .click()
+        .click({ force: true })
         .should('have.attr', 'aria-selected', 'true');
       cy.url().should('include', `${PAGE_URL}/list/sending`);
-    });
-
-    describe('the filtering UI', () => {
-      it('renders with a "Filter Domains" text field', () => {
-        cy.visit(PAGE_URL);
-
-        cy.wait('@accountDomainsReq');
-
-        cy.findByLabelText('Filter Domains').should('be.visible');
-      });
-
-      it('renders with a "Domain Status" button that renders a popover when clicked', () => {
-        cy.visit(PAGE_URL);
-
-        cy.wait('@accountDomainsReq');
-
-        cy.findByRole('button', { name: 'Domain Status' }).click();
-        cy.findByRole('checkbox', { name: 'Select All' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'Sending Domain' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'DKIM Signing' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'Bounce' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'SPF Valid' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'DMARC Compliant' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'Pending Verification' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'Failed Verification' }).should('be.visible');
-        cy.findByRole('checkbox', { name: 'Blocked' }).should('be.visible');
-        cy.findByRole('button', { name: 'Apply' }).should('be.visible');
-      });
     });
 
     describe('sending domains table', () => {
@@ -115,67 +87,70 @@ describe('The domains list page', () => {
         return cy.get('tbody tr').eq(rowIndex);
       }
 
+      function verifyMultipleResults() {
+        cy.findByRole('table').should('be.visible');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'with-a-subaccount.com',
+          creationDate: 'Aug 7, 2017',
+          subaccount: 'Fake...unt 1 (101)',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          subaccount: 'Primary Account',
+          statusTags: ['Blocked'],
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          subaccount: 'Primary Account',
+          statusTags: ['SPF Valid'],
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          subaccount: 'Primary Account',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'failed-verification.com',
+          creationDate: 'Aug 3, 2017',
+          subaccount: 'Primary Account',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 5,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 2, 2017',
+          subaccount: 'Primary Account',
+          statusTags: ['Sending'],
+        });
+        verifyTableRow({
+          rowIndex: 6,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          subaccount: 'Primary Account',
+          statusTags: ['Sending', 'Bounce'],
+        }).within(() => {
+          cy.findByDataId('default-bounce-domain-tooltip').click();
+        });
+        cy.findAllByText('Default Bounce Domain').should('be.visible');
+      }
+
       it('renders a table after requesting sending domains', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
-        cy.findByRole('table').should('be.visible');
-
-        verifyTableRow({
-          rowIndex: 0,
-          domainName: 'default-bounce.com',
-          creationDate: 'Aug 3, 2017',
-          statusTags: ['Sending', 'Bounce'],
-        }).within(() => {
-          cy.findByDataId('default-bounce-domain-tooltip').click();
-        });
-
-        cy.findAllByText('Default Bounce Domain').should('be.visible');
-
-        verifyTableRow({
-          rowIndex: 1,
-          domainName: 'ready-for-sending.com',
-          creationDate: 'Aug 3, 2017',
-          statusTags: ['Sending'],
-        });
-
-        verifyTableRow({
-          rowIndex: 2,
-          domainName: 'failed-verification.com',
-          creationDate: 'Aug 3, 2017',
-          statusTags: ['Failed Verification'],
-        });
-
-        verifyTableRow({
-          rowIndex: 3,
-          domainName: 'dkim-signing.com',
-          creationDate: 'Aug 3, 2017',
-          statusTags: ['Sending', 'DKIM Signing'],
-        });
-
-        verifyTableRow({
-          rowIndex: 4,
-          domainName: 'spf-valid.com',
-          creationDate: 'Aug 3, 2017',
-          statusTags: ['SPF Valid'],
-        });
-
-        verifyTableRow({
-          rowIndex: 5,
-          domainName: 'blocked.com',
-          creationDate: 'Aug 3, 2017',
-          statusTags: ['Blocked'],
-        });
-
-        verifyTableRow({
-          rowIndex: 6,
-          domainName: 'with-a-subaccount.com',
-          creationDate: 'Aug 3, 2017',
-          subaccount: 'Fake...unt 1 (101)',
-          statusTags: ['Failed Verification'],
-        });
+        verifyMultipleResults();
       });
 
       it('renders an empty state when no results are returned', () => {
@@ -220,6 +195,302 @@ describe('The domains list page', () => {
 
         cy.findByRole('table').should('be.visible');
       });
+
+      it('filters by domain name when typing in the "Filter Domains" field', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        // Partial domain name match
+        cy.findByLabelText('Filter Domains').type('blocked');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+
+        // Clearing the field removes the filter
+        cy.findByLabelText('Filter Domains').clear();
+
+        verifyMultipleResults();
+
+        // Full domain name match
+        cy.findByLabelText('Filter Domains').type('blocked.com');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+      });
+
+      it('sorts alphabetically via the "Sort By" field', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByLabelText('Sort By').select('Domain Name (A - Z)');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          statusTags: ['Sending', 'Bounce'],
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'failed-verification.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 2, 2017',
+          statusTags: ['Sending'],
+        });
+        verifyTableRow({
+          rowIndex: 5,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          statusTags: ['SPF Valid'],
+        });
+        verifyTableRow({
+          rowIndex: 6,
+          domainName: 'with-a-subaccount.com',
+          creationDate: 'Aug 7, 2017',
+          subaccount: 'Fake...unt 1 (101)',
+          statusTags: ['Unverified'],
+        });
+
+        cy.findByLabelText('Sort By').select('Domain Name (Z - A)');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'with-a-subaccount.com',
+          creationDate: 'Aug 7, 2017',
+          subaccount: 'Fake...unt 1 (101)',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          statusTags: ['SPF Valid'],
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 2, 2017',
+          statusTags: ['Sending'],
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'failed-verification.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+        verifyTableRow({
+          rowIndex: 5,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          statusTags: ['Sending', 'Bounce'],
+        });
+        verifyTableRow({
+          rowIndex: 6,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+      });
+
+      it('sorts chronologically via the "Sort By" field', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByLabelText('Sort By').select('Date Added (Newest - Oldest)');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'with-a-subaccount.com',
+          creationDate: 'Aug 7, 2017',
+          subaccount: 'Fake...unt 1 (101)',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          statusTags: ['SPF Valid'],
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'failed-verification.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 5,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 2, 2017',
+          statusTags: ['Sending'],
+        });
+        verifyTableRow({
+          rowIndex: 6,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          statusTags: ['Sending', 'Bounce'],
+        });
+
+        cy.findByLabelText('Sort By').select('Date Added (Oldest - Newest)');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          statusTags: ['Sending', 'Bounce'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 2, 2017',
+          statusTags: ['Sending'],
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'failed-verification.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          statusTags: ['SPF Valid'],
+        });
+        verifyTableRow({
+          rowIndex: 5,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+        verifyTableRow({
+          rowIndex: 6,
+          domainName: 'with-a-subaccount.com',
+          creationDate: 'Aug 7, 2017',
+          subaccount: 'Fake...unt 1 (101)',
+          statusTags: ['Unverified'],
+        });
+      });
+
+      it('filters by domain status', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+
+        cy.findByLabelText('Blocked').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+        cy.findByLabelText('Blocked').uncheck({ force: true });
+
+        cy.findByLabelText('Unverified').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'with-a-subaccount.com',
+          creationDate: 'Aug 7, 2017',
+          statusTags: ['Unverified'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'failed-verification.com',
+          creationDate: 'Aug 3, 2017',
+          statusTags: ['Unverified'],
+        });
+        cy.findByLabelText('Unverified').uncheck({ force: true });
+
+        cy.findByLabelText('SPF Valid').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          creationDate: 'Aug 6, 2017',
+          statusTags: ['Blocked'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          statusTags: ['SPF Valid'],
+        });
+        cy.findByLabelText('SPF Valid').uncheck({ force: true });
+
+        cy.findByLabelText('Bounce').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'default-bounce.com',
+          creationDate: 'Aug 1, 2017',
+          statusTags: ['Sending', 'Bounce'],
+        });
+        cy.findByLabelText('Bounce').uncheck({ force: true });
+
+        cy.findByLabelText('DKIM Signing').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+        cy.findByLabelText('DKIM Signing').uncheck({ force: true });
+      });
     });
 
     describe('bounce domains table', () => {
@@ -239,7 +510,7 @@ describe('The domains list page', () => {
                   content: 'default-bounce.com',
                   href: `${PAGE_URL}/details/default-bounce.com`,
                 });
-                cy.findByText('Aug 3, 2017');
+                cy.findByText('Aug 1, 2017');
               });
             cy.get('td')
               .eq(1)
@@ -287,6 +558,8 @@ describe('The domains list page', () => {
 
         cy.findByRole('table').should('be.visible');
       });
+
+      // NOTE: Filtering/sorting is not tested for this table here as this particular set of UI is using the same component as the sending domains table.
     });
 
     describe('tracking domains table', () => {
@@ -316,28 +589,17 @@ describe('The domains list page', () => {
         return cy.get('tbody tr').eq(rowIndex);
       }
 
-      it('renders requested tracking domains data in a table', () => {
-        cy.stubRequest({
-          url: '/api/v1/tracking-domains',
-          fixture: 'tracking-domains/200.get.json',
-          requestAlias: 'trackingDomainsReq',
-        });
-        stubSubaccounts();
-        cy.visit(`${PAGE_URL}/list/tracking`);
-        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
-
+      function verifyMultipleResults() {
         verifyTableRow({
           rowIndex: 0,
           domainName: 'unverified.com',
-          status: 'Failed Verification',
+          status: 'Unverified',
         });
-
         verifyTableRow({
           rowIndex: 1,
           domainName: 'verified.com',
           status: 'Tracking',
         });
-
         verifyTableRow({
           rowIndex: 2,
           domainName: 'verified-and-default.com',
@@ -346,27 +608,30 @@ describe('The domains list page', () => {
           cy.findByDataId('default-tracking-domain-tooltip').click();
         });
         cy.findAllByText('Default Tracking Domain').should('be.visible');
-
         verifyTableRow({
           rowIndex: 3,
           domainName: 'blocked.com',
           status: 'Blocked',
         });
-
         verifyTableRow({
           rowIndex: 4,
           domainName: 'with-subaccount-assignment.com',
           status: 'Tracking',
           subaccount: 'Subaccount 101',
         });
+      }
+
+      it('renders requested tracking domains data in a table', () => {
+        stubTrackingDomains();
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
+
+        verifyMultipleResults();
       });
 
       it('renders an empty state when no results are returned', () => {
-        cy.stubRequest({
-          url: '/api/v1/tracking-domains',
-          fixture: '200.get.no-results.json',
-          requestAlias: 'trackingDomainsReq',
-        });
+        stubTrackingDomains({ fixture: '200.get.no-results.json' });
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
 
@@ -377,12 +642,7 @@ describe('The domains list page', () => {
       });
 
       it('renders an error message when an error is returned from the server', () => {
-        cy.stubRequest({
-          url: '/api/v1/tracking-domains',
-          fixture: '400.json',
-          statusCode: 400,
-          requestAlias: 'trackingDomainsReq',
-        });
+        stubTrackingDomains({ fixture: '400.json', statusCode: 400 });
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait('@trackingDomainsReq');
 
@@ -394,14 +654,158 @@ describe('The domains list page', () => {
         });
 
         // Verifying that the list endpoint is re-requested, rendering the table successfully
-        cy.stubRequest({
-          url: '/api/v1/tracking-domains',
-          fixture: 'tracking-domains/200.get.json',
-          requestAlias: 'trackingDomainsReq',
-        });
+        stubTrackingDomains();
         cy.findByRole('button', { name: 'Try Again' }).click();
         cy.wait('@trackingDomainsReq');
         cy.findByRole('table').should('be.visible');
+      });
+
+      it('filters by domain name when typing in the "Filter Domains" field', () => {
+        stubTrackingDomains();
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+
+        // Verify partial match
+        cy.findByLabelText('Filter Domains').type('verified.com');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'unverified.com',
+          status: 'Unverified',
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'verified.com',
+          status: 'Tracking',
+        });
+
+        // Clear the filter and verify all results are rendered
+        cy.findByLabelText('Filter Domains').clear();
+        verifyMultipleResults();
+
+        // Verify exact match
+        cy.findByLabelText('Filter Domains').type('unverified.com');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'unverified.com',
+          status: 'Unverified',
+        });
+
+        // No results
+
+        cy.findByLabelText('Filter Domains')
+          .clear()
+          .type('abcdefghijklmnop');
+
+        cy.get('table').should('not.be.visible');
+        cy.findByText('There is no data to display').should('be.visible');
+      });
+
+      it('sorts alphabetically via the "Sort By" field', () => {
+        stubTrackingDomains();
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+
+        cy.findByLabelText('Sort By').select('Domain Name (Z - A)');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+          subaccount: 'Subaccount 101',
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'verified.com',
+          status: 'Tracking',
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'verified-and-default.com',
+          status: 'Tracking',
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'unverified.com',
+          status: 'Unverified',
+        });
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'blocked.com',
+          status: 'Blocked',
+        });
+
+        cy.findByLabelText('Sort By').select('Domain Name (A - Z)');
+
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          status: 'Blocked',
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'unverified.com',
+          status: 'Unverified',
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'verified-and-default.com',
+          status: 'Tracking',
+        });
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'verified.com',
+          status: 'Tracking',
+        });
+        verifyTableRow({
+          rowIndex: 4,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+          subaccount: 'Subaccount 101',
+        });
+      });
+
+      it('filters by domain status', () => {
+        stubTrackingDomains();
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait('@trackingDomainsReq');
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Tracking Domain').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'verified.com',
+          status: 'Tracking',
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'verified-and-default.com',
+          status: 'Tracking',
+        });
+        verifyTableRow({
+          rowIndex: 2,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+          subaccount: 'Subaccount 101',
+        });
+        cy.findByLabelText('Tracking Domain').uncheck({ force: true });
+
+        cy.findByLabelText('Unverified').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'unverified.com',
+          status: 'Unverified',
+        });
+        cy.findByLabelText('Unverified').uncheck({ force: true });
+
+        cy.findByLabelText('Blocked').check({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          status: 'Blocked',
+        });
+        cy.findByLabelText('Blocked').uncheck({ force: true });
       });
     });
   }
@@ -437,5 +841,18 @@ function stubSubaccounts({
     url: '/api/v1/subaccounts',
     fixture,
     requestAlias,
+  });
+}
+
+function stubTrackingDomains({
+  fixture = 'tracking-domains/200.get.json',
+  requestAlias = 'trackingDomainsReq',
+  statusCode = 200,
+} = {}) {
+  cy.stubRequest({
+    url: '/api/v1/tracking-domains',
+    fixture,
+    requestAlias,
+    statusCode,
   });
 }

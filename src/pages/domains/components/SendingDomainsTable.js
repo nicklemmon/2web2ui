@@ -1,129 +1,109 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Bookmark } from '@sparkpost/matchbox-icons';
+import { formatDate } from 'src/helpers/date';
 import config from 'src/config';
-import { ApiErrorBanner, Empty, PanelLoading, Subaccount, TableCollection } from 'src/components';
+import { Subaccount } from 'src/components';
+import {
+  Box,
+  Inline,
+  ScreenReaderOnly,
+  Stack,
+  Table,
+  Tag,
+  Text,
+  Tooltip,
+} from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { TranslatableText } from 'src/components/text';
-import { Box, Inline, Panel, ScreenReaderOnly, Stack, Tag, Tooltip } from 'src/components/matchbox';
-import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
-import { formatDate } from 'src/helpers/date';
-import useUniqueId from 'src/hooks/useUniqueId';
-import useDomains from '../hooks/useDomains';
-import { DETAILS_BASE_URL, API_ERROR_MESSAGE } from '../constants';
+import { useUniqueId } from 'src/hooks';
+import { DETAILS_BASE_URL } from '../constants';
 
-export default function SendingDomainsTable({ renderBounceOnly = false }) {
-  const {
-    listSendingDomains,
-    sendingDomains,
-    bounceDomains,
-    sendingDomainsListError,
-    hasSubaccounts,
-    listSubaccounts,
-    subaccounts,
-    listPending,
-  } = useDomains();
-  const domains = renderBounceOnly ? bounceDomains : sendingDomains;
-  const isEmpty = domains.length === 0;
-
-  useEffect(() => {
-    listSendingDomains();
-
-    if (hasSubaccounts && subaccounts.length === 0) {
-      listSubaccounts();
-    }
-    // eslint-disable-next-line
-  }, []);
-
-  if (listPending) return <PanelLoading />;
-
-  if (sendingDomainsListError) {
-    return (
-      <ApiErrorBanner
-        errorDetails={sendingDomainsListError.message}
-        message={API_ERROR_MESSAGE}
-        reload={() => listSendingDomains()}
-      />
-    );
-  }
-
-  if (isEmpty) {
-    return (
-      <Panel.LEGACY>
-        <Empty message="There is no data to display" />
-      </Panel.LEGACY>
-    );
-  }
-
+export default function SendingDomainsTable({ rows }) {
   return (
-    <TableCollection
-      columns={[
-        { label: 'Domains', key: 'sending_domains_domain' },
-        { label: <ScreenReaderOnly>Status</ScreenReaderOnly>, key: 'sending_domains_status' },
-      ]}
-      rows={domains}
-      getRowData={getRowData}
-      pagination={true}
-    />
+    <Table title="Sending Domains">
+      <ScreenReaderOnly as="thead">
+        <Table.Row>
+          <Table.HeaderCell>Domain</Table.HeaderCell>
+
+          <Table.HeaderCell>Status</Table.HeaderCell>
+        </Table.Row>
+      </ScreenReaderOnly>
+
+      <tbody>
+        {rows?.map((domain, index) => {
+          return (
+            <Table.Row key={`table-row-${index}`}>
+              <Table.Cell>
+                <MainCell row={domain} />
+              </Table.Cell>
+
+              <Table.Cell>
+                <StatusCell row={domain} />
+              </Table.Cell>
+            </Table.Row>
+          );
+        })}
+      </tbody>
+    </Table>
   );
 }
 
-function getRowData(domain) {
-  return [<MainCell domain={domain} />, <StatusCell domain={domain} />];
-}
-
-function MainCell({ domain }) {
-  const {
-    domain: domainName,
-    creation_time,
-    shared_with_subaccounts,
-    subaccount_id,
-    subaccount_name,
-  } = domain;
+function MainCell({ row }) {
+  const { domainName, creationTime, sharedWithSubaccounts, subaccountId, subaccountName } = row;
 
   return (
     <Stack space="100">
       <PageLink to={`${DETAILS_BASE_URL}/${domainName}`}>{domainName}</PageLink>
 
-      {subaccount_id ? (
-        <div>
-          <TranslatableText>Assignment: </TranslatableText>
-          <Subaccount all={shared_with_subaccounts} id={subaccount_id} name={subaccount_name} />
-        </div>
-      ) : null}
+      <Text fontSize="200" lineHeight="200">
+        <TranslatableText>Assignment: </TranslatableText>
 
-      {creation_time ? (
-        <div>
-          <TranslatableText>Added: </TranslatableText>
+        {subaccountId ? (
+          <Subaccount all={sharedWithSubaccounts} id={subaccountId} name={subaccountName} />
+        ) : (
+          'Primary Account'
+        )}
+      </Text>
 
-          {formatDate(creation_time, config.dateFormatWithComma)}
-        </div>
-      ) : null}
+      <Text fontSize="200" lineHeight="200">
+        <TranslatableText>Added: </TranslatableText>
+
+        {creationTime ? formatDate(creationTime, config.dateFormatWithComma) : 'Unknown'}
+      </Text>
     </Stack>
   );
 }
 
-function StatusCell({ domain }) {
+function StatusCell({ row }) {
+  const {
+    blocked,
+    defaultBounceDomain,
+    readyForBounce,
+    readyForDKIM,
+    readyForSending,
+    validSPF,
+    unverified,
+    subaccountId,
+  } = row;
   const tooltipId = useUniqueId('default-bounce-domain');
-  const resolvedStatus = resolveStatus(domain.status);
-  const readyFor = resolveReadyFor(domain.status);
-  const { is_default_bounce_domain, status } = domain;
+  const tooltipContent = `Default${subaccountId ? ' Subaccount ' : ''} Bounce Domain`;
 
-  if (resolvedStatus === 'blocked') return <Tag color="red">Blocked</Tag>;
+  if (blocked) return <Tag color="red">Blocked</Tag>;
+
+  if (unverified) return <Tag color="yellow">Unverified</Tag>;
 
   return (
     <Inline space="100">
-      {resolvedStatus === 'unverified' && <Tag color="yellow">Failed Verification</Tag>}
+      {readyForSending && <Tag>Sending</Tag>}
 
-      {readyFor?.sending && <Tag>Sending</Tag>}
-
-      {readyFor?.bounce && (
+      {readyForBounce && (
         <Tag>
           <Inline space="100">
             <TranslatableText>Bounce</TranslatableText>
 
-            {is_default_bounce_domain && (
+            {defaultBounceDomain && (
               <Box color="green.700">
-                <Tooltip content="Default Bounce Domain" id={tooltipId}>
+                <Tooltip content={tooltipContent} id={tooltipId}>
                   <div tabIndex="0" data-id="default-bounce-domain-tooltip">
                     <Bookmark />
                   </div>
@@ -134,9 +114,9 @@ function StatusCell({ domain }) {
         </Tag>
       )}
 
-      {readyFor?.dkim && <Tag color="green">DKIM Signing</Tag>}
+      {readyForDKIM && <Tag color="green">DKIM Signing</Tag>}
 
-      {status?.spf_status === 'valid' && <Tag color="green">SPF Valid</Tag>}
+      {validSPF && <Tag color="green">SPF Valid</Tag>}
     </Inline>
   );
 }

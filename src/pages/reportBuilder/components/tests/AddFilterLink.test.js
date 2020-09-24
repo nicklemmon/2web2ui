@@ -24,7 +24,7 @@ describe('Add Filter Link', () => {
 
   it('should handle click correctly', () => {
     const wrapper = subject();
-    const linkComponent = wrapper.find('PageLink');
+    const linkComponent = wrapper.find('ButtonLink');
     linkComponent.simulate('mouseUp', {});
     linkComponent.simulate('click');
 
@@ -39,15 +39,15 @@ describe('Add Filter Link', () => {
 
   it('should handle click while holding down meta(cmd) key correctly', () => {
     const wrapper = subject();
-    wrapper.find('PageLink').simulate('mouseUp', { metaKey: true });
-    wrapper.find('PageLink').simulate('click');
+    wrapper.find('ButtonLink').simulate('mouseUp', { metaKey: true });
+    wrapper.find('ButtonLink').simulate('click');
     expect(baseProps.addFilters).not.toHaveBeenCalled();
   });
 
   it('should handle click while holding down control key correctly', () => {
     const wrapper = subject();
-    wrapper.find('PageLink').simulate('mouseUp', { ctrlKey: true });
-    wrapper.find('PageLink').simulate('click');
+    wrapper.find('ButtonLink').simulate('mouseUp', { ctrlKey: true });
+    wrapper.find('ButtonLink').simulate('click');
     expect(baseProps.addFilters).not.toHaveBeenCalled();
   });
 });

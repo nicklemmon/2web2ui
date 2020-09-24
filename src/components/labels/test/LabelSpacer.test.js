@@ -1,19 +1,28 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { useHibana } from 'src/context/HibanaContext';
+import TestApp from 'src/__testHelpers__/TestApp';
 import LabelSpacer from '../LabelSpacer';
 
-jest.mock('src/context/HibanaContext');
-
 describe('LabelSpacer', () => {
-  it('does not render any passed in props and renders with content hidden from screen reader users', () => {
-    useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
-
-    const { container } = render(<LabelSpacer id="my-id" />);
-
-    const elById = container.querySelector('#my-id');
+  it('renders with content hidden from screen reader users', () => {
+    const { container } = render(
+      <TestApp isHibanaEnabled={true}>
+        <LabelSpacer />
+      </TestApp>,
+    );
     const el = container.querySelector('[aria-hidden="true"]');
-    expect(elById).not.toBeTruthy();
+
+    expect(el).toBeInTheDocument();
+  });
+
+  it('renders with the passed in `className`', () => {
+    const { container } = render(
+      <TestApp isHibanaEnabled={true}>
+        <LabelSpacer className="hello-there" />
+      </TestApp>,
+    );
+    const el = container.querySelector('.hello-there');
+
     expect(el).toBeInTheDocument();
   });
 });

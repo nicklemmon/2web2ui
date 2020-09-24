@@ -7,23 +7,23 @@ function verifyRow({ rowIndex, firstCell, secondCell, thirdCell, fourthCell, fif
     .within(() => {
       cy.get('td')
         .eq(0)
-        .should('have.text', firstCell);
+        .should('contain', firstCell);
 
       cy.get('td')
         .eq(1)
-        .should('have.text', secondCell);
+        .should('contain', secondCell);
 
       cy.get('td')
         .eq(2)
-        .should('have.text', thirdCell);
+        .should('contain', thirdCell);
 
       cy.get('td')
         .eq(3)
-        .should('have.text', fourthCell);
+        .should('contain', fourthCell);
 
       cy.get('td')
         .eq(4)
-        .should('have.text', fifthCell);
+        .should('contain', fifthCell);
     });
 }
 
@@ -373,12 +373,12 @@ if (IS_HIBANA_ENABLED) {
 
     it('clicking on a resource adds it as a filter"', () => {
       cy.clock(STABLE_UNIX_DATE);
+      cy.visit(PAGE_URL);
       cy.stubRequest({
         url: '/api/v1/metrics/deliverability/template**/*',
         fixture: 'metrics/deliverability/template/200.get.json',
         requestAlias: 'getTemplate',
       });
-      cy.visit(PAGE_URL);
 
       cy.findByLabelText('Break Down By')
         .scrollIntoView()
@@ -387,7 +387,9 @@ if (IS_HIBANA_ENABLED) {
       cy.wait('@getTemplate');
 
       cy.get('table').within(() => {
-        cy.findByText('my-template-1').click();
+        cy.findByRole('button', { name: 'my-template-1 (Applies a filter to the report)' }).click({
+          force: true,
+        });
       });
 
       cy.findByDataId('report-options').within(() => {

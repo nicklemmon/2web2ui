@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import useRouter from 'src/hooks/useRouter';
 import qs from 'qs';
-
 import { addFilters } from 'src/actions/reportOptions';
-import { PageLink } from 'src/components/links';
+import { ButtonLink } from 'src/components/links';
+import { ScreenReaderOnly } from 'src/components/matchbox';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import { selectSummaryChartSearchOptions } from 'src/selectors/reportSearchOptions';
 
@@ -32,6 +32,7 @@ export const AddFilterLink = ({
   const handleClick = e => {
     if (!isNewTabKeyPressed) {
       addFilters([newFilter]);
+      // eslint-disable-next-line no-unused-expressions
       e?.preventDefault();
     }
   };
@@ -45,9 +46,11 @@ export const AddFilterLink = ({
   const fullLink = `${pathname}?${linkParams}`;
 
   return (
-    <PageLink onMouseUp={handleMouseUp} onClick={handleClick} to={fullLink}>
+    <ButtonLink onMouseUp={handleMouseUp} onClick={handleClick} to={fullLink}>
       {newFilter.value}
-    </PageLink>
+
+      <ScreenReaderOnly>(Applies a filter to the report)</ScreenReaderOnly>
+    </ButtonLink>
   );
 };
 

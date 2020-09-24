@@ -104,4 +104,51 @@ describe('Table Matchbox component wrapper', () => {
       expect(subject).toThrowError();
     });
   });
+
+  describe('Table.SortButton', () => {
+    const subject = props =>
+      shallow(
+        <Table.SortButton onClick={jest.fn} {...props}>
+          Click Me
+        </Table.SortButton>,
+      );
+
+    it('renders with passed in children', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject({ children: 'Click Me' });
+
+      expect(wrapper).toHaveTextContent('Click Me');
+    });
+
+    it('invokes the passed in onClick function when clicked', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const mockFn = jest.fn();
+      const wrapper = subject({ onClick: mockFn });
+
+      wrapper.simulate('click');
+      expect(mockFn).toHaveBeenCalled();
+    });
+
+    it('renders ascending when the "sortDirection" is "asc"', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject({ sortDirection: 'asc' });
+
+      expect(wrapper).toHaveTextContent('Ascending');
+    });
+
+    it('renders the sort icon with "sortDirection" of "desc"', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject({ sortDirection: 'desc' });
+
+      expect(wrapper).toHaveTextContent('Descending');
+    });
+
+    it('renders the sort icon with an undefined "sortDirection"', () => {
+      useHibana.mockImplementationOnce(() => [{ isHibanaEnabled: true }]);
+      const wrapper = subject({ sortDirection: undefined });
+
+      expect(wrapper).not.toHaveTextContent('Ascending');
+      expect(wrapper).not.toHaveTextContent('Descending');
+    });
+  });
 });

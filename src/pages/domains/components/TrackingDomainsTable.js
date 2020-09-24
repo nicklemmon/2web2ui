@@ -1,117 +1,84 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Bookmark } from '@sparkpost/matchbox-icons';
-import { ApiErrorBanner, Empty, PanelLoading, Subaccount, TableCollection } from 'src/components';
-import { Box, Inline, Panel, ScreenReaderOnly, Stack, Tag, Tooltip } from 'src/components/matchbox';
+import { Subaccount } from 'src/components';
+import { Box, Inline, ScreenReaderOnly, Stack, Table, Tag, Tooltip } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { TranslatableText } from 'src/components/text';
 import useUniqueId from 'src/hooks/useUniqueId';
-import useDomains from '../hooks/useDomains';
-import { DETAILS_BASE_URL, API_ERROR_MESSAGE } from '../constants';
+import { DETAILS_BASE_URL } from '../constants';
 
-export default function TrackingDomainsTable() {
-  const {
-    listTrackingDomains,
-    listPending,
-    hasSubaccounts,
-    listSubaccounts,
-    subaccounts,
-    trackingDomains,
-    trackingDomainsListError,
-  } = useDomains();
-  const isEmpty = trackingDomains.length === 0;
-
-  useEffect(() => {
-    listTrackingDomains();
-
-    if (hasSubaccounts && subaccounts.length === 0) {
-      listSubaccounts();
-    }
-    // eslint-disable-next-line
-  }, []);
-
-  if (listPending) return <PanelLoading />;
-
-  if (trackingDomainsListError) {
-    return (
-      <ApiErrorBanner
-        errorDetails={trackingDomainsListError.message}
-        message={API_ERROR_MESSAGE}
-        reload={() => listTrackingDomains()}
-      />
-    );
-  }
-
-  if (isEmpty) {
-    return (
-      <Panel.LEGACY>
-        <Empty message="There is no data to display" />
-      </Panel.LEGACY>
-    );
-  }
-
+export default function TrackingDomainsTable({ rows }) {
   return (
-    <TableCollection
-      columns={[
-        { label: 'Domains', key: 'sending_domains_domain' },
-        { label: <ScreenReaderOnly>Status</ScreenReaderOnly>, key: 'sending_domains_status' },
-      ]}
-      rows={trackingDomains}
-      getRowData={getRowData}
-      pagination={true}
-    />
+    <Table title="Tracking Domains">
+      <ScreenReaderOnly as="thead">
+        <Table.Row>
+          <Table.HeaderCell>Domain</Table.HeaderCell>
+
+          <Table.HeaderCell>Status</Table.HeaderCell>
+        </Table.Row>
+      </ScreenReaderOnly>
+
+      <tbody>
+        {rows?.map((domain, index) => {
+          return (
+            <Table.Row key={`table-row-${index}`}>
+              <Table.Cell>
+                <MainCell row={domain} />
+              </Table.Cell>
+
+              <Table.Cell>
+                <StatusCell row={domain} />
+              </Table.Cell>
+            </Table.Row>
+          );
+        })}
+      </tbody>
+    </Table>
   );
 }
 
-function getRowData(trackingDomain) {
-  return [
-    <MainCell trackingDomain={trackingDomain} />,
-    <StatusCell trackingDomain={trackingDomain} />,
-  ];
-}
+function MainCell({ row }) {
+  const { domainName, subaccountId, sharedWithSubaccounts, subaccountName } = row;
 
-function MainCell({ trackingDomain }) {
-  const { domain, subaccount_id, shared_with_subaccounts, subaccount_name } = trackingDomain;
   return (
     <Stack space="100">
-      <PageLink to={`${DETAILS_BASE_URL}/${domain}`}>{domain}</PageLink>
+      <PageLink to={`${DETAILS_BASE_URL}/${domainName}`}>{domainName}</PageLink>
 
-      {subaccount_id ? (
+      {subaccountId && (
         <div>
           <TranslatableText>Assignment: </TranslatableText>
-          <Subaccount all={shared_with_subaccounts} id={subaccount_id} name={subaccount_name} />
+          <Subaccount all={sharedWithSubaccounts} id={subaccountId} name={subaccountName} />
         </div>
-      ) : null}
+      )}
     </Stack>
   );
 }
 
-function StatusCell({ trackingDomain }) {
+function StatusCell({ row }) {
+  const { defaultTrackingDomain, unverified, blocked } = row;
   const tooltipId = useUniqueId('default-tracking-domain');
-  const { default: isDefault, status } = trackingDomain;
+
+  if (blocked) return <Tag color="red">Blocked</Tag>;
+
+  if (unverified) return <Tag color="yellow">Unverified</Tag>;
 
   return (
     <Inline space="100">
-      {status === 'blocked' && <Tag color="red">Blocked</Tag>}
+      <Tag>
+        <Inline space="100">
+          <TranslatableText>Tracking</TranslatableText>
 
-      {status === 'unverified' && <Tag color="yellow">Failed Verification</Tag>}
-
-      {status === 'verified' && (
-        <Tag>
-          <Inline space="100">
-            <TranslatableText>Tracking</TranslatableText>
-
-            {isDefault && (
-              <Box color="green.700">
-                <Tooltip content="Default Tracking Domain" id={tooltipId}>
-                  <div tabIndex="0" data-id="default-tracking-domain-tooltip">
-                    <Bookmark />
-                  </div>
-                </Tooltip>
-              </Box>
-            )}
-          </Inline>
-        </Tag>
-      )}
+          {defaultTrackingDomain && (
+            <Box color="green.700">
+              <Tooltip content="Default Tracking Domain" id={tooltipId}>
+                <div tabIndex="0" data-id="default-tracking-domain-tooltip">
+                  <Bookmark />
+                </div>
+              </Tooltip>
+            </Box>
+          )}
+        </Inline>
+      </Tag>
     </Inline>
   );
 }

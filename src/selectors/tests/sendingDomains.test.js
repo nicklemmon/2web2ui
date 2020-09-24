@@ -1,4 +1,13 @@
-import { selectVerifiedDomains, selectReadyForBounce, selectDkimVerifiedDomains, hasUnverifiedDomains, selectDomain, selectNotBlockedDomains, selectDomains } from '../sendingDomains';
+import {
+  selectVerifiedDomains,
+  selectReadyForBounce,
+  selectDkimVerifiedDomains,
+  hasUnverifiedDomains,
+  selectDomain,
+  selectNotBlockedDomains,
+  selectDomains,
+  selectSendingDomainsRows,
+} from '../sendingDomains';
 
 describe('Selectors: sendingDomains', () => {
   let state;
@@ -10,16 +19,16 @@ describe('Selectors: sendingDomains', () => {
           id: 'xyz.com',
           dkim: {
             selector: 'scph0118',
-            public: '123456789A'
-          }
+            public: '123456789A',
+          },
         },
         list: [
           {
             domain: 'owner-verified.test',
             status: {
               ownership_verified: true,
-              compliance_status: 'valid'
-            }
+              compliance_status: 'valid',
+            },
           },
           {
             domain: 'dkim-verified.test',
@@ -28,8 +37,8 @@ describe('Selectors: sendingDomains', () => {
               compliance_status: 'valid',
               mx_status: 'valid',
               cname_status: 'invalid',
-              dkim_status: 'valid'
-            }
+              dkim_status: 'valid',
+            },
           },
           {
             domain: 'compliance-verified.test',
@@ -38,8 +47,8 @@ describe('Selectors: sendingDomains', () => {
               compliance_status: 'pending',
               mx_status: 'invalid',
               cname_status: 'valid',
-              dkim_status: 'invalid'
-            }
+              dkim_status: 'invalid',
+            },
           },
           {
             domain: 'verified-but-blocked.test',
@@ -48,20 +57,19 @@ describe('Selectors: sendingDomains', () => {
               compliance_status: 'blocked',
               mx_status: 'valid',
               cname_status: 'valid',
-              dkim_status: 'valid'
-            }
-          }
-        ]
+              dkim_status: 'valid',
+            },
+          },
+        ],
       },
       subaccounts: {
-        list: []
-      }
+        list: [],
+      },
     };
   });
 
   it('should return domains with subaccount_name if subaccount_id is present', () => {
     expect(selectDomains(state)).toMatchSnapshot();
-
   });
 
   it('should append DKIM keys to domain object', () => {
@@ -98,10 +106,10 @@ describe('Selectors: sendingDomains', () => {
       const state = {
         sendingDomains: {
           list: [
-            { status: { ownership_verified: true, compliance_status: 'valid' }},
-            { status: { ownership_verified: true, compliance_status: 'blocked' }}
-          ]
-        }
+            { status: { ownership_verified: true, compliance_status: 'valid' } },
+            { status: { ownership_verified: true, compliance_status: 'blocked' } },
+          ],
+        },
       };
       expect(hasUnverifiedDomains(state)).toEqual(false);
     });
@@ -109,11 +117,14 @@ describe('Selectors: sendingDomains', () => {
     it('should return false if there are no domains', () => {
       const state = {
         sendingDomains: {
-          list: []
-        }
+          list: [],
+        },
       };
       expect(hasUnverifiedDomains(state)).toEqual(false);
     });
   });
 
+  it('maps data to flat structure for use within sending domains tables', () => {
+    expect(selectSendingDomainsRows(state)).toMatchSnapshot();
+  });
 });

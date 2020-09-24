@@ -22,7 +22,7 @@ exports[`TestCollection Component should render 1`] = `
       },
       Object {
         "label": <ScreenReaderOnly>
-          Actons
+          Actions
         </ScreenReaderOnly>,
       },
     ]

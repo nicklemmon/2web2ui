@@ -1,11 +1,11 @@
 import Container from './Container';
 import CreateForm from './CreateForm';
-import SendingDomainsTable from './SendingDomainsTable';
-import TrackingDomainsTable from './TrackingDomainsTable';
+import SendingDomainsTab from './SendingDomainsTab';
+import TrackingDomainsTab from './TrackingDomainsTab';
 
 export default {
   CreateForm,
   Container,
-  SendingDomainsTable,
-  TrackingDomainsTable,
+  SendingDomainsTab,
+  TrackingDomainsTab,
 };
