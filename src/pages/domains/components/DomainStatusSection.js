@@ -55,7 +55,9 @@ export default function DomainStatusSection(props) {
               authentication documentation.
             </SubduedText>
           )}
-          <ExternalLink to="/">Documentation</ExternalLink>
+          <ExternalLink to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership">
+            Documentation
+          </ExternalLink>
         </Stack>
       </Layout.Section>
       <Layout.Section>

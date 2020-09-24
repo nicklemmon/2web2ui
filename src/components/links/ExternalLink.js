@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { OpenInNew } from '@sparkpost/matchbox-icons';
 import { Button, UnstyledLink } from 'src/components/matchbox';
+import styled from 'styled-components';
 
 const ExternalLink = ({
   as: Component = UnstyledLink,
   children,
   component: _component, // ignore, won't apply external props correctly if set
+  icon: Icon = OpenInNew,
   ...props
 }) => {
   const isButton = Component.name === 'Button';
@@ -18,9 +20,13 @@ const ExternalLink = ({
     iconMargin = '0 0 0 4px';
   }
 
+  const StyledIcon = styled(Icon)`
+    margin: ${iconMargin};
+  `;
+
   return (
     <Component {...props} external={true}>
-      {children} <OpenInNew size={iconSize} style={{ margin: iconMargin }} />
+      {children} <StyledIcon size={iconSize} />
     </Component>
   );
 };

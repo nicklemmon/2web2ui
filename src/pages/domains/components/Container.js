@@ -5,6 +5,10 @@ import {
   update as updateSendingDomain,
   remove as deleteDomain,
   verifyDkim,
+  verify,
+  verifyMailbox,
+  verifyAbuse,
+  verifyPostmaster,
 } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
@@ -35,7 +39,11 @@ const mapDispatchToProps = {
   updateSendingDomain,
   listSubaccounts,
   listTrackingDomains,
+  verify,
   verifyDkim,
+  verifyMailbox,
+  verifyAbuse,
+  verifyPostmaster,
   showAlert,
   deleteDomain,
 };

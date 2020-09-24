@@ -6,6 +6,8 @@ import DomainStatusSection from './DomainStatusSection';
 import DeleteDomainSection from './DeleteDomainSection';
 import LinkTrackingDomainSection from './LinkTrackingDomainSection';
 import SetupBounceDomainSection from './SetupBounceDomainSection';
+import VerifyEmailSection from './VerifyEmailSection';
+
 export default {
   Container,
   SendingDomainsTable,
@@ -15,4 +17,5 @@ export default {
   DeleteDomainSection,
   DomainStatusSection,
   LinkTrackingDomainSection,
+  VerifyEmailSection,
 };

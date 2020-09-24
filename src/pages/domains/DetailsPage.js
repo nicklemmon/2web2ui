@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Page, Layout, Banner, Button } from 'src/components/matchbox';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
@@ -13,9 +13,11 @@ import { ExternalLink, SupportTicketLink } from 'src/components/links';
 import { selectTrackingDomainsOptions } from 'src/selectors/trackingDomains';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
+import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
 
 function DetailsPage(props) {
   const resolvedStatus = resolveStatus(props.domain.status);
+  const [warningBanner, toggleBanner] = useState(true);
   useEffect(() => {
     props.getDomain(props.match.params.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,10 +31,13 @@ function DetailsPage(props) {
           onClick: () => props.history.push('/domains/list/sending'),
         }}
       >
-        {resolvedStatus === 'unverified' && (
+        {resolvedStatus === 'unverified' && warningBanner && (
           <Banner
             status="warning"
             title="Unverified domains will be removed two weeks after being added."
+            onDismiss={() => {
+              toggleBanner(false);
+            }}
             mb="500"
           >
             It can take 24 to 48 hours for the DNS records to propogate and verify the domain.
@@ -43,10 +48,12 @@ function DetailsPage(props) {
         )}
         {resolvedStatus === 'blocked' && (
           <Banner status="danger" title="This domain has been blocked by SparkPost" mb="500">
-            It can take 24 to 48 hours for the DNS records to propogate and verify the domain.
+            ??
             <Banner.Actions>
               <SupportTicketLink as={Button}>Create Support ticket</SupportTicketLink>
-              <ExternalLink to="/">Domains Documentation</ExternalLink>
+              <ExternalLink to="https://www.sparkpost.com/docs/getting-started/requirements-for-sending-domains/#if-your-domain-is-blocked">
+                Domains Documentation
+              </ExternalLink>
             </Banner.Actions>
           </Banner>
         )}
@@ -62,18 +69,32 @@ function DetailsPage(props) {
         {resolvedStatus !== 'blocked' && (
           <>
             <Layout>
-              <Domains.SetupForSending domain={props.domain} id={props.match.params.id} />
+              <Domains.SetupForSending
+                domain={props.domain}
+                id={props.match.params.id}
+                resolvedStatus={resolvedStatus}
+              />
             </Layout>
-            <Layout>
-              <Domains.SetupBounceDomainSection {...props} />
-            </Layout>
-            <Layout>
-              <Domains.LinkTrackingDomainSection {...props} />
-            </Layout>
+            {resolvedStatus !== 'unverified' && (
+              <>
+                <Layout>
+                  <Domains.SetupBounceDomainSection {...props} resolvedStatus={resolvedStatus} />
+                </Layout>
+
+                <Layout>
+                  <Domains.LinkTrackingDomainSection {...props} resolvedStatus={resolvedStatus} />
+                </Layout>
+              </>
+            )}
           </>
         )}
+        {resolvedStatus === 'unverified' && (
+          <Layout>
+            <Domains.VerifyEmailSection {...props} />
+          </Layout>
+        )}
         <Layout>
-          <Domains.DeleteDomainSection {...props} />
+          <Domains.DeleteDomainSection {...props} resolvedStatus={resolvedStatus} />
         </Layout>
       </Page>
     </Domains.Container>
@@ -87,6 +108,7 @@ export default connect(
     allowSubaccountDefault: selectAllSubaccountDefaultBounceDomains(state),
     trackingDomains: selectTrackingDomainsOptions(state),
     isByoipAccount: selectCondition(hasAccountOptionEnabled('byoip_customer'))(state),
+    hasAnyoneAtEnabled: selectHasAnyoneAtDomainVerificationEnabled(state),
   }),
   { getDomain },
 )(DetailsPage);

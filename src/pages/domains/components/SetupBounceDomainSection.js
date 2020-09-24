@@ -10,21 +10,39 @@ import { useForm, Controller } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
 import getConfig from 'src/helpers/getConfig';
 import { CopyField } from 'src/components';
+import useDomains from '../hooks/useDomains';
 
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
 `;
 
 export default function SetupBounceDomainSection({ domain, isByoipAccount }) {
-  // const { verifyDkim, showAlert } = useDomains();
-  const { id, status } = domain;
+  const { id, status, subaccount_id } = domain;
   const readyFor = resolveReadyFor(status);
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
   const bounceDomainsConfig = getConfig('bounceDomains');
   const { control, handleSubmit, watch } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
+  const { verify, showAlert } = useDomains();
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    const type = watchVerificationType.toLowerCase();
+
+    return verify({ id, subaccount: subaccount_id, type }).then(result => {
+      if (result[`${type}_status`] === 'valid') {
+        showAlert({
+          type: 'success',
+          message: `You have successfully verified ${type} record of ${id}`,
+        });
+      } else {
+        showAlert({
+          type: 'error',
+          message: `Unable to verify ${type} record of ${id}`,
+          details: result.dns[`${type}_error`],
+        });
+      }
+    });
+  };
   return (
     <>
       <Layout.Section annotated>
@@ -48,7 +66,12 @@ export default function SetupBounceDomainSection({ domain, isByoipAccount }) {
             </Text>{' '}
             record, Hostname and Value for this domain in the settings section of your DNS provider.
             <Panel.Action>
-              Forward to Collegue <PlaneIcon />
+              <ExternalLink
+                to="mailto:abc@example.com?subject=todo-get-subject&body=todo-get-message"
+                icon={PlaneIcon}
+              >
+                Forward to Collegue
+              </ExternalLink>
             </Panel.Action>
           </Panel.Section>
           <form onSubmit={handleSubmit(onSubmit)}>
