@@ -23,7 +23,7 @@ describe('segment helpers', () => {
         [SEGMENT_TRAITS.USER_ID]: 'username',
         [SEGMENT_TRAITS.TENANT]: 'tenant',
       });
-      expect(window.analytics.group).toBeCalledWith('tenant//123');
+      expect(window.analytics.group).toBeCalledWith('tenant//123', { groupId: 'tenant//123' });
     });
 
     it('does not call window.analytics.identify without user id/email', () => {
@@ -47,7 +47,9 @@ describe('segment helpers', () => {
 
       segmentIdentify(traits);
       expect(window.analytics.identify).toBeCalledWith('email@abc.com//123', traits);
-      expect(window.analytics.group).toBeCalledWith('test-tenant//123');
+      expect(window.analytics.group).toBeCalledWith('test-tenant//123', {
+        groupId: 'test-tenant//123',
+      });
     });
   });
 

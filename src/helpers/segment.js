@@ -59,9 +59,14 @@ export const segmentIdentify = traits => {
       `${filteredTraits[SEGMENT_TRAITS.EMAIL]}//${traits[SEGMENT_TRAITS.CUSTOMER_ID]}`,
       filteredTraits,
     );
-    window.analytics.group(
-      `${filteredTraits[SEGMENT_TRAITS.TENANT]}//${traits[SEGMENT_TRAITS.CUSTOMER_ID]}`,
-    );
+    const groupIdentifier = `${filteredTraits[SEGMENT_TRAITS.TENANT]}//${
+      traits[SEGMENT_TRAITS.CUSTOMER_ID]
+    }`;
+
+    // Mixpanel ignores the first argument for grouping, so we need to pass it twice
+    window.analytics.group(groupIdentifier, {
+      groupId: groupIdentifier,
+    });
   }
 };
 
