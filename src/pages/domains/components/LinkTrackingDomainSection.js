@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { Button, Layout, Stack } from 'src/components/matchbox';
 import { Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
-import { ExternalLink } from 'src/components/links';
+import { SubduedLink } from 'src/components/links';
 import { useForm, Controller } from 'react-hook-form';
 import { Select } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
+import { EXTERNAL_LINKS } from '../constants';
 
 export default function LinkTrackingDomainSection({ domain, trackingDomains }) {
   const { control, handleSubmit } = useForm();
@@ -39,7 +40,9 @@ export default function LinkTrackingDomainSection({ domain, trackingDomains }) {
         <Layout.SectionTitle as="h2">Link Tracking Domain</Layout.SectionTitle>
         <Stack>
           <SubduedText>Assign a tracking domain?</SubduedText>
-          <ExternalLink to="/">Documentation</ExternalLink>
+          <SubduedLink to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+            Tracking Domain Documentation
+          </SubduedLink>
         </Stack>
       </Layout.Section>
       <Layout.Section>

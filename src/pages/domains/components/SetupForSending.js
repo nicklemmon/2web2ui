@@ -5,9 +5,10 @@ import { SubduedText } from 'src/components/text';
 import { Send } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
-import { ExternalLink } from 'src/components/links';
+import { ExternalLink, SubduedLink } from 'src/components/links';
 import styled from 'styled-components';
 import { CopyField } from 'src/components';
+import { EXTERNAL_LINKS } from '../constants';
 
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
@@ -60,7 +61,9 @@ export default function SetupForSending({ domain, resolvedStatus }) {
                 be verified and used, in order to ensure DKIM checks are passed.
               </SubduedText>
 
-              <ExternalLink to="/">Documentation</ExternalLink>
+              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+                Sending Domain Documentation
+              </SubduedLink>
             </Stack>
           </>
         )}

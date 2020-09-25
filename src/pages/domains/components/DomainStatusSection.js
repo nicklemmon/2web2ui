@@ -6,8 +6,9 @@ import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell
 import { Bookmark } from '@sparkpost/matchbox-icons';
 import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
-import { ExternalLink } from 'src/components/links';
+import { SubduedLink } from 'src/components/links';
 import { ToggleBlock } from 'src/components';
+import { EXTERNAL_LINKS } from '../constants';
 
 export default function DomainStatusSection(props) {
   const { allowDefault, allowSubaccountDefault, domain } = props;
@@ -55,9 +56,21 @@ export default function DomainStatusSection(props) {
               authentication documentation.
             </SubduedText>
           )}
-          <ExternalLink to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-domain-step-2-verifying-domain-ownership">
-            Documentation
-          </ExternalLink>
+          {resolvedStatus === 'unverified' && (
+            <SubduedLink to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}>
+              Domain Documentation
+            </SubduedLink>
+          )}
+          {resolvedStatus === 'verified' && (
+            <Stack>
+              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+                Sending Domain Documentation
+              </SubduedLink>
+              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_API_DOCUMENTATION}>
+                Sending Domain API Documentation
+              </SubduedLink>
+            </Stack>
+          )}
         </Stack>
       </Layout.Section>
       <Layout.Section>

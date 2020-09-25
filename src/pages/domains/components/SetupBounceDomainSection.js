@@ -14,13 +14,14 @@ import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { Send } from '@sparkpost/matchbox-icons';
 import { resolveReadyFor } from 'src/helpers/domains';
-import { ExternalLink, PageLink } from 'src/components/links';
+import { ExternalLink, PageLink, SubduedLink } from 'src/components/links';
 import styled from 'styled-components';
 import { useForm, Controller } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
 import getConfig from 'src/helpers/getConfig';
 import { CopyField } from 'src/components';
 import useDomains from '../hooks/useDomains';
+import { EXTERNAL_LINKS } from '../constants';
 
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
@@ -112,7 +113,9 @@ export default function SetupBounceDomainSection({ domain, isByoipAccount }) {
             </Stack>
           </SubduedText>
 
-          <ExternalLink to="/">Bounce Domain Documentation</ExternalLink>
+          <SubduedLink to={EXTERNAL_LINKS.BOUNCE_DOMAIN_DOCUMENTATION}>
+            Bounce Domain Documentation
+          </SubduedLink>
           <PageLink to="/domains/create">Create a seperate bounce subdomain</PageLink>
         </Stack>
       </Layout.Section>
