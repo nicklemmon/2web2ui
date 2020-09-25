@@ -36,23 +36,23 @@ const FilterBoxWrapper = props => (
 );
 
 export function ReportsListModal(props) {
-  const { reports, open, onClose, currentUser, handleDelete } = props;
+  const { reports, open, onClose, currentUser, handleDelete, handleEdit } = props;
   const handleReportChange = report => {
     props.handleReportChange(report);
     onClose();
   };
 
   const getActions = useCallback(
-    (reportType, id, name) => {
+    (reportType, report) => {
       return (
         <Popover
           left
-          id={`popover-${reportType}-${id}`}
+          id={`popover-${reportType}-${report.id}`}
           trigger={
             <Button
               variant="minimal"
-              aria-controls={`popover-${reportType}-${id}`}
-              data-id={`${reportType}-${id}`}
+              aria-controls={`popover-${reportType}-${report.id}`}
+              data-id={`${reportType}-${report.id}`}
             >
               <Button.Icon as={MoreHoriz} />
               <ScreenReaderOnly>Open Menu</ScreenReaderOnly>
@@ -60,18 +60,19 @@ export function ReportsListModal(props) {
           }
         >
           <ActionList>
-            <ActionList.Action content="Delete" onClick={() => handleDelete({ id, name })} />
+            <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />
+            <ActionList.Action content="Edit" onClick={() => handleEdit(report)} />
           </ActionList>
         </Popover>
       );
     },
-    [handleDelete],
+    [handleDelete, handleEdit],
   );
 
   const myReports = reports.filter(({ creator }) => creator === currentUser);
 
   const myReportsRows = report => {
-    const { id, name, modified } = report;
+    const { name, modified } = report;
     return [
       <ButtonLink
         onClick={() => {
@@ -81,14 +82,14 @@ export function ReportsListModal(props) {
         {name}
       </ButtonLink>,
       <div>{formatDateTime(modified)}</div>,
-      getActions('myReports', id, name),
+      getActions('myReports', report),
     ];
   };
 
   const allReportsRows = report => {
-    const { id, name, modified, creator, subaccount_id, current_user_can_edit } = report;
+    const { name, modified, creator, subaccount_id, current_user_can_edit } = report;
     //conditionally render the actionlist
-    const action = current_user_can_edit ? getActions('allReports', id, name) : '';
+    const action = current_user_can_edit ? getActions('allReports', report) : '';
 
     return [
       <ButtonLink

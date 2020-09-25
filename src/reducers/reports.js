@@ -2,21 +2,30 @@ const initialState = {
   createPending: false,
   list: [],
   status: 'idle',
+  saveStatus: 'idle',
   deletePending: false,
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case 'CREATE_REPORT_PENDING':
-      return { ...state, createPending: true };
+      return { ...state, saveStatus: 'loading' };
     case 'CREATE_REPORT_SUCCESS':
+      return { ...state, saveStatus: 'success' };
     case 'CREATE_REPORT_FAIL':
-      return { ...state, createPending: false };
+      return { ...state, saveStatus: 'error' };
+
+    case 'UPDATE_REPORT_PENDING':
+      return { ...state, saveStatus: 'loading' };
+    case 'UPDATE_REPORT_SUCCESS':
+      return { ...state, saveStatus: 'success' };
+    case 'UPDATE_REPORT_FAIL':
+      return { ...state, saveStatus: 'error' };
 
     case 'GET_REPORTS_PENDING':
       return { ...state, list: [], status: 'loading' };
     case 'GET_REPORTS_SUCCESS':
-      return { ...state, list: payload, status: 'idle' };
+      return { ...state, list: payload, status: 'success' };
     case 'GET_REPORTS_FAIL':
       return { ...state, status: 'error' };
 

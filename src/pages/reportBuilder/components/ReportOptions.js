@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { refreshReportOptions } from 'src/actions/reportOptions';
 import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel, Stack, Tag } from 'src/components/matchbox';
-import { Tabs } from 'src/components';
+import { Tabs, Loading } from 'src/components';
 
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { selectSummaryMetricsProcessed } from 'src/selectors/reportSearchOptions';
@@ -18,6 +18,37 @@ import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
 import { PRESET_REPORT_CONFIGS } from '../constants/presetReport';
 
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import { getReports } from 'src/actions/reports';
+
+export const ActiveFilters = ({ filters, handleFilterRemove }) => {
+  const filtersWithIndex = filters.map((value, index) => ({ ...value, index }));
+  const groupedFilters = _.groupBy(filtersWithIndex, 'type');
+
+  return (
+    <Stack>
+      {Object.keys(groupedFilters).map(key => (
+        <Inline key={`filter_group_${key}`}>
+          <div>{key}</div>
+          <div>
+            <strong className={styles.Conditional}>equals</strong>
+            {groupedFilters[key].map(({ value, index }) => (
+              <Tag
+                className={styles.TagWrapper}
+                key={`tag_${index}`}
+                onRemove={handleFilterRemove ? () => handleFilterRemove(index) : undefined}
+              >
+                {value}
+              </Tag>
+            ))}
+          </div>
+        </Inline>
+      ))}
+    </Stack>
+  );
+};
+
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
   const {
@@ -26,6 +57,11 @@ export function ReportOptions(props) {
     reportOptions,
     reportLoading,
     searchOptions,
+    // Saved Reports
+    isSavedReportsEnabled,
+    reports,
+    reportsStatus,
+    getReports,
   } = props;
   const [selectedReport, setReport] = useState(null);
 
@@ -59,14 +95,29 @@ export function ReportOptions(props) {
 
   // Updates the query params with incoming search option changes
   useEffect(() => {
-    updateRoute(searchOptions);
-  }, [searchOptions, updateRoute]);
+    if (reportOptions.isReady) {
+      updateRoute({ ...searchOptions, report: selectedReport?.id });
+    }
+  }, [searchOptions, updateRoute, reportOptions.isReady, selectedReport]);
+
+  useEffect(() => {
+    if (isSavedReportsEnabled) {
+      getReports();
+    }
+  }, [isSavedReportsEnabled, getReports]);
 
   //Initializes the report options with the search
   useEffect(() => {
-    const { options, filters = [], report: reportKey } = parseSearch(location.search);
-    const report = PRESET_REPORT_CONFIGS.find(({ key }) => key === reportKey);
+    const { options, filters = [], report: reportId } = parseSearch(location.search);
+    const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
+    const report = allReports.find(({ id }) => id === reportId);
 
+    //Waiting on reports (if enabled) to initialize
+    if (reportId && isSavedReportsEnabled && reportsStatus !== 'success') {
+      return;
+    }
+
+    // Initializes once it finds relavant report
     if (report) {
       const { options: reportOptions, filters: reportFilters = [] } = parseSearch(
         report.query_string,
@@ -77,7 +128,7 @@ export function ReportOptions(props) {
       refreshReportOptions({ ...options, filters });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isSavedReportsEnabled, reportsStatus, reports]);
 
   const { getActivatorProps, getDrawerProps, openDrawer, closeDrawer } = Drawer.useDrawer({
     id: 'report-drawer',
@@ -113,37 +164,9 @@ export function ReportOptions(props) {
     closeDrawer();
   };
 
-  const ActiveFilters = () => {
-    const filtersWithIndex = reportOptions.filters.map((value, index) => ({ ...value, index }));
-    const groupedFilters = _.groupBy(filtersWithIndex, 'type');
-
-    return (
-      <Inline>
-        <Heading as="h2" looksLike="h5">
-          Filters
-        </Heading>
-        <Stack>
-          {Object.keys(groupedFilters).map(key => (
-            <Inline key={`filter_group_${key}`}>
-              <div>{key}</div>
-              <div>
-                <strong className={styles.Conditional}>equals</strong>
-                {groupedFilters[key].map(({ value, index }) => (
-                  <Tag
-                    className={styles.TagWrapper}
-                    key={`tag_${index}`}
-                    onRemove={() => handleFilterRemove(index)}
-                  >
-                    {value}
-                  </Tag>
-                ))}
-              </div>
-            </Inline>
-          ))}
-        </Stack>
-      </Inline>
-    );
-  };
+  if (!reportOptions.isReady) {
+    return <Loading />;
+  }
 
   return (
     <div data-id="report-options">
@@ -192,7 +215,15 @@ export function ReportOptions(props) {
       {!isEmpty &&
       Boolean(reportOptions.filters.length) && ( //Only show if there are active filters
           <Panel.LEGACY.Section>
-            <ActiveFilters />
+            <Inline>
+              <Heading as="h2" looksLike="h5">
+                Filters
+              </Heading>
+              <ActiveFilters
+                filters={reportOptions.filters}
+                handleFilterRemove={handleFilterRemove}
+              />
+            </Inline>
           </Panel.LEGACY.Section>
         )}
     </div>
@@ -203,9 +234,13 @@ const mapStateToProps = state => ({
   processedMetrics: selectSummaryMetricsProcessed(state),
   reportOptions: state.reportOptions,
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
+  reports: state.reports.list,
+  reportsStatus: state.reports.status,
+  isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
 });
 
 const mapDispatchToProps = {
   refreshReportOptions,
+  getReports,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ReportOptions);

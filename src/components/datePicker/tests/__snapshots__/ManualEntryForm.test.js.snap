@@ -132,7 +132,9 @@ exports[`Component: DatePicker ManualEntryForm should render correctly by defaul
   <div
     className="PrecisionLabel"
   >
-    Precision: 
+    <TranslatableText>
+      Precision: 
+    </TranslatableText>
     Hour
   </div>
 </form>
@@ -205,7 +207,9 @@ exports[`Component: DatePicker ManualEntryForm should sync props to state 1`] = 
   <div
     className="PrecisionLabel"
   >
-    Precision: 
+    <TranslatableText>
+      Precision: 
+    </TranslatableText>
     Hour
   </div>
 </form>
@@ -278,7 +282,9 @@ exports[`Component: DatePicker ManualEntryForm should update state from new prop
   <div
     className="PrecisionLabel"
   >
-    Precision: 
+    <TranslatableText>
+      Precision: 
+    </TranslatableText>
     Hour
   </div>
 </form>

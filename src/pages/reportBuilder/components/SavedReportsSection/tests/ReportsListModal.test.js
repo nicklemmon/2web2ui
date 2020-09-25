@@ -4,30 +4,30 @@ import { ReportsListModal } from '../ReportsListModal';
 import TestApp from 'src/__testHelpers__/TestApp';
 
 describe('ReportsListModal', () => {
-  const mockHandleDelete = jest.fn();
-  const subject = props => {
-    const defaults = {
-      currentUser: 'Sparky McSparkFace',
-      handleDelete: mockHandleDelete,
-      open: true,
-      reports: [
-        {
-          id: 0,
-          creator: 'Sparky McSparkFace',
-          name: 'My Saved Report',
-          modified: '2020-09-02T13:00:00.000Z',
-          current_user_can_edit: true,
-        },
-        {
-          id: 1,
-          creator: 'Not Me',
-          name: 'Someone Elses Report',
-          modified: '2020-10-02T13:00:00.000Z',
-          current_user_can_edit: false,
-        },
-      ],
-    };
+  const defaults = {
+    currentUser: 'Sparky McSparkFace',
+    handleDelete: jest.fn(),
+    handleEdit: jest.fn(),
+    open: true,
+    reports: [
+      {
+        id: 0,
+        creator: 'Sparky McSparkFace',
+        name: 'My Saved Report',
+        modified: '2020-09-02T13:00:00.000Z',
+        current_user_can_edit: true,
+      },
+      {
+        id: 1,
+        creator: 'Not Me',
+        name: 'Someone Elses Report',
+        modified: '2020-10-02T13:00:00.000Z',
+        current_user_can_edit: false,
+      },
+    ],
+  };
 
+  const subject = props => {
     render(
       <TestApp isHibanaEnabled={true}>
         <ReportsListModal {...defaults} {...props} />
@@ -73,6 +73,18 @@ describe('ReportsListModal', () => {
     screen.getByText('All Reports').click();
     screen.getByTestId('allReports-0').click();
     screen.getByText('Delete').click();
-    expect(mockHandleDelete).toHaveBeenCalledWith({ id: 0, name: 'My Saved Report' });
+    expect(defaults.handleDelete).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 0, name: 'My Saved Report' }),
+    );
+  });
+
+  it('handles edit when clicking edit in the actionlist', () => {
+    subject();
+    screen.getByText('All Reports').click();
+    screen.getByTestId('allReports-0').click();
+    screen.getByText('Edit').click();
+    expect(defaults.handleEdit).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 0, name: 'My Saved Report' }),
+    );
   });
 });

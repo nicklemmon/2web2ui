@@ -8,7 +8,7 @@ import { Page, Panel } from 'src/components/matchbox';
 import { Empty, Loading, Unit, LegendCircle } from 'src/components';
 import { Button, Box, Grid, Inline, Tooltip } from 'src/components/matchbox';
 import { Definition } from 'src/components/text';
-import { ReportOptions, ReportTable, SaveNewReportModal } from './components';
+import { ReportOptions, ReportTable, SaveReportModal } from './components';
 import Charts from './components/Charts';
 import {
   bounceTabMetrics,
@@ -228,7 +228,8 @@ export function ReportBuilder({
         </div>
       )}
       {isSavedReportsEnabled && (
-        <SaveNewReportModal
+        <SaveReportModal
+          create
           open={showSaveNewReportModal}
           onCancel={() => setShowSaveNewReportModal(false)}
         />

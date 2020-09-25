@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { PRESET_REPORT_CONFIGS } from '../../constants/presetReport';
 import TypeSelect from 'src/components/typeahead/TypeSelect';
@@ -7,6 +7,7 @@ import { Bold, TranslatableText } from 'src/components/text';
 import { Edit, FolderOpen, Save } from '@sparkpost/matchbox-icons';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import SaveReportModal from './SaveReportModal';
 import { deleteReport, getReports } from 'src/actions/reports';
 import ReportsListModal from './ReportsListModal';
 import { DeleteModal } from 'src/components/modals';
@@ -16,27 +17,28 @@ const SavedReportsSection = props => {
   /* eslint-disable no-unused-vars */
   const [modalStatus, setModalStatus] = useState('');
   const reports = props.reports.map(report => ({ ...report, key: report.id }));
-  const [toDelete, setToDelete] = useState({});
-
-  useEffect(() => {
-    if (props.isSavedReportsEnabled) {
-      props.getReports();
-    }
-    // eslint-disable-next-line
-  }, []);
+  const [focusedReport, setFocusedReport] = useState({});
 
   const onDelete = () => {
     const { deleteReport, getReports, showAlert } = props;
-    deleteReport(toDelete.id).then(() => {
+    deleteReport(focusedReport.id).then(() => {
       setModalStatus('');
-      showAlert({ type: 'success', message: `You have successfully deleted ${toDelete.name}` });
+      showAlert({
+        type: 'success',
+        message: `You have successfully deleted ${focusedReport.name}`,
+      });
       getReports();
     });
   };
 
   const openDeleteModal = reportToDelete => {
-    setToDelete(reportToDelete);
+    setFocusedReport(reportToDelete);
     setModalStatus('delete');
+  };
+
+  const openEditModal = reportToEdit => {
+    setFocusedReport(reportToEdit);
+    setModalStatus('edit');
   };
 
   return (
@@ -47,9 +49,9 @@ const SavedReportsSection = props => {
       <Column>
         <TypeSelect
           disabled={props.status === 'loading'}
+          label="Report"
           id="report-typeahead"
           itemToString={report => (report ? report.name : '')} // return empty string when nothing is selected
-          label="Report"
           onChange={props.handleReportChange}
           placeholder="Select a Report"
           renderItem={report => (
@@ -65,17 +67,61 @@ const SavedReportsSection = props => {
       </Column>
       {props.isSavedReportsEnabled && (
         <Column width="content">
-          <Button variant="tertiary" onClick={() => setModalStatus('edit')}>
+          <Button
+            data-id="edit-report-details-button"
+            variant="tertiary"
+            onClick={() => {
+              setFocusedReport(props.selectedItem);
+              setModalStatus('edit');
+            }}
+            disabled={
+              !props.selectedItem ||
+              !props.selectedItem.current_user_can_edit ||
+              props.selectedItem.type === 'preset'
+            }
+          >
             <TranslatableText>Edit Details</TranslatableText>
-            <Button.Icon as={Edit} marginLeft="100" />
+            <Button.Icon as={Edit} ml="100" />
           </Button>
-          <Button variant="tertiary" onClick={() => setModalStatus('save')}>
+          <SaveReportModal
+            open={modalStatus === 'edit'}
+            report={focusedReport}
+            onCancel={() => {
+              setModalStatus('');
+              setFocusedReport({});
+            }}
+          />
+          <Button
+            data-id="save-report-changes-button"
+            variant="tertiary"
+            onClick={() => {
+              setFocusedReport(props.selectedItem);
+              setModalStatus('save');
+            }}
+            disabled={
+              !props.selectedItem ||
+              !props.selectedItem.current_user_can_edit ||
+              props.selectedItem.type === 'preset'
+            }
+          >
             <TranslatableText>Save Changes</TranslatableText>
-            <Button.Icon as={Save} marginLeft="100" />
+            <Button.Icon as={Save} ml="100" />
           </Button>
+
+          <SaveReportModal
+            open={modalStatus === 'save'}
+            saveQuery
+            isOwner={props.currentUser.userName === focusedReport.creator}
+            report={focusedReport}
+            onCancel={() => {
+              setModalStatus('');
+              setFocusedReport({});
+            }}
+          />
+
           <Button variant="tertiary" onClick={() => setModalStatus('view')}>
             <TranslatableText>View All Reports</TranslatableText>
-            <Button.Icon as={FolderOpen} marginLeft="100" />
+            <Button.Icon as={FolderOpen} ml="100" />
           </Button>
         </Column>
       )}
@@ -84,15 +130,15 @@ const SavedReportsSection = props => {
         confirmVerb="Delete"
         content={
           <p>
-            The report <Bold>"{toDelete.name}"</Bold> will be permanently removed. This cannot be
-            undone.
+            The report <Bold>"{focusedReport.name}"</Bold> will be permanently removed. This cannot
+            be undone.
           </p>
         }
         open={modalStatus === 'delete'}
         isPending={props.isDeletePending}
         onCancel={() => {
           setModalStatus('');
-          setToDelete({});
+          focusedReport({});
         }}
         onConfirm={onDelete}
       />
@@ -102,6 +148,7 @@ const SavedReportsSection = props => {
           setModalStatus('');
         }}
         handleDelete={openDeleteModal}
+        handleEdit={openEditModal}
         handleReportChange={props.handleReportChange}
         reports={reports}
       />

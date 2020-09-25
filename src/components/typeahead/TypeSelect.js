@@ -51,7 +51,7 @@ function TypeSelect({
 }) {
   const [matches, setMatches] = useState([]);
   // Controlled input so that we can change the value after selecting dropdown.
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(selectedItem ? itemToString(selectedItem) : '');
   // note, sorting large result lists can be expensive
   const [updateMatches] = useDebouncedCallback(value => {
     const matches = value ? sortMatch(results, value, itemToString) : results;
@@ -87,7 +87,8 @@ function TypeSelect({
       onBlur: () => {
         setInputValue(itemToString(selectedItem));
       },
-      onFocus: () => {
+      onFocus: event => {
+        event.target.select();
         openMenu();
       },
     };

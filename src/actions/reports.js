@@ -11,6 +11,17 @@ export function createReport(data) {
   });
 }
 
+export function updateReport({ id, ...data }) {
+  return sparkpostApiRequest({
+    type: 'UPDATE_REPORT',
+    meta: {
+      method: 'PUT',
+      url: `/v1/reports/${id}`,
+      data,
+    },
+  });
+}
+
 export function getReports() {
   return sparkpostApiRequest({
     type: 'GET_REPORTS',

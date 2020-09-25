@@ -13,6 +13,7 @@ import {
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import OGStyles from './ManualEntryForm.module.scss';
 import hibanaStyles from './ManualEntryFormHibana.module.scss';
+import { TranslatableText } from 'src/components/text';
 
 const DATE_PLACEHOLDER = '1970-01-20';
 const TIME_PLACEHOLDER = '12:00am';
@@ -133,7 +134,8 @@ export class ManualEntryFormClassComponent extends Component {
 
       precisionLabel = !selectedPrecision && (
         <div className={styles.PrecisionLabel}>
-          Precision: {_.startCase(_.words(precisionLabelValue).join(' '))}
+          <TranslatableText>Precision: </TranslatableText>
+          {_.startCase(_.words(precisionLabelValue).join(' '))}
         </div>
       );
     }

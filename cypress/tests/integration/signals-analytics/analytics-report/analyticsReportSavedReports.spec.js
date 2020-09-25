@@ -193,6 +193,49 @@ if (IS_HIBANA_ENABLED) {
           .should('have.contain', 'Bounces');
       });
 
+      it('should edit details of a saved report', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.findByLabelText('Report').focus(); // open typeahead
+
+        cy.findByRole('button', { name: 'Edit Details' }).should('be.disabled');
+
+        cy.findListBoxByLabelText('Report').within(() => {
+          cy.get(`a[role="option"]`)
+            .eq(0)
+            .should('have.contain', 'My Bounce Report')
+            .click();
+        });
+
+        cy.findByRole('button', { name: 'Edit Details' }).click();
+        cy.get('[name="name"]').should('have.value', 'My Bounce Report');
+        cy.get('[name="description"]').should('have.value', 'Here is a description');
+      });
+
+      it('should save changes of a saved report', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.findByLabelText('Report').focus(); // open typeahead
+
+        cy.findByRole('button', { name: 'Save Changes' }).should('be.disabled');
+
+        cy.findListBoxByLabelText('Report').within(() => {
+          cy.get(`a[role="option"]`)
+            .eq(0)
+            .should('have.contain', 'My Bounce Report')
+            .click();
+        });
+
+        cy.findByRole('button', { name: 'Save Changes' }).click();
+        cy.get('[name="name"]').should('have.value', 'My Bounce Report');
+        cy.get('[name="description"]').should('have.value', 'Here is a description');
+
+        cy.withinModal(() => {
+          cy.findByText('Bounces').should('be.visible');
+          cy.findByText('Last 7 Days').should('be.visible');
+        });
+      });
+
       it('opens saved reports modal', () => {
         cy.visit(PAGE_URL);
         cy.wait('@getSavedReports');
