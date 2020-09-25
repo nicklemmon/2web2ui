@@ -1,11 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
+  get as getDomain,
   list as listSendingDomains,
   update as updateSendingDomain,
   create as createSendingDomain,
   remove as deleteDomain,
   verifyDkim,
+  verify,
+  verifyMailbox,
+  verifyAbuse,
+  verifyPostmaster,
 } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { showAlert } from 'src/actions/globalAlert';
@@ -35,11 +40,16 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   createSendingDomain,
   createTrackingDomain,
+  getDomain,
   listSendingDomains,
   updateSendingDomain,
   listSubaccounts,
   listTrackingDomains,
+  verify,
   verifyDkim,
+  verifyMailbox,
+  verifyAbuse,
+  verifyPostmaster,
   showAlert,
   deleteDomain,
 };

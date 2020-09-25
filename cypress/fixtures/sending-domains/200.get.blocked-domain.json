@@ -1,0 +1,24 @@
+{
+  "results": {
+    "dkim": {
+      "signing_domain": "bounce.uat.sparkspam.com",
+      "headers": "from:to:subject:date",
+      "public": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDsX69hvF8NAfCCQPKfSjM2degOp4F5/nvbnd3RZnCtLiZ77GRu1Mi+cmzo3N+xGHPCffjQRlDlbtBC4Qrs0qxeexlUTbfxp1w+MQ/Lz7IjiskJ6J+ohA9pOvEwp9MUlf44HTCQWs2yPcJrO1lAjs/wgzBi2B8N+5v1pQ0los7orwIDAQAB",
+      "selector": "scph0817"
+    },
+    "creation_time": "2017-08-03T22:26:41+00:00",
+    "is_default_bounce_domain": false,
+    "status": {
+      "mx_status": "unverified",
+      "spf_status": "unverified",
+      "cname_status": "valid",
+      "ownership_verified": true,
+      "abuse_at_status": "unverified",
+      "compliance_status": "blocked",
+      "verification_mailbox_status": "unverified",
+      "dkim_status": "invalid",
+      "postmaster_at_status": "unverified"
+    },
+    "shared_with_subaccounts": true
+  }
+}

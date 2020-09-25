@@ -6,8 +6,9 @@ import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell
 import { Bookmark } from '@sparkpost/matchbox-icons';
 import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
-import { ExternalLink } from 'src/components/links';
+import { SubduedLink } from 'src/components/links';
 import { ToggleBlock } from 'src/components';
+import { EXTERNAL_LINKS } from '../constants';
 
 export default function DomainStatusSection(props) {
   const { allowDefault, allowSubaccountDefault, domain } = props;
@@ -55,7 +56,21 @@ export default function DomainStatusSection(props) {
               authentication documentation.
             </SubduedText>
           )}
-          <ExternalLink to="/">Documentation</ExternalLink>
+          {resolvedStatus === 'unverified' && (
+            <SubduedLink to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}>
+              Domain Documentation
+            </SubduedLink>
+          )}
+          {resolvedStatus === 'verified' && (
+            <Stack>
+              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+                Sending Domain Documentation
+              </SubduedLink>
+              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_API_DOCUMENTATION}>
+                Sending Domain API Documentation
+              </SubduedLink>
+            </Stack>
+          )}
         </Stack>
       </Layout.Section>
       <Layout.Section>
@@ -92,39 +107,43 @@ export default function DomainStatusSection(props) {
               )}
             </Columns>
           </Panel.Section>
-          {domain.subaccount_id ? (
-            <Panel.Section>
-              <Heading as="h3" looksLike="h5">
-                Subaccount Assignment
-              </Heading>
-              <Text as="p">Subaccount {domain.subaccount_id}</Text>
-            </Panel.Section>
-          ) : (
-            <Panel.Section>
-              <ToggleBlock
-                input={{
-                  name: 'share-with-all-subaccounts',
-                  checked: domain.shared_with_subaccounts,
-                  onChange: toggleShareWithSubaccounts,
-                }}
-                label="Share this domain with all subaccounts"
-              />
-            </Panel.Section>
-          )}
-          {showDefaultBounceToggle && (
+          {resolvedStatus !== 'blocked' && (
             <>
-              <Panel.Section>
-                <Checkbox
-                  id="set-as-default-domain"
-                  label={
-                    <>
-                      Set as Default Bounce Domain <Bookmark color="green" />
-                    </>
-                  }
-                  checked={domain.is_default_bounce_domain}
-                  onClick={toggleDefaultBounce}
-                />
-              </Panel.Section>
+              {domain.subaccount_id ? (
+                <Panel.Section>
+                  <Heading as="h3" looksLike="h5">
+                    Subaccount Assignment
+                  </Heading>
+                  <Text as="p">Subaccount {domain.subaccount_id}</Text>
+                </Panel.Section>
+              ) : (
+                <Panel.Section>
+                  <ToggleBlock
+                    input={{
+                      name: 'share-with-all-subaccounts',
+                      checked: domain.shared_with_subaccounts,
+                      onChange: toggleShareWithSubaccounts,
+                    }}
+                    label="Share this domain with all subaccounts"
+                  />
+                </Panel.Section>
+              )}
+              {showDefaultBounceToggle && (
+                <>
+                  <Panel.Section>
+                    <Checkbox
+                      id="set-as-default-domain"
+                      label={
+                        <>
+                          Set as Default Bounce Domain <Bookmark color="green" />
+                        </>
+                      }
+                      checked={domain.is_default_bounce_domain}
+                      onClick={toggleDefaultBounce}
+                    />
+                  </Panel.Section>
+                </>
+              )}
             </>
           )}
         </Panel>
