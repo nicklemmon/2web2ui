@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
+  get as getDomain,
   list as listSendingDomains,
   update as updateSendingDomain,
   remove as deleteDomain,
@@ -35,6 +36,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
+  getDomain,
   listSendingDomains,
   updateSendingDomain,
   listSubaccounts,

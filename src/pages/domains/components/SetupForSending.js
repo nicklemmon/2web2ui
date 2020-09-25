@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Layout, Stack, Tag, Text } from 'src/components/matchbox';
+import { Button, Layout, Stack, TextField, Tag, Text } from 'src/components/matchbox';
 import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { Send } from '@sparkpost/matchbox-icons';
@@ -12,6 +12,11 @@ import { CopyField } from 'src/components';
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
 `;
+
+const Field = ({ verified, label, value }) => {
+  if (!verified) return <CopyField label={label} value={value} />;
+  return <TextField label={label} value={value} readOnly />;
+};
 
 export default function SetupForSending({ domain, resolvedStatus }) {
   const { verifyDkim, showAlert } = useDomains();
@@ -90,14 +95,24 @@ export default function SetupForSending({ domain, resolvedStatus }) {
           )}
           <Panel.Section>
             <Stack>
-              <>
-                <Text as="label" fontWeight="500" fontSize="200">
-                  Type
-                </Text>
-                <Text as="p">TXT</Text>
-              </>
-              <CopyField label="Hostname" value={domain.dkimHostname}></CopyField>
-              <CopyField label="Value" value={domain.dkimValue}></CopyField>
+              {resolvedStatus !== 'verified' && (
+                <>
+                  <Text as="label" fontWeight="500" fontSize="200">
+                    Type
+                  </Text>
+                  <Text as="p">TXT</Text>
+                </>
+              )}
+              <Field
+                label="Hostname"
+                value={domain.dkimHostname}
+                verified={resolvedStatus === 'verified'}
+              />
+              <Field
+                label="Value"
+                value={domain.dkimValue}
+                verified={resolvedStatus === 'verified'}
+              />
               {resolvedStatus !== 'verified' && (
                 <Checkbox
                   id="add-txt-to-godaddy"
