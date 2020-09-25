@@ -8,7 +8,7 @@ import {
   selectAllSubaccountDefaultBounceDomains,
 } from 'src/selectors/account';
 import { selectDomain } from 'src/selectors/sendingDomains';
-import { resolveStatus } from 'src/helpers/domains';
+import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
 import { selectTrackingDomainsOptions } from 'src/selectors/trackingDomains';
 import { selectCondition } from 'src/selectors/accessConditionState';
@@ -18,6 +18,9 @@ import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/accoun
 function DetailsPage(props) {
   const resolvedStatus = resolveStatus(props.domain.status);
   const [warningBanner, toggleBanner] = useState(true);
+  const readyFor = resolveReadyFor(props.domain);
+  const displaySendingAndBounceSection =
+    readyFor.dkim && readyFor.bounce && props.domain.status.spf_status === 'valid';
   useEffect(() => {
     props.getDomain(props.match.params.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,18 +71,30 @@ function DetailsPage(props) {
         </Layout>
         {resolvedStatus !== 'blocked' && (
           <>
-            <Layout>
-              <Domains.SetupForSending
-                domain={props.domain}
-                id={props.match.params.id}
-                resolvedStatus={resolvedStatus}
-              />
-            </Layout>
+            {!displaySendingAndBounceSection && (
+              <Layout>
+                <Domains.SetupForSending
+                  domain={props.domain}
+                  id={props.match.params.id}
+                  resolvedStatus={resolvedStatus}
+                />
+              </Layout>
+            )}
             {resolvedStatus !== 'unverified' && (
               <>
-                <Layout>
-                  <Domains.SetupBounceDomainSection {...props} resolvedStatus={resolvedStatus} />
-                </Layout>
+                {!displaySendingAndBounceSection && (
+                  <Layout>
+                    <Domains.SetupBounceDomainSection {...props} resolvedStatus={resolvedStatus} />
+                  </Layout>
+                )}
+                {displaySendingAndBounceSection && (
+                  <Layout>
+                    <Domains.SendingAndBounceDomainSection
+                      {...props}
+                      resolvedStatus={resolvedStatus}
+                    />
+                  </Layout>
+                )}
 
                 <Layout>
                   <Domains.LinkTrackingDomainSection {...props} resolvedStatus={resolvedStatus} />
