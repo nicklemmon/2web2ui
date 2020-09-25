@@ -14,6 +14,7 @@ import { selectTrackingDomainsOptions } from 'src/selectors/trackingDomains';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
 import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
+import { Loading } from 'src/components/loading/Loading';
 
 function DetailsPage(props) {
   const resolvedStatus = resolveStatus(props.domain.status);
@@ -25,6 +26,11 @@ function DetailsPage(props) {
     props.getDomain(props.match.params.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (props.sendingDomainsPending) {
+    return <Loading />;
+  }
+
   return (
     <Domains.Container>
       <Page
@@ -124,6 +130,7 @@ export default connect(
     trackingDomains: selectTrackingDomainsOptions(state),
     isByoipAccount: selectCondition(hasAccountOptionEnabled('byoip_customer'))(state),
     hasAnyoneAtEnabled: selectHasAnyoneAtDomainVerificationEnabled(state),
+    sendingDomainsPending: state.sendingDomains.getLoading,
   }),
   { getDomain },
 )(DetailsPage);
