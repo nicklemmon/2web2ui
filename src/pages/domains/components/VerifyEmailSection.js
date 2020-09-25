@@ -26,16 +26,14 @@ export default function VerifyEmailSection({ hasAnyoneAtEnabled, domain }) {
         <MailboxVerificationModal onCancel={closeModal} domain={domain} />
       )}
       <Layout.Section annotated>
-        <Layout.SectionTitle as="h2">
-          Email Verification
-          {warningBanner && (
-            <Banner status="warning" size="small" onDismiss={() => toggleBanner(false)}>
-              <Text fontWeight="normal" maxWidth="100">
-                This form of verification is not recommended.
-              </Text>
-            </Banner>
-          )}
-        </Layout.SectionTitle>
+        <Layout.SectionTitle as="h2">Email Verification</Layout.SectionTitle>
+        {warningBanner && (
+          <Banner status="warning" size="small" onDismiss={() => toggleBanner(false)}>
+            <Text fontWeight="normal" maxWidth="100">
+              This form of verification is not recommended.
+            </Text>
+          </Banner>
+        )}
       </Layout.Section>
       <Layout.Section>
         <Panel>

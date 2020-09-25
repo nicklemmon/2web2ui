@@ -19,9 +19,10 @@ import { Loading } from 'src/components/loading/Loading';
 function DetailsPage(props) {
   const resolvedStatus = resolveStatus(props.domain.status);
   const [warningBanner, toggleBanner] = useState(true);
-  const readyFor = resolveReadyFor(props.domain);
+  const readyFor = resolveReadyFor(props.domain.status);
   const displaySendingAndBounceSection =
-    readyFor.dkim && readyFor.bounce && props.domain.status.spf_status === 'valid';
+    resolvedStatus === 'verified' && readyFor.bounce && props.domain.status.spf_status === 'valid';
+
   useEffect(() => {
     props.getDomain(props.match.params.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps

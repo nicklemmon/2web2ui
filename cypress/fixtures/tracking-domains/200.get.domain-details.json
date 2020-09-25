@@ -1,0 +1,207 @@
+{
+  "results": [
+    {
+      "domain": "blah231231231.gmail.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "blahwerwerwrew.gmail.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "click3.spappteam.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "example1.domain.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "foo.spappteam.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": true,
+        "cname_status": "valid",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "patkemper.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "test.testdomain.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "testesttestttest.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "track-prd.splango.net",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "track.spappteam.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": true,
+        "cname_status": "valid",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "tracking.staging.jrhodes.me",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "trackprd.splango.net",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": true,
+        "cname_status": "",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "trackprd2.splango.net",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
+    },
+    {
+      "domain": "click5.spappteam.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      },
+      "subaccount_id": 104
+    },
+    {
+      "domain": "track1.spappteam.com",
+      "port": 80,
+      "secure": false,
+      "default": true,
+      "status": {
+        "verified": true,
+        "cname_status": "valid",
+        "compliance_status": "valid"
+      },
+      "subaccount_id": 104
+    },
+    {
+      "domain": "thisisatrackingdomain.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      },
+      "subaccount_id": 12159
+    },
+    {
+      "domain": "www.nicklemmon.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      },
+      "subaccount_id": 12175
+    },
+    {
+      "domain": "lynn.lynn.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      },
+      "subaccount_id": 12189
+    }
+  ]
+}
