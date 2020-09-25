@@ -11,6 +11,9 @@ import LinkTrackingDomainSection from './LinkTrackingDomainSection';
 import SetupBounceDomainSection from './SetupBounceDomainSection';
 import VerifyEmailSection from './VerifyEmailSection';
 import SendingAndBounceDomainSection from './SendingAndBounceDomainSection';
+import TrackingDomainStatusCell from './TrackingDomainStatusCell';
+import TrackingDnsSection from './TrackingDnsSection';
+
 export default {
   CreateForm,
   Container,
@@ -25,4 +28,6 @@ export default {
   DomainStatusSection,
   LinkTrackingDomainSection,
   VerifyEmailSection,
+  TrackingDomainStatusCell,
+  TrackingDnsSection,
 };

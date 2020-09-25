@@ -3,26 +3,37 @@ import { Layout, Stack, Text } from 'src/components/matchbox';
 import { Checkbox, Columns, Column, Panel } from 'src/components/matchbox';
 import { Heading, SubduedText } from 'src/components/text';
 import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
+import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 import { Bookmark } from '@sparkpost/matchbox-icons';
 import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
 import { SubduedLink } from 'src/components/links';
 import { ToggleBlock } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
+import _ from 'lodash';
 
-export default function DomainStatusSection(props) {
-  const { allowDefault, allowSubaccountDefault, domain } = props;
+export default function DomainStatusSection({
+  allowDefault,
+  allowSubaccountDefault,
+  domain,
+  id,
+  isTracking,
+}) {
   const readyFor = resolveReadyFor(domain.status);
   const resolvedStatus = resolveStatus(domain.status);
   const showDefaultBounceSubaccount =
     !domain.subaccount_id || (domain.subaccount_id && allowSubaccountDefault);
   const showDefaultBounceToggle =
     allowDefault && readyFor.sending && readyFor.bounce && showDefaultBounceSubaccount;
-  const { updateSendingDomain } = useDomains();
+  const {
+    updateSendingDomain,
+    trackingDomains,
+    updateTrackingDomain,
+    listTrackingDomains,
+  } = useDomains();
+  const trackingDomain = _.find(trackingDomains, ['domainName', id]);
 
   const toggleDefaultBounce = () => {
-    const { id } = props;
-
     return updateSendingDomain({
       id,
       subaccount: domain.subaccount_id,
@@ -32,9 +43,17 @@ export default function DomainStatusSection(props) {
     });
   };
 
-  const toggleShareWithSubaccounts = () => {
-    const { id } = props;
+  const toggleDefaultTracking = ({ domain, subaccount }) => {
+    return updateTrackingDomain({
+      domain,
+      subaccount,
+      default: !trackingDomain.defaultTrackingDomain,
+    })
+      .catch(_.noop) // ignore errors
+      .then(() => listTrackingDomains());
+  };
 
+  const toggleShareWithSubaccounts = () => {
     return updateSendingDomain({
       id,
       subaccount: domain.subaccount_id,
@@ -43,6 +62,73 @@ export default function DomainStatusSection(props) {
       throw err; // for error reporting
     });
   };
+
+  if (isTracking && trackingDomain) {
+    return (
+      <>
+        <Layout.Section annotated>
+          <Stack>
+            <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
+            <Stack>
+              <SubduedLink to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+                Tracking Domain Documentation
+              </SubduedLink>
+            </Stack>
+          </Stack>
+        </Layout.Section>
+        <Layout.Section>
+          <Panel>
+            <Panel.Section>
+              <Columns space="100">
+                <Column>
+                  <Heading as="h3" looksLike="h5">
+                    Domain
+                  </Heading>
+                  <Text as="p">{trackingDomain?.domainName}</Text>
+                </Column>
+                <Column>
+                  <Heading as="h3" looksLike="h5">
+                    Status
+                  </Heading>
+                  <TrackingDomainStatusCell row={trackingDomain} />
+                </Column>
+              </Columns>
+            </Panel.Section>
+
+            <>
+              {trackingDomain?.subaccountId && (
+                <Panel.Section>
+                  <Heading as="h3" looksLike="h5">
+                    Subaccount Assignment
+                  </Heading>
+                  <Text as="p">Subaccount {trackingDomain?.subaccountId}</Text>
+                </Panel.Section>
+              )}
+            </>
+            {trackingDomain.verified && (
+              <Panel.Section>
+                <Checkbox
+                  id="set-as-default-domain"
+                  label={
+                    <>
+                      Set as Default Tracking Domain <Bookmark color="green" />
+                    </>
+                  }
+                  checked={trackingDomain.defaultTrackingDomain}
+                  onClick={() =>
+                    toggleDefaultTracking({
+                      domain: trackingDomain,
+                      subaccount: trackingDomain.subaccountId,
+                    })
+                  }
+                />
+              </Panel.Section>
+            )}
+          </Panel>
+        </Layout.Section>
+      </>
+    );
+  }
 
   return (
     <>

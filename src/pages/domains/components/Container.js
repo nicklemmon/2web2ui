@@ -14,7 +14,13 @@ import {
 } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { showAlert } from 'src/actions/globalAlert';
-import { createTrackingDomain, listTrackingDomains } from 'src/actions/trackingDomains';
+import {
+  createTrackingDomain,
+  listTrackingDomains,
+  updateTrackingDomain,
+  deleteTrackingDomain,
+  verifyTrackingDomain,
+} from 'src/actions/trackingDomains';
 import { selectSendingDomainsRows, selectBounceDomainsRows } from 'src/selectors/sendingDomains';
 import { selectTrackingDomainsRows } from 'src/selectors/trackingDomains';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
@@ -52,6 +58,9 @@ const mapDispatchToProps = {
   verifyPostmaster,
   showAlert,
   deleteDomain,
+  updateTrackingDomain,
+  deleteTrackingDomain,
+  verifyTrackingDomain,
 };
 
 export default connect(

@@ -2,21 +2,37 @@ import React from 'react';
 import { Button, Layout, Text } from 'src/components/matchbox';
 import { Panel } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
+import _ from 'lodash';
 
 export default function DeleteDomainSection(props) {
-  const { deleteDomain, showAlert } = useDomains();
+  const { deleteDomain, deleteTrackingDomain, showAlert, trackingDomains } = useDomains();
   const handleDeleteDomain = () => {
-    const {
-      domain: { id, subaccount_id: subaccount },
-    } = props;
+    if (props.isTracking) {
+      let trackingDomain = _.find(trackingDomains, ['domainName', props.id]);
 
-    return deleteDomain({ id, subaccount }).then(() => {
-      showAlert({
-        type: 'success',
-        message: `Domain ${id} deleted.`,
+      return deleteTrackingDomain({
+        domain: props.id,
+        subaccount: trackingDomain.subaccountId,
+      }).then(() => {
+        showAlert({
+          type: 'success',
+          message: `Domain ${props.id} deleted.`,
+        });
+        props.history.push('/domains/list/tracking');
       });
-      props.history.push('/domains/list/sending');
-    });
+    } else {
+      const {
+        domain: { id, subaccount_id: subaccount },
+      } = props;
+
+      return deleteDomain({ id, subaccount }).then(() => {
+        showAlert({
+          type: 'success',
+          message: `Domain ${id} deleted.`,
+        });
+        props.history.push('/domains/list/sending');
+      });
+    }
   };
   return (
     <>
