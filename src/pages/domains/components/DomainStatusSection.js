@@ -65,7 +65,7 @@ export default function DomainStatusSection({
 
   if (isTracking && trackingDomain) {
     return (
-      <>
+      <Layout>
         <Layout.Section annotated>
           <Stack>
             <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
@@ -95,16 +95,15 @@ export default function DomainStatusSection({
               </Columns>
             </Panel.Section>
 
-            <>
-              {trackingDomain?.subaccountId && (
-                <Panel.Section>
-                  <Heading as="h3" looksLike="h5">
-                    Subaccount Assignment
-                  </Heading>
-                  <Text as="p">Subaccount {trackingDomain?.subaccountId}</Text>
-                </Panel.Section>
-              )}
-            </>
+            {trackingDomain?.subaccountId && (
+              <Panel.Section>
+                <Heading as="h3" looksLike="h5">
+                  Subaccount Assignment
+                </Heading>
+                <Text as="p">Subaccount {trackingDomain?.subaccountId}</Text>
+              </Panel.Section>
+            )}
+
             {trackingDomain.verified && (
               <Panel.Section>
                 <Checkbox
@@ -126,12 +125,12 @@ export default function DomainStatusSection({
             )}
           </Panel>
         </Layout.Section>
-      </>
+      </Layout>
     );
   }
 
   return (
-    <>
+    <Layout>
       <Layout.Section annotated>
         <Stack>
           <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
@@ -234,6 +233,6 @@ export default function DomainStatusSection({
           )}
         </Panel>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }

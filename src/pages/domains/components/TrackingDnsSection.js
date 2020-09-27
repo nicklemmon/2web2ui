@@ -22,8 +22,11 @@ export default function TrackingDnsSection(props) {
       subaccountId: trackingDomain.subaccountId,
     });
   };
+  if (!props.isSectionVisible) {
+    return null;
+  }
   return (
-    <>
+    <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Tracking</Layout.SectionTitle>
       </Layout.Section>
@@ -71,6 +74,6 @@ export default function TrackingDnsSection(props) {
           )}
         </Panel>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }

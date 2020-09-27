@@ -19,7 +19,7 @@ const Field = ({ verified, label, value }) => {
   return <TextField label={label} value={value} readOnly />;
 };
 
-export default function SetupForSending({ domain, resolvedStatus }) {
+export default function SetupForSending({ domain, resolvedStatus, isSectionVisible }) {
   const { verifyDkim, showAlert } = useDomains();
 
   const handleVerifyDkim = () => {
@@ -41,8 +41,11 @@ export default function SetupForSending({ domain, resolvedStatus }) {
       }
     });
   };
+  if (!isSectionVisible) {
+    return null;
+  }
   return (
-    <>
+    <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">
           {resolvedStatus === 'unverified' ? 'DNS Verification' : 'Sending'}
@@ -135,6 +138,6 @@ export default function SetupForSending({ domain, resolvedStatus }) {
           )}
         </Panel>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }

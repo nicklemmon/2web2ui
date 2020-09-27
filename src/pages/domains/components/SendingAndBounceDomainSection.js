@@ -5,14 +5,21 @@ import { useForm } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
 import getConfig from 'src/helpers/getConfig';
 
-export default function SendingAndBounceDomainSection({ domain, isByoipAccount }) {
+export default function SendingAndBounceDomainSection({
+  domain,
+  isByoipAccount,
+  isSectionVisible,
+}) {
   const { id, status } = domain;
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
   const bounceDomainsConfig = getConfig('bounceDomains');
   const { watch } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
+  if (!isSectionVisible) {
+    return null;
+  }
   return (
-    <>
+    <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Sending and Bounce</Layout.SectionTitle>
       </Layout.Section>
@@ -77,6 +84,6 @@ export default function SendingAndBounceDomainSection({ domain, isByoipAccount }
           </Panel.Section>
         </Panel>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }

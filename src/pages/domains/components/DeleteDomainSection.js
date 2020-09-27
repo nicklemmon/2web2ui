@@ -35,7 +35,7 @@ export default function DeleteDomainSection(props) {
     }
   };
   return (
-    <>
+    <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Delete Domain</Layout.SectionTitle>
       </Layout.Section>
@@ -55,6 +55,6 @@ export default function DeleteDomainSection(props) {
           </Panel.Section>
         </Panel>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }

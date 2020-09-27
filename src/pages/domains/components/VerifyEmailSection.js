@@ -14,11 +14,14 @@ import useModal from 'src/hooks/useModal';
 import { useForm, Controller } from 'react-hook-form';
 import useDomains from '../hooks/useDomains';
 
-export default function VerifyEmailSection({ hasAnyoneAtEnabled, domain }) {
+export default function VerifyEmailSection({ hasAnyoneAtEnabled, domain, isSectionVisible }) {
   const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
   const [warningBanner, toggleBanner] = useState(true);
+  if (!isSectionVisible) {
+    return null;
+  }
   return (
-    <>
+    <Layout>
       {isModalOpen && name === 'AllowAnyoneAtModal' && (
         <AllowAnyoneAtModal onCancel={closeModal} domain={domain} />
       )}
@@ -59,7 +62,7 @@ export default function VerifyEmailSection({ hasAnyoneAtEnabled, domain }) {
           </Panel.Section>
         </Panel>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }
 

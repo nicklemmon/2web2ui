@@ -37,7 +37,7 @@ const Field = ({ verified, label, value }) => {
   return <TextField label={label} value={value} readOnly />;
 };
 
-export default function SetupBounceDomainSection({ domain, isByoipAccount }) {
+export default function SetupBounceDomainSection({ domain, isByoipAccount, isSectionVisible }) {
   const { id, status, subaccount_id } = domain;
   const readyFor = resolveReadyFor(status);
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
@@ -80,8 +80,11 @@ export default function SetupBounceDomainSection({ domain, isByoipAccount }) {
       }
     });
   };
+  if (!isSectionVisible) {
+    return null;
+  }
   return (
-    <>
+    <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Bounce</Layout.SectionTitle>
         <Stack>
@@ -276,6 +279,6 @@ export default function SetupBounceDomainSection({ domain, isByoipAccount }) {
           </form>
         </Panel>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }

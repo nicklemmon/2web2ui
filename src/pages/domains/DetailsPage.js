@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Layout, Banner, Button } from 'src/components/matchbox';
+import { Page, Banner, Button } from 'src/components/matchbox';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { connect } from 'react-redux';
@@ -21,6 +21,7 @@ import { Loading } from 'src/components/loading/Loading';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';
 import { TranslatableText } from 'src/components/text';
+import { EXTERNAL_LINKS } from './constants';
 
 function DetailsPage(props) {
   const {
@@ -89,74 +90,71 @@ function DetailsPage(props) {
             ??
             <Banner.Actions>
               <SupportTicketLink as={Button}>Create Support ticket</SupportTicketLink>
-              <ExternalLink to="https://www.sparkpost.com/docs/getting-started/requirements-for-sending-domains/#if-your-domain-is-blocked">
+              <ExternalLink to={EXTERNAL_LINKS.BLOCKED_DOMAIN_DOCUMENTATION}>
                 Domains Documentation
               </ExternalLink>
             </Banner.Actions>
           </Banner>
         )}
 
-        <Layout>
-          <Domains.DomainStatusSection
-            domain={domain}
-            id={match.params.id}
-            allowSubaccountDefault={allowSubaccountDefault}
-            allowDefault={allowDefault}
-            isTracking={isTracking}
-          />
-        </Layout>
-        {resolvedStatus !== 'blocked' && !isTracking && (
-          <>
-            {!displaySendingAndBounceSection && (
-              <Layout>
-                <Domains.SetupForSending
-                  domain={domain}
-                  id={match.params.id}
-                  resolvedStatus={resolvedStatus}
-                />
-              </Layout>
-            )}
-            {resolvedStatus !== 'unverified' && (
-              <>
-                {!displaySendingAndBounceSection && (
-                  <Layout>
-                    <Domains.SetupBounceDomainSection {...props} resolvedStatus={resolvedStatus} />
-                  </Layout>
-                )}
-                {displaySendingAndBounceSection && (
-                  <Layout>
-                    <Domains.SendingAndBounceDomainSection
-                      {...props}
-                      resolvedStatus={resolvedStatus}
-                    />
-                  </Layout>
-                )}
+        <Domains.DomainStatusSection
+          domain={domain}
+          id={match.params.id}
+          allowSubaccountDefault={allowSubaccountDefault}
+          allowDefault={allowDefault}
+          isTracking={isTracking}
+        />
 
-                <Layout>
-                  <Domains.LinkTrackingDomainSection {...props} resolvedStatus={resolvedStatus} />
-                </Layout>
-              </>
-            )}
-          </>
-        )}
-        {resolvedStatus === 'unverified' && !isTracking && (
-          <Layout>
-            <Domains.VerifyEmailSection {...props} />
-          </Layout>
-        )}
-        {isTracking && (
-          <Layout>
-            <Domains.TrackingDnsSection {...props} id={match.params.id} />
-          </Layout>
-        )}
-        <Layout>
-          <Domains.DeleteDomainSection
-            {...props}
-            id={match.params.id}
-            resolvedStatus={resolvedStatus}
-            isTracking={isTracking}
-          />
-        </Layout>
+        <Domains.SetupForSending
+          domain={domain}
+          id={match.params.id}
+          resolvedStatus={resolvedStatus}
+          isSectionVisible={
+            resolvedStatus !== 'blocked' && !isTracking && !displaySendingAndBounceSection
+          }
+        />
+        <Domains.SetupBounceDomainSection
+          {...props}
+          resolvedStatus={resolvedStatus}
+          isSectionVisible={
+            resolvedStatus !== 'blocked' &&
+            !isTracking &&
+            resolvedStatus !== 'unverified' &&
+            !displaySendingAndBounceSection
+          }
+        />
+        <Domains.SendingAndBounceDomainSection
+          {...props}
+          resolvedStatus={resolvedStatus}
+          isSectionVisible={
+            resolvedStatus !== 'blocked' &&
+            !isTracking &&
+            resolvedStatus !== 'unverified' &&
+            displaySendingAndBounceSection
+          }
+        />
+
+        <Domains.LinkTrackingDomainSection
+          {...props}
+          resolvedStatus={resolvedStatus}
+          isSectionVisible={
+            resolvedStatus !== 'blocked' && !isTracking && resolvedStatus !== 'unverified'
+          }
+        />
+
+        <Domains.VerifyEmailSection
+          {...props}
+          isSectionVisible={resolvedStatus === 'unverified' && !isTracking}
+        />
+
+        <Domains.TrackingDnsSection {...props} id={match.params.id} isSectionVisible={isTracking} />
+
+        <Domains.DeleteDomainSection
+          {...props}
+          id={match.params.id}
+          resolvedStatus={resolvedStatus}
+          isTracking={isTracking}
+        />
       </Page>
     </Domains.Container>
   );

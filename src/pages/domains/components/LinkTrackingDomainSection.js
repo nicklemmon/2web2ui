@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Layout, Stack } from 'src/components/matchbox';
 import { Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
@@ -8,14 +8,10 @@ import { Select } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
 
-export default function LinkTrackingDomainSection({ domain, trackingDomains }) {
+export default function LinkTrackingDomainSection({ domain, trackingDomains, isSectionVisible }) {
   const { control, handleSubmit } = useForm();
 
-  const { listTrackingDomains, updateSendingDomain, showAlert } = useDomains();
-
-  useEffect(() => {
-    listTrackingDomains();
-  }, [listTrackingDomains]);
+  const { updateSendingDomain, showAlert } = useDomains();
 
   const onSubmit = ({ trackingDomain }) => {
     const { id, subaccount_id: subaccount } = domain;
@@ -34,8 +30,11 @@ export default function LinkTrackingDomainSection({ domain, trackingDomains }) {
         }),
       );
   };
+  if (!isSectionVisible) {
+    return null;
+  }
   return (
-    <>
+    <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Link Tracking Domain</Layout.SectionTitle>
         <Stack>
@@ -72,6 +71,6 @@ export default function LinkTrackingDomainSection({ domain, trackingDomains }) {
           </Panel>
         </form>
       </Layout.Section>
-    </>
+    </Layout>
   );
 }

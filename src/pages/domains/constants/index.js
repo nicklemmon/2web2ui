@@ -14,4 +14,6 @@ export const EXTERNAL_LINKS = {
     'https://www.sparkpost.com/docs/tech-resources/custom-bounce-domain/',
   TRACKING_DOMAIN_DOCUMENTATION:
     'https://www.sparkpost.com/docs/tech-resources/enabling-multiple-custom-tracking-domains/',
+  BLOCKED_DOMAIN_DOCUMENTATION:
+    'https://www.sparkpost.com/docs/getting-started/requirements-for-sending-domains/#if-your-domain-is-blocked',
 };
