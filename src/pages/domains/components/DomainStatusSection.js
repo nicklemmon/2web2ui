@@ -116,7 +116,7 @@ export default function DomainStatusSection({
                   checked={trackingDomain.defaultTrackingDomain}
                   onClick={() =>
                     toggleDefaultTracking({
-                      domain: trackingDomain,
+                      domain: trackingDomain?.domainName,
                       subaccount: trackingDomain.subaccountId,
                     })
                   }
