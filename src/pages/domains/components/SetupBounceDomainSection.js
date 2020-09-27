@@ -116,7 +116,7 @@ export default function SetupBounceDomainSection({ domain, isByoipAccount, isSec
             </Stack>
           </SubduedText>
 
-          <SubduedLink to={EXTERNAL_LINKS.BOUNCE_DOMAIN_DOCUMENTATION}>
+          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.BOUNCE_DOMAIN_DOCUMENTATION}>
             Bounce Domain Documentation
           </SubduedLink>
           <PageLink to="/domains/create">Create a seperate bounce subdomain</PageLink>

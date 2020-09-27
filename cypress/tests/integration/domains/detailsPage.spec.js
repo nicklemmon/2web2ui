@@ -65,6 +65,28 @@ describe('The domains details page', () => {
         cy.findByRole('button', { name: 'Verify Domain' }).should('be.visible');
       });
 
+      it('unverified domain renders success message on Verifying domain', () => {
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/hello-world-there.com',
+          fixture: 'sending-domains/200.get.unverified-dkim.json',
+          requestAlias: 'unverifieddkimSendingDomains',
+        });
+        cy.stubRequest({
+          method: 'POST',
+          url: '/api/v1/sending-domains/hello-world-there.com/verify',
+          fixture: 'sending-domains/verify/200.post.json',
+          requestAlias: 'verifyDomain',
+        });
+
+        cy.visit(`${BASE_UI_URL}/hello-world-there.com`);
+        cy.wait(['@accountDomainsReq', '@unverifieddkimSendingDomains']);
+        cy.findByRole('button', { name: 'Verify Domain' }).click();
+        cy.wait('@verifyDomain');
+        cy.findAllByText(
+          'You have successfully verified DKIM record of hello-world-there.com',
+        ).should('be.visible');
+      });
+
       it('renders correct sections for unverified bounce domains', () => {
         cy.stubRequest({
           url: '/api/v1/tracking-domains',
@@ -89,6 +111,33 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Sending and Bounce' }).should('not.be.visible');
+      });
+
+      it('unverified bounce domain renders success message on Verifying bounce domain', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.domain-details.json',
+          requestAlias: 'trackingDomainsList',
+        });
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/prd2.splango.net',
+          fixture: 'sending-domains/200.get.unverified-bounce.json',
+          requestAlias: 'unverifiedBounceDomains',
+        });
+        cy.stubRequest({
+          method: 'POST',
+          url: '/api/v1/sending-domains/prd2.splango.net/verify',
+          fixture: 'sending-domains/verify/200.post.json',
+          requestAlias: 'verifyDomain',
+        });
+        cy.visit(`${BASE_UI_URL}/prd2.splango.net`);
+        cy.wait(['@unverifiedBounceDomains', '@trackingDomainsList']);
+        cy.wait('@accountDomainsReq');
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).click();
+        cy.wait('@verifyDomain');
+        cy.findAllByText('You have successfully verified cname record of prd2.splango.net').should(
+          'be.visible',
+        );
       });
 
       it('renders correct sections for unverified spf domains', () => {
@@ -140,6 +189,49 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Bounce' }).should('not.be.visible');
         cy.findByRole('button', { name: 'Authenticate for SPF' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
+      });
+
+      it('on deleting a domain successfully redirects to list page', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.domain-details.json',
+          requestAlias: 'trackingDomainsList',
+        });
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/bounce2.spappteam.com',
+          fixture: 'sending-domains/200.get.all-verified.json',
+          requestAlias: 'verifiedDomains',
+        });
+        cy.stubRequest({
+          method: 'DELETE',
+          url: '/api/v1/sending-domains/bounce2.spappteam.com',
+          fixture: 'sending-domains/verify/200.post.json',
+          requestAlias: 'deleteDomain',
+        });
+        cy.visit(`${BASE_UI_URL}/bounce2.spappteam.com`);
+        cy.wait(['@verifiedDomains', '@trackingDomainsList']);
+        cy.wait('@accountDomainsReq');
+        cy.findByRole('button', { name: 'Delete Domain' }).click();
+        cy.wait('@deleteDomain');
+        cy.findAllByText('Domain bounce2.spappteam.com deleted.');
+        cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
+      });
+      it('renders correct section for Tracking Domains Details Section', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.domain-details.json',
+          requestAlias: 'trackingDomainsList',
+        });
+        cy.visit(`${BASE_UI_URL}/click3.spappteam.com`);
+        cy.wait(['@trackingDomainsList']);
+        cy.wait('@accountDomainsReq');
+        cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
+        cy.findByRole('heading', { name: 'Tracking' }).should('be.visible');
+        cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
+        cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'Bounce' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
       });

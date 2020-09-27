@@ -33,6 +33,9 @@ function DetailsPage(props) {
     allowSubaccountDefault,
     allowDefault,
     domain,
+    isByoipAccount,
+    trackingDomains,
+    hasAnyoneAtEnabled,
     getDomain,
     listTrackingDomains,
   } = props;
@@ -114,8 +117,8 @@ function DetailsPage(props) {
           }
         />
         <Domains.SetupBounceDomainSection
-          {...props}
-          resolvedStatus={resolvedStatus}
+          domain={domain}
+          isByoipAccount={isByoipAccount}
           isSectionVisible={
             resolvedStatus !== 'blocked' &&
             !isTracking &&
@@ -124,8 +127,8 @@ function DetailsPage(props) {
           }
         />
         <Domains.SendingAndBounceDomainSection
-          {...props}
-          resolvedStatus={resolvedStatus}
+          domain={domain}
+          isByoipAccount={isByoipAccount}
           isSectionVisible={
             resolvedStatus !== 'blocked' &&
             !isTracking &&
@@ -135,24 +138,25 @@ function DetailsPage(props) {
         />
 
         <Domains.LinkTrackingDomainSection
-          {...props}
-          resolvedStatus={resolvedStatus}
+          domain={domain}
+          trackingDomains={trackingDomains}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && resolvedStatus !== 'unverified'
           }
         />
 
         <Domains.VerifyEmailSection
-          {...props}
+          domain={domain}
+          hasAnyoneAtEnabled={hasAnyoneAtEnabled}
           isSectionVisible={resolvedStatus === 'unverified' && !isTracking}
         />
 
-        <Domains.TrackingDnsSection {...props} id={match.params.id} isSectionVisible={isTracking} />
+        <Domains.TrackingDnsSection id={match.params.id} isSectionVisible={isTracking} />
 
         <Domains.DeleteDomainSection
-          {...props}
+          domain={domain}
+          history={history}
           id={match.params.id}
-          resolvedStatus={resolvedStatus}
           isTracking={isTracking}
         />
       </Page>

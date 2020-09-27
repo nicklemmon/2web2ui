@@ -64,7 +64,7 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
                 be verified and used, in order to ensure DKIM checks are passed.
               </SubduedText>
 
-              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
                 Sending Domain Documentation
               </SubduedLink>
             </Stack>

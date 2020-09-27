@@ -7,7 +7,7 @@ import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 import { Bookmark } from '@sparkpost/matchbox-icons';
 import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
-import { SubduedLink } from 'src/components/links';
+import { ExternalLink, SubduedLink } from 'src/components/links';
 import { ToggleBlock } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
 import _ from 'lodash';
@@ -70,7 +70,7 @@ export default function DomainStatusSection({
           <Stack>
             <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
             <Stack>
-              <SubduedLink to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
                 Tracking Domain Documentation
               </SubduedLink>
             </Stack>
@@ -142,16 +142,16 @@ export default function DomainStatusSection({
             </SubduedText>
           )}
           {resolvedStatus === 'unverified' && (
-            <SubduedLink to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}>
+            <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}>
               Domain Documentation
             </SubduedLink>
           )}
           {resolvedStatus === 'verified' && (
             <Stack>
-              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
                 Sending Domain Documentation
               </SubduedLink>
-              <SubduedLink to={EXTERNAL_LINKS.SENDING_DOMAINS_API_DOCUMENTATION}>
+              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_API_DOCUMENTATION}>
                 Sending Domain API Documentation
               </SubduedLink>
             </Stack>

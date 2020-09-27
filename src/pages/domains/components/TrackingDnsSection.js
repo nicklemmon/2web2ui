@@ -11,9 +11,9 @@ const Field = ({ verified, label, value }) => {
   return <TextField label={label} value={value} readOnly />;
 };
 
-export default function TrackingDnsSection(props) {
+export default function TrackingDnsSection({ id, isSectionVisible }) {
   const { trackingDomains, verifyTrackingDomain } = useDomains();
-  let trackingDomain = _.find(trackingDomains, ['domainName', props.id]) || {};
+  let trackingDomain = _.find(trackingDomains, ['domainName', id]) || {};
   const { unverified } = trackingDomain;
 
   const handleVerify = () => {
@@ -22,7 +22,7 @@ export default function TrackingDnsSection(props) {
       subaccountId: trackingDomain.subaccountId,
     });
   };
-  if (!props.isSectionVisible) {
+  if (!isSectionVisible) {
     return null;
   }
   return (
