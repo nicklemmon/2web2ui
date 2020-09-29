@@ -13,6 +13,9 @@ export default function SCIMTokenSection(props) {
     deleteScimToken,
     error,
     showAlert,
+    generateScimTokenPending,
+    deleteScimTokenPending,
+    scimTokenListLoading,
     resetScimTokenErrors,
   } = props;
   const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
@@ -50,22 +53,26 @@ export default function SCIMTokenSection(props) {
     if (scimTokenList.length > 0) {
       deleteScimToken({ id: scimTokenList[0].id }).then(() => {
         generateScimToken().then(() => {
-          openModal({ name: 'Generate SCIM Token' });
-          listScimToken();
+          listScimToken().then(() => {
+            closeModal();
+            openModal({ name: 'Generate SCIM Token' });
+          });
         });
       });
     } else {
       generateScimToken().then(() => {
-        openModal({ name: 'Generate SCIM Token' });
-        listScimToken();
+        listScimToken().then(() => {
+          openModal({ name: 'Generate SCIM Token' });
+        });
       });
     }
   };
   const handleDeleteToken = () => {
     deleteScimToken({ id: scimTokenList[0].id }).then(() => {
-      listScimToken();
-      closeModal();
-      showAlert({ type: 'success', message: 'SCIM token deleted' });
+      listScimToken().then(() => {
+        closeModal();
+        showAlert({ type: 'success', message: 'SCIM token deleted' });
+      });
     });
   };
 
@@ -93,8 +100,10 @@ export default function SCIMTokenSection(props) {
               <ButtonWrapper>
                 <Button
                   variant="primary"
+                  loading={
+                    generateScimTokenPending || deleteScimTokenPending || scimTokenListLoading
+                  }
                   onClick={() => {
-                    closeModal();
                     handleGenerateToken();
                   }}
                 >
@@ -126,6 +135,7 @@ export default function SCIMTokenSection(props) {
                   onClick={() => {
                     handleDeleteToken();
                   }}
+                  loading={deleteScimTokenPending || scimTokenListLoading}
                 >
                   Delete SCIM Token
                 </Button>

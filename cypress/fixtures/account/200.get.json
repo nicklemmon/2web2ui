@@ -32,7 +32,6 @@
         "messaging_onboarding": true,
         "stepName": "Show Me SparkPost",
         "snippets": true,
-        "sso_scim_section": true,
         "onboarding": {
           "active_step": "Show Me SparkPost",
           "invite_collaborator_completed": true,

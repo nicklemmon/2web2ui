@@ -53,21 +53,18 @@ describe('SingleSignOnPanel', () => {
     );
   });
 
-  describe('renders SCIM Section when isSsoScimUiEnabled is true', () => {
-    it('renders with scim section', () => {
-      const subject = wrapper({
-        cert: 'abc==',
-        enabled: true,
-        loading: false,
-        provider: 'https://sso.sparkpost.com/redirect',
-        updateError: 'Oh no!',
-        updatedAt: '2018-09-11T19:39:06+00:00',
-        isSsoScimUiEnabled: true,
-        scimTokenList: [],
-        newScimToken: 'fake-token',
-      });
-
-      expect(subject.find('SCIMTokenSection')).toHaveLength(1);
+  it('renders with scim section', () => {
+    const subject = wrapper({
+      cert: 'abc==',
+      enabled: true,
+      loading: false,
+      provider: 'https://sso.sparkpost.com/redirect',
+      updateError: 'Oh no!',
+      updatedAt: '2018-09-11T19:39:06+00:00',
+      scimTokenList: [],
+      newScimToken: 'fake-token',
     });
+
+    expect(subject.find('SCIMTokenSection')).toHaveLength(1);
   });
 });

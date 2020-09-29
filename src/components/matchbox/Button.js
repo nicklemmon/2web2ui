@@ -12,6 +12,7 @@ function Button({ variant, ...props }) {
   if (!isHibanaEnabled) {
     return (
       <OGButton
+        disabled={props.loading}
         {...getVariantProps({ variant, isHibanaEnabled })}
         {...omitSystemProps(props, ['size', 'color', 'variant'])}
       />
