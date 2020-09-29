@@ -12,7 +12,6 @@ import ProviderSection from './ProviderSection';
 import StatusSection from './StatusSection';
 import SCIMTokenSection from './SCIMTokenSection';
 import { PANEL_LOADING_HEIGHT } from 'src/pages/account/constants';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import {
   generateScimToken,
   listScimToken,
@@ -26,7 +25,6 @@ export function SingleSignOnPanel(props) {
     getAccountSingleSignOnDetails,
     provider,
     tfaRequired,
-    isSsoScimUiEnabled,
     loading,
     listScimToken,
     generateScimToken,
@@ -36,16 +34,17 @@ export function SingleSignOnPanel(props) {
     deleteScimTokenError,
     generateScimTokenError,
     resetScimTokenErrors,
+    generateScimTokenPending,
+    deleteScimTokenPending,
+    scimTokenListLoading,
     showAlert,
   } = props;
   useEffect(() => {
     getAccountSingleSignOnDetails();
   }, [getAccountSingleSignOnDetails]);
   useEffect(() => {
-    if (isSsoScimUiEnabled) {
-      listScimToken();
-    }
-  }, [isSsoScimUiEnabled, listScimToken]);
+    listScimToken();
+  }, [listScimToken]);
 
   const renderContent = () => {
     return (
@@ -60,7 +59,7 @@ export function SingleSignOnPanel(props) {
         )}
         <ProviderSection readOnly={tfaRequired} provider={provider} />
         <StatusSection readOnly={tfaRequired} {...props} />
-        {isSsoScimUiEnabled && provider && (
+        {provider && (
           <SCIMTokenSection
             showAlert={showAlert}
             scimTokenList={scimTokenList}
@@ -69,6 +68,9 @@ export function SingleSignOnPanel(props) {
             listScimToken={listScimToken}
             deleteScimToken={deleteScimToken}
             resetScimTokenErrors={resetScimTokenErrors}
+            generateScimTokenPending={generateScimTokenPending}
+            deleteScimTokenPending={deleteScimTokenPending}
+            scimTokenListLoading={scimTokenListLoading}
             error={deleteScimTokenError || generateScimTokenError}
           />
         )}
@@ -110,11 +112,13 @@ const mapDispatchToProps = {
 const mapStateToProps = state => ({
   ...state.accountSingleSignOn,
   tfaRequired: state.account.tfa_required,
-  isSsoScimUiEnabled: isAccountUiOptionSet('sso_scim_section')(state),
   scimTokenList: state.scimToken.scimTokenList,
   newScimToken: state.scimToken.newScimToken,
   deleteScimTokenError: state.scimToken.deleteScimTokenError,
   generateScimTokenError: state.scimToken.generateScimTokenError,
+  generateScimTokenPending: state.scimToken.generateScimTokenPending,
+  deleteScimTokenPending: state.scimToken.deleteScimTokenPending,
+  scimTokenListLoading: state.scimToken.scimTokenListLoading,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleSignOnPanel);
