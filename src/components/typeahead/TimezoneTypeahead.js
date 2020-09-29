@@ -15,7 +15,7 @@ const UTC_OPTION = {
   label: 'UTC',
 };
 
-const options = moment.tz
+export const options = moment.tz
   .names()
   // Filter out non-standard timezones, inverse timezones (ETC/UTC-7 is equivalent to UTC+7)
   .filter(

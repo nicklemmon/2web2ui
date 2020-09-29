@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import moment from 'moment';
-import { TimezoneTypeahead } from '../TimezoneTypeahead';
+import { TimezoneTypeahead, options } from '../TimezoneTypeahead';
 import TestApp from 'src/__testHelpers__/TestApp';
 
 describe('Timezone Typeahead Item', () => {
@@ -32,10 +32,9 @@ describe('Timezone Typeahead Item', () => {
   it('if initialValue is set, it should select that as the default', () => {
     const wrapper = subject({ initialValue: 'Pacific/Chatham' });
 
-    expect(wrapper.find('Typeahead').prop('selectedItem')).toEqual({
-      label: '(UTC+12:45) Pacific/Chatham',
-      value: 'Pacific/Chatham',
-    });
+    expect(wrapper.find('Typeahead').prop('selectedItem')).toEqual(
+      options.find(timeZone => timeZone.value === 'Pacific/Chatham'),
+    );
   });
 
   it('if isForcedUTC is set, it should set timezone to UTC in onChange ', () => {
