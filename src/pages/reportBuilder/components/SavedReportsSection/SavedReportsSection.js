@@ -55,7 +55,11 @@ const SavedReportsSection = props => {
           onChange={props.handleReportChange}
           placeholder="Select a Report"
           renderItem={report => (
-            <TypeSelect.Item label={report.name} meta={report.creator || 'Default'} />
+            <TypeSelect.Item
+              label={report.name}
+              itemToString={item => item.key}
+              meta={report.creator || 'Default'}
+            />
           )}
           results={[
             ...reports.filter(({ creator }) => creator === props.currentUser.username),

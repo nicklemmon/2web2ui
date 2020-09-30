@@ -89,6 +89,7 @@ function TypeSelect({
       },
       onFocus: event => {
         event.target.select();
+        setMatches(results);
         openMenu();
       },
     };
@@ -164,7 +165,7 @@ TypeSelect.propTypes = {
 
 TypeSelect.defaultProps = {
   disabled: false,
-  itemToString: item => item.key,
+  itemToString: item => item,
   maxHeight: 300,
   maxNumberOfResults: 100,
   maxWidth: 1200,

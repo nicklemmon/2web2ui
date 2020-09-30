@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useDebouncedCallback } from 'use-debounce';
 import TestApp from 'src/__testHelpers__/TestApp';
@@ -14,6 +14,7 @@ describe('TypeSelect', () => {
         <TypeSelect
           id="test-type-select"
           label="Things"
+          itemToString={item => item?.key}
           results={[
             { key: 'eleven', name: 'Eleven' },
             { key: 'mike-wheeler', name: 'Mike Wheeler' },
@@ -85,6 +86,20 @@ describe('TypeSelect', () => {
 
     expect(listboxItems).toHaveLength(1);
     expect(listboxItems[0]).toHaveTextContent('eleven');
+  });
+
+  it('shows all items after blurring and refocusing', async () => {
+    const { getAllByRole, getByLabelText } = subject();
+    getByLabelText('Things').focus();
+    await userEvent.type(getByLabelText('Things'), 'e');
+    const listboxItems = getAllByRole('option');
+
+    expect(listboxItems).toHaveLength(1);
+    expect(listboxItems[0]).toHaveTextContent('eleven');
+    fireEvent.blur(getByLabelText('Things'));
+    fireEvent.focus(getByLabelText('Things'));
+
+    expect(getAllByRole('option')).toHaveLength(3);
   });
 
   it('when disabled renders a disabled text field', async () => {
