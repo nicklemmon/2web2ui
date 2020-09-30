@@ -48,12 +48,10 @@ function DetailsPage(props) {
 
   useEffect(() => {
     getDomain(match.params.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getDomain, match.params.id]);
   useEffect(() => {
     listTrackingDomains();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [listTrackingDomains]);
 
   if (sendingDomainsPending || trackingDomainListPending) {
     return <Loading />;

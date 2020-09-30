@@ -44,7 +44,7 @@ export default function SetupBounceDomainSection({ domain, isByoipAccount, isSec
   const bounceDomainsConfig = getConfig('bounceDomains');
   const { control, handleSubmit, watch } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
-  const { getDomain, verify, showAlert } = useDomains();
+  const { getDomain, verify, showAlert, userName } = useDomains();
   const [warningBanner, toggleBanner] = useState(true);
 
   const onSubmit = () => {
@@ -134,10 +134,10 @@ export default function SetupBounceDomainSection({ domain, isByoipAccount, isSec
               provider.
               <Panel.Action>
                 <ExternalLink
-                  to="mailto:abc@example.com?subject=todo-get-subject&body=todo-get-message"
+                  to={`mailto:?subject=Assistance%20Requested%20Verifying%20a%20Sending%20Domain%20on%20SparkPost&body=${userName}%20has%20requested%20your%20assistance%20verifying%20a%20sending%20domain%20with%20SparkPost.%20Follow%20the%20link%20below%20to%20find%20the%20values%20you%E2%80%99ll%20need%20to%20add%20to%20the%20settings%20of%20your%20DNS%20provider.%0D%0A%5BGo%20to%20SparkPost%5D(${window.location})%0D%0A`}
                   icon={PlaneIcon}
                 >
-                  Forward to Collegue
+                  Forward to Colleague
                 </ExternalLink>
               </Panel.Action>
             </Panel.Section>

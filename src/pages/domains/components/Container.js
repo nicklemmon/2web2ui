@@ -40,6 +40,7 @@ function mapStateToProps(state) {
     subaccounts: state.subaccounts.list,
     trackingDomains: selectTrackingDomainsRows(state),
     trackingDomainsListError: state.trackingDomains.error,
+    userName: state.currentUser.username,
   };
 }
 
