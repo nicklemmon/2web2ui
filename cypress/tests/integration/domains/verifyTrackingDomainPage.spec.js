@@ -17,13 +17,13 @@ describe('The verify tracking domain page', () => {
           requestAlias: 'accountDomainsReq',
         });
       });
-    });
-    it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-      cy.visit(PAGE_URL);
-      cy.wait('@accountDomainsReq');
+      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@accountDomainsReq');
 
-      cy.title().should('include', 'Verify Tracking Domain');
-      cy.findByRole('heading', { name: 'Verify Tracking Domain' }).should('be.visible');
+        cy.title().should('include', 'Verify Tracking Domain');
+        cy.findByRole('heading', { name: 'Verify Tracking Domain' }).should('be.visible');
+      });
     });
   }
 
