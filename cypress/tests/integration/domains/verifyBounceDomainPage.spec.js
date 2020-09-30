@@ -1,5 +1,5 @@
 import { IS_HIBANA_ENABLED } from 'cypress/constants';
-
+const BASE_URL = '/domains/details/';
 const PAGE_URL = '/domains/details/fake-domain.com/verify-bounce';
 
 describe('The verify bounce domain page', () => {
@@ -9,19 +9,41 @@ describe('The verify bounce domain page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-      cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-domains-v2.json',
-        requestAlias: 'accountDomainsReq',
+    describe('Verify Bounce Domain Page', () => {
+      beforeEach(() => {
+        cy.stubRequest({
+          url: '/api/v1/account',
+          fixture: 'account/200.get.has-domains-v2.json',
+          requestAlias: 'accountDomainsReq',
+        });
       });
+      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@accountDomainsReq');
 
-      cy.visit(PAGE_URL);
-
-      cy.wait('@accountDomainsReq');
-
-      cy.title().should('include', 'Verify Bounce Domain');
-      cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
+        cy.title().should('include', 'Verify Bounce Domain');
+        cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
+      });
+      it('clicking on Authenticate for Bounce, displays a success message', () => {
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/prd2.splango.net',
+          fixture: 'sending-domains/200.get.unverified-bounce.json',
+          requestAlias: 'unverifiedBounceDomains',
+        });
+        cy.stubRequest({
+          method: 'POST',
+          url: '/api/v1/sending-domains/prd2.splango.net/verify',
+          fixture: 'sending-domains/verify/200.post.json',
+          requestAlias: 'verifyDomain',
+        });
+        cy.visit(BASE_URL + 'prd2.splango.net/verify-bounce');
+        cy.wait(['@accountDomainsReq', '@unverifiedBounceDomains']);
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).click();
+        cy.wait('@verifyDomain');
+        cy.findAllByText('You have successfully verified cname record of prd2.splango.net').should(
+          'be.visible',
+        );
+      });
     });
   }
 
