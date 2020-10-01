@@ -2,6 +2,10 @@ import React from 'react';
 import { GroupByOption } from '../GroupByOption';
 import { shallow } from 'enzyme';
 
+jest.mock('../../context/ReportBuilderContext', () => ({
+  useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar' } })),
+}));
+
 describe('Group By Option', () => {
   let wrapper;
 
@@ -36,7 +40,10 @@ describe('Group By Option', () => {
 
   it('should handle select change', () => {
     wrapper.find('Select').simulate('change', { target: { value: 'campaign' } });
-    expect(props._getTableData).toHaveBeenCalledWith({ groupBy: 'campaign' });
+    expect(props._getTableData).toHaveBeenCalledWith({
+      groupBy: 'campaign',
+      reportOptions: { foo: 'bar' },
+    });
   });
   it('should handle select change when its just a placeholder value', () => {
     wrapper.find('Select').simulate('change', { target: { value: 'placeholder' } });
@@ -64,7 +71,10 @@ describe('Group By Option', () => {
   it('should make new domain api call when unchecking the "Only Top Domains" checkbox', () => {
     expect(wrapper.find('Checkbox')).toBeChecked();
     wrapper.find('Checkbox').simulate('change');
-    expect(props._getTableData).toHaveBeenCalledWith({ groupBy: 'domain' });
+    expect(props._getTableData).toHaveBeenCalledWith({
+      groupBy: 'domain',
+      reportOptions: { foo: 'bar' },
+    });
     expect(wrapper.find('Checkbox')).not.toBeChecked();
   });
 
@@ -74,7 +84,10 @@ describe('Group By Option', () => {
     expect(wrapper.find('Checkbox')).not.toBeChecked();
     wrapper.find('Checkbox').simulate('change');
     expect(props._getTableData).toHaveBeenCalledTimes(2);
-    expect(props._getTableData).toHaveBeenCalledWith({ groupBy: 'watched-domain' });
+    expect(props._getTableData).toHaveBeenCalledWith({
+      groupBy: 'watched-domain',
+      reportOptions: { foo: 'bar' },
+    });
     expect(wrapper.find('Checkbox')).toBeChecked();
   });
 });

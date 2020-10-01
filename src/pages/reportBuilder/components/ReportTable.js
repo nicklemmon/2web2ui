@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
-import { _getTableData } from 'src/actions/summaryChart';
+import { _getTableDataReportBuilder as _getTableData } from 'src/actions/summaryChart';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 

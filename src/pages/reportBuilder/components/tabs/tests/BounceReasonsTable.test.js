@@ -2,6 +2,15 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { BounceReasonsTable } from '../BounceReasonsTable';
 import TestApp from 'src/__testHelpers__/TestApp';
+import { useReportBuilderContext } from 'src/pages/reportBuilder/context/ReportBuilderContext';
+jest.mock('src/pages/reportBuilder/context/ReportBuilderContext');
+useReportBuilderContext.mockImplementation(() => ({
+  state: {
+    relativeRange: 'hour',
+    from: 'randomDate',
+    to: 'randomDate',
+  },
+}));
 
 describe('Bounce Reason Table', () => {
   const mockGetData = jest.fn();
@@ -48,11 +57,12 @@ describe('Bounce Reason Table', () => {
   });
 
   it('does not make api request when report options is not valid', () => {
-    const {} = subject({
-      reportOptions: {
+    useReportBuilderContext.mockImplementationOnce(() => ({
+      state: {
         relativeRange: 'hour',
       },
-    });
+    }));
+    subject();
     expect(mockGetData).not.toHaveBeenCalled();
   });
 

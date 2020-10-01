@@ -4,7 +4,8 @@ import { selectReportSearchOptions } from './reportSearchOptions';
 import _ from 'lodash';
 
 const selectReportOptions = (state) => state.reportOptions;
-const selectChartLoading = ({ bounceReport }) => bounceReport.aggregatesLoading || bounceReport.categoriesLoading;
+const selectChartLoading = ({ bounceReport }) =>
+  bounceReport.aggregatesLoading || bounceReport.categoriesLoading;
 const selectReasonsLoading = ({ bounceReport }) => bounceReport.reasonsLoading;
 const selectTableLoading = createSelector(
   [selectChartLoading, selectReasonsLoading],
@@ -18,12 +19,11 @@ const selectAdminReasons = ({ bounceReport }) => bounceReport.adminReasons.filte
 const selectFormattedAggregates = createSelector(
   [selectAggregates],
   (aggregates) => {
-    if (!aggregates.count_bounce && !aggregates.count_admin_bounce) {
-      return [];
-    }
-    return formatAggregates(aggregates);
+  if (!aggregates.count_bounce && !aggregates.count_admin_bounce) {
+    return [];
   }
-);
+  return formatAggregates(aggregates);
+});
 
 const selectReshapedCategories = createSelector(
   [selectClassifications],
@@ -38,13 +38,12 @@ const selectCategories = createSelector(
 const selectAdminCategories = createSelector(
   [selectReshapedCategories],
   (categories) => {
-    const adminBounces = _.find(categories, ({ name }) => name === 'Admin');
-    if (adminBounces) {
-      return adminBounces.children;
-    }
-    return [];
+  const adminBounces = _.find(categories, ({ name }) => name === 'Admin');
+  if (adminBounces) {
+    return adminBounces.children;
   }
-);
+  return [];
+});
 
 const selectBandTypes = createSelector(
   [selectFormattedAggregates],

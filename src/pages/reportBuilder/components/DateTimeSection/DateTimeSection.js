@@ -26,7 +26,6 @@ export const DateTimeSection = ({
   useMetricsRollup,
 }) => {
   const [shownPrecision, setShownPrecision] = useState('');
-
   const updateShownPrecision = useCallback(
     shownPrecision => {
       setShownPrecision(shownPrecision);

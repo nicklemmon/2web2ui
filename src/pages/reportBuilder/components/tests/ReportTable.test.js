@@ -3,6 +3,11 @@ import { render, within } from '@testing-library/react';
 import { ReportTable } from '../ReportTable';
 import { shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
+
+jest.mock('../../context/ReportBuilderContext', () => ({
+  useReportBuilderContext: jest.fn(() => [{ foo: 'bar' }]),
+}));
+
 jest.mock('../AddFilterLink', () => jest.fn(({ newFilter }) => <>{newFilter.value}</>));
 
 //Hibana will be enabled in actual component but this should only affect layout

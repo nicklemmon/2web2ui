@@ -10,6 +10,7 @@ import {
   TableCollectionBody,
   TableWrapper,
 } from './Wrappers';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
 const filterBoxConfig = {
   show: true,
@@ -29,7 +30,8 @@ const columns = [
 ];
 
 export function RejectionReasonsTable(props) {
-  const { loading, reasons, refreshRejectionReport, reportOptions } = props;
+  const { state: reportOptions } = useReportBuilderContext();
+  const { loading, reasons, refreshRejectionReport } = props;
 
   useEffect(() => {
     if (reportOptions.to && reportOptions.from) {
@@ -69,7 +71,6 @@ export function RejectionReasonsTable(props) {
 const mapStateToProps = state => ({
   loading: state.rejectionReport.reasonsLoading,
   reasons: state.rejectionReport.list,
-  reportOptions: state.reportOptions,
 });
 
 const mapDispatchToProps = {

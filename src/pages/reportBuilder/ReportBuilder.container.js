@@ -1,34 +1,11 @@
-import React, { createContext, useContext } from 'react';
-import { connect } from 'react-redux';
-import { refreshReportOptions } from 'src/actions/reportOptions';
+import { ReportBuilderContextProvider } from './context/ReportBuilderContext';
 import ReportBuilder from './ReportBuilder';
+import React from 'react';
 
-const ReportBuilderContext = createContext({});
-
-const ReportBuilderProvider = ({ children, reportOptions, refreshReportOptions }) => {
-  const contextValue = {
-    reportOptions,
-    refreshReportOptions,
-  };
-
+export default function ReportBuilderContainer(props) {
   return (
-    <ReportBuilderContext.Provider value={contextValue}>{children}</ReportBuilderContext.Provider>
+    <ReportBuilderContextProvider>
+      <ReportBuilder {...props} />
+    </ReportBuilderContextProvider>
   );
-};
-
-const ReportBuilderContainer = props => {
-  return (
-    <ReportBuilderProvider {...props}>
-      <ReportBuilder />
-    </ReportBuilderProvider>
-  );
-};
-
-//TODO: Replace with useReducer or some locally managed reportOptions
-const mapStateToProps = state => {
-  return { reportOptions: state.reportOptions };
-};
-
-export const useReportBuilderContext = () => useContext(ReportBuilderContext);
-
-export default connect(mapStateToProps, { refreshReportOptions })(ReportBuilderContainer);
+}

@@ -2,6 +2,15 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { DelayReasonsTable } from '../DelayReasonsTable';
 import TestApp from 'src/__testHelpers__/TestApp';
+import { useReportBuilderContext } from 'src/pages/reportBuilder/context/ReportBuilderContext';
+jest.mock('src/pages/reportBuilder/context/ReportBuilderContext');
+useReportBuilderContext.mockImplementation(() => ({
+  state: {
+    relativeRange: 'hour',
+    from: 'randomDate',
+    to: 'randomDate',
+  },
+}));
 
 describe('Delay Reasons Table', () => {
   const mockGetData = jest.fn();
@@ -16,11 +25,6 @@ describe('Delay Reasons Table', () => {
       },
     ],
     totalAccepted: 1000,
-    reportOptions: {
-      relativeRange: 'hour',
-      from: 'randomDate',
-      to: 'randomDate',
-    },
     refreshDelayReport: mockGetData,
   };
   const subject = props =>
@@ -39,11 +43,12 @@ describe('Delay Reasons Table', () => {
   });
 
   it('does not make api request when report options is not valid', () => {
-    const {} = subject({
-      reportOptions: {
+    useReportBuilderContext.mockImplementationOnce(() => ({
+      state: {
         relativeRange: 'hour',
       },
-    });
+    }));
+    subject();
     expect(mockGetData).not.toHaveBeenCalled();
   });
 

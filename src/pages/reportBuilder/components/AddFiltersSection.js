@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from 'react';
+import React, { useReducer, useCallback, useContext } from 'react';
 import { Box, Button, Drawer, Grid, Inline, Select } from 'src/components/matchbox';
 import Typeahead from './Typeahead';
 import { Add, Close } from '@sparkpost/matchbox-icons';
@@ -12,7 +12,7 @@ import {
 } from 'src/actions/metrics';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
-import { initTypeaheadCache, setFilters } from 'src/actions/reportOptions';
+import { initTypeaheadCache } from 'src/actions/reportOptions';
 import { connect } from 'react-redux';
 import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCache';
 import styles from './ReportOptions.module.scss';
@@ -236,6 +236,5 @@ export default connect(
     listSubaccounts,
     listSendingDomains,
     initTypeaheadCache,
-    setFilters,
   },
 )(AddFiltersSection);

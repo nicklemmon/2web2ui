@@ -11,6 +11,7 @@ import {
   TableWrapper,
 } from './Wrappers';
 import { safeRate } from 'src/helpers/math';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
 const filterBoxConfig = {
   show: true,
@@ -29,7 +30,8 @@ const columns = [
 ];
 
 export function DelayReasonsTable(props) {
-  const { loading, reasons, totalAccepted, refreshDelayReport, reportOptions } = props;
+  const { state: reportOptions } = useReportBuilderContext();
+  const { loading, reasons, totalAccepted, refreshDelayReport } = props;
 
   useEffect(() => {
     if (reportOptions.to && reportOptions.from) {
@@ -78,7 +80,6 @@ const mapStateToProps = state => {
     loading: state.delayReport.aggregatesLoading || state.delayReport.reasonsLoading,
     reasons: state.delayReport.reasons,
     totalAccepted: aggregates ? aggregates.count_accepted : 1,
-    reportOptions: state.reportOptions,
   };
 };
 

@@ -14,10 +14,10 @@ import { useForm, Controller } from 'react-hook-form';
 import { CheckboxWrapper } from 'src/components/reactHookFormWrapper';
 import { Loading } from 'src/components';
 import useRouter from 'src/hooks/useRouter';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import { createReport, updateReport, getReports } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
-import { useReportBuilderContext } from '../../ReportBuilder.container';
 import { ActiveFilters } from '../ReportOptions';
 
 import { formatDateTime, relativeDateOptionsIndexed } from 'src/helpers/date';
@@ -76,7 +76,7 @@ export function SaveReportModal(props) {
     location: { search = '' },
   } = useRouter();
 
-  const { reportOptions = {} } = useReportBuilderContext();
+  const { state: reportOptions } = useReportBuilderContext();
 
   React.useEffect(() => {
     if (!report) return;

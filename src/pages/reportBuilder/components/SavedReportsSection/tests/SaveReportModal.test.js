@@ -10,6 +10,10 @@ jest.mock('src/context/HibanaContext', () => ({
   useHibana: jest.fn().mockReturnValue([{ isHibanaEnabled: true }]),
 }));
 
+jest.mock('src/pages/reportBuilder/context/ReportBuilderContext', () => ({
+  useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar' } })),
+}));
+
 const mockOnCancel = jest.fn();
 const mockCreateReport = jest.fn(() => Promise.resolve());
 const mockGetReports = jest.fn(() => Promise.resolve());

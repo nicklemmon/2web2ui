@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import useRouter from 'src/hooks/useRouter';
 import qs from 'qs';
-import { addFilters } from 'src/actions/reportOptions';
 import { ButtonLink } from 'src/components/links';
 import { ScreenReaderOnly } from 'src/components/matchbox';
+import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
-import { selectSummaryChartSearchOptions } from 'src/selectors/reportSearchOptions';
 
-export const AddFilterLink = ({
-  //From parent
-  newFilter,
-  //From redux
-  currentSearchOptions,
-  addFilters,
-}) => {
+export const AddFilterLink = ({ newFilter }) => {
   const [isNewTabKeyPressed, setNewTabKeyPressed] = useState(false);
+  const { actions, selectors } = useReportBuilderContext();
+  const { addFilters } = actions;
+  const { selectSummaryChartSearchOptions: currentSearchOptions } = selectors;
   const {
     location: { pathname },
   } = useRouter();
@@ -54,8 +49,4 @@ export const AddFilterLink = ({
   );
 };
 
-const mapStateToProps = state => ({
-  currentSearchOptions: selectSummaryChartSearchOptions(state),
-});
-
-export default connect(mapStateToProps, { addFilters })(AddFilterLink);
+export default AddFilterLink;

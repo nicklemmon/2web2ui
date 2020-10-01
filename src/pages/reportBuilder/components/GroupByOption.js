@@ -3,16 +3,19 @@ import styles from './ReportTable.module.scss';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
+import { useReportBuilderContext } from '../context/ReportBuilderContext';
 
 export const GroupByOption = props => {
   const { groupBy, hasSubaccounts, tableLoading, _getTableData } = props;
+  const { state: reportOptions } = useReportBuilderContext();
+
   const selectId = useUniqueId('break-down-by');
 
   const [topDomainsOnly, setTopDomainsOnly] = useState(true);
 
   const handleGroupChange = e => {
     if (e.target.value !== 'placeholder') {
-      _getTableData({ groupBy: e.target.value });
+      _getTableData({ groupBy: e.target.value, reportOptions });
     }
   };
 
@@ -20,7 +23,7 @@ export const GroupByOption = props => {
     const newTopDomainsOnly = !topDomainsOnly;
     setTopDomainsOnly(newTopDomainsOnly);
     const groupBy = newTopDomainsOnly ? 'watched-domain' : 'domain';
-    _getTableData({ groupBy });
+    _getTableData({ groupBy, reportOptions });
   };
 
   const getSelectOptions = () => {

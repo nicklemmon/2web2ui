@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { refreshReportOptions } from 'src/actions/reportOptions';
 import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel, Stack, Tag } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
 
+import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
-import { selectSummaryMetricsProcessed } from 'src/selectors/reportSearchOptions';
 import { parseSearch } from 'src/helpers/reports';
 import styles from './ReportOptions.module.scss';
 import MetricsDrawer from './MetricsDrawer';
@@ -51,19 +50,15 @@ export const ActiveFilters = ({ filters, handleFilterRemove }) => {
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
-  const {
-    processedMetrics,
-    refreshReportOptions,
-    reportOptions,
-    reportLoading,
-    searchOptions,
-    // Saved Reports
-    isSavedReportsEnabled,
-    reports,
-    reportsStatus,
-    getReports,
-  } = props;
+  const { reportLoading, isSavedReportsEnabled, reports, reportsStatus, getReports } = props;
   const [selectedReport, setReport] = useState(null);
+
+  const { state: reportOptions, actions, selectors } = useReportBuilderContext();
+  const { refreshReportOptions, removeFilter } = actions;
+  const {
+    selectSummaryMetricsProcessed: processedMetrics,
+    selectSummaryChartSearchOptions,
+  } = selectors;
 
   const { location, updateRoute } = useRouter();
   const handleReportChange = report => {
@@ -85,7 +80,6 @@ export function ReportOptions(props) {
         refreshReportOptions({ ...options, filters });
       }
     }
-
     setReport(report);
   };
 
@@ -96,9 +90,9 @@ export function ReportOptions(props) {
   // Updates the query params with incoming search option changes
   useEffect(() => {
     if (reportOptions.isReady) {
-      updateRoute({ ...searchOptions, report: selectedReport?.id });
+      updateRoute(selectSummaryChartSearchOptions);
     }
-  }, [searchOptions, updateRoute, reportOptions.isReady, selectedReport]);
+  }, [selectSummaryChartSearchOptions, updateRoute, reportOptions.isReady, selectedReport]);
 
   useEffect(() => {
     if (isSavedReportsEnabled) {
@@ -140,11 +134,7 @@ export function ReportOptions(props) {
   };
 
   const handleFilterRemove = index => {
-    const filters = [
-      ...reportOptions.filters.slice(0, index),
-      ...reportOptions.filters.slice(index + 1),
-    ];
-    refreshReportOptions({ filters });
+    removeFilter(index);
   };
 
   const handleTimezoneSelect = useCallback(
@@ -189,7 +179,13 @@ export function ReportOptions(props) {
           <Button {...getActivatorProps()} onClick={() => handleDrawerOpen(0)} variant="secondary">
             Add Metrics
           </Button>
-          <Button {...getActivatorProps()} onClick={() => handleDrawerOpen(1)} variant="secondary">
+          <Button
+            {...getActivatorProps()}
+            onClick={() => {
+              handleDrawerOpen(1);
+            }}
+            variant="secondary"
+          >
             Add Filters
           </Button>
         </Inline>
@@ -231,16 +227,10 @@ export function ReportOptions(props) {
 }
 
 const mapStateToProps = state => ({
-  processedMetrics: selectSummaryMetricsProcessed(state),
-  reportOptions: state.reportOptions,
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
   reports: state.reports.list,
   reportsStatus: state.reports.status,
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
 });
 
-const mapDispatchToProps = {
-  refreshReportOptions,
-  getReports,
-};
-export default connect(mapStateToProps, mapDispatchToProps)(ReportOptions);
+export default connect(mapStateToProps, { getReports })(ReportOptions);

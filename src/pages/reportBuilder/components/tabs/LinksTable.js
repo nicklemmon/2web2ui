@@ -10,6 +10,7 @@ import {
   TableWrapper,
 } from './Wrappers';
 import { safeRate } from 'src/helpers/math';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
 const filterBoxConfig = {
   show: true,
@@ -29,7 +30,8 @@ const columns = [
 ];
 
 export function LinksTable(props) {
-  const { loading, links, refreshEngagementReport, reportOptions, totalClicks } = props;
+  const { state: reportOptions } = useReportBuilderContext();
+  const { loading, links, refreshEngagementReport, totalClicks } = props;
 
   useEffect(() => {
     if (reportOptions.to && reportOptions.from) {
@@ -78,7 +80,6 @@ const mapStateToProps = state => {
     loading: linkMetrics.loading || aggregateMetrics.loading,
     totalClicks: aggregateData.count_clicked,
     links: linkMetrics.data,
-    reportOptions: state.reportOptions,
   };
 };
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { Error } from '@sparkpost/matchbox-icons';
-import { refreshSummaryReport } from 'src/actions/summaryChart';
+import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { Page, Panel } from 'src/components/matchbox';
 import { Empty, Loading, Unit, LegendCircle } from 'src/components';
 import { Button, Box, Grid, Inline, Tooltip } from 'src/components/matchbox';
@@ -18,10 +18,6 @@ import {
 } from 'src/config/metrics';
 import { Tabs } from 'src/components';
 import {
-  selectSummaryChartSearchOptions,
-  selectSummaryMetricsProcessed,
-} from 'src/selectors/reportSearchOptions';
-import {
   BounceReasonsTable,
   DelayReasonsTable,
   LinksTable,
@@ -31,6 +27,7 @@ import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import styles from './ReportBuilder.module.scss';
 import { getSubscription } from 'src/actions/billing';
+import { useReportBuilderContext } from './context/ReportBuilderContext';
 
 const MetricDefinition = ({ label, children }) => {
   return (
@@ -48,15 +45,16 @@ const MetricDefinition = ({ label, children }) => {
 export function ReportBuilder({
   chart,
   isSavedReportsEnabled,
-  processedMetrics,
-  reportOptions,
-  summarySearchOptions = {},
-  refreshSummaryReport,
   getSubscription,
+  refreshReportBuilder,
   subscription,
 }) {
   const [showTable, setShowTable] = useState(true);
   const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false);
+
+  const { state: reportOptions, selectors } = useReportBuilderContext();
+  const processedMetrics = selectors.selectSummaryMetricsProcessed;
+  const summarySearchOptions = selectors.selectSummaryChartSearchOptions || {};
 
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
@@ -64,9 +62,9 @@ export function ReportBuilder({
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
-      refreshSummaryReport(reportOptions);
+      refreshReportBuilder(reportOptions);
     }
-  }, [refreshSummaryReport, reportOptions, isEmpty]);
+  }, [refreshReportBuilder, reportOptions, isEmpty]);
 
   useEffect(() => {
     getSubscription();
@@ -241,15 +239,12 @@ export function ReportBuilder({
 //Redux
 const mapStateToProps = state => ({
   chart: state.summaryChart,
-  reportOptions: state.reportOptions,
-  processedMetrics: selectSummaryMetricsProcessed(state),
-  summarySearchOptions: selectSummaryChartSearchOptions(state),
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
   subscription: state.billing.subscription,
 });
 
 const mapDispatchToProps = {
-  refreshSummaryReport,
+  refreshReportBuilder,
   getSubscription,
 };
 

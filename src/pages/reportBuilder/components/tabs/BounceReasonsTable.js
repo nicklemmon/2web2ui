@@ -12,6 +12,7 @@ import {
   TableCollectionBody,
   TableWrapper,
 } from './Wrappers';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
 const filterBoxConfig = {
   show: true,
@@ -35,7 +36,8 @@ const columns = [
 ];
 
 export function BounceReasonsTable(props) {
-  const { aggregates, reasons, refreshBounceReport, reportOptions, tableLoading } = props;
+  const { state: reportOptions } = useReportBuilderContext();
+  const { aggregates, reasons, refreshBounceReport, tableLoading } = props;
 
   useEffect(() => {
     if (reportOptions.to && reportOptions.from) {
