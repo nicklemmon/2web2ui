@@ -1,0 +1,25 @@
+{
+  "results": {
+    "dkim": {
+      "signing_domain": "bounce2.spappteam.com",
+      "headers": "from:to:subject:date",
+      "public": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBTu/gLuz7UulDWh8BV2T7+C3chM6xh5HtG2b9qjpExVu2RpXYgXpm/ifi4rHkStKlhPJ3gxaa939in3nb8GC6U/2uqRJjPXN5x4KKOVXLAsWFdJwZLCk+lUhe1qZ297bt4yxH0yDhi3zW00o7m6gP3fZKSBI58uaXJndoLBJuOQIDAQAB",
+      "selector": "scph1117"
+    },
+    "creation_time": "2017-11-20T15:03:31+00:00",
+    "tracking_domain": "track.spappteam.com",
+    "status": {
+      "mx_status": "unverified",
+      "spf_status": "valid",
+      "cname_status": "valid",
+      "ownership_verified": true,
+      "abuse_at_status": "unverified",
+      "compliance_status": "valid",
+      "verification_mailbox_status": "unverified",
+      "dkim_status": "invalid",
+      "postmaster_at_status": "unverified"
+    },
+    "is_default_bounce_domain": true,
+    "shared_with_subaccounts": false
+  }
+}

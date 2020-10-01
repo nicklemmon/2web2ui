@@ -1,11 +1,10 @@
 import React from 'react';
-import { Bookmark } from '@sparkpost/matchbox-icons';
 import { Subaccount } from 'src/components';
-import { Box, Inline, ScreenReaderOnly, Stack, Table, Tag, Tooltip } from 'src/components/matchbox';
+import { ScreenReaderOnly, Stack, Table } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { TranslatableText } from 'src/components/text';
-import useUniqueId from 'src/hooks/useUniqueId';
 import { DETAILS_BASE_URL } from '../constants';
+import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 
 export default function TrackingDomainsTable({ rows }) {
   return (
@@ -27,7 +26,7 @@ export default function TrackingDomainsTable({ rows }) {
               </Table.Cell>
 
               <Table.Cell>
-                <StatusCell row={domain} />
+                <TrackingDomainStatusCell row={domain} />
               </Table.Cell>
             </Table.Row>
           );
@@ -51,34 +50,5 @@ function MainCell({ row }) {
         </div>
       )}
     </Stack>
-  );
-}
-
-function StatusCell({ row }) {
-  const { defaultTrackingDomain, unverified, blocked } = row;
-  const tooltipId = useUniqueId('default-tracking-domain');
-
-  if (blocked) return <Tag color="red">Blocked</Tag>;
-
-  if (unverified) return <Tag color="yellow">Unverified</Tag>;
-
-  return (
-    <Inline space="100">
-      <Tag>
-        <Inline space="100">
-          <TranslatableText>Tracking</TranslatableText>
-
-          {defaultTrackingDomain && (
-            <Box color="green.700">
-              <Tooltip content="Default Tracking Domain" id={tooltipId}>
-                <div tabIndex="0" data-id="default-tracking-domain-tooltip">
-                  <Bookmark />
-                </div>
-              </Tooltip>
-            </Box>
-          )}
-        </Inline>
-      </Tag>
-    </Inline>
   );
 }
