@@ -236,11 +236,6 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
       });
     });
-    it('renders the Sections with relevant titles', () => {
-      cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
-      cy.findByRole('heading', { name: 'Sending' }).should('be.visible');
-      cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
-    });
   }
 
   if (!IS_HIBANA_ENABLED) {
