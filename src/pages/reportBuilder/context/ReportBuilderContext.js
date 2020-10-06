@@ -1,5 +1,7 @@
 import React, { useCallback, useContext, useMemo, useReducer, createContext } from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
+
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { getRelativeDates } from 'src/helpers/date';
 import {
@@ -10,8 +12,9 @@ import {
 import { getLocalTimezone } from 'src/helpers/date';
 import { dedupeFilters } from 'src/helpers/reports';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import config from 'src/config';
-import moment from 'moment';
 
 const ReportOptionsContext = createContext({});
 
@@ -100,6 +103,62 @@ const reducer = (state, action) => {
   }
 };
 
+const reducerV2 = (state, action) => {
+  switch (action.type) {
+    case 'UPDATE_REPORT_OPTIONS': {
+      const { payload, meta } = action;
+      const { useMetricsRollup } = meta;
+      let update = { ...state, ...payload };
+      const getPrecision = useMetricsRollup ? getRollupPrecision : getRawPrecision;
+
+      if (!update.timezone || !useMetricsRollup) {
+        update.timezone = getLocalTimezone();
+      }
+
+      if (!update.metrics) {
+        update.metrics = config.reportBuilder.defaultMetrics;
+      }
+
+      // If queryFilters, then was converted over from older filters.
+      if (payload.queryFilters) {
+        update.filters = payload.queryFilters;
+      }
+
+      if (!update.relativeRange) {
+        update.relativeRange = '7days';
+      }
+
+      //old version of update
+
+      const rollupPrecision = useMetricsRollup && update.precision;
+      if (update.relativeRange !== 'custom') {
+        const { from, to } = getRelativeDates(update.relativeRange, {
+          precision: rollupPrecision,
+        });
+        //for metrics rollup, when using the relative dates, get the precision, else use the given precision
+        //If precision is not in the URL, get the recommended precision.
+        const precision = getPrecision({ from, to, precision: rollupPrecision });
+        update = { ...update, from, to, precision };
+      } else {
+        const precision = getPrecision({
+          from: update.from,
+          to: moment(update.to),
+          precision: rollupPrecision,
+        });
+
+        update = { ...update, precision };
+      }
+      return {
+        ...update,
+        isReady: true,
+      };
+    }
+
+    default:
+      return state;
+  }
+};
+
 const getSelectors = reportOptions => {
   const selectDateOptions = {
     from: moment(reportOptions.from)
@@ -147,18 +206,18 @@ const getSelectors = reportOptions => {
 };
 
 const ReportOptionsContextProvider = props => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { useMetricsRollup } = props;
+  const { useMetricsRollup, isComparatorsEnabled } = props;
+  const [state, dispatch] = useReducer(isComparatorsEnabled ? reducerV2 : reducer, initialState);
 
   const refreshReportOptions = useCallback(
     payload => {
       dispatch({
         type: 'UPDATE_REPORT_OPTIONS',
         payload,
-        meta: { useMetricsRollup },
+        meta: { useMetricsRollup, isComparatorsEnabled },
       });
     },
-    [dispatch, useMetricsRollup],
+    [dispatch, useMetricsRollup, isComparatorsEnabled],
   );
 
   const addFilters = useCallback(
@@ -210,6 +269,7 @@ const ReportOptionsContextProvider = props => {
 
 const mapStateToProps = state => ({
   useMetricsRollup: selectFeatureFlaggedMetrics(state).useMetricsRollup,
+  isComparatorsEnabled: selectCondition(isUserUiOptionSet('allow_new_comparators'))(state),
 });
 
 export const ReportBuilderContextProvider = connect(mapStateToProps)(ReportOptionsContextProvider);

@@ -142,7 +142,7 @@ const SavedReportsSection = props => {
         isPending={props.isDeletePending}
         onCancel={() => {
           setModalStatus('');
-          focusedReport({});
+          setFocusedReport({});
         }}
         onConfirm={onDelete}
       />

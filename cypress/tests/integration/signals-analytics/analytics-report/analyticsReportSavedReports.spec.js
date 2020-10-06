@@ -269,6 +269,9 @@ if (IS_HIBANA_ENABLED) {
         cy.visit(PAGE_URL);
         cy.wait('@getSavedReports');
         cy.findByRole('button', { name: 'View All Reports' }).click();
+        //Avoid flakey test by waiting for modal to render. Might be some other issue as well.
+        /* eslint-disable-next-line */
+        cy.wait(500);
         cy.findByText('Open Menu').click({ force: true }); // The content is visually hidden (intentionally!), so `force: true` is needed here
         cy.findByText('Delete').click({ force: true });
 

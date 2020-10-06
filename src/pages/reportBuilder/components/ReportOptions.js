@@ -7,7 +7,7 @@ import { Tabs, Loading } from 'src/components';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { AccessControl } from 'src/components/auth';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
-import { parseSearch } from 'src/helpers/reports';
+import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { not } from 'src/helpers/conditions';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportOptions.module.scss';
@@ -27,7 +27,6 @@ import { getReports } from 'src/actions/reports';
 export const ActiveFilters = ({ filters, handleFilterRemove }) => {
   const filtersWithIndex = filters.map((value, index) => ({ ...value, index }));
   const groupedFilters = _.groupBy(filtersWithIndex, 'type');
-
   return (
     <Stack>
       {Object.keys(groupedFilters).map(key => (
@@ -53,7 +52,14 @@ export const ActiveFilters = ({ filters, handleFilterRemove }) => {
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
-  const { reportLoading, isSavedReportsEnabled, reports, reportsStatus, getReports } = props;
+  const {
+    reportLoading,
+    isSavedReportsEnabled,
+    isComparatorsEnabled,
+    reports,
+    reportsStatus,
+    getReports,
+  } = props;
   const [selectedReport, setReport] = useState(null);
 
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
@@ -64,27 +70,6 @@ export function ReportOptions(props) {
   } = selectors;
 
   const { location, updateRoute } = useRouter();
-  const handleReportChange = report => {
-    if (report) {
-      const { options, filters = [] } = parseSearch(report.query_string);
-      //Keep time range and filters when changing to preset report from another preset report.
-      if (report.type === 'preset' && (!selectedReport || selectedReport.type === 'preset')) {
-        const {
-          from,
-          to,
-          relativeRange,
-          timezone,
-          precision,
-          filters: reportOptionsFilters,
-        } = reportOptions;
-        const mergedOptions = { ...options, from, to, relativeRange, timezone, precision };
-        refreshReportOptions({ ...mergedOptions, filters: reportOptionsFilters });
-      } else {
-        refreshReportOptions({ ...options, filters });
-      }
-    }
-    setReport(report);
-  };
 
   const isEmpty = useMemo(() => {
     return !Boolean(processedMetrics.length);
@@ -93,9 +78,22 @@ export function ReportOptions(props) {
   // Updates the query params with incoming search option changes
   useEffect(() => {
     if (reportOptions.isReady) {
-      updateRoute(selectSummaryChartSearchOptions);
+      const { filters, ...update } = selectSummaryChartSearchOptions;
+      if (isComparatorsEnabled) {
+        update.query_filters = JSON.stringify(filters);
+      } else {
+        update.filters = filters;
+      }
+
+      updateRoute({ ...update, report: selectedReport?.id });
     }
-  }, [selectSummaryChartSearchOptions, updateRoute, reportOptions.isReady, selectedReport]);
+  }, [
+    selectSummaryChartSearchOptions,
+    updateRoute,
+    reportOptions.isReady,
+    selectedReport,
+    isComparatorsEnabled,
+  ]);
 
   useEffect(() => {
     if (isSavedReportsEnabled) {
@@ -105,7 +103,8 @@ export function ReportOptions(props) {
 
   //Initializes the report options with the search
   useEffect(() => {
-    const { options, filters = [], report: reportId } = parseSearch(location.search);
+    const { report: reportId, ...options } = parseSearch(location.search);
+
     const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
     const report = allReports.find(({ id }) => id === reportId);
 
@@ -116,13 +115,11 @@ export function ReportOptions(props) {
 
     // Initializes once it finds relavant report
     if (report) {
-      const { options: reportOptions, filters: reportFilters = [] } = parseSearch(
-        report.query_string,
-      );
+      const { filters: reportFilters = [], ...reportOptions } = parseSearch(report.query_string);
       setReport(report);
-      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...filters] });
+      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...options.filters] });
     } else {
-      refreshReportOptions({ ...options, filters });
+      refreshReportOptions(options);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSavedReportsEnabled, reportsStatus, reports]);
@@ -131,6 +128,22 @@ export function ReportOptions(props) {
     id: 'report-drawer',
   });
   const [drawerTab, setDrawerTab] = useState(0);
+
+  const handleReportChange = report => {
+    if (report) {
+      const options = parseSearch(report.query_string);
+      //Keep time range and filters when changing to preset report from another preset report.
+      if (report.type === 'preset' && (!selectedReport || selectedReport.type === 'preset')) {
+        const { from, to, relativeRange, timezone, precision, filters } = reportOptions;
+        const mergedOptions = { ...options, from, to, relativeRange, timezone, precision, filters };
+        refreshReportOptions(mergedOptions);
+      } else {
+        refreshReportOptions(options);
+      }
+    }
+    setReport(report);
+  };
+
   const handleDrawerOpen = index => {
     setDrawerTab(index);
     openDrawer();
@@ -241,6 +254,7 @@ const mapStateToProps = state => ({
   reports: state.reports.list,
   reportsStatus: state.reports.status,
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
+  isComparatorsEnabled: selectCondition(isUserUiOptionSet('allow_reports_filters_v2'))(state),
 });
 
 export default connect(mapStateToProps, { getReports })(ReportOptions);
