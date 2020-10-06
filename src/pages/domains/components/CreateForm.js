@@ -53,6 +53,17 @@ export default function CreateForm() {
       });
     }
 
+    if (primaryUse === 'bounce') {
+      return createSendingDomain({
+        assignTo,
+        domain,
+        subaccount,
+      }).then(() => {
+        showAlert({ type: 'success', message: `Bounce Domain ${domain} created` });
+        history.push(`/domains/details/${domain}/verify-bounce`);
+      });
+    }
+
     return createSendingDomain({
       assignTo,
       domain,
@@ -103,16 +114,16 @@ export default function CreateForm() {
                   </TranslatableText>
                 </RadioCard>
 
-                {/* TODO: Bounce domains cannot be created - a sending domain has to be created and verified via `CNAME` or `MX` records */}
-                {/* <RadioCard
+                <RadioCard
                   ref={register}
                   label="Bounce Domain"
                   id="primary-use-bounce-domain"
                   value="bounce"
                   name="primaryUse"
                 >
-                  Mauris sit amet ex eu dolor vestibulum gravida quis sagittis risus.
-                </RadioCard> */}
+                  Bounce domains are the return path address and are used for report bounces, emails
+                  rejected from the recipient server.
+                </RadioCard>
 
                 <RadioCard
                   ref={register}
