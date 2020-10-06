@@ -8,7 +8,7 @@ export default function DeleteDomainSection({ domain, isTracking, id, history })
   const { deleteDomain, deleteTrackingDomain, showAlert, trackingDomains } = useDomains();
   const handleDeleteDomain = () => {
     if (isTracking) {
-      let trackingDomain = _.find(trackingDomains, ['domainName', id]);
+      let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
 
       return deleteTrackingDomain({
         domain: id,

@@ -16,7 +16,7 @@ const Field = ({ verified, label, value }) => {
 
 export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   const { trackingDomains, verifyTrackingDomain } = useDomains();
-  let trackingDomain = _.find(trackingDomains, ['domainName', id]) || {};
+  let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
   const { unverified } = trackingDomain;
 
   const handleVerify = () => {

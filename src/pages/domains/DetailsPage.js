@@ -44,7 +44,7 @@ function DetailsPage(props) {
   const readyFor = resolveReadyFor(domain.status);
   const displaySendingAndBounceSection =
     resolvedStatus === 'verified' && readyFor.bounce && domain.status.spf_status === 'valid';
-  const isTracking = Boolean(_.find(trackingDomainList, ['domain', match.params.id]));
+  const isTracking = Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]));
 
   useEffect(() => {
     getDomain(match.params.id);
