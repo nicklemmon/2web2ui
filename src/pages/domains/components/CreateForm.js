@@ -116,13 +116,16 @@ export default function CreateForm() {
 
                 <RadioCard
                   ref={register}
+                  disabled={createPending}
                   label="Bounce Domain"
                   id="primary-use-bounce-domain"
                   value="bounce"
                   name="primaryUse"
                 >
-                  Bounce domains are the return path address and are used for report bounces, emails
-                  rejected from the recipient server.
+                  <TranslatableText>
+                    Bounce domains are the return path address and are used for report bounces,
+                    emails rejected from the recipient server.
+                  </TranslatableText>
                 </RadioCard>
 
                 <RadioCard
@@ -170,7 +173,7 @@ export default function CreateForm() {
               <Panel.Section>
                 <Stack space="300">
                   <Radio.Group label="Subaccount Assignment">
-                    {watchedPrimaryUse === 'sending' && (
+                    {(watchedPrimaryUse === 'sending' || watchedPrimaryUse === 'bounce') && (
                       <Radio
                         ref={register}
                         disabled={createPending}
