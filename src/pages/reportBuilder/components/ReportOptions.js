@@ -1,17 +1,20 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel, Stack, Tag } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
-
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
+import { AccessControl } from 'src/components/auth';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearch } from 'src/helpers/reports';
+import { not } from 'src/helpers/conditions';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportOptions.module.scss';
 import MetricsDrawer from './MetricsDrawer';
 import { Legend } from './index';
-import _ from 'lodash';
 import AddFiltersSection from './AddFiltersSection';
+import FiltersForm from './FiltersForm';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
@@ -160,21 +163,21 @@ export function ReportOptions(props) {
 
   return (
     <div data-id="report-options">
-      <Panel.LEGACY.Section>
+      <Panel.Section>
         <SavedReportsSection
           selectedItem={selectedReport}
           handleReportChange={handleReportChange}
         />
-      </Panel.LEGACY.Section>
-      <Panel.LEGACY.Section>
+      </Panel.Section>
+      <Panel.Section>
         <DateTimeSection
           reportOptions={reportOptions}
           handleTimezoneSelect={handleTimezoneSelect}
           reportLoading={reportLoading}
           refreshReportOptions={refreshReportOptions}
         />
-      </Panel.LEGACY.Section>
-      <Panel.LEGACY.Section>
+      </Panel.Section>
+      <Panel.Section>
         <Inline space="300">
           <Button {...getActivatorProps()} onClick={() => handleDrawerOpen(0)} variant="secondary">
             Add Metrics
@@ -197,30 +200,37 @@ export function ReportOptions(props) {
                 <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
               </Tabs.Item>
               <Tabs.Item>
-                <AddFiltersSection handleSubmit={handleSubmit} reportOptions={reportOptions} />
+                <AccessControl condition={not(isAccountUiOptionSet('allow_report_filters_v2'))}>
+                  <AddFiltersSection handleSubmit={handleSubmit} reportOptions={reportOptions} />
+                </AccessControl>
+
+                <AccessControl condition={isAccountUiOptionSet('allow_report_filters_v2')}>
+                  <FiltersForm handleSubmit={handleSubmit} reportOptions={reportOptions} />
+                </AccessControl>
               </Tabs.Item>
             </Tabs>
           </Drawer.Content>
         </Drawer>
-      </Panel.LEGACY.Section>
+      </Panel.Section>
       {!isEmpty && (
-        <Panel.LEGACY.Section>
+        <Panel.Section>
           <Legend metrics={processedMetrics} removeMetric={handleRemoveMetric} />
-        </Panel.LEGACY.Section>
+        </Panel.Section>
       )}
       {!isEmpty &&
       Boolean(reportOptions.filters.length) && ( //Only show if there are active filters
-          <Panel.LEGACY.Section>
+          <Panel.Section>
             <Inline>
               <Heading as="h2" looksLike="h5">
                 Filters
               </Heading>
+
               <ActiveFilters
                 filters={reportOptions.filters}
                 handleFilterRemove={handleFilterRemove}
               />
             </Inline>
-          </Panel.LEGACY.Section>
+          </Panel.Section>
         )}
     </div>
   );

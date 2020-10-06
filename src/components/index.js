@@ -29,6 +29,7 @@ export { default as TabsWrapper } from './tabsWrapper';
 export { default as IconButton } from './iconButton';
 export { default as MultiEmailField } from './multiEmailField';
 export { default as Abbreviation } from './abbreviation';
+export { default as RadioButtonGroup } from './radioButtonGroup';
 export { default as RecipientValidationPriceTable } from './recipientValidation/RecipientValidationPriceTable';
 export { default as ButtonWrapper } from './buttonWrapper/ButtonWrapper';
 export { default as Tabs } from './tabs/Tabs';

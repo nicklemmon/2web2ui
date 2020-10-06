@@ -150,7 +150,7 @@ export function ReportBuilder({
         )
       }
     >
-      <Panel.LEGACY>
+      <Panel>
         <ReportOptions reportLoading={chart.chartLoading} searchOptions={summarySearchOptions} />
         {isEmpty ? (
           <Empty message="No Data" description="Must select at least one metric." />
@@ -160,9 +160,9 @@ export function ReportBuilder({
             <div data-id="summary-chart">
               <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
                 <Tabs.Item>
-                  <Panel.LEGACY.Section className={styles.ChartSection}>
+                  <Panel.Section className={styles.ChartSection}>
                     <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
-                  </Panel.LEGACY.Section>
+                  </Panel.Section>
                   <Box padding="400" backgroundColor={tokens.color_gray_1000}>
                     <Grid>
                       <Grid.Column sm={3}>
@@ -219,7 +219,7 @@ export function ReportBuilder({
             </div>
           </>
         )}
-      </Panel.LEGACY>
+      </Panel>
       {showTable && (
         <div data-id="summary-table">
           <ReportTable />

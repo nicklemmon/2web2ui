@@ -1,4 +1,5 @@
 export { default as useABTest } from './useABTest';
+export { default as useMultiEntry } from './useMultiEntry';
 export { default as useEffectAfterMounting } from './useEffectAfterMounting';
 export { default as useHibanaOverride } from './useHibanaOverride';
 export { default as useHibanaToggle } from './useHibanaToggle';

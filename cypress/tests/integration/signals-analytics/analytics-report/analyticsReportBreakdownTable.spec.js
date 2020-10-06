@@ -35,7 +35,7 @@ if (IS_HIBANA_ENABLED) {
       cy.stubRequest({
         url: '/api/v1/subaccounts',
         fixture: 'subaccounts/200.get.json',
-        requestAliasList: 'getSubaccountList',
+        requestAlias: 'getSubaccountList',
       });
       cy.login({ isStubbed: true });
     });

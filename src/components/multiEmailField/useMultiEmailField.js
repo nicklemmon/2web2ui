@@ -7,11 +7,13 @@ const useMultiEmailField = (value = '', emailList = [], error = '') => {
   const [multiEmailError, setMultiEmailError] = useState(error);
   const [multiEmailList, setMultiEmailList] = useState(emailList);
 
-  const handleMultiEmailKeyDownAndBlur = (e) => {
+  const handleMultiEmailKeyDownAndBlur = e => {
     // Remove the last email from the list when the user deletes
     // and no in progress value is present in the field
     if (e.keyCode === 8 && !multiEmailValue) {
-      setMultiEmailList(multiEmailList.filter((email, index) => index + 1 !== multiEmailList.length));
+      setMultiEmailList(
+        multiEmailList.filter((email, index) => index + 1 !== multiEmailList.length),
+      );
     }
 
     if (e.type === 'blur' || e.keyCode === 32 || e.keyCode === 13) {
@@ -39,13 +41,13 @@ const useMultiEmailField = (value = '', emailList = [], error = '') => {
     }
   };
 
-  const handleMultiEmailChange = (e) => {
+  const handleMultiEmailChange = e => {
     setMultiEmailValue(e.target.value);
     setMultiEmailError('');
   };
 
-  const handleMultiEmailRemove = (target) => {
-    const nextEmailList = multiEmailList.filter((item) => !_.isEqual(target, item));
+  const handleMultiEmailRemove = target => {
+    const nextEmailList = multiEmailList.filter(item => !_.isEqual(target, item));
 
     setMultiEmailList(nextEmailList);
   };
@@ -59,7 +61,7 @@ const useMultiEmailField = (value = '', emailList = [], error = '') => {
     setMultiEmailList,
     handleMultiEmailChange,
     handleMultiEmailKeyDownAndBlur,
-    handleMultiEmailRemove
+    handleMultiEmailRemove,
   };
 };
 
