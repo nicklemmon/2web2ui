@@ -9,19 +9,21 @@ describe('The verify tracking domain page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-      cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-domains-v2.json',
-        requestAlias: 'accountDomainsReq',
+    describe('Verify Tracking Domain Page', () => {
+      beforeEach(() => {
+        cy.stubRequest({
+          url: '/api/v1/account',
+          fixture: 'account/200.get.has-domains-v2.json',
+          requestAlias: 'accountDomainsReq',
+        });
       });
+      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@accountDomainsReq');
 
-      cy.visit(PAGE_URL);
-
-      cy.wait('@accountDomainsReq');
-
-      cy.title().should('include', 'Verify Tracking Domain');
-      cy.findByRole('heading', { name: 'Verify Tracking Domain' }).should('be.visible');
+        cy.title().should('include', 'Verify Tracking Domain');
+        cy.findByRole('heading', { name: 'Verify Tracking Domain' }).should('be.visible');
+      });
     });
   }
 

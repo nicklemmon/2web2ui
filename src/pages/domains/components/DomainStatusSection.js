@@ -31,7 +31,7 @@ export default function DomainStatusSection({
     updateTrackingDomain,
     listTrackingDomains,
   } = useDomains();
-  const trackingDomain = _.find(trackingDomains, ['domainName', id]);
+  const trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
 
   const toggleDefaultBounce = () => {
     return updateSendingDomain({

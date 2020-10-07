@@ -41,11 +41,11 @@ export default function VerifyEmailSection({ hasAnyoneAtEnabled, domain, isSecti
       <Layout.Section>
         <Panel>
           <Panel.Section>
-            If you don't have access to update your DNS records or this domain, you can click
-            "verify sender" to ask SparkPost to send an email to any mailbox on this domain. Once
-            you click verify on the recieved you can send email from this domain, but SparkPost will
-            not be DKIM-sign the mail it sends on your behalf, which could cause delivebility
-            issues.
+            If you don't have access to update your DNS records for this domain, you can click
+            "verify sender" to ask SparkPost to send an email to any address on this domain. Once
+            you click verify on the email recieved you can send email from this domain, but
+            SparkPost will not be able to DKIM-sign the mail it sends on your behalf, which could
+            cause delivebility issues.
           </Panel.Section>
 
           <Panel.Section>

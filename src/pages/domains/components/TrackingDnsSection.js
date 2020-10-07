@@ -1,8 +1,11 @@
 import React from 'react';
 import { Button, Layout, Stack, TextField, Text } from 'src/components/matchbox';
 import { Panel } from 'src/components/matchbox';
+import { SubduedText } from 'src/components/text';
+import { ExternalLink, SubduedLink } from 'src/components/links';
 import useDomains from '../hooks/useDomains';
 import { CopyField } from 'src/components';
+import { EXTERNAL_LINKS } from '../constants';
 
 import _ from 'lodash';
 
@@ -11,9 +14,9 @@ const Field = ({ verified, label, value }) => {
   return <TextField label={label} value={value} readOnly />;
 };
 
-export default function TrackingDnsSection({ id, isSectionVisible }) {
+export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   const { trackingDomains, verifyTrackingDomain } = useDomains();
-  let trackingDomain = _.find(trackingDomains, ['domainName', id]) || {};
+  let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
   const { unverified } = trackingDomain;
 
   const handleVerify = () => {
@@ -28,7 +31,20 @@ export default function TrackingDnsSection({ id, isSectionVisible }) {
   return (
     <Layout>
       <Layout.Section annotated>
-        <Layout.SectionTitle as="h2">Tracking</Layout.SectionTitle>
+        <Stack>
+          <Layout.SectionTitle as="h2">{title || 'Tracking'} </Layout.SectionTitle>
+          {unverified && (
+            <SubduedText>
+              Tracking domains are used by mail providers to determine where engagement rate (like
+              opens and clicks) should be sent. This allows you to measure the health of your email
+              campaigns so that your team is able to create content and mailing lists that maximize
+              your potential.
+            </SubduedText>
+          )}
+          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+            Tracking Domain Documentation
+          </SubduedLink>
+        </Stack>
       </Layout.Section>
       <Layout.Section>
         <Panel>
@@ -69,7 +85,6 @@ export default function TrackingDnsSection({ id, isSectionVisible }) {
               <Button variant="primary" onClick={handleVerify}>
                 Verify Domain
               </Button>
-              {/* Functionality not available */}
             </Panel.Section>
           )}
         </Panel>
