@@ -17,6 +17,7 @@ describe('The domains details page', () => {
           requestAlias: 'accountDomainsReq',
         });
       });
+
       it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
         cy.visit(PAGE_URL);
 
@@ -193,6 +194,23 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
       });
 
+      it('delete prompts confirmation modal first', () => {
+        cy.visit(`${BASE_UI_URL}/verified.com`);
+
+        cy.findByRole('button', { name: 'Delete Domain' }).click();
+
+        cy.withinModal(() => {
+          cy.findAllByText('Are you sure you want to delete this domain?').should('be.visible');
+
+          cy.findAllByText(
+            'Any future transmission that uses this domain will be rejected.',
+          ).should('be.visible');
+
+          cy.findByRole('button', { name: 'Delete' }).should('be.visible');
+          cy.findByRole('button', { name: 'Cancel' }).should('be.visible');
+        });
+      });
+
       it('on deleting a domain successfully redirects to list page', () => {
         cy.stubRequest({
           url: '/api/v1/tracking-domains',
@@ -214,10 +232,16 @@ describe('The domains details page', () => {
         cy.wait(['@verifiedDomains', '@trackingDomainsList']);
         cy.wait('@accountDomainsReq');
         cy.findByRole('button', { name: 'Delete Domain' }).click();
-        cy.wait('@deleteDomain');
+
+        cy.withinModal(() => {
+          cy.findByRole('button', { name: 'Delete' }).click();
+          cy.wait('@deleteDomain');
+        });
+
         cy.findAllByText('Domain bounce2.spappteam.com deleted.');
         cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
       });
+
       it('renders correct section for Tracking Domains Details Section', () => {
         cy.stubRequest({
           url: '/api/v1/tracking-domains',
