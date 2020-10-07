@@ -21,6 +21,7 @@ describe('The domains create page', () => {
         .should('be.visible')
         .should('be.checked');
       cy.findByLabelText(/Tracking Domain/g).should('be.visible');
+      cy.findByLabelText(/Bounce Domain/g).should('be.visible');
       cy.verifyLink({ href: LINKS.SENDING_REQS, content: 'Domains Documentation' });
       cy.findByRole('heading', { name: 'Domain and Assignment' }).should('be.visible');
       cy.findByLabelText('Domain').should('be.visible');
@@ -123,6 +124,74 @@ describe('The domains create page', () => {
       cy.findByText('This is an error').should('be.visible');
     });
 
+    it('creates a new bounce domain assigned to all subaccounts', () => {
+      commonBeforeSteps();
+      stubSendingDomainsPostReq();
+
+      cy.findByLabelText(/Bounce Domain/g).check({ force: true });
+      cy.findByLabelText('Domain').type('example.com');
+      cy.findByLabelText('Principal and all Subaccounts').should('be.checked');
+      cy.findByRole('button', { name: 'Save and Continue' }).click();
+
+      cy.wait('@sendingDomainsReq').then(xhr => {
+        const { domain, shared_with_subaccounts } = xhr.request.body;
+
+        cy.wrap(domain).should('be.eq', 'example.com');
+        cy.wrap(shared_with_subaccounts).should('be.eq', true);
+      });
+
+      cy.findByText('Bounce Domain example.com created').should('be.visible');
+      cy.url().should('include', '/domains/details/example.com/verify-bounce');
+      cy.title().should('include', 'Verify Bounce Domain | Domains');
+      cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
+    });
+    it('creates a new bounce domain for the principal account only', () => {
+      commonBeforeSteps();
+      stubSendingDomainsPostReq();
+
+      cy.findByLabelText(/Bounce Domain/g).check({ force: true });
+      cy.findByLabelText('Domain').type('example.com');
+      cy.findByLabelText('Principal Account only').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByRole('button', { name: 'Save and Continue' }).click();
+
+      cy.wait('@sendingDomainsReq').then(xhr => {
+        const { domain, shared_with_subaccounts } = xhr.request.body;
+
+        cy.wrap(domain).should('be.eq', 'example.com');
+        cy.wrap(shared_with_subaccounts).should('be.eq', false);
+      });
+
+      cy.findByText('Bounce Domain example.com created').should('be.visible');
+      cy.url().should('include', '/domains/details/example.com/verify-bounce');
+      cy.title().should('include', 'Verify Bounce Domain | Domains');
+      cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
+    });
+    it('creates a new Bounce domain for the assigned subaccount', () => {
+      commonBeforeSteps();
+      stubSendingDomainsPostReq();
+      stubSubaccountsReq();
+
+      cy.findByLabelText(/Bounce Domain/g).check({ force: true });
+      cy.findByLabelText('Domain').type('example.com');
+      cy.findByLabelText('Single Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.wait('@subaccountsReq');
+      cy.findByLabelText('Subaccount').click();
+      cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
+      cy.findByRole('button', { name: 'Save and Continue' }).click();
+
+      cy.wait('@sendingDomainsReq').then(xhr => {
+        const { domain, shared_with_subaccounts } = xhr.request.body;
+
+        cy.wrap(domain).should('be.eq', 'example.com');
+        cy.wrap(shared_with_subaccounts).should('be.eq', false);
+        cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
+      });
+
+      cy.findByText('Bounce Domain example.com created').should('be.visible');
+      cy.url().should('include', '/domains/details/example.com/verify-bounce');
+      cy.title().should('include', 'Verify Bounce Domain | Domains');
+      cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
+    });
     it('creates a new tracking domain', () => {
       commonBeforeSteps();
       stubTrackingDomainsPostReq();
