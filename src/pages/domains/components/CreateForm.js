@@ -122,10 +122,8 @@ export default function CreateForm() {
                   value="bounce"
                   name="primaryUse"
                 >
-                  <TranslatableText>
-                    Bounce domains are the return path address and are used for report bounces,
-                    emails rejected from the recipient server.
-                  </TranslatableText>
+                  Bounce domains are the return path address and are used for report bounces, emails
+                  rejected from the recipient server.
                 </RadioCard>
 
                 <RadioCard
