@@ -9,10 +9,7 @@ import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportOptions.module.scss';
-import MetricsDrawer from './MetricsDrawer';
-import { Legend } from './index';
-import AddFiltersSection from './AddFiltersSection';
-import FiltersForm from './FiltersForm';
+import { AddFiltersSection, CompareByDrawer, FiltersForm, Legend, MetricsDrawer } from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
@@ -48,7 +45,7 @@ export const ActiveFilters = ({ filters, handleFilterRemove }) => {
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
-  const { reportLoading, isComparatorsEnabled, selectedReport, setReport } = props;
+  const { reportLoading, isComparatorsEnabled, isCompareByEnabled, selectedReport, setReport } = props;
 
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
   const { refreshReportOptions, removeFilter } = actions;
@@ -165,11 +162,22 @@ export function ReportOptions(props) {
           >
             Add Filters
           </Button>
+          {isCompareByEnabled && (
+            <Button
+              {...getActivatorProps()}
+              onClick={() => {
+                handleDrawerOpen(2);
+              }}
+              variant="secondary"
+            >
+              Compare
+            </Button>
+          )}
         </Inline>
         <Drawer {...getDrawerProps()} portalId="drawer-portal">
           <Drawer.Header showCloseButton />
           <Drawer.Content p="0">
-            <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabs}>
+            <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabsFeatureFlag}>
               <Tabs.Item>
                 <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
               </Tabs.Item>
@@ -180,6 +188,11 @@ export function ReportOptions(props) {
                   <AddFiltersSection handleSubmit={handleSubmit} reportOptions={reportOptions} />
                 )}
               </Tabs.Item>
+              {isCompareByEnabled && (
+                <Tabs.Item>
+                  <CompareByDrawer />
+                </Tabs.Item>
+              )}
             </Tabs>
           </Drawer.Content>
         </Drawer>
@@ -212,6 +225,7 @@ const mapStateToProps = state => ({
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
   isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
+  isCompareByEnabled: selectCondition(isUserUiOptionSet('allow_compare_by'))(state), //Comparing different filters
 });
 
 export default connect(mapStateToProps)(ReportOptions);
