@@ -50,7 +50,7 @@ export default function CreateForm() {
   }, [watchedPrimaryUse, setValue]);
 
   const onSubmit = data => {
-    const { domain, primaryUse, subaccount } = data;
+    const { assignTo, domain, primaryUse, subaccount } = data;
 
     if (primaryUse === 'tracking') {
       return createTrackingDomain({
