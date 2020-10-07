@@ -57,8 +57,8 @@ module.exports = (on, config) => {
     '*google-analytics.com',
     '*.storage.googleapis.com',
     '*pendo.io',
-    'api.segment.io',
-    'cdn.segment.com',
+    'api.analytics.sparkpost.com', // Our proxy for Segment API
+    'cdn.analytics.sparkpost.com', // Our proxy for Segment CDN
     '*siftscience.com',
     '*googletagmanager.com',
     '*sentry.io',
