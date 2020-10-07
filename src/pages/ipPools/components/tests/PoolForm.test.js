@@ -155,29 +155,6 @@ describe('PoolForm', () => {
       });
     });
 
-    it('Does not show the "Shared Pool" option in the overflow pool list when none of the available pool IPs have auto warmup enabled', () => {
-      wrapper.setProps({
-        pools: [
-          {
-            name: 'Fake Pool',
-            id: 'fake-pool',
-            ips: [
-              {
-                external_ip: '1.1.1.1',
-              },
-            ],
-          },
-        ],
-      });
-
-      expect(
-        wrapper
-          .find(component)
-          .prop('options')
-          .some(option => option.label === 'Shared Pool' && option.value === 'shared pool'),
-      ).toBe(false);
-    });
-
     it('Does not show the "Shared Pool" option in the overflow pool list when the tenant is not in SparkPost Cloud or SparkPost Cloud EU', () => {
       config.tenantId = 'foo';
       wrapper.setProps(poolsWithAutoWarmupEnabled);

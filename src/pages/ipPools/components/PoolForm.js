@@ -32,12 +32,7 @@ export class PoolForm extends Component {
       })
       .filter(Boolean); // See: https://stackoverflow.com/a/32906951
 
-    // If the pool has available IPs with auto warmup enabled,
-    // *and* the user is in SPC or SPCEU,
-    // render the 'Shared Pool' option in the `<select/>`
-    const hasPoolsWithAutoWarmup = pools.some(({ ips }) => ips.some(ip => ip.auto_warmup_enabled));
-
-    if (hasPoolsWithAutoWarmup && (inSPC() || inSPCEU())) {
+    if (inSPC() || inSPCEU()) {
       overflowPools.unshift({
         label: 'Shared Pool',
         value: 'shared pool',
