@@ -177,9 +177,33 @@ export default function CreateForm() {
           <Layout.Section>
             <Panel>
               <Panel.Section>
-                <Stack space="300">
-                  <Radio.Group label="Subaccount Assignment">
-                    {(watchedPrimaryUse === 'sending' || watchedPrimaryUse === 'bounce') && (
+                <TextField
+                  ref={register({ required: 'A valid domain is required.' })}
+                  disabled={createPending}
+                  label="Domain"
+                  control={control}
+                  name="domain"
+                  id="textfield-domain"
+                  placeholder="e.g. sub.domain.com"
+                  error={errors.domain?.message}
+                />
+              </Panel.Section>
+
+              {hasSubaccounts && (
+                <Panel.Section>
+                  <Stack space="300">
+                    <Radio.Group label="Subaccount Assignment">
+                      {(watchedPrimaryUse === 'sending' || watchedPrimaryUse === 'bounce') && (
+                        <Radio
+                          ref={register}
+                          disabled={createPending}
+                          label="Principal and all Subaccounts"
+                          id="assign-to-shared"
+                          value="shared"
+                          name="assignTo"
+                        />
+                      )}
+
                       <Radio
                         ref={register}
                         disabled={createPending}
@@ -188,26 +212,25 @@ export default function CreateForm() {
                         value="principalOnly"
                         name="assignTo"
                       />
-                    )}
 
-                    <Radio
-                      ref={register}
-                      disabled={createPending}
-                      label="Single Subaccount"
-                      id="assign-to-subaccount"
-                      value="singleSubaccount"
-                      name="assignTo"
+                      <Radio
+                        ref={register}
+                        disabled={createPending}
+                        label="Single Subaccount"
+                        id="assign-to-subaccount"
+                        value="singleSubaccount"
+                        name="assignTo"
+                      />
+                    </Radio.Group>
+
+                    {/* See https://react-hook-form.com/api#useWatch */}
+                    <IsolatedSubaccountsField
+                      control={control}
+                      errors={errors}
+                      createPending={createPending}
                     />
-                  </Radio.Group>
-
-                  {/* See https://react-hook-form.com/api#useWatch */}
-                  <IsolatedSubaccountsField
-                    control={control}
-                    errors={errors}
-                    createPending={createPending}
-                  />
-                </Stack>
-              </Panel.Section>
+                  </Stack>
+                </Panel.Section>
               )}
             </Panel>
           </Layout.Section>
