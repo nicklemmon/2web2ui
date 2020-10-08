@@ -33,6 +33,7 @@ export default function DomainStatusSection({
     trackingDomains,
     updateTrackingDomain,
     listTrackingDomains,
+    deletePending,
   } = useDomains();
   const trackingDomain = _.find(trackingDomains, ['domainName', id]);
 
@@ -133,7 +134,7 @@ export default function DomainStatusSection({
                         : `Transmissions and templates that don't specify a tracking domain will now use ${domainName}.`}
                     </p>
                   }
-                  isPending={false}
+                  isPending={deletePending}
                   onCancel={() => closeModal()}
                   onConfirm={() => toggleDefaultTracking()}
                   confirmVerb={isDefault ? 'Remove Default' : 'Set as Default'}
