@@ -11,8 +11,8 @@ export function DomainAlignmentModal(props) {
   });
   return (
     <form onSubmit={handleSubmit(onSubmit)} id="domainAlignmentForm">
-      <Modal open={isOpen}>
-        <Modal.Header showCLoseButton>Domain Alignment</Modal.Header>
+      <Modal open={isOpen} onClose={onClose}>
+        <Modal.Header showCloseButton>Domain Alignment</Modal.Header>
         <Modal.Content>
           <Stack>
             <Text as="p">
