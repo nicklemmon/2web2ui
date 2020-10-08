@@ -94,7 +94,7 @@ describe('The domains list page', () => {
           rowIndex: 0,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
         verifyTableRow({
@@ -276,7 +276,7 @@ describe('The domains list page', () => {
           rowIndex: 6,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
 
@@ -286,7 +286,7 @@ describe('The domains list page', () => {
           rowIndex: 0,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
         verifyTableRow({
@@ -339,7 +339,7 @@ describe('The domains list page', () => {
           rowIndex: 0,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
         verifyTableRow({
@@ -421,7 +421,7 @@ describe('The domains list page', () => {
           rowIndex: 6,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
       });
