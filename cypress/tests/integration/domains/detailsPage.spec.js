@@ -205,8 +205,7 @@ describe('The domains details page', () => {
         });
 
         cy.visit(`${BASE_UI_URL}/verified-and-default.com`);
-        cy.wait(['@trackingDomainsList']);
-        cy.wait('@accountDomainsReq');
+        cy.wait(['@trackingDomainsList', '@accountDomainsReq']);
 
         cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
 
@@ -217,14 +216,13 @@ describe('The domains details page', () => {
         cy.findAllByLabelText('Set as Default Tracking Domain').click({ force: true });
 
         cy.withinModal(() => {
-          cy.server();
-
-          cy.route({
+          cy.stubRequest({
             method: 'PUT',
             url: '/api/v1/tracking-domains/verified-and-default.com',
             response: 'tracking-domains/200.put.json',
           }).as('trackingDomainUpdate');
 
+          cy.server();
           cy.route({
             method: 'GET',
             url: '/api/v1/tracking-domains',
@@ -266,8 +264,7 @@ describe('The domains details page', () => {
         });
 
         cy.visit(`${BASE_UI_URL}/verified.com`);
-        cy.wait(['@trackingDomainsList']);
-        cy.wait('@accountDomainsReq');
+        cy.wait(['@trackingDomainsList', '@accountDomainsReq']);
 
         cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
 
@@ -277,14 +274,13 @@ describe('The domains details page', () => {
         cy.findAllByLabelText('Set as Default Tracking Domain').click({ force: true });
 
         cy.withinModal(() => {
-          cy.server();
-
-          cy.route({
+          cy.stubRequest({
             method: 'PUT',
             url: '/api/v1/tracking-domains/verified.com',
             response: 'tracking-domains/200.put.json',
           }).as('trackingDomainUpdate');
 
+          cy.server();
           cy.route({
             method: 'GET',
             url: '/api/v1/tracking-domains',
@@ -333,8 +329,7 @@ describe('The domains details page', () => {
           requestAlias: 'deleteDomain',
         });
         cy.visit(`${BASE_UI_URL}/bounce2.spappteam.com`);
-        cy.wait(['@verifiedDomains', '@trackingDomainsList']);
-        cy.wait('@accountDomainsReq');
+        cy.wait(['@verifiedDomains', '@trackingDomainsList', '@accountDomainsReq']);
         cy.findByRole('button', { name: 'Delete Domain' }).click();
         cy.wait('@deleteDomain');
         cy.findAllByText('Domain bounce2.spappteam.com deleted.');
@@ -348,8 +343,7 @@ describe('The domains details page', () => {
           requestAlias: 'trackingDomainsList',
         });
         cy.visit(`${BASE_UI_URL}/click3.spappteam.com`);
-        cy.wait(['@trackingDomainsList']);
-        cy.wait('@accountDomainsReq');
+        cy.wait(['@trackingDomainsList', '@accountDomainsReq']);
         cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
         cy.findByRole('heading', { name: 'Tracking' }).should('be.visible');
         cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');

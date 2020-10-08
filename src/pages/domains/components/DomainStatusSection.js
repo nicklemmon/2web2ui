@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Layout, Stack, Text } from 'src/components/matchbox';
 import { Checkbox, Columns, Column, Panel } from 'src/components/matchbox';
 import { Heading, SubduedText } from 'src/components/text';
@@ -7,6 +7,7 @@ import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 import { Bookmark } from '@sparkpost/matchbox-icons';
 import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
+import useModal from 'src/hooks/useModal';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { ToggleBlock } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
@@ -20,7 +21,7 @@ export default function DomainStatusSection({
   id,
   isTracking,
 }) {
-  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const { closeModal, isModalOpen, openModal } = useModal();
   const readyFor = resolveReadyFor(domain.status);
   const resolvedStatus = resolveStatus(domain.status);
   const showDefaultBounceSubaccount =
@@ -45,10 +46,10 @@ export default function DomainStatusSection({
     });
   };
 
-  const toggleDefaultTracking = ({ domain, subaccount }) => {
+  const toggleDefaultTracking = () => {
     return updateTrackingDomain({
-      domain,
-      subaccount,
+      domain: trackingDomain?.domainName,
+      subaccount: trackingDomain.subaccountId,
       default: !trackingDomain.defaultTrackingDomain,
     })
       .catch(_.noop) // ignore errors
@@ -119,11 +120,11 @@ export default function DomainStatusSection({
                     </>
                   }
                   checked={trackingDomain.defaultTrackingDomain}
-                  onClick={() => setConfirmationModalOpen(true)}
+                  onClick={() => openModal()}
                 />
 
                 <ConfirmationModal
-                  open={isConfirmationModalOpen}
+                  open={isModalOpen}
                   title={`${isDefault ? 'Remove' : 'Set'} default tracking domain (${domainName})`}
                   content={
                     <p>
@@ -133,13 +134,8 @@ export default function DomainStatusSection({
                     </p>
                   }
                   isPending={false}
-                  onCancel={() => setConfirmationModalOpen(false)}
-                  onConfirm={() =>
-                    toggleDefaultTracking({
-                      domain: domainName,
-                      subaccount: trackingDomain.subaccountId,
-                    })
-                  }
+                  onCancel={() => closeModal()}
+                  onConfirm={() => toggleDefaultTracking()}
                   confirmVerb={isDefault ? 'Remove Default' : 'Set as Default'}
                 />
               </Panel.Section>
