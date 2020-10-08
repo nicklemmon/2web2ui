@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import useDomains from '../../hooks/useDomains';
-import { Button } from 'src/components/matchbox';
 import DeleteDomainSection from '../DeleteDomainSection';
 jest.mock('../../hooks/useDomains');
 const mockfunc = jest.fn(() => {
   return Promise.resolve();
 });
+
 useDomains.mockImplementation(() => {
   return { deleteDomain: mockfunc, showAlert: jest.fn() };
 });
@@ -55,10 +55,5 @@ describe('DeleteDomainSection', () => {
 
   it('renders a Delete Domain Button', () => {
     expect(wrapper.find('Button')).toHaveTextContent('Delete Domain');
-  });
-
-  it('call deleteDomain when the DeleteDomain button is clicked', () => {
-    wrapper.find(Button).simulate('click');
-    expect(mockfunc).toHaveBeenCalled();
   });
 });
