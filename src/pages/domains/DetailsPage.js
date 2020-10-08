@@ -120,7 +120,7 @@ function DetailsPage(props) {
           isSectionVisible={
             resolvedStatus !== 'blocked' &&
             !isTracking &&
-            resolvedStatus === 'unverified' &&
+            (!readyFor.bounce || !(domain.status.spf_status === 'valid')) &&
             !displaySendingAndBounceSection
           }
         />
