@@ -17,6 +17,8 @@ import { SubduedText, TranslatableText } from 'src/components/text';
 import useRouter from 'src/hooks/useRouter';
 import SubaccountTypeahead from 'src/components/typeahead/SubaccountTypeahead';
 import useDomains from '../hooks/useDomains';
+import { DomainAlignmentModal } from './DomainAlignmentModal';
+import useModal from 'src/hooks/useModal';
 
 export default function CreateForm() {
   const { history } = useRouter();
@@ -33,6 +35,12 @@ export default function CreateForm() {
       assignTo: 'shared',
     },
   });
+  const {
+    closeModal,
+    isModalOpen,
+    openModal,
+    meta: { assignTo, domain, subaccount } = {},
+  } = useModal();
   const watchedPrimaryUse = watch('primaryUse');
 
   useEffect(() => {
@@ -64,166 +72,181 @@ export default function CreateForm() {
       });
     }
 
+    if (primaryUse === 'sending') {
+      openModal({ name: 'Domain Alignment', ...data });
+    }
+  };
+
+  const onSubmitDomainAlignmentModal = data => {
+    const { strictalignment } = data;
     return createSendingDomain({
       assignTo,
       domain,
       subaccount,
     }).then(() => {
       showAlert({ type: 'success', message: `Sending Domain ${domain} created` });
-      history.push(`/domains/details/${domain}/verify-sending`);
+      if (strictalignment === 'yes') {
+        history.push(`/domains/details/${domain}/verify-sending-bounce`);
+      } else history.push(`/domains/details/${domain}/verify-sending`);
     });
   };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Layout>
-        <Layout.Section annotated>
-          <Layout.SectionTitle>Domain Type</Layout.SectionTitle>
+    <>
+      <DomainAlignmentModal
+        isOpen={isModalOpen}
+        onSubmit={onSubmitDomainAlignmentModal}
+        onClose={closeModal}
+      />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Domain Type</Layout.SectionTitle>
 
-          <Stack>
-            <SubduedText>
-              Adding a domain is very easy. You&rsquo;ll want to configure at least one domain for
-              each domain type in order to get the most out of our sending and analytics.
-            </SubduedText>
+            <Stack>
+              <SubduedText>
+                Adding a domain is very easy. You&rsquo;ll want to configure at least one domain for
+                each domain type in order to get the most out of our sending and analytics.
+              </SubduedText>
 
-            <SubduedLink as={ExternalLink} to={LINKS.SENDING_REQS}>
-              Domains Documentation
-            </SubduedLink>
-          </Stack>
-        </Layout.Section>
+              <SubduedLink as={ExternalLink} to={LINKS.SENDING_REQS}>
+                Domains Documentation
+              </SubduedLink>
+            </Stack>
+          </Layout.Section>
 
-        <Layout.Section>
-          <Panel>
-            <Panel.Section>
-              <RadioCard.Group label="Primary Use for Domain">
-                <RadioCard
-                  ref={register}
-                  disabled={createPending}
-                  label="Sending Domain"
-                  id="primary-use-sending-domain"
-                  value="sending"
-                  name="primaryUse"
-                >
-                  <TranslatableText>
-                    A Sending Domain lets customers know where their mail is
-                    &ldquo;From&rdquo;.&nbsp;
-                  </TranslatableText>
-                  <Abbreviation title="Domain Name System">DNS</Abbreviation>
-                  <TranslatableText>
-                    &nbsp;records should be configured based on this domain.
-                  </TranslatableText>
-                </RadioCard>
-
-                <RadioCard
-                  ref={register}
-                  disabled={createPending}
-                  label="Bounce Domain"
-                  id="primary-use-bounce-domain"
-                  value="bounce"
-                  name="primaryUse"
-                >
-                  Bounce domains are the return path address and are used for report bounces, emails
-                  rejected from the recipient server.
-                </RadioCard>
-
-                <RadioCard
-                  ref={register}
-                  disabled={createPending}
-                  label="Tracking Domain"
-                  id="primary-use-tracking-domain"
-                  value="tracking"
-                  name="primaryUse"
-                >
-                  Tracking domains are used to report engagement for your mail streams.
-                </RadioCard>
-              </RadioCard.Group>
-            </Panel.Section>
-          </Panel>
-        </Layout.Section>
-      </Layout>
-      <Layout>
-        <Layout.Section annotated>
-          <Layout.SectionTitle>Domain and Assignment</Layout.SectionTitle>
-
-          <SubduedText>
-            We recommend using a subdomain e.g. mail.mydomain.com. Depending on how you want to use
-            your domain, you may not be able to completely configure your DNS records if you use
-            your organizational domain.
-          </SubduedText>
-        </Layout.Section>
-
-        <Layout.Section>
-          <Panel>
-            <Panel.Section>
-              <TextField
-                ref={register({ required: 'A valid domain is required.' })}
-                disabled={createPending}
-                label="Domain"
-                control={control}
-                name="domain"
-                id="textfield-domain"
-                placeholder="e.g. sub.domain.com"
-                error={errors.domain?.message}
-              />
-            </Panel.Section>
-
-            {hasSubaccounts && (
+          <Layout.Section>
+            <Panel>
               <Panel.Section>
-                <Stack space="300">
-                  <Radio.Group label="Subaccount Assignment">
-                    {(watchedPrimaryUse === 'sending' || watchedPrimaryUse === 'bounce') && (
+                <RadioCard.Group label="Primary Use for Domain">
+                  <RadioCard
+                    ref={register}
+                    disabled={createPending}
+                    label="Sending Domain"
+                    id="primary-use-sending-domain"
+                    value="sending"
+                    name="primaryUse"
+                  >
+                    <TranslatableText>
+                      A Sending Domain lets customers know where their mail is
+                      &ldquo;From&rdquo;.&nbsp;
+                    </TranslatableText>
+                    <Abbreviation title="Domain Name System">DNS</Abbreviation>
+                    <TranslatableText>
+                      &nbsp;records should be configured based on this domain.
+                    </TranslatableText>
+                  </RadioCard>
+
+                  <RadioCard
+                    ref={register}
+                    disabled={createPending}
+                    label="Bounce Domain"
+                    id="primary-use-bounce-domain"
+                    value="bounce"
+                    name="primaryUse"
+                  >
+                    Bounce domains are the return path address and are used for report bounces,
+                    emails rejected from the recipient server.
+                  </RadioCard>
+
+                  <RadioCard
+                    ref={register}
+                    disabled={createPending}
+                    label="Tracking Domain"
+                    id="primary-use-tracking-domain"
+                    value="tracking"
+                    name="primaryUse"
+                  >
+                    Tracking domains are used to report engagement for your mail streams.
+                  </RadioCard>
+                </RadioCard.Group>
+              </Panel.Section>
+            </Panel>
+          </Layout.Section>
+        </Layout>
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Domain and Assignment</Layout.SectionTitle>
+
+            <SubduedText>
+              We recommend using a subdomain e.g. mail.mydomain.com. Depending on how you want to
+              use your domain, you may not be able to completely configure your DNS records if you
+              use your organizational domain.
+            </SubduedText>
+          </Layout.Section>
+
+          <Layout.Section>
+            <Panel>
+              <Panel.Section>
+                <TextField
+                  ref={register({ required: 'A valid domain is required.' })}
+                  disabled={createPending}
+                  label="Domain"
+                  control={control}
+                  name="domain"
+                  id="textfield-domain"
+                  placeholder="e.g. sub.domain.com"
+                  error={errors.domain?.message}
+                />
+              </Panel.Section>
+
+              {hasSubaccounts && (
+                <Panel.Section>
+                  <Stack space="300">
+                    <Radio.Group label="Subaccount Assignment">
+                      {(watchedPrimaryUse === 'sending' || watchedPrimaryUse === 'bounce') && (
+                        <Radio
+                          ref={register}
+                          disabled={createPending}
+                          label="Principal and all Subaccounts"
+                          id="assign-to-shared"
+                          value="shared"
+                          name="assignTo"
+                        />
+                      )}
+
                       <Radio
                         ref={register}
                         disabled={createPending}
-                        label="Principal and all Subaccounts"
-                        id="assign-to-shared"
-                        value="shared"
+                        label="Principal Account only"
+                        id="assign-to-principal-only"
+                        value="principalOnly"
                         name="assignTo"
                       />
-                    )}
 
-                    <Radio
-                      ref={register}
-                      disabled={createPending}
-                      label="Principal Account only"
-                      id="assign-to-principal-only"
-                      value="principalOnly"
-                      name="assignTo"
+                      <Radio
+                        ref={register}
+                        disabled={createPending}
+                        label="Single Subaccount"
+                        id="assign-to-subaccount"
+                        value="singleSubaccount"
+                        name="assignTo"
+                      />
+                    </Radio.Group>
+
+                    {/* See https://react-hook-form.com/api#useWatch */}
+                    <IsolatedSubaccountsField
+                      control={control}
+                      errors={errors}
+                      createPending={createPending}
                     />
+                  </Stack>
+                </Panel.Section>
+              )}
+            </Panel>
+          </Layout.Section>
+        </Layout>
 
-                    <Radio
-                      ref={register}
-                      disabled={createPending}
-                      label="Single Subaccount"
-                      id="assign-to-subaccount"
-                      value="singleSubaccount"
-                      name="assignTo"
-                    />
-                  </Radio.Group>
+        <Layout>
+          <Layout.Section annotated />
 
-                  {/* See https://react-hook-form.com/api#useWatch */}
-                  <IsolatedSubaccountsField
-                    control={control}
-                    errors={errors}
-                    createPending={createPending}
-                  />
-                </Stack>
-              </Panel.Section>
-            )}
-          </Panel>
-        </Layout.Section>
-      </Layout>
-
-      <Layout>
-        <Layout.Section annotated />
-
-        <Layout.Section>
-          <Button loading={createPending} variant="primary" type="submit">
-            Save and Continue
-          </Button>
-        </Layout.Section>
-      </Layout>
-    </form>
+          <Layout.Section>
+            <Button loading={createPending} variant="primary" type="submit">
+              Save and Continue
+            </Button>
+          </Layout.Section>
+        </Layout>
+      </form>
+    </>
   );
 }
 
