@@ -3,7 +3,7 @@ import { IS_HIBANA_ENABLED } from 'cypress/constants';
 const BASE_UI_URL = '/domains/details';
 const PAGE_URL = `${BASE_UI_URL}/fake-domain.com`;
 
-let trackingDomainsList = require('../../../fixtures/tracking-domains/200.get.json');
+let trackingDomainsList = require('cypress/fixtures/tracking-domains/200.get.json');
 
 describe('The domains details page', () => {
   beforeEach(() => {
