@@ -12,16 +12,12 @@ const path = require('path');
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-
 const WEBPACK_OPTIONS = {
   mode: 'development',
   resolve: {
     alias: {
-      'src/helpers': path.resolve('.', 'src/helpers'),
-      'src/config': path.resolve('.', 'src/config'),
-      'src/constants': path.resolve('.', 'src/constants'),
-      'cypress/helpers': path.resolve('.', 'cypress/helpers'),
-      'cypress/constants': path.resolve('.', 'cypress/constants'),
+      src: path.join(__dirname, '../../src'),
+      cypress: path.join(__dirname, '../../cypress'),
     },
   },
 };
