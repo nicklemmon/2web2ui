@@ -31,15 +31,6 @@ export default (state = initialState, { type, payload, meta }) => {
     case 'LIST_SENDING_DOMAINS_FAIL':
       return { ...state, listError: payload, listLoading: false };
 
-    case 'DELETE_SENDING_DOMAIN_PENDING':
-      return { ...state, deleting: meta.domain, deleteError: null };
-
-    case 'DELETE_SENDING_DOMAIN_FAIL':
-      return { ...state, deleting: false, deleteError: payload };
-
-    case 'DELETE_SENDING_DOMAIN_SUCCESS':
-      return { ...state, deleting: false, list: state.list.filter(d => d.domain !== meta.domain) };
-
     case 'GET_SENDING_DOMAIN_PENDING':
       return { ...state, getLoading: true, getError: null };
 

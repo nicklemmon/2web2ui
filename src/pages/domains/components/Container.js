@@ -36,7 +36,6 @@ function mapStateToProps(state) {
       state.trackingDomains.listLoading ||
       state.subaccounts.listLoading,
     createPending: state.sendingDomains.createLoading || state.trackingDomains.createLoading,
-    deletePending: state.trackingDomains.deleting || state.sendingDomains.deleting,
     hasSubaccounts: hasSubaccounts(state),
     subaccounts: state.subaccounts.list,
     trackingDomains: selectTrackingDomainsRows(state),
