@@ -56,7 +56,13 @@ export default function DeleteDomainSection({ domain, isTracking, id, history })
             <DeleteModal
               title="Are you sure you want to delete this domain?"
               open={isDeleteModalOpen}
-              content={<p>Any future transmission that uses this domain will be rejected.</p>}
+              content={
+                isTracking ? (
+                  <p>Any future transmission that uses this tracking domain will be rejected.</p>
+                ) : (
+                  <p>Any future transmission that uses this domain will be rejected.</p>
+                )
+              }
               onConfirm={handleDeleteDomain}
               onCancel={() => setDeleteModalOpen(false)}
             />
