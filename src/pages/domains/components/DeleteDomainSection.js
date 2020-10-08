@@ -8,7 +8,13 @@ import _ from 'lodash';
 
 export default function DeleteDomainSection({ domain, isTracking, id, history }) {
   const { closeModal, isModalOpen, openModal } = useModal();
-  const { deleteDomain, deleteTrackingDomain, showAlert, trackingDomains } = useDomains();
+  const {
+    deleteDomain,
+    deleteTrackingDomain,
+    showAlert,
+    trackingDomains,
+    deletePending,
+  } = useDomains();
   const handleDeleteDomain = () => {
     if (isTracking) {
       let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
@@ -66,6 +72,7 @@ export default function DeleteDomainSection({ domain, isTracking, id, history })
                   <p>Any future transmission that uses this domain will be rejected.</p>
                 )
               }
+              isPending={deletePending}
               onConfirm={handleDeleteDomain}
               onCancel={() => closeModal()}
             />
