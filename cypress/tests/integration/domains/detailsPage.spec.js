@@ -194,8 +194,31 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
       });
 
-      it('delete prompts confirmation modal first', () => {
-        cy.visit(`${BASE_UI_URL}/verified.com`);
+      it('delete tracking domain prompts confirmation modal first (with different verbiage)', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.domain-details.json',
+          requestAlias: 'trackingDomainsList',
+        });
+
+        cy.visit(`${BASE_UI_URL}/blah231231231.gmail.com`);
+
+        cy.findByRole('button', { name: 'Delete Domain' }).click();
+
+        cy.withinModal(() => {
+          cy.findAllByText('Are you sure you want to delete this domain?').should('be.visible');
+
+          cy.findAllByText(
+            'Any templates or transmissions that use this tracking domain directly will fail.',
+          ).should('be.visible');
+
+          cy.findByRole('button', { name: 'Delete' }).should('be.visible');
+          cy.findByRole('button', { name: 'Cancel' }).should('be.visible');
+        });
+      });
+
+      it('delete domain prompts confirmation modal first', () => {
+        cy.visit(`${BASE_UI_URL}/bounce.uat.sparkspam.com`);
 
         cy.findByRole('button', { name: 'Delete Domain' }).click();
 

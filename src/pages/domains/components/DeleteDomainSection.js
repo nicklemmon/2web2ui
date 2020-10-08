@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Layout, Text } from 'src/components/matchbox';
 import { Panel } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
+import useModal from 'src/hooks/useModal';
 import { DeleteModal } from 'src/components/modals';
 import _ from 'lodash';
 
 export default function DeleteDomainSection({ domain, isTracking, id, history }) {
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const { closeModal, isModalOpen, openModal } = useModal();
   const { deleteDomain, deleteTrackingDomain, showAlert, trackingDomains } = useDomains();
   const handleDeleteDomain = () => {
     if (isTracking) {
@@ -49,22 +50,24 @@ export default function DeleteDomainSection({ domain, isTracking, id, history })
           </Panel.Section>
 
           <Panel.Section>
-            <Button variant="destructive" onClick={() => setDeleteModalOpen(true)}>
+            <Button variant="destructive" onClick={() => openModal()}>
               Delete Domain
             </Button>
 
             <DeleteModal
               title="Are you sure you want to delete this domain?"
-              open={isDeleteModalOpen}
+              open={isModalOpen}
               content={
                 isTracking ? (
-                  <p>Any future transmission that uses this tracking domain will be rejected.</p>
+                  <p>
+                    Any templates or transmissions that use this tracking domain directly will fail.
+                  </p>
                 ) : (
                   <p>Any future transmission that uses this domain will be rejected.</p>
                 )
               }
               onConfirm={handleDeleteDomain}
-              onCancel={() => setDeleteModalOpen(false)}
+              onCancel={() => closeModal()}
             />
           </Panel.Section>
         </Panel>
