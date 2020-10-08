@@ -195,6 +195,40 @@ describe('Change Billing Plan Page', () => {
     });
     cy.findByRole('button', { name: 'Change Plan' }).should('be.disabled');
   });
+
+  it('Upgrades free account to starter 100K, but saved reports is over the new limit', () => {
+    // user is on the test plan
+    cy.stubRequest({
+      url: '/api/v1/account',
+      fixture: 'account/200.get.test-plan.json',
+    });
+    cy.stubRequest({
+      url: '/api/v1/billing',
+      fixture: 'billing/200.get.has-no-credit-card.json',
+      fixtureAlias: 'billingGet',
+    });
+    cy.stubRequest({
+      url: '/api/v1/billing/subscription',
+      fixture: 'billing/subscription/200.get.test-plan-with-reports.json',
+    });
+
+    cy.visit('/account/billing/plan');
+
+    cy.findAllByText('100,000').should('be.visible');
+    cy.findAllByText('emails/month').should('be.visible');
+    cy.findAllByText('$20').should('be.visible');
+
+    cy.get('[data-id=select-plan-100K-starter-0519]').click();
+
+    cy.findByText(/Your new plan only allows for 30 saved reports*./).should('be.visible');
+    cy.findByText('delete 50 saved reports').should('be.visible');
+    cy.verifyLink({
+      content: 'Update Status',
+      href: '/reports/summary',
+    });
+    cy.findByRole('button', { name: 'Change Plan' }).should('be.disabled');
+  });
+
   it('Upgrades free account to starter 50K with query parameter', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
@@ -582,7 +616,7 @@ describe('Change Billing Plan Page', () => {
     cy.url().should('equal', `${Cypress.config().baseUrl}/account/billing`);
   });
 
-  it('downgrades from premier to starter with quantity excedding limit_override', () => {
+  it('downgrades from premier to starter with quantity exceeding limit_override', () => {
     cy.stubRequest({
       url: '/api/v1/account',
       fixture: 'account/200.get.250k-premier-plan.json',

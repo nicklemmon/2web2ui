@@ -10,6 +10,10 @@
           "plan": "subaccounts-unlimited"
         },
         {
+          "product": "reports",
+          "plan": "reports-free"
+        },
+        {
           "product": "sso",
           "plan": "sso"
         },
@@ -37,6 +41,10 @@
           "plan": "online-support"
         },
         {
+          "product": "reports",
+          "plan": "reports-starter"
+        },
+        {
           "product": "subaccounts",
           "plan": "subaccounts-starter"
         },
@@ -62,6 +70,10 @@
         {
           "product": "subaccounts",
           "plan": "subaccounts-starter"
+        },
+        {
+          "product": "reports",
+          "plan": "reports-starter"
         }
       ]
     },
@@ -77,6 +89,10 @@
         {
           "product": "subaccounts",
           "plan": "subaccounts-premier"
+        },
+        {
+          "product": "reports",
+          "plan": "reports-premier"
         },
         {
           "product": "sso",
@@ -114,6 +130,10 @@
           "plan": "subaccounts-premier"
         },
         {
+          "product": "reports",
+          "plan": "reports-premier"
+        },
+        {
           "product": "sso",
           "plan": "sso"
         },
@@ -149,6 +169,10 @@
           "plan": "subaccounts-premier"
         },
         {
+          "product": "reports",
+          "plan": "reports-premier"
+        },
+        {
           "product": "sso",
           "plan": "sso"
         },
@@ -182,6 +206,10 @@
         {
           "product": "subaccounts",
           "plan": "subaccounts-premier"
+        },
+        {
+          "product": "reports",
+          "plan": "reports-premier"
         },
         {
           "product": "sso",

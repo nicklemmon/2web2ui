@@ -10,14 +10,14 @@
       {
         "plan": "subaccounts-free",
         "product": "subaccounts",
-        "quantity": 14,
+        "quantity": 0,
         "limit": 5000
       },
       {
         "plan": "reports-free",
         "product": "reports",
-        "quantity": 0,
-        "limit": 100
+        "quantity": 80,
+        "limit": 5000
       },
       {
         "plan": "sso",
