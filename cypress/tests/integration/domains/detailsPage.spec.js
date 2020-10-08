@@ -210,19 +210,21 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
 
         cy.findAllByLabelText('Set as Default Tracking Domain').should('be.visible');
+
         cy.findAllByLabelText('Set as Default Tracking Domain').should('be.checked');
 
-        // todo: why am I having to force click?
         cy.findAllByLabelText('Set as Default Tracking Domain').click({ force: true });
 
         cy.withinModal(() => {
+          cy.server();
+
           cy.stubRequest({
             method: 'PUT',
             url: '/api/v1/tracking-domains/verified-and-default.com',
-            response: 'tracking-domains/200.put.json',
-          }).as('trackingDomainUpdate');
+            fixture: 'tracking-domains/200.put.json',
+            requestAlias: 'trackingDomainUpdate',
+          });
 
-          cy.server();
           cy.route({
             method: 'GET',
             url: '/api/v1/tracking-domains',
@@ -274,13 +276,15 @@ describe('The domains details page', () => {
         cy.findAllByLabelText('Set as Default Tracking Domain').click({ force: true });
 
         cy.withinModal(() => {
+          cy.server();
+
           cy.stubRequest({
             method: 'PUT',
             url: '/api/v1/tracking-domains/verified.com',
-            response: 'tracking-domains/200.put.json',
-          }).as('trackingDomainUpdate');
+            fixture: 'tracking-domains/200.put.json',
+            requestAlias: 'trackingDomainUpdate',
+          });
 
-          cy.server();
           cy.route({
             method: 'GET',
             url: '/api/v1/tracking-domains',
