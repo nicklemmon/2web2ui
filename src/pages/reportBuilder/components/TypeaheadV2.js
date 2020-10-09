@@ -17,7 +17,6 @@ function Typeahead(props) {
     setFilterValues,
     index,
     lookaheadRequest,
-    reportOptions,
     value,
     results = [],
     itemToString,
@@ -51,7 +50,6 @@ function Typeahead(props) {
       setOmitResults(false);
       setLoading(true);
       const options = {
-        ...reportOptions,
         match: pattern,
         limit: METRICS_API_LIMIT,
       };
@@ -59,7 +57,7 @@ function Typeahead(props) {
         setLoading(false);
       });
     },
-    [setLoading, setOmitResults, lookaheadRequest, reportOptions, setInputValue],
+    [setLoading, setOmitResults, lookaheadRequest, setInputValue],
   );
 
   const filteredResults = useMemo(() => {

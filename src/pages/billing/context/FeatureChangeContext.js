@@ -63,8 +63,8 @@ export const FeatureChangeProvider = ({
                 description: (
                   <div>
                     <span>
-                      {`Your new plan doesn't include dedicated IPs. 
-                    Your current IP(s) will be removed at the end of your current billing cycle.`}
+                      Your new plan doesn't include dedicated IPs. Your current IP(s) will be
+                      removed at the end of your current billing cycle.
                     </span>
                   </div>
                 ),
@@ -72,7 +72,7 @@ export const FeatureChangeProvider = ({
               };
             }
             return resObject;
-          case 'subaccounts':
+          case 'subaccounts': {
             //there will always be a limit present for each plan,
             //but till the api is released we need to default the higher limit to keep the current flow working
             const limitOfNewPlan = _.get(comparedPlan, 'limit', 5000);
@@ -129,6 +129,50 @@ export const FeatureChangeProvider = ({
               };
             }
             return resObject;
+          }
+          case 'reports': {
+            const { limit: limitOfNewPlan } = comparedPlan;
+            const qtyExceedsLimit = quantity > limitOfNewPlan;
+            if (qtyExceedsLimit) {
+              const noOfReportsToDelete = quantity - limitOfNewPlan;
+              const description = (
+                <div>
+                  <>
+                    {limitOfNewPlan === 0
+                      ? "Your new plan doesn't include saved reports."
+                      : `Your new plan only allows for ${pluralString(
+                          limitOfNewPlan,
+                          'saved reports',
+                          'saved reports',
+                        )}.`}
+                  </>
+                  {qtyExceedsLimit && (
+                    <>
+                      <span> Please </span>
+                      <strong>
+                        delete {pluralString(noOfReportsToDelete, 'saved report', 'saved reports')}
+                      </strong>
+                      <span> to continue.</span>
+                    </>
+                  )}
+                </div>
+              );
+
+              resObject.reports = {
+                label: 'Saved Reports',
+                description,
+                condition: !qtyExceedsLimit,
+                action: qtyExceedsLimit ? (
+                  <Button variant="destructive" external to="/reports/summary">
+                    Update Status
+                  </Button>
+                ) : (
+                  undefined
+                ),
+              };
+            }
+            return resObject;
+          }
           case 'sso':
           case 'tfa_required':
             if (actions.auth || !comparedPlan) {

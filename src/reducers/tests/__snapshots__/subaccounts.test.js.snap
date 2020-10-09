@@ -7,6 +7,7 @@ Object {
   "list": Array [],
   "listError": null,
   "listLoading": false,
+  "ready": false,
   "subaccount": Object {},
 }
 `;
@@ -18,6 +19,7 @@ Object {
   "list": Array [],
   "listError": null,
   "listLoading": false,
+  "ready": false,
   "subaccount": Object {},
 }
 `;
@@ -29,6 +31,7 @@ Object {
   "list": Array [],
   "listError": null,
   "listLoading": false,
+  "ready": false,
   "subaccount": Object {},
 }
 `;
@@ -40,6 +43,7 @@ Object {
   "list": Array [],
   "listError": null,
   "listLoading": false,
+  "ready": false,
   "subaccount": Object {
     "id": "test-subaccount",
     "name": "Test Subaccount",
@@ -54,6 +58,8 @@ Object {
   "list": Array [],
   "listError": [Error: Oh no!],
   "listLoading": false,
+  "ready": true,
+  "status": "error",
   "subaccount": Object {},
 }
 `;
@@ -65,6 +71,8 @@ Object {
   "list": Array [],
   "listError": null,
   "listLoading": true,
+  "ready": false,
+  "status": "pending",
   "subaccount": Object {},
 }
 `;
@@ -81,6 +89,8 @@ Object {
   ],
   "listError": null,
   "listLoading": false,
+  "ready": true,
+  "status": "success",
   "subaccount": Object {},
 }
 `;

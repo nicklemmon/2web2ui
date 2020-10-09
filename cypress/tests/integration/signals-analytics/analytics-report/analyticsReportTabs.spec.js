@@ -7,6 +7,11 @@ if (IS_HIBANA_ENABLED) {
     beforeEach(() => {
       cy.stubAuth();
       cy.login({ isStubbed: true });
+      cy.stubRequest({
+        url: '/api/v1/subaccounts',
+        fixture: '/subaccounts/200.get.json',
+        requestAlias: 'getSubaccounts',
+      });
       stubDeliverability();
       stubTimeSeries();
       cy.visit(PAGE_URL);

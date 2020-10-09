@@ -28,8 +28,26 @@
     {
       "plan": "subaccounts-starter",
       "product": "subaccounts",
-      "price": 0, 
+      "price": 0,
       "limit": 0
+    },
+    {
+      "plan": "reports-free",
+      "product": "reports",
+      "price": 0,
+      "limit": 100
+    },
+    {
+      "plan": "reports-premier",
+      "product": "reports",
+      "price": 0,
+      "limit": 200
+    },
+    {
+      "plan": "reports-starter",
+      "product": "reports",
+      "price": 0,
+      "limit": 30
     },
     {
       "plan": "sso",

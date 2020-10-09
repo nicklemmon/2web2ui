@@ -35,6 +35,12 @@ export const FEATURE_COMPARISON = {
       'Starter Plans': true,
       'Premier Plans': true,
     },
+    'Saved Reports': {
+      conditionFlag: 'allow_saved_reports',
+      'Test Account': true,
+      'Starter Plans': 30,
+      'Premier Plans': 100,
+    },
   },
   'Advanced Settings': {
     'Scheduled Sending': {

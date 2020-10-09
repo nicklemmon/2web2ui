@@ -7,9 +7,11 @@ import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 import { Bookmark } from '@sparkpost/matchbox-icons';
 import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
+import useModal from 'src/hooks/useModal';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { ToggleBlock } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
+import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
 
 export default function DomainStatusSection({
@@ -19,6 +21,7 @@ export default function DomainStatusSection({
   id,
   isTracking,
 }) {
+  const { closeModal, isModalOpen, openModal } = useModal();
   const readyFor = resolveReadyFor(domain.status);
   const resolvedStatus = resolveStatus(domain.status);
   const showDefaultBounceSubaccount =
@@ -30,6 +33,7 @@ export default function DomainStatusSection({
     trackingDomains,
     updateTrackingDomain,
     listTrackingDomains,
+    updateTrackingPending,
   } = useDomains();
   const trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
 
@@ -43,10 +47,10 @@ export default function DomainStatusSection({
     });
   };
 
-  const toggleDefaultTracking = ({ domain, subaccount }) => {
+  const toggleDefaultTracking = () => {
     return updateTrackingDomain({
-      domain,
-      subaccount,
+      domain: trackingDomain?.domainName,
+      subaccount: trackingDomain.subaccountId,
       default: !trackingDomain.defaultTrackingDomain,
     })
       .catch(_.noop) // ignore errors
@@ -64,6 +68,9 @@ export default function DomainStatusSection({
   };
 
   if (isTracking && trackingDomain) {
+    const isDefault = trackingDomain.defaultTrackingDomain;
+    const domainName = trackingDomain?.domainName;
+
     return (
       <Layout>
         <Layout.Section annotated>
@@ -84,7 +91,7 @@ export default function DomainStatusSection({
                   <Heading as="h3" looksLike="h5">
                     Domain
                   </Heading>
-                  <Text as="p">{trackingDomain?.domainName}</Text>
+                  <Text as="p">{domainName}</Text>
                 </Column>
                 <Column>
                   <Heading as="h3" looksLike="h5">
@@ -107,19 +114,30 @@ export default function DomainStatusSection({
             {trackingDomain.verified && (
               <Panel.Section>
                 <Checkbox
-                  id="set-as-default-domain"
+                  id="set-as-default-tracking-domain"
                   label={
                     <>
                       Set as Default Tracking Domain <Bookmark color="green" />
                     </>
                   }
                   checked={trackingDomain.defaultTrackingDomain}
-                  onClick={() =>
-                    toggleDefaultTracking({
-                      domain: trackingDomain?.domainName,
-                      subaccount: trackingDomain.subaccountId,
-                    })
+                  onClick={() => openModal()}
+                />
+
+                <ConfirmationModal
+                  open={isModalOpen}
+                  title={`${isDefault ? 'Remove' : 'Set'} default tracking domain (${domainName})`}
+                  content={
+                    <p>
+                      {isDefault
+                        ? `Transmissions and templates that don't specify a tracking domain will no longer use ${domainName}. Instead, they will use the system default until another default is selected.`
+                        : `Transmissions and templates that don't specify a tracking domain will now use ${domainName}.`}
+                    </p>
                   }
+                  isPending={updateTrackingPending}
+                  onCancel={() => closeModal()}
+                  onConfirm={() => toggleDefaultTracking()}
+                  confirmVerb={isDefault ? 'Remove Default' : 'Set as Default'}
                 />
               </Panel.Section>
             )}
@@ -217,7 +235,7 @@ export default function DomainStatusSection({
                 <>
                   <Panel.Section>
                     <Checkbox
-                      id="set-as-default-domain"
+                      id="set-as-default-bounce-domain"
                       label={
                         <>
                           Set as Default Bounce Domain <Bookmark color="green" />

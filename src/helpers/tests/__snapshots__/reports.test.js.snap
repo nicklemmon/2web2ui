@@ -20,6 +20,31 @@ Array [
 ]
 `;
 
+exports[`report helpers mapFiltersToComparators returns the new structure for filters 1`] = `
+Array [
+  Object {
+    "AND": Object {
+      "domains": Object {
+        "eq": Array [
+          "some random value",
+        ],
+      },
+      "subaccounts": Object {
+        "eq": Array [
+          698,
+          656,
+        ],
+      },
+      "templates": Object {
+        "eq": Array [
+          "oiwjefoijwef",
+        ],
+      },
+    },
+  },
+]
+`;
+
 exports[`report helpers parseSearch should parse search with missing range 1`] = `
 Object {
   "filters": Array [

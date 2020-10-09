@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ComparisonModal, {
+import {
+  ComparisonModal,
   RenderCell,
   HeaderRow,
   GroupHeading,
@@ -23,6 +24,7 @@ jest.mock('src/pages/billing/constants', () => ({
     },
     featureGroup2: {
       featureA: {
+        conditionFlag: 'is_visible',
         PLANA: true,
         PLANB: '15 days',
         PLANC: 'test /n string',
@@ -37,10 +39,17 @@ describe('FeatureComparisonModal: ', () => {
     const props = {
       open: true,
       handleClose: jest.fn(),
+      flags: { is_visible: true },
     };
     it('should render correctly', () => {
       const wrapper = shallow(<ComparisonModal {...props} />);
       expect(wrapper).toMatchSnapshot();
+      expect(wrapper.find(Row)).toHaveLength(2);
+    });
+    it('should not render rows without the flag', () => {
+      const flags = { is_visible: undefined };
+      const wrapper = shallow(<ComparisonModal {...props} flags={flags} />);
+      expect(wrapper.find(Row)).toHaveLength(1);
     });
   });
   describe('Row: ', () => {

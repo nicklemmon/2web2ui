@@ -99,6 +99,15 @@ function reducer(state, action) {
       return { ...state, groupings: updatedGroupings };
     }
 
+    case 'SET_FILTERS': {
+      return {
+        ...state,
+        groupings: action.groupings.length
+          ? remapGroupings(action.groupings)
+          : remapGroupings(initialGroupingsState),
+      };
+    }
+
     case 'CLEAR_FILTERS': {
       return {
         ...state,
@@ -186,6 +195,16 @@ export default function useFiltersSection() {
     [dispatch],
   );
 
+  const setFilters = useCallback(
+    groupings => {
+      return dispatch({
+        type: 'SET_FILTERS',
+        groupings,
+      });
+    },
+    [dispatch],
+  );
+
   const clearFilters = () => dispatch({ type: 'CLEAR_FILTERS' });
 
   return {
@@ -199,6 +218,7 @@ export default function useFiltersSection() {
       addFilter,
       removeFilter,
       clearFilters,
+      setFilters,
     },
   };
 }

@@ -762,6 +762,15 @@ const appRoutes = [
     subcategory: 'Domains',
   },
   {
+    path: '/domains/details/:id/verify-sending-bounce',
+    component: domains.VerifySendingBounceDomainPage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Verify Sending/Bounce Domain | Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
     path: '/domains/details/:id/verify-tracking',
     component: domains.VerifyTrackingDomainPage,
     condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),

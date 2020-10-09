@@ -41,6 +41,12 @@ describe('The domains create page', () => {
       cy.findByLabelText('Principal and all Subaccounts').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
+      cy.withinModal(() => {
+        cy.findByText('Domain Alignment').should('be.visible');
+        cy.findByLabelText('Yes').should('be.checked');
+        cy.findByRole('button', { name: 'Save and Continue' }).click();
+      });
+
       cy.wait('@sendingDomainsReq').then(xhr => {
         const { domain, shared_with_subaccounts } = xhr.request.body;
 
@@ -50,8 +56,8 @@ describe('The domains create page', () => {
 
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
-      cy.title().should('include', 'Verify Sending Domain | Domains');
-      cy.findByRole('heading', { name: 'Verify Sending Domain' }).should('be.visible');
+      cy.title().should('include', 'Verify Sending/Bounce Domain | Domains');
+      cy.findByRole('heading', { name: 'Verify Sending/Bounce Domain' }).should('be.visible');
     });
 
     it('creates a new sending domain for the principal account only', () => {
@@ -62,6 +68,12 @@ describe('The domains create page', () => {
       cy.findByLabelText('Domain').type('example.com');
       cy.findByLabelText('Principal Account only').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.findByRole('button', { name: 'Save and Continue' }).click();
+
+      cy.withinModal(() => {
+        cy.findByText('Domain Alignment').should('be.visible');
+        cy.findByLabelText('No').check({ force: true });
+        cy.findByRole('button', { name: 'Save and Continue' }).click();
+      });
 
       cy.wait('@sendingDomainsReq').then(xhr => {
         const { domain, shared_with_subaccounts } = xhr.request.body;
@@ -89,6 +101,12 @@ describe('The domains create page', () => {
       cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
+      cy.withinModal(() => {
+        cy.findByText('Domain Alignment').should('be.visible');
+        cy.findByLabelText('Yes').should('be.checked');
+        cy.findByRole('button', { name: 'Save and Continue' }).click();
+      });
+
       cy.wait('@sendingDomainsReq').then(xhr => {
         const { domain, shared_with_subaccounts } = xhr.request.body;
 
@@ -99,8 +117,8 @@ describe('The domains create page', () => {
 
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
-      cy.title().should('include', 'Verify Sending Domain | Domains');
-      cy.findByRole('heading', { name: 'Verify Sending Domain' }).should('be.visible');
+      cy.title().should('include', 'Verify Sending/Bounce Domain | Domains');
+      cy.findByRole('heading', { name: 'Verify Sending/Bounce Domain' }).should('be.visible');
     });
 
     it('handles sending domain creation errors', () => {
@@ -116,6 +134,12 @@ describe('The domains create page', () => {
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
+
+      cy.withinModal(() => {
+        cy.findByText('Domain Alignment').should('be.visible');
+        cy.findByLabelText('Yes').should('be.checked');
+        cy.findByRole('button', { name: 'Save and Continue' }).click();
+      });
 
       cy.wait('@sendingDomainsReq');
 

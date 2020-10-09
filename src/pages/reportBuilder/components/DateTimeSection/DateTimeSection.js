@@ -85,6 +85,7 @@ export const DateTimeSection = ({
             to={reportOptions.to}
             selectedPrecision={reportOptions.precision}
             changeTime={refreshReportOptions}
+            ready={reportOptions.isReady}
             disabled={reportLoading || !useMetricsRollup}
           />
         ) : (

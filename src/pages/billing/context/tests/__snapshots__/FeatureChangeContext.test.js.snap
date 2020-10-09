@@ -22,8 +22,7 @@ Object {
       "condition": true,
       "description": <div>
         <span>
-          Your new plan doesn't include dedicated IPs. 
-                    Your current IP(s) will be removed at the end of your current billing cycle.
+          Your new plan doesn't include dedicated IPs. Your current IP(s) will be removed at the end of your current billing cycle.
         </span>
       </div>,
       "key": "dedicated_ip",
@@ -31,6 +30,44 @@ Object {
     },
   ],
   "isReady": true,
+  "loading": false,
+}
+`;
+
+exports[`FeatureChangeContext should render acknowledgement for a change in limit on saved reports 1`] = `
+Object {
+  "features": Array [
+    Object {
+      "action": <Button
+        external={true}
+        to="/reports/summary"
+        variant="destructive"
+      >
+        Update Status
+      </Button>,
+      "condition": false,
+      "description": <div>
+        <React.Fragment>
+          Your new plan only allows for 10 saved reports.
+        </React.Fragment>
+        <React.Fragment>
+          <span>
+             Please 
+          </span>
+          <strong>
+            delete 
+            90 saved reports
+          </strong>
+          <span>
+             to continue.
+          </span>
+        </React.Fragment>
+      </div>,
+      "key": "reports",
+      "label": "Saved Reports",
+    },
+  ],
+  "isReady": false,
   "loading": false,
 }
 `;

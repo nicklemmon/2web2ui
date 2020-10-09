@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dehydrate filters should dehydrate filters properly 1`] = `
+Array [
+  Object {
+    "AND": Object {
+      "subaccounts": Object {
+        "notEq": Array [
+          123,
+        ],
+      },
+      "templates": Object {
+        "eq": Array [
+          "only thing left",
+        ],
+      },
+    },
+  },
+]
+`;
+
+exports[`hydrate filters should hydrate filters properly 1`] = `
+Array [
+  Object {
+    "AND": Object {
+      "templates": Object {
+        "eq": Array [
+          Object {
+            "type": "Template",
+            "value": "thing",
+          },
+        ],
+      },
+    },
+  },
+]
+`;
+
+exports[`hydrate filters should hydrate subaccount filters correctly 1`] = `
+Array [
+  Object {
+    "AND": Object {
+      "subaccounts": Object {
+        "eq": Array [
+          Object {
+            "id": 123,
+            "type": "Subaccount",
+            "value": "Cool Subaccount Name (ID 123)",
+          },
+        ],
+      },
+    },
+  },
+]
+`;

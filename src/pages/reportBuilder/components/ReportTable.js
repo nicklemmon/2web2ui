@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import { _getTableDataReportBuilder as _getTableData } from 'src/actions/summaryChart';
-import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 
 import { TableCollection, Unit, PanelLoading } from 'src/components';
@@ -31,12 +30,7 @@ export const ReportTable = props => {
     tableData = [],
     tableLoading,
     subaccounts,
-    getSubaccountsList,
   } = props;
-
-  useEffect(() => {
-    getSubaccountsList();
-  }, [getSubaccountsList]);
 
   //TODO RB CLEANUP: Change value. Default has to be 'aggregate' for now due to sharing reducer with non-hibana summary report
   const groupBy = props.groupBy === 'aggregate' ? 'placeholder' : props.groupBy;
@@ -155,4 +149,4 @@ const mapStateToProps = state => ({
   ...state.summaryChart,
 });
 
-export default connect(mapStateToProps, { _getTableData, getSubaccountsList })(ReportTable);
+export default connect(mapStateToProps, { _getTableData })(ReportTable);

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import qs from 'query-string';
 import { getRelativeDates, relativeDateOptions } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
+import { FILTER_KEY_MAP } from './metrics';
 
 export function dedupeFilters(filters) {
   return _.uniqBy(filters, stringifyTypeaheadfilter);
@@ -98,7 +99,11 @@ export function parseSearchNew(search) {
   }
 
   if (query_filters) {
-    ret.queryFilters = JSON.parse(query_filters);
+    try {
+      ret.queryFilters = JSON.parse(decodeURI(query_filters));
+    } catch {
+      ret.queryFilters = [];
+    }
   } else {
     const filtersList = (typeof filters === 'string' ? [filters] : filters).map(filter => {
       const parts = filter.split(':');
@@ -154,21 +159,11 @@ export function parseSearchNew(search) {
   return ret;
 }
 
-const FILTER_KEY_MAP = {
-  'Recipient Domain': 'domains',
-  Campaign: 'campaigns',
-  Template: 'templates',
-  'Sending IP': 'sending_ips',
-  'IP Pool': 'ip_pools',
-  Subaccount: 'subaccounts',
-  'Sending Domain': 'sending_domains',
-};
-
-function mapFiltersToComparators(filters) {
+export function mapFiltersToComparators(filters) {
   const mappedFilters = filters.reduce((acc, { value, type, id }) => {
     const filterKey = FILTER_KEY_MAP[type];
-    acc[filterKey] = acc[filterKey] || [];
-    acc[filterKey].push(filterKey === 'subaccounts' ? id : value);
+    acc[filterKey] = acc[filterKey] || { eq: [] };
+    acc[filterKey].eq.push(filterKey === 'subaccounts' ? id : value);
     return acc;
   }, {});
   return [{ AND: mappedFilters }];

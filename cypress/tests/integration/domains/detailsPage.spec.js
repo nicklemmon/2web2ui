@@ -1,6 +1,9 @@
 import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 const BASE_UI_URL = '/domains/details';
-const PAGE_URL = '/domains/details/fake-domain.com';
+const PAGE_URL = `${BASE_UI_URL}/fake-domain.com`;
+
+let trackingDomainsList = require('cypress/fixtures/tracking-domains/200.get.json');
 
 describe('The domains details page', () => {
   beforeEach(() => {
@@ -234,6 +237,124 @@ describe('The domains details page', () => {
         });
       });
 
+      it('confirms removal of default domain tracking.', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.json',
+          requestAlias: 'trackingDomainsList',
+        });
+
+        cy.visit(`${BASE_UI_URL}/verified-and-default.com`);
+        cy.wait(['@trackingDomainsList', '@accountDomainsReq']);
+
+        cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
+
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('be.visible');
+
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('be.checked');
+
+        cy.findAllByLabelText('Set as Default Tracking Domain').click({ force: true });
+
+        cy.withinModal(() => {
+          cy.server();
+
+          cy.stubRequest({
+            method: 'PUT',
+            url: '/api/v1/tracking-domains/verified-and-default.com',
+            fixture: 'tracking-domains/200.put.json',
+            requestAlias: 'trackingDomainUpdate',
+          });
+
+          cy.route({
+            method: 'GET',
+            url: '/api/v1/tracking-domains',
+            response: {
+              results: trackingDomainsList.results.map(result => {
+                if (result.domain === 'verified.com') {
+                  result.default = true;
+                } else if (result.domain === 'verified-and-default.com') {
+                  result.default = false;
+                }
+
+                return result;
+              }),
+            },
+          }).as('updatedTrackingDomainsList');
+
+          cy.findAllByText('Remove default tracking domain (verified-and-default.com)').should(
+            'be.visible',
+          );
+          cy.findAllByText(
+            "Transmissions and templates that don't specify a tracking domain will no longer use verified-and-default.com. Instead, they will use the system default until another default is selected.",
+          ).should('be.visible');
+          cy.findByRole('button', { name: 'Remove Default' }).should('be.visible');
+          cy.findByRole('button', { name: 'Cancel' }).should('be.visible');
+
+          cy.findByRole('button', { name: 'Remove Default' }).click();
+          cy.wait('@trackingDomainUpdate');
+        });
+
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('be.visible');
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('not.be.checked');
+      });
+
+      it('confirms setting a default domain tracking.', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.json',
+          requestAlias: 'trackingDomainsList',
+        });
+
+        cy.visit(`${BASE_UI_URL}/verified.com`);
+        cy.wait(['@trackingDomainsList', '@accountDomainsReq']);
+
+        cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
+
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('be.visible');
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('not.be.checked');
+
+        cy.findAllByLabelText('Set as Default Tracking Domain').click({ force: true });
+
+        cy.withinModal(() => {
+          cy.server();
+
+          cy.stubRequest({
+            method: 'PUT',
+            url: '/api/v1/tracking-domains/verified.com',
+            fixture: 'tracking-domains/200.put.json',
+            requestAlias: 'trackingDomainUpdate',
+          });
+
+          cy.route({
+            method: 'GET',
+            url: '/api/v1/tracking-domains',
+            response: {
+              results: trackingDomainsList.results.map(result => {
+                if (result.domain === 'verified.com') {
+                  result.default = true;
+                } else if (result.domain === 'verified-and-default.com') {
+                  result.default = false;
+                }
+
+                return result;
+              }),
+            },
+          }).as('updatedTrackingDomainsList');
+
+          cy.findAllByText('Set default tracking domain (verified.com)').should('be.visible');
+          cy.findAllByText(
+            "Transmissions and templates that don't specify a tracking domain will now use verified.com.",
+          ).should('be.visible');
+          cy.findByRole('button', { name: 'Set as Default' }).should('be.visible');
+          cy.findByRole('button', { name: 'Cancel' }).should('be.visible');
+
+          cy.findByRole('button', { name: 'Set as Default' }).click();
+        });
+
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('be.visible');
+        cy.findAllByLabelText('Set as Default Tracking Domain').should('be.checked');
+      });
+
       it('on deleting a domain successfully redirects to list page', () => {
         cy.stubRequest({
           url: '/api/v1/tracking-domains',
@@ -252,8 +373,7 @@ describe('The domains details page', () => {
           requestAlias: 'deleteDomain',
         });
         cy.visit(`${BASE_UI_URL}/bounce2.spappteam.com`);
-        cy.wait(['@verifiedDomains', '@trackingDomainsList']);
-        cy.wait('@accountDomainsReq');
+        cy.wait(['@verifiedDomains', '@trackingDomainsList', '@accountDomainsReq']);
         cy.findByRole('button', { name: 'Delete Domain' }).click();
 
         cy.withinModal(() => {
@@ -272,8 +392,7 @@ describe('The domains details page', () => {
           requestAlias: 'trackingDomainsList',
         });
         cy.visit(`${BASE_UI_URL}/click3.spappteam.com`);
-        cy.wait(['@trackingDomainsList']);
-        cy.wait('@accountDomainsReq');
+        cy.wait(['@trackingDomainsList', '@accountDomainsReq']);
         cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
         cy.findByRole('heading', { name: 'Tracking' }).should('be.visible');
         cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
