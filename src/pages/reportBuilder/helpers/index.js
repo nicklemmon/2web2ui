@@ -19,7 +19,8 @@ export const hydrateFilters = (groupings, { subaccounts = [] } = {}) => {
             case 'notEq': {
               if (filter === 'subaccounts') {
                 filterRet[comparison] = filterObj[comparison].map(value => {
-                  const subaccount = subaccounts.find(subaccount => subaccount.id === value) || {};
+                  const subaccount =
+                    subaccounts.find(subaccount => subaccount.id === Number.parseInt(value)) || {};
 
                   const { name, id } = subaccount;
                   return {

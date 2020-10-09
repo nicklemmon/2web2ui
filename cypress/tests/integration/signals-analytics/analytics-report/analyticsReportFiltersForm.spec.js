@@ -278,6 +278,23 @@ if (IS_HIBANA_ENABLED) {
         });
       });
     });
+
+    it('handles loading a form with old filters', () => {
+      cy.visit(
+        '/signals/analytics?filters=Subaccount%3AFake Subaccount 1 (ID 101)%3A101&filters=Subaccount%3AFake Subaccount 2 (ID 102)%3A102&filters=Recipient Domain%3Amydomain.com&filters=Template%3Atemplatey',
+      );
+
+      cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
+
+      cy.findByRole('button', { name: 'Add Filters' }).click();
+      cy.findAllByLabelText('Subaccount').should('be.visible');
+      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+      cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+      cy.findByLabelText('Recipient Domain').should('exist');
+      cy.findByText('mydomain.com').should('exist');
+      cy.findByLabelText('Template').should('exist');
+      cy.findByText('templatey').should('exist');
+    });
   });
 }
 
