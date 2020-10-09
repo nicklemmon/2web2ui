@@ -97,3 +97,23 @@ html {
     display: block;
   }
 }
+
+@media (pointer: coarse), (hover: none) {
+  [title] {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  [title]:focus::before {
+    content: attr(title);
+    position: absolute;
+    top: -132%;
+    left: 0;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid;
+    min-width: 175px;
+    padding: 3px;
+  }
+}
