@@ -32,7 +32,7 @@ export default (state = initialState, { type, payload, meta }) => {
       return { ...state, listError: payload, listLoading: false };
 
     case 'DELETE_SENDING_DOMAIN_PENDING':
-      return { ...state, deleting: meta.domain, deleteError: null };
+      return { ...state, deleting: true, deleteError: null };
 
     case 'DELETE_SENDING_DOMAIN_FAIL':
       return { ...state, deleting: false, deleteError: payload };
