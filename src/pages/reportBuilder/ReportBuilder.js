@@ -4,9 +4,10 @@ import moment from 'moment';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { Error } from '@sparkpost/matchbox-icons';
 import { refreshReportBuilder } from 'src/actions/summaryChart';
-import { Page, Panel } from 'src/components/matchbox';
-import { Empty, Loading, Unit, LegendCircle } from 'src/components';
-import { Button, Box, Grid, Inline, Tooltip } from 'src/components/matchbox';
+import { list as getSubaccountsList } from 'src/actions/subaccounts';
+import { getReports } from 'src/actions/reports';
+import { Empty, Tabs, Loading, Unit, LegendCircle } from 'src/components';
+import { Box, Button, Grid, Inline, Page, Panel, Tooltip } from 'src/components/matchbox';
 import { Definition } from 'src/components/text';
 import { ReportOptions, ReportTable, SaveReportModal } from './components';
 import Charts from './components/Charts';
@@ -16,7 +17,6 @@ import {
   delayTabMetrics,
   linksTabMetrics,
 } from 'src/config/metrics';
-import { Tabs } from 'src/components';
 import {
   BounceReasonsTable,
   DelayReasonsTable,
@@ -25,9 +25,14 @@ import {
 } from './components/tabs';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportBuilder.module.scss';
 import { getSubscription } from 'src/actions/billing';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
+import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
+import { dehydrateFilters } from './helpers';
+import { parseSearchNew as parseSearch } from 'src/helpers/reports';
+import useRouter from 'src/hooks/useRouter';
 
 const MetricDefinition = ({ label, children }) => {
   return (
@@ -45,14 +50,22 @@ const MetricDefinition = ({ label, children }) => {
 export function ReportBuilder({
   chart,
   isSavedReportsEnabled,
+  isComparatorsEnabled,
   getSubscription,
   refreshReportBuilder,
   subscription,
+  reports,
+  reportsStatus,
+  getReports,
+  getSubaccountsList,
+  subaccountsReady,
 }) {
   const [showTable, setShowTable] = useState(true);
+  const [selectedReport, setReport] = useState(null);
   const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false);
 
-  const { state: reportOptions, selectors } = useReportBuilderContext();
+  const { state: reportOptions, selectors, actions } = useReportBuilderContext();
+  const { refreshReportOptions } = actions;
   const processedMetrics = selectors.selectSummaryMetricsProcessed;
   const summarySearchOptions = selectors.selectSummaryChartSearchOptions || {};
 
@@ -62,13 +75,63 @@ export function ReportBuilder({
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
-      refreshReportBuilder(reportOptions);
+      if (isComparatorsEnabled) {
+        refreshReportBuilder({
+          ...reportOptions,
+          filters: dehydrateFilters(reportOptions.filters),
+        });
+      } else {
+        refreshReportBuilder(reportOptions);
+      }
     }
-  }, [refreshReportBuilder, reportOptions, isEmpty]);
+  }, [refreshReportBuilder, reportOptions, isEmpty, isComparatorsEnabled]);
+
+  const { location } = useRouter();
 
   useEffect(() => {
     getSubscription();
   }, [getSubscription]);
+
+  useEffect(() => {
+    if (isComparatorsEnabled) {
+      getSubaccountsList();
+    }
+  }, [isComparatorsEnabled, getSubaccountsList]);
+
+  useEffect(() => {
+    if (isSavedReportsEnabled) {
+      getReports();
+    }
+  }, [isSavedReportsEnabled, getReports]);
+
+  //Initializes the report options with the search
+  useEffect(() => {
+    const { report: reportId, filters: optionsFilters = [], ...options } = parseSearch(
+      location.search,
+    );
+
+    const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
+    const report = allReports.find(({ id }) => id === reportId);
+
+    //Waiting on reports (if enabled) to initialize
+    if (
+      (reportId && isSavedReportsEnabled && reportsStatus !== 'success') ||
+      (isComparatorsEnabled && !subaccountsReady) ||
+      reportOptions.isReady //Already ran once
+    ) {
+      return;
+    }
+
+    // Initializes once it finds relavant report
+    if (report) {
+      const { filters: reportFilters = [], ...reportOptions } = parseSearch(report.query_string);
+      setReport(report);
+      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...optionsFilters] });
+    } else {
+      refreshReportOptions(options);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSavedReportsEnabled, reportsStatus, reports, subaccountsReady]);
 
   const isMaxReports = useMemo(() => {
     const reportsProduct = subscription?.products?.find(({ product }) => product === 'reports');
@@ -122,6 +185,10 @@ export function ReportBuilder({
   const { to, from } = summarySearchOptions;
   const dateValue = `${moment(from).format('MMM Do')} - ${moment(to).format('MMM Do, YYYY')}`;
 
+  if (!reportOptions.isReady) {
+    return <Loading />;
+  }
+
   return (
     <Page
       title="Analytics Report"
@@ -151,7 +218,12 @@ export function ReportBuilder({
       }
     >
       <Panel>
-        <ReportOptions reportLoading={chart.chartLoading} searchOptions={summarySearchOptions} />
+        <ReportOptions
+          selectedReport={selectedReport}
+          setReport={setReport}
+          reportLoading={chart.chartLoading}
+          searchOptions={summarySearchOptions}
+        />
         {isEmpty ? (
           <Empty message="No Data" description="Must select at least one metric." />
         ) : (
@@ -240,12 +312,18 @@ export function ReportBuilder({
 const mapStateToProps = state => ({
   chart: state.summaryChart,
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
+  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
+  reports: state.reports.list,
+  reportsStatus: state.reports.status,
+  subaccountsReady: state.subaccounts.ready,
   subscription: state.billing.subscription,
 });
 
 const mapDispatchToProps = {
   refreshReportBuilder,
   getSubscription,
+  getReports,
+  getSubaccountsList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReportBuilder);

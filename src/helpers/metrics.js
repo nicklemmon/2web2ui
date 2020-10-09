@@ -13,7 +13,7 @@ const {
   chartColors = [],
 } = config;
 const indexedPrecisions = _.keyBy(precisionMap, 'value');
-const FILTER_KEY_MAP = {
+export const FILTER_KEY_MAP = {
   'Recipient Domain': 'domains',
   Campaign: 'campaigns',
   Template: 'templates',
@@ -25,16 +25,10 @@ const FILTER_KEY_MAP = {
 
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
-export function getQueryFromOptions({
-  from,
-  to,
-  timezone,
-  precision,
-  metrics,
-  filters = [],
-  match = '',
-  limit,
-}) {
+export function getQueryFromOptions(
+  { from, to, timezone, precision, metrics, filters = [], match = '', limit },
+  { isComparatorsEnabled } = {},
+) {
   from = moment(from);
   to = moment(to);
 
@@ -45,10 +39,18 @@ export function getQueryFromOptions({
     from: from.format(apiDateFormat),
     to: to.format(apiDateFormat),
     delimiter,
-    ...getFilterSets(filters, delimiter),
     timezone,
     precision,
   };
+  if (isComparatorsEnabled) {
+    //Formatted as JSON of { groupings: [filterObject]}
+    //TODO: Uncomment once it's ready
+    // options.query_filters = filters.length
+    //   ? encodeURI(JSON.stringify({ groupings: filters }))
+    //   : undefined;
+  } else {
+    Object.assign(options, getFilterSets(filters, delimiter));
+  }
   if (match.length > 0) {
     options.match = match;
   }

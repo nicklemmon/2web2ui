@@ -1,6 +1,7 @@
 import { fetch as fetchMetrics } from 'src/actions/metrics';
 import { getQueryFromOptions, getMetricsFromKeys } from 'src/helpers/metrics';
 import { getRelativeDates } from 'src/helpers/date';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
 // second argument is only for mocking local functions that can't be otherwise mocked or spied on in jest-land
 export function refreshSummaryReport(
@@ -49,6 +50,9 @@ export function refreshReportBuilder(
 ) {
   return (dispatch, getState) => {
     const { summaryChart } = getState();
+    const isComparatorsEnabled = Boolean(
+      isAccountUiOptionSet('allow_report_filters_v2')(getState()),
+    );
 
     // if new metrics are included, convert them to their full representation from config
     if (updates.metrics) {
@@ -62,8 +66,7 @@ export function refreshReportBuilder(
       ...getRelativeDates(updates.relativeRange),
     };
 
-    // convert new meta data into query param format
-    const params = getQueryFromOptions(merged);
+    const params = getQueryFromOptions(merged, { isComparatorsEnabled });
     const isCurrentGroupingAggregates = summaryChart.groupBy === 'aggregate';
     return Promise.all([
       dispatch(getChartData({ params, metrics: merged.metrics })),

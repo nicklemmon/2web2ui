@@ -227,6 +227,57 @@ if (IS_HIBANA_ENABLED) {
         cy.findAllByRole('group', { name: 'Filter By' }).should('have.length', 1);
       });
     });
+
+    it('handles applying the form and storing in the URL', () => {
+      navigateToForm();
+
+      //Uses subaccounts to make sure it joins data correctly
+      cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+      cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
+
+      cy.findByLabelText('Subaccount').type('Fake Subaccount');
+      cy.findByRole('option', { name: 'Fake Subaccount 1 (ID 101)' }).click();
+
+      cy.findByLabelText('Subaccount').type('Fake Subaccount');
+      cy.findByRole('option', { name: 'Fake Subaccount 2 (ID 102)' }).click();
+
+      cy.findByRole('button', { name: 'Add And Grouping' }).click();
+
+      getGroupingByIndex(1).within(() => {
+        getFilterByIndex(0).within(() => {
+          cy.findByLabelText(TYPE_LABEL).select('Recipient Domain');
+          cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+          cy.findByLabelText('Recipient Domain').type('some tags');
+        });
+      });
+
+      cy.findByRole('button', { name: 'Apply Filters' }).click();
+
+      cy.findByRole('button', { name: 'Add Filters' }).click();
+      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+      cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+      cy.findByText('some').should('exist');
+      cy.findByText('tags').should('exist');
+    });
+
+    it('handles loading form on initial mount from query params', () => {
+      cy.visit(
+        '/signals/analytics?query_filters=%255B%257B%2522AND%2522%3A%257B%2522subaccounts%2522%3A%257B%2522eq%2522%3A%255B101%2C102%255D%257D%257D%257D%2C%257B%2522AND%2522%3A%257B%2522domains%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%2C%2522there%2522%2C%2522friend%2522%2C%2522these%2522%2C%2522are%2522%2C%2522some%2522%2C%2522tags%2522%255D%257D%257D%257D%255D',
+      );
+
+      cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
+
+      cy.findByRole('button', { name: 'Add Filters' }).click();
+      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+      cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+      getGroupingByIndex(1).within(() => {
+        getFilterByIndex(0).within(() => {
+          cy.findByLabelText('Recipient Domain').should('exist');
+          cy.findByText('some').should('exist');
+          cy.findByText('tags').should('exist');
+        });
+      });
+    });
   });
 }
 

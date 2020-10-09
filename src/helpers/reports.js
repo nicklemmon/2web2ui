@@ -98,7 +98,11 @@ export function parseSearchNew(search) {
   }
 
   if (query_filters) {
-    ret.queryFilters = JSON.parse(query_filters);
+    try {
+      ret.queryFilters = JSON.parse(decodeURI(query_filters));
+    } catch {
+      ret.queryFilters = [];
+    }
   } else {
     const filtersList = (typeof filters === 'string' ? [filters] : filters).map(filter => {
       const parts = filter.split(':');

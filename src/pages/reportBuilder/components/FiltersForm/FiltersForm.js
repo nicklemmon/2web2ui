@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import {
@@ -37,7 +37,7 @@ import {
 import useFiltersForm from './useFiltersForm';
 
 function FiltersForm({
-  // handleSubmit,
+  handleSubmit,
   reportOptions,
   fetchMetricsDomains,
   listSubaccounts,
@@ -58,18 +58,21 @@ function FiltersForm({
     addFilter,
     removeFilter,
     clearFilters,
+    setFilters,
   } = actions;
   const groupings = getGroupingFields(state.groupings);
+  const { filters } = reportOptions;
 
   function handleFormSubmit(e) {
     e.preventDefault(); // Prevents page refresh
     const formattedGroupings = remapFormData(groupings);
 
-    // eslint-disable-next-line
-    console.log('formattedGroupings', formattedGroupings);
-
-    // return handleSubmit();
+    return handleSubmit({ filters: formattedGroupings });
   }
+
+  useEffect(() => {
+    setFilters(filters);
+  }, [setFilters, filters]);
 
   const FILTERS = [
     {
@@ -181,7 +184,6 @@ function FiltersForm({
                                   id={`typeahead-${groupingIndex}-${filterIndex}`}
                                   lookaheadRequest={filterRequest}
                                   itemToString={item => (item?.value ? item.value : '')}
-                                  reportOption={reportOptions}
                                   groupingIndex={groupingIndex}
                                   filterType={filter.type}
                                   filterIndex={filterIndex}

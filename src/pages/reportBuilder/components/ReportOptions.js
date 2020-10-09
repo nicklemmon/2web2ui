@@ -5,10 +5,8 @@ import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel, Stack, Tag } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
-import { AccessControl } from 'src/components/auth';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
-import { not } from 'src/helpers/conditions';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportOptions.module.scss';
 import MetricsDrawer from './MetricsDrawer';
@@ -18,11 +16,9 @@ import FiltersForm from './FiltersForm';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
-import { PRESET_REPORT_CONFIGS } from '../constants/presetReport';
-
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
-import { getReports } from 'src/actions/reports';
+import { dehydrateFilters } from '../helpers';
 
 export const ActiveFilters = ({ filters, handleFilterRemove }) => {
   const filtersWithIndex = filters.map((value, index) => ({ ...value, index }));
@@ -52,15 +48,7 @@ export const ActiveFilters = ({ filters, handleFilterRemove }) => {
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
-  const {
-    reportLoading,
-    isSavedReportsEnabled,
-    isComparatorsEnabled,
-    reports,
-    reportsStatus,
-    getReports,
-  } = props;
-  const [selectedReport, setReport] = useState(null);
+  const { reportLoading, isComparatorsEnabled, selectedReport, setReport } = props;
 
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
   const { refreshReportOptions, removeFilter } = actions;
@@ -69,7 +57,7 @@ export function ReportOptions(props) {
     selectSummaryChartSearchOptions,
   } = selectors;
 
-  const { location, updateRoute } = useRouter();
+  const { updateRoute } = useRouter();
 
   const isEmpty = useMemo(() => {
     return !Boolean(processedMetrics.length);
@@ -78,11 +66,12 @@ export function ReportOptions(props) {
   // Updates the query params with incoming search option changes
   useEffect(() => {
     if (reportOptions.isReady) {
-      const { filters, ...update } = selectSummaryChartSearchOptions;
+      const { filters: selectedFilters, ...update } = selectSummaryChartSearchOptions;
+      const { filters } = reportOptions;
       if (isComparatorsEnabled) {
-        update.query_filters = JSON.stringify(filters);
+        update.query_filters = encodeURI(JSON.stringify(dehydrateFilters(filters)));
       } else {
-        update.filters = filters;
+        update.filters = selectedFilters;
       }
 
       updateRoute({ ...update, report: selectedReport?.id });
@@ -93,36 +82,8 @@ export function ReportOptions(props) {
     reportOptions.isReady,
     selectedReport,
     isComparatorsEnabled,
+    reportOptions,
   ]);
-
-  useEffect(() => {
-    if (isSavedReportsEnabled) {
-      getReports();
-    }
-  }, [isSavedReportsEnabled, getReports]);
-
-  //Initializes the report options with the search
-  useEffect(() => {
-    const { report: reportId, ...options } = parseSearch(location.search);
-
-    const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
-    const report = allReports.find(({ id }) => id === reportId);
-
-    //Waiting on reports (if enabled) to initialize
-    if (reportId && isSavedReportsEnabled && reportsStatus !== 'success') {
-      return;
-    }
-
-    // Initializes once it finds relavant report
-    if (report) {
-      const { filters: reportFilters = [], ...reportOptions } = parseSearch(report.query_string);
-      setReport(report);
-      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...options.filters] });
-    } else {
-      refreshReportOptions(options);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSavedReportsEnabled, reportsStatus, reports]);
 
   const { getActivatorProps, getDrawerProps, openDrawer, closeDrawer } = Drawer.useDrawer({
     id: 'report-drawer',
@@ -213,13 +174,11 @@ export function ReportOptions(props) {
                 <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
               </Tabs.Item>
               <Tabs.Item>
-                <AccessControl condition={not(isAccountUiOptionSet('allow_report_filters_v2'))}>
-                  <AddFiltersSection handleSubmit={handleSubmit} reportOptions={reportOptions} />
-                </AccessControl>
-
-                <AccessControl condition={isAccountUiOptionSet('allow_report_filters_v2')}>
+                {isComparatorsEnabled ? (
                   <FiltersForm handleSubmit={handleSubmit} reportOptions={reportOptions} />
-                </AccessControl>
+                ) : (
+                  <AddFiltersSection handleSubmit={handleSubmit} reportOptions={reportOptions} />
+                )}
               </Tabs.Item>
             </Tabs>
           </Drawer.Content>
@@ -251,10 +210,8 @@ export function ReportOptions(props) {
 
 const mapStateToProps = state => ({
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
-  reports: state.reports.list,
-  reportsStatus: state.reports.status,
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
-  isComparatorsEnabled: selectCondition(isUserUiOptionSet('allow_reports_filters_v2'))(state),
+  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
 });
 
-export default connect(mapStateToProps, { getReports })(ReportOptions);
+export default connect(mapStateToProps)(ReportOptions);

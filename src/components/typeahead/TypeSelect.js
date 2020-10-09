@@ -70,6 +70,12 @@ function TypeSelect({
     }
   };
 
+  useEffect(() => {
+    if (selectedItem) {
+      setInputValue(itemToString(selectedItem));
+    }
+  }, [itemToString, selectedItem]);
+
   const typeaheadFn = ({
     getInputProps,
     getItemProps,

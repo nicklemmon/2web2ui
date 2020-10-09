@@ -13,8 +13,9 @@ import { getLocalTimezone } from 'src/helpers/date';
 import { dedupeFilters } from 'src/helpers/reports';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import { selectCondition } from 'src/selectors/accessConditionState';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import config from 'src/config';
+import { hydrateFilters } from '../helpers';
 
 const ReportOptionsContext = createContext({});
 
@@ -107,7 +108,7 @@ const reducerV2 = (state, action) => {
   switch (action.type) {
     case 'UPDATE_REPORT_OPTIONS': {
       const { payload, meta } = action;
-      const { useMetricsRollup } = meta;
+      const { useMetricsRollup, subaccounts } = meta;
       let update = { ...state, ...payload };
       const getPrecision = useMetricsRollup ? getRollupPrecision : getRawPrecision;
 
@@ -121,7 +122,7 @@ const reducerV2 = (state, action) => {
 
       // If queryFilters, then was converted over from older filters.
       if (payload.queryFilters) {
-        update.filters = payload.queryFilters;
+        update.filters = hydrateFilters(payload.queryFilters, { subaccounts });
       }
 
       if (!update.relativeRange) {
@@ -189,6 +190,7 @@ const getSelectors = reportOptions => {
    * Converts reportOptions for url sharing
    */
   const selectReportSearchOptions = { ...selectDateOptions, ...selectTypeaheadFilters };
+
   /**
    * Converts reportOptions for url sharing for the summary chart
    */
@@ -206,7 +208,7 @@ const getSelectors = reportOptions => {
 };
 
 const ReportOptionsContextProvider = props => {
-  const { useMetricsRollup, isComparatorsEnabled } = props;
+  const { useMetricsRollup, isComparatorsEnabled, subaccounts } = props;
   const [state, dispatch] = useReducer(isComparatorsEnabled ? reducerV2 : reducer, initialState);
 
   const refreshReportOptions = useCallback(
@@ -214,10 +216,10 @@ const ReportOptionsContextProvider = props => {
       dispatch({
         type: 'UPDATE_REPORT_OPTIONS',
         payload,
-        meta: { useMetricsRollup, isComparatorsEnabled },
+        meta: { useMetricsRollup, subaccounts },
       });
     },
-    [dispatch, useMetricsRollup, isComparatorsEnabled],
+    [dispatch, useMetricsRollup, subaccounts],
   );
 
   const addFilters = useCallback(
@@ -268,8 +270,9 @@ const ReportOptionsContextProvider = props => {
 };
 
 const mapStateToProps = state => ({
+  subaccounts: state.subaccounts.list,
   useMetricsRollup: selectFeatureFlaggedMetrics(state).useMetricsRollup,
-  isComparatorsEnabled: selectCondition(isUserUiOptionSet('allow_new_comparators'))(state),
+  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
 });
 
 export const ReportBuilderContextProvider = connect(mapStateToProps)(ReportOptionsContextProvider);
