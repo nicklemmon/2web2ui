@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CompareByDrawer = () => {
-  return <div></div>;
+  return <div>Compare By Placeholder</div>;
 };
 
 export default CompareByDrawer;
