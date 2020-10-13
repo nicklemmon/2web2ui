@@ -45,8 +45,16 @@ export const ActiveFilters = ({ filters, handleFilterRemove }) => {
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
-  const { reportLoading, isComparatorsEnabled, isCompareByEnabled, selectedReport, setReport } = props;
-
+  const {
+    reportLoading,
+    isComparatorsEnabled,
+    isCompareByEnabled,
+    selectedReport,
+    setReport,
+  } = props;
+  const drawerTabsFeatureFlag = isCompareByEnabled
+    ? [...drawerTabs, { content: 'Compare' }]
+    : drawerTabs;
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
   const { refreshReportOptions, removeFilter } = actions;
   const {
