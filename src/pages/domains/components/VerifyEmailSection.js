@@ -69,20 +69,16 @@ export default function VerifyEmailSection({ domain, isSectionVisible }) {
 
 function VerifyButton({ onClick, variant = 'primary', submitting }) {
   return (
-    <Button variant={variant} disabled={submitting} onClick={onClick}>
-      {submitting ? 'Sending Email...' : 'Send Email'}
+    <Button variant={variant} loading={submitting} onClick={onClick}>
+      Send Email
     </Button>
   );
 }
 function AllowAnyoneAtModal(props) {
-  const {
-    onCancel,
-    domain,
-    submitting, //todo
-  } = props;
+  const { onCancel, domain } = props;
   const { id, subaccount_id: subaccount } = domain;
   const { control, handleSubmit, errors } = useForm();
-  const { verifyMailbox, showAlert } = useDomains();
+  const { verifyMailbox, showAlert, verifyEmailLoading } = useDomains();
 
   const onSubmit = data => {
     const localPart = data.localPart;
@@ -126,7 +122,7 @@ function AllowAnyoneAtModal(props) {
         </Modal.Content>
 
         <Modal.Footer>
-          <Button variant="primary" type="submit" form="modalForm" loading={submitting}>
+          <Button variant="primary" type="submit" form="modalForm" loading={verifyEmailLoading}>
             Send Email
           </Button>
         </Modal.Footer>
@@ -136,11 +132,7 @@ function AllowAnyoneAtModal(props) {
 }
 
 function MailboxVerificationModal(props) {
-  const {
-    onCancel,
-    domain,
-    submitting, //todo
-  } = props;
+  const { onCancel, domain, verifyEmailLoading } = props;
   const { id, subaccount_id: subaccount } = domain;
   const { verifyAbuse, verifyPostmaster, showAlert } = useDomains();
 
@@ -177,7 +169,7 @@ function MailboxVerificationModal(props) {
               <VerifyButton
                 onClick={verifyWithPostmaster}
                 variant="secondary"
-                submitting={submitting}
+                submitting={verifyEmailLoading}
               />
             </Grid.Column>
           </Grid>
@@ -189,7 +181,11 @@ function MailboxVerificationModal(props) {
               </p>
             </Grid.Column>
             <Grid.Column xs={6}>
-              <VerifyButton onClick={verifyWithAbuse} variant="secondary" submitting={submitting} />
+              <VerifyButton
+                onClick={verifyWithAbuse}
+                variant="secondary"
+                submitting={verifyEmailLoading}
+              />
             </Grid.Column>
           </Grid>
         </Stack>

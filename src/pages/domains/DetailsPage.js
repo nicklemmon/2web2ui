@@ -7,7 +7,6 @@ import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
 import { selectTrackingDomainsList } from 'src/selectors/trackingDomains';
-
 import { Loading } from 'src/components/loading/Loading';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';

@@ -39,7 +39,14 @@ const Field = ({ verified, label, value }) => {
 
 export default function SetupBounceDomainSection({ domain, isSectionVisible, title }) {
   const { id, status, subaccount_id } = domain;
-  const { getDomain, verify, showAlert, userName, isByoipAccount } = useDomains();
+  const {
+    getDomain,
+    verify,
+    showAlert,
+    userName,
+    isByoipAccount,
+    verifyBounceLoading,
+  } = useDomains();
   const readyFor = resolveReadyFor(status);
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
   const bounceDomainsConfig = getConfig('bounceDomains');
@@ -242,7 +249,7 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                 ></Field>
                 <Field
                   label="Value"
-                  value="v=spf1 mx  a    ~all"
+                  value="v=spf1 mx a ~all"
                   verified={domain.status.spf_status === 'valid'}
                 ></Field>
               </Stack>
@@ -253,11 +260,13 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                   <Checkbox
                     id="add-txt-to-godaddy"
                     label="The TXT record has been added to the DNS provider"
+                    disabled={verifyBounceLoading}
                   />
                 ) : (
                   <Checkbox
                     id="add-txt-to-godaddy"
                     label={`The ${watchVerificationType} record has been added to the DNS provider`}
+                    disabled={verifyBounceLoading}
                   />
                 )}
               </Panel.Section>
@@ -271,7 +280,7 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
             )}
             {!readyFor.bounce && (
               <Panel.Section>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" loading={verifyBounceLoading}>
                   Authenticate for Bounce
                 </Button>
               </Panel.Section>

@@ -15,7 +15,7 @@ const Field = ({ verified, label, value }) => {
 };
 
 export default function TrackingDnsSection({ id, isSectionVisible, title }) {
-  const { trackingDomains, verifyTrackingDomain } = useDomains();
+  const { trackingDomains, verifyTrackingDomain, verifyingTrackingPending } = useDomains();
   let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
   const { unverified } = trackingDomain;
 
@@ -82,7 +82,7 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
           </Panel.Section>
           {unverified && (
             <Panel.Section>
-              <Button variant="primary" onClick={handleVerify}>
+              <Button variant="primary" onClick={handleVerify} loading={verifyingTrackingPending}>
                 Verify Domain
               </Button>
             </Panel.Section>

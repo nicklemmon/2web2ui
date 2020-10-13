@@ -58,6 +58,10 @@ function mapStateToProps(state) {
     hasAnyoneAtEnabled: selectHasAnyoneAtDomainVerificationEnabled(state),
     allowDefault: selectAllowDefaultBounceDomains(state),
     allowSubaccountDefault: selectAllSubaccountDefaultBounceDomains(state),
+    verifyDkimLoading: state.sendingDomains.verifyDkimLoading,
+    verifyEmailLoading: state.sendingDomains.verifyEmailLoading,
+    verifyBounceLoading: state.sendingDomains.verifyBounceLoading,
+    verifyingTrackingPending: state.trackingDomains.verifyingTrackingPending,
   };
 }
 
