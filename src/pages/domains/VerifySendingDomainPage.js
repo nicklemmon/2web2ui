@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveStatus } from 'src/helpers/domains';
-import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
 import Domains from './components';
 
 function VerifySendingDomainsPage(props) {
-  const { match, getDomain, domain, hasAnyoneAtEnabled } = props;
+  const { match, getDomain, domain } = props;
   const resolvedStatus = resolveStatus(domain.status);
 
   useEffect(() => {
@@ -27,15 +26,10 @@ function VerifySendingDomainsPage(props) {
       >
         <Domains.SetupForSending
           domain={domain}
-          id={match.params.id}
           resolvedStatus={resolvedStatus}
           isSectionVisible={true}
         />
-        <Domains.VerifyEmailSection
-          domain={domain}
-          hasAnyoneAtEnabled={hasAnyoneAtEnabled}
-          isSectionVisible={true}
-        />
+        <Domains.VerifyEmailSection domain={domain} isSectionVisible={true} />
       </Page>
     </Domains.Container>
   );
@@ -45,7 +39,6 @@ export default connect(
   state => ({
     domain: selectDomain(state),
     sendingDomainsPending: state.sendingDomains.getLoading,
-    hasAnyoneAtEnabled: selectHasAnyoneAtDomainVerificationEnabled(state),
   }),
   { getDomain },
 )(VerifySendingDomainsPage);

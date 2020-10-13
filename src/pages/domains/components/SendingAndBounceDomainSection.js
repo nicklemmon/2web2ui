@@ -4,13 +4,11 @@ import { Panel } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
 import getConfig from 'src/helpers/getConfig';
+import useDomains from '../hooks/useDomains';
 
-export default function SendingAndBounceDomainSection({
-  domain,
-  isByoipAccount,
-  isSectionVisible,
-}) {
+export default function SendingAndBounceDomainSection({ domain, isSectionVisible }) {
   const { id, status } = domain;
+  const { isByoipAccount } = useDomains();
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
   const bounceDomainsConfig = getConfig('bounceDomains');
   const { watch } = useForm();

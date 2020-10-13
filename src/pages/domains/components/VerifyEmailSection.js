@@ -14,8 +14,9 @@ import useModal from 'src/hooks/useModal';
 import { useForm, Controller } from 'react-hook-form';
 import useDomains from '../hooks/useDomains';
 
-export default function VerifyEmailSection({ hasAnyoneAtEnabled, domain, isSectionVisible }) {
+export default function VerifyEmailSection({ domain, isSectionVisible }) {
   const { closeModal, isModalOpen, openModal, meta: { name } = {} } = useModal();
+  const { hasAnyoneAtEnabled } = useDomains();
   const [warningBanner, toggleBanner] = useState(true);
   if (!isSectionVisible) {
     return null;
