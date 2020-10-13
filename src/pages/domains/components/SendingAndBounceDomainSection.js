@@ -3,14 +3,15 @@ import { Box, Layout, Stack, Text, TextField } from 'src/components/matchbox';
 import { Button, Checkbox, Panel, Tag } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
-import { Bold } from 'src/components/text';
+import { Bold, SubduedText } from 'src/components/text';
 import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import getConfig from 'src/helpers/getConfig';
 import useDomains from '../hooks/useDomains';
-import { ExternalLink } from 'src/components/links';
+import { ExternalLink, SubduedLink } from 'src/components/links';
 import { CopyField } from 'src/components';
 import { Send } from '@sparkpost/matchbox-icons';
 import styled from 'styled-components';
+import { EXTERNAL_LINKS } from '../constants';
 
 const StyledBox = styled(Box)`
   float: right;
@@ -114,6 +115,15 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
         <Layout.SectionTitle as="h2">
           {resolvedStatus === 'verified' ? 'Sending and Bounce' : 'DNS Verification'}
         </Layout.SectionTitle>
+        <Stack>
+          <SubduedText>
+            Strict alignment is when the sending and bounce domain being the same value(e.g. sending
+            domain = sparkpost.com, and bounce domain = sparkpost.com)
+          </SubduedText>
+          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+            Domain Documentation
+          </SubduedLink>
+        </Stack>
       </Layout.Section>
       <Layout.Section>
         <Panel>
