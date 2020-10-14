@@ -1,3 +1,6 @@
+export const DELIVERY_CONFIDENCE_TOOLTIP =
+  "The Delivery Confidence Score is a number between 0-100 which represents SparkPost's confidence that the email address can be delivered to.";
+
 export const ROLE_TOOLTIP =
   'Role email addresses represent a group or activity (sales, abuse) \
   and not an individual. They tend to have a lower engagement rate and a higher unsubscribe rate.';

@@ -7,7 +7,7 @@ export const initialState = {
   jobLoadingStatus: {
     // id: 'pending'
   },
-  jobsLoadingStatus: 'init'
+  jobsLoadingStatus: 'init',
 };
 
 const recipientValidationReducer = (state = initialState, { meta, payload, type }) => {
@@ -22,21 +22,24 @@ const recipientValidationReducer = (state = initialState, { meta, payload, type 
       return {
         ...state,
         jobsLoadingStatus: 'success',
-        jobResults: payload.reduce((acc, job) => ({ ...acc, [job.list_id]: job }), state.jobResults)
+        jobResults: payload.reduce(
+          (acc, job) => ({ ...acc, [job.list_id]: job }),
+          state.jobResults,
+        ),
       };
 
     case 'GET_JOB_STATUS_PENDING':
     case 'TRIGGER_JOB_PENDING':
       return {
         ...state,
-        jobLoadingStatus: { ...state.jobLoadingStatus, [meta.context.id]: 'pending' }
+        jobLoadingStatus: { ...state.jobLoadingStatus, [meta.context.id]: 'pending' },
       };
 
     case 'GET_JOB_STATUS_FAIL':
     case 'TRIGGER_JOB_FAIL':
       return {
         ...state,
-        jobLoadingStatus: { ...state.jobLoadingStatus, [meta.context.id]: 'fail' }
+        jobLoadingStatus: { ...state.jobLoadingStatus, [meta.context.id]: 'fail' },
       };
 
     case 'GET_JOB_STATUS_SUCCESS':
@@ -44,7 +47,7 @@ const recipientValidationReducer = (state = initialState, { meta, payload, type 
       return {
         ...state,
         jobLoadingStatus: { ...state.jobLoadingStatus, [meta.context.id]: 'success' },
-        jobResults: { ...state.jobResults, [payload.list_id]: payload }
+        jobResults: { ...state.jobResults, [payload.list_id]: payload },
       };
 
     // List Upload
@@ -69,9 +72,9 @@ const recipientValidationReducer = (state = initialState, { meta, payload, type 
         ...state,
         singleResults: {
           ...payload,
-          email: meta.email
+          email: meta.email,
         },
-        singleLoading: false
+        singleLoading: false,
       };
 
     case 'SINGLE_RECIPIENT_VALIDATION_FAIL':

@@ -6,6 +6,7 @@ import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links'
 import { Grid, Button, Page, Panel, ScreenReaderOnly } from 'src/components/matchbox';
 import CodeBlock from './components/CodeBlock';
 import {
+  DELIVERY_CONFIDENCE_TOOLTIP,
   ROLE_TOOLTIP,
   DISPOSABLE_TOOLTIP,
   FREE_TOOLTIP,
@@ -127,7 +128,7 @@ function WhiteText(props) {
 
 function ResultList({ data }) {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
-  const { is_role, is_disposable, is_free, did_you_mean } = data;
+  const { delivery_confidence, is_role, is_disposable, is_free, did_you_mean } = data;
 
   return (
     <div className={styles.ResultList} role="list">
@@ -140,6 +141,14 @@ function ResultList({ data }) {
           <span>{did_you_mean}</span>
         </ResultListItem>
       )}
+
+      <ResultListItem>
+        <ResultListKey>
+          Delivery Confidence Score <Tooltip content={DELIVERY_CONFIDENCE_TOOLTIP} />
+        </ResultListKey>
+
+        <span>{delivery_confidence}</span>
+      </ResultListItem>
 
       <ResultListItem>
         <ResultListKey>
@@ -206,7 +215,16 @@ function Result({ children }) {
 
 function ResultCodeBlock({ data }) {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
-  const { result, valid, reason, is_role, is_disposable, is_free, did_you_mean } = data;
+  const {
+    result,
+    valid,
+    reason,
+    delivery_confidence,
+    is_role,
+    is_disposable,
+    is_free,
+    did_you_mean,
+  } = data;
 
   return (
     <pre className={styles.CodeSnippet}>
@@ -223,6 +241,11 @@ function ResultCodeBlock({ data }) {
           <br />
         </>
       )}
+      <TabCharacter />
+      <TabCharacter />
+      "delivery_confidence":{' '}
+      <WhiteText data-id="delivery_confidence-value">{delivery_confidence.toString()}</WhiteText>,
+      <br />
       <TabCharacter />
       <TabCharacter />
       "valid": <WhiteText data-id="valid-value">{valid.toString()}</WhiteText>,<br />

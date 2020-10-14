@@ -4,6 +4,7 @@
     "is_role": false,
     "is_disposable": false,
     "is_free": true,
-    "result": "valid"
+    "result": "valid",
+    "delivery_confidence": 45
   }
 }

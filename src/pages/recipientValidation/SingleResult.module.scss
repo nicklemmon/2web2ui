@@ -51,7 +51,7 @@
   width: 100%;
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 60% 40%;
   padding: spacing() 0;
 
   + .ResultListItem {

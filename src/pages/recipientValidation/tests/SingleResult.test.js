@@ -12,6 +12,7 @@ describe('SingleResult', () => {
         reason: 'Invalid Domain',
         is_role: false,
         is_disposable: false,
+        delivery_confidence: 45,
         is_free: false,
         did_you_mean: 'harry.potter@hogwarts.edu',
         email: 'harry.potter@hogwarts.com',
@@ -33,7 +34,13 @@ describe('SingleResult', () => {
 
   it('should render without crashing when certain props are missing', () => {
     const { queryByText } = subject({
-      singleResults: { valid: true, is_role: false, is_disposable: false, is_free: true },
+      singleResults: {
+        valid: true,
+        is_role: false,
+        is_disposable: false,
+        is_free: true,
+        delivery_confidence: 45,
+      },
     });
 
     expect(queryByText('Recipient Validation')).toBeInTheDocument();
@@ -73,6 +80,7 @@ describe('SingleResult', () => {
         is_role: false,
         is_disposable: false,
         is_free: true,
+        delivery_confidence: 45,
         did_you_mean: 'hello@world.com',
       },
     });
@@ -87,6 +95,7 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: false,
         is_free: true,
+        delivery_confidence: 45,
         result: 'valid',
       },
     });
@@ -106,6 +115,7 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: false,
         is_free: true,
+        delivery_confidence: 45,
         result: 'neutral',
       },
     });
@@ -125,6 +135,7 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: false,
         is_free: true,
+        delivery_confidence: 45,
         result: 'risky',
       },
     });
@@ -144,6 +155,7 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: false,
         is_free: true,
+        delivery_confidence: 45,
         result: 'undeliverable',
       },
     });
@@ -161,6 +173,7 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: false,
         is_free: true,
+        delivery_confidence: 45,
         result: 'typo',
       },
     });
@@ -180,6 +193,7 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: false,
         is_free: true,
+        delivery_confidence: 45,
         result: 'not-a-real-result',
       },
     });
@@ -194,6 +208,7 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: true,
         is_free: false,
+        delivery_confidence: 45,
         reason: 'Mock Reason',
       },
     });
@@ -209,10 +224,25 @@ describe('SingleResult', () => {
         is_role: true,
         is_disposable: true,
         is_free: false,
+        delivery_confidence: 45,
       },
     });
 
     expect(queryByText('Recipient Validation')).toBeInTheDocument();
+  });
+
+  it('renders the delivery confidence score', () => {
+    const { getAllByText } = subject({
+      singleResults: {
+        valid: true,
+        is_role: true,
+        is_disposable: true,
+        is_free: true,
+        delivery_confidence: 99,
+      },
+    });
+
+    expect(getAllByText('99')).toHaveLength(2);
   });
 
   it('renders the relevant API response value in the "Raw API Response" portion of the view', () => {
@@ -222,12 +252,16 @@ describe('SingleResult', () => {
         is_role: false,
         is_disposable: false,
         is_free: false,
+        delivery_confidence: 45,
         reason: 'fake reason',
         did_you_mean: 'fake-email@gmail.com',
       },
     });
 
     expect(queryByTestId('valid-value')).toHaveTextContent('false', { normalizeWhitespace: true });
+    expect(queryByTestId('delivery_confidence-value')).toHaveTextContent('45', {
+      normalizeWhitespace: true,
+    });
     expect(queryByTestId('is_role-value')).toHaveTextContent('false', {
       normalizeWhitespace: true,
     });

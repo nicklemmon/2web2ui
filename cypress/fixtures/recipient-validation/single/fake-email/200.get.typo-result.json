@@ -5,6 +5,7 @@
     "is_disposable": false,
     "is_free": true,
     "result": "typo",
-    "did_you_mean": "fake-email@gmail.com"
+    "did_you_mean": "fake-email@gmail.com",
+    "delivery_confidence": 45
   }
 }
