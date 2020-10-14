@@ -8,14 +8,12 @@ const mockfunc = jest.fn(() => {
   return Promise.resolve();
 });
 useDomains.mockImplementation(() => {
-  return { updateSendingDomain: mockfunc };
+  return { updateSendingDomain: mockfunc, allowDefault: true, allowSubaccountDefault: true };
 });
 
 describe('DomainStatusSection', () => {
   const defaultProps = {
     id: 'hello-2.com',
-    allowDefault: true,
-    allowSubaccountDefault: true,
     domain: {
       id: 'hello-2.com',
       dkim: {
@@ -43,6 +41,7 @@ describe('DomainStatusSection', () => {
       dkimValue:
         'v=DKIM1; k=rsa; h=sha256; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCpiANdZRxauv72XRP72eLbKav/4ohDpJD9Mye3eh+02++djlfvjfaxdRUVTFd5hkpCPlAHqVIMqyjQwvbCSwmj8ttzVbVfLA18w+nHJP77NihXJ3kbpGqQrXMVAY4vb/DhMWhfBzPctDw6CHrz3aV957DiK5+l0SlwXyIcwa5JvwIDAQAB',
     },
+    isTracking: false,
   };
   const subject = () => shallow(<DomainStatusSection {...defaultProps} />);
 
