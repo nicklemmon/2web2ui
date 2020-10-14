@@ -222,6 +222,14 @@ export const selectMonthlyTransmissionsUsage = createSelector(getTransmissionsUs
   _.get(usage, 'month.used', 0),
 );
 
+export const selectStartOfBillingPeriod = createSelector(
+  [getTransmissionsUsage, getBillingPeriod],
+  (usage, billingPeriod) => {
+    // IMPORTANT CAVEAT: This will not accurately return the billing period for annual plans due to an API limitation
+    return _.get(usage, `${billingPeriod}.start`);
+  },
+);
+
 export const selectEndOfBillingPeriod = createSelector(
   [getTransmissionsUsage, getBillingPeriod],
   (usage, billingPeriod) => {

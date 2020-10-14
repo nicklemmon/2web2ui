@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDateTime, formatDate } from 'src/helpers/date';
+import { formatDateTime, formatApiDate } from 'src/helpers/date';
 import classnames from 'classnames';
 import { fetch as getAccount } from 'src/actions/account';
 import { PanelLoading } from 'src/components/loading';
 import { ProgressBar, Panel, Text, Box, Inline } from 'src/components/matchbox';
+import {
+  selectEndOfBillingPeriod,
+  selectStartOfBillingPeriod,
+} from 'src/selectors/accountBillingInfo';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import styles from './UsageReport.module.scss';
 import { LINKS } from 'src/constants';
+import config from 'src/config';
 import SendMoreCTA from './SendMoreCTA';
 
 const actions = [
@@ -73,7 +78,7 @@ export class UsageReport extends Component {
   }
 
   render() {
-    const { subscription, usage } = this.props;
+    const { subscription, usage, endOfBillingPeriod, startOfBillingPeriod } = this.props;
 
     if (!subscription || !usage) {
       return <PanelLoading />;
@@ -103,9 +108,10 @@ export class UsageReport extends Component {
         <Panel.LEGACY.Section>
           <ProgressLabel
             title="This Month"
-            secondaryTitle={`Billing cycle: ${formatDate(usage.month.start)} - ${formatDate(
-              usage.month.end,
-            )}`}
+            secondaryTitle={`Billing cycle: ${formatApiDate(
+              startOfBillingPeriod,
+              config.dateFormat,
+            )} - ${formatApiDate(endOfBillingPeriod, config.dateFormat)}`}
           />
           {hasMonthlyLimit && (
             <ProgressBar completed={getPercent(usage.month.used, usage.month.limit)} my="300" />
@@ -124,5 +130,15 @@ export class UsageReport extends Component {
   }
 }
 
-const mapStateToProps = ({ account: { usage, subscription } }) => ({ usage, subscription });
+const mapStateToProps = state => {
+  const {
+    account: { usage, subscription },
+  } = state;
+  return {
+    usage,
+    subscription,
+    endOfBillingPeriod: selectEndOfBillingPeriod(state),
+    startOfBillingPeriod: selectStartOfBillingPeriod(state),
+  };
+};
 export default connect(mapStateToProps, { getAccount })(UsageReport);
