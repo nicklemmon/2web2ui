@@ -233,7 +233,7 @@ const mapStateToProps = state => ({
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
   isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
   isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
-  isCompareByEnabled: selectCondition(isUserUiOptionSet('allow_compare_by'))(state), //Comparing different filters
+  isCompareByEnabled: selectCondition(isAccountUiOptionSet('allow_compare_by'))(state), //Comparing different filters
 });
 
 export default connect(mapStateToProps)(ReportOptions);
