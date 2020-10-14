@@ -16,7 +16,7 @@
       "abuse_at_status": "unverified",
       "compliance_status": "valid",
       "verification_mailbox_status": "unverified",
-      "dkim_status": "invalid",
+      "dkim_status": "valid",
       "postmaster_at_status": "unverified"
     },
     "is_default_bounce_domain": true,

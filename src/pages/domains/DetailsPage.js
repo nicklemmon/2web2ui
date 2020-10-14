@@ -28,7 +28,7 @@ function DetailsPage(props) {
   const [warningBanner, toggleBanner] = useState(true);
   const readyFor = resolveReadyFor(domain.status);
   const displaySendingAndBounceSection =
-    resolvedStatus === 'verified' && readyFor.bounce && domain.status.spf_status === 'valid';
+    readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
   const isTracking = Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]));
 
   useEffect(() => {

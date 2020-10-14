@@ -114,15 +114,17 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
         <Layout.SectionTitle as="h2">
           {readyFor.dkim ? 'Sending and Bounce' : 'DNS Verification'}
         </Layout.SectionTitle>
-        <Stack>
-          <SubduedText>
-            Strict alignment is when the sending and bounce domain being the same value(e.g. sending
-            domain = sparkpost.com, and bounce domain = sparkpost.com)
-          </SubduedText>
-          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
-            Domain Documentation
-          </SubduedLink>
-        </Stack>
+        {(!readyFor.dkim || !readyFor.bounce) && (
+          <Stack>
+            <SubduedText>
+              Strict alignment is when the sending and bounce domain being the same value(e.g.
+              sending domain = sparkpost.com, and bounce domain = sparkpost.com)
+            </SubduedText>
+            <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+              Domain Documentation
+            </SubduedLink>
+          </Stack>
+        )}
       </Layout.Section>
       <Layout.Section>
         <Panel>
