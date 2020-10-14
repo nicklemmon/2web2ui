@@ -49,3 +49,11 @@ export function commonBeforeSteps() {
   stubUTCDeliverability();
   stubUTCTimeSeries();
 }
+
+export function getFilterTags() {
+  return cy.findByDataId('active-filter-tags');
+}
+
+export function getFilterGroupings() {
+  return cy.findByDataId('active-filter-group');
+}

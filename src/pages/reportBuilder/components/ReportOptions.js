@@ -2,13 +2,12 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Heading } from 'src/components/text';
-import { Button, Drawer, Inline, Panel, Stack, Tag } from 'src/components/matchbox';
+import { Button, Drawer, Inline, Panel } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import styles from './ReportOptions.module.scss';
 import { AddFiltersSection, CompareByDrawer, FiltersForm, Legend, MetricsDrawer } from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
@@ -16,32 +15,7 @@ import useRouter from 'src/hooks/useRouter';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { dehydrateFilters } from '../helpers';
-
-export const ActiveFilters = ({ filters, handleFilterRemove }) => {
-  const filtersWithIndex = filters.map((value, index) => ({ ...value, index }));
-  const groupedFilters = _.groupBy(filtersWithIndex, 'type');
-  return (
-    <Stack>
-      {Object.keys(groupedFilters).map(key => (
-        <Inline key={`filter_group_${key}`}>
-          <div>{key}</div>
-          <div>
-            <strong className={styles.Conditional}>equals</strong>
-            {groupedFilters[key].map(({ value, index }) => (
-              <Tag
-                className={styles.TagWrapper}
-                key={`tag_${index}`}
-                onRemove={handleFilterRemove ? () => handleFilterRemove(index) : undefined}
-              >
-                {value}
-              </Tag>
-            ))}
-          </div>
-        </Inline>
-      ))}
-    </Stack>
-  );
-};
+import { ActiveFilters, ActiveFiltersV2 } from './ActiveFilters';
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
@@ -56,7 +30,7 @@ export function ReportOptions(props) {
     ? [...drawerTabs, { content: 'Compare' }]
     : drawerTabs;
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
-  const { refreshReportOptions, removeFilter } = actions;
+  const { refreshReportOptions, removeFilter, removeFilterV2 } = actions;
   const {
     selectSummaryMetricsProcessed: processedMetrics,
     selectSummaryChartSearchOptions,
@@ -115,8 +89,13 @@ export function ReportOptions(props) {
     openDrawer();
   };
 
+  // TODO: Remove when the filter groupings feature flag is removed
   const handleFilterRemove = index => {
     removeFilter(index);
+  };
+
+  const handleFilterRemoveV2 = ({ groupingIndex, filterIndex, valueIndex }) => {
+    return removeFilterV2({ groupingIndex, filterIndex, valueIndex });
   };
 
   const handleTimezoneSelect = useCallback(
@@ -148,6 +127,7 @@ export function ReportOptions(props) {
           handleReportChange={handleReportChange}
         />
       </Panel.Section>
+
       <Panel.Section>
         <DateTimeSection
           reportOptions={reportOptions}
@@ -156,6 +136,7 @@ export function ReportOptions(props) {
           refreshReportOptions={refreshReportOptions}
         />
       </Panel.Section>
+
       <Panel.Section>
         <Inline space="300">
           <Button {...getActivatorProps()} onClick={() => handleDrawerOpen(0)} variant="secondary">
@@ -182,6 +163,7 @@ export function ReportOptions(props) {
             </Button>
           )}
         </Inline>
+
         <Drawer {...getDrawerProps()} portalId="drawer-portal">
           <Drawer.Header showCloseButton />
           <Drawer.Content p="0">
@@ -205,23 +187,32 @@ export function ReportOptions(props) {
           </Drawer.Content>
         </Drawer>
       </Panel.Section>
+
       {!isEmpty && (
         <Panel.Section>
           <Legend metrics={processedMetrics} removeMetric={handleRemoveMetric} />
         </Panel.Section>
       )}
+
       {!isEmpty &&
-      Boolean(reportOptions.filters.length) && ( //Only show if there are active filters
+      Boolean(reportOptions.filters.length) && ( // Only show if there are active filters
           <Panel.Section>
             <Inline>
               <Heading as="h2" looksLike="h5">
                 Filters
               </Heading>
 
-              <ActiveFilters
-                filters={reportOptions.filters}
-                handleFilterRemove={handleFilterRemove}
-              />
+              {isComparatorsEnabled ? (
+                <ActiveFiltersV2
+                  filters={reportOptions.filters}
+                  handleFilterRemove={handleFilterRemoveV2}
+                />
+              ) : (
+                <ActiveFilters
+                  filters={reportOptions.filters}
+                  handleFilterRemove={handleFilterRemove}
+                />
+              )}
             </Inline>
           </Panel.Section>
         )}

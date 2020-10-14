@@ -67,7 +67,7 @@ if (IS_HIBANA_ENABLED) {
       };
 
       //Add filters and change time range
-      cy.findByText('Add Filters').click();
+      cy.findByRole('button', { name: 'Add Filters' }).click();
 
       cy.withinDrawer(() => {
         cy.stubRequest({
@@ -110,7 +110,7 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('Saves a new report', () => {
+    it('saves a new report', () => {
       cy.stubRequest({
         method: 'POST',
         url: '/api/v1/reports',
@@ -125,21 +125,21 @@ if (IS_HIBANA_ENABLED) {
       cy.withinModal(() => {
         cy.findByText('Save New Report').should('be.visible');
 
-        //Check validation
+        // Check validation
         cy.findByRole('button', { name: 'Save Report' }).click();
         cy.findAllByText('Required').should('have.length', 2);
 
-        //Check submission
-        cy.get('[name="name"]').type('Hello There');
-        cy.get('[name="description"]').type('General Kenobi');
-        cy.get('[name="is_editable"]').check({ force: true });
+        // Check submission
+        cy.findByLabelText('Name').type('Hello There');
+        cy.findByLabelText('Description').type('General Kenobi');
+        cy.findByLabelText('Allow others to edit report').check({ force: true });
         cy.findByRole('button', { name: 'Save Report' }).click();
       });
       cy.wait('@saveNewReport');
       cy.findByText('You have successfully saved Hello There').click();
     });
 
-    describe('with save reports', () => {
+    describe('with saved reports', () => {
       beforeEach(() => {
         cy.stubRequest({
           url: '/api/v1/reports',
@@ -154,17 +154,17 @@ if (IS_HIBANA_ENABLED) {
         cy.findByLabelText('Report').focus();
 
         cy.findListBoxByLabelText('Report').within(() => {
-          cy.get(`a[role="option"]`)
+          cy.findAllByRole('option')
             .eq(0)
             .should('have.contain', 'My Bounce Report')
             .should('have.contain', 'mockuser');
 
-          cy.get(`a[role="option"]`)
+          cy.findAllByRole('option')
             .eq(1)
             .should('have.contain', 'Your Sending Report')
             .should('have.contain', 'sally-sender');
 
-          cy.get(`a[role="option"]`)
+          cy.findAllByRole('option')
             .eq(2)
             .should('have.contain', 'Summary Report')
             .should('have.contain', 'Default');
@@ -177,7 +177,7 @@ if (IS_HIBANA_ENABLED) {
         cy.findByLabelText('Report').focus(); // open typeahead
 
         cy.findListBoxByLabelText('Report').within(() => {
-          cy.get(`a[role="option"]`)
+          cy.findAllByRole('option')
             .eq(0)
             .should('have.contain', 'My Bounce Report')
             .click();
@@ -201,15 +201,15 @@ if (IS_HIBANA_ENABLED) {
         cy.findByRole('button', { name: 'Edit Details' }).should('be.disabled');
 
         cy.findListBoxByLabelText('Report').within(() => {
-          cy.get(`a[role="option"]`)
+          cy.findAllByRole('option')
             .eq(0)
             .should('have.contain', 'My Bounce Report')
             .click();
         });
 
         cy.findByRole('button', { name: 'Edit Details' }).click();
-        cy.get('[name="name"]').should('have.value', 'My Bounce Report');
-        cy.get('[name="description"]').should('have.value', 'Here is a description');
+        cy.findByLabelText('Name').should('have.value', 'My Bounce Report');
+        cy.findByLabelText('Description').should('have.value', 'Here is a description');
       });
 
       it('should save changes of a saved report', () => {
@@ -220,15 +220,15 @@ if (IS_HIBANA_ENABLED) {
         cy.findByRole('button', { name: 'Save Changes' }).should('be.disabled');
 
         cy.findListBoxByLabelText('Report').within(() => {
-          cy.get(`a[role="option"]`)
+          cy.findAllByRole('option')
             .eq(0)
             .should('have.contain', 'My Bounce Report')
             .click();
         });
 
         cy.findByRole('button', { name: 'Save Changes' }).click();
-        cy.get('[name="name"]').should('have.value', 'My Bounce Report');
-        cy.get('[name="description"]').should('have.value', 'Here is a description');
+        cy.findByLabelText('Name').should('have.value', 'My Bounce Report');
+        cy.findByLabelText('Description').should('have.value', 'Here is a description');
 
         cy.withinModal(() => {
           cy.findByText('Bounces').should('be.visible');

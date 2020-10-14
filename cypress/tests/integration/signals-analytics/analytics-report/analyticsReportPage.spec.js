@@ -1,6 +1,16 @@
 import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { PAGE_URL, METRICS } from './constants';
-import { stubDeliverability, stubTimeSeries, stubSubaccounts, commonBeforeSteps } from './helpers';
+import {
+  stubDeliverability,
+  stubTimeSeries,
+  stubSubaccounts,
+  commonBeforeSteps,
+  getFilterTags,
+  getFilterGroupings,
+} from './helpers';
+
+const ENCODED_QUERY_FILTERS =
+  '%255B%257B%2522AND%2522%3A%257B%2522campaigns%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%2C%2522world%2522%255D%257D%2C%2522templates%2522%3A%257B%2522eq%2522%3A%255B%2522greg-hackathon%2522%255D%2C%2522notEq%2522%3A%255B%2522gregs-test%2522%255D%257D%257D%257D%2C%257B%2522AND%2522%3A%257B%2522sending_ips%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%255D%2C%2522notLike%2522%3A%255B%2522hello-again%2522%255D%257D%257D%257D%255D';
 
 if (IS_HIBANA_ENABLED) {
   describe('Analytics Report', () => {
@@ -452,6 +462,115 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
+    it('renders applied grouped comparator filters according to the URL query params', () => {
+      commonBeforeSteps();
+      cy.stubRequest({
+        url: '/api/v1/account',
+        fixture: 'account/200.get.has-report-filters-v2.json',
+        requestAlias: 'getAccount',
+      });
+      cy.visit(`${PAGE_URL}&query_filters=${ENCODED_QUERY_FILTERS}`);
+      cy.wait(['@getAccount', '@getDeliverability', '@getTimeSeries']);
+
+      getFilterTags().within(() => {
+        getFilterGroupings()
+          .eq(0)
+          .within(() => {
+            cy.findByText('Campaign').should('be.visible');
+            cy.findByText('contains').should('be.visible');
+            cy.findByText('hello').should('be.visible');
+            cy.findByText('world').should('be.visible');
+            cy.findAllByText('Template')
+              .should('be.visible')
+              .should('have.length', 2);
+            cy.findByText('is equal to').should('be.visible');
+            cy.findByText('greg-hackathon').should('be.visible');
+            cy.findByText('is not equal to').should('be.visible');
+            cy.findByText('gregs-test').should('be.visible');
+
+            // "AND" comparison between filters within a group
+            cy.findAllByText('AND')
+              .should('be.visible')
+              .should('have.length', 2);
+          });
+
+        getFilterGroupings()
+          .eq(1)
+          .within(() => {
+            cy.findAllByText('Sending IP')
+              .should('be.visible')
+              .should('have.length', 2);
+            cy.findByText('contains').should('be.visible');
+            cy.findByText('hello').should('be.visible');
+            cy.findByText('does not contain').should('be.visible');
+            cy.findByText('hello-again').should('be.visible');
+          });
+      });
+    });
+
+    it('removes filters when individual filter value tags are removed', () => {
+      commonBeforeSteps();
+      cy.stubRequest({
+        url: '/api/v1/account',
+        fixture: 'account/200.get.has-report-filters-v2.json',
+        requestAlias: 'getAccount',
+      });
+      cy.visit(`${PAGE_URL}&query_filters=${ENCODED_QUERY_FILTERS}`);
+      cy.wait(['@getAccount', '@getDeliverability', '@getTimeSeries']);
+
+      cy.findByRole('heading', { name: 'Filters' }).should('be.visible');
+
+      getFilterTags().within(() => {
+        // Verify there are two sets of filter groupings
+        getFilterGroupings().should('have.length', 2);
+
+        getFilterGroupings()
+          .eq(0)
+          .within(() => {
+            // Granularly verifying that when filter values are removed, a filter label no longer renders
+            cy.findByText('Campaign').should('be.visible');
+            cy.findByText('hello').should('be.visible');
+            cy.findByText('world').should('be.visible');
+            getFirstRemoveButton().click();
+            cy.findByText('Campaign').should('be.visible');
+            cy.findByText('hello').should('not.be.visible');
+            cy.findByText('world').should('be.visible');
+            getFirstRemoveButton().click();
+            // The filter label no longer renders when all filter values are removed
+            cy.findByText('Campaign').should('not.be.visible');
+            cy.findByText('hello').should('not.be.visible');
+            cy.findByText('world').should('not.be.visible');
+
+            // Remove remaining filters in the group
+            getFirstRemoveButton().click();
+            getFirstRemoveButton().click();
+          });
+
+        // After removing all filters within a grouping, only one grouping remains
+        getFilterGroupings().should('have.length', 1);
+
+        getFilterGroupings()
+          .eq(0)
+          .within(() => {
+            cy.findByText('hello').should('be.visible');
+            cy.findByText('hello-again').should('be.visible');
+            getFirstRemoveButton().click();
+            getFirstRemoveButton().click();
+          });
+      });
+
+      // No tags render when no filters are applied
+      getFilterTags().should('not.be.visible');
+      cy.findByRole('heading', { name: 'Filters' }).should('not.be.visible');
+      cy.findByRole('button', { name: 'Add Filters' }).click();
+
+      // Verify the filters form state was reset as well
+      cy.withinDrawer(() => {
+        cy.findByLabelText('Type').should('be.visible');
+        cy.findByLabelText('Compare By').should('not.be.visible');
+      });
+    });
+
     it('closes the drawer when clicking the close button', () => {
       cy.findByText('Add Filters').click();
 
@@ -463,4 +582,8 @@ if (IS_HIBANA_ENABLED) {
       cy.findByLabelText('Type').should('not.be.visible');
     });
   });
+}
+
+function getFirstRemoveButton() {
+  return cy.findAllByRole('button', { name: 'Remove' }).eq(0);
 }
