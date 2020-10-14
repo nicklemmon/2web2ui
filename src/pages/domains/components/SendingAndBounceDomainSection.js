@@ -4,7 +4,7 @@ import { Button, Checkbox, Panel, Tag } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
 import { Bold, SubduedText } from 'src/components/text';
-import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
+import { resolveReadyFor } from 'src/helpers/domains';
 import getConfig from 'src/helpers/getConfig';
 import useDomains from '../hooks/useDomains';
 import { ExternalLink, SubduedLink } from 'src/components/links';
@@ -42,11 +42,10 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
   const { errors, watch, register, handleSubmit } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
 
-  const resolvedStatus = resolveStatus(domain.status);
   const readyFor = resolveReadyFor(domain.status);
 
   const getButtonText = () => {
-    if (resolvedStatus !== 'verified' || !readyFor.bounce) return 'Authenticate Domain';
+    if (!readyFor.dkim || !readyFor.bounce) return 'Authenticate Domain';
     if (status.spf_status !== 'valid') return 'Authenticate for SPF';
   };
 
@@ -80,12 +79,12 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
         } else {
           showAlert({
             type: 'error',
-            message: `SPF autheticated failed`,
+            message: `SPF authetication failed`,
           });
         }
       });
 
-    if (resolveStatus !== 'verified') {
+    if (!readyFor.dkim) {
       const { id, subaccount_id: subaccount } = domain;
 
       verifyDkim({ id, subaccount }).then(results => {
@@ -113,7 +112,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
     <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">
-          {resolvedStatus === 'verified' ? 'Sending and Bounce' : 'DNS Verification'}
+          {readyFor.dkim ? 'Sending and Bounce' : 'DNS Verification'}
         </Layout.SectionTitle>
         <Stack>
           <SubduedText>
@@ -128,7 +127,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
       <Layout.Section>
         <Panel>
           <form onSubmit={handleSubmit(onSubmit)} id="sendingbounceForm">
-            {resolvedStatus !== 'verified' || !readyFor.bounce ? (
+            {!readyFor.dkim || !readyFor.bounce ? (
               <Panel.Section>
                 Add the <Bold>TXT</Bold> and <Bold>{watchVerificationType} </Bold>
                 records, Hostnames and Values for this domain in the settings section of your DNS
@@ -150,12 +149,11 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
 
             <Panel.Section>
               <Stack>
-                <Box>
-                  <Text as="span" fontSize="300" fontWeight="semibold">
-                    {resolvedStatus !== 'verified' ? 'Add DKIM Record' : 'TXT record for DKIM'}
-                  </Text>
-                </Box>
-                {resolvedStatus !== 'verified' && (
+                <Text as="span" fontSize="300" fontWeight="semibold" role="heading">
+                  {!readyFor.dkim ? 'Add DKIM Record' : 'TXT record for DKIM'}
+                </Text>
+
+                {!readyFor.dkim && (
                   <>
                     <Text as="label" fontWeight="500" fontSize="200">
                       Type
@@ -163,27 +161,18 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                     <Text as="p">TXT</Text>
                   </>
                 )}
-                <Field
-                  label="Hostname"
-                  value={domain.dkimHostname}
-                  verified={resolvedStatus === 'verified'}
-                />
-                <Field
-                  label="Value"
-                  value={domain.dkimValue}
-                  verified={resolvedStatus === 'verified'}
-                />
+                <Field label="Hostname" value={domain.dkimHostname} verified={readyFor.dkim} />
+                <Field label="Value" value={domain.dkimValue} verified={readyFor.dkim} />
               </Stack>
             </Panel.Section>
             <Panel.Section>
               <Stack>
-                <Box>
-                  <Text as="span" fontSize="300" fontWeight="semibold">
-                    {!readyFor.bounce
-                      ? 'Add Bounce Record'
-                      : `${initVerificationType} record for Bounce`}
-                  </Text>
-                </Box>
+                <Text as="span" fontSize="300" fontWeight="semibold" role="heading">
+                  {!readyFor.bounce
+                    ? 'Add Bounce Record'
+                    : `${initVerificationType} record for Bounce`}
+                </Text>
+
                 {watchVerificationType === 'MX' ? (
                   <Stack space="200">
                     <Field label="Hostname" value={id} />
@@ -227,26 +216,26 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
             <Panel.Section>
               <Stack>
                 <Box>
-                  <Text as="span" fontSize="300" fontWeight="semibold">
-                    {status.spf_status !== 'valid' ? (
-                      <Box>
-                        <Box display="inline">
+                  {status.spf_status !== 'valid' ? (
+                    <Box>
+                      <Box display="inline">
+                        <Text as="span" fontSize="300" fontWeight="semibold" role="heading">
                           Add SPF Record{' '}
-                          <Tag color="green" ml="400">
-                            Recommended
-                          </Tag>
-                        </Box>
-
-                        <StyledBox>
-                          <Text as="span" fontSize="200" color="gray.700" fontWeight="400">
-                            Optional
-                          </Text>
-                        </StyledBox>
+                        </Text>
+                        <Tag color="green" ml="400">
+                          Recommended
+                        </Tag>
                       </Box>
-                    ) : (
-                      'TXT record for SPF'
-                    )}
-                  </Text>
+
+                      <StyledBox>
+                        <Text as="span" fontSize="200" color="gray.700" fontWeight="400">
+                          Optional
+                        </Text>
+                      </StyledBox>
+                    </Box>
+                  ) : (
+                    'TXT record for SPF'
+                  )}
                 </Box>
                 <Field label="Hostname" value={id} verified={status.spf_status === 'valid'} />
                 <Field
@@ -256,7 +245,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                 />
               </Stack>
             </Panel.Section>
-            {(!readyFor.bounce || resolveStatus !== 'verified') && (
+            {(!readyFor.bounce || !readyFor.dkim) && (
               <Panel.Section>
                 <Checkbox
                   ref={register({ required: true })}
@@ -268,9 +257,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                 />
               </Panel.Section>
             )}
-            {(!readyFor.bounce ||
-              resolveStatus !== 'verified' ||
-              status.spf_status !== 'valid') && (
+            {(!readyFor.bounce || !readyFor.dkim || status.spf_status !== 'valid') && (
               <Panel.Section>
                 <Button
                   variant="primary"
