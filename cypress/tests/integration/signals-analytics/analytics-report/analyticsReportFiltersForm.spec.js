@@ -259,7 +259,7 @@ if (IS_HIBANA_ENABLED) {
           .eq(0)
           .within(() => {
             cy.findByText('Subaccount').should('be.visible');
-            cy.findByText('eq').should('be.visible');
+            cy.findByText('is equal to').should('be.visible');
             cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
             cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
           });
@@ -271,7 +271,7 @@ if (IS_HIBANA_ENABLED) {
           .eq(1)
           .within(() => {
             cy.findByText('Recipient Domain').should('be.visible');
-            cy.findByText('like').should('be.visible');
+            cy.findByText('contains').should('be.visible');
             cy.findByText('some').should('be.visible');
             cy.findByText('tags').should('be.visible');
           });
@@ -318,13 +318,16 @@ if (IS_HIBANA_ENABLED) {
       cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
 
       cy.findByRole('button', { name: 'Add Filters' }).click();
-      cy.findAllByLabelText('Subaccount').should('be.visible');
-      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
-      cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
-      cy.findByLabelText('Recipient Domain').should('exist');
-      cy.findByText('mydomain.com').should('exist');
-      cy.findByLabelText('Template').should('exist');
-      cy.findByText('templatey').should('exist');
+
+      cy.withinDrawer(() => {
+        cy.findAllByLabelText('Subaccount').should('be.visible');
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+        cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+        cy.findByLabelText('Recipient Domain').should('exist');
+        cy.findByText('mydomain.com').should('exist');
+        cy.findByLabelText('Template').should('exist');
+        cy.findByText('templatey').should('exist');
+      });
     });
   });
 }

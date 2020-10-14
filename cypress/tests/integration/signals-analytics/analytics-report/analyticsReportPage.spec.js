@@ -477,15 +477,15 @@ if (IS_HIBANA_ENABLED) {
           .eq(0)
           .within(() => {
             cy.findByText('Campaign').should('be.visible');
-            cy.findByText('like').should('be.visible');
+            cy.findByText('contains').should('be.visible');
             cy.findByText('hello').should('be.visible');
             cy.findByText('world').should('be.visible');
             cy.findAllByText('Template')
               .should('be.visible')
               .should('have.length', 2);
-            cy.findByText('eq').should('be.visible');
+            cy.findByText('is equal to').should('be.visible');
             cy.findByText('greg-hackathon').should('be.visible');
-            cy.findByText('notEq').should('be.visible');
+            cy.findByText('is not equal to').should('be.visible');
             cy.findByText('gregs-test').should('be.visible');
 
             // "AND" comparison between filters within a group
@@ -500,9 +500,9 @@ if (IS_HIBANA_ENABLED) {
             cy.findAllByText('Sending IP')
               .should('be.visible')
               .should('have.length', 2);
-            cy.findByText('like').should('be.visible');
+            cy.findByText('contains').should('be.visible');
             cy.findByText('hello').should('be.visible');
-            cy.findByText('notLike').should('be.visible');
+            cy.findByText('does not contain').should('be.visible');
             cy.findByText('hello-again').should('be.visible');
           });
       });
