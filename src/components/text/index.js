@@ -1,4 +1,5 @@
 export { default as Bold } from './Bold';
+export { default as Comparison } from './Comparison';
 export { default as Definition } from './Definition';
 export { default as Emphasized } from './Emphasized';
 export { default as Heading } from './Heading';

@@ -1,6 +1,7 @@
-import { remapFormData, getGroupingFields, remapGroupings } from '../helpers';
+import { getApiFormattedGroupings, getGroupingFields, getIterableFormattedGroupings } from '../';
+import * as helpers from '../';
 
-const GROUPINGS = [
+const EXAMPLE_GROUPINGS = [
   {
     AND: {
       domains: {
@@ -44,9 +45,39 @@ const GROUPINGS = [
 ];
 
 describe('Report Builder helpers', () => {
-  describe('remapGroupings', () => {
+  describe('hydrate filters', () => {
+    it('should hydrate filters properly', () => {
+      const hydratedFilters = helpers.hydrateFilters([{ AND: { templates: { eq: ['thing'] } } }]);
+      expect(hydratedFilters).toMatchSnapshot();
+    });
+
+    it('should hydrate subaccount filters correctly', () => {
+      const hydratedFilters = helpers.hydrateFilters([{ AND: { subaccounts: { eq: [123] } } }], {
+        subaccounts: [{ id: 123, name: 'Cool Subaccount Name' }],
+      });
+      expect(hydratedFilters).toMatchSnapshot();
+    });
+  });
+
+  describe('dehydrate filters', () => {
+    it('should dehydrate filters properly', () => {
+      const dehydratedFilters = helpers.dehydrateFilters([
+        {
+          AND: {
+            templates: { eq: [{ value: 'only thing left' }] },
+            subaccounts: {
+              notEq: [{ value: 'should be gone', id: 123, name: 'Should not be here' }],
+            },
+          },
+        },
+      ]);
+      expect(dehydratedFilters).toMatchSnapshot();
+    });
+  });
+
+  describe('getIterableFormattedGroupings', () => {
     it('remaps data in to an array of objects for clean consumption by the UI', () => {
-      const data = remapGroupings(GROUPINGS);
+      const data = getIterableFormattedGroupings(EXAMPLE_GROUPINGS);
 
       expect(data[0]).toStrictEqual({
         type: 'AND',
@@ -125,7 +156,7 @@ describe('Report Builder helpers', () => {
 
     it('structures filters to a default state when no type is supplied', () => {
       const grouping = [{ AND: {} }, { OR: {} }];
-      const data = remapGroupings(grouping);
+      const data = getIterableFormattedGroupings(grouping);
 
       expect(data).toStrictEqual([
         {
@@ -173,7 +204,7 @@ describe('Report Builder helpers', () => {
         },
       ];
 
-      expect(remapGroupings(firstGrouping)).toStrictEqual([
+      expect(getIterableFormattedGroupings(firstGrouping)).toStrictEqual([
         {
           type: 'OR',
           filters: [
@@ -191,7 +222,7 @@ describe('Report Builder helpers', () => {
         },
       ]);
 
-      expect(remapGroupings(secondGrouping)).toStrictEqual([
+      expect(getIterableFormattedGroupings(secondGrouping)).toStrictEqual([
         {
           type: 'OR',
           filters: [
@@ -211,7 +242,7 @@ describe('Report Builder helpers', () => {
     });
   });
 
-  describe('remapFormData', () => {
+  describe('getApiFormattedGroupings', () => {
     it('handles the initial, empty state', () => {
       const groupingFields = [
         {
@@ -235,7 +266,7 @@ describe('Report Builder helpers', () => {
           ],
         },
       ];
-      const data = remapFormData(groupingFields);
+      const data = getApiFormattedGroupings(groupingFields);
 
       expect(data).toStrictEqual([]);
     });
@@ -304,7 +335,7 @@ describe('Report Builder helpers', () => {
         },
       ];
 
-      const data = remapFormData(groupingFields);
+      const data = getApiFormattedGroupings(groupingFields);
 
       expect(data).toStrictEqual([
         { AND: { templates: { eq: ['hello'] } } },
@@ -401,7 +432,7 @@ describe('Report Builder helpers', () => {
           ],
         },
       ];
-      const data = remapFormData(groupingFields);
+      const data = getApiFormattedGroupings(groupingFields);
       const expectedData = [
         { AND: { templates: { eq: ['hello'] } } },
         { OR: { templates: { eq: ['hello'] }, subaccounts: { eq: ['102', '104'] } } },
@@ -412,9 +443,11 @@ describe('Report Builder helpers', () => {
     });
 
     it('reverts re-mapped groupings data to the original structure', () => {
-      const data = remapFormData(getGroupingFields(remapGroupings(GROUPINGS)));
+      const data = getApiFormattedGroupings(
+        getGroupingFields(getIterableFormattedGroupings(EXAMPLE_GROUPINGS)),
+      );
 
-      expect(data).toStrictEqual(GROUPINGS);
+      expect(data).toStrictEqual(EXAMPLE_GROUPINGS);
     });
   });
 });

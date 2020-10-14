@@ -1,10 +1,14 @@
 import { useReducer, useCallback } from 'react';
-import { getInitialGroupState, getInitialFilterState, remapGroupings } from './helpers';
+import {
+  getInitialGroupState,
+  getInitialFilterState,
+  getIterableFormattedGroupings,
+} from '../../helpers';
 
 const initialGroupingsState = [{ AND: {} }];
 
 const initialState = {
-  groupings: remapGroupings(initialGroupingsState),
+  groupings: getIterableFormattedGroupings(initialGroupingsState),
 };
 
 function reducer(state, action) {
@@ -93,7 +97,7 @@ function reducer(state, action) {
 
       // If the last filter is totally cleared out, re-populate it with the default state
       if (updatedGroupings.length === 0) {
-        updatedGroupings = remapGroupings(initialGroupingsState);
+        updatedGroupings = getIterableFormattedGroupings(initialGroupingsState);
       }
 
       return { ...state, groupings: updatedGroupings };
@@ -103,15 +107,15 @@ function reducer(state, action) {
       return {
         ...state,
         groupings: action.groupings.length
-          ? remapGroupings(action.groupings)
-          : remapGroupings(initialGroupingsState),
+          ? getIterableFormattedGroupings(action.groupings)
+          : getIterableFormattedGroupings(initialGroupingsState),
       };
     }
 
     case 'CLEAR_FILTERS': {
       return {
         ...state,
-        groupings: remapGroupings(initialGroupingsState),
+        groupings: getIterableFormattedGroupings(initialGroupingsState),
       };
     }
 

@@ -15,7 +15,11 @@ import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import config from 'src/config';
-import { hydrateFilters } from '../helpers';
+import {
+  getIterableFormattedGroupings,
+  getApiFormattedGroupings,
+  hydrateFilters,
+} from '../helpers';
 
 const ReportOptionsContext = createContext({});
 
@@ -100,7 +104,7 @@ const reducer = (state, action) => {
     }
 
     default:
-      return state;
+      throw new Error(`${action.type} is not supported.`);
   }
 };
 
@@ -155,8 +159,25 @@ const reducerV2 = (state, action) => {
       };
     }
 
+    case 'REMOVE_FILTER': {
+      const { payload } = action;
+      const groupings = getIterableFormattedGroupings(state.filters);
+      const targetFilter = groupings[payload.groupingIndex].filters[payload.filterIndex];
+      // Filter out matching values based on index
+      targetFilter.values = targetFilter.values.filter(
+        value => value !== targetFilter.values[payload.valueIndex],
+      );
+      // Remap iterable data structure to match API structure
+      const filters = getApiFormattedGroupings(groupings);
+
+      return {
+        ...state,
+        filters,
+      };
+    }
+
     default:
-      return state;
+      throw new Error(`${action.type} is not supported.`);
   }
 };
 
@@ -213,7 +234,7 @@ const ReportOptionsContextProvider = props => {
 
   const refreshReportOptions = useCallback(
     payload => {
-      dispatch({
+      return dispatch({
         type: 'UPDATE_REPORT_OPTIONS',
         payload,
         meta: { useMetricsRollup, subaccounts },
@@ -224,7 +245,7 @@ const ReportOptionsContextProvider = props => {
 
   const addFilters = useCallback(
     payload => {
-      dispatch({
+      return dispatch({
         type: 'ADD_FILTERS',
         payload,
       });
@@ -232,9 +253,20 @@ const ReportOptionsContextProvider = props => {
     [dispatch],
   );
 
+  // TODO: Remove when old reducer is removed
   const removeFilter = useCallback(
     payload => {
-      dispatch({
+      return dispatch({
+        type: 'REMOVE_FILTER',
+        payload,
+      });
+    },
+    [dispatch],
+  );
+
+  const removeFilterV2 = useCallback(
+    payload => {
+      return dispatch({
         type: 'REMOVE_FILTER',
         payload,
       });
@@ -245,7 +277,7 @@ const ReportOptionsContextProvider = props => {
   //Not currently used but I am leaving them here for now.
   const setFilters = useCallback(
     payload => {
-      dispatch({
+      return dispatch({
         type: 'SET_FILTERS',
         payload,
       });
@@ -255,13 +287,21 @@ const ReportOptionsContextProvider = props => {
 
   //Not currently used but I am leaving them here for now.
   const clearFilters = useCallback(() => {
-    dispatch({
+    return dispatch({
       type: 'CLEAR_FILTERS',
     });
   }, [dispatch]);
 
-  const actions = { addFilters, clearFilters, setFilters, removeFilter, refreshReportOptions };
+  const actions = {
+    addFilters,
+    clearFilters,
+    setFilters,
+    removeFilter, // TODO: Remove when old reducer is removed
+    removeFilterV2,
+    refreshReportOptions,
+  };
   const selectors = useMemo(() => getSelectors(state), [state]);
+
   return (
     <ReportOptionsContext.Provider value={{ state, actions, selectors }}>
       {props.children}

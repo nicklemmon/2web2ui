@@ -13,12 +13,15 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { CheckboxWrapper } from 'src/components/reactHookFormWrapper';
 import { Loading } from 'src/components';
+import { Heading } from 'src/components/text';
 import useRouter from 'src/hooks/useRouter';
-import { useReportBuilderContext } from '../../context/ReportBuilderContext';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
+import { selectCondition } from 'src/selectors/accessConditionState';
 import { createReport, updateReport, getReports } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
-import { ActiveFilters } from '../ReportOptions';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
+import { ActiveFilters, ActiveFiltersV2 } from '../ReportOptions';
 
 import { formatDateTime, relativeDateOptionsIndexed } from 'src/helpers/date';
 
@@ -64,6 +67,7 @@ export function SaveReportModal(props) {
     updateReport,
     create,
     saveQuery,
+    isComparatorsEnabled,
   } = props;
   const { handleSubmit, control, errors, setValue, reset } = useForm({
     defaultValues: {
@@ -103,6 +107,7 @@ export function SaveReportModal(props) {
     if (loading) {
       return <Loading />;
     }
+
     //TODO look into use ref={register}, Matchbox can forward refs after 4.2.1
     return (
       <form onSubmit={handleSubmit(onSubmit)} id="newReportForm">
@@ -111,6 +116,7 @@ export function SaveReportModal(props) {
             as={TextField}
             label="Name"
             name="name"
+            id="saved-reports-name"
             control={control}
             rules={{ required: true }}
             error={errors.name && 'Required'}
@@ -118,17 +124,26 @@ export function SaveReportModal(props) {
           {saveQuery && (
             <Stack>
               <Box>
-                <h6>Metrics</h6>
+                <Heading as="h6">Metrics</Heading>
+
                 <ActiveMetrics metrics={reportOptions.metrics} />
               </Box>
+
               {Boolean(reportOptions.filters.length) && (
                 <Box>
-                  <h6>Filters</h6>
-                  <ActiveFilters filters={reportOptions.filters} />
+                  <Heading as="h6">Filters</Heading>
+
+                  {isComparatorsEnabled ? (
+                    <ActiveFiltersV2 filters={reportOptions.filters} />
+                  ) : (
+                    <ActiveFilters filters={reportOptions.filters} />
+                  )}
                 </Box>
               )}
+
               <Box>
-                <h6>Date Range</h6>
+                <Heading as="h6">Date Range</Heading>
+
                 <DateRange
                   to={reportOptions.to}
                   from={reportOptions.from}
@@ -143,6 +158,7 @@ export function SaveReportModal(props) {
             rows="5"
             label="Description"
             name="description"
+            id="saved-reports-description"
             control={control}
             placeholder="Enter short description for your report"
             rules={{ required: true }}
@@ -153,6 +169,7 @@ export function SaveReportModal(props) {
               <Controller
                 as={CheckboxWrapper}
                 label="Allow others to edit report"
+                id="saved-reports-allow-others-to-edit"
                 name="is_editable"
                 setValue={setValue}
                 control={control}
@@ -185,6 +202,7 @@ export function SaveReportModal(props) {
 }
 const mapStateToProps = state => ({
   loading: state.reports.saveStatus === 'loading',
+  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
 });
 const mapDispatchToProps = { createReport, getReports, updateReport, showAlert };
 

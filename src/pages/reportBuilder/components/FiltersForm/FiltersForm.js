@@ -23,13 +23,12 @@ import {
   ScreenReaderOnly,
   Stack,
 } from 'src/components/matchbox';
-import { Uppercase } from 'src/components/text';
-import { getGroupingFields, remapFormData } from './helpers';
+import { Uppercase, Comparison } from 'src/components/text';
+import { getGroupingFields, getApiFormattedGroupings } from '../../helpers';
 import Typeahead from '../TypeaheadV2';
 import {
   TypeSelect,
   CompareBySelect,
-  ComparisonText,
   MultiEntryController,
   AddButton,
   RemoveButton,
@@ -65,7 +64,7 @@ function FiltersForm({
 
   function handleFormSubmit(e) {
     e.preventDefault(); // Prevents page refresh
-    const formattedGroupings = remapFormData(groupings);
+    const formattedGroupings = getApiFormattedGroupings(groupings);
 
     return handleSubmit({ filters: formattedGroupings });
   }
@@ -279,7 +278,7 @@ function FiltersForm({
                               ) : null}
 
                               {filter.hasComparisonBetweenFilters ? (
-                                <ComparisonText>{grouping.type}</ComparisonText>
+                                <Comparison>{grouping.type}</Comparison>
                               ) : null}
                             </Stack>
 
@@ -294,7 +293,7 @@ function FiltersForm({
                     })}
                   </Panel>
 
-                  {grouping.hasAndBetweenGroups ? <ComparisonText>And</ComparisonText> : null}
+                  {grouping.hasAndBetweenGroups ? <Comparison>And</Comparison> : null}
                 </Stack>
 
                 {grouping.hasAndButton ? (

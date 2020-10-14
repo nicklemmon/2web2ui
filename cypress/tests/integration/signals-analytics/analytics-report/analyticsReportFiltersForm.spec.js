@@ -1,6 +1,6 @@
 import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { PAGE_URL } from './constants';
-import { commonBeforeSteps } from './helpers';
+import { commonBeforeSteps, getFilterTags, getFilterGroupings } from './helpers';
 
 const TYPE_LABEL = 'Type';
 const COMPARE_BY_LABEL = 'Compare By';
@@ -228,10 +228,10 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('handles applying the form and storing in the URL', () => {
+    it('handles applying the form and storing the parameters in the URL', () => {
       navigateToForm();
 
-      //Uses subaccounts to make sure it joins data correctly
+      // Uses subaccounts to make sure it joins data correctly
       cy.findByLabelText(TYPE_LABEL).select('Subaccount');
       cy.findByLabelText(COMPARE_BY_LABEL).should('have.value', 'eq');
 
@@ -253,11 +253,38 @@ if (IS_HIBANA_ENABLED) {
 
       cy.findByRole('button', { name: 'Apply Filters' }).click();
 
+      // Verify rendered filter tags on the reports page, outside of the drawer
+      getFilterTags().within(() => {
+        getFilterGroupings()
+          .eq(0)
+          .within(() => {
+            cy.findByText('Subaccount').should('be.visible');
+            cy.findByText('eq').should('be.visible');
+            cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+            cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+          });
+
+        // Comparison between groupings
+        cy.findByText('And').should('be.visible');
+
+        getFilterGroupings()
+          .eq(1)
+          .within(() => {
+            cy.findByText('Recipient Domain').should('be.visible');
+            cy.findByText('like').should('be.visible');
+            cy.findByText('some').should('be.visible');
+            cy.findByText('tags').should('be.visible');
+          });
+      });
+
       cy.findByRole('button', { name: 'Add Filters' }).click();
-      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
-      cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
-      cy.findByText('some').should('exist');
-      cy.findByText('tags').should('exist');
+
+      cy.withinDrawer(() => {
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+        cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+        cy.findByText('some').should('exist');
+        cy.findByText('tags').should('exist');
+      });
     });
 
     it('handles loading form on initial mount from query params', () => {
@@ -268,8 +295,12 @@ if (IS_HIBANA_ENABLED) {
       cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
 
       cy.findByRole('button', { name: 'Add Filters' }).click();
-      cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
-      cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+
+      cy.withinDrawer(() => {
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+        cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+      });
+
       getGroupingByIndex(1).within(() => {
         getFilterByIndex(0).within(() => {
           cy.findByLabelText('Recipient Domain').should('exist');

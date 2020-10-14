@@ -143,8 +143,16 @@ export const METRICS = [
     queryParam: 'count_clicked',
   },
   {
+    name: 'Initial Opens',
+    queryParam: 'count_initial_rendered',
+  },
+  {
     name: 'Open Rate',
     queryParam: 'open_rate_approx',
+  },
+  {
+    name: 'Opens',
+    queryParam: 'count_rendered',
   },
   {
     name: 'Spam Complaint Rate',

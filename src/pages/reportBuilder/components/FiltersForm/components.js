@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Add, Close } from '@sparkpost/matchbox-icons';
-import { Button, ScreenReaderOnly, Select, Text } from 'src/components/matchbox';
-import { Emphasized, Uppercase } from 'src/components/text';
+import { Button, ScreenReaderOnly, Select } from 'src/components/matchbox';
 import { useMultiEntry } from 'src/hooks';
 
 const COMPARE_BY_OPTIONS = [
@@ -57,16 +56,6 @@ export function CompareBySelect({ id, hasLikeOptions, onChange, value }) {
       options={options}
       value={value ? value : options[0].value}
     />
-  );
-}
-
-export function ComparisonText({ children }) {
-  return (
-    <Text fontWeight="500">
-      <Uppercase>
-        <Emphasized>{children}</Emphasized>
-      </Uppercase>
-    </Text>
   );
 }
 
