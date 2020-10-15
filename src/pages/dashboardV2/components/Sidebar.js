@@ -6,7 +6,7 @@ import { Box, Layout, Stack, Tag, Text } from 'src/components/matchbox';
 import { Bold, Heading, SubduedText, TranslatableText } from 'src/components/text';
 import { PageLink } from 'src/components/links';
 import { formatFullNumber } from 'src/helpers/units';
-import { formatDate, formatApiDate } from 'src/helpers/date';
+import { formatDate } from 'src/helpers/date';
 import { snakeToFriendly } from 'src/helpers/string';
 import useDashboardContext from '../hooks/useDashboardContext';
 
@@ -113,7 +113,7 @@ function BillingUsage() {
                 <TranslatableText>Your billing period ends </TranslatableText>
 
                 <span data-id="sidebar-validations-end-of-billing-period">
-                  {formatApiDate(endOfBillingPeriod, config.dateFormatWithComma)}
+                  {formatDate(endOfBillingPeriod, config.dateFormatWithComma)}
                 </span>
               </SubduedText>
             ) : null}

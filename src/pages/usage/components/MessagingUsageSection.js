@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Grid, Inline, Layout, Stack } from 'src/components/matchbox';
 import { ExternalLink, PageLink } from 'src/components/links';
 import { Heading, SubduedText } from 'src/components/text';
-import { formatApiDate } from 'src/helpers/date';
+import { formatDate } from 'src/helpers/date';
 import config from 'src/config';
 import { LINKS } from 'src/constants';
 import { LabelAndKeyPair } from './LabelAndKeyPair';
@@ -64,10 +64,10 @@ export const MessagingUsageSection = ({
                   <Box id="date">
                     <LabelAndKeyPair
                       label="Billing Cycle"
-                      value={`${formatApiDate(
-                        startOfBillingPeriod,
+                      value={`${formatDate(startOfBillingPeriod, config.dateFormat)} - ${formatDate(
+                        endOfBillingPeriod,
                         config.dateFormat,
-                      )} - ${formatApiDate(endOfBillingPeriod, config.dateFormat)}`}
+                      )}`}
                     ></LabelAndKeyPair>
                   </Box>
                 </Grid.Column>

@@ -159,7 +159,7 @@ export function formatDateTimeWithoutYear(datetime) {
 
 // format as ISO 8601 timestamp to match SP API
 export const formatApiTimestamp = time => moment.utc(time).format();
-export const formatApiDate = (date, format = FORMATS.SHORT_DATE) => moment.utc(date).format(format);
+export const formatApiDate = date => moment.utc(date).format(FORMATS.SHORT_DATE);
 export const formatInputDate = date => moment(date).format(FORMATS.SHORT_DATE);
 export const formatInputTime = time => moment(time).format(FORMATS.TIME);
 export const parseDate = str => moment(str, FORMATS.INPUT_DATES, true);

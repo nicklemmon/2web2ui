@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDateTime, formatApiDate } from 'src/helpers/date';
+import { formatDateTime, formatDate } from 'src/helpers/date';
 import classnames from 'classnames';
 import { fetch as getAccount } from 'src/actions/account';
 import { PanelLoading } from 'src/components/loading';
@@ -79,7 +79,6 @@ export class UsageReport extends Component {
 
   render() {
     const { subscription, usage, endOfBillingPeriod, startOfBillingPeriod } = this.props;
-
     if (!subscription || !usage) {
       return <PanelLoading />;
     }
@@ -108,10 +107,10 @@ export class UsageReport extends Component {
         <Panel.LEGACY.Section>
           <ProgressLabel
             title="This Month"
-            secondaryTitle={`Billing cycle: ${formatApiDate(
+            secondaryTitle={`Billing cycle: ${formatDate(
               startOfBillingPeriod,
               config.dateFormat,
-            )} - ${formatApiDate(endOfBillingPeriod, config.dateFormat)}`}
+            )} - ${formatDate(endOfBillingPeriod, config.dateFormat)}`}
           />
           {hasMonthlyLimit && (
             <ProgressBar completed={getPercent(usage.month.used, usage.month.limit)} my="300" />
