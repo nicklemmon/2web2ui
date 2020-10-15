@@ -28,8 +28,6 @@ export default function DashboardPageV2() {
     currentUser,
     pending,
     hasSetupDocumentationPanel,
-    hasAddSendingDomainLink,
-    hasGenerateApiKeyLink,
     hasUsageSection,
   } = useDashboardContext();
 
@@ -65,7 +63,6 @@ export default function DashboardPageV2() {
                 <ScreenReaderOnly>
                   <Heading as="h3">Next Steps</Heading>
                 </ScreenReaderOnly>
-
                 <Columns space="0">
                   <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.55]}>
                     <Box
@@ -77,33 +74,10 @@ export default function DashboardPageV2() {
                     >
                       <Picture role="presentation" seeThrough>
                         <source srcSet={ConfigurationImgWebp} type="image/webp" />
-
                         <Picture.Image src={ConfigurationImg} alt="" />
                       </Picture>
                     </Box>
                   </Box>
-
-                  <Column>
-                    <Box display="flex" flexDirection="column" height="100%">
-                      {hasAddSendingDomainLink && (
-                        <Dashboard.Shortcut to="/account/sending-domains/create">
-                          Add a Sending Domain
-                        </Dashboard.Shortcut>
-                      )}
-
-                      {hasGenerateApiKeyLink && (
-                        <Dashboard.Shortcut to="/account/api-keys/create">
-                          Generate an API Key
-                        </Dashboard.Shortcut>
-                      )}
-
-                      <Dashboard.Shortcut to="/signals/analytics">
-                        Analyze your Data
-                      </Dashboard.Shortcut>
-
-                      <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
-                    </Box>
-                  </Column>
                 </Columns>
               </Dashboard.Panel>
 
@@ -111,7 +85,6 @@ export default function DashboardPageV2() {
                 <Panel.Section>
                   <Panel.Headline>
                     <Panel.HeadlineIcon as={LightbulbOutline} />
-
                     <TranslatableText>Helpful Shortcuts</TranslatableText>
                   </Panel.Headline>
 

@@ -18,6 +18,21 @@ import DashboardPageV2 from './DashboardPageV2';
 
 function mapStateToProps(state) {
   const isPending = state.account.loading || state.account.usageLoading || state.alerts.listPending;
+  const isAdminOrDev = isAdmin(state) || hasRole(ROLES.DEVELOPER)(state);
+  const hasSetupDocumentationPanel = isAdminOrDev;
+  const addSendingDomainOnboarding = isAdminOrDev && hasGrants('sending_domains/manage')(state);
+  const verifySendingDomainOnboarding =
+    isAdminOrDev && hasGrants('sending_domains/manage')(state) && !addSendingDomainOnboarding;
+  const createApiKeyOnboarding =
+    isAdminOrDev &&
+    hasGrants('api_keys/manage')(state) &&
+    !addSendingDomainOnboarding &&
+    !verifySendingDomainOnboarding;
+  const startSendingOnboarding =
+    isAdminOrDev &&
+    !addSendingDomainOnboarding &&
+    !verifySendingDomainOnboarding &&
+    !createApiKeyOnboarding;
 
   return {
     currentUser: state.currentUser,
@@ -28,9 +43,11 @@ function mapStateToProps(state) {
     validationsThisMonth: selectMonthlyRecipientValidationUsage(state),
     endOfBillingPeriod: selectEndOfBillingPeriod(state),
     pending: isPending,
-    hasSetupDocumentationPanel: isAdmin(state) || hasRole(ROLES.DEVELOPER)(state),
-    hasAddSendingDomainLink: hasGrants('sending_domains/manage')(state),
-    hasGenerateApiKeyLink: hasGrants('api_keys/manage')(state),
+    hasSetupDocumentationPanel,
+    addSendingDomainOnboarding,
+    verifySendingDomainOnboarding,
+    createApiKeyOnboarding,
+    startSendingOnboarding,
     hasUpgradeLink: hasGrants('account/manage')(state),
     hasUsageSection: isAdmin(state),
   };
