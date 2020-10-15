@@ -26,7 +26,7 @@ export const AddFilterLink = ({ newFilter }) => {
 
   const handleClick = e => {
     if (!isNewTabKeyPressed) {
-      addFilters([newFilter]);
+      addFilters(newFilter);
       // eslint-disable-next-line no-unused-expressions
       e?.preventDefault();
     }

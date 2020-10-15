@@ -43,11 +43,7 @@ export function getQueryFromOptions(
     precision,
   };
   if (isComparatorsEnabled) {
-    //Formatted as JSON of { groupings: [filterObject]}
-    //TODO: Uncomment once it's ready
-    // options.query_filters = filters.length
-    //   ? encodeURI(JSON.stringify({ groupings: filters }))
-    //   : undefined;
+    options.query_filters = filters.length ? JSON.stringify({ groupings: filters }) : undefined;
   } else {
     Object.assign(options, getFilterSets(filters, delimiter));
   }

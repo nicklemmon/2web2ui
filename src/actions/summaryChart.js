@@ -170,6 +170,7 @@ export function _getTableData({ params, metrics, groupBy }) {
 export function _getTableDataReportBuilder({ params, metrics, groupBy, reportOptions }) {
   return (dispatch, getState) => {
     const state = getState();
+    const isComparatorsEnabled = Boolean(isAccountUiOptionSet('allow_report_filters_v2')(state));
 
     // The selected grouping
     const activeGroup = groupBy || state.summaryChart.groupBy;
@@ -179,7 +180,10 @@ export function _getTableDataReportBuilder({ params, metrics, groupBy, reportOpt
 
     // Gets filters and metrics for params
     if (!params && reportOptions) {
-      params = getQueryFromOptions({ ...reportOptions, metrics: activeMetrics });
+      params = getQueryFromOptions(
+        { ...reportOptions, metrics: activeMetrics },
+        { isComparatorsEnabled },
+      );
     }
 
     const path = activeGroup === 'aggregate' ? 'deliverability' : `deliverability/${activeGroup}`;

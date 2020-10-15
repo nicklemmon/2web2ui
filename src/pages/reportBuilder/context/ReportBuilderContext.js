@@ -15,6 +15,7 @@ import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import config from 'src/config';
+import { FILTER_KEY_MAP } from 'src/helpers/metrics';
 import {
   getIterableFormattedGroupings,
   getApiFormattedGroupings,
@@ -30,7 +31,7 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_FILTERS': {
-      const mergedFilters = dedupeFilters([...state.filters, ...action.payload]);
+      const mergedFilters = dedupeFilters([...state.filters, action.payload]);
       if (mergedFilters.length === state.filters.length) {
         return state;
       }
@@ -110,6 +111,15 @@ const reducer = (state, action) => {
 
 const reducerV2 = (state, action) => {
   switch (action.type) {
+    case 'ADD_FILTERS': {
+      return {
+        ...state,
+        filters: [
+          ...state.filters,
+          { AND: { [FILTER_KEY_MAP[action.payload.type]]: { eq: [action.payload] } } },
+        ],
+      };
+    }
     case 'UPDATE_REPORT_OPTIONS': {
       const { payload, meta } = action;
       const { useMetricsRollup, subaccounts } = meta;

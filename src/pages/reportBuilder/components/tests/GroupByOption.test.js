@@ -3,7 +3,7 @@ import { GroupByOption } from '../GroupByOption';
 import { shallow } from 'enzyme';
 
 jest.mock('../../context/ReportBuilderContext', () => ({
-  useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar' } })),
+  useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar', filters: [] } })),
 }));
 
 describe('Group By Option', () => {
@@ -42,7 +42,7 @@ describe('Group By Option', () => {
     wrapper.find('Select').simulate('change', { target: { value: 'campaign' } });
     expect(props._getTableData).toHaveBeenCalledWith({
       groupBy: 'campaign',
-      reportOptions: { foo: 'bar' },
+      reportOptions: { foo: 'bar', filters: [] },
     });
   });
   it('should handle select change when its just a placeholder value', () => {
@@ -73,7 +73,7 @@ describe('Group By Option', () => {
     wrapper.find('Checkbox').simulate('change');
     expect(props._getTableData).toHaveBeenCalledWith({
       groupBy: 'domain',
-      reportOptions: { foo: 'bar' },
+      reportOptions: { foo: 'bar', filters: [] },
     });
     expect(wrapper.find('Checkbox')).not.toBeChecked();
   });
@@ -86,7 +86,7 @@ describe('Group By Option', () => {
     expect(props._getTableData).toHaveBeenCalledTimes(2);
     expect(props._getTableData).toHaveBeenCalledWith({
       groupBy: 'watched-domain',
-      reportOptions: { foo: 'bar' },
+      reportOptions: { foo: 'bar', filters: [] },
     });
     expect(wrapper.find('Checkbox')).toBeChecked();
   });

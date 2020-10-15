@@ -40,7 +40,7 @@ describe('Add Filter Link', () => {
       'to',
       '/report?filters=Campaign%3A%20shinynewfilter&filters=Subaccount%3Asubmarine%3A10&metrics=count_something',
     );
-    expect(addFilters).toHaveBeenCalledWith([{ id: 10, type: 'Subaccount', value: 'submarine' }]);
+    expect(addFilters).toHaveBeenCalledWith({ id: 10, type: 'Subaccount', value: 'submarine' });
   });
 
   it('should handle click while holding down meta(cmd) key correctly', () => {

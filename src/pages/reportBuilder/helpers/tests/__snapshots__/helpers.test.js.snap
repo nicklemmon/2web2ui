@@ -6,7 +6,7 @@ Array [
     "AND": Object {
       "subaccounts": Object {
         "notEq": Array [
-          123,
+          "123",
         ],
       },
       "templates": Object {

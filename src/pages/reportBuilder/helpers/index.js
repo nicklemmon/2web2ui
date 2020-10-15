@@ -262,7 +262,7 @@ export function dehydrateFilters(groupings) {
             case 'eq':
             case 'notEq': {
               if (filter === 'subaccounts') {
-                filterRet[comparison] = filterObj[comparison].map(({ id }) => id);
+                filterRet[comparison] = filterObj[comparison].map(({ id }) => String(id));
               } else {
                 filterRet[comparison] = filterObj[comparison].map(({ value }) => value);
               }

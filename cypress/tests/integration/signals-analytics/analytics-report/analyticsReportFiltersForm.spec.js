@@ -1,6 +1,12 @@
 import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { PAGE_URL } from './constants';
-import { commonBeforeSteps, getFilterTags, getFilterGroupings } from './helpers';
+import {
+  commonBeforeSteps,
+  getFilterTags,
+  getFilterGroupings,
+  stubDeliverability,
+  stubTimeSeries,
+} from './helpers';
 
 const TYPE_LABEL = 'Type';
 const COMPARE_BY_LABEL = 'Compare By';
@@ -327,6 +333,30 @@ if (IS_HIBANA_ENABLED) {
         cy.findByText('mydomain.com').should('exist');
         cy.findByLabelText('Template').should('exist');
         cy.findByText('templatey').should('exist');
+      });
+    });
+
+    it('applies the form and adds appropriate query params for API requests', () => {
+      navigateToForm();
+      stubDeliverability('nextGetDeliverability');
+      stubTimeSeries('nextGetTimeSeries');
+      cy.withinDrawer(() => {
+        fillOutForm();
+        cy.findByRole('button', { name: 'Apply Filters' }).click();
+      });
+
+      cy.wait('@nextGetTimeSeries').then(xhr => {
+        cy.wrap(xhr.url).should(
+          'include',
+          'query_filters={"groupings":[{"AND":{"templates":{"notLike":["template"]}}},{"AND":{"sending_domains":{"like":["thisisasendingdomain"]}}}]}',
+        );
+      });
+
+      cy.wait('@nextGetDeliverability').then(xhr => {
+        cy.wrap(xhr.url).should(
+          'include',
+          'query_filters={"groupings":[{"AND":{"templates":{"notLike":["template"]}}},{"AND":{"sending_domains":{"like":["thisisasendingdomain"]}}}]}',
+        );
       });
     });
   });
