@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import styles from './ReportTable.module.scss';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
+
 import { dehydrateFilters } from '../helpers';
 
 export const GroupByOption = props => {
-  const { groupBy, hasSubaccounts, tableLoading, _getTableData } = props;
+  const { groupBy, hasSubaccounts, tableLoading, _getTableData, isComparatorsEnabled } = props;
   const { state: reportOptions } = useReportBuilderContext();
 
   const selectId = useUniqueId('break-down-by');
@@ -16,11 +20,15 @@ export const GroupByOption = props => {
 
   const handleGroupChange = e => {
     if (e.target.value !== 'placeholder') {
-      const { filters, ...options } = reportOptions;
-      _getTableData({
-        groupBy: e.target.value,
-        reportOptions: { ...options, filters: dehydrateFilters(filters) },
-      });
+      if (isComparatorsEnabled) {
+        const { filters, ...options } = reportOptions;
+        _getTableData({
+          groupBy: e.target.value,
+          reportOptions: { ...options, filters: dehydrateFilters(filters) },
+        });
+      } else {
+        _getTableData({ groupBy: e.target.value, reportOptions });
+      }
     }
   };
 
@@ -30,10 +38,14 @@ export const GroupByOption = props => {
     const groupBy = newTopDomainsOnly ? 'watched-domain' : 'domain';
     const { filters, ...options } = reportOptions;
 
-    _getTableData({
-      groupBy,
-      reportOptions: { ...options, filters: dehydrateFilters(filters) },
-    });
+    if (isComparatorsEnabled) {
+      _getTableData({
+        groupBy,
+        reportOptions: { ...options, filters: dehydrateFilters(filters) },
+      });
+    } else {
+      _getTableData({ groupBy, reportOptions });
+    }
   };
 
   const getSelectOptions = () => {
@@ -93,4 +105,6 @@ export const GroupByOption = props => {
   );
 };
 
-export default GroupByOption;
+export default connect(state => ({
+  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
+}))(GroupByOption);
