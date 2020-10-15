@@ -62,7 +62,7 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('be.visible');
         cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Bounce' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'Bounce' }).should('be.visible');
         cy.findByRole('heading', { name: 'Sending and Bounce' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Link Tracking Domain' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
@@ -195,6 +195,31 @@ describe('The domains details page', () => {
         cy.findByRole('button', { name: 'Authenticate for SPF' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
+      });
+      it('renders correct sections for verified bounce domain and unverified sending domain', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.domain-details.json',
+          requestAlias: 'trackingDomainsList',
+        });
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/bounce2.spappteam.com',
+          fixture: 'sending-domains/200.get.bounce-verified-sending-unverified.json',
+          requestAlias: 'verifiedDomains',
+        });
+        cy.visit(`${BASE_UI_URL}/bounce2.spappteam.com`);
+        cy.wait(['@verifiedDomains', '@trackingDomainsList']);
+        cy.wait('@accountDomainsReq');
+        cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
+        cy.findByRole('heading', { name: 'Sending and Bounce' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'Link Tracking Domain' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
+        cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'Bounce' }).should('be.visible');
+        cy.findByRole('button', { name: 'Verify Domain' }).should('be.visible');
+        cy.findByRole('button', { name: 'Authenticate for SPF' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
+        cy.findByRole('heading', { name: 'Email Verification' }).should('be.visible');
       });
 
       it('delete tracking domain prompts confirmation modal first (with different verbiage)', () => {

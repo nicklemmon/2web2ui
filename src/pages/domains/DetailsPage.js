@@ -118,20 +118,14 @@ function DetailsPage(props) {
           domain={domain}
           isByoipAccount={isByoipAccount}
           isSectionVisible={
-            resolvedStatus !== 'blocked' &&
-            !isTracking &&
-            resolvedStatus !== 'unverified' &&
-            !displaySendingAndBounceSection
+            resolvedStatus !== 'blocked' && !isTracking && !displaySendingAndBounceSection
           }
         />
         <Domains.SendingAndBounceDomainSection
           domain={domain}
           isByoipAccount={isByoipAccount}
           isSectionVisible={
-            resolvedStatus !== 'blocked' &&
-            !isTracking &&
-            resolvedStatus !== 'unverified' &&
-            displaySendingAndBounceSection
+            resolvedStatus !== 'blocked' && !isTracking && displaySendingAndBounceSection
           }
         />
 
