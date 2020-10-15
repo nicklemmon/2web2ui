@@ -452,7 +452,7 @@ describe('selectEndOfBillingPeriod', () => {
       },
     };
 
-    expect(billingInfo.selectEndOfBillingPeriod(state)).toEqual('04-05-06');
+    expect(billingInfo.selectEndOfBillingPeriod(state)).toEqual('2006-04-05T08:00:00.000Z');
   });
 });
 
