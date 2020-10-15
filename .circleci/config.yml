@@ -174,6 +174,28 @@ jobs:
       - cypress_cleanup:
           theme: og
 
+  'Integration Testing - OG Theme - Targeted':
+    <<: *defaults
+    description: 'Runs integration tests for the OG theme, structured for individual test debugging'
+    parameters:
+      specs:
+        type: string
+        default: ''
+    steps:
+      - setup
+      - cypress_dependencies
+      # Restores the /build folder from the previous job
+      - attach_workspace:
+          at: ./
+      - run: mv build-og build
+      - run:
+          name: 'Run Cypress Integration Tests - Targeted'
+          command: |
+            SPECS=<< parameters.specs >>
+            npm run test-integration-ci -- --spec $SPECS
+      - cypress_cleanup:
+          theme: og
+
   'Integration Testing - Hibana Theme':
     <<: *defaults
     parallelism: 5
@@ -193,6 +215,28 @@ jobs:
             FORMATTED_SPECS=$(join , ${SPECS[@]})
             echo $FORMATTED_SPECS
             npm run test-integration-ci-hibana -- --spec $FORMATTED_SPECS
+      - cypress_cleanup:
+          theme: hibana
+
+  'Integration Testing - Hibana Theme - Targeted':
+    <<: *defaults
+    description: 'Runs integration tests for the Hibana theme, structured for individual test debugging'
+    parameters:
+      specs:
+        type: string
+        default: ''
+    steps:
+      - setup
+      - cypress_dependencies
+      # Restores the /build folder from the previous job
+      - attach_workspace:
+          at: ./
+      - run: mv build-hibana build
+      - run:
+          name: 'Run Cypress Integration Tests - Targeted'
+          command: |
+            SPECS=<< parameters.specs >>
+            npm run test-integration-ci-hibana -- --spec $SPECS
       - cypress_cleanup:
           theme: hibana
 
@@ -231,3 +275,15 @@ workflows:
             - 'Unit Testing'
             - 'Integration Testing - OG Theme'
             - 'Integration Testing - Hibana Theme'
+      # Uncomment these jobs to run targeted integration tests by passing in
+      # the targeted filename to run an individual spec or groups of specs.
+      # See: https://docs.cypress.io/guides/guides/command-line.html#cypress-run for formatting tips.
+      #
+      # - 'Integration Testing - OG Theme - Targeted':
+      #     specs: "./cypress/tests/integration/<your-glob-pattern-goes-here>.spec.js"
+      #     requires:
+      #       - 'Build - OG Theme'
+      # - 'Integration Testing - Hibana Theme - Targeted':
+      #     specs: "./cypress/tests/integration/<your-glob-pattern-goes-here>.spec.js"
+      #     requires:
+      #       - 'Build - Hibana'
