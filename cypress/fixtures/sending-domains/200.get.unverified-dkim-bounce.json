@@ -1,0 +1,25 @@
+{
+  "results": {
+    "dkim": {
+      "signing_domain": "sending-bounce.net",
+      "headers": "from:to:subject:date",
+      "public": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCpvvVTbW5Bmo/Cef+MHqcle4Ko/lc5CQh+tCdED/u6ATQTyTYNYM5zUtIL1+7z5n2V+Hncxr23d5FE6n+rFxSib3ZuvehQqwKsdBiIQPUP4m1excbtjizHd0Sp0MCqcK5+fom0RY+A/PdncsgLRr/Or7vd0IFeJhniptk7EduhQwIDAQAB",
+      "selector": "scph0118"
+    },
+    "creation_time": "2018-01-29T14:10:53+00:00",
+    "is_default_bounce_domain": false,
+    "status": {
+      "mx_status": "unverified",
+      "spf_status": "unverified",
+      "cname_status": "invalid",
+      "ownership_verified": false,
+      "abuse_at_status": "unverified",
+      "compliance_status": "valid",
+      "verification_mailbox": "jose",
+      "verification_mailbox_status": "unverified",
+      "dkim_status": "unverified",
+      "postmaster_at_status": "unverified"
+    },
+    "shared_with_subaccounts": false
+  }
+}

@@ -3,20 +3,10 @@ import { Page, Banner, Button } from 'src/components/matchbox';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { connect } from 'react-redux';
-import {
-  selectAllowDefaultBounceDomains,
-  selectAllSubaccountDefaultBounceDomains,
-} from 'src/selectors/account';
 import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
-import {
-  selectTrackingDomainsOptions,
-  selectTrackingDomainsList,
-} from 'src/selectors/trackingDomains';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
-import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
+import { selectTrackingDomainsList } from 'src/selectors/trackingDomains';
 import { Loading } from 'src/components/loading/Loading';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';
@@ -30,12 +20,7 @@ function DetailsPage(props) {
     history,
     sendingDomainsPending,
     trackingDomainListPending,
-    allowSubaccountDefault,
-    allowDefault,
     domain,
-    isByoipAccount,
-    trackingDomains,
-    hasAnyoneAtEnabled,
     getDomain,
     listTrackingDomains,
   } = props;
@@ -43,7 +28,7 @@ function DetailsPage(props) {
   const [warningBanner, toggleBanner] = useState(true);
   const readyFor = resolveReadyFor(domain.status);
   const displaySendingAndBounceSection =
-    resolvedStatus === 'verified' && readyFor.bounce && domain.status.spf_status === 'valid';
+    readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
   const isTracking = Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]));
 
   useEffect(() => {
@@ -98,17 +83,10 @@ function DetailsPage(props) {
           </Banner>
         )}
 
-        <Domains.DomainStatusSection
-          domain={domain}
-          id={match.params.id}
-          allowSubaccountDefault={allowSubaccountDefault}
-          allowDefault={allowDefault}
-          isTracking={isTracking}
-        />
+        <Domains.DomainStatusSection domain={domain} id={match.params.id} isTracking={isTracking} />
 
         <Domains.SetupForSending
           domain={domain}
-          id={match.params.id}
           resolvedStatus={resolvedStatus}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && !displaySendingAndBounceSection
@@ -116,14 +94,12 @@ function DetailsPage(props) {
         />
         <Domains.SetupBounceDomainSection
           domain={domain}
-          isByoipAccount={isByoipAccount}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && !displaySendingAndBounceSection
           }
         />
         <Domains.SendingAndBounceDomainSection
           domain={domain}
-          isByoipAccount={isByoipAccount}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && displaySendingAndBounceSection
           }
@@ -131,7 +107,6 @@ function DetailsPage(props) {
 
         <Domains.LinkTrackingDomainSection
           domain={domain}
-          trackingDomains={trackingDomains}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && resolvedStatus !== 'unverified'
           }
@@ -139,7 +114,6 @@ function DetailsPage(props) {
 
         <Domains.VerifyEmailSection
           domain={domain}
-          hasAnyoneAtEnabled={hasAnyoneAtEnabled}
           isSectionVisible={resolvedStatus === 'unverified' && !isTracking}
         />
 
@@ -159,12 +133,7 @@ function DetailsPage(props) {
 export default connect(
   state => ({
     domain: selectDomain(state),
-    allowDefault: selectAllowDefaultBounceDomains(state),
-    allowSubaccountDefault: selectAllSubaccountDefaultBounceDomains(state),
-    trackingDomains: selectTrackingDomainsOptions(state),
     trackingDomainList: selectTrackingDomainsList(state),
-    isByoipAccount: selectCondition(hasAccountOptionEnabled('byoip_customer'))(state),
-    hasAnyoneAtEnabled: selectHasAnyoneAtDomainVerificationEnabled(state),
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
   }),

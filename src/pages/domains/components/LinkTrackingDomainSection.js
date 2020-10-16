@@ -8,10 +8,10 @@ import { Select } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
 
-export default function LinkTrackingDomainSection({ domain, trackingDomains, isSectionVisible }) {
+export default function LinkTrackingDomainSection({ domain, isSectionVisible }) {
   const { control, handleSubmit } = useForm();
 
-  const { updateSendingDomain, showAlert } = useDomains();
+  const { trackingDomainOptions, updateSendingDomain, showAlert } = useDomains();
 
   const onSubmit = ({ trackingDomain }) => {
     const { id, subaccount_id: subaccount } = domain;
@@ -54,7 +54,7 @@ export default function LinkTrackingDomainSection({ domain, trackingDomains, isS
                   <Select
                     onChange={onChange}
                     value={value || domain.tracking_domain}
-                    options={trackingDomains || []}
+                    options={trackingDomainOptions || []}
                     label="Linked Tracking Domain"
                     helpText="Domains must be verified to be linked to a sending domain."
                   />

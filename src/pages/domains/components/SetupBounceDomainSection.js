@@ -37,19 +37,21 @@ const Field = ({ verified, label, value }) => {
   return <TextField label={label} value={value} readOnly />;
 };
 
-export default function SetupBounceDomainSection({
-  domain,
-  isByoipAccount,
-  isSectionVisible,
-  title,
-}) {
+export default function SetupBounceDomainSection({ domain, isSectionVisible, title }) {
   const { id, status, subaccount_id } = domain;
+  const {
+    getDomain,
+    verify,
+    showAlert,
+    userName,
+    isByoipAccount,
+    verifyBounceLoading,
+  } = useDomains();
   const readyFor = resolveReadyFor(status);
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
   const bounceDomainsConfig = getConfig('bounceDomains');
   const { control, handleSubmit, watch } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
-  const { getDomain, verify, showAlert, userName } = useDomains();
   const [warningBanner, toggleBanner] = useState(true);
 
   const onSubmit = () => {
@@ -247,7 +249,7 @@ export default function SetupBounceDomainSection({
                 ></Field>
                 <Field
                   label="Value"
-                  value="v=spf1 mx  a    ~all"
+                  value="v=spf1 mx a ~all"
                   verified={domain.status.spf_status === 'valid'}
                 ></Field>
               </Stack>
@@ -258,11 +260,13 @@ export default function SetupBounceDomainSection({
                   <Checkbox
                     id="add-txt-to-godaddy"
                     label="The TXT record has been added to the DNS provider"
+                    disabled={verifyBounceLoading}
                   />
                 ) : (
                   <Checkbox
                     id="add-txt-to-godaddy"
                     label={`The ${watchVerificationType} record has been added to the DNS provider`}
+                    disabled={verifyBounceLoading}
                   />
                 )}
               </Panel.Section>
@@ -276,7 +280,7 @@ export default function SetupBounceDomainSection({
             )}
             {!readyFor.bounce && (
               <Panel.Section>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" loading={verifyBounceLoading}>
                   Authenticate for Bounce
                 </Button>
               </Panel.Section>

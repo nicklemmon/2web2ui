@@ -14,27 +14,24 @@ import { EXTERNAL_LINKS } from '../constants';
 import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
 
-export default function DomainStatusSection({
-  allowDefault,
-  allowSubaccountDefault,
-  domain,
-  id,
-  isTracking,
-}) {
+export default function DomainStatusSection({ domain, id, isTracking }) {
   const { closeModal, isModalOpen, openModal } = useModal();
-  const readyFor = resolveReadyFor(domain.status);
-  const resolvedStatus = resolveStatus(domain.status);
-  const showDefaultBounceSubaccount =
-    !domain.subaccount_id || (domain.subaccount_id && allowSubaccountDefault);
-  const showDefaultBounceToggle =
-    allowDefault && readyFor.sending && readyFor.bounce && showDefaultBounceSubaccount;
   const {
+    allowDefault,
+    allowSubaccountDefault,
     updateSendingDomain,
     trackingDomains,
     updateTrackingDomain,
     listTrackingDomains,
     updateTrackingPending,
   } = useDomains();
+  const readyFor = resolveReadyFor(domain.status);
+  const resolvedStatus = resolveStatus(domain.status);
+  const showDefaultBounceSubaccount =
+    !domain.subaccount_id || (domain.subaccount_id && allowSubaccountDefault);
+  const showDefaultBounceToggle =
+    allowDefault && readyFor.sending && readyFor.bounce && showDefaultBounceSubaccount;
+
   const trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
 
   const toggleDefaultBounce = () => {

@@ -20,7 +20,7 @@ const Field = ({ verified, label, value }) => {
 };
 
 export default function SetupForSending({ domain, resolvedStatus, isSectionVisible }) {
-  const { verifyDkim, showAlert, userName } = useDomains();
+  const { verifyDkim, showAlert, userName, verifyDkimLoading } = useDomains();
 
   const handleVerifyDkim = () => {
     const { id, subaccount_id: subaccount } = domain;
@@ -130,7 +130,7 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
           </Panel.Section>
           {resolvedStatus !== 'verified' && (
             <Panel.Section>
-              <Button variant="primary" onClick={handleVerifyDkim}>
+              <Button variant="primary" onClick={handleVerifyDkim} loading={verifyDkimLoading}>
                 Verify Domain
               </Button>
               {/* Functionality not available */}
