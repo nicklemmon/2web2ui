@@ -74,12 +74,12 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
         if (result.status.spf_status === 'valid') {
           showAlert({
             type: 'success',
-            message: `You have successfully autheticated SPF`,
+            message: `You have successfully authenticated SPF`,
           });
         } else {
           showAlert({
             type: 'error',
-            message: `SPF authetication failed`,
+            message: `SPF authentication failed`,
           });
         }
       });
