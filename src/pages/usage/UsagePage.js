@@ -7,6 +7,10 @@ import { MessagingUsageSection } from './components/MessagingUsageSection';
 import { FeatureUsageSection } from './components/FeatureUsageSection';
 import { RVUsageSection } from './components/RVUsageSection';
 import { Loading } from 'src/components';
+import {
+  selectEndOfBillingPeriod,
+  selectStartOfBillingPeriod,
+} from 'src/selectors/accountBillingInfo';
 
 export function UsagePage({
   getAccount,
@@ -16,6 +20,8 @@ export function UsagePage({
   rvUsage,
   subscription,
   billingSubscription,
+  endOfBillingPeriod,
+  startOfBillingPeriod,
   loading,
 }) {
   useEffect(() => {
@@ -35,7 +41,12 @@ export function UsagePage({
   return (
     <Page title="Usage">
       <Layout>
-        <MessagingUsageSection usage={usage} subscription={subscription} />
+        <MessagingUsageSection
+          usage={usage}
+          subscription={subscription}
+          endOfBillingPeriod={endOfBillingPeriod}
+          startOfBillingPeriod={startOfBillingPeriod}
+        />
       </Layout>
       <Layout>
         <FeatureUsageSection billingSubscription={billingSubscription} />
@@ -52,6 +63,8 @@ const mapStateToProps = state => {
     subscription: state.account.subscription,
     billingSubscription: state.billing.subscription,
     loading: state.account.loading || state.billing.loading || state.billing.usageLoading,
+    endOfBillingPeriod: selectEndOfBillingPeriod(state),
+    startOfBillingPeriod: selectStartOfBillingPeriod(state),
   };
 };
 

@@ -11,6 +11,8 @@ import {
 } from 'src/helpers/conditions/account';
 import { selectCondition } from './accessConditionState';
 import { getCurrentAccountPlan } from 'src/selectors/accessConditionState';
+import moment from 'moment';
+
 const suspendedSelector = state => state.account.isSuspendedForBilling;
 const pendingSubscriptionSelector = state =>
   state.account.pending_subscription ||
@@ -222,11 +224,27 @@ export const selectMonthlyTransmissionsUsage = createSelector(getTransmissionsUs
   _.get(usage, 'month.used', 0),
 );
 
+export const selectStartOfBillingPeriod = createSelector(
+  [getTransmissionsUsage, getBillingPeriod],
+  (usage, billingPeriod) => {
+    // IMPORTANT CAVEAT: This will not accurately return the billing period for annual plans due to an API limitation
+    return _.get(usage, `${billingPeriod}.start`)
+      ? moment(_.get(usage, `${billingPeriod}.start`))
+          .utc()
+          .format('YYYY-MM-DD') + 'T08:00:00.000Z' //added the T08:00:00.000Z to convert it actual time of when the bill run happens
+      : undefined;
+  },
+);
+
 export const selectEndOfBillingPeriod = createSelector(
   [getTransmissionsUsage, getBillingPeriod],
   (usage, billingPeriod) => {
     // IMPORTANT CAVEAT: This will not accurately return the billing period for annual plans due to an API limitation
-    return _.get(usage, `${billingPeriod}.end`);
+    return _.get(usage, `${billingPeriod}.end`)
+      ? moment(_.get(usage, `${billingPeriod}.end`))
+          .utc()
+          .format('YYYY-MM-DD') + 'T08:00:00.000Z' //added the T08:00:00.000Z to convert it actual time of when the bill run happens
+      : undefined;
   },
 );
 
