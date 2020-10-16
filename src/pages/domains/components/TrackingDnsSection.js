@@ -36,17 +36,21 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   return (
     <Layout>
       <Layout.Section annotated>
+        <Layout.SectionTitle as="h2">{title || 'Tracking'} </Layout.SectionTitle>
         <Stack>
-          <Layout.SectionTitle as="h2">{title || 'Tracking'} </Layout.SectionTitle>
           {unverified && (
-            <SubduedText>
+            <SubduedText fontSize="200">
               Tracking domains are used by mail providers to determine where engagement rate (like
               opens and clicks) should be sent. This allows you to measure the health of your email
               campaigns so that your team is able to create content and mailing lists that maximize
               your potential.
             </SubduedText>
           )}
-          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+          <SubduedLink
+            as={ExternalLink}
+            to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}
+            fontSize="200"
+          >
             Tracking Domain Documentation
           </SubduedLink>
         </Stack>

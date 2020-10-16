@@ -57,7 +57,7 @@ export default function SetupForSending({ domain, isSectionVisible }) {
               Recommended
             </Tag>
             <Stack>
-              <SubduedText>
+              <SubduedText fontSize="200">
                 DKIM (DomainKeys Identified Mail) is an email authentication method that allows a
                 sender to claim responsibility for a message by using digital signatures generated
                 from private and public keys. DKIM failures can cause messages to be rejected, so
@@ -65,7 +65,11 @@ export default function SetupForSending({ domain, isSectionVisible }) {
                 be verified and used, in order to ensure DKIM checks are passed.
               </SubduedText>
 
-              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+              <SubduedLink
+                as={ExternalLink}
+                to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}
+                fontSize="200"
+              >
                 Sending Domain Documentation
               </SubduedLink>
             </Stack>
