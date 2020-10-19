@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Layout, Stack, TextField, Text } from 'src/components/matchbox';
-import { Panel } from 'src/components/matchbox';
+import { Panel, Checkbox } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import useDomains from '../hooks/useDomains';
@@ -18,6 +18,7 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   const { trackingDomains, verifyTrackingDomain, verifyingTrackingPending } = useDomains();
   let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
   const { unverified } = trackingDomain;
+  const [checked, toggleChecked] = useState(!!unverified);
 
   const handleVerify = () => {
     return verifyTrackingDomain({
@@ -50,7 +51,7 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
         <Panel>
           {unverified ? (
             <Panel.Section>
-              Add these{' '}
+              Add the{' '}
               <Text as="span" fontWeight="semibold">
                 CNAME
               </Text>{' '}
@@ -79,10 +80,25 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
               <Field label="Hostname" value={trackingDomain.domainName} verified={!unverified} />
               <Field label="Value" value="placeholder" verified={!unverified} />
             </Stack>
+
+            {unverified && (
+              <Checkbox
+                mt="600"
+                mb="100"
+                onChange={() => toggleChecked(!checked)}
+                label={<>The CNAME record has been added to the DNS provider</>}
+              />
+            )}
           </Panel.Section>
+
           {unverified && (
             <Panel.Section>
-              <Button variant="primary" onClick={handleVerify} loading={verifyingTrackingPending}>
+              <Button
+                variant="primary"
+                onClick={handleVerify}
+                disabled={!checked}
+                loading={verifyingTrackingPending}
+              >
                 Verify Domain
               </Button>
             </Panel.Section>

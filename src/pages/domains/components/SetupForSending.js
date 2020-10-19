@@ -133,7 +133,6 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
               <Button variant="primary" onClick={handleVerifyDkim} loading={verifyDkimLoading}>
                 Verify Domain
               </Button>
-              {/* Functionality not available */}
             </Panel.Section>
           )}
         </Panel>
