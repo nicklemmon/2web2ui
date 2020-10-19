@@ -13,7 +13,7 @@ import {
   Tag,
 } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
-import { ButtonLink } from 'src/components/links';
+import { ButtonLink, PageLink } from 'src/components/links';
 
 const allReportsColumns = [
   { label: 'Name', sortKey: 'name' },
@@ -60,8 +60,13 @@ export function ReportsListModal(props) {
           }
         >
           <ActionList>
-            <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />
             <ActionList.Action content="Edit" onClick={() => handleEdit(report)} />
+            <ActionList.Action
+              content="Schedule"
+              to={`/signals/schedule/${report.id}`}
+              component={PageLink}
+            />
+            <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />
           </ActionList>
         </Popover>
       );

@@ -41,3 +41,13 @@ export function deleteReport(id) {
     },
   });
 }
+
+export function getReport(id) {
+  return sparkpostApiRequest({
+    type: 'GET_REPORT',
+    meta: {
+      method: 'GET',
+      url: `/v1/reports/${id}`,
+    },
+  });
+}
