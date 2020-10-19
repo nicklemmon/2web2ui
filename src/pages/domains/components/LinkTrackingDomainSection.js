@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Layout, Stack } from 'src/components/matchbox';
 import { Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
@@ -9,8 +9,8 @@ import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
 
 export default function LinkTrackingDomainSection({ domain, isSectionVisible }) {
+  const [selectValueChanged, setSelectValueChanged] = useState(false);
   const { control, handleSubmit } = useForm();
-
   const { trackingDomainOptions, updateSendingDomain, showAlert } = useDomains();
 
   const onSubmit = ({ trackingDomain }) => {
@@ -30,9 +30,11 @@ export default function LinkTrackingDomainSection({ domain, isSectionVisible }) 
         }),
       );
   };
+
   if (!isSectionVisible) {
     return null;
   }
+
   return (
     <Layout>
       <Layout.Section annotated>
@@ -52,7 +54,10 @@ export default function LinkTrackingDomainSection({ domain, isSectionVisible }) 
                 name="trackingDomain"
                 render={({ value, onChange }) => (
                   <Select
-                    onChange={onChange}
+                    onChange={() => {
+                      setSelectValueChanged(!selectValueChanged);
+                      onChange();
+                    }}
                     value={value || domain.tracking_domain}
                     options={trackingDomainOptions || []}
                     label="Linked Tracking Domain"
@@ -63,10 +68,9 @@ export default function LinkTrackingDomainSection({ domain, isSectionVisible }) 
               />
             </Panel.Section>
             <Panel.Section>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" disabled={!selectValueChanged}>
                 Update Tracking Domain
               </Button>
-              {/* Functionality not available */}
             </Panel.Section>
           </Panel>
         </form>
