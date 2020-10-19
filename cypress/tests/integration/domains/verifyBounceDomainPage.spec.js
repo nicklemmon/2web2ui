@@ -24,6 +24,7 @@ describe('The verify bounce domain page', () => {
         cy.title().should('include', 'Verify Bounce Domain');
         cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
       });
+
       it('clicking on Authenticate for Bounce, displays a success message', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/prd2.splango.net',
@@ -38,7 +39,14 @@ describe('The verify bounce domain page', () => {
         });
         cy.visit(BASE_URL + 'prd2.splango.net/verify-bounce');
         cy.wait(['@accountDomainsReq', '@unverifiedBounceDomains']);
+
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('be.disabled');
+        cy.findAllByLabelText('The CNAME record has been added to the DNS provider').click({
+          force: true,
+        });
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('not.be.disabled');
         cy.findByRole('button', { name: 'Authenticate for Bounce' }).click();
+
         cy.wait('@verifyDomain');
         cy.findAllByText('You have successfully verified cname record of prd2.splango.net').should(
           'be.visible',
