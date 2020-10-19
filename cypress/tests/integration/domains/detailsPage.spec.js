@@ -163,10 +163,10 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
         cy.findByRole('heading', { name: 'Link Tracking Domain' }).should('be.visible');
         cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
-        cy.findByRole('heading', { name: 'Sending' }).should('be.visible');
+        cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Bounce' }).should('be.visible');
         cy.findByRole('button', { name: 'Authenticate for SPF' }).should('be.visible');
-        cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
+        cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Sending and Bounce' }).should('not.be.visible');
       });
