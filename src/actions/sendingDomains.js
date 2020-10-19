@@ -1,13 +1,14 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
 import setSubaccountHeader from 'src/actions/helpers/setSubaccountHeader';
+import { showAlert } from './globalAlert';
 
 export function list() {
   return sparkpostApiRequest({
     type: 'LIST_SENDING_DOMAINS',
     meta: {
       method: 'GET',
-      url: '/v1/sending-domains'
-    }
+      url: '/v1/sending-domains',
+    },
   });
 }
 
@@ -18,8 +19,8 @@ export function get(id) {
       method: 'GET',
       url: `/v1/sending-domains/${id}`,
       id,
-      showErrorAlert: false
-    }
+      showErrorAlert: false,
+    },
   });
 }
 
@@ -32,23 +33,36 @@ export function create(data) {
       method: 'POST',
       url: '/v1/sending-domains',
       headers: setSubaccountHeader(subaccount),
-      data: { ...formData, shared_with_subaccounts: assignTo === 'shared' }
-    }
+      data: { ...formData, shared_with_subaccounts: assignTo === 'shared' },
+    },
   });
 }
 
 export function update({ id, subaccount, ...data }) {
   const headers = setSubaccountHeader(subaccount);
+  const shared = data.shared_with_subaccounts;
 
-  return sparkpostApiRequest({
-    type: 'UPDATE_SENDING_DOMAIN',
-    meta: {
-      method: 'PUT',
-      url: `/v1/sending-domains/${id}`,
-      data,
-      headers
-    }
-  });
+  return dispatch =>
+    dispatch(
+      sparkpostApiRequest({
+        type: 'UPDATE_SENDING_DOMAIN',
+        meta: {
+          method: 'PUT',
+          url: `/v1/sending-domains/${id}`,
+          data,
+          headers,
+        },
+      }),
+    ).then(() =>
+      dispatch(
+        showAlert({
+          type: 'success',
+          message: `Successfully ${
+            shared ? 'shared' : 'un-shared'
+          } this domain with all subaccounts.`,
+        }),
+      ),
+    );
 }
 
 export function remove({ id, subaccount }) {
@@ -57,8 +71,8 @@ export function remove({ id, subaccount }) {
     meta: {
       method: 'DELETE',
       url: `/v1/sending-domains/${id}`,
-      headers: setSubaccountHeader(subaccount)
-    }
+      headers: setSubaccountHeader(subaccount),
+    },
   });
 }
 
@@ -71,9 +85,9 @@ export function verify({ id, subaccount, type, ...rest }) {
       headers: setSubaccountHeader(subaccount),
       data: {
         ...rest,
-        [`${type}_verify`]: true
-      }
-    }
+        [`${type}_verify`]: true,
+      },
+    },
   });
 }
 
@@ -108,8 +122,8 @@ function verifyToken({ id, subaccount, type, token }) {
       headers: setSubaccountHeader(subaccount),
       data: { [`${type}_token`]: token },
       type,
-      domain: id
-    }
+      domain: id,
+    },
   });
 }
 
