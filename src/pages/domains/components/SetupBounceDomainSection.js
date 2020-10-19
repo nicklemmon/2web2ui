@@ -53,6 +53,9 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
   const { control, handleSubmit, watch } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
   const [warningBanner, toggleBanner] = useState(true);
+  const [checked, toggleChecked] = useState(
+    readyFor.bounce && domain.status.spf_status !== 'valid',
+  );
 
   const onSubmit = () => {
     if (!readyFor.bounce) {
@@ -261,26 +264,33 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                     id="add-txt-to-godaddy"
                     label="The TXT record has been added to the DNS provider"
                     disabled={verifyBounceLoading}
+                    onChange={() => toggleChecked(!checked)}
                   />
                 ) : (
                   <Checkbox
                     id="add-txt-to-godaddy"
                     label={`The ${watchVerificationType} record has been added to the DNS provider`}
                     disabled={verifyBounceLoading}
+                    onChange={() => toggleChecked(!checked)}
                   />
                 )}
               </Panel.Section>
             )}
             {readyFor.bounce && domain.status.spf_status !== 'valid' && (
               <Panel.Section>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={!checked}>
                   Authenticate for SPF
                 </Button>
               </Panel.Section>
             )}
             {!readyFor.bounce && (
               <Panel.Section>
-                <Button variant="primary" type="submit" loading={verifyBounceLoading}>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={!checked}
+                  loading={verifyBounceLoading}
+                >
                   Authenticate for Bounce
                 </Button>
               </Panel.Section>

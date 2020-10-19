@@ -137,6 +137,11 @@ describe('The domains details page', () => {
         cy.visit(`${BASE_UI_URL}/prd2.splango.net`);
         cy.wait(['@unverifiedBounceDomains', '@trackingDomainsList']);
         cy.wait('@accountDomainsReq');
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('be.disabled');
+        cy.findAllByLabelText('The CNAME record has been added to the DNS provider').click({
+          force: true,
+        });
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('not.be.disabled');
         cy.findByRole('button', { name: 'Authenticate for Bounce' }).click();
         cy.wait('@verifyDomain');
         cy.findAllByText('You have successfully verified cname record of prd2.splango.net').should(
@@ -196,6 +201,7 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
       });
+
       it('renders correct sections for verified bounce domain and unverified sending domain', () => {
         cy.stubRequest({
           url: '/api/v1/tracking-domains',
