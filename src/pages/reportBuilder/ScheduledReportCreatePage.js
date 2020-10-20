@@ -3,18 +3,36 @@ import { connect } from 'react-redux';
 
 import useRouter from 'src/hooks/useRouter';
 import { getReport } from 'src/actions/reports';
+import { Layout, Page } from 'src/components/matchbox';
+import ScheduledReportForm from './components/ScheduledReportForm';
 
 const ScheduledReportCreatePage = props => {
   const {
     requestParams: { reportId },
   } = useRouter();
+
   const { getReport, report } = props;
 
   useEffect(() => {
     getReport(reportId);
   }, [getReport, reportId]);
 
-  return <div>{report.name}</div>;
+  const handleSubmit = values => {
+    /* eslint-disable-next-line no-console */
+    console.log(values);
+  };
+  return (
+    <Page title="Schedule Report">
+      <Layout>
+        <Layout.Section annotated>
+          <Layout.SectionTitle>Details</Layout.SectionTitle>
+        </Layout.Section>
+        <Layout.Section>
+          <ScheduledReportForm report={report} handleSubmit={handleSubmit} />
+        </Layout.Section>
+      </Layout>
+    </Page>
+  );
 };
 
 const mapStateToProps = state => ({
