@@ -1,6 +1,6 @@
+import debugLog from 'src/__testHelpers__/debugLog';
 import { createMockStore } from 'src/__testHelpers__/mockStore';
 import cases from 'jest-in-case';
-const { log } = console;
 
 export async function snapshotAction({ actionCreator, state = {} }) {
   const store = createMockStore(state);
@@ -32,7 +32,7 @@ export async function snapshotAction({ actionCreator, state = {} }) {
         );
       }
 
-      if (typeof e.message === 'string') log(e.message);
+      if (typeof e.message === 'string') debugLog(e.message);
       throw new Error(e.message);
     }
   } else {
