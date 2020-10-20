@@ -125,5 +125,10 @@ describe('report helpers', () => {
       ];
       expect(reports.mapFiltersToComparators(filters)).toMatchSnapshot();
     });
+
+    it('returns an empty array when no mapped filters are returned', () => {
+      const filters = [];
+      expect(reports.mapFiltersToComparators(filters)).toMatchSnapshot();
+    });
   });
 });

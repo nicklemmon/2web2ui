@@ -42,6 +42,9 @@ export function ReportOptions(props) {
     return !Boolean(processedMetrics.length);
   }, [processedMetrics]);
 
+  // Render filters when metrics are not empty and when the filters array is not empty
+  const hasFilters = !isEmpty && Boolean(reportOptions.filters.length);
+
   // Updates the query params with incoming search option changes
   useEffect(() => {
     if (reportOptions.isReady) {
@@ -194,28 +197,27 @@ export function ReportOptions(props) {
         </Panel.Section>
       )}
 
-      {!isEmpty &&
-      Boolean(reportOptions.filters.length) && ( // Only show if there are active filters
-          <Panel.Section>
-            <Inline>
-              <Heading as="h2" looksLike="h5">
-                Filters
-              </Heading>
+      {hasFilters && (
+        <Panel.Section>
+          <Inline>
+            <Heading as="h2" looksLike="h5">
+              Filters
+            </Heading>
 
-              {isComparatorsEnabled ? (
-                <ActiveFiltersV2
-                  filters={reportOptions.filters}
-                  handleFilterRemove={handleFilterRemoveV2}
-                />
-              ) : (
-                <ActiveFilters
-                  filters={reportOptions.filters}
-                  handleFilterRemove={handleFilterRemove}
-                />
-              )}
-            </Inline>
-          </Panel.Section>
-        )}
+            {isComparatorsEnabled ? (
+              <ActiveFiltersV2
+                filters={reportOptions.filters}
+                handleFilterRemove={handleFilterRemoveV2}
+              />
+            ) : (
+              <ActiveFilters
+                filters={reportOptions.filters}
+                handleFilterRemove={handleFilterRemove}
+              />
+            )}
+          </Inline>
+        </Panel.Section>
+      )}
     </div>
   );
 }

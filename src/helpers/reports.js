@@ -166,5 +166,8 @@ export function mapFiltersToComparators(filters) {
     acc[filterKey].eq.push(filterKey === 'subaccounts' ? id : value);
     return acc;
   }, {});
+
+  if (_.isEmpty(mappedFilters)) return [];
+
   return [{ AND: mappedFilters }];
 }

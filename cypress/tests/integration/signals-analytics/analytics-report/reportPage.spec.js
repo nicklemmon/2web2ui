@@ -508,6 +508,19 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
+    it('renders no filters section when grouped comparator filters are in their initial, empty state', () => {
+      commonBeforeSteps();
+      cy.stubRequest({
+        url: '/api/v1/account',
+        fixture: 'account/200.get.has-report-filters-v2.json',
+        requestAlias: 'getAccount',
+      });
+      cy.visit(`${PAGE_URL}&query_filters=%255B%257B%2522AND%2522%3A%257B%257D%257D%255D`); // Equivalent to `[{ AND: {} }]`
+      cy.wait(['@getAccount', '@getDeliverability', '@getTimeSeries']);
+
+      getFilterTags().should('not.be.visible');
+    });
+
     it('removes filters when individual filter value tags are removed', () => {
       commonBeforeSteps();
       cy.stubRequest({
