@@ -93,10 +93,8 @@ export function ReportBuilder({
   }, [getSubscription]);
 
   useEffect(() => {
-    if (isComparatorsEnabled) {
-      getSubaccountsList();
-    }
-  }, [isComparatorsEnabled, getSubaccountsList]);
+    getSubaccountsList();
+  }, [getSubaccountsList]);
 
   useEffect(() => {
     if (isSavedReportsEnabled) {

@@ -16,7 +16,7 @@ import styles from './ReportTable.module.scss';
 
 const tableWrapper = props => {
   return (
-    <Panel.LEGACY borderTop="0">
+    <Panel.LEGACY>
       <Table freezeFirstColumn>{props.children}</Table>
     </Panel.LEGACY>
   );
