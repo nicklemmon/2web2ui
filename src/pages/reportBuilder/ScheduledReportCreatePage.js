@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import useRouter from 'src/hooks/useRouter';
 import { getReport } from 'src/actions/reports';
-import { Layout, Page } from 'src/components/matchbox';
+import { Page } from 'src/components/matchbox';
 import ScheduledReportForm from './components/ScheduledReportForm';
 
 const ScheduledReportCreatePage = props => {
@@ -23,14 +23,7 @@ const ScheduledReportCreatePage = props => {
   };
   return (
     <Page title="Schedule Report">
-      <Layout>
-        <Layout.Section annotated>
-          <Layout.SectionTitle>Details</Layout.SectionTitle>
-        </Layout.Section>
-        <Layout.Section>
-          <ScheduledReportForm report={report} handleSubmit={handleSubmit} />
-        </Layout.Section>
-      </Layout>
+      <ScheduledReportForm report={report} handleSubmit={handleSubmit} />
     </Page>
   );
 };
