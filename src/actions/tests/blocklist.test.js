@@ -1,7 +1,7 @@
 import * as blocklist from '../blocklist';
 import sparkpostApiRequest from '../helpers/sparkpostApiRequest';
 
-jest.mock('src/actions/helpers/sparkpostApiRequest', () => jest.fn(a => a));
+jest.mock('src/actions/helpers/sparkpostApiRequest');
 
 describe('Action Creator: Blocklist', () => {
   it('it makes request to list incidents', async () => {

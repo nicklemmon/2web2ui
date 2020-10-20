@@ -1,5 +1,5 @@
 import { fetch, register, emailRequest, getBillingInfo, getUsage } from '../account';
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn(a => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 test('fetch - no params', () => {
   const fetchAction = fetch();

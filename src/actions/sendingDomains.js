@@ -1,6 +1,5 @@
 import sparkpostApiRequest from 'src/actions/helpers/sparkpostApiRequest';
 import setSubaccountHeader from 'src/actions/helpers/setSubaccountHeader';
-import { showAlert } from './globalAlert';
 
 export function list() {
   return sparkpostApiRequest({
@@ -40,29 +39,16 @@ export function create(data) {
 
 export function update({ id, subaccount, ...data }) {
   const headers = setSubaccountHeader(subaccount);
-  const shared = data.shared_with_subaccounts;
 
-  return dispatch =>
-    dispatch(
-      sparkpostApiRequest({
-        type: 'UPDATE_SENDING_DOMAIN',
-        meta: {
-          method: 'PUT',
-          url: `/v1/sending-domains/${id}`,
-          data,
-          headers,
-        },
-      }),
-    ).then(() =>
-      dispatch(
-        showAlert({
-          type: 'success',
-          message: `Successfully ${
-            shared ? 'shared' : 'un-shared'
-          } this domain with all subaccounts.`,
-        }),
-      ),
-    );
+  return sparkpostApiRequest({
+    type: 'UPDATE_SENDING_DOMAIN',
+    meta: {
+      method: 'PUT',
+      url: `/v1/sending-domains/${id}`,
+      data,
+      headers,
+    },
+  });
 }
 
 export function remove({ id, subaccount }) {

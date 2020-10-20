@@ -55,18 +55,21 @@ describe('DomainStatusSection', () => {
     expect(wrapper).toHaveTextContent('Subaccount Assignment');
     expect(wrapper).toHaveTextContent(defaultProps.domain.subaccount_id);
   });
-  it('renders the Share with all subaccounts toggle if the suabaccount number is not present', () => {
+
+  it('renders the Share with all subaccounts toggle if the subaccount number is not present', () => {
     defaultProps.domain.subaccount_id = null;
     wrapper = shallow(<DomainStatusSection {...defaultProps} />);
     expect(wrapper.find('ToggleBlock')).toHaveLength(1);
     expect(wrapper.find({ label: 'Share this domain with all subaccounts' })).toHaveLength(1);
   });
+
   it('render the "Set as Default Bounce Domain" checkbox only when condition is met', () => {
     defaultProps.domain.status.ownership_verified = true;
     defaultProps.domain.status.mx_status = 'valid';
     wrapper = shallow(<DomainStatusSection {...defaultProps} />);
     expect(wrapper.find('Checkbox')).toHaveLength(1);
   });
+
   it('renders the correct value for "Set as Default Bounce Domain" checkbox', () => {
     defaultProps.domain.is_default_bounce_domain = true;
     defaultProps.domain.status.ownership_verified = true;
@@ -74,6 +77,7 @@ describe('DomainStatusSection', () => {
     wrapper = shallow(<DomainStatusSection {...defaultProps} />);
     expect(wrapper.find({ checked: true })).toHaveLength(1);
   });
+
   it('call updateSendingDomain when "Set as Default Bounce Domain" is checked or unchecked', () => {
     defaultProps.domain.is_default_bounce_domain = true;
     defaultProps.domain.status.ownership_verified = true;

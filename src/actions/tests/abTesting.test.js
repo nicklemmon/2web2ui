@@ -1,7 +1,7 @@
 import { createMockStore } from 'src/__testHelpers__/mockStore';
 import * as abTesting from '../abTesting';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: A/B Testing', () => {
   let mockStore;
@@ -41,7 +41,9 @@ describe('Action Creator: A/B Testing', () => {
   });
 
   it('should dispatch a schedule test action', () => {
-    mockStore.dispatch(abTesting.scheduleAbTest({ data: 'data', id: 'test_one', subaccountId: 101 }));
+    mockStore.dispatch(
+      abTesting.scheduleAbTest({ data: 'data', id: 'test_one', subaccountId: 101 }),
+    );
     expect(mockStore.getActions()).toMatchSnapshot();
   });
 
@@ -76,7 +78,9 @@ describe('Action Creator: A/B Testing', () => {
   });
 
   it('should dispatch an reschedule action', () => {
-    mockStore.dispatch(abTesting.rescheduleAbTest({ data: 'data', id: 'test_one', subaccountId: 101 }));
+    mockStore.dispatch(
+      abTesting.rescheduleAbTest({ data: 'data', id: 'test_one', subaccountId: 101 }),
+    );
     expect(mockStore.getActions()).toMatchSnapshot();
   });
 });

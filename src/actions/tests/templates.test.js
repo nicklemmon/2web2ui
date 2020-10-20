@@ -3,7 +3,7 @@ import * as templates from '../templates';
 import * as templatesHelpers from '../helpers/templates';
 import _ from 'lodash';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: Templates', () => {
   let mockStore;
@@ -11,13 +11,13 @@ describe('Action Creator: Templates', () => {
 
   const user = {
     currentUser: {
-      username: 'user'
-    }
+      username: 'user',
+    },
   };
 
   beforeEach(async () => {
     templatesHelpers.getTestDataKey = jest.fn(() => 'key');
-    dispatchMock = jest.fn((a) => Promise.resolve(a));
+    dispatchMock = jest.fn(a => Promise.resolve(a));
     mockStore = createMockStore(user);
   });
 
@@ -46,7 +46,7 @@ describe('Action Creator: Templates', () => {
       id: 'id',
       parsedTestData: { test: 'data' },
       form: 'data',
-      sharedWithSubaccounts: false
+      sharedWithSubaccounts: false,
     };
     mockStore.dispatch(templates.create(data));
     expect(mockStore.getActions()).toMatchSnapshot();
@@ -56,7 +56,7 @@ describe('Action Creator: Templates', () => {
     const data = {
       id: 'id',
       parsedTestData: { test: 'data' },
-      form: 'data'
+      form: 'data',
     };
     const thunk = templates.update(data);
     await thunk(dispatchMock);
@@ -67,7 +67,7 @@ describe('Action Creator: Templates', () => {
     const data = {
       id: 'id',
       parsedTestData: { test: 'data' },
-      form: 'data'
+      form: 'data',
     };
     const thunk = templates.publish(data);
     await thunk(dispatchMock);
@@ -78,10 +78,10 @@ describe('Action Creator: Templates', () => {
     const action = templates.getPreview({
       content: {
         html: '<h1>Test Draft</h1>',
-        subject: 'Test Draft'
+        subject: 'Test Draft',
       },
       id: 'test-template',
-      mode: 'draft'
+      mode: 'draft',
     });
     await mockStore.dispatch(action);
     expect(mockStore.getActions()).toMatchSnapshot();
@@ -92,7 +92,7 @@ describe('Action Creator: Templates', () => {
       emails: ['test@example.com'],
       from: 'test@sparkpostbox.com',
       id: 'test-template',
-      mode: 'draft'
+      mode: 'draft',
     });
     await mockStore.dispatch(action);
     expect(mockStore.getActions()).toMatchSnapshot();
@@ -104,14 +104,14 @@ describe('Action Creator: Templates', () => {
         id: 'my-id',
         subaccount: 123,
         content: {
-          html: '<p>Hello world</p>'
+          html: '<p>Hello world</p>',
         },
         testData: {
           substitution_data: {},
           options: {},
-          metadata: {}
+          metadata: {},
         },
-        sharedWithSubaccounts: true
+        sharedWithSubaccounts: true,
       });
 
       await mockStore.dispatch(action);
@@ -124,14 +124,14 @@ describe('Action Creator: Templates', () => {
       const action = templates.update({
         id: 'my-new-id',
         content: {
-          html: '<p>My new content.</p>'
+          html: '<p>My new content.</p>',
         },
         testData: {
           options: {},
           substitution_data: {
-            foo: 'bar'
-          }
-        }
+            foo: 'bar',
+          },
+        },
       });
 
       await mockStore.dispatch(action);
@@ -146,10 +146,10 @@ describe('Action Creator: Templates', () => {
         testData: {
           options: {},
           substitution_data: {
-            hello: 'world'
+            hello: 'world',
           },
-          metadata: {}
-        }
+          metadata: {},
+        },
       };
       const action = templates.publish(data, 123);
 
@@ -172,16 +172,18 @@ describe('Action Creator: Templates', () => {
       const data = {
         options: {},
         substitution_data: {
-          foo: 'bar'
+          foo: 'bar',
         },
-        metadata: {}
+        metadata: {},
       };
 
-      await mockStore.dispatch(templates.setTestData({
-        data,
-        id: 'foo',
-        mode: 'draft'
-      }));
+      await mockStore.dispatch(
+        templates.setTestData({
+          data,
+          id: 'foo',
+          mode: 'draft',
+        }),
+      );
 
       expect(window.localStorage.setItem).toHaveBeenCalledWith('key', JSON.stringify(data));
     });
@@ -203,4 +205,3 @@ describe('Action Creator: Templates', () => {
     });
   });
 });
-
