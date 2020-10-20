@@ -4,7 +4,7 @@ import {
   singleAddress,
   getJobStatus,
   getList,
-  triggerJob
+  triggerJob,
 } from '../recipientValidation';
 
 jest.mock('src/actions/helpers/sparkpostApiRequest');
@@ -13,43 +13,41 @@ describe('Recipient Verification Actions', () => {
   snapshotActionCases('.uploadList', [
     {
       name: 'when uploading csv',
-      action: () => (
+      actionCreator: () =>
         uploadList({
-          data: 'csv-file'
-        })
-      )
-    }
+          data: 'csv-file',
+        }),
+    },
   ]);
 
   snapshotActionCases('.singleAddress', [
     {
       name: 'when verifying a single address',
-      action: () => (
+      actionCreator: () =>
         singleAddress({
-          address: 'foo@bar.com'
-        })
-      )
-    }
+          address: 'foo@bar.com',
+        }),
+    },
   ]);
 
   snapshotActionCases('.getJobStatus', [
     {
       name: 'when getting status of a list job',
-      action: () => getJobStatus('12345')
-    }
+      actionCreator: () => getJobStatus('12345'),
+    },
   ]);
 
   snapshotActionCases('.getList', [
     {
       name: 'when getting list of jobs',
-      action: () => getList()
-    }
+      actionCreator: () => getList(),
+    },
   ]);
 
   snapshotActionCases('.triggerJob', [
     {
       name: 'when triggering a job to be processed',
-      action: () => triggerJob('12345')
-    }
+      actionCreator: () => triggerJob('12345'),
+    },
   ]);
 });

@@ -5,7 +5,7 @@ import {
   getSnippet,
   getSnippets,
   deleteSnippet,
-  updateSnippet
+  updateSnippet,
 } from '../snippets';
 
 jest.mock('src/actions/helpers/sparkpostApiRequest');
@@ -14,153 +14,141 @@ describe('Snippet Actions', () => {
   snapshotActionCases('.clearSnippet', [
     {
       name: 'by default',
-      action: clearSnippet
-    }
+      actionCreator: clearSnippet,
+    },
   ]);
 
   snapshotActionCases('.createSnippet', [
     {
       name: 'when assigned to master account',
-      action: () => (
+      actionCreator: () =>
         createSnippet({
           id: 'test-snippet',
           name: 'Test Snippet',
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'when shared with all subaccounts',
-      action: () => (
+      actionCreator: () =>
         createSnippet({
           id: 'test-snippet',
           name: 'Test Snippet',
           sharedWithSubaccounts: true,
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'with a subaccount',
-      action: () => (
+      actionCreator: () =>
         createSnippet({
           id: 'test-snippet',
           name: 'Test Snippet',
           subaccountId: 'example-subaccount',
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'with html and text content',
-      action: () => (
+      actionCreator: () =>
         createSnippet({
           html: '<p>Testing...</p>',
           id: 'test-snippet',
           name: 'Test Snippet',
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'with amp_html',
-      action: () => (
+      actionCreator: () =>
         createSnippet({
-          amp_html: '<p>AMP Testing...</p>'
-        })
-      )
-    }
+          amp_html: '<p>AMP Testing...</p>',
+        }),
+    },
   ]);
 
   snapshotActionCases('.getSnippet', [
     {
       name: 'with id',
-      action: () => getSnippet({ id: 123 })
+      actionCreator: () => getSnippet({ id: 123 }),
     },
     {
       name: 'with id and subaccount',
-      action: () => getSnippet({ id: 123, subaccountId: 456 })
-    }
+      actionCreator: () => getSnippet({ id: 123, subaccountId: 456 }),
+    },
   ]);
 
   snapshotActionCases('.getSnippets', [
     {
       name: 'when assigned to master account',
-      action: getSnippets
-    }
+      actionCreator: getSnippets,
+    },
   ]);
 
   snapshotActionCases('.deleteSnippet', [
     {
       name: 'when assigned to master account',
-      action: () => (
+      actionCreator: () =>
         deleteSnippet({
-          id: 'test-snippet'
-        })
-      )
+          id: 'test-snippet',
+        }),
     },
     {
       name: 'when assigned to subaccount',
-      action: () => (
+      actionCreator: () =>
         deleteSnippet({
           id: 'test-snippet',
-          subaccountId: 101
-        })
-      )
-    }
+          subaccountId: 101,
+        }),
+    },
   ]);
 
   snapshotActionCases('.updateSnippet', [
     {
       name: 'when assigned to master account',
-      action: () => (
+      actionCreator: () =>
         updateSnippet({
           id: 'test-snippet',
           name: 'Test Snippet',
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'when shared with all subaccounts',
-      action: () => (
+      actionCreator: () =>
         updateSnippet({
           id: 'test-snippet',
           name: 'Test Snippet',
           sharedWithSubaccounts: true,
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'with a subaccount',
-      action: () => (
+      actionCreator: () =>
         updateSnippet({
           id: 'test-snippet',
           name: 'Test Snippet',
           subaccountId: 'example-subaccount',
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'with html and text content',
-      action: () => (
+      actionCreator: () =>
         updateSnippet({
           html: '<p>Testing...</p>',
           id: 'test-snippet',
           name: 'Test Snippet',
-          text: 'Testing...'
-        })
-      )
+          text: 'Testing...',
+        }),
     },
     {
       name: 'with amp_html',
-      action: () => (
+      actionCreator: () =>
         updateSnippet({
-          amp_html: '<p>AMP Testing...</p>'
-        })
-      )
-    }
+          amp_html: '<p>AMP Testing...</p>',
+        }),
+    },
   ]);
 });

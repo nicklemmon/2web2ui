@@ -10,8 +10,8 @@ export const createSnippet = ({
   sharedWithSubaccounts = false,
   subaccountId,
   text,
-  amp_html
-}) => (
+  amp_html,
+}) =>
   sparkpostApiRequest({
     type: 'CREATE_SNIPPET',
     meta: {
@@ -23,49 +23,45 @@ export const createSnippet = ({
         content: {
           html,
           text,
-          amp_html
+          amp_html,
         },
         id,
         name,
-        shared_with_subaccounts: subaccountId ? false : sharedWithSubaccounts
-      }
-    }
-  })
-);
+        shared_with_subaccounts: subaccountId ? false : sharedWithSubaccounts,
+      },
+    },
+  });
 
-export const getSnippet = ({ id, subaccountId }) => (
+export const getSnippet = ({ id, subaccountId }) =>
   sparkpostApiRequest({
     type: 'GET_SNIPPET',
     meta: {
       method: 'GET',
       headers: setSubaccountHeader(subaccountId),
       url: `/labs/snippets/${id}`,
-      context: { id, subaccountId }
-    }
-  })
-);
+      context: { id, subaccountId },
+    },
+  });
 
-export const getSnippets = () => (
+export const getSnippets = () =>
   sparkpostApiRequest({
     type: 'GET_SNIPPETS',
     meta: {
       method: 'GET',
-      url: '/labs/snippets'
-    }
-  })
-);
+      url: '/labs/snippets',
+    },
+  });
 
-export const deleteSnippet = ({ id, subaccountId }) => (
+export const deleteSnippet = ({ id, subaccountId }) =>
   sparkpostApiRequest({
     type: 'DELETE_SNIPPET',
     meta: {
       method: 'DELETE',
       url: `/labs/snippets/${id}`,
       headers: setSubaccountHeader(subaccountId),
-      context: { id, subaccountId }
-    }
-  })
-);
+      context: { id, subaccountId },
+    },
+  });
 
 export const updateSnippet = ({
   html,
@@ -74,8 +70,8 @@ export const updateSnippet = ({
   sharedWithSubaccounts = false,
   subaccountId,
   text,
-  amp_html
-}) => (
+  amp_html,
+}) =>
   sparkpostApiRequest({
     type: 'UPDATE_SNIPPET',
     meta: {
@@ -87,11 +83,10 @@ export const updateSnippet = ({
         content: {
           html,
           text,
-          amp_html
+          amp_html,
         },
         name,
-        shared_with_subaccounts: subaccountId ? false : sharedWithSubaccounts
-      }
-    }
-  })
-);
+        shared_with_subaccounts: subaccountId ? false : sharedWithSubaccounts,
+      },
+    },
+  });

@@ -1,6 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Action Creator: Sending Domains Create domain should be assigned a subaccount 1`] = `
+exports[`Action Creator: Sending Domains  chained dispatches Action Creator: Sending Domains Update should request with correct post data 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "data": Object {
+        "shared_with_subaccounts": true,
+      },
+      "headers": Object {},
+      "method": "PUT",
+      "url": "/v1/sending-domains/domain.com",
+    },
+    "type": "UPDATE_SENDING_DOMAIN",
+  },
+  Object {
+    "payload": Object {
+      "message": "Successfully shared this domain with all subaccounts.",
+      "type": "success",
+    },
+    "type": "SHOW_GLOBAL_ALERT",
+  },
+]
+`;
+
+exports[`Action Creator: Sending Domains  chained dispatches Action Creator: Sending Domains Update should update domain owned by subaccount 1`] = `
+Array [
+  Object {
+    "meta": Object {
+      "data": Object {
+        "shared_with_subaccounts": true,
+      },
+      "headers": Object {
+        "x-msys-subaccount": 101,
+      },
+      "method": "PUT",
+      "url": "/v1/sending-domains/domain.com",
+    },
+    "type": "UPDATE_SENDING_DOMAIN",
+  },
+  Object {
+    "payload": Object {
+      "message": "Successfully shared this domain with all subaccounts.",
+      "type": "success",
+    },
+    "type": "SHOW_GLOBAL_ALERT",
+  },
+]
+`;
+
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Create domain should be assigned a subaccount 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -19,7 +67,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Create domain should be assigned to master 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Create domain should be assigned to master 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -36,7 +84,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Create domain should be shared with all subaccount 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Create domain should be shared with all subaccount 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -53,7 +101,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Remove should remove calls API 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Remove should remove calls API 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -66,7 +114,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Remove should remove includes subaccount header with required 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Remove should remove includes subaccount header with required 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -81,41 +129,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Update should request with correct post data 1`] = `
-Array [
-  Object {
-    "meta": Object {
-      "data": Object {
-        "is_default_bounce_domain": true,
-      },
-      "headers": Object {},
-      "method": "PUT",
-      "url": "/v1/sending-domains/domain.com",
-    },
-    "type": "UPDATE_SENDING_DOMAIN",
-  },
-]
-`;
-
-exports[`Action Creator: Sending Domains Update should update domain owned by subaccount 1`] = `
-Array [
-  Object {
-    "meta": Object {
-      "data": Object {
-        "is_default_bounce_domain": true,
-      },
-      "headers": Object {
-        "x-msys-subaccount": 101,
-      },
-      "method": "PUT",
-      "url": "/v1/sending-domains/domain.com",
-    },
-    "type": "UPDATE_SENDING_DOMAIN",
-  },
-]
-`;
-
-exports[`Action Creator: Sending Domains Verify Token should dispatch verify abuse token action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify Token should dispatch verify abuse token action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -135,7 +149,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify Token should dispatch verify mailbox token action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify Token should dispatch verify mailbox token action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -155,7 +169,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify Token should dispatch verify postmaster token action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify Token should dispatch verify postmaster token action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -175,7 +189,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should dispatch verify abuse action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should dispatch verify abuse action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -193,7 +207,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should dispatch verify cname action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should dispatch verify cname action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -209,7 +223,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should dispatch verify dkim action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should dispatch verify dkim action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -227,7 +241,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should dispatch verify mailbox action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should dispatch verify mailbox action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -246,7 +260,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should dispatch verify mx action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should dispatch verify mx action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -262,7 +276,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should dispatch verify postmaster action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should dispatch verify postmaster action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -280,7 +294,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should verify as abuse when using the mailbox action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should verify as abuse when using the mailbox action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -298,7 +312,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains Verify should verify as postmaster when using the mailbox action 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains Verify should verify as postmaster when using the mailbox action 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -316,7 +330,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains should clear current sending domain 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains should clear current sending domain 1`] = `
 Array [
   Object {
     "type": "CLEAR_SENDING_DOMAIN",
@@ -324,7 +338,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains should request a list 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains should request a list 1`] = `
 Array [
   Object {
     "meta": Object {
@@ -336,7 +350,7 @@ Array [
 ]
 `;
 
-exports[`Action Creator: Sending Domains should request a sending domain 1`] = `
+exports[`Action Creator: Sending Domains  non-chained dispatches Action Creator: Sending Domains should request a sending domain 1`] = `
 Array [
   Object {
     "meta": Object {

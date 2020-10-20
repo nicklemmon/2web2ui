@@ -5,15 +5,15 @@ jest.mock('../helpers/sparkpostApiRequest');
 
 snapshotActionCases('Action: Subaccounts', {
   clearSubaccount: {
-    action: actions.clearSubaccount
+    actionCreator: actions.clearSubaccount,
   },
   editSubaccount: {
-    action: () => actions.editSubaccount(123, { name: 'Test Example' })
+    actionCreator: () => actions.editSubaccount(123, { name: 'Test Example' }),
   },
   getSubaccount: {
-    action: () => actions.getSubaccount(123)
+    actionCreator: () => actions.getSubaccount(123),
   },
   list: {
-    action: actions.list
-  }
+    actionCreator: actions.list,
+  },
 });

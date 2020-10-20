@@ -5,11 +5,10 @@ import * as metricsHelpers from 'src/helpers/metrics';
 jest.mock('src/helpers/metrics');
 jest.mock('src/actions/metrics');
 jest.mock('src/helpers/accepted', () => ({
-  getAcceptedMetrics: () => ({ accepted: 'metrics' })
+  getAcceptedMetrics: () => ({ accepted: 'metrics' }),
 }));
 
 describe('Action Creator: Refresh Accepted Report', () => {
-
   let dispatchMock;
   let queryMock;
   let updates;
@@ -19,7 +18,7 @@ describe('Action Creator: Refresh Accepted Report', () => {
     queryMock = {};
     updates = { abc: 'cool' };
     metricsHelpers.getQueryFromOptions = jest.fn(() => queryMock);
-    dispatchMock = jest.fn((a) => Promise.resolve(a));
+    dispatchMock = jest.fn(a => Promise.resolve(a));
     result = refreshAcceptedReport(updates)(dispatchMock);
   });
 
@@ -28,16 +27,18 @@ describe('Action Creator: Refresh Accepted Report', () => {
   });
 
   it('should get query options, passing in combined updates and metrics constant', () => {
-    expect(metricsHelpers.getQueryFromOptions).toHaveBeenCalledWith({ abc: 'cool', metrics: { accepted: 'metrics' }});
+    expect(metricsHelpers.getQueryFromOptions).toHaveBeenCalledWith({
+      abc: 'cool',
+      metrics: { accepted: 'metrics' },
+    });
   });
 
   it('should dispatch actions', () => {
     expect(dispatchMock).toHaveBeenCalledTimes(2);
     expect(metricsActions.fetchDeliverability).toHaveBeenCalledWith({
       type: 'GET_ACCEPTED_AGGREGATES',
-      params: queryMock
+      params: queryMock,
     });
     expect(metricsActions.fetchDeliveriesByAttempt).toHaveBeenCalledWith(queryMock);
   });
-
 });
