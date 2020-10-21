@@ -40,6 +40,21 @@ if (IS_HIBANA_ENABLED) {
       cy.findByLabelText('Break Down By').should('be.visible');
     });
 
+    it('renders the initial page based on query params', () => {
+      cy.visit(`${PAGE_URL}&filters=Recipient Domain%3Atest.com`);
+      cy.withinMainContent(() => {
+        cy.findAllByText('Targeted').should('have.length', 2);
+        cy.findAllByText('Accepted').should('have.length', 2);
+        cy.findAllByText('Bounces').should('have.length', 2);
+      });
+      cy.findByDataId('report-options').within(() => {
+        cy.findByText('Filters').should('be.visible');
+        cy.findByText('Recipient Domain').should('be.visible');
+        cy.findByText('equals').should('be.visible');
+        cy.findByText('test.com').should('be.visible');
+      });
+    });
+
     it('filters by metric', () => {
       // 1. Open the drawer, uncheck default metrics, check all metrics
       cy.findByRole('button', { name: 'Add Metrics' }).click();

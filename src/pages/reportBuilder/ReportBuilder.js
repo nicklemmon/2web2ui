@@ -102,16 +102,18 @@ export function ReportBuilder({
     }
   }, [isSavedReportsEnabled, getReports]);
 
-  //Initializes the report options with the search
+  //Grabs report options from the URL query params (as well as report ID)
   useEffect(() => {
-    const { report: reportId, filters: optionsFilters = [], ...options } = parseSearch(
+    const { report: reportId, filters: urlFilters = [], ...urlOptions } = parseSearch(
       location.search,
     );
 
+    //Looks for report with report ID
     const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
     const report = allReports.find(({ id }) => id === reportId);
 
-    //Waiting on reports (if enabled) to initialize
+    //Waiting on reports to load (if enabled) to finish initializeing
+    //Waiting on subaccounts (if using comparators) to finish initializing
     if (
       (reportId && isSavedReportsEnabled && reportsStatus !== 'success') ||
       (isComparatorsEnabled && !subaccountsReady) ||
@@ -120,13 +122,14 @@ export function ReportBuilder({
       return;
     }
 
-    // Initializes once it finds relavant report
+    // If report is found from ID, consolidates reportOptions from URL and report
     if (report) {
       const { filters: reportFilters = [], ...reportOptions } = parseSearch(report.query_string);
       setReport(report);
-      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...optionsFilters] });
+      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...urlFilters] });
     } else {
-      refreshReportOptions(options);
+      //Initializes w/ just URL options
+      refreshReportOptions({ ...urlOptions, filters: urlFilters });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSavedReportsEnabled, reportsStatus, reports, subaccountsReady]);
