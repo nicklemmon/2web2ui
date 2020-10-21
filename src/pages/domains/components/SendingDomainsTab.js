@@ -2,6 +2,8 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
 import { useTable } from 'src/hooks';
+// import { usePageFilters } from 'src/hooks';
+
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
 import SendingDomainsTable from './SendingDomainsTable';
@@ -60,7 +62,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const [tableState, tableDispatch] = useTable(domains);
   const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
   const isEmpty = !listPending && tableState.rows?.length === 0;
-
+  // const { filters } = usePageFilters({
+  //   page: {
+  //     validate: val => !isNaN(val) && val > 0 && val < 10,
+  //     normalize: val => val * 1, // Convert from string to number
+  //     defaultValue: 0,
+  //     excludeFromRoute: false,
+  //   },
+  // });
   // Make initial requests
   useEffect(() => {
     listSendingDomains();
