@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Layout, Stack, TextField, Tag, Text } from 'src/components/matchbox';
+import { Button, Layout, Stack, Tag, Text } from 'src/components/matchbox';
 import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { Send } from '@sparkpost/matchbox-icons';
@@ -13,11 +13,6 @@ import { EXTERNAL_LINKS } from '../constants';
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
 `;
-
-const Field = ({ verified, label, value }) => {
-  if (!verified) return <CopyField label={label} value={value} />;
-  return <TextField label={label} value={value} readOnly />;
-};
 
 export default function SetupForSending({ domain, resolvedStatus, isSectionVisible }) {
   const { verifyDkim, showAlert, userName, verifyDkimLoading } = useDomains();
@@ -109,15 +104,15 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
                   <Text as="p">TXT</Text>
                 </>
               )}
-              <Field
+              <CopyField
                 label="Hostname"
                 value={domain.dkimHostname}
-                verified={resolvedStatus === 'verified'}
+                hideCopy={resolvedStatus === 'verified'}
               />
-              <Field
+              <CopyField
                 label="Value"
                 value={domain.dkimValue}
-                verified={resolvedStatus === 'verified'}
+                hideCopy={resolvedStatus === 'verified'}
               />
               {resolvedStatus !== 'verified' && (
                 <Checkbox

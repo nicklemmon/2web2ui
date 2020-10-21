@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Layout, Stack, TextField, Text } from 'src/components/matchbox';
+import { Button, Layout, Stack, Text } from 'src/components/matchbox';
 import { Panel, Checkbox } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
@@ -8,11 +8,6 @@ import { CopyField } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
 
 import _ from 'lodash';
-
-const Field = ({ verified, label, value }) => {
-  if (!verified) return <CopyField label={label} value={value} />;
-  return <TextField label={label} value={value} readOnly />;
-};
 
 export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   const { trackingDomains, verifyTrackingDomain, verifyingTrackingPending } = useDomains();
@@ -77,8 +72,8 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
                   <Text as="p">TXT</Text>
                 </>
               )}
-              <Field label="Hostname" value={trackingDomain.domainName} verified={!unverified} />
-              <Field label="Value" value="placeholder" verified={!unverified} />
+              <CopyField label="Hostname" value={trackingDomain.domainName} hideCopy={true} />
+              <CopyField label="Value" value="placeholder" hideCopy={!unverified} />
             </Stack>
 
             {unverified && (

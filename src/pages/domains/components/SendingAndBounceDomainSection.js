@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Layout, Stack, Text, TextField } from 'src/components/matchbox';
+import { Box, Layout, Stack, Text } from 'src/components/matchbox';
 import { Button, Checkbox, Panel, Tag } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
@@ -16,10 +16,6 @@ import { EXTERNAL_LINKS } from '../constants';
 const StyledBox = styled(Box)`
   float: right;
 `;
-const Field = ({ verified, label, value }) => {
-  if (!verified) return <CopyField label={label} value={value} />;
-  return <TextField label={label} value={value} readOnly />;
-};
 
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
@@ -163,8 +159,8 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                     <Text as="p">TXT</Text>
                   </>
                 )}
-                <Field label="Hostname" value={domain.dkimHostname} verified={readyFor.dkim} />
-                <Field label="Value" value={domain.dkimValue} verified={readyFor.dkim} />
+                <CopyField label="Hostname" value={domain.dkimHostname} hideCopy={readyFor.dkim} />
+                <CopyField label="Value" value={domain.dkimValue} hideCopy={readyFor.dkim} />
               </Stack>
             </Panel.Section>
             <Panel.Section>
@@ -177,8 +173,8 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
 
                 {watchVerificationType === 'MX' ? (
                   <Stack space="200">
-                    <Field label="Hostname" value={id} />
-                    <Field label="Value" value={bounceDomainsConfig.mxValue} />
+                    <CopyField label="Hostname" value={id} />
+                    <CopyField label="Value" value={bounceDomainsConfig.mxValue} />
                     <LineBreak text="AND" />
                     <>
                       <Text as="label" fontWeight="500" fontSize="200">
@@ -186,12 +182,11 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                       </Text>
                       <Text as="p">{initVerificationType}</Text>
                     </>
-                    <Field label="Hostname" value={id} verified={readyFor.bounce} />
-
-                    <Field
+                    <CopyField label="Hostname" value={id} hideCopy={readyFor.bounce} />
+                    <CopyField
                       label="Value"
                       value={"v=spf1 ip4:{'<YOUR-IP-ADDRESS>'}/20 ~all"}
-                      verified={readyFor.bounce}
+                      hideCopy={readyFor.bounce}
                     />
                   </Stack>
                 ) : (
@@ -204,12 +199,11 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                         <Text as="p">CNAME</Text>
                       </>
                     )}
-
-                    <Field label="Hostname" value={id} verified={readyFor.bounce} />
-                    <Field
+                    <CopyField label="Hostname" value={id} hideCopy={readyFor.bounce} />
+                    <CopyField
                       label="Value"
                       value={bounceDomainsConfig.cnameValue}
-                      verified={readyFor.bounce}
+                      hideCopy={readyFor.bounce}
                     />
                   </Stack>
                 )}
@@ -239,11 +233,11 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                     'TXT record for SPF'
                   )}
                 </Box>
-                <Field label="Hostname" value={id} verified={status.spf_status === 'valid'} />
-                <Field
+                <CopyField label="Hostname" value={id} hideCopy={status.spf_status === 'valid'} />
+                <CopyField
                   label="Value"
                   value="v=spf1 mx a ~all"
-                  verified={status.spf_status === 'valid'}
+                  hideCopy={status.spf_status === 'valid'}
                 />
               </Stack>
             </Panel.Section>

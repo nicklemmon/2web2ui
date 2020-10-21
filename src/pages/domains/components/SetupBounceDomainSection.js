@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Banner,
-  Box,
-  Button,
-  Layout,
-  Stack,
-  Select,
-  Tag,
-  Text,
-  TextField,
-} from 'src/components/matchbox';
+import { Banner, Box, Button, Layout, Stack, Select, Tag, Text } from 'src/components/matchbox';
 import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { Send } from '@sparkpost/matchbox-icons';
@@ -31,11 +21,6 @@ const StyledText = styled(Text)`
   float: right;
   color: #c5ced6;
 `;
-
-const Field = ({ verified, label, value }) => {
-  if (!verified) return <CopyField label={label} value={value} />;
-  return <TextField label={label} value={value} readOnly />;
-};
 
 export default function SetupBounceDomainSection({ domain, isSectionVisible, title }) {
   const { id, status, subaccount_id } = domain;
@@ -190,11 +175,11 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                 )}
                 {watchVerificationType === 'MX' ? (
                   <Stack space="200">
-                    <Field label="Hostname" value={id} verified={readyFor.bounce} />
-                    <Field
+                    <CopyField label="Hostname" value={id} hideCopy={readyFor.bounce} />
+                    <CopyField
                       label="Value"
                       value={bounceDomainsConfig.mxValue}
-                      verified={readyFor.bounce}
+                      hideCopy={readyFor.bounce}
                     />
                     <LineBreak text="AND" />
                     <>
@@ -203,21 +188,20 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                       </Text>
                       <Text as="p">{initVerificationType}</Text>
                     </>
-                    <Field label="Hostname" value={id} verified={readyFor.bounce} />
-
-                    <Field
+                    <CopyField label="Hostname" value={id} hideCopy={readyFor.bounce} />
+                    <CopyField
                       label="Value"
                       value={"v=spf1 ip4:{'<YOUR-IP-ADDRESS>'}/20 ~all"}
-                      verified={readyFor.bounce}
+                      hideCopy={readyFor.bounce}
                     />
                   </Stack>
                 ) : (
                   <Stack space="200">
-                    <Field label="Hostname" value={id} verified={readyFor.bounce} />
-                    <Field
+                    <CopyField label="Hostname" value={id} hideCopy={readyFor.bounce} />
+                    <CopyField
                       label="Value"
                       value={bounceDomainsConfig.cnameValue}
-                      verified={readyFor.bounce}
+                      hideCopy={readyFor.bounce}
                     />
                   </Stack>
                 )}
@@ -245,16 +229,16 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                     <Text as="p">TXT</Text>
                   </>
                 )}
-                <Field
+                <CopyField
                   label="Hostname"
                   value={id}
-                  verified={domain.status.spf_status === 'valid'}
-                ></Field>
-                <Field
+                  hideCopy={domain.status.spf_status === 'valid'}
+                />
+                <CopyField
                   label="Value"
                   value="v=spf1 mx a ~all"
-                  verified={domain.status.spf_status === 'valid'}
-                ></Field>
+                  hideCopy={domain.status.spf_status === 'valid'}
+                />
               </Stack>
             </Panel.Section>
             {(!readyFor.bounce || domain.status.spf_status !== 'valid') && (
