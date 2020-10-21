@@ -1,5 +1,5 @@
 import { snapshotActionCases } from 'src/__testHelpers__/snapshotActionHelpers';
-import { sendingDomains } from '../sendingDomains';
+const sendingDomains = require('../sendingDomains');
 
 jest.mock('../helpers/sparkpostApiRequest');
 

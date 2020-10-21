@@ -30,6 +30,34 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
       });
 
+      it('renders snackbar after sharing and un-sharing the domain.', () => {
+        cy.stubRequest({
+          method: 'PUT',
+          url: '/api/v1/sending-domains/*',
+          fixture: 'sending-domains/200.put.json',
+          requestAlias: 'sendingDomainUpdate',
+        });
+
+        cy.visit(PAGE_URL);
+
+        cy.wait('@accountDomainsReq');
+        cy.findAllByText('Share this domain with all subaccounts').should('be.visible');
+        cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
+        cy.wait('@sendingDomainUpdate');
+        cy.withinSnackbar(() => {
+          cy.findAllByText('Successfully shared this domain with all subaccounts.').should(
+            'be.visible',
+          );
+        });
+        cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
+        cy.wait('@sendingDomainUpdate');
+        cy.withinSnackbar(() => {
+          cy.findAllByText('Successfully un-shared this domain with all subaccounts.').should(
+            'be.visible',
+          );
+        });
+      });
+
       it('renders correct section for Blocked domains', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/bounce.uat.sparkspam.com',
