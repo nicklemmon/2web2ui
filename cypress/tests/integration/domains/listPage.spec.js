@@ -68,7 +68,7 @@ describe('The domains list page', () => {
               .within(() => {
                 cy.verifyLink({
                   content: domainName,
-                  href: `/domains/details/${domainName}`,
+                  href: `/domains/details/sending-bounce/${domainName}`,
                 });
 
                 if (creationDate) cy.findByText(creationDate).should('be.visible');
@@ -508,7 +508,7 @@ describe('The domains list page', () => {
               .within(() => {
                 cy.verifyLink({
                   content: 'default-bounce.com',
-                  href: `${PAGE_URL}/details/default-bounce.com`,
+                  href: `${PAGE_URL}/details/sending-bounce/default-bounce.com`,
                 });
                 cy.findByText('Aug 1, 2017');
               });
@@ -572,7 +572,7 @@ describe('The domains list page', () => {
               .within(() => {
                 cy.verifyLink({
                   content: domainName,
-                  href: `/domains/details/${domainName}`,
+                  href: `/domains/details/tracking/${domainName}`,
                 });
 
                 if (subaccount) cy.findByText(subaccount).should('be.visible');
@@ -617,7 +617,7 @@ describe('The domains list page', () => {
           rowIndex: 4,
           domainName: 'with-subaccount-assignment.com',
           status: 'Tracking',
-          subaccount: 'Subaccount 101',
+          subaccount: 'Fake Subaccount 1 (101)',
         });
       }
 
@@ -662,8 +662,9 @@ describe('The domains list page', () => {
 
       it('filters by domain name when typing in the "Filter Domains" field', () => {
         stubTrackingDomains();
+        stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking`);
-        cy.wait('@trackingDomainsReq');
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         // Verify partial match
         cy.findByLabelText('Filter Domains').type('verified.com');
@@ -704,8 +705,9 @@ describe('The domains list page', () => {
 
       it('sorts alphabetically via the "Sort By" field', () => {
         stubTrackingDomains();
+        stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking`);
-        cy.wait('@trackingDomainsReq');
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByLabelText('Sort By').select('Domain Name (Z - A)');
 
@@ -713,7 +715,7 @@ describe('The domains list page', () => {
           rowIndex: 0,
           domainName: 'with-subaccount-assignment.com',
           status: 'Tracking',
-          subaccount: 'Subaccount 101',
+          subaccount: 'Fake Subaccount 1 (101)',
         });
         verifyTableRow({
           rowIndex: 1,
@@ -762,14 +764,15 @@ describe('The domains list page', () => {
           rowIndex: 4,
           domainName: 'with-subaccount-assignment.com',
           status: 'Tracking',
-          subaccount: 'Subaccount 101',
+          subaccount: 'Fake Subaccount 1 (101)',
         });
       });
 
       it('filters by domain status', () => {
         stubTrackingDomains();
+        stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking`);
-        cy.wait('@trackingDomainsReq');
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
         cy.findByLabelText('Tracking Domain').check({ force: true });
@@ -787,11 +790,17 @@ describe('The domains list page', () => {
           rowIndex: 2,
           domainName: 'with-subaccount-assignment.com',
           status: 'Tracking',
-          subaccount: 'Subaccount 101',
+          subaccount: 'Fake Subaccount 1 (101)',
+        });
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?verified=true');
         });
         cy.findByLabelText('Tracking Domain').uncheck({ force: true });
 
         cy.findByLabelText('Unverified').check({ force: true });
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?unverified=true');
+        });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'unverified.com',
@@ -800,12 +809,24 @@ describe('The domains list page', () => {
         cy.findByLabelText('Unverified').uncheck({ force: true });
 
         cy.findByLabelText('Blocked').check({ force: true });
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?blocked=true');
+        });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'blocked.com',
           status: 'Blocked',
         });
         cy.findByLabelText('Blocked').uncheck({ force: true });
+      });
+      it('syncs domain status with query params', () => {
+        stubTrackingDomains();
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/tracking?verified=true`);
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+        cy.findByLabelText('Tracking Domain').should('be.checked');
       });
     });
   }

@@ -41,7 +41,7 @@ function MainCell({ row }) {
 
   return (
     <Stack space="100">
-      <PageLink to={`${DETAILS_BASE_URL}/${domainName}`}>{domainName}</PageLink>
+      <PageLink to={`${DETAILS_BASE_URL}/tracking/${domainName}`}>{domainName}</PageLink>
 
       {subaccountId && (
         <SubaccountShrinkWrapper
