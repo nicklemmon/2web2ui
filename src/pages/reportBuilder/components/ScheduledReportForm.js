@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Box,
@@ -16,25 +17,72 @@ import { getLocalTimezone } from 'src/helpers/date';
 import { RadioButtonGroup } from 'src/components';
 import { ComboBoxTypeaheadWrapper } from 'src/components/reactHookFormWrapper';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
+import { listUsers } from 'src/actions/users';
+import { selectUsers } from 'src/selectors/users';
 
-const ScheduledReportForm = ({ report, handleSubmit: onSubmit }) => {
+const DAY_OF_WEEK_OPTIONS = [
+  { label: `Sunday`, value: 0 },
+  { label: 'Monday', value: 1 },
+  { label: 'Tuesday', value: 2 },
+  { label: 'Wednesday', value: 3 },
+  { label: 'Thursday', value: 4 },
+  { label: 'Friday', value: 5 },
+  { label: 'Saturday', value: 6 },
+];
+
+const ScheduledReportForm = ({
+  report,
+  handleSubmit: parentHandleSubmit,
+  listUsers,
+  loading,
+  users,
+}) => {
   const { control, handleSubmit, errors, register, setValue, watch } = useForm();
   const [period, setPeriod] = useState('AM');
   const [timezone, setTimezone] = useState(getLocalTimezone());
 
-  const Typeahead = useCallback(
-    () => (
+  useEffect(() => {
+    listUsers();
+  }, [listUsers]);
+
+  const Typeahead = useCallback(() => {
+    if (loading) {
+      return <TextField disabled />;
+    }
+    return (
       <ComboBoxTypeaheadWrapper
-        results={['hello', 'yes']}
-        value={[]}
-        setValue={setValue}
-        label="Send To"
         id="to-address"
-        name="toAddresses2"
+        itemToString={item => (item ? `Name: ${item.name} ---- Email: ${item.email}` : '')}
+        label="Send To"
+        name="toAddresses"
+        results={users}
+        setValue={setValue}
+        value={[]}
       />
-    ),
-    [setValue],
-  );
+    );
+  }, [loading, users, setValue]);
+
+  const onSubmit = formValues => {
+    const { name, description = 'NA', subject, ...rest } = formValues;
+    const recipients = rest.toAddresses.map(({ username }) => username);
+    const [hour, minute] = rest.time.split(':');
+    const day_of_week = rest.day || '*';
+    const schedule = {
+      day_of_week,
+      month: '*',
+      day_of_month: '*',
+      hour: period === 'AM' ? parseInt(hour) % 12 : (parseInt(hour) % 12) + 12,
+      minute,
+      second: 0,
+    };
+    parentHandleSubmit({
+      name,
+      description,
+      subject,
+      recipients,
+      schedule,
+    });
+  };
 
   const currentTiming = watch('timing');
 
@@ -83,7 +131,7 @@ const ScheduledReportForm = ({ report, handleSubmit: onSubmit }) => {
               />
             </Panel.Section>
             <Panel.Section>
-              <Controller control={control} as={Typeahead} name="toAddresses2" />
+              <Controller control={control} as={Typeahead} name="toAddresses" />
             </Panel.Section>
           </Panel>
         </Layout.Section>
@@ -115,24 +163,23 @@ const ScheduledReportForm = ({ report, handleSubmit: onSubmit }) => {
                   ref={register}
                   label="Day"
                   name="day"
-                  options={[
-                    `Sunday`,
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday',
-                  ]}
+                  options={DAY_OF_WEEK_OPTIONS}
                   disabled={currentTiming === 'daily'}
                 />
                 <TextField
-                  ref={register({ required: 'Required' })}
+                  ref={register({
+                    required: 'Required',
+                    pattern: {
+                      value: /^(1[0-2]|0?[1-9]):[0-5][0-9]$/,
+                      message: 'Invalid time format, should be hh:mm 12 hour format',
+                    },
+                  })}
                   label="Time"
                   name="time"
                   id="time"
                   error={errors.time?.message}
                   maxWidth="12rem"
+                  placeholder="hh:mm"
                   connectRight={
                     <RadioButtonGroup label="Grouping Type">
                       <RadioButtonGroup.Button
@@ -162,13 +209,20 @@ const ScheduledReportForm = ({ report, handleSubmit: onSubmit }) => {
               </Inline>
             </Panel.Section>
           </Panel>
+          <Inline>
+            <Button type="submit" variant="primary">
+              Schedule Report
+            </Button>
+            <Button variant="secondary">Cancel</Button>
+          </Inline>
         </Layout.Section>
       </Layout>
-      <Button type="submit" variant="primary">
-        SUBMIT
-      </Button>
     </form>
   );
 };
+const mapStateToProps = state => ({
+  users: selectUsers(state),
+  loading: state.users.loading,
+});
 
-export default ScheduledReportForm;
+export default connect(mapStateToProps, { listUsers })(ScheduledReportForm);

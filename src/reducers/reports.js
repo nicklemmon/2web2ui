@@ -3,6 +3,7 @@ const initialState = {
   list: [],
   status: 'idle',
   saveStatus: 'idle',
+  saveScheduledReportStatus: 'idle',
   report: {},
   deletePending: false,
   getReportPending: false,
@@ -43,6 +44,13 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, report: payload, getReportPending: false };
     case 'GET_REPORT_FAIL':
       return { ...state, getReportPending: false };
+
+    case 'CREATE_SCHEDULED_REPORT_PENDING':
+      return { ...state, saveScheduledReportStatus: 'loading' };
+    case 'CREATE_SCHEDULED_REPORT_SUCCESS':
+      return { ...state, saveScheduledReportStatus: 'success' };
+    case 'CREATE_SCHEDULED_REPORT_FAIL':
+      return { ...state, saveScheduledReportStatus: 'error' };
 
     default:
       return state;
