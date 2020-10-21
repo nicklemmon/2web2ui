@@ -1,8 +1,18 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash';
+import { getSubaccountsIndexedById, getSubaccountName } from './subaccounts';
 
 const getTrackingDomains = state => state.trackingDomains.list;
 const selectSubaccountFromProps = (state, props) => _.get(props, 'domain.subaccount_id', null);
+
+export const selectDomains = createSelector(
+  [getTrackingDomains, getSubaccountsIndexedById],
+  (domains = [], subaccounts) =>
+    domains.map(domain => ({
+      ...domain,
+      subaccount_name: getSubaccountName(subaccounts, domain['subaccount_id']),
+    })),
+);
 
 export const convertStatus = ({ verified, compliance_status }) => {
   if (compliance_status !== 'valid') {
@@ -67,7 +77,7 @@ export const selectTrackingDomainsOptions = createSelector(
   (verified, defaultDomain) => defaultDomain.concat(verified),
 );
 
-export const selectTrackingDomainsRows = createSelector([getTrackingDomains], (domains = []) => {
+export const selectTrackingDomainsRows = createSelector([selectDomains], (domains = []) => {
   return domains.map(trackingDomain => {
     const {
       domain,

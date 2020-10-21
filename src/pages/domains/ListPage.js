@@ -1,13 +1,14 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import { Page, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
-import useRouter from 'src/hooks/useRouter';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import Domains from './components';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
 
 export default function DomainsPage() {
-  const { history, location } = useRouter();
+  const history = useHistory();
+  const location = useLocation();
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
   // Additionally, the `role="tab"` works ideally with a button - so better to just do this so keyboard users
   // have some level of control over this UI. Unfortunately things are still a little funky with focus
@@ -31,6 +32,22 @@ export default function DomainsPage() {
   ];
   const tabIndex = TABS.findIndex(tab => tab['data-to'] === location.pathname);
 
+  const matchesSendingTab = useRouteMatch(SENDING_DOMAINS_URL);
+  const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
+  const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
+
+  const renderTab = () => {
+    if (matchesSendingTab) {
+      return <Domains.SendingDomainsTab />;
+    }
+    if (matchesBounceTab) {
+      return <Domains.SendingDomainsTab renderBounceOnly />;
+    }
+    if (matchesTrackingTab) {
+      return <Domains.TrackingDomainsTab />;
+    }
+  };
+
   return (
     <Domains.Container>
       <Page
@@ -43,34 +60,8 @@ export default function DomainsPage() {
       >
         <Stack>
           <Tabs selected={tabIndex} tabs={TABS} />
-
           <div>
-            <Route
-              path={SENDING_DOMAINS_URL}
-              render={() => (
-                <TabPanel>
-                  <Domains.SendingDomainsTab />
-                </TabPanel>
-              )}
-            />
-
-            <Route
-              path={BOUNCE_DOMAINS_URL}
-              render={() => (
-                <TabPanel>
-                  <Domains.SendingDomainsTab renderBounceOnly />
-                </TabPanel>
-              )}
-            />
-
-            <Route
-              path={TRACKING_DOMAINS_URL}
-              render={() => (
-                <TabPanel>
-                  <Domains.TrackingDomainsTab />
-                </TabPanel>
-              )}
-            />
+            <TabPanel>{renderTab()}</TabPanel>
           </div>
         </Stack>
       </Page>

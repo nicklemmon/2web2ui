@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { listTests } from 'src/actions/inboxPlacement';
 import { ApiErrorBanner, Loading } from 'src/components';
 import FilterSortCollection from 'src/components/collection/FilterSortCollection';
@@ -210,4 +209,4 @@ const mapStateToProps = state => ({
   loading: state.inboxPlacement.testsPending,
 });
 
-export default withRouter(connect(mapStateToProps, { listTests })(TestListPage));
+export default connect(mapStateToProps, { listTests })(TestListPage);

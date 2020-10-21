@@ -196,6 +196,9 @@ describe('Selectors: Tracking Domains', () => {
         trackingDomains: {
           list: testDomains,
         },
+        subaccounts: {
+          list: [],
+        },
       };
       expect(selectTrackingDomainsRows(state)).toMatchSnapshot();
     });
