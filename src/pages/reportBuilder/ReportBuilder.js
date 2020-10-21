@@ -126,7 +126,7 @@ export function ReportBuilder({
       setReport(report);
       refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...optionsFilters] });
     } else {
-      refreshReportOptions(options);
+      refreshReportOptions({ ...options, filters: optionsFilters });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSavedReportsEnabled, reportsStatus, reports, subaccountsReady]);
