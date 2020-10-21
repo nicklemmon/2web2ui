@@ -59,7 +59,12 @@ export class ListPage extends Component {
     if (hasSubaccounts) {
       const subaccountCol =
         subaccount_id || shared_with_subaccounts ? (
-          <Subaccount all={shared_with_subaccounts} id={subaccount_id} name={subaccount_name} />
+          <Subaccount
+            all={shared_with_subaccounts}
+            id={subaccount_id}
+            name={subaccount_name}
+            shrinkLength={12}
+          />
         ) : null;
 
       rowData.push(subaccountCol);

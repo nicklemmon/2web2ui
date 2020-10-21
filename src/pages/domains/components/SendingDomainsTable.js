@@ -2,7 +2,7 @@ import React from 'react';
 import { Bookmark } from '@sparkpost/matchbox-icons';
 import { formatDate } from 'src/helpers/date';
 import config from 'src/config';
-import { Subaccount } from 'src/components';
+import { SubaccountShrinkWrapper } from 'src/components';
 import {
   Box,
   Inline,
@@ -55,19 +55,24 @@ function MainCell({ row }) {
     <Stack space="100">
       <PageLink to={`${DETAILS_BASE_URL}/${domainName}`}>{domainName}</PageLink>
 
-      <Text fontSize="200" lineHeight="200">
-        <TranslatableText>Assignment: </TranslatableText>
-
-        {subaccountId ? (
-          <Subaccount all={sharedWithSubaccounts} id={subaccountId} name={subaccountName} />
-        ) : (
-          'Primary Account'
-        )}
-      </Text>
+      {subaccountId ? (
+        <Text fontSize="200" lineHeight="200">
+          <SubaccountShrinkWrapper
+            sharedWithSubaccounts={sharedWithSubaccounts}
+            subaccountId={subaccountId}
+            subaccountName={subaccountName}
+          >
+            <TranslatableText>Assignment: </TranslatableText>
+          </SubaccountShrinkWrapper>
+        </Text>
+      ) : (
+        <Text fontSize="200" lineHeight="200">
+          <TranslatableText>Assignment: Primary Account</TranslatableText>
+        </Text>
+      )}
 
       <Text fontSize="200" lineHeight="200">
         <TranslatableText>Added: </TranslatableText>
-
         {creationTime ? formatDate(creationTime, config.dateFormatWithComma) : 'Unknown'}
       </Text>
     </Stack>

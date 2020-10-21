@@ -25,6 +25,7 @@ export { default as StatusTooltipHeader } from './domainStatus/StatusTooltipHead
 export { default as DomainStatusCell } from './domainStatus/DomainStatusCell';
 export { default as CookieConsent } from './cookieConsent/CookieConsent';
 export { default as Subaccount } from './labels/Subaccount';
+export { default as SubaccountShrinkWrapper } from './labels/SubaccountShrinkWrapper';
 export { default as TabsWrapper } from './tabsWrapper';
 export { default as IconButton } from './iconButton';
 export { default as MultiEmailField } from './multiEmailField';

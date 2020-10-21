@@ -90,7 +90,7 @@ export class ListPage extends Component {
         2,
         0,
         user.subaccount_id ? (
-          <Subaccount id={user.subaccount_id} name={user.subaccount_name} />
+          <Subaccount id={user.subaccount_id} name={user.subaccount_name} shrinkLength={12} />
         ) : null,
       );
     }

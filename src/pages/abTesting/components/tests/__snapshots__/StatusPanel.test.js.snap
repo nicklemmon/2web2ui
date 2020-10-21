@@ -40,6 +40,7 @@ exports[`Status Panel Component should render 1`] = `
         isDefault={false}
         master={false}
         receiveAll={false}
+        shrinkLength={12}
       />
     </LabelledValue>
   </Panel.LEGACY.Section>

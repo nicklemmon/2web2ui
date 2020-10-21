@@ -63,7 +63,7 @@ export const StatusPanel = ({ test, version, id, subaccountId, latest, subaccoun
         <LabelledValue label="Test ID" value={id} />
         {!!subaccountId && (
           <LabelledValue label="Subaccount">
-            <Subaccount id={subaccountId} name={subaccountName} />
+            <Subaccount id={subaccountId} name={subaccountName} shrinkLength={12} />
           </LabelledValue>
         )}
       </Panel.LEGACY.Section>

@@ -27,7 +27,7 @@ const StatusDescription = ({ domain, readyFor, status }) => {
       {subaccount_id && (
         <Panel.LEGACY.Section>
           <LabelledValue label="Subaccount">
-            <Subaccount id={subaccount_id} />
+            <Subaccount id={subaccount_id} shrinkLength={12} />
           </LabelledValue>
         </Panel.LEGACY.Section>
       )}

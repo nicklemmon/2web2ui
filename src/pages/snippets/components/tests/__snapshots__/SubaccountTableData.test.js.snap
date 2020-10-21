@@ -7,5 +7,6 @@ exports[`SubaccountTableData returns a tag 1`] = `
   isDefault={false}
   master={false}
   receiveAll={false}
+  shrinkLength={12}
 />
 `;
