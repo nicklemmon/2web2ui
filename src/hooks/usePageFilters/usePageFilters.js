@@ -110,14 +110,20 @@ const omitFiltersExcludedFromRoute = (filters, allowedList) => {
  *         The `filters`, `prevFilters`, `updateFilters`, and `resetFilters` in an object
  *
  * @example
- * const { filters, prevFilters, updateFilters, resetFilters } = usePageFilters({
+ * const initFilters = {
  *   page: {
  *     validate: val => !isNaN(val) && val > 0 && val < 10,
  *     normalize: val => val * 1, // Convert from string to number
  *     defaultValue: 0,
  *     excludeFromRoute: false,
  *   }
- * });
+ * };
+ *
+ * function FakeComponent(){
+ * //remember to have initFilters outside the functional component or you will have a runaway useEffect
+ * const { filters, prevFilters, updateFilters, resetFilters } = usePageFilters(initFilters);
+ * }
+ *
  */
 const usePageFilters = allowedList => {
   const { requestParams, updateRoute } = useRouter();

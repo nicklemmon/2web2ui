@@ -25,11 +25,11 @@ describe('The domains create page', () => {
       cy.verifyLink({ href: LINKS.SENDING_REQS, content: 'Domains Documentation' });
       cy.findByRole('heading', { name: 'Domain and Assignment' }).should('be.visible');
       cy.findByLabelText('Domain').should('be.visible');
-      cy.findByLabelText('Principal and all Subaccounts')
+      cy.findByLabelText('Share with all Subaccounts')
         .should('be.visible')
         .should('be.checked');
-      cy.findByLabelText('Principal Account only').should('be.visible');
-      cy.findByLabelText('Single Subaccount').should('be.visible');
+      cy.findByLabelText('Assign to Master Account').should('be.visible');
+      cy.findByLabelText('Assign to Subaccount').should('be.visible');
     });
 
     it('creates a new sending domain assigned to all subaccounts', () => {
@@ -38,7 +38,7 @@ describe('The domains create page', () => {
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal and all Subaccounts').should('be.checked');
+      cy.findByLabelText('Share with all Subaccounts').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.withinModal(() => {
@@ -60,13 +60,13 @@ describe('The domains create page', () => {
       cy.findByRole('heading', { name: 'Verify Sending/Bounce Domain' }).should('be.visible');
     });
 
-    it('creates a new sending domain for the principal account only', () => {
+    it('creates a new sending domain for the Assign to Master Account', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal Account only').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Master Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.withinModal(() => {
@@ -95,7 +95,7 @@ describe('The domains create page', () => {
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Single Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.wait('@subaccountsReq');
       cy.findByLabelText('Subaccount').click();
       cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
@@ -154,7 +154,7 @@ describe('The domains create page', () => {
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal and all Subaccounts').should('be.checked');
+      cy.findByLabelText('Share with all Subaccounts').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.wait('@sendingDomainsReq').then(xhr => {
@@ -169,13 +169,13 @@ describe('The domains create page', () => {
       cy.title().should('include', 'Verify Bounce Domain | Domains');
       cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
     });
-    it('creates a new bounce domain for the principal account only', () => {
+    it('creates a new bounce domain for the Assign to Master Account', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal Account only').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Master Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.wait('@sendingDomainsReq').then(xhr => {
@@ -197,7 +197,7 @@ describe('The domains create page', () => {
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Single Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.wait('@subaccountsReq');
       cy.findByLabelText('Subaccount').click();
       cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
@@ -222,8 +222,8 @@ describe('The domains create page', () => {
 
       cy.findByLabelText(/Tracking Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal and all Subaccounts').should('not.be.visible'); // This field is hidden when "Tracking Domains" is selected as the primary use
-      cy.findByLabelText('Principal Account only').should('be.checked');
+      cy.findByLabelText('Share with all Subaccounts').should('not.be.visible'); // This field is hidden when "Tracking Domains" is selected as the primary use
+      cy.findByLabelText('Assign to Master Account').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.wait('@trackingDomainsReq').then(xhr => {
@@ -266,7 +266,7 @@ describe('The domains create page', () => {
 
       cy.findByLabelText(/Tracking Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Single Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.wait('@subaccountsReq');
       cy.findByLabelText('Subaccount').click();
       cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
@@ -288,7 +288,7 @@ describe('The domains create page', () => {
     it('renders form validation errors when skipping required fields', () => {
       commonBeforeSteps();
 
-      cy.findByLabelText('Single Subaccount').check({ force: true });
+      cy.findByLabelText('Assign to Subaccount').check({ force: true });
       cy.findByRole('button', { name: 'Save and Continue' }).click();
       cy.findByText('A valid domain is required.').should('be.visible');
       cy.findByText('A valid subdomain is required.').should('be.visible');
