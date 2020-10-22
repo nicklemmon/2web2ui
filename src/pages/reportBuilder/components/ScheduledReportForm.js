@@ -32,6 +32,28 @@ const DAY_OF_WEEK_OPTIONS = [
 
 const hasAtLeastOneRecipient = recipientList => recipientList.length > 0;
 
+export const formatFormValues = formValues => {
+  const { name, description = 'NA', subject, period, ...rest } = formValues;
+  const recipients = rest.recipients.map(({ username }) => username);
+  const [hour, minute] = rest.time.split(':');
+  const day_of_week = rest.day || '*';
+  const schedule = {
+    day_of_week,
+    month: '*',
+    day_of_month: '*',
+    hour: period === 'AM' ? parseInt(hour) % 12 : (parseInt(hour) % 12) + 12,
+    minute: parseInt(minute),
+    second: 0,
+  };
+  return {
+    name,
+    description,
+    subject,
+    recipients,
+    schedule,
+  };
+};
+
 export const ScheduledReportForm = ({
   report,
   handleSubmit: parentHandleSubmit,
@@ -66,25 +88,7 @@ export const ScheduledReportForm = ({
   );
 
   const onSubmit = formValues => {
-    const { name, description = 'NA', subject, ...rest } = formValues;
-    const recipients = rest.recipients.map(({ username }) => username);
-    const [hour, minute] = rest.time.split(':');
-    const day_of_week = rest.day || '*';
-    const schedule = {
-      day_of_week,
-      month: '*',
-      day_of_month: '*',
-      hour: period === 'AM' ? parseInt(hour) % 12 : (parseInt(hour) % 12) + 12,
-      minute,
-      second: 0,
-    };
-    parentHandleSubmit({
-      name,
-      description,
-      subject,
-      recipients,
-      schedule,
-    });
+    parentHandleSubmit(formatFormValues({ ...formValues, period, timezone }));
   };
 
   const currentTiming = watch('timing');
@@ -153,9 +157,9 @@ export const ScheduledReportForm = ({
           <Panel>
             <Panel.Section>
               <Radio.Group label="Send Report">
-                <Radio ref={register} label="Daily" value="daily" name="timing" />
-                <Radio ref={register} label="Weekly" value="weekly" name="timing" />
-                <Radio ref={register} label="Monthly" value="monthly" name="timing" />
+                <Radio id="daily" ref={register} label="Daily" value="daily" name="timing" />
+                <Radio id="weekly" ref={register} label="Weekly" value="weekly" name="timing" />
+                <Radio id="monthly" ref={register} label="Monthly" value="monthly" name="timing" />
               </Radio.Group>
             </Panel.Section>
             <Panel.Section>
@@ -192,19 +196,23 @@ export const ScheduledReportForm = ({
                     <RadioButtonGroup id="period" label="Grouping Type">
                       <RadioButtonGroup.Button
                         id="am"
+                        name="am"
                         checked={period === 'AM'}
                         onChange={() => {
                           setPeriod('AM');
                         }}
+                        value="AM"
                       >
                         <Uppercase>AM</Uppercase>
                       </RadioButtonGroup.Button>
                       <RadioButtonGroup.Button
                         id="pm"
+                        name="pm"
                         checked={period === 'PM'}
                         onChange={() => {
                           setPeriod('PM');
                         }}
+                        value="AM"
                       >
                         <Uppercase>PM</Uppercase>
                       </RadioButtonGroup.Button>
