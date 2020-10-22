@@ -39,7 +39,12 @@ export const ScheduledReportForm = ({
   loading,
   users,
 }) => {
-  const { control, handleSubmit, errors, register, setValue, watch } = useForm();
+  const { control, handleSubmit, errors, register, setValue, watch } = useForm({
+    defaultValues: {
+      timing: 'daily',
+      recipients: [],
+    },
+  });
   const [period, setPeriod] = useState('AM');
   const [timezone, setTimezone] = useState(getLocalTimezone());
 
@@ -132,7 +137,6 @@ export const ScheduledReportForm = ({
               <Controller
                 control={control}
                 as={Typeahead}
-                defaultValue={[]}
                 name="recipients"
                 rules={{ validate: hasAtLeastOneRecipient }}
               />
