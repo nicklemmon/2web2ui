@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: PublicRoute renders component 1`] = `
-<Memo(AccessControl)
+<AccessControl
   condition={[MockFunction]}
   redirect="/auth"
   wait={false}
@@ -13,5 +13,5 @@ exports[`Component: PublicRoute renders component 1`] = `
       public={true}
     />
   </withRouter(ProviderComponent)>
-</Memo(AccessControl)>
+</AccessControl>
 `;

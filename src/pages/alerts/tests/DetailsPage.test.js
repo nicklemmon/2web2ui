@@ -1,6 +1,5 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import { RedirectAndAlert } from 'src/components/globalAlert';
 import { DetailsPageComponent as DetailsPage } from '../DetailsPage';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -49,7 +48,7 @@ describe('Page: Alert Details', () => {
 
   it('should redirect to List page if fails to load', () => {
     wrapper.setProps({ error: { message: 'this failed' } });
-    expect(wrapper.find(RedirectAndAlert)).toHaveLength(1);
+    expect(wrapper.find('RedirectAndAlert')).toHaveLength(1);
     expect(wrapper.find('Page')).not.toExist();
   });
 

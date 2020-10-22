@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import useEditorContext from '../hooks/useEditorContext';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
-import { RedirectAndAlert } from 'src/components/globalAlert';
 import EditAndPreviewPage from '../EditAndPreviewPage';
 import { routeNamespace } from '../constants/routes';
 import styles from '../EditAndPreviewPage.module.scss';
@@ -53,7 +52,7 @@ describe('EditAndPreviewPage', () => {
 
   it('redirects and alerts when fails to load', () => {
     const wrapper = subject({ editorState: { hasDraftFailedToLoad: true } });
-    expect(wrapper.find(RedirectAndAlert)).toExist();
+    expect(wrapper.find('RedirectAndAlert')).toExist();
   });
 
   it('renders the <Prompt/> message when the editor state has not been saved and the target `pathname` does not match the current starting pattern', () => {

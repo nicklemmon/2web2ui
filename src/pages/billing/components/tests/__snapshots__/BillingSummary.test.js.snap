@@ -655,7 +655,9 @@ exports[`Component: Billing Summary should render correctly if you can't change 
 </div>
 `;
 
-exports[`Component: Billing Summary should render correctly if you can't update your billing info 1`] = `
+exports[
+  `Component: Billing Summary should render correctly if you can't update your billing info 1`
+] = `
 <div>
   <PendingPlanBanner
     account={
@@ -1481,7 +1483,7 @@ exports[`Component: Billing Summary should show the invoice history if there are
       </LabelledValue>
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Component
+  <Connect(InvoiceHistory)
     invoices={
       Array [
         "an invoice",

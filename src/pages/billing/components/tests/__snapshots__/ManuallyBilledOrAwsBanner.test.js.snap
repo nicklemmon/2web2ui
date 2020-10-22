@@ -10,11 +10,11 @@ exports[`ManuallyBilledBanner renders banner 1`] = `
   <p>
     To make changes to your plan or billing information, please
      
-    <Component
+    <Connect(SupportTicketLink)
       issueId="general_issue"
     >
       submit a support ticket
-    </Component>
+    </Connect(SupportTicketLink)>
     .
   </p>
   <Box
@@ -45,11 +45,11 @@ exports[`ManuallyBilledBanner with custom subscription and plan in Zuora 1`] = `
   <p>
     To make changes to your plan or billing information, please
      
-    <Component
+    <Connect(SupportTicketLink)
       issueId="general_issue"
     >
       submit a support ticket
-    </Component>
+    </Connect(SupportTicketLink)>
     .
   </p>
   <Box
@@ -80,11 +80,11 @@ exports[`ManuallyBilledBanner with custom subscription, plan not in Zuora 1`] = 
   <p>
     To make changes to your plan or billing information, please
      
-    <Component
+    <Connect(SupportTicketLink)
       issueId="general_issue"
     >
       submit a support ticket
-    </Component>
+    </Connect(SupportTicketLink)>
     .
   </p>
 </Banner>
@@ -98,11 +98,11 @@ exports[`ManuallyBilledBanner with transitioning custom subscription when charge
   <p>
     If your account should not be transitioned, please
      
-    <Component
+    <Connect(SupportTicketLink)
       issueId="general_issue"
     >
       submit a support ticket
-    </Component>
+    </Connect(SupportTicketLink)>
     .
   </p>
 </Banner>
@@ -116,11 +116,11 @@ exports[`ManuallyBilledBanner with transitioning custom subscription when volume
   <p>
     If your account should not be transitioned, please
      
-    <Component
+    <Connect(SupportTicketLink)
       issueId="general_issue"
     >
       submit a support ticket
-    </Component>
+    </Connect(SupportTicketLink)>
     .
   </p>
 </Banner>

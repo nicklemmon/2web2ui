@@ -7,7 +7,7 @@ exports[`SsoAuthPage tests renders correctly 1`] = `
     sectioned={true}
     title="Single Sign-On"
   >
-    <Component
+    <Connect(ReduxForm)
       onSubmit={[Function]}
     />
   </Panel.LEGACY>
@@ -27,4 +27,6 @@ exports[`SsoAuthPage tests renders correctly 1`] = `
 
 exports[`SsoAuthPage tests should display sso error message from url 1`] = `"Oh no!"`;
 
-exports[`SsoAuthPage tests should throw error when ssoUser is false 1`] = `"User is not set up to use single sign-on"`;
+exports[
+  `SsoAuthPage tests should throw error when ssoUser is false 1`
+] = `"User is not set up to use single sign-on"`;

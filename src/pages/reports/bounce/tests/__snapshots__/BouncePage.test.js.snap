@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BouncePage:  should display loading panel on top level metrics when aggregates are loading 1`] = `
+exports[
+  `BouncePage:  should display loading panel on top level metrics when aggregates are loading 1`
+] = `
 <Page
   title="Bounce Report"
 >
@@ -120,7 +122,7 @@ exports[`BouncePage:  should render 1`] = `
   <withRouter(Connect(ReportOptions))
     searchOptions={Object {}}
   />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Bounce Rate"
     rateValue={10}
     secondaryMessage={
@@ -139,7 +141,7 @@ exports[`BouncePage:  should render 1`] = `
       10
     </strong>
      sent messages bounced
-  </Component>
+  </Connect(MetricsSummary)>
   <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
@@ -343,7 +345,7 @@ Array [
   <LongTextContainer
     text="bouncy boi"
   />,
-  <Memo(Connect(AddFilterLink))
+  <Connect(AddFilterLink)
     content="gmail"
     newFilter={
       Object {
@@ -374,7 +376,7 @@ Array [
   <LongTextContainer
     text="u y bounce?"
   />,
-  <Memo(Connect(AddFilterLink))
+  <Connect(AddFilterLink)
     content="gmail"
     newFilter={
       Object {
@@ -400,14 +402,16 @@ Array [
 ]
 `;
 
-exports[`BouncePage:  should show empty reasons table when there are no admin reasons when on admin bounce tab 1`] = `
+exports[
+  `BouncePage:  should show empty reasons table when there are no admin reasons when on admin bounce tab 1`
+] = `
 <Page
   title="Bounce Report"
 >
   <withRouter(Connect(ReportOptions))
     searchOptions={Object {}}
   />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Bounce Rate"
     rateValue={10}
     secondaryMessage={
@@ -426,7 +430,7 @@ exports[`BouncePage:  should show empty reasons table when there are no admin re
       10
     </strong>
      sent messages bounced
-  </Component>
+  </Connect(MetricsSummary)>
   <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
@@ -467,14 +471,16 @@ exports[`BouncePage:  should show empty reasons table when there are no admin re
 </Page>
 `;
 
-exports[`BouncePage:  should show empty reasons table when there are no reasons when on regular bounce tab 1`] = `
+exports[
+  `BouncePage:  should show empty reasons table when there are no reasons when on regular bounce tab 1`
+] = `
 <Page
   title="Bounce Report"
 >
   <withRouter(Connect(ReportOptions))
     searchOptions={Object {}}
   />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Bounce Rate"
     rateValue={10}
     secondaryMessage={
@@ -493,7 +499,7 @@ exports[`BouncePage:  should show empty reasons table when there are no reasons 
       10
     </strong>
      sent messages bounced
-  </Component>
+  </Connect(MetricsSummary)>
   <Panel.LEGACY>
     <TabsWrapper>
       <Tabs
@@ -541,7 +547,7 @@ exports[`BouncePage:  should show loading panel when table is loading 1`] = `
   <withRouter(Connect(ReportOptions))
     searchOptions={Object {}}
   />
-  <Component
+  <Connect(MetricsSummary)
     rateTitle="Bounce Rate"
     rateValue={10}
     secondaryMessage={
@@ -560,7 +566,7 @@ exports[`BouncePage:  should show loading panel when table is loading 1`] = `
       10
     </strong>
      sent messages bounced
-  </Component>
+  </Connect(MetricsSummary)>
   <Panel.LEGACY>
     <TabsWrapper>
       <Tabs

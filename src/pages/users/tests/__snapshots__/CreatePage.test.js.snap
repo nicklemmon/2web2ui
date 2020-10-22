@@ -42,15 +42,7 @@ exports[`Page: User Create Page should render correctly by default 1`] = `
           />
           <Field
             allowSubaccountAssignment={false}
-            component={
-              Object {
-                "$$typeof": Symbol(react.memo),
-                "WrappedComponent": [Function],
-                "compare": null,
-                "displayName": "Connect(RoleRadioGroup)",
-                "type": [Function],
-              }
-            }
+            component={[Function]}
             name="access"
           />
         </Stack>

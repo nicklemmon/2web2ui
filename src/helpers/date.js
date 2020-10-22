@@ -135,10 +135,7 @@ export function getRelativeDates(
 }
 
 export function getDuration(dates, unit = 'hours') {
-  if (!dates) return;
-
   const { from, to } = dates;
-
   return moment(to).diff(moment(from), unit);
 }
 

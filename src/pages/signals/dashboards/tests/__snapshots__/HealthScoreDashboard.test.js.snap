@@ -1,24 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Signals Engagement Recency Dashboard renders page 1`] = `
+exports[`Signals Health Score Dashboard renders page 1`] = `
 <SignalsPage
-  title={
-    <React.Fragment>
-      Engagement Recency
-    </React.Fragment>
-  }
+  title="Health Score"
 >
   <PageDescription>
     
-  The share over time of your email that has been sent to recipients who most recently
-  opened messages or clicked links during several defined time periods.
+  This is a predictive score that monitors your email health to identify problems before
+  they negatively impact email delivery. This score is informed by message events,
+  including bounces, spam trap hits, and engagement across our entire network.
 
   </PageDescription>
-  <Panel.LEGACY>
+  <Panel.LEGACY
+    title="Health Score Trends"
+  >
     <Panel.LEGACY.Section>
       <Grid>
         <Grid.Column
-          md={4}
+          md={5}
           xs={12}
         >
           <Connect(DateFilter)
@@ -27,7 +26,30 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
         </Grid.Column>
       </Grid>
     </Panel.LEGACY.Section>
-    <Panel.LEGACY.Section>
+  </Panel.LEGACY>
+  <Grid>
+    <Grid.Column
+      lg={5}
+      xl={4}
+      xs={12}
+    >
+      <Connect(CurrentHealthGauge) />
+    </Grid.Column>
+    <Grid.Column
+      lg={7}
+      xl={8}
+      xs={12}
+    >
+      <Connect(HealthScoreChart) />
+    </Grid.Column>
+  </Grid>
+  <Connect(withRouter(Connect(HealthScoreOverview)))
+    defaults={
+      Object {
+        "perPage": 25,
+      }
+    }
+    header={
       <Grid>
         <Connect(FacetFilter)
           facets={
@@ -50,18 +72,16 @@ exports[`Signals Engagement Recency Dashboard renders page 1`] = `
               },
             ]
           }
-          label="Breakdown"
         />
       </Grid>
-    </Panel.LEGACY.Section>
-  </Panel.LEGACY>
-  <Connect(withRouter(Connect(EngagementRecencyOverview)))
-    defaults={
-      Object {
-        "perPage": 25,
-      }
     }
     hideTitle={true}
+    subaccounts={
+      Array [
+        "sub1",
+        "sub2",
+      ]
+    }
   />
 </SignalsPage>
 `;

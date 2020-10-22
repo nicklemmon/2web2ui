@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { shallow } from 'enzyme';
 import TestApp from 'src/__testHelpers__/TestApp';
-import BillingAddressForm from '../BillingAddressForm';
 import CreditCardSection from '../CreditCardSection';
 
 describe('CreditCardSection', () => {
@@ -30,6 +29,6 @@ describe('CreditCardSection', () => {
   it('should render credit card form when credit_card is not present', () => {
     const instance = shallow(<CreditCardSection {...defaultProps} creditCard={null} />);
     expect(instance.find('PaymentForm')).toHaveLength(1);
-    expect(instance.find(BillingAddressForm)).toHaveLength(1);
+    expect(instance.find('Connect(BillingAddressForm)')).toHaveLength(1);
   });
 });

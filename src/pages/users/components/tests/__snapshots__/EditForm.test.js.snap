@@ -7,15 +7,7 @@ exports[`Component: EditForm should render 1`] = `
       <Field
         allowSubaccountAssignment={false}
         allowSuperUser={false}
-        component={
-          Object {
-            "$$typeof": Symbol(react.memo),
-            "WrappedComponent": [Function],
-            "compare": null,
-            "displayName": "Connect(RoleRadioGroup)",
-            "type": [Function],
-          }
-        }
+        component={[Function]}
         name="access"
       />
     </Panel.LEGACY.Section>

@@ -92,7 +92,7 @@ describe('Webhooks Form Component', () => {
     expect(wrapper.find('Button').prop('disabled')).toBe(true);
     expect(wrapper.find('NameField').prop('disabled')).toBe(true);
     expect(wrapper.find('TargetField').prop('disabled')).toBe(true);
-    expect(wrapper.find(SubaccountSection).prop('disabled')).toBe(true);
+    expect(wrapper.find('Connect(SubaccountSection)').prop('disabled')).toBe(true);
     expect(wrapper.find('EventsRadioGroup').prop('disabled')).toBe(true);
     expect(wrapper.find('EventCheckBoxes').prop('disabled')).toBe(true);
     expect(wrapper.find('AuthDropDown').prop('disabled')).toBe(true);

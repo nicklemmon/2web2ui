@@ -45,7 +45,7 @@ exports[`Page: Test List renders page correctly with defaults 1`] = `
         validateDate={[Function]}
       />
     </Panel.LEGACY.Section>
-    <Component
+    <Connect(TrendsChart)
       filters={
         Object {
           "dateRange": Object {
@@ -149,7 +149,7 @@ exports[`Page: Test List renders page with tests 1`] = `
         validateDate={[Function]}
       />
     </Panel.LEGACY.Section>
-    <Component
+    <Connect(TrendsChart)
       filters={
         Object {
           "dateRange": Object {

@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import { EditPage } from '../EditPage';
-import { SupportTicketLink } from 'src/components/links';
 
 describe('IP Pools Edit Page', () => {
   let props;
@@ -54,7 +53,7 @@ describe('IP Pools Edit Page', () => {
 
     it('should show support ticket link if manually billed', () => {
       wrapper.setProps({ isManuallyBilled: true });
-      expect(wrapper.find(SupportTicketLink)).toExist();
+      expect(wrapper.find('Connect(SupportTicketLink)')).toExist();
     });
 
     it('should list pools and get pool when calling loadDependentData', () => {

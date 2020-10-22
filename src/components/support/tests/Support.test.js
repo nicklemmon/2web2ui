@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Modal } from 'src/components/matchbox';
-import SupportForm from '../components/SupportForm';
 import { Support } from '../Support';
 import findRouteByPath from 'src/helpers/findRouteByPath';
 
@@ -86,7 +85,7 @@ describe('Support', () => {
 
   it('calls closeSupportPanel when support form is closed', () => {
     wrapper.setProps({ currentSupportView: 'ticket' });
-    wrapper.find(SupportForm).simulate('close');
+    wrapper.find('Connect(ReduxForm)').simulate('close');
     expect(props.closeSupportPanel).toHaveBeenCalled();
   });
 

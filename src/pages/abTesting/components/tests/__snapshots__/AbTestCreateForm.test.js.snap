@@ -1,6 +1,107 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`A/B Test Create Form Component should render subaccount section if subaccounts exist 1`] = `
+exports[`A/B Test Create Form Component should render correctly 1`] = `
+<form
+  onSubmit={[MockFunction]}
+>
+  <Box
+    as={[Function]}
+  >
+    <Stack>
+      <OGOnlyWrapper
+        as={[Function]}
+      >
+        <Grid>
+          <Grid.Column>
+            <Field
+              component={[Function]}
+              helpText={
+                <ExternalLink
+                  to="https://developers.sparkpost.com/api/ab-testing.html"
+                >
+                  Learn more about A/B tests
+                </ExternalLink>
+              }
+              label="A/B test name"
+              name="name"
+              onChange={[Function]}
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </Grid.Column>
+          <Grid.Column>
+            <Field
+              component={[Function]}
+              helpText="A Unique ID for your test, we'll fill this in for you."
+              label="A/B Test ID"
+              name="id"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </Grid.Column>
+        </Grid>
+      </OGOnlyWrapper>
+      <OGOnlyWrapper
+        as={[Function]}
+      >
+        <Grid>
+          <Grid.Column
+            md={6}
+          >
+            <Field
+              component={[Function]}
+              errorInLabel={true}
+              helpText={
+                <span>
+                  Only published templates are available. Or
+                   
+                  <PageLink
+                    to="/templates"
+                  >
+                    create a new template
+                  </PageLink>
+                  .
+                </span>
+              }
+              label="Default template"
+              name="default_variant"
+              placeholder="Type to search"
+              validate={
+                Array [
+                  [Function],
+                  [Function],
+                ]
+              }
+            />
+          </Grid.Column>
+        </Grid>
+      </OGOnlyWrapper>
+    </Stack>
+  </Box>
+  <Panel.LEGACY.Section>
+    <Button
+      disabled={true}
+      submit={true}
+      variant="primary"
+    >
+      Continue
+    </Button>
+  </Panel.LEGACY.Section>
+</form>
+`;
+
+exports[
+  `A/B Test Create Form Component should render subaccount section if subaccounts exist 1`
+] = `
 <Field
   component={[Function]}
   helpText="Leaving this field blank will permanently assign the A/B test to the master account."
@@ -82,7 +183,6 @@ exports[`A/B Test Create Form Component should render when no available template
                   .
                 </span>
               }
-              id="templates-typeahead"
               label="Default template"
               name="default_variant"
               placeholder="Type to search"
