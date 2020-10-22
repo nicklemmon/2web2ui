@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import {
@@ -30,7 +30,9 @@ const DAY_OF_WEEK_OPTIONS = [
   { label: 'Saturday', value: 6 },
 ];
 
-const ScheduledReportForm = ({
+const hasAtLeastOneRecipient = recipientList => recipientList.length > 0;
+
+export const ScheduledReportForm = ({
   report,
   handleSubmit: parentHandleSubmit,
   listUsers,
@@ -45,26 +47,22 @@ const ScheduledReportForm = ({
     listUsers();
   }, [listUsers]);
 
-  const Typeahead = useCallback(() => {
-    if (loading) {
-      return <TextField disabled />;
-    }
-    return (
-      <ComboBoxTypeaheadWrapper
-        id="to-address"
-        itemToString={item => (item ? `Name: ${item.name} ---- Email: ${item.email}` : '')}
-        label="Send To"
-        name="toAddresses"
-        results={users}
-        setValue={setValue}
-        value={[]}
-      />
-    );
-  }, [loading, users, setValue]);
+  const Typeahead = (
+    <ComboBoxTypeaheadWrapper
+      disabled={loading}
+      error={errors.recipients && 'At least 1 recipient must be selected'}
+      id="to-address"
+      itemToString={item => (item ? `Name: ${item.name} ---- Email: ${item.email}` : '')}
+      label="Send To"
+      name="recipients"
+      results={users}
+      setValue={setValue}
+    />
+  );
 
   const onSubmit = formValues => {
     const { name, description = 'NA', subject, ...rest } = formValues;
-    const recipients = rest.toAddresses.map(({ username }) => username);
+    const recipients = rest.recipients.map(({ username }) => username);
     const [hour, minute] = rest.time.split(':');
     const day_of_week = rest.day || '*';
     const schedule = {
@@ -131,7 +129,13 @@ const ScheduledReportForm = ({
               />
             </Panel.Section>
             <Panel.Section>
-              <Controller control={control} as={Typeahead} name="toAddresses" />
+              <Controller
+                control={control}
+                as={Typeahead}
+                defaultValue={[]}
+                name="recipients"
+                rules={{ validate: hasAtLeastOneRecipient }}
+              />
             </Panel.Section>
           </Panel>
         </Layout.Section>
@@ -181,7 +185,7 @@ const ScheduledReportForm = ({
                   maxWidth="12rem"
                   placeholder="hh:mm"
                   connectRight={
-                    <RadioButtonGroup label="Grouping Type">
+                    <RadioButtonGroup id="period" label="Grouping Type">
                       <RadioButtonGroup.Button
                         id="am"
                         checked={period === 'AM'}
