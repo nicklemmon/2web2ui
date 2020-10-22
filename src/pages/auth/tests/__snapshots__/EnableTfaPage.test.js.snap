@@ -9,7 +9,7 @@ exports[`Component: EnableTfaPage should render correctly 1`] = `
     <p>
       Your administrator requires all users on this account to use two factor authentication.
     </p>
-    <Connect(EnableTfaForm)
+    <Component
       afterEnable={[Function]}
     />
   </Stack>

@@ -2,7 +2,7 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 import config from 'src/config';
 import TestApp from 'src/__testHelpers__/TestApp';
-
+import VerifyEmail from '../VerifyEmail';
 import { SetupSending } from '../SetupSending';
 
 // Snapshot note - Fragments that are not directly rendered will show 'UNDEFINED'
@@ -86,7 +86,7 @@ describe('Component: SetupSending', () => {
   it('should close verify by email modal', () => {
     const wrapper = shallow(<SetupSending {...props} />);
     wrapper.setState({ open: true }); // open modal
-    wrapper.find('Connect(VerifyEmail)').simulate('cancel');
+    wrapper.find(VerifyEmail).simulate('cancel');
     expect(wrapper.state('open')).toEqual(false);
   });
 

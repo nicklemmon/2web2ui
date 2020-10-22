@@ -298,7 +298,7 @@ exports[`Api Keys List Page should show api key banner on successful create 1`] 
   }
   title="API Keys"
 >
-  <Connect(ApiKeySuccessBanner)
+  <Component
     title="New API Key"
   />
   <TableCollection

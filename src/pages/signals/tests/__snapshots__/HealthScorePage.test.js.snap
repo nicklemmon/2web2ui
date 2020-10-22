@@ -7,9 +7,7 @@ Object {
 }
 `;
 
-exports[
-  `Signals Health Score Page bar chart props renders tooltip content for component weights 1`
-] = `
+exports[`Signals Health Score Page bar chart props renders tooltip content for component weights 1`] = `
 "
       Other Bounces are defined as the share of attempted email injections that bounce for a variety
       of miscellaneous technical reasons.
@@ -24,9 +22,7 @@ exports[`Signals Health Score Page bar chart props renders tooltip content for h
 />
 `;
 
-exports[
-  `Signals Health Score Page bar chart props renders tooltip content for hovered component 1`
-] = `""`;
+exports[`Signals Health Score Page bar chart props renders tooltip content for hovered component 1`] = `""`;
 
 exports[`Signals Health Score Page bar chart props renders tooltip content for injections 1`] = `
 <TooltipMetric
@@ -35,18 +31,14 @@ exports[`Signals Health Score Page bar chart props renders tooltip content for i
 />
 `;
 
-exports[
-  `Signals Health Score Page bar chart props renders tooltip content for selected component 1`
-] = `
+exports[`Signals Health Score Page bar chart props renders tooltip content for selected component 1`] = `
 <TooltipMetric
   label="Engaged Recipients"
   value="0.1235%"
 />
 `;
 
-exports[
-  `Signals Health Score Page bar chart props renders y label content for component weights 1`
-] = `"Engaged Recipients"`;
+exports[`Signals Health Score Page bar chart props renders y label content for component weights 1`] = `"Engaged Recipients"`;
 
 exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
 <SignalsPage
@@ -70,7 +62,7 @@ exports[`Signals Health Score Page renders correctly when recieving data 1`] = `
           md={5}
           xs={12}
         >
-          <Connect(DateFilter)
+          <Component
             label="Date Range"
           />
         </Grid.Column>
@@ -469,7 +461,7 @@ Array [
           md={5}
           xs={12}
         >
-          <Connect(DateFilter)
+          <Component
             label="Date Range"
           />
         </Grid.Column>
@@ -516,7 +508,7 @@ exports[`Signals Health Score Page renders empty weights 1`] = `
           md={5}
           xs={12}
         >
-          <Connect(DateFilter)
+          <Component
             label="Date Range"
           />
         </Grid.Column>
@@ -766,7 +758,7 @@ exports[`Signals Health Score Page renders error correctly 1`] = `
           md={5}
           xs={12}
         >
-          <Connect(DateFilter)
+          <Component
             label="Date Range"
           />
         </Grid.Column>
@@ -851,7 +843,7 @@ Array [
           md={5}
           xs={12}
         >
-          <Connect(DateFilter)
+          <Component
             label="Date Range"
           />
         </Grid.Column>

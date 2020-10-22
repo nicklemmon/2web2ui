@@ -2,7 +2,7 @@
 
 exports[`Summary Table should render group by row data 1`] = `
 Array [
-  <Connect(AddFilterLink)
+  <Memo(Connect(AddFilterLink))
     content="Master Account (ID 0)"
     newFilter={
       Object {
@@ -28,7 +28,7 @@ Array [
       value={12345}
     />
   </div>,
-  <Connect(AddFilterLink)
+  <Memo(Connect(AddFilterLink))
     content="sub 1 name"
     newFilter={
       Object {
@@ -54,7 +54,7 @@ Array [
       value={12345}
     />
   </div>,
-  <Connect(AddFilterLink)
+  <Memo(Connect(AddFilterLink))
     content="Deleted (ID 1010)"
     newFilter={
       Object {
