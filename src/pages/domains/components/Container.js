@@ -26,6 +26,7 @@ import {
   selectTrackingDomainsRows,
   selectTrackingDomainsOptions,
 } from 'src/selectors/trackingDomains';
+import { selectTrackingDomainCname } from 'src/selectors/account';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { DomainsProvider } from '../context/DomainsContext';
 import { selectCondition } from 'src/selectors/accessConditionState';
@@ -62,6 +63,7 @@ function mapStateToProps(state) {
     verifyEmailLoading: state.sendingDomains.verifyEmailLoading,
     verifyBounceLoading: state.sendingDomains.verifyBounceLoading,
     verifyingTrackingPending: state.trackingDomains.verifyingTrackingPending,
+    trackingDomainCname: selectTrackingDomainCname(state),
   };
 }
 

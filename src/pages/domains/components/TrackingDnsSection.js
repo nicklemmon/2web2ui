@@ -15,7 +15,12 @@ const Field = ({ verified, label, value }) => {
 };
 
 export default function TrackingDnsSection({ id, isSectionVisible, title }) {
-  const { trackingDomains, verifyTrackingDomain, verifyingTrackingPending } = useDomains();
+  const {
+    trackingDomainCname,
+    trackingDomains,
+    verifyTrackingDomain,
+    verifyingTrackingPending,
+  } = useDomains();
   let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
   const { unverified } = trackingDomain;
 
@@ -77,7 +82,7 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
                 </>
               )}
               <Field label="Hostname" value={trackingDomain.domainName} verified={!unverified} />
-              <Field label="Value" value="placeholder" verified={!unverified} />
+              <Field label="Value" value={trackingDomainCname} verified={!unverified} />
             </Stack>
           </Panel.Section>
           {unverified && (

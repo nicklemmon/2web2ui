@@ -19,8 +19,9 @@ const Field = ({ verified, label, value }) => {
   return <TextField label={label} value={value} readOnly />;
 };
 
-export default function SetupForSending({ domain, resolvedStatus, isSectionVisible }) {
+export default function SetupForSending({ domain, isSectionVisible }) {
   const { verifyDkim, showAlert, userName, verifyDkimLoading } = useDomains();
+  const readyFor = resolveReadyFor(domain.status);
 
   const handleVerifyDkim = () => {
     const { id, subaccount_id: subaccount } = domain;
@@ -48,9 +49,9 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
     <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">
-          {resolvedStatus === 'unverified' ? 'DNS Verification' : 'Sending'}
+          {!readyFor.dkim ? 'DNS Verification' : 'Sending'}
         </Layout.SectionTitle>
-        {resolvedStatus === 'unverified' && (
+        {!readyFor.dkim && (
           <>
             <Tag color="green" mb="200">
               Recommended
@@ -73,7 +74,7 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
       </Layout.Section>
       <Layout.Section>
         <Panel>
-          {resolvedStatus !== 'verified' ? (
+          {!readyFor.dkim ? (
             <Panel.Section>
               Add these{' '}
               <Text as="span" fontWeight="semibold">
@@ -101,7 +102,7 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
           )}
           <Panel.Section>
             <Stack>
-              {resolvedStatus !== 'verified' && (
+              {!readyFor.dkim && (
                 <>
                   <Text as="label" fontWeight="500" fontSize="200">
                     Type
@@ -109,17 +110,9 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
                   <Text as="p">TXT</Text>
                 </>
               )}
-              <Field
-                label="Hostname"
-                value={domain.dkimHostname}
-                verified={resolvedStatus === 'verified'}
-              />
-              <Field
-                label="Value"
-                value={domain.dkimValue}
-                verified={resolvedStatus === 'verified'}
-              />
-              {resolvedStatus !== 'verified' && (
+              <Field label="Hostname" value={domain.dkimHostname} verified={readyFor.dkim} />
+              <Field label="Value" value={domain.dkimValue} verified={readyFor.dkim} />
+              {!readyFor.dkim && (
                 <Checkbox
                   id="add-txt-to-godaddy"
                   label={<>The TXT record has been added to the DNS provider</>}
@@ -128,7 +121,7 @@ export default function SetupForSending({ domain, resolvedStatus, isSectionVisib
               {/*API doesn't support it; Do we want to store this in ui option*/}
             </Stack>
           </Panel.Section>
-          {resolvedStatus !== 'verified' && (
+          {!readyFor.dkim && (
             <Panel.Section>
               <Button variant="primary" onClick={handleVerifyDkim} loading={verifyDkimLoading}>
                 Verify Domain
