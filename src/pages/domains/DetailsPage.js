@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Page, Banner, Button, Box } from 'src/components/matchbox';
+import { useRouteMatch } from 'react-router-dom';
+import { Page, Banner, Button } from 'src/components/matchbox';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { connect } from 'react-redux';
@@ -11,15 +13,14 @@ import { Loading } from 'src/components/loading/Loading';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';
 import { TranslatableText } from 'src/components/text';
-import { EXTERNAL_LINKS } from './constants';
 import styled from 'styled-components';
+import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
 
 const StyledBox = styled(Box)`
   max-width: 600px;
 `;
 function DetailsPage(props) {
   const {
-    trackingDomainList,
     match,
     history,
     sendingDomainsPending,
@@ -33,7 +34,8 @@ function DetailsPage(props) {
   const readyFor = resolveReadyFor(domain.status);
   const displaySendingAndBounceSection =
     readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
-  const isTracking = Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]));
+
+  const [isTracking] = useState(useRouteMatch(`${DETAILS_BASE_URL}/tracking`));
 
   const handleAllDomains = () => {
     if (isTracking) return history.push('/domains/list/tracking');
@@ -44,11 +46,11 @@ function DetailsPage(props) {
   };
 
   useEffect(() => {
-    getDomain(match.params.id);
-  }, [getDomain, match.params.id]);
+    if (!isTracking) getDomain(match.params.id);
+  }, [getDomain, isTracking, match.params.id]);
   useEffect(() => {
-    listTrackingDomains();
-  }, [listTrackingDomains]);
+    if (isTracking) listTrackingDomains();
+  }, [isTracking, listTrackingDomains]);
 
   if (sendingDomainsPending || trackingDomainListPending) {
     return <Loading />;

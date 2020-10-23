@@ -8,7 +8,6 @@ import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
 
 const filtersInitialState = {
-  isSelectAllChecked: false,
   domainNameFilter: undefined,
   checkboxes: [
     {
