@@ -18,12 +18,13 @@ const ScheduledReportCreatePage = props => {
   }, [getReport, reportId]);
 
   const handleSubmit = values => {
-    createScheduledReport(reportId, values).then(() =>
+    createScheduledReport(reportId, values).then(() => {
       showAlert({
         type: 'success',
-        message: `Scheduled ${values.name} for report: ${report.name}`,
-      }),
-    );
+        message: `Successfully scheduled ${values.name} for report: ${report.name}`,
+      });
+      props.history.push('/signals/analytics');
+    });
   };
   return (
     <Page title="Schedule Report">

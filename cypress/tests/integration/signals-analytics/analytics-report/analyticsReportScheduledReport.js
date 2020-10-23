@@ -7,12 +7,17 @@ if (IS_HIBANA_ENABLED) {
       commonBeforeSteps();
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.metrics-rollup-and-saved-reports',
+        fixture: 'users/200.get.saved-reports-and-scheduled-reports',
       });
 
       cy.stubRequest({
         url: `/api/v1/users`,
         fixture: 'users/200.get.list',
+      });
+
+      cy.stubRequest({
+        url: '/api/v1/reports',
+        fixture: '200.get.no-results',
       });
 
       cy.stubRequest({
@@ -89,7 +94,10 @@ if (IS_HIBANA_ENABLED) {
           },
           subject: 'Free Macbook',
         });
-      cy.findByText('Scheduled My First Report for report: My Bounce Report').should('be.visible');
+      cy.url().should('include', '/signals/analytics');
+      cy.findByText('Successfully scheduled My First Report for report: My Bounce Report').should(
+        'be.visible',
+      );
     });
   });
 }

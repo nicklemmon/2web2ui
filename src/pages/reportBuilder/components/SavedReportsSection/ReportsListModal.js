@@ -14,6 +14,8 @@ import {
 } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
 import { ButtonLink, PageLink } from 'src/components/links';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 
 const allReportsColumns = [
   { label: 'Name', sortKey: 'name' },
@@ -36,7 +38,15 @@ const FilterBoxWrapper = props => (
 );
 
 export function ReportsListModal(props) {
-  const { reports, open, onClose, currentUser, handleDelete, handleEdit } = props;
+  const {
+    reports,
+    open,
+    onClose,
+    currentUser,
+    handleDelete,
+    handleEdit,
+    isScheduledReportsEnabled,
+  } = props;
   const handleReportChange = report => {
     props.handleReportChange(report);
     onClose();
@@ -61,17 +71,19 @@ export function ReportsListModal(props) {
         >
           <ActionList>
             <ActionList.Action content="Edit" onClick={() => handleEdit(report)} />
-            <ActionList.Action
-              content="Schedule"
-              to={`/signals/schedule/${report.id}`}
-              component={PageLink}
-            />
+            {isScheduledReportsEnabled && (
+              <ActionList.Action
+                content="Schedule"
+                to={`/signals/schedule/${report.id}`}
+                component={PageLink}
+              />
+            )}
             <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />
           </ActionList>
         </Popover>
       );
     },
-    [handleDelete, handleEdit],
+    [handleDelete, handleEdit, isScheduledReportsEnabled],
   );
 
   const myReports = reports.filter(({ creator }) => creator === currentUser);
@@ -160,6 +172,7 @@ export function ReportsListModal(props) {
 const mapStateToProps = state => {
   return {
     currentUser: state.currentUser.username,
+    isScheduledReportsEnabled: selectCondition(isUserUiOptionSet('allow_scheduled_reports'))(state),
   };
 };
 export default connect(mapStateToProps)(ReportsListModal);

@@ -2,6 +2,7 @@ import { reportBuilder, reports, signals } from 'src/pages';
 import App from 'src/components/layout/App';
 import { hasGrants } from 'src/helpers/conditions';
 import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 
 const reportsRoutes = [
   {
@@ -126,6 +127,7 @@ const hibanaReportsRoutes = [
   {
     path: '/signals/schedule/:reportId/',
     component: reportBuilder.ScheduledReportCreatePage,
+    condition: isUserUiOptionSet('allow_scheduled_reports'),
     layout: App,
     title: 'Schedule Report',
   },
