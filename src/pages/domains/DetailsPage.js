@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Page, Banner, Button, Box } from 'src/components/matchbox';
 import { useRouteMatch } from 'react-router-dom';
-import { Page, Banner, Button } from 'src/components/matchbox';
 import { get as getDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { connect } from 'react-redux';
@@ -15,6 +14,7 @@ import _ from 'lodash';
 import { TranslatableText } from 'src/components/text';
 import styled from 'styled-components';
 import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
+import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
 
 const StyledBox = styled(Box)`
   max-width: 600px;
@@ -28,6 +28,8 @@ function DetailsPage(props) {
     domain,
     getDomain,
     listTrackingDomains,
+    trackingDomainList,
+    sendingDomainsGetError,
   } = props;
   const resolvedStatus = resolveStatus(domain.status);
   const [warningBanner, toggleBanner] = useState(true);
@@ -54,6 +56,27 @@ function DetailsPage(props) {
 
   if (sendingDomainsPending || trackingDomainListPending) {
     return <Loading />;
+  }
+
+  if (sendingDomainsGetError && !isTracking) {
+    return (
+      <RedirectAndAlert
+        to="/domains/list/sending"
+        alert={{ type: 'error', message: sendingDomainsGetError.message }}
+      />
+    );
+  }
+
+  if (
+    isTracking &&
+    !Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]))
+  ) {
+    return (
+      <RedirectAndAlert
+        to="/domains/list/tracking"
+        alert={{ type: 'error', message: 'Resource could not be found' }}
+      />
+    );
   }
 
   return (
@@ -151,6 +174,8 @@ export default connect(
     trackingDomainList: selectTrackingDomainsList(state),
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
+    trackingDomainList: selectTrackingDomainsList(state),
+    sendingDomainsGetError: state.sendingDomains.getError,
   }),
   { getDomain, listTrackingDomains },
 )(DetailsPage);
