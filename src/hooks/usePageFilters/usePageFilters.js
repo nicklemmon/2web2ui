@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useRef, useEffect } from 'react';
+import { useCallback, useReducer, useRef, useEffect, useState } from 'react';
 import _ from 'lodash';
 import useRouter from 'src/hooks/useRouter';
 
@@ -119,8 +119,10 @@ const omitFiltersExcludedFromRoute = (filters, allowedList) => {
  *   }
  * });
  */
-const usePageFilters = allowedList => {
+const usePageFilters = params => {
+  const [allowedList] = useState(params);
   const { requestParams, updateRoute } = useRouter();
+
   const defaultFilters = useRef(
     Object.keys(allowedList).reduce((acc, key) => {
       acc[key] = allowedList[key].defaultValue;
@@ -143,10 +145,10 @@ const usePageFilters = allowedList => {
     ),
   });
 
-  const updateFilters = useCallback(
-    filters => dispatch({ type: PAGE_FILTER_ACTIONS.SPREAD, payload: filters }),
-    [],
-  );
+  const updateFilters = useCallback(filters => {
+    return dispatch({ type: PAGE_FILTER_ACTIONS.SPREAD, payload: filters });
+  }, []);
+
   const resetFilters = useCallback(
     () => dispatch({ type: PAGE_FILTER_ACTIONS.RESET, payload: defaultFilters.current }),
     [],
