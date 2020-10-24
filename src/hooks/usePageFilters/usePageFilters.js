@@ -127,7 +127,6 @@ const omitFiltersExcludedFromRoute = (filters, allowedList) => {
  */
 const usePageFilters = allowedList => {
   const { requestParams, updateRoute } = useRouter();
-
   const defaultFilters = useRef(
     Object.keys(allowedList).reduce((acc, key) => {
       acc[key] = allowedList[key].defaultValue;
@@ -154,7 +153,6 @@ const usePageFilters = allowedList => {
     filters => dispatch({ type: PAGE_FILTER_ACTIONS.SPREAD, payload: filters }),
     [],
   );
-
   const resetFilters = useCallback(
     () => dispatch({ type: PAGE_FILTER_ACTIONS.RESET, payload: defaultFilters.current }),
     [],
