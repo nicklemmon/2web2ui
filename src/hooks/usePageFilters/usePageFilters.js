@@ -1,4 +1,4 @@
-import { useCallback, useReducer, useRef, useEffect, useState } from 'react';
+import { useCallback, useReducer, useRef, useEffect } from 'react';
 import _ from 'lodash';
 import useRouter from 'src/hooks/useRouter';
 
@@ -110,17 +110,22 @@ const omitFiltersExcludedFromRoute = (filters, allowedList) => {
  *         The `filters`, `prevFilters`, `updateFilters`, and `resetFilters` in an object
  *
  * @example
- * const { filters, prevFilters, updateFilters, resetFilters } = usePageFilters({
+ * const initFilters = {
  *   page: {
  *     validate: val => !isNaN(val) && val > 0 && val < 10,
  *     normalize: val => val * 1, // Convert from string to number
  *     defaultValue: 0,
  *     excludeFromRoute: false,
  *   }
- * });
+ * };
+ *
+ * function FakeComponent(){
+ * //remember to have initFilters outside the functional component or you will have a runaway useEffect
+ * const { filters, prevFilters, updateFilters, resetFilters } = usePageFilters(initFilters);
+ * }
+ *
  */
-const usePageFilters = params => {
-  const [allowedList] = useState(params);
+const usePageFilters = allowedList => {
   const { requestParams, updateRoute } = useRouter();
 
   const defaultFilters = useRef(
@@ -145,9 +150,10 @@ const usePageFilters = params => {
     ),
   });
 
-  const updateFilters = useCallback(filters => {
-    return dispatch({ type: PAGE_FILTER_ACTIONS.SPREAD, payload: filters });
-  }, []);
+  const updateFilters = useCallback(
+    filters => dispatch({ type: PAGE_FILTER_ACTIONS.SPREAD, payload: filters }),
+    [],
+  );
 
   const resetFilters = useCallback(
     () => dispatch({ type: PAGE_FILTER_ACTIONS.RESET, payload: defaultFilters.current }),
