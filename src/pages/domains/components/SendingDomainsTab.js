@@ -199,9 +199,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
           <TableFilters.DomainField
             disabled={listPending}
             value={filtersState.domainNameFilter}
-            onChange={e => {
-              filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
-            }}
+            onChange={e => filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })}
           />
 
           <TableFilters.SortSelect

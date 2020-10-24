@@ -9,7 +9,6 @@ import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from '.
 export default function DomainsPage() {
   const history = useHistory();
   const location = useLocation();
-  // let [filters, setFilters] = useState({});
   // Note - passing in `PageLink` as a component here was possible, however, focus handling was breaking.
   // Additionally, the `role="tab"` works ideally with a button - so better to just do this so keyboard users
   // have some level of control over this UI. Unfortunately things are still a little funky with focus
@@ -32,13 +31,10 @@ export default function DomainsPage() {
     },
   ];
   const tabIndex = TABS.findIndex(tab => tab['data-to'] === location.pathname);
-  // eslint-disable-next-line no-unused-vars
 
   const matchesSendingTab = useRouteMatch(SENDING_DOMAINS_URL);
   const matchesBounceTab = useRouteMatch(BOUNCE_DOMAINS_URL);
   const matchesTrackingTab = useRouteMatch(TRACKING_DOMAINS_URL);
-
-  // const { filters, updateFilters } = usePageFilters({});
 
   const renderTab = () => {
     if (matchesSendingTab) {
