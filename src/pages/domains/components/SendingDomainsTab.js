@@ -113,6 +113,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
+  //sync the params with filters on page load
   useEffect(() => {
     const validateFilters = filters => {
       return filters.filter(x => initFiltersForSending.hasOwnProperty(x));
@@ -136,7 +137,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // When filter state updates, update table state
+  // When filter state updates, update table state and the query parameters
   useEffect(() => {
     if (!listPending) {
       function getFilterFromCheckbox(name) {
