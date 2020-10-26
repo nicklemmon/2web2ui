@@ -197,7 +197,7 @@ export default function CreateForm() {
                         <Radio
                           ref={register}
                           disabled={createPending}
-                          label="Principal and all Subaccounts"
+                          label="Share with all Subaccounts"
                           id="assign-to-shared"
                           value="shared"
                           name="assignTo"
@@ -207,7 +207,7 @@ export default function CreateForm() {
                       <Radio
                         ref={register}
                         disabled={createPending}
-                        label="Principal Account only"
+                        label="Assign to Master Account"
                         id="assign-to-principal-only"
                         value="principalOnly"
                         name="assignTo"
@@ -216,7 +216,7 @@ export default function CreateForm() {
                       <Radio
                         ref={register}
                         disabled={createPending}
-                        label="Single Subaccount"
+                        label="Assign to Subaccount"
                         id="assign-to-subaccount"
                         value="singleSubaccount"
                         name="assignTo"
