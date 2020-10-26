@@ -125,7 +125,12 @@ function reducer(state, action) {
     }
 
     case 'CHANGE_PER_PAGE': {
-      const rows = action.data.slice(0, action.perPage);
+      const rows = slicePage(
+        state.rawData.map(i => i),
+        0,
+        action.perPage,
+      );
+
       return {
         ...state,
         perPage: action.perPage,
