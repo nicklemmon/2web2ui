@@ -1,15 +1,18 @@
 import React from 'react';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { Pagination } from 'src/components/matchbox';
+
+// TODO: Figure out what the real difference is between PerPageControl and PerPageButtons
 import PerPageControl from './PerPageControl';
+import PerPageButtons from 'src/components/collection/PerPageButtons';
+
 import OGPaginationStyles from './Pagination.module.scss';
 import PaginationHibanaStyles from './PaginationHibana.module.scss';
 
-/**
- * CommonPagination
- * ================
- * This component exists to re-use the styles surrounding the Pagination and PerPageControl components
- */
+const perPageComponents = ['control', 'buttons'];
+const whichButtonComponentToUse = perPageComponents[0];
+
+// TODO: probably revert this change ....
 function CommonPagination({
   styles,
   currentPage,
@@ -33,7 +36,20 @@ function CommonPagination({
         />
       </div>
       <div>
-        <PerPageControl onChange={handlePerPageChange} perPage={perPage} totalCount={totalCount} />
+        {whichButtonComponentToUse === 'control' && (
+          <PerPageControl
+            onChange={handlePerPageChange}
+            perPage={perPage}
+            totalCount={totalCount}
+          />
+        )}
+        {whichButtonComponentToUse === 'buttons' && (
+          <PerPageButtons
+            onChange={handlePerPageChange}
+            perPage={perPage}
+            totalCount={totalCount}
+          />
+        )}
       </div>
     </div>
   );

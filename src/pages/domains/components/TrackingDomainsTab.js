@@ -2,13 +2,12 @@
 import React, { useEffect, useReducer } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
-import { Pagination } from 'src/components/pagination';
+import { Pagination } from 'src/components/collection';
 import { useTable } from 'src/hooks';
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
-const { log } = console;
 
 const filtersInitialState = {
   isSelectAllChecked: false,
@@ -139,17 +138,20 @@ export default function TrackingDomainsTab() {
 
         {!listPending && !isEmpty && <TrackingDomainsTable rows={tableState.rows} />}
       </Panel>
+
       <Pagination
-        pages={1}
-        pageRange={3}
-        currentPage={1}
-        perPage={10}
-        totalCount={100}
-        handlePagination={() => {
-          log('handlePerPageChange');
+        data={tableState.rows}
+        onPageChange={() => {
+          // console.log(arguments[0], arguments[1]);
+          // return tableDispatch({
+          //   type: 'CHANGE_PAGE',
+          // });
         }}
-        handlePerPageChange={() => {
-          log('handlePerPageChange');
+        onPerPageChange={() => {
+          // console.log(arguments[0], arguments[1]);
+          // return tableDispatch({
+          //   type: 'CHANGE_PER_PAGE',
+          // });
         }}
       />
     </>

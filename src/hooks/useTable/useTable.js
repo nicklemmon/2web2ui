@@ -1,16 +1,23 @@
 import { useEffect, useReducer } from 'react';
+import { DEFAULT_CURRENT_PAGE as CURRENT_PAGE, DEFAULT_PER_PAGE as PER_PAGE } from 'src/constants';
 import _ from 'lodash';
 import { filterByCollectionValues } from 'src/helpers/array';
+
+const { log } = console;
 
 const initialState = {
   rawData: [],
   rows: [],
   sortBy: undefined,
   sortDirection: undefined,
+  currentPage: CURRENT_PAGE,
+  perPage: PER_PAGE,
 };
 
 function useTable(data = []) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  log('useTable data: ', data);
 
   useEffect(() => {
     dispatch({ type: 'DATA_LOADED', data });
@@ -72,6 +79,20 @@ function reducer(state, action) {
         rows: sortedRows,
         sortBy: column,
         sortDirection: direction,
+      };
+    }
+
+    case 'CHANGE_PAGE': {
+      log('CHANGE_PAGE');
+      return {
+        ...state,
+      };
+    }
+
+    case 'CHANGE_PER_PAGE': {
+      log('CHANGE_PER_PAGE');
+      return {
+        ...state,
       };
     }
 

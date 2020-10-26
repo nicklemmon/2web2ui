@@ -10,7 +10,6 @@ export const ENABLE_TFA_AUTH_ROUTE = '/auth/enable-tfa';
 export const SSO_AUTH_ROUTE = '/auth/sso';
 export const DASHBOARD_ROUTE = '/dashboard';
 export const COOKIE_DOMAIN = '.sparkpost.com';
-export const DEFAULT_PAGE_RANGE = 5;
 
 export const FORMATS = {
   DATE: 'MMM Do',
@@ -168,6 +167,9 @@ export const ALL_EVENTS_FILTERS = {
 };
 
 export const DEFAULT_PER_PAGE_BUTTONS = [10, 25, 50, 100];
+export const DEFAULT_PAGE_RANGE = 5;
+export const DEFAULT_CURRENT_PAGE = 1;
+export const DEFAULT_PER_PAGE = 10;
 
 export const ANALYTICS_CREATE_ACCOUNT = 'create account';
 export const ANALYTICS_ADDON_IP = 'dedicated_ips';
