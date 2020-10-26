@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import { Box, Button } from 'src/components/matchbox';
-import styles from './SummaryTable.module.scss';
+import styles from './Pagination.module.scss';
 
 const SIZES = [10, 25, 50, 100];
 

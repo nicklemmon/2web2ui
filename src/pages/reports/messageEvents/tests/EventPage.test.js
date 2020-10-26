@@ -9,18 +9,15 @@ describe('Page: Event tests', () => {
     getSelectedEvent: jest.fn(),
     history: {
       replace: jest.fn(),
-      push: jest.fn()
+      push: jest.fn(),
     },
     messageId: 'id',
-    messageHistory: [
-      { event_id: '1' },
-      { event_id: '2' }
-    ],
+    messageHistory: [{ event_id: '1' }, { event_id: '2' }],
     isOrphanEvent: false,
     match: {
-      params: {}
+      params: {},
     },
-    selectedEventId: 'eventId'
+    selectedEventId: 'eventId',
   };
 
   let wrapper;
@@ -42,7 +39,12 @@ describe('Page: Event tests', () => {
   });
 
   it('redirects to list page if event_id not found', () => {
-    wrapper.setProps({ isOrphanEvent: true, selectedEvent: null, selectedEventId: 3, loading: true });
+    wrapper.setProps({
+      isOrphanEvent: true,
+      selectedEvent: null,
+      selectedEventId: 3,
+      loading: true,
+    });
     wrapper.setProps({ loading: false });
     expect(wrapper).toMatchSnapshot();
   });

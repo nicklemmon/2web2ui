@@ -10,6 +10,7 @@ export const ENABLE_TFA_AUTH_ROUTE = '/auth/enable-tfa';
 export const SSO_AUTH_ROUTE = '/auth/sso';
 export const DASHBOARD_ROUTE = '/dashboard';
 export const COOKIE_DOMAIN = '.sparkpost.com';
+export const DEFAULT_PAGE_RANGE = 5;
 
 export const FORMATS = {
   DATE: 'MMM Do',

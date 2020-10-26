@@ -1,0 +1,9 @@
+@mixin buttonOverrides {
+  button,
+  button:active,
+  button:focus {
+    border-right: 1px solid color(gray, 7);
+    border-left: 1px solid color(gray, 7);
+    background: #f2f2f2;
+  }
+}
