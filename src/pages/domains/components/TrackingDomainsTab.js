@@ -155,6 +155,12 @@ export default function TrackingDomainsTab() {
             onChange={e => filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })}
           />
 
+          <TableFilters.StatusPopover
+            disabled={listPending}
+            checkboxes={filtersState.checkboxes}
+            onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
+          />
+
           <TableFilters.SortSelect
             disabled={listPending}
             defaultValue="domainName"
@@ -180,12 +186,6 @@ export default function TrackingDomainsTab() {
                 direction: selectedOption.getAttribute('data-sort-direction'),
               });
             }}
-          />
-
-          <TableFilters.StatusPopover
-            disabled={listPending}
-            checkboxes={filtersState.checkboxes}
-            onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
           />
         </TableFilters>
       </Panel.Section>

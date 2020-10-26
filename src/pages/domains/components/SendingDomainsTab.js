@@ -9,7 +9,7 @@ import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 
 const filtersInitialState = {
-  domainNameFilter: undefined,
+  domainNameFilter: '',
   checkboxes: [
     {
       label: 'Sending Domain',
@@ -101,7 +101,13 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
   const isEmpty = !listPending && tableState.rows?.length === 0;
   const location = useLocation();
-  const { updateFilters } = usePageFilters(initFiltersForSending);
+  const { updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
+  //resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
+  useEffect(() => {
+    filtersDispatch({ type: 'RESET', state: filtersInitialState });
+    resetFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [renderBounceOnly]);
   // Make initial requests
   useEffect(() => {
     listSendingDomains();
@@ -202,6 +208,12 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
             onChange={e => filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })}
           />
 
+          <TableFilters.StatusPopover
+            disabled={listPending}
+            checkboxes={filtersState.checkboxes}
+            onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
+          />
+
           <TableFilters.SortSelect
             disabled={listPending}
             defaultValue="creationTime"
@@ -241,12 +253,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
                 direction: selectedOption.getAttribute('data-sort-direction'),
               });
             }}
-          />
-
-          <TableFilters.StatusPopover
-            disabled={listPending}
-            checkboxes={filtersState.checkboxes}
-            onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
           />
         </TableFilters>
       </Panel.Section>
