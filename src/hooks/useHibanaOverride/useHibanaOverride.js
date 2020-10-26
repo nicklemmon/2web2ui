@@ -1,7 +1,7 @@
 import { useHibana } from 'src/context/HibanaContext';
 import { composeTheme } from '@css-modules-theme/core';
 
-export default function useHibanaOverride(OGstyles, hibanaStyles = {}) {
+export default function useHibanaOverride(OGstyles, hibanaStyles) {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
