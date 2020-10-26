@@ -184,6 +184,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
       <Pagination
         data={tableState.rawData}
+        perPage={tableState.perPage}
         saveCsv={false}
         onPageChange={page => {
           page += 1; // because matchbox Pagination component gives back 0 base page argument, while it takes a 1 base currentPage prop
