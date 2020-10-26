@@ -97,6 +97,9 @@ export class SummaryTableClassComponent extends React.Component {
             perPage={perPage}
           />
         </Table>
+
+        {/* TODO?: Replace this with src/components/collection/pagination? probably.... since it appears this is the only spot that does it's own (only spot that doesn't use the src/components/collection/* ) */}
+        {/* TODO?: Or just undo this change completely.... */}
         <Pagination
           pages={pages}
           pageRange={PAGE_RANGE}

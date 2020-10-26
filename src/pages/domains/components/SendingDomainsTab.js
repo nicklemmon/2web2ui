@@ -1,14 +1,16 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 
-// usePageFilters is correcting the URL
 import { usePageFilters } from 'src/hooks';
 import { Panel, Pagination } from 'src/components/matchbox';
+import { Pagination } from 'src/components/collection';
+
+//
+
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
-const { log } = console;
 
 const filtersInitialState = {
   domainNameFilter: '',
@@ -257,17 +259,20 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         {/* {!listPending && !isEmpty && <SendingDomainsTable rows={tableState.rows} />} */}
       </Panel>
 
-      {/* <Pagination
-        pages={1}
-        pageRange={3}
-        currentPage={1}
-        perPage={10}
-        totalCount={100}
-        handlePagination={() => {
-          log('handlePerPageChange');
+      {/*
+      <Pagination
+        data={tableState.rows}
+        onPageChange={() => {
+          // console.log(arguments[0], arguments[1]);
+          // return tableDispatch({
+          //   type: 'CHANGE_PAGE',
+          // });
         }}
-        handlePerPageChange={() => {
-          log('handlePerPageChange');
+        onPerPageChange={() => {
+          // console.log(arguments[0], arguments[1]);
+          // return tableDispatch({
+          //   type: 'CHANGE_PER_PAGE',
+          // });
         }}
       /> */}
     </>
