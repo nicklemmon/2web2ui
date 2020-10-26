@@ -1,11 +1,12 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
-import { Panel } from 'src/components/matchbox';
+import { Panel, Pagination } from 'src/components/matchbox';
 import { useTable } from 'src/hooks';
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
+const { log } = console;
 
 const filtersInitialState = {
   isSelectAllChecked: false,
@@ -113,69 +114,86 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   }
 
   return (
-    <Panel mb="0">
-      <Panel.Section>
-        <TableFilters>
-          <TableFilters.DomainField
-            disabled={listPending}
-            value={filtersState.domainNameFilter}
-            onChange={e => filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })}
-          />
+    <>
+      <Panel mb="400">
+        <Panel.Section>
+          <TableFilters>
+            <TableFilters.DomainField
+              disabled={listPending}
+              value={filtersState.domainNameFilter}
+              onChange={e =>
+                filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })
+              }
+            />
 
-          <TableFilters.SortSelect
-            disabled={listPending}
-            defaultValue="creationTime"
-            value={sort.by}
-            options={[
-              {
-                label: 'Date Added (Newest - Oldest)',
-                value: 'creationTimeDesc',
-                'data-sort-by': 'creationTime',
-                'data-sort-direction': 'desc',
-              },
-              {
-                label: 'Date Added (Oldest - Newest)',
-                value: 'creationTimeAsc',
-                'data-sort-by': 'creationTime',
-                'data-sort-direction': 'asc',
-              },
-              {
-                label: 'Domain Name (A - Z)',
-                value: 'domainNameAsc',
-                'data-sort-by': 'domainName',
-                'data-sort-direction': 'asc',
-              },
-              {
-                label: 'Domain Name (Z - A)',
-                value: 'domainNameDesc',
-                'data-sort-by': 'domainName',
-                'data-sort-direction': 'desc',
-              },
-            ]}
-            onChange={e => {
-              const { target } = e;
-              const selectedOption = target.options[target.selectedIndex];
+            <TableFilters.SortSelect
+              disabled={listPending}
+              defaultValue="creationTime"
+              value={sort.by}
+              options={[
+                {
+                  label: 'Date Added (Newest - Oldest)',
+                  value: 'creationTimeDesc',
+                  'data-sort-by': 'creationTime',
+                  'data-sort-direction': 'desc',
+                },
+                {
+                  label: 'Date Added (Oldest - Newest)',
+                  value: 'creationTimeAsc',
+                  'data-sort-by': 'creationTime',
+                  'data-sort-direction': 'asc',
+                },
+                {
+                  label: 'Domain Name (A - Z)',
+                  value: 'domainNameAsc',
+                  'data-sort-by': 'domainName',
+                  'data-sort-direction': 'asc',
+                },
+                {
+                  label: 'Domain Name (Z - A)',
+                  value: 'domainNameDesc',
+                  'data-sort-by': 'domainName',
+                  'data-sort-direction': 'desc',
+                },
+              ]}
+              onChange={e => {
+                const { target } = e;
+                const selectedOption = target.options[target.selectedIndex];
 
-              setSort({
-                by: selectedOption.getAttribute('data-sort-by'),
-                direction: selectedOption.getAttribute('data-sort-direction'),
-              });
-            }}
-          />
+                setSort({
+                  by: selectedOption.getAttribute('data-sort-by'),
+                  direction: selectedOption.getAttribute('data-sort-direction'),
+                });
+              }}
+            />
 
-          <TableFilters.StatusPopover
-            disabled={listPending}
-            checkboxes={filtersState.checkboxes}
-            onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
-          />
-        </TableFilters>
-      </Panel.Section>
+            <TableFilters.StatusPopover
+              disabled={listPending}
+              checkboxes={filtersState.checkboxes}
+              onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
+            />
+          </TableFilters>
+        </Panel.Section>
 
-      {listPending && <Loading />}
+        {listPending && <Loading />}
 
-      {isEmpty && <Empty message="There is no data to display" />}
+        {isEmpty && <Empty message="There is no data to display" />}
 
-      {!listPending && !isEmpty && <SendingDomainsTable rows={tableState.rows} />}
-    </Panel>
+        {!listPending && !isEmpty && <SendingDomainsTable rows={tableState.rows} />}
+      </Panel>
+      <Pagination
+        pages={1}
+        pageRange={3}
+        currentPage={1}
+        perPage={10}
+        totalCount={100}
+        handlePagination={() => {
+          log('handlePerPageChange');
+        }}
+        handlePerPageChange={() => {
+          log('handlePerPageChange');
+        }}
+      />
+    </>
   );
 }

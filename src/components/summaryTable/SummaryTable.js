@@ -2,16 +2,14 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
-import { Pagination, Table } from 'src/components/matchbox';
+import { Table } from 'src/components/matchbox';
+import { Pagination } from 'src/components/pagination';
+import { DEFAULT_PAGE_RANGE as PAGE_RANGE } from 'src/constants';
 import Body from './Body';
 import Column from './Column';
 import Head from './Head';
-import PerPageControl from './PerPageControl';
 import { getColumnProps, pickPageProps } from './utils';
 import OGStyles from './SummaryTable.module.scss';
-import HibanaStyles from './SummaryTableHibana.module.scss';
-
-const PAGE_RANGE = 5;
 
 export class SummaryTableClassComponent extends React.Component {
   static defaultProps = {
@@ -101,32 +99,21 @@ export class SummaryTableClassComponent extends React.Component {
             perPage={perPage}
           />
         </Table>
-        <div className={styles.PaginationWrapper}>
-          <div className={styles.PageButtons}>
-            <Pagination
-              currentPage={currentPage}
-              pageRange={PAGE_RANGE}
-              pages={pages}
-              onChange={this.handlePagination}
-              flat
-              className={styles.Pagination}
-            />
-          </div>
-          <div>
-            <PerPageControl
-              onChange={this.handlePerPageChange}
-              perPage={perPage}
-              totalCount={totalCount}
-            />
-          </div>
-        </div>
+        <Pagination
+          pages={pages}
+          pageRange={PAGE_RANGE}
+          currentPage={currentPage}
+          perPage={perPage}
+          totalCount={totalCount}
+          handlePagination={this.handlePagination}
+          handlePerPageChange={this.handlePerPageChange}
+        />
       </div>
     );
   }
 }
 
 export default function SummaryTable(props) {
-  const styles = useHibanaOverride(OGStyles, HibanaStyles);
-
+  const styles = useHibanaOverride(OGStyles);
   return <SummaryTableClassComponent styles={styles} {...props} />;
 }
