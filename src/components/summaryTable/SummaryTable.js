@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { Table } from 'src/components/matchbox';
 import { Pagination } from 'src/components/pagination';
 import { DEFAULT_PAGE_RANGE as PAGE_RANGE } from 'src/constants';
@@ -81,13 +80,12 @@ export class SummaryTableClassComponent extends React.Component {
       order,
       perPage,
       totalCount,
-      styles,
     } = this.props;
     const columnProps = getColumnProps(children);
     const pages = Math.ceil(totalCount / perPage);
 
     return (
-      <div className={styles.SummaryTable}>
+      <div className={OGStyles.SummaryTable}>
         <Table p="400">
           <Head columns={columnProps} onSort={this.handleSort} order={order} />
           <Body
@@ -113,7 +111,4 @@ export class SummaryTableClassComponent extends React.Component {
   }
 }
 
-export default function SummaryTable(props) {
-  const styles = useHibanaOverride(OGStyles);
-  return <SummaryTableClassComponent styles={styles} {...props} />;
-}
+export default SummaryTableClassComponent;
