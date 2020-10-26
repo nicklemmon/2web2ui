@@ -1,7 +1,7 @@
 import React from 'react';
-import { Layout, Stack, Text } from 'src/components/matchbox';
-import { Checkbox, Columns, Column, Panel } from 'src/components/matchbox';
-import { Heading, SubduedText } from 'src/components/text';
+import { Layout, Stack } from 'src/components/matchbox';
+import { Checkbox, Columns, Column, Panel, LabelValue } from 'src/components/matchbox';
+import { SubduedText } from 'src/components/text';
 import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
 import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 import { Bookmark } from '@sparkpost/matchbox-icons';
@@ -86,26 +86,23 @@ export default function DomainStatusSection({ domain: sendingOrBounceDomain, id,
             <Panel.Section>
               <Columns space="100">
                 <Column>
-                  <Heading as="h3" looksLike="h5">
-                    Domain
-                  </Heading>
-                  <Text as="p">{domainName}</Text>
+                  <LabelValue label="Domain" orientation="vertical">
+                    {domainName}
+                  </LabelValue>
                 </Column>
                 <Column>
-                  <Heading as="h3" looksLike="h5">
-                    Status
-                  </Heading>
-                  <TrackingDomainStatusCell row={domain} />
+                  <LabelValue label="Status" orientation="vertical">
+                    <TrackingDomainStatusCell row={domain} />
+                  </LabelValue>
                 </Column>
               </Columns>
             </Panel.Section>
 
             {subaccountId && (
               <Panel.Section>
-                <Heading as="h3" looksLike="h5">
-                  Subaccount Assignment
-                </Heading>
-                <Subaccount id={subaccountId} name={subaccountName} />
+                <LabelValue label="Subaccount Assignment" orientation="vertical">
+                  <Subaccount id={subaccountId} name={subaccountName} />
+                </LabelValue>
               </Panel.Section>
             )}
 
@@ -185,29 +182,24 @@ export default function DomainStatusSection({ domain: sendingOrBounceDomain, id,
           <Panel.Section>
             <Columns space="100">
               <Column>
-                <Heading as="h3" looksLike="h5">
-                  Domain
-                </Heading>
-                <Text as="p">{domain.dkim?.signing_domain}</Text>
+                <LabelValue label="Domain" orientation="vertical">
+                  {domain.dkim?.signing_domain}
+                </LabelValue>
               </Column>
               <Column>
-                <Heading as="h3" looksLike="h5">
-                  Status
-                </Heading>
-                <StatusCell domain={domain} />
+                <LabelValue label="Status" orientation="vertical">
+                  <StatusCell domain={domain} />
+                </LabelValue>
               </Column>
               {domain.creation_time ? (
                 <Column>
-                  <Heading as="h3" looksLike="h5">
-                    Date Added
-                  </Heading>
-                  <Text as="p">
+                  <LabelValue label="Date Added" orientation="vertical">
                     {new Date(domain.creation_time).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric',
                     })}
-                  </Text>
+                  </LabelValue>
                 </Column>
               ) : (
                 <Column />
@@ -218,10 +210,9 @@ export default function DomainStatusSection({ domain: sendingOrBounceDomain, id,
             <>
               {subaccountId ? (
                 <Panel.Section>
-                  <Heading as="h3" looksLike="h5">
-                    Subaccount Assignment
-                  </Heading>
-                  <Subaccount id={subaccountId} name={subaccountName} />
+                  <LabelValue label="Subaccount Assignment" orientation="vertical">
+                    <Subaccount id={subaccountId} name={subaccountName} />
+                  </LabelValue>
                 </Panel.Section>
               ) : (
                 <Panel.Section>
