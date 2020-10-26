@@ -39,7 +39,7 @@ const CollectionPagination = ({
     );
   };
 
-  if (!currentPage) {
+  if (!currentPage && currentPage !== 0) {
     return null;
   }
 

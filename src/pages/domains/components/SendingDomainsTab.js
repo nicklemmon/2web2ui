@@ -101,11 +101,17 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   } = useDomains();
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
+  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+
+  // const [tableState, tableDispatch] = useTable(domains, { paginate: true });
+  // const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
+  // const isEmpty = !listPending && tableState.rows?.length === 0;
+
   // const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   // const [tableState, tableDispatch] = useTable(domains);
   // const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
   // const isEmpty = !listPending && tableState.rows?.length === 0;
-  // const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
+  const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   //resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
     // filtersDispatch({ type: 'RESET', state: filtersInitialState });
@@ -261,16 +267,20 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
       {/*
       <Pagination
-        data={tableState.rows}
+        data={tableState.rawData}
         saveCsv={false}
         onPageChange={page => {
-          return tableDispatch({
-            type: 'CHANGE_PAGE',
-            page,
-          });
+          page += 1; // because matchbox Pagination component gives back 0 base page argument, while it takes a 1 base currentPage prop
+          // Only adding this if condition because this keeps firing on load
+          if (tableState.currentPage !== page) {
+            tableDispatch({
+              type: 'CHANGE_PAGE',
+              page: page,
+            });
+          }
         }}
         onPerPageChange={perPage => {
-          return tableDispatch({
+          tableDispatch({
             type: 'CHANGE_PER_PAGE',
             perPage,
           });
