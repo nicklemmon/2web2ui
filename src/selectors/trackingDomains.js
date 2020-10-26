@@ -2,12 +2,12 @@ import { createSelector } from 'reselect';
 import _ from 'lodash';
 import { getSubaccountsIndexedById, getSubaccountName } from './subaccounts';
 
-const getTrackingDomains = state => state.trackingDomains.list || [];
+const getTrackingDomains = state => state.trackingDomains.list;
 const selectSubaccountFromProps = (state, props) => _.get(props, 'domain.subaccount_id', null);
 
 export const selectDomains = createSelector(
   [getTrackingDomains, getSubaccountsIndexedById],
-  (domains, subaccounts) =>
+  (domains = [], subaccounts) =>
     domains.map(domain => ({
       ...domain,
       subaccount_name: getSubaccountName(subaccounts, domain['subaccount_id']),
