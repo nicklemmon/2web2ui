@@ -9,12 +9,14 @@ import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
 import { selectTrackingDomainsList } from 'src/selectors/trackingDomains';
 import { Loading } from 'src/components/loading/Loading';
+import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';
 import { TranslatableText } from 'src/components/text';
 import styled from 'styled-components';
 import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
+import { hasSubaccounts } from 'src/selectors/subaccounts';
 
 const StyledBox = styled(Box)`
   max-width: 600px;
@@ -30,6 +32,9 @@ function DetailsPage(props) {
     listTrackingDomains,
     trackingDomainList,
     sendingDomainsGetError,
+    listSubaccounts,
+    hasSubaccounts,
+    subaccounts,
   } = props;
   const resolvedStatus = resolveStatus(domain.status);
   const [warningBanner, toggleBanner] = useState(true);
@@ -53,6 +58,12 @@ function DetailsPage(props) {
   useEffect(() => {
     if (isTracking) listTrackingDomains();
   }, [isTracking, listTrackingDomains]);
+
+  useEffect(() => {
+    if (hasSubaccounts && subaccounts?.length === 0) {
+      listSubaccounts();
+    }
+  }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
   if (sendingDomainsPending || trackingDomainListPending) {
     return <Loading />;
@@ -174,8 +185,9 @@ export default connect(
     trackingDomainList: selectTrackingDomainsList(state),
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
-    trackingDomainList: selectTrackingDomainsList(state),
+    hasSubaccounts: hasSubaccounts(state),
+    subaccounts: state.subaccounts.list,
     sendingDomainsGetError: state.sendingDomains.getError,
   }),
-  { getDomain, listTrackingDomains },
+  { getDomain, listTrackingDomains, listSubaccounts },
 )(DetailsPage);

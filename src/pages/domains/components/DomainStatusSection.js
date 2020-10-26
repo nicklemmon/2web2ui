@@ -9,7 +9,7 @@ import { resolveStatus, resolveReadyFor } from 'src/helpers/domains';
 import useDomains from '../hooks/useDomains';
 import useModal from 'src/hooks/useModal';
 import { ExternalLink, SubduedLink } from 'src/components/links';
-import { ToggleBlock } from 'src/components';
+import { ToggleBlock, Subaccount } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
 import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
@@ -24,6 +24,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
     updateTrackingDomain,
     listTrackingDomains,
     updateTrackingPending,
+    subaccounts,
   } = useDomains();
   const readyFor = resolveReadyFor(domain.status);
   const resolvedStatus = resolveStatus(domain.status);
@@ -33,6 +34,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
     allowDefault && readyFor.sending && readyFor.bounce && showDefaultBounceSubaccount;
 
   const trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
+  let subaccountName = _.find(subaccounts, ['id', trackingDomain.subaccount_id])?.name;
 
   const toggleDefaultBounce = () => {
     return updateSendingDomain({
@@ -67,6 +69,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
   if (isTracking && trackingDomain) {
     const isDefault = trackingDomain.defaultTrackingDomain;
     const domainName = trackingDomain?.domainName;
+    subaccountName = _.find(subaccounts, ['id', trackingDomain.subaccountId])?.name;
 
     return (
       <Layout>
@@ -104,7 +107,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                 <Heading as="h3" looksLike="h5">
                   Subaccount Assignment
                 </Heading>
-                <Text as="p">Subaccount {trackingDomain?.subaccountId}</Text>
+                <Subaccount id={trackingDomain?.subaccountId} name={subaccountName} />
               </Panel.Section>
             )}
 
@@ -214,7 +217,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                   <Heading as="h3" looksLike="h5">
                     Subaccount Assignment
                   </Heading>
-                  <Text as="p">Subaccount {domain.subaccount_id}</Text>
+                  <Subaccount id={domain.subaccount_id} name={subaccountName} />
                 </Panel.Section>
               ) : (
                 <Panel.Section>
