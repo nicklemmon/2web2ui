@@ -14,7 +14,7 @@ import { EXTERNAL_LINKS } from '../constants';
 import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
 
-export default function DomainStatusSection({ domain, id, isTracking }) {
+export default function DomainStatusSection({ domain: sendingOrBounceDomain, id, isTracking }) {
   const { closeModal, isModalOpen, openModal } = useModal();
   const {
     allowDefault,
@@ -26,20 +26,19 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
     updateTrackingPending,
     subaccounts,
   } = useDomains();
-  const readyFor = resolveReadyFor(domain.status);
-  const resolvedStatus = resolveStatus(domain.status);
-  const showDefaultBounceSubaccount =
-    !domain.subaccount_id || (domain.subaccount_id && allowSubaccountDefault);
-  const showDefaultBounceToggle =
-    allowDefault && readyFor.sending && readyFor.bounce && showDefaultBounceSubaccount;
 
-  const trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
-  let subaccountName = _.find(subaccounts, ['id', trackingDomain.subaccount_id])?.name;
+  let domain = isTracking
+    ? _.find(trackingDomains, ['domainName', id.toLowerCase()])
+    : sendingOrBounceDomain;
+
+  const subaccountId = isTracking ? domain.subaccountId : domain.subaccount_id;
+
+  let subaccountName = _.find(subaccounts, ['id', subaccountId])?.name;
 
   const toggleDefaultBounce = () => {
     return updateSendingDomain({
       id,
-      subaccount: domain.subaccount_id,
+      subaccount: subaccountId,
       is_default_bounce_domain: !domain.is_default_bounce_domain,
     }).catch(err => {
       throw err; // for error reporting
@@ -48,9 +47,9 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
 
   const toggleDefaultTracking = () => {
     return updateTrackingDomain({
-      domain: trackingDomain?.domainName,
-      subaccount: trackingDomain.subaccountId,
-      default: !trackingDomain.defaultTrackingDomain,
+      domain: domain?.domainName,
+      subaccount: subaccountId,
+      default: !domain.defaultTrackingDomain,
     })
       .catch(_.noop) // ignore errors
       .then(() => listTrackingDomains());
@@ -59,17 +58,16 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
   const toggleShareWithSubaccounts = () => {
     return updateSendingDomain({
       id,
-      subaccount: domain.subaccount_id,
+      subaccount: subaccountId,
       shared_with_subaccounts: !domain.shared_with_subaccounts,
     }).catch(err => {
       throw err; // for error reporting
     });
   };
 
-  if (isTracking && trackingDomain) {
-    const isDefault = trackingDomain.defaultTrackingDomain;
-    const domainName = trackingDomain?.domainName;
-    subaccountName = _.find(subaccounts, ['id', trackingDomain.subaccountId])?.name;
+  if (isTracking) {
+    const isDefault = domain.defaultTrackingDomain;
+    const domainName = domain.domainName;
 
     return (
       <Layout>
@@ -97,21 +95,21 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                   <Heading as="h3" looksLike="h5">
                     Status
                   </Heading>
-                  <TrackingDomainStatusCell row={trackingDomain} />
+                  <TrackingDomainStatusCell row={domain} />
                 </Column>
               </Columns>
             </Panel.Section>
 
-            {trackingDomain?.subaccountId && (
+            {subaccountId && (
               <Panel.Section>
                 <Heading as="h3" looksLike="h5">
                   Subaccount Assignment
                 </Heading>
-                <Subaccount id={trackingDomain?.subaccountId} name={subaccountName} />
+                <Subaccount id={subaccountId} name={subaccountName} />
               </Panel.Section>
             )}
 
-            {trackingDomain.verified && (
+            {domain.verified && (
               <Panel.Section>
                 <Checkbox
                   id="set-as-default-tracking-domain"
@@ -120,7 +118,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                       Set as Default Tracking Domain <Bookmark color="green" />
                     </>
                   }
-                  checked={trackingDomain.defaultTrackingDomain}
+                  checked={domain.defaultTrackingDomain}
                   onClick={() => openModal()}
                 />
 
@@ -146,6 +144,12 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
       </Layout>
     );
   }
+
+  const readyFor = resolveReadyFor(domain.status);
+  const resolvedStatus = resolveStatus(domain.status);
+  const showDefaultBounceSubaccount = !subaccountId || (subaccountId && allowSubaccountDefault);
+  const showDefaultBounceToggle =
+    allowDefault && readyFor.sending && readyFor.bounce && showDefaultBounceSubaccount;
 
   return (
     <Layout>
@@ -212,12 +216,12 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
           </Panel.Section>
           {resolvedStatus !== 'blocked' && (
             <>
-              {domain.subaccount_id ? (
+              {subaccountId ? (
                 <Panel.Section>
                   <Heading as="h3" looksLike="h5">
                     Subaccount Assignment
                   </Heading>
-                  <Subaccount id={domain.subaccount_id} name={subaccountName} />
+                  <Subaccount id={subaccountId} name={subaccountName} />
                 </Panel.Section>
               ) : (
                 <Panel.Section>

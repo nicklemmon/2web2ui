@@ -8,11 +8,12 @@ import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
 import { selectTrackingDomainsList } from 'src/selectors/trackingDomains';
+import { selectTrackingDomainCname } from 'src/selectors/account';
 import { Loading } from 'src/components/loading/Loading';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';
-import { TranslatableText } from 'src/components/text';
+import { Bold, TranslatableText } from 'src/components/text';
 import styled from 'styled-components';
 import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
@@ -35,6 +36,7 @@ function DetailsPage(props) {
     listSubaccounts,
     hasSubaccounts,
     subaccounts,
+    trackingDomainCname,
   } = props;
   const resolvedStatus = resolveStatus(domain.status);
   const [warningBanner, toggleBanner] = useState(true);
@@ -65,10 +67,6 @@ function DetailsPage(props) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
-  if (sendingDomainsPending || trackingDomainListPending) {
-    return <Loading />;
-  }
-
   if (sendingDomainsGetError && !isTracking) {
     return (
       <RedirectAndAlert
@@ -80,6 +78,7 @@ function DetailsPage(props) {
 
   if (
     isTracking &&
+    trackingDomainList.length > 0 &&
     !Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]))
   ) {
     return (
@@ -88,6 +87,17 @@ function DetailsPage(props) {
         alert={{ type: 'error', message: 'Resource could not be found' }}
       />
     );
+  }
+
+  if (
+    sendingDomainsPending ||
+    trackingDomainListPending ||
+    !(
+      Boolean(domain.dkim.signing_domain) ||
+      Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]))
+    )
+  ) {
+    return <Loading />;
   }
 
   return (
@@ -112,10 +122,33 @@ function DetailsPage(props) {
               It can take 24 to 48 hours for the DNS records to propogate and verify the domain.
             </TranslatableText>
             <Banner.Actions>
-              <ExternalLink to="/">Domains Documentation</ExternalLink>
+              <ExternalLink to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}>
+                Domains Documentation
+              </ExternalLink>
             </Banner.Actions>
           </Banner>
         )}
+        {resolvedStatus === 'unverified' && warningBanner && isTracking && (
+          <Banner
+            status="warning"
+            title="Unverified domains will be removed two weeks after being added."
+            onDismiss={() => {
+              toggleBanner(false);
+            }}
+            mb="500"
+          >
+            <TranslatableText>
+              To verify a tracking domain, edit its DNS settings to <Bold>add a CNAME record</Bold>{' '}
+              with the value of <strong>{trackingDomainCname}</strong>.
+            </TranslatableText>
+            <Banner.Actions>
+              <ExternalLink to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+                Domains Documentation
+              </ExternalLink>
+            </Banner.Actions>
+          </Banner>
+        )}
+
         {resolvedStatus === 'blocked' && (
           <Banner status="danger" title="This domain has been blocked by SparkPost" mb="500">
             <StyledBox>
@@ -188,6 +221,7 @@ export default connect(
     hasSubaccounts: hasSubaccounts(state),
     subaccounts: state.subaccounts.list,
     sendingDomainsGetError: state.sendingDomains.getError,
+    trackingDomainCname: selectTrackingDomainCname(state),
   }),
   { getDomain, listTrackingDomains, listSubaccounts },
 )(DetailsPage);
