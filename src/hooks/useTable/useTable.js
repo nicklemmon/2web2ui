@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from 'react';
-import { DEFAULT_CURRENT_PAGE as CURRENT_PAGE, DEFAULT_PER_PAGE as PER_PAGE } from 'src/constants';
+import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE as PER_PAGE } from 'src/constants';
 import _ from 'lodash';
 import { filterByCollectionValues } from 'src/helpers/array';
 
@@ -8,20 +8,20 @@ const { log } = console;
 const initialState = {
   rawData: [],
   rows: [],
+  paginateData: false,
   sortBy: undefined,
   sortDirection: undefined,
-  currentPage: CURRENT_PAGE,
+  currentPage: DEFAULT_CURRENT_PAGE,
   perPage: PER_PAGE,
 };
 
-function useTable(data = []) {
+function useTable(data = [], { paginate }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  log('useTable data: ', data);
+  const shouldPaginate = paginate || state.paginateData;
 
   useEffect(() => {
-    dispatch({ type: 'DATA_LOADED', data });
-  }, [data]);
+    dispatch({ type: 'DATA_LOADED', data, paginateData: shouldPaginate });
+  }, [data, shouldPaginate]);
 
   return [state, dispatch];
 }
@@ -42,13 +42,35 @@ function getSortDirection({ state, column }) {
   return 'asc';
 }
 
+/**
+ * Note: It's really important currentPage starts at 1, NOT 0, for getPaginationStart to provide the correct start and slice correctly
+ */
+function slicePage(data, start, perPage) {
+  return data.slice(start, start + perPage);
+}
+
+/**
+ * Note: It's really important currentPage starts at 1, NOT 0, for this function to do what's expected
+ */
+function getPaginationStart({ currentPage, perPage }) {
+  return (currentPage - 1) * perPage;
+}
+
 function reducer(state, action) {
   switch (action.type) {
     case 'DATA_LOADED': {
+      let rows = action.data.map(i => i);
+
+      if (action.paginateData) {
+        const start = getPaginationStart(state);
+        rows = slicePage(rows, start, state.perPage);
+      }
+
       return {
         ...state,
         rawData: action.data,
-        rows: action.data,
+        rows,
+        paginateData: action.paginateData,
       };
     }
 
@@ -84,15 +106,31 @@ function reducer(state, action) {
 
     case 'CHANGE_PAGE': {
       log('CHANGE_PAGE', action.page);
+
+      const start = getPaginationStart({
+        currentPage: action.page,
+        perPage: state.perPage,
+      });
+
+      const rows = slicePage(
+        state.rawData.map(i => i),
+        start,
+        state.perPage,
+      );
+
       return {
         ...state,
+        rows,
       };
     }
 
     case 'CHANGE_PER_PAGE': {
-      log('CHANGE_PER_PAGE', action.perPage);
+      const rows = action.data.slice(0, action.perPage);
       return {
         ...state,
+        perPage: action.perPage,
+        currentPage: DEFAULT_CURRENT_PAGE,
+        rows,
       };
     }
 
