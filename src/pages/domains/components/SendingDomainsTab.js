@@ -184,17 +184,18 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
       <Pagination
         data={tableState.rows}
-        onPageChange={() => {
-          // console.log(arguments[0], arguments[1]);
-          // return tableDispatch({
-          //   type: 'CHANGE_PAGE',
-          // });
+        saveCsv={false}
+        onPageChange={page => {
+          return tableDispatch({
+            type: 'CHANGE_PAGE',
+            page,
+          });
         }}
-        onPerPageChange={() => {
-          // console.log(arguments[0], arguments[1]);
-          // return tableDispatch({
-          //   type: 'CHANGE_PER_PAGE',
-          // });
+        onPerPageChange={perPage => {
+          return tableDispatch({
+            type: 'CHANGE_PER_PAGE',
+            perPage,
+          });
         }}
       />
     </>
