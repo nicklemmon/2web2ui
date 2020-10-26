@@ -83,14 +83,14 @@ function reducer(state, action) {
     }
 
     case 'CHANGE_PAGE': {
-      log('CHANGE_PAGE');
+      log('CHANGE_PAGE', action.page);
       return {
         ...state,
       };
     }
 
     case 'CHANGE_PER_PAGE': {
-      log('CHANGE_PER_PAGE');
+      log('CHANGE_PER_PAGE', action.perPage);
       return {
         ...state,
       };
