@@ -16,7 +16,7 @@ import styles from './ReportTable.module.scss';
 
 const tableWrapper = props => {
   return (
-    <Panel.LEGACY borderTop="0">
+    <Panel.LEGACY>
       <Table freezeFirstColumn>{props.children}</Table>
     </Panel.LEGACY>
   );
@@ -128,16 +128,16 @@ export const ReportTable = props => {
 
   return (
     <>
-      <Panel.LEGACY marginBottom="-1px">
-        <Panel.LEGACY.Section>
+      <Panel marginBottom="-1px">
+        <Panel.Section>
           <GroupByOption
             _getTableData={_getTableData}
             groupBy={groupBy}
             hasSubaccounts={hasSubaccounts}
             tableLoading={tableLoading}
           />
-        </Panel.LEGACY.Section>
-      </Panel.LEGACY>
+        </Panel.Section>
+      </Panel>
       <div data-id="summary-table">{renderTable()}</div>
     </>
   );

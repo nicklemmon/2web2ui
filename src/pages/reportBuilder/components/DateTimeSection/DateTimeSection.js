@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PrecisionSelector from './PrecisionSelector';
 import { isForcedUTCRollupPrecision } from 'src/helpers/metrics';
 import { Grid, Select, Tooltip } from 'src/components/matchbox';
-import DatePicker from './DatePicker';
+import DatePicker from 'src/components/datePicker/DatePickerNew';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import config from 'src/config';
 import styles from '../ReportOptions.module.scss';
@@ -87,6 +87,7 @@ export const DateTimeSection = ({
             changeTime={refreshReportOptions}
             ready={reportOptions.isReady}
             disabled={reportLoading || !useMetricsRollup}
+            useMetricsRollup={useMetricsRollup}
           />
         ) : (
           <Select
@@ -94,7 +95,7 @@ export const DateTimeSection = ({
             id="precision-select"
             options={PRECISION_OPTIONS}
             value={shownPrecision}
-            disabled={reportLoading}
+            disabled={reportLoading || !useMetricsRollup}
             readOnly
           />
         )}

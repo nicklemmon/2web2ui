@@ -112,11 +112,15 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
         </Layout.SectionTitle>
         {(!readyFor.dkim || !readyFor.bounce) && (
           <Stack>
-            <SubduedText>
+            <SubduedText fontSize="200">
               Strict alignment is when the sending and bounce domain being the same value (e.g.
               sending domain = sparkpost.com, and bounce domain = sparkpost.com)
             </SubduedText>
-            <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+            <SubduedLink
+              as={ExternalLink}
+              to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}
+              fontSize="200"
+            >
               Domain Documentation
             </SubduedLink>
           </Stack>

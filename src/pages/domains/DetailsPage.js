@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Banner, Button } from 'src/components/matchbox';
-import { get as getDomain } from 'src/actions/sendingDomains';
+import { Page, Banner, Button, Box } from 'src/components/matchbox';
+import { get as getDomain, clearSendingDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { connect } from 'react-redux';
 import { selectDomain } from 'src/selectors/sendingDomains';
@@ -12,7 +12,11 @@ import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';
 import { TranslatableText } from 'src/components/text';
 import { EXTERNAL_LINKS } from './constants';
+import styled from 'styled-components';
 
+const StyledBox = styled(Box)`
+  max-width: 600px;
+`;
 function DetailsPage(props) {
   const {
     trackingDomainList,
@@ -23,6 +27,7 @@ function DetailsPage(props) {
     domain,
     getDomain,
     listTrackingDomains,
+    clearSendingDomain,
   } = props;
   const resolvedStatus = resolveStatus(domain.status);
   const [warningBanner, toggleBanner] = useState(true);
@@ -31,9 +36,21 @@ function DetailsPage(props) {
     readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
   const isTracking = Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]));
 
+  const handleAllDomains = () => {
+    if (isTracking) return history.push('/domains/list/tracking');
+
+    if (readyFor.bounce) return history.push('/domains/list/bounce');
+
+    return history.push('/domains/list/sending');
+  };
+
   useEffect(() => {
     getDomain(match.params.id);
-  }, [getDomain, match.params.id]);
+    return () => {
+      //reset the domain
+      clearSendingDomain();
+    };
+  }, [clearSendingDomain, getDomain, match.params.id]);
   useEffect(() => {
     listTrackingDomains();
   }, [listTrackingDomains]);
@@ -48,10 +65,7 @@ function DetailsPage(props) {
         title="Domain Details"
         breadcrumbAction={{
           content: 'All Domains',
-          onClick: () =>
-            isTracking
-              ? history.push('/domains/list/tracking')
-              : history.push('/domains/list/sending'),
+          onClick: handleAllDomains,
         }}
       >
         {resolvedStatus === 'unverified' && warningBanner && !isTracking && (
@@ -73,7 +87,12 @@ function DetailsPage(props) {
         )}
         {resolvedStatus === 'blocked' && (
           <Banner status="danger" title="This domain has been blocked by SparkPost" mb="500">
-            ??
+            <StyledBox>
+              If your domain’s status is “Blocked”, it’s generally because your domain is already in
+              use by another SparkPost account, your domain has been previously blocked for sending
+              abusive traffic through our service or another provider, or because one or more of our
+              requirements are not met.
+            </StyledBox>
             <Banner.Actions>
               <SupportTicketLink as={Button}>Create Support ticket</SupportTicketLink>
               <ExternalLink to={EXTERNAL_LINKS.BLOCKED_DOMAIN_DOCUMENTATION}>
@@ -87,7 +106,6 @@ function DetailsPage(props) {
 
         <Domains.SetupForSending
           domain={domain}
-          resolvedStatus={resolvedStatus}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && !displaySendingAndBounceSection
           }
@@ -137,5 +155,5 @@ export default connect(
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
   }),
-  { getDomain, listTrackingDomains },
+  { getDomain, listTrackingDomains, clearSendingDomain },
 )(DetailsPage);

@@ -40,8 +40,12 @@ export default function LinkTrackingDomainSection({ domain, isSectionVisible }) 
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Link Tracking Domain</Layout.SectionTitle>
         <Stack>
-          <SubduedText>Assign a tracking domain?</SubduedText>
-          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+          <SubduedText fontSize="200">Assign a tracking domain?</SubduedText>
+          <SubduedLink
+            as={ExternalLink}
+            to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}
+            fontSize="200"
+          >
             Tracking Domain Documentation
           </SubduedLink>
         </Stack>

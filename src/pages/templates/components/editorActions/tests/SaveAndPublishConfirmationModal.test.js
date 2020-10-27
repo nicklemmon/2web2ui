@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { RedirectAndAlert } from 'src/components/globalAlert';
 import useEditorContext from '../../../hooks/useEditorContext';
 import { routeNamespace } from '../../../constants/routes';
 import { setSubaccountQuery } from 'src/helpers/subaccounts';
@@ -11,26 +12,20 @@ describe('SaveAndPublishConfirmationModal', () => {
   const subject = (editorState, history, props) => {
     useEditorContext.mockReturnValue({
       draft: {
-        id: 'foo'
+        id: 'foo',
       },
       isDraftPublishing: false,
       publishDraft: jest.fn(),
       parsedTestData: {
         options: {},
         metadata: {},
-        substitution_data: {}
+        substitution_data: {},
       },
       setHasSaved: jest.fn(),
-      ...editorState
+      ...editorState,
     });
 
-    return shallow(
-      <SaveAndPublishConfirmationModal
-        onCancel={jest.fn()}
-        open={true}
-        {...props}
-      />
-    );
+    return shallow(<SaveAndPublishConfirmationModal onCancel={jest.fn()} open={true} {...props} />);
   };
 
   it('renders', () => {
@@ -49,14 +44,14 @@ describe('SaveAndPublishConfirmationModal', () => {
     const publishDraftPromise = Promise.resolve();
     const parsedTestData = {
       options: {
-        foo: 'bar'
+        foo: 'bar',
       },
       metadata: {
-        meta: 'data'
+        meta: 'data',
       },
       substitution_data: {
-        substitution: 'data'
-      }
+        substitution: 'data',
+      },
     };
     const publishDraft = jest.fn(() => publishDraftPromise);
     const draft = { id: 'foo', subaccount_id: 101 };
@@ -65,7 +60,7 @@ describe('SaveAndPublishConfirmationModal', () => {
       publishDraft,
       draft,
       content,
-      parsedTestData
+      parsedTestData,
     });
     wrapper.find('ConfirmationModal').simulate('confirm');
 
@@ -73,13 +68,18 @@ describe('SaveAndPublishConfirmationModal', () => {
       {
         id: draft.id,
         content,
-        parsedTestData
+        parsedTestData,
       },
-      101
+      101,
     );
 
     return publishDraftPromise.then(() => {
-      expect(wrapper.find('RedirectAndAlert')).toHaveProp('to', `/${routeNamespace}/edit/${draft.id}/published/content${setSubaccountQuery(draft.subaccount_id)}`);
+      expect(wrapper.find(RedirectAndAlert)).toHaveProp(
+        'to',
+        `/${routeNamespace}/edit/${draft.id}/published/content${setSubaccountQuery(
+          draft.subaccount_id,
+        )}`,
+      );
     });
   });
 });

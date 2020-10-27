@@ -2,27 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { shrinkToFit } from 'src/helpers/string';
 
-const Subaccount = ({ id, name, all, receiveAll, master, isDefault }) => {
+const Subaccount = ({ id, name, all, receiveAll, master, isDefault, shrinkLength }) => {
   let content = null;
   let defaultContent = null;
+  let noNameButId = `Subaccount ${id}`;
 
-  if (id) {
-    content = name ? `${shrinkToFit(name,12)} (${id})` : `Subaccount ${id}`;
+  if (name && shrinkLength) {
+    name = shrinkToFit(name, shrinkLength);
   }
 
-  if (isDefault) {
-    defaultContent = ' (Default)';
+  if (id && shrinkLength) {
+    noNameButId = shrinkToFit(noNameButId, shrinkLength);
   }
 
+  // already shrunk, then add id if we have it
+  if (name && id) {
+    content = `${name} (${id})`;
+  } else if (name) {
+    content = name;
+  } else if (id) {
+    content = noNameButId;
+  }
+
+  // override name/id if any of these flags are present
   if (all) {
     content = 'Shared with all';
-  }
-
-  if (receiveAll) {
+  } else if (receiveAll) {
     content = 'All';
-  }
-
-  if (master) {
+  } else if (master) {
     content = 'Master Account';
   }
 
@@ -30,7 +37,12 @@ const Subaccount = ({ id, name, all, receiveAll, master, isDefault }) => {
     return null;
   }
 
-  return <>{content}{defaultContent}</>;
+  return (
+    <span>
+      {content}
+      {isDefault ? ' (Default)' : ''}
+    </span>
+  );
 };
 
 Subaccount.propTypes = {
@@ -47,7 +59,7 @@ Subaccount.propTypes = {
   receiveAll: PropTypes.bool,
 
   // Makes the tag orange and appends '(Default)'
-  isDefault: PropTypes.bool
+  isDefault: PropTypes.bool,
 };
 
 Subaccount.defaultProps = {
@@ -55,7 +67,7 @@ Subaccount.defaultProps = {
   all: false,
   master: false,
   isDefault: false,
-  receiveAll: false
+  receiveAll: false,
 };
 
 export default Subaccount;

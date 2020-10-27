@@ -13,11 +13,11 @@ Array [
       <div>
         For any questions or to request reactivation, please
          
-        <Connect(SupportTicketLink)
+        <Memo(Connect(SupportTicketLink))
           issueId="account_suspension"
         >
           submit a ticket
-        </Connect(SupportTicketLink)>
+        </Memo(Connect(SupportTicketLink))>
         .
       </div>
     </React.Fragment>,

@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Box, Inline, Stack, Tag, Text } from 'src/components/matchbox';
 import { Comparison, Emphasized } from 'src/components/text';
-import { getIterableFormattedGroupings, getGroupingFields } from '../helpers';
+import { getIterableFormattedGroupings, getActiveFilterTagGroups } from '../helpers';
 import styles from './ReportOptions.module.scss';
 
 export function ActiveFilters({ filters, handleFilterRemove }) {
@@ -33,7 +33,8 @@ export function ActiveFilters({ filters, handleFilterRemove }) {
 }
 
 export function ActiveFiltersV2({ filters, handleFilterRemove }) {
-  const groupings = getGroupingFields(getIterableFormattedGroupings(filters));
+  const iterableGroupings = getIterableFormattedGroupings(filters);
+  const groupings = getActiveFilterTagGroups(iterableGroupings);
 
   // TODO: Once `Inline` supports the `data-id` prop, extra <div> elements with `data-id` will no longer needed.
   // Matchbox issue: https://github.com/SparkPost/matchbox/issues/661
@@ -67,11 +68,13 @@ export function ActiveFiltersV2({ filters, handleFilterRemove }) {
                         </Text>
 
                         <Text fontWeight="500" as="span" fontSize="200">
-                          <Emphasized>{getCompareByText(filter.compareBy)}</Emphasized>
+                          <Emphasized>{filter.compareBy}</Emphasized>
                         </Text>
 
                         {filter.values.map((rawValue, valueIndex) => {
+                          // Some values are objects when returned from the typeahead, others are just strings
                           const value = typeof rawValue === 'object' ? rawValue.value : rawValue;
+                          // The remove method is not always present - conditionally rendering the remove button on the relevant `<Tag />`
                           const onRemoveFn = handleFilterRemove
                             ? () => handleFilterRemove({ groupingIndex, filterIndex, valueIndex })
                             : undefined;
@@ -108,19 +111,4 @@ export function ActiveFiltersV2({ filters, handleFilterRemove }) {
       </Inline>
     </div>
   );
-}
-
-function getCompareByText(compareByVal) {
-  switch (compareByVal) {
-    case 'eq':
-      return 'is equal to';
-    case 'notEq':
-      return 'is not equal to';
-    case 'like':
-      return 'contains';
-    case 'notLike':
-      return 'does not contain';
-    default:
-      throw new Error(`${compareByVal} is not a valid comparison value.`);
-  }
 }

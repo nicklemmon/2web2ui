@@ -94,49 +94,49 @@ describe('The domains list page', () => {
           rowIndex: 0,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
         verifyTableRow({
           rowIndex: 1,
           domainName: 'blocked.com',
           creationDate: 'Aug 6, 2017',
-          subaccount: 'Primary Account',
+          subaccount: 'Assignment: Primary Account',
           statusTags: ['Blocked'],
         });
         verifyTableRow({
           rowIndex: 2,
           domainName: 'spf-valid.com',
           creationDate: 'Aug 5, 2017',
-          subaccount: 'Primary Account',
+          subaccount: 'Assignment: Primary Account',
           statusTags: ['SPF Valid'],
         });
         verifyTableRow({
           rowIndex: 3,
           domainName: 'dkim-signing.com',
           creationDate: 'Aug 4, 2017',
-          subaccount: 'Primary Account',
+          subaccount: 'Assignment: Primary Account',
           statusTags: ['Sending', 'DKIM Signing'],
         });
         verifyTableRow({
           rowIndex: 4,
           domainName: 'failed-verification.com',
           creationDate: 'Aug 3, 2017',
-          subaccount: 'Primary Account',
+          subaccount: 'Assignment: Primary Account',
           statusTags: ['Unverified'],
         });
         verifyTableRow({
           rowIndex: 5,
           domainName: 'ready-for-sending.com',
           creationDate: 'Aug 2, 2017',
-          subaccount: 'Primary Account',
+          subaccount: 'Assignment: Primary Account',
           statusTags: ['Sending'],
         });
         verifyTableRow({
           rowIndex: 6,
           domainName: 'default-bounce.com',
           creationDate: 'Aug 1, 2017',
-          subaccount: 'Primary Account',
+          subaccount: 'Assignment: Primary Account',
           statusTags: ['Sending', 'Bounce'],
         }).within(() => {
           cy.findByDataId('default-bounce-domain-tooltip').click();
@@ -276,7 +276,7 @@ describe('The domains list page', () => {
           rowIndex: 6,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
 
@@ -286,7 +286,7 @@ describe('The domains list page', () => {
           rowIndex: 0,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
         verifyTableRow({
@@ -339,7 +339,7 @@ describe('The domains list page', () => {
           rowIndex: 0,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
         verifyTableRow({
@@ -421,7 +421,7 @@ describe('The domains list page', () => {
           rowIndex: 6,
           domainName: 'with-a-subaccount.com',
           creationDate: 'Aug 7, 2017',
-          subaccount: 'Fake...unt 1 (101)',
+          subaccount: 'Fake Subaccount 1 (101)',
           statusTags: ['Unverified'],
         });
       });

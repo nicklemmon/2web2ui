@@ -1,0 +1,11 @@
+{
+  "results": {
+    "id": "stubbed-ab-test",
+    "name": "Stubbed AB Test",
+    "version": 1,
+    "status": "draft",
+    "default_template": { "template_id": "stubbed-template-2" },
+    "created_at": "2020-10-15T17:37:30.467Z",
+    "updated_at": "2020-10-15T17:37:30.467Z"
+  }
+}

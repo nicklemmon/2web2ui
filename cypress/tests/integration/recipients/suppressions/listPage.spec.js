@@ -60,6 +60,20 @@ describe('The recipients suppressions list page', () => {
     cy.findByLabelText('Subaccount').should('be.visible');
   });
 
+  it('clears the subaccount field in the "Find by Email" tab when the clear button is clicked', () => {
+    cy.visit(PAGE_URL);
+
+    cy.findByText('Find by Email').click();
+
+    cy.findByLabelText('Subaccount').click();
+    cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
+    cy.findByLabelText('Subaccount')
+      .click()
+      .should('have.value', 'Fake Subaccount 1 (101)');
+    cy.findByRole('button', { name: 'Clear' }).click();
+    cy.findByLabelText('Subaccount').should('have.value', '');
+  });
+
   describe('the suppressions list table', () => {
     it('renders retrieved suppression lists in the table', () => {
       cy.visit(PAGE_URL);

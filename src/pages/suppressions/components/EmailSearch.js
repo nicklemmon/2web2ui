@@ -24,7 +24,10 @@ export class FilterForm extends Component {
   };
 
   handleSubaccountSelect = subaccount => {
-    this.setState({ subaccountId: subaccount.id }, this.refresh);
+    // If a subaccount is selected, update state accordingly, otherwise clear it
+    const selectedSubaccount = subaccount ? subaccount.id : '';
+
+    this.setState({ subaccountId: selectedSubaccount }, this.refresh);
   };
 
   refresh() {
@@ -56,6 +59,7 @@ export class FilterForm extends Component {
             />
           </Box>
         </Grid.Column>
+
         {hasSubaccounts && (
           <Grid.Column xs={12} md={6}>
             <Box>
@@ -67,7 +71,7 @@ export class FilterForm extends Component {
                 name="subaccount"
                 component={SubaccountTypeaheadWrapper}
                 label=""
-                onChange={this.handleSubaccountSelect}
+                onChange={e => this.handleSubaccountSelect(e)}
                 placeholder="Subaccount"
               />
             </Box>

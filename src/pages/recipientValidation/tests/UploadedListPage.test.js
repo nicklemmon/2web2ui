@@ -2,6 +2,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import TestApp from 'src/__testHelpers__/TestApp';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
+import UploadedListForm from '../components/UploadedListForm';
+import ValidateSection from '../components/ValidateSection';
 import { UploadedListPage } from '../UploadedListPage';
 import styles from '../UploadedListPage.module.scss';
 
@@ -91,14 +93,14 @@ describe('UploadedListPage', () => {
 
     it('render with upload form when job is queued', () => {
       const wrapper = queuedSubject();
-      expect(wrapper.find('Connect(UploadedListForm)')).toExist();
+      expect(wrapper.find(UploadedListForm)).toExist();
     });
 
     it('calls triggerJob when form is submitted', () => {
       const triggerJob = jest.fn(a => Promise.resolve(a));
       const wrapper = queuedSubject({ triggerJob });
 
-      wrapper.find('Connect(UploadedListForm)').simulate('submit');
+      wrapper.find(UploadedListForm).simulate('submit');
 
       expect(triggerJob).toHaveBeenCalledWith('B1C1_D1C1');
     });
@@ -115,7 +117,7 @@ describe('UploadedListPage', () => {
             updatedAt: '1997-11-21T15:55:06Z',
           },
           listId: 'B1C1_D1C1',
-        }).find('Connect(ValidateSection)'),
+        }).find(ValidateSection),
       ).toHaveLength(1);
     });
   });

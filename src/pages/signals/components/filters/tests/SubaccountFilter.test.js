@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { SubaccountFilterClassComponent as SubaccountFilter } from '../SubaccountFilter';
+import SubaccountTypeahead from 'src/components/typeahead/SubaccountTypeahead';
 import styles from '../SubaccountFilter.module.scss';
 
 describe('SubaccountFilter Component', () => {
@@ -99,7 +100,7 @@ describe('SubaccountFilter Component', () => {
     };
 
     wrapper.setState({ isOpen: true, isSearchOpen: true });
-    wrapper.find('Connect(SubaccountTypeahead)').simulate('change', value);
+    wrapper.find(SubaccountTypeahead).simulate('change', value);
 
     expect(changeSignalOptions).toHaveBeenCalledWith({ subaccount: value });
   });
@@ -109,7 +110,7 @@ describe('SubaccountFilter Component', () => {
     const wrapper = subject({ changeSignalOptions });
 
     wrapper.setState({ isOpen: true, isSearchOpen: true });
-    wrapper.find('Connect(SubaccountTypeahead)').simulate('change', null);
+    wrapper.find(SubaccountTypeahead).simulate('change', null);
 
     expect(changeSignalOptions).toHaveBeenCalledWith({
       subaccount: { id: undefined, name: 'Master & All Subaccounts' },

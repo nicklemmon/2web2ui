@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SendMoreCTA Component renders correctly 1`] = `
-<AccessControl
+<Component
   condition={[Function]}
 >
   <p>
     Need to send more?
      
-    <Connect(ConditionSwitch)>
+    <Component>
       <Case
         condition={[Function]}
       >
@@ -26,14 +26,14 @@ exports[`SendMoreCTA Component renders correctly 1`] = `
           Upgrade your account.
         </PageLink>
       </Case>
-    </Connect(ConditionSwitch)>
+    </Component>
      
   </p>
-</AccessControl>
+</Component>
 `;
 
 exports[`SendMoreCTA Component renders correctly 2`] = `
-<AccessControl
+<Component
   condition={[Function]}
 >
   <Box
@@ -50,7 +50,7 @@ exports[`SendMoreCTA Component renders correctly 2`] = `
       >
         Need to send more?
       </Text>
-      <Connect(ConditionSwitch)>
+      <Component>
         <Case
           condition={[Function]}
         >
@@ -73,9 +73,9 @@ exports[`SendMoreCTA Component renders correctly 2`] = `
             Upgrade your account.
           </PageLink>
         </Case>
-      </Connect(ConditionSwitch)>
+      </Component>
     </Box>
     <div />
   </Box>
-</AccessControl>
+</Component>
 `;

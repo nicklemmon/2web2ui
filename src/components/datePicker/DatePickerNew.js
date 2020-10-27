@@ -12,7 +12,11 @@ import {
   getNextHour,
   isSameDate,
 } from 'src/helpers/date';
-import { roundBoundaries, getRollupPrecision, getPrecision } from 'src/helpers/metrics';
+import {
+  roundBoundaries,
+  getRollupPrecision,
+  getPrecision as getRawPrecision,
+} from 'src/helpers/metrics';
 import {
   ActionList,
   Box,
@@ -24,7 +28,7 @@ import {
   WindowEvent,
 } from 'src/components/matchbox';
 import ButtonWrapper from 'src/components/buttonWrapper';
-import ManualEntryForm from './ManualEntryForm';
+import ManualEntryForm from './ManualEntryFormNew';
 import { FORMATS } from 'src/constants';
 import styled from 'styled-components';
 import { tokens } from '@sparkpost/design-tokens-hibana';
@@ -33,10 +37,14 @@ import { useHibana } from 'src/context/HibanaContext';
 
 const ActionListWrapper = styled.div`
   width: 150px;
+  border-right-color: ${tokens.color_gray_400};
+  border-right-style: solid;
+  border-right-width: ${tokens.borderWidth_100};
 `;
 
 const DateSelectorWrapper = styled.div`
   width: max-content;
+  max-width: 38.5rem;
 `;
 
 const StyledError = styled.span`
@@ -49,8 +57,8 @@ const StyledError = styled.span`
 const DATE_FORMAT = FORMATS.LONG_DATETIME;
 
 const initialState = {
-  showDatePicker: false,
-  selecting: false,
+  isDatePickerOpen: false,
+  isSelecting: false,
   relativeRange: 'custom',
   selected: {},
   validationError: null,
@@ -71,10 +79,10 @@ const actionTypes = {
 const datePickerReducer = (state, { type, payload }) => {
   switch (type) {
     case actionTypes.open: {
-      return { ...state, showDatePicker: true };
+      return { ...state, isDatePickerOpen: true };
     }
     case actionTypes.close: {
-      return { ...state, showDatePicker: false, selecting: false, validationError: null };
+      return { ...state, isDatePickerOpen: false, isSelecting: false, validationError: null };
     }
     case actionTypes.error: {
       const { validationError } = payload;
@@ -93,6 +101,9 @@ const datePickerReducer = (state, { type, payload }) => {
 };
 export function DatePicker(props) {
   const [state, dispatch] = useReducer(datePickerReducer, initialState);
+  const { isSelecting, selected, isDatePickerOpen } = state;
+
+  const getPrecision = props.useMetricsRollup ? getRollupPrecision : getRawPrecision;
 
   const syncTimeToState = useCallback(
     ({ from, to, precision, relativeRange }) => {
@@ -104,7 +115,7 @@ export function DatePicker(props) {
             selected: { from, to },
             selectedPrecision,
             relativeRange,
-            selecting: false,
+            isSelecting: false,
           },
         });
       }
@@ -123,7 +134,7 @@ export function DatePicker(props) {
 
   // Closes popover on escape, submits on enter
   const handleKeyDown = e => {
-    if (!state.showDatePicker) {
+    if (!isDatePickerOpen) {
       return;
     }
 
@@ -131,10 +142,20 @@ export function DatePicker(props) {
       cancelDatePicker();
     }
 
-    if (!state.selecting && e.key === 'Enter') {
+    if (!isSelecting && e.key === 'Enter') {
       handleSubmit();
     }
   };
+
+  const { updateShownPrecision } = props;
+  useEffect(() => {
+    if (updateShownPrecision) {
+      if (isDatePickerOpen && props.precision !== state.selectedPrecision) {
+        return updateShownPrecision(state.selectedPrecision);
+      }
+      return updateShownPrecision('');
+    }
+  }, [isDatePickerOpen, updateShownPrecision, state.selectedPrecision, props.precision]);
 
   const handleDayKeyDown = (day, modifiers, e) => {
     handleKeyDown(e);
@@ -151,10 +172,9 @@ export function DatePicker(props) {
   };
 
   const handleDayClick = clicked => {
-    const { selecting, selected } = state;
     const { validate, selectPrecision } = props;
 
-    const dates = selecting
+    const dates = isSelecting
       ? selected
       : {
           from: fromFormatter(clicked),
@@ -163,7 +183,7 @@ export function DatePicker(props) {
 
     const validationError = validate && validate(dates);
 
-    if (selecting && validationError) {
+    if (isSelecting && validationError) {
       dispatch({ type: actionTypes.error, payload: { validationError } });
       return;
     }
@@ -174,19 +194,17 @@ export function DatePicker(props) {
         relativeRange: 'custom',
         selected: dates,
         beforeSelected: dates,
-        selecting: !selecting,
+        isSelecting: !isSelecting,
         validationError: null,
         selectedPrecision:
           selectPrecision &&
-          getRollupPrecision({ from: dates.from, to: dates.to, precision: props.precision }),
+          getPrecision({ from: dates.from, to: dates.to, precision: props.precision }),
       },
     });
   };
 
   const handleDayHover = hovered => {
-    const { selecting } = state;
-
-    if (selecting) {
+    if (isSelecting) {
       const { from, to, precision } = getOrderedRange(hovered);
       dispatch({
         type: actionTypes.dayHover,
@@ -204,7 +222,7 @@ export function DatePicker(props) {
       from = fromFormatter(newDate);
     }
     //Changes datepicker precision if the current set precision is not available
-    const precision = getRollupPrecision({
+    const precision = getPrecision({
       from,
       to,
       precision: selectPrecision && oldPrecision,
@@ -220,14 +238,20 @@ export function DatePicker(props) {
   const handleSelectRange = value => {
     const { selectedPrecision: precision } = state;
     if (value !== 'custom') {
-      const { from, to } = getRelativeDates(value, { precision });
-
+      /*
+      First get the raw dates from the range.
+      Then check the precision for the date range.
+      Finally, use correct precision to round the date range.
+       */
+      const { from: fromRaw, to: toRaw } = getRelativeDates(value);
+      const newPrecision = getPrecision({ from: moment(fromRaw), to: moment(toRaw), precision });
+      const { from, to } = getRelativeDates(value, { precision: newPrecision });
       dispatch({
         type: actionTypes.selectRange,
         payload: {
-          selecting: false,
+          isSelecting: false,
           relativeRange: value,
-          selectedPrecision: precision,
+          selectedPrecision: newPrecision,
           selected: { from, to },
         },
       });
@@ -314,6 +338,7 @@ export function DatePicker(props) {
     return {
       content: label,
       highlighted: state.relativeRange === value,
+      is: 'button',
       onClick: () => handleSelectRange(value),
     };
   });
@@ -348,11 +373,11 @@ export function DatePicker(props) {
       as="div"
       trigger={DateField}
       onClose={cancelDatePicker}
-      open={state.showDatePicker}
+      open={isDatePickerOpen}
       left={left}
     >
       <Box display="flex">
-        <ActionListWrapper borderRight="400">
+        <ActionListWrapper>
           <ActionList actions={rangeOptions} />
         </ActionListWrapper>
         <Box as={DateSelectorWrapper} padding="400">
@@ -382,6 +407,7 @@ export function DatePicker(props) {
               preventFuture={preventFuture}
               selectedPrecision={selectedPrecision}
               defaultPrecision={selectPrecision && precision}
+              useMetricsRollup={props.useMetricsRollup}
             />
           )}
         </Box>
@@ -427,6 +453,7 @@ DatePicker.propTypes = {
   showPresets: PropTypes.bool,
   hideManualEntry: PropTypes.bool,
   selectPrecision: PropTypes.bool,
+  precision: PropTypes.string,
   id: PropTypes.string,
 };
 

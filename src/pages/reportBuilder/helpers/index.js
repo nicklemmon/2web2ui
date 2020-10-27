@@ -71,11 +71,13 @@ export function getInitialGroupState() {
 
 /**
  * Returns UI state to render multi-layer filter forms based on the user's entry
+ * Unit tests for this function were intentionally not written as they are tied closely to UI state
+ * and are well tested by integration tests.
  *
- * @param {array} remappedGroupings - array of iterable filter groupings, usually derived from `getIterableFormattedGroupings`
+ * @param {array} iterableGroupings - array of iterable filter groupings, usually derived from `getIterableFormattedGroupings`
  */
-export function getGroupingFields(remappedGroupings) {
-  const groupings = remappedGroupings;
+export function getGroupingFields(iterableGroupings) {
+  const groupings = iterableGroupings;
   const getValueFieldType = compareBy => {
     switch (compareBy) {
       case 'eq':
@@ -91,7 +93,7 @@ export function getGroupingFields(remappedGroupings) {
     }
   };
 
-  return remappedGroupings.map((grouping, groupingIndex) => {
+  return groupings.map((grouping, groupingIndex) => {
     return {
       ...grouping,
 
@@ -141,6 +143,56 @@ export function getGroupingFields(remappedGroupings) {
           // Renders when there is more than 1 grouping in the form
           hasRemoveButton:
             (groupingIndex === 0 && grouping.filters.length > 1) || groupingIndex > 0,
+        };
+      }),
+    };
+  });
+}
+
+/**
+ * Returns UI state to render active filter tags based on the user's entry
+ * Unit tests for this function were intentionally not written as they are tied closely to UI state
+ * and are well tested by integration tests.
+ *
+ * @param {array} remappedGroupings
+ */
+export function getActiveFilterTagGroups(iterableGroupings) {
+  const groupings = iterableGroupings;
+  const getCompareByText = compareBy => {
+    switch (compareBy) {
+      case 'eq':
+        return 'is equal to';
+      case 'notEq':
+        return 'is not equal to';
+      case 'like':
+        return 'contains';
+      case 'notLike':
+        return 'does not contain';
+      default:
+        throw new Error(`${compareBy} is not a valid comparison value.`);
+    }
+  };
+
+  return groupings.map((grouping, groupingIndex) => {
+    return {
+      type: grouping.type,
+      values: grouping.values,
+
+      // Renders below all groups *except* the last one in the list
+      hasAndBetweenGroups: groupingIndex + 1 < groupings.length,
+
+      filters: grouping.filters.map((filter, filterIndex) => {
+        return {
+          values: filter.values,
+
+          // Grabbing the label by the key value
+          label: Object.keys(FILTER_KEY_MAP).find(key => FILTER_KEY_MAP[key] === filter.type),
+
+          compareBy: getCompareByText(filter.compareBy),
+
+          // Renders comparison text ("OR" or "AND") when more than one grouping exists but not on the last filter in the grouping
+          hasComparisonBetweenFilters:
+            grouping.filters.length > 1 && filterIndex + 1 !== grouping.filters.length,
         };
       }),
     };

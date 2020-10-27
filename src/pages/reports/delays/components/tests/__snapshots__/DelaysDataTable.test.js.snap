@@ -45,7 +45,7 @@ Array [
   <LongTextContainer
     text="bad delay"
   />,
-  <Connect(AddFilterLink)
+  <Memo(Connect(AddFilterLink))
     content="gmail.com"
     newFilter={
       Object {

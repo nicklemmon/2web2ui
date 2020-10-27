@@ -103,12 +103,12 @@ export default function CreateForm() {
             <Layout.SectionTitle>Domain Type</Layout.SectionTitle>
 
             <Stack>
-              <SubduedText>
+              <SubduedText fontSize="200">
                 Adding a domain is very easy. You&rsquo;ll want to configure at least one domain for
                 each domain type in order to get the most out of our sending and analytics.
               </SubduedText>
 
-              <SubduedLink as={ExternalLink} to={LINKS.SENDING_REQS}>
+              <SubduedLink as={ExternalLink} to={LINKS.SENDING_REQS} fontSize="200">
                 Domains Documentation
               </SubduedLink>
             </Stack>
@@ -167,7 +167,7 @@ export default function CreateForm() {
           <Layout.Section annotated>
             <Layout.SectionTitle>Domain and Assignment</Layout.SectionTitle>
 
-            <SubduedText>
+            <SubduedText fontSize="200">
               We recommend using a subdomain e.g. mail.mydomain.com. Depending on how you want to
               use your domain, you may not be able to completely configure your DNS records if you
               use your organizational domain.

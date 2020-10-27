@@ -10,7 +10,12 @@ import { EXTERNAL_LINKS } from '../constants';
 import _ from 'lodash';
 
 export default function TrackingDnsSection({ id, isSectionVisible, title }) {
-  const { trackingDomains, verifyTrackingDomain, verifyingTrackingPending } = useDomains();
+  const {
+    trackingDomainCname,
+    trackingDomains,
+    verifyTrackingDomain,
+    verifyingTrackingPending,
+  } = useDomains();
   let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
   const { unverified } = trackingDomain;
   const [checked, toggleChecked] = useState(!!unverified);
@@ -27,17 +32,21 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   return (
     <Layout>
       <Layout.Section annotated>
+        <Layout.SectionTitle as="h2">{title || 'Tracking'} </Layout.SectionTitle>
         <Stack>
-          <Layout.SectionTitle as="h2">{title || 'Tracking'} </Layout.SectionTitle>
           {unverified && (
-            <SubduedText>
+            <SubduedText fontSize="200">
               Tracking domains are used by mail providers to determine where engagement rate (like
               opens and clicks) should be sent. This allows you to measure the health of your email
               campaigns so that your team is able to create content and mailing lists that maximize
               your potential.
             </SubduedText>
           )}
-          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+          <SubduedLink
+            as={ExternalLink}
+            to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}
+            fontSize="200"
+          >
             Tracking Domain Documentation
           </SubduedLink>
         </Stack>
@@ -73,7 +82,7 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
                 </>
               )}
               <CopyField label="Hostname" value={trackingDomain.domainName} hideCopy={true} />
-              <CopyField label="Value" value="placeholder" hideCopy={!unverified} />
+              <CopyField label="Value" value={trackingDomainCname} hideCopy={!unverified} />
             </Stack>
 
             {unverified && (

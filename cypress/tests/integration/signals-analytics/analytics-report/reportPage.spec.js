@@ -40,6 +40,21 @@ if (IS_HIBANA_ENABLED) {
       cy.findByLabelText('Break Down By').should('be.visible');
     });
 
+    it('renders the initial page based on query params', () => {
+      cy.visit(`${PAGE_URL}&filters=Recipient Domain%3Atest.com`);
+      cy.withinMainContent(() => {
+        cy.findAllByText('Targeted').should('have.length', 2);
+        cy.findAllByText('Accepted').should('have.length', 2);
+        cy.findAllByText('Bounces').should('have.length', 2);
+      });
+      cy.findByDataId('report-options').within(() => {
+        cy.findByText('Filters').should('be.visible');
+        cy.findByText('Recipient Domain').should('be.visible');
+        cy.findByText('equals').should('be.visible');
+        cy.findByText('test.com').should('be.visible');
+      });
+    });
+
     it('filters by metric', () => {
       // 1. Open the drawer, uncheck default metrics, check all metrics
       cy.findByRole('button', { name: 'Add Metrics' }).click();
@@ -506,6 +521,19 @@ if (IS_HIBANA_ENABLED) {
             cy.findByText('hello-again').should('be.visible');
           });
       });
+    });
+
+    it('renders no filters section when grouped comparator filters are in their initial, empty state', () => {
+      commonBeforeSteps();
+      cy.stubRequest({
+        url: '/api/v1/account',
+        fixture: 'account/200.get.has-report-filters-v2.json',
+        requestAlias: 'getAccount',
+      });
+      cy.visit(`${PAGE_URL}&query_filters=%255B%257B%2522AND%2522%3A%257B%257D%257D%255D`); // Equivalent to `[{ AND: {} }]`
+      cy.wait(['@getAccount', '@getDeliverability', '@getTimeSeries']);
+
+      getFilterTags().should('not.be.visible');
     });
 
     it('removes filters when individual filter value tags are removed', () => {

@@ -85,6 +85,7 @@ export class AbTestCreateForm extends Component {
                 <Grid.Column md={6}>
                   <Field
                     name="default_variant"
+                    id="templates-typeahead"
                     component={TemplateTypeaheadWrapper}
                     subaccountId={subaccountId}
                     label="Default template"
