@@ -7,7 +7,7 @@ import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import { AddFiltersSection, CompareByDrawer, FiltersForm, Legend, MetricsDrawer } from './index';
+import { AddFiltersSection, CompareByForm, FiltersForm, Legend, MetricsDrawer } from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
@@ -160,7 +160,7 @@ export function ReportOptions(props) {
               }}
               variant="secondary"
             >
-              Compare
+              Add Comparison
             </Button>
           )}
         </Inline>
@@ -181,7 +181,7 @@ export function ReportOptions(props) {
               </Tabs.Item>
               {isCompareByEnabled && (
                 <Tabs.Item>
-                  <CompareByDrawer />
+                  <CompareByForm />
                 </Tabs.Item>
               )}
             </Tabs>
