@@ -1,6 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import TestApp from 'src/__testHelpers__/TestApp';
+import JobsTableCollection from '../components/JobsTableCollection';
 import { RecipientValidationPage } from '../RecipientValidationPage';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import styles from '../RecipientValidationPage.module.scss';
@@ -47,7 +48,7 @@ describe('Page: Recipient Email Verification (shallow)', () => {
   it('should render Recipient Validation page correctly', () => {
     wrapper = subject();
     expect(wrapper.find('withRouter(Connect(ListForm))')).toExist();
-    expect(wrapper.find('Connect(withJobs(JobsTableCollection))')).toExist();
+    expect(wrapper.find(JobsTableCollection)).toExist();
   });
 
   it('renders single email verification tab correctly when selected', () => {

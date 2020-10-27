@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import { RedirectAndAlert } from 'src/components/globalAlert';
 import { EditPage } from '../EditPage';
 import formatFormValues from '../helpers/formatFormValues';
 import AlertForm from '../components/AlertForm';
@@ -12,14 +13,14 @@ describe('Page: Alerts Edit', () => {
     showUIAlert: jest.fn(),
     error: null,
     history: {
-      push: jest.fn()
+      push: jest.fn(),
     },
     loading: false,
     getAlert: jest.fn(),
     getError: undefined,
     getLoading: undefined,
     id: 'alert-id-1',
-    alert: {}
+    alert: {},
   };
 
   let wrapper;
@@ -39,16 +40,16 @@ describe('Page: Alerts Edit', () => {
 
   it('should render Error when there is an error when getting alert', () => {
     wrapper.setProps({ getError: true });
-    expect(wrapper.find('RedirectAndAlert')).toExist();
+    expect(wrapper.find(RedirectAndAlert)).toExist();
   });
 
   it('should get alert when component mounts', () => {
-    wrapper = shallow(<EditPage {...props} id={'alert-id-2'} />);
+    wrapper = shallow(<EditPage {...props} id="alert-id-2" />);
     expect(props.getAlert).toHaveBeenCalledWith({ id: 'alert-id-2' });
   });
 
   it('should handle submit', async () => {
-    formatFormValues.mockImplementationOnce((a) => a);
+    formatFormValues.mockImplementationOnce(a => a);
     await wrapper.find(AlertForm).simulate('submit', { value: 'mock value' });
     expect(props.updateAlert).toHaveBeenCalledWith({ data: { value: 'mock value' }, id: props.id });
     expect(props.showUIAlert).toHaveBeenCalled();

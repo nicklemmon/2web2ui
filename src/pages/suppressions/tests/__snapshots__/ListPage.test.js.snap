@@ -34,10 +34,10 @@ exports[`ListPage renders correctly 1`] = `
       />
     </TabsWrapper>
     <Panel.LEGACY.Section>
-      <Connect(ReduxForm) />
+      <Component />
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Connect(Results)
+  <Component
     subaccounts={Array []}
   />
 </Page>
@@ -77,10 +77,10 @@ exports[`ListPage renders correctly with subaccounts 1`] = `
       />
     </TabsWrapper>
     <Panel.LEGACY.Section>
-      <Connect(ReduxForm) />
+      <Component />
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Connect(Results)
+  <Component
     hasSubaccounts={true}
     subaccounts={Array []}
   />
@@ -121,12 +121,12 @@ exports[`ListPage renders filter by email tab correctly when selected 1`] = `
       />
     </TabsWrapper>
     <Panel.LEGACY.Section>
-      <Connect(ReduxForm)
+      <Component
         onSubmit={[MockFunction]}
       />
     </Panel.LEGACY.Section>
   </Panel.LEGACY>
-  <Connect(Results)
+  <Component
     subaccounts={Array []}
   />
 </Page>

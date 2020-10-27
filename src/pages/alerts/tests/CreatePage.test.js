@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
+import { RedirectAndAlert } from 'src/components/globalAlert';
 import { CreatePage } from '../CreatePage';
 import formatFormValues from '../helpers/formatFormValues';
 import AlertForm from '../components/AlertForm';
@@ -41,7 +42,7 @@ describe('Page: Alerts Create', () => {
 
   it('should render Error when there is an error during duplicate alert', () => {
     wrapper.setProps({ getError: true });
-    expect(wrapper.find('RedirectAndAlert')).toExist();
+    expect(wrapper.find(RedirectAndAlert)).toExist();
   });
 
   it('should get alert if duplicate id exists', () => {

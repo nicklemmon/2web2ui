@@ -162,7 +162,7 @@ exports[`Support renders support form 1`] = `
         ]
       }
     />
-    <Connect(ReduxForm)
+    <Component
       onClose={[MockFunction]}
     />
   </Panel.LEGACY>

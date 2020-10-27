@@ -1,5 +1,6 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
+import { RedirectAndAlert } from 'src/components/globalAlert';
 import TestApp from 'src/__testHelpers__/TestApp';
 import { TestDetailsPage } from '../TestDetailsPage';
 
@@ -71,7 +72,7 @@ describe('Page: Single Inbox Placement Test', () => {
         message: 'You dun goofed',
       },
     });
-    expect(wrapper.find('RedirectAndAlert')).toMatchSnapshot();
+    expect(wrapper.find(RedirectAndAlert)).toMatchSnapshot();
     expect(wrapper.find('Page')).not.toExist();
   });
 
