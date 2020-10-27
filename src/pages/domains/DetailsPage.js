@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Page, Banner, Button, Box } from 'src/components/matchbox';
-import { get as getDomain } from 'src/actions/sendingDomains';
+import { get as getDomain, clearSendingDomain } from 'src/actions/sendingDomains';
 import Domains from './components';
 import { connect } from 'react-redux';
 import { selectDomain } from 'src/selectors/sendingDomains';
@@ -27,6 +27,7 @@ function DetailsPage(props) {
     domain,
     getDomain,
     listTrackingDomains,
+    clearSendingDomain,
   } = props;
   const resolvedStatus = resolveStatus(domain.status);
   const [warningBanner, toggleBanner] = useState(true);
@@ -45,7 +46,11 @@ function DetailsPage(props) {
 
   useEffect(() => {
     getDomain(match.params.id);
-  }, [getDomain, match.params.id]);
+    return () => {
+      //reset the domain
+      clearSendingDomain();
+    };
+  }, [clearSendingDomain, getDomain, match.params.id]);
   useEffect(() => {
     listTrackingDomains();
   }, [listTrackingDomains]);
@@ -150,5 +155,5 @@ export default connect(
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
   }),
-  { getDomain, listTrackingDomains },
+  { getDomain, listTrackingDomains, clearSendingDomain },
 )(DetailsPage);

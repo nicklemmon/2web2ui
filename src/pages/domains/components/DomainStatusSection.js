@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Stack, Text } from 'src/components/matchbox';
-import { Checkbox, Columns, Column, Panel } from 'src/components/matchbox';
+import { Checkbox, Columns, Column, Panel, Tooltip } from 'src/components/matchbox';
 import { Heading, SubduedText } from 'src/components/text';
 import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
 import TrackingDomainStatusCell from './TrackingDomainStatusCell';
@@ -71,14 +71,14 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
     return (
       <Layout>
         <Layout.Section annotated>
-          <Stack>
-            <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
-            <Stack>
-              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
-                Tracking Domain Documentation
-              </SubduedLink>
-            </Stack>
-          </Stack>
+          <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
+          <SubduedLink
+            as={ExternalLink}
+            to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}
+            fontSize="200"
+          >
+            Tracking Domain Documentation
+          </SubduedLink>
         </Layout.Section>
         <Layout.Section>
           <Panel>
@@ -147,26 +147,38 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
   return (
     <Layout>
       <Layout.Section annotated>
+        <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
         <Stack>
-          <Layout.SectionTitle as="h2">Domain Status</Layout.SectionTitle>
           {resolvedStatus === 'unverified' && (
-            <SubduedText>
+            <SubduedText fontSize="200">
               This domain failed authentication. It can take 24 to 48 hours for the DNS record to
               propogate. For other reasons why this ay have happenedchek out our domain
               authentication documentation.
             </SubduedText>
           )}
           {resolvedStatus === 'unverified' && (
-            <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}>
+            <SubduedLink
+              as={ExternalLink}
+              to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}
+              fontSize="200"
+            >
               Domain Documentation
             </SubduedLink>
           )}
           {resolvedStatus === 'verified' && (
             <Stack>
-              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}>
+              <SubduedLink
+                as={ExternalLink}
+                to={EXTERNAL_LINKS.SENDING_DOMAINS_DOCUMENTATION}
+                fontSize="200"
+              >
                 Sending Domain Documentation
               </SubduedLink>
-              <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.SENDING_DOMAINS_API_DOCUMENTATION}>
+              <SubduedLink
+                as={ExternalLink}
+                to={EXTERNAL_LINKS.SENDING_DOMAINS_API_DOCUMENTATION}
+                fontSize="200"
+              >
                 Sending Domain API Documentation
               </SubduedLink>
             </Stack>
@@ -225,6 +237,7 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                       onChange: toggleShareWithSubaccounts,
                     }}
                     label="Share this domain with all subaccounts"
+                    variant="dense"
                   />
                 </Panel.Section>
               )}
@@ -235,7 +248,16 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                       id="set-as-default-bounce-domain"
                       label={
                         <>
-                          Set as Default Bounce Domain <Bookmark color="green" />
+                          Set as Default Bounce Domain{' '}
+                          <Tooltip
+                            id="default-bounce-tooltip"
+                            dark
+                            content={`When this is set to "ON", all future transmissions ${
+                              domain.subaccount_id ? 'for this subaccount ' : ''
+                            }will use ${id} as their bounce domain (unless otherwise specified).`}
+                          >
+                            <Bookmark color="green" />
+                          </Tooltip>
                         </>
                       }
                       checked={domain.is_default_bounce_domain}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Box,
   Grid,
   Button,
   Banner,
@@ -10,6 +11,7 @@ import {
   TextField,
   Text,
 } from 'src/components/matchbox';
+import { Bold } from 'src/components/text';
 import useModal from 'src/hooks/useModal';
 import { useForm, Controller } from 'react-hook-form';
 import useDomains from '../hooks/useDomains';
@@ -113,7 +115,11 @@ function AllowAnyoneAtModal(props) {
                     control={control}
                     rules={{ required: true }}
                     error={errors?.localPart?.type === 'required' ? 'Required' : ''}
-                    connectRight={<strong>{`@${id}`}</strong>}
+                    connectRight={
+                      <Box paddingLeft="200">
+                        <Bold>{`@${id}`}</Bold>
+                      </Box>
+                    }
                   />
                 </div>
               </Grid.Column>
