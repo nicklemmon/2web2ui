@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Stack, Text } from 'src/components/matchbox';
-import { Box, Checkbox, Columns, Column, Panel, Tooltip } from 'src/components/matchbox';
+import { Checkbox, Columns, Column, Panel, Tooltip } from 'src/components/matchbox';
 import { Heading, SubduedText } from 'src/components/text';
 import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
 import TrackingDomainStatusCell from './TrackingDomainStatusCell';
@@ -13,11 +13,6 @@ import { ToggleBlock } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
 import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
-import styled from 'styled-components';
-
-const StyledBox = styled(Box)`
-  max-width: 400px;
-`;
 
 export default function DomainStatusSection({ domain, id, isTracking }) {
   const { closeModal, isModalOpen, openModal } = useModal();
@@ -235,16 +230,15 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
                 </Panel.Section>
               ) : (
                 <Panel.Section>
-                  <StyledBox>
-                    <ToggleBlock
-                      input={{
-                        name: 'share-with-all-subaccounts',
-                        checked: domain.shared_with_subaccounts,
-                        onChange: toggleShareWithSubaccounts,
-                      }}
-                      label="Share this domain with all subaccounts"
-                    />
-                  </StyledBox>
+                  <ToggleBlock
+                    input={{
+                      name: 'share-with-all-subaccounts',
+                      checked: domain.shared_with_subaccounts,
+                      onChange: toggleShareWithSubaccounts,
+                    }}
+                    label="Share this domain with all subaccounts"
+                    variant="dense"
+                  />
                 </Panel.Section>
               )}
               {showDefaultBounceToggle && (
