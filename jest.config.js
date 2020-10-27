@@ -45,3 +45,4 @@ module.exports = {
   },
   watchPathIgnorePatterns: ['<rootDir>/build'],
 };
+process.env.TZ = 'America/New_York';

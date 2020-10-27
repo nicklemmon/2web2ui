@@ -9,7 +9,7 @@ import {
   getRollupPrecision,
   getMomentPrecisionByDate,
 } from 'src/helpers/metrics';
-import styles from './ManualEntryForm.module.scss';
+import styles from './ManualEntryFormNew.module.scss';
 
 const DATE_PLACEHOLDER = '1970-01-20';
 const TIME_PLACEHOLDER = '12:00am';
@@ -48,8 +48,7 @@ export function ManualEntryForm(props) {
     }
   }, initialState);
 
-  //default precision should only be set for the datepicker for metrics rollup
-  const getPrecision = props.defaultPrecision ? getRollupPrecision : getRawPrecision;
+  const getPrecision = props.useMetricsRollup ? getRollupPrecision : getRawPrecision;
 
   const syncPropsToState = useCallback(({ to, from }) => {
     dispatch({

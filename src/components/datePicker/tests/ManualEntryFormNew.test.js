@@ -1,14 +1,13 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import _ from 'lodash';
 import * as metricsHelpers from 'src/helpers/metrics';
-import { ManualEntryForm } from '../ManualEntryForm';
-import styles from '../ManualEntryForm.module.scss';
+import { ManualEntryForm } from '../ManualEntryFormNew';
+import styles from '../ManualEntryFormNew.module.scss';
 import TestApp from 'src/__testHelpers__/TestApp';
 
 import moment from 'moment';
 
-describe('Component: DatePicker ManualEntryForm', () => {
+describe('Component: DatePicker ManualEntryForm(new)', () => {
   const defaultProps = {
     selectDates: jest.fn(),
     onEnter: jest.fn(),

@@ -119,10 +119,14 @@ export function getRecommendedRollupPrecision(from, to = moment()) {
  */
 export function getPrecisionOptions(from, to = moment()) {
   const diff = to.diff(from, 'minutes');
-  return rollupPrecisionMap
+  return _getPrecisionOptions(diff);
+}
+const _getPrecisionOptions = _.memoize(diff => {
+  const result = rollupPrecisionMap
     .filter(({ min, max }) => diff >= min && diff <= max)
     .map(({ value }) => ({ value, label: _.startCase(_.words(value).join(' ')) }));
-}
+  return result;
+});
 
 export function getMomentPrecisionByDate(from, to = moment()) {
   const diff = to.diff(from, 'minutes');

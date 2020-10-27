@@ -10,6 +10,7 @@ describe('PrecisionSelector', () => {
     to: '2019-02-17T12:00:00',
     changeTime: mockChangeTime,
     selectedPrecision: 'hour',
+    useMetricsRollup: true,
   };
   const subject = props => {
     return render(

@@ -170,6 +170,7 @@ export class ReportOptionsClassComponent extends Component {
                   />
                 ) : (
                   <Select
+                    id="precision-select"
                     label="Precision"
                     options={PRECISION_OPTIONS}
                     value={this.state.shownPrecision}

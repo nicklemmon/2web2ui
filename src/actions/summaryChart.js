@@ -26,7 +26,7 @@ export function refreshSummaryReport(
       ...reportOptions,
       ...getRelativeDates(reportOptions.relativeRange),
       ...updates,
-      ...getRelativeDates(updates.relativeRange),
+      ...getRelativeDates(updates.relativeRange, { precision: updates.precision }),
     };
 
     // convert new meta data into query param format
@@ -63,7 +63,7 @@ export function refreshReportBuilder(
     const merged = {
       ...summaryChart,
       ...updates,
-      ...getRelativeDates(updates.relativeRange),
+      ...getRelativeDates(updates.relativeRange, { precision: updates.precision }),
     };
 
     const params = getQueryFromOptions(merged, { isComparatorsEnabled });

@@ -4,15 +4,26 @@ import { getPrecisionOptions, roundBoundaries, getRollupPrecision } from 'src/he
 import { Select } from 'src/components/matchbox';
 import moment from 'moment';
 
-const PrecisionSelector = ({ from, to, changeTime, selectedPrecision, disabled, ready }) => {
+const PrecisionSelector = ({
+  from,
+  to,
+  changeTime,
+  selectedPrecision,
+  disabled,
+  ready,
+  useMetricsRollup,
+}) => {
   const precisionOptions = getPrecisionOptions(moment(from), moment(to));
 
   useEffect(() => {
-    const updatedPrecision = getRollupPrecision({ from, to, precision: selectedPrecision });
-    if (updatedPrecision !== selectedPrecision && ready) {
-      changeTime({ precision: updatedPrecision });
+    if (from && to && selectedPrecision && useMetricsRollup) {
+      const updatedPrecision = getRollupPrecision({ from, to, precision: selectedPrecision });
+      if (updatedPrecision !== selectedPrecision && ready) {
+        //Bug showed up during unit tests, wasn't showing up in actual page though.
+        changeTime({ precision: updatedPrecision });
+      }
     }
-  }, [changeTime, from, precisionOptions, selectedPrecision, to, ready]);
+  }, [changeTime, from, precisionOptions, selectedPrecision, to, ready, useMetricsRollup]);
 
   const updatePrecision = ({ currentTarget: { value: precision } }) => {
     const { from: roundedFrom, to: roundedTo } = roundBoundaries({ from, to, precision });
