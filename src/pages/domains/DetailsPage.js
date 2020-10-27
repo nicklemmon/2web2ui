@@ -57,7 +57,11 @@ function DetailsPage(props) {
 
   useEffect(() => {
     if (!isTracking) getDomain(match.params.id);
-  }, [getDomain, isTracking, match.params.id]);
+    return () => {
+      //reset the domain
+      clearSendingDomain();
+    };
+  }, [clearSendingDomain, getDomain, isTracking, match.params.id]);
   useEffect(() => {
     if (isTracking) listTrackingDomains();
   }, [isTracking, listTrackingDomains]);

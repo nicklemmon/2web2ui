@@ -1,9 +1,6 @@
 import React from 'react';
 import { Layout, Stack } from 'src/components/matchbox';
-import { Checkbox, Columns, Column, Panel, Tooltip } from 'src/components/matchbox';
-import { SubduedText } from 'src/components/text';
-import { Layout, Stack } from 'src/components/matchbox';
-import { Checkbox, Columns, Column, Panel, LabelValue } from 'src/components/matchbox';
+import { Checkbox, Columns, Column, Panel, Tooltip, LabelValue } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
 import TrackingDomainStatusCell from './TrackingDomainStatusCell';
