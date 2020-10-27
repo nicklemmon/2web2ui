@@ -86,7 +86,7 @@ Array [
   Object {
     "meta": Object {
       "data": Object {
-        "shared_with_subaccounts": true,
+        "is_default_bounce_domain": true,
       },
       "headers": Object {},
       "method": "PUT",
@@ -102,7 +102,7 @@ Array [
   Object {
     "meta": Object {
       "data": Object {
-        "shared_with_subaccounts": true,
+        "is_default_bounce_domain": true,
       },
       "headers": Object {
         "x-msys-subaccount": 101,

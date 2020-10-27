@@ -73,14 +73,15 @@ snapshotActionCases('Action Creator: Sending Domains', {
     actionCreator: sendingDomains.clearSendingDomain,
   },
   'Update should request with correct post data': {
-    actionCreator: () => sendingDomains.update({ id: 'domain.com', shared_with_subaccounts: true }),
+    actionCreator: () =>
+      sendingDomains.update({ id: 'domain.com', is_default_bounce_domain: true }),
   },
   'Update should update domain owned by subaccount': {
     actionCreator: () =>
       sendingDomains.update({
         id: 'domain.com',
         subaccount: 101,
-        shared_with_subaccounts: true,
+        is_default_bounce_domain: true,
       }),
   },
 });
