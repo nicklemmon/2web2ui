@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
-import { selectTrackingDomainsList } from 'src/selectors/trackingDomains';
+import { getTrackingDomains } from 'src/selectors/trackingDomains';
 import { selectTrackingDomainCname } from 'src/selectors/account';
 import { Loading } from 'src/components/loading/Loading';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
@@ -83,7 +83,8 @@ function DetailsPage(props) {
 
   if (
     isTracking &&
-    trackingDomainList.length > 0 &&
+    !trackingDomainListPending &&
+    trackingDomainList &&
     !Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]))
   ) {
     return (
@@ -220,7 +221,7 @@ function DetailsPage(props) {
 export default connect(
   state => ({
     domain: selectDomain(state),
-    trackingDomainList: selectTrackingDomainsList(state),
+    trackingDomainList: getTrackingDomains(state),
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
     hasSubaccounts: hasSubaccounts(state),

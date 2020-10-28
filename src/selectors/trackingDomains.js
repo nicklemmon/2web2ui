@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import _ from 'lodash';
 import { getSubaccountsIndexedById, getSubaccountName } from './subaccounts';
 
-const getTrackingDomains = state => state.trackingDomains.list;
+export const getTrackingDomains = state => state.trackingDomains.list;
 const selectSubaccountFromProps = (state, props) => _.get(props, 'domain.subaccount_id', null);
 
 export const selectDomains = createSelector(
