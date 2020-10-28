@@ -249,7 +249,6 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
               <Panel.Section>
                 <Checkbox
                   ref={register({ required: true })}
-                  id="add-to-dns"
                   name="addToDns"
                   label="The TXT and CNAME records have been added to the DNS provider"
                   error={errors.addToDns && 'Adding TXT and CNAME is required'}
@@ -264,6 +263,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                   type="submit"
                   name="sendingBounceForm"
                   loading={verifyBounceLoading || verifyDkimLoading}
+                  disabled={!watch('addToDns')}
                 >
                   {getButtonText()}
                 </Button>

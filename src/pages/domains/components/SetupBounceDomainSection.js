@@ -34,12 +34,9 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
   const readyFor = resolveReadyFor(status);
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
   const bounceDomainsConfig = getConfig('bounceDomains');
-  const { control, handleSubmit, watch } = useForm();
+  const { control, handleSubmit, watch, register } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
   const [warningBanner, toggleBanner] = useState(true);
-  const [checked, toggleChecked] = useState(
-    readyFor.bounce && domain.status.spf_status !== 'valid',
-  );
 
   const onSubmit = () => {
     if (!readyFor.bounce) {
@@ -254,24 +251,28 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
               <Panel.Section>
                 {readyFor.bounce && domain.status.spf_status !== 'valid' ? (
                   <Checkbox
-                    id="add-txt-to-godaddy"
+                    name="ack-checkbox-bounce"
                     label="The TXT record has been added to the DNS provider"
                     disabled={verifyBounceLoading}
-                    onChange={() => toggleChecked(!checked)}
+                    ref={register({ required: true })}
                   />
                 ) : (
                   <Checkbox
-                    id="add-txt-to-godaddy"
+                    name="ack-checkbox-bounce"
                     label={`The ${watchVerificationType} record has been added to the DNS provider`}
                     disabled={verifyBounceLoading}
-                    onChange={() => toggleChecked(!checked)}
+                    ref={register({ required: true })}
                   />
                 )}
               </Panel.Section>
             )}
             {readyFor.bounce && domain.status.spf_status !== 'valid' && (
               <Panel.Section>
-                <Button variant="primary" type="submit" disabled={!checked}>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={!Boolean(watch('ack-checkbox-bounce'))}
+                >
                   Authenticate for SPF
                 </Button>
               </Panel.Section>
@@ -281,7 +282,7 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                 <Button
                   variant="primary"
                   type="submit"
-                  disabled={!checked}
+                  disabled={!Boolean(watch('ack-checkbox-bounce'))}
                   loading={verifyBounceLoading}
                 >
                   Authenticate for Bounce

@@ -8,6 +8,7 @@ import useDomains from '../hooks/useDomains';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import styled from 'styled-components';
 import { CopyField } from 'src/components';
+import { useForm } from 'react-hook-form';
 import { EXTERNAL_LINKS } from '../constants';
 
 const PlaneIcon = styled(Send)`
@@ -17,8 +18,9 @@ const PlaneIcon = styled(Send)`
 export default function SetupForSending({ domain, isSectionVisible }) {
   const { verifyDkim, showAlert, userName, verifyDkimLoading } = useDomains();
   const readyFor = resolveReadyFor(domain.status);
+  const { handleSubmit, watch, register } = useForm();
 
-  const handleVerifyDkim = () => {
+  const onSubmit = () => {
     const { id, subaccount_id: subaccount } = domain;
 
     return verifyDkim({ id, subaccount }).then(results => {
@@ -72,70 +74,70 @@ export default function SetupForSending({ domain, isSectionVisible }) {
         )}
       </Layout.Section>
       <Layout.Section>
-        <Panel>
-          {!readyFor.dkim ? (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Panel>
+            {!readyFor.dkim ? (
+              <Panel.Section>
+                Add these{' '}
+                <Text as="span" fontWeight="semibold">
+                  TXT
+                </Text>{' '}
+                records, Hostnames and Values for this domain in the settings section of your DNS
+                provider.
+                <Panel.Action>
+                  <ExternalLink
+                    to={`mailto:?subject=Assistance%20Requested%20Verifying%20a%20Sending%20Domain%20on%20SparkPost&body=${userName}%20has%20requested%20your%20assistance%20verifying%20a%20sending%20domain%20with%20SparkPost.%20Follow%20the%20link%20below%20to%20find%20the%20values%20you%E2%80%99ll%20need%20to%20add%20to%20the%20settings%20of%20your%20DNS%20provider.%0D%0A%5BGo%20to%20SparkPost%5D(${window.location})%0D%0A`}
+                    icon={PlaneIcon}
+                  >
+                    Forward to Colleague
+                  </ExternalLink>
+                </Panel.Action>
+              </Panel.Section>
+            ) : (
+              <Panel.Section>
+                Below is the{' '}
+                <Text as="span" fontWeight="semibold">
+                  TXT
+                </Text>{' '}
+                record for the Hostname and DKIM value of this domain.
+              </Panel.Section>
+            )}
             <Panel.Section>
-              Add these{' '}
-              <Text as="span" fontWeight="semibold">
-                TXT
-              </Text>{' '}
-              records, Hostnames and Values for this domain in the settings section of your DNS
-              provider.
-              <Panel.Action>
-                <ExternalLink
-                  to={`mailto:?subject=Assistance%20Requested%20Verifying%20a%20Sending%20Domain%20on%20SparkPost&body=${userName}%20has%20requested%20your%20assistance%20verifying%20a%20sending%20domain%20with%20SparkPost.%20Follow%20the%20link%20below%20to%20find%20the%20values%20you%E2%80%99ll%20need%20to%20add%20to%20the%20settings%20of%20your%20DNS%20provider.%0D%0A%5BGo%20to%20SparkPost%5D(${window.location})%0D%0A`}
-                  icon={PlaneIcon}
+              <Stack>
+                {!readyFor.dkim && (
+                  <>
+                    <Text as="label" fontWeight="500" fontSize="200">
+                      Type
+                    </Text>
+                    <Text as="p">TXT</Text>
+                  </>
+                )}
+                <CopyField label="Hostname" value={domain.dkimHostname} hideCopy={readyFor.dkim} />
+                <CopyField label="Value" value={domain.dkimValue} hideCopy={readyFor.dkim} />
+                {!readyFor.dkim && (
+                  <Checkbox
+                    name="ack-checkbox-dkim"
+                    ref={register({ required: true })}
+                    label={<>The TXT record has been added to the DNS provider</>}
+                  />
+                )}
+                {/*API doesn't support it; Do we want to store this in ui option*/}
+              </Stack>
+            </Panel.Section>
+            {!readyFor.dkim && (
+              <Panel.Section>
+                <Button
+                  variant="primary"
+                  loading={verifyDkimLoading}
+                  type="submit"
+                  disabled={!Boolean(watch('ack-checkbox-dkim'))}
                 >
-                  Forward to Colleague
-                </ExternalLink>
-              </Panel.Action>
-            </Panel.Section>
-          ) : (
-            <Panel.Section>
-              Below is the{' '}
-              <Text as="span" fontWeight="semibold">
-                TXT
-              </Text>{' '}
-              record for the Hostname and DKIM value of this domain.
-            </Panel.Section>
-          )}
-          <Panel.Section>
-            <Stack>
-              {!readyFor.dkim && (
-                <>
-                  <Text as="label" fontWeight="500" fontSize="200">
-                    Type
-                  </Text>
-                  <Text as="p">TXT</Text>
-                </>
-              )}
-              <CopyField
-                label="Hostname"
-                value={domain.dkimHostname}
-                hideCopy={readyFor.dkim}
-              />
-              <CopyField
-                label="Value"
-                value={domain.dkimValue}
-                hideCopy={readyFor.dkim}
-              />
-              {!readyFor.dkim && (
-                <Checkbox
-                  id="add-txt-to-godaddy"
-                  label={<>The TXT record has been added to the DNS provider</>}
-                />
-              )}
-              {/*API doesn't support it; Do we want to store this in ui option*/}
-            </Stack>
-          </Panel.Section>
-          {!readyFor.dkim && (
-            <Panel.Section>
-              <Button variant="primary" onClick={handleVerifyDkim} loading={verifyDkimLoading}>
-                Verify Domain
-              </Button>
-            </Panel.Section>
-          )}
-        </Panel>
+                  Verify Domain
+                </Button>
+              </Panel.Section>
+            )}
+          </Panel>
+        </form>
       </Layout.Section>
     </Layout>
   );
