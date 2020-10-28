@@ -7,6 +7,9 @@ import { tokens } from '@sparkpost/design-tokens-hibana';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@sparkpost/matchbox-icons';
 import { ActionList, Box, TextField } from 'src/components/matchbox';
 import sortMatch from 'src/helpers/sortMatch';
+import { LoadingSVG } from 'src/components';
+
+const Loading = () => <LoadingSVG size="XSmall" />;
 
 const PopoverActionList = styled(ActionList)`
   background: ${tokens.color_white};
@@ -48,6 +51,8 @@ function TypeSelect({
   renderItem,
   results,
   selectedItem,
+  onInputChange,
+  loading,
 }) {
   const [matches, setMatches] = useState([]);
   // Controlled input so that we can change the value after selecting dropdown.
@@ -60,8 +65,18 @@ function TypeSelect({
   }, 300);
 
   useEffect(() => {
-    updateMatches(inputValue);
-  }, [updateMatches, inputValue, results]);
+    if (onInputChange) {
+      //External trigger for filtering
+      onInputChange(inputValue);
+    } else {
+      //Internal trigger for filtering
+      updateMatches(inputValue);
+    }
+  }, [updateMatches, onInputChange, inputValue]);
+
+  useEffect(() => {
+    setMatches(results);
+  }, [results]);
 
   const handleStateChange = (changes, downshift) => {
     // Highlights first item in list by default
@@ -103,7 +118,10 @@ function TypeSelect({
     const textFieldProps = getInputProps(textFieldConfig);
     textFieldProps['data-lpignore'] = true;
 
-    const SuffixIcon = isOpen ? KeyboardArrowUp : KeyboardArrowDown;
+    let SuffixIcon = isOpen ? KeyboardArrowUp : KeyboardArrowDown;
+    if (loading) {
+      SuffixIcon = Loading;
+    }
 
     return (
       <div>
