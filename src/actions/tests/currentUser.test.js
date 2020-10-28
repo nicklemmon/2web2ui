@@ -1,7 +1,7 @@
 import { snapshotActionCases } from 'src/__testHelpers__/snapshotActionHelpers';
 import * as actions from '../currentUser';
 
-jest.mock('src/actions/helpers/sparkpostApiRequest', () => jest.fn(a => a));
+jest.mock('src/actions/helpers/sparkpostApiRequest');
 
 snapshotActionCases('Action: Current User', {
   get: {

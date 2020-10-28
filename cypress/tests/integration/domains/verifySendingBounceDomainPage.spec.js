@@ -17,6 +17,7 @@ describe('The verify sending/bounce domain page', () => {
           requestAlias: 'accountDomainsReq',
         });
       });
+
       it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
         cy.visit(PAGE_URL);
         cy.wait('@accountDomainsReq');
@@ -24,6 +25,7 @@ describe('The verify sending/bounce domain page', () => {
         cy.title().should('include', 'Verify Sending/Bounce Domain');
         cy.findByRole('heading', { name: 'Verify Sending/Bounce Domain' }).should('be.visible');
       });
+
       it('renders sections correclty in case of unverified sending/bounce domain', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/sending-bounce.net',
@@ -45,6 +47,7 @@ describe('The verify sending/bounce domain page', () => {
         cy.findByRole('heading', { name: 'Add SPF Record' }).should('be.visible');
         cy.findByRole('button', { name: 'Authenticate Domain' }).should('be.visible');
       });
+
       it('clicking on the Authenticate Domain renders success message on succesful verification of dkim and cname of domain and renders correct section titles after', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/sending-bounce.net',
@@ -76,7 +79,8 @@ describe('The verify sending/bounce domain page', () => {
         cy.findByRole('heading', { name: 'Add SPF Record' }).should('be.visible');
         cy.findByRole('button', { name: 'Authenticate for SPF' }).should('be.visible');
       });
-      it('clicking on the Authenticate Domain renders validation error if the checkbox is not checked', () => {
+
+      it('Authenticate Domain submit button is disabled until the user selects the confirmation checkbox', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/sending-bounce.net',
           fixture: 'sending-domains/200.get.unverified-dkim-bounce.json',
@@ -85,9 +89,22 @@ describe('The verify sending/bounce domain page', () => {
 
         cy.visit('/domains/details/sending-bounce.net/verify-sending-bounce');
         cy.wait(['@accountDomainsReq', '@unverifiedDkimBounce']);
-        cy.findByRole('button', { name: 'Authenticate Domain' }).click();
 
-        cy.findAllByText('Adding TXT and CNAME is required').should('be.visible');
+        cy.findByRole('button', { name: 'Authenticate Domain' }).should('be.visible');
+        cy.findAllByText('The TXT and CNAME records have been added to the DNS provider').should(
+          'be.visible',
+        );
+        cy.findAllByText('The TXT and CNAME records have been added to the DNS provider').should(
+          'not.be.checked',
+        );
+        cy.findByRole('button', { name: 'Authenticate Domain' }).should('be.disabled');
+
+        cy.findByLabelText('The TXT and CNAME records have been added to the DNS provider').check({
+          force: true,
+        });
+
+        cy.findByRole('button', { name: 'Authenticate Domain' }).should('not.be.disabled');
+        cy.findByRole('button', { name: 'Authenticate Domain' }).click();
       });
     });
   }

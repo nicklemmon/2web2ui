@@ -25,13 +25,6 @@ export async function snapshotAction({ actionCreator, state = {} }) {
         return;
       }
 
-      if (e.message === 'dispatch(...).then is not a function') {
-        fail(
-          'Error: The variable action is a function; what it returns needs to be mocked as a promise in your test that imports snapshotActionCases.',
-        );
-        return;
-      }
-
       if (typeof e.message === 'string') debugLog(e.message);
       fail(e.message);
       return;
