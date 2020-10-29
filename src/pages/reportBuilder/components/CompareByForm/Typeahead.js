@@ -4,7 +4,7 @@ import { METRICS_API_LIMIT } from 'src/constants';
 import sortMatch from 'src/helpers/sortMatch';
 import { useDebouncedCallback } from 'use-debounce';
 
-function Typeahead({ id, onChange, lookaheadRequest, results = [], itemToString, ...rest }) {
+function Typeahead({ id, onChange, lookaheadRequest, results = [], ...rest }) {
   const [omitResults, setOmitResults] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -41,13 +41,15 @@ function Typeahead({ id, onChange, lookaheadRequest, results = [], itemToString,
 
   return (
     <TypeSelect
+      id={id}
       onChange={onChange}
       onInputChange={onInputChange}
       results={omitResults ? [] : filteredResults}
       itemToString={item => {
-        return item?.value;
+        return item ? item.value : '';
       }}
       loading={loading}
+      suffix={null}
       {...rest}
     />
   );

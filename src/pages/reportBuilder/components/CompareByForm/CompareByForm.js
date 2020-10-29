@@ -16,14 +16,14 @@ import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCac
 import Typeahead from './Typeahead';
 
 const initialState = {
-  filters: [{}, {}],
+  filters: [null, null],
   filterType: undefined,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_FILTER':
-      return { ...state, filters: [...state.filters, {}] };
+      return { ...state, filters: [...state.filters, null] };
     case 'REMOVE_FILTER':
       return {
         ...state,
@@ -57,9 +57,13 @@ function CompareByForm({
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    const cleanedFilters = filters.filter(filter => filter); //filters the filter filters
+    // eslint-disable-next-line
+    console.log(cleanedFilters);
   }
 
-  const FILTERS = [
+  const FILTER_TYPES = [
     {
       label: 'Recipient Domain',
       value: 'domains',
@@ -96,7 +100,7 @@ function CompareByForm({
       action: listSubaccounts,
     },
   ];
-  const filterConfig = FILTERS.find(item => item.value === filterType);
+  const filterConfig = FILTER_TYPES.find(item => item.value === filterType);
   const filterAction = filterConfig?.action;
   const filterLabel = filterConfig?.label;
 
@@ -112,10 +116,9 @@ function CompareByForm({
             onChange={e => {
               dispatch({ type: 'SET_FILTER_TYPE', filterType: e.target.value });
             }}
-            options={FILTERS}
+            options={FILTER_TYPES.map(({ label, value }) => ({ label, value }))}
             value={filterType || 'Select Resource'}
           />
-
           {filterType &&
             filters.map((filter, index) => {
               return (

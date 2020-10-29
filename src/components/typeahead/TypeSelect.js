@@ -53,6 +53,7 @@ function TypeSelect({
   selectedItem,
   onInputChange,
   loading,
+  ...rest
 }) {
   const [matches, setMatches] = useState([]);
   // Controlled input so that we can change the value after selecting dropdown.
@@ -87,9 +88,15 @@ function TypeSelect({
 
   useEffect(() => {
     if (selectedItem) {
-      setInputValue(itemToString(selectedItem));
+      const selectedValue = itemToString(selectedItem);
+      if (selectedValue !== inputValue) {
+        setInputValue(selectedValue);
+      }
+    } else if (selectedItem === null) {
+      setInputValue('');
     }
-  }, [itemToString, selectedItem]);
+    // eslint-disable-next-line
+  }, [selectedItem]);
 
   const typeaheadFn = ({
     getInputProps,
@@ -119,9 +126,6 @@ function TypeSelect({
     textFieldProps['data-lpignore'] = true;
 
     let SuffixIcon = isOpen ? KeyboardArrowUp : KeyboardArrowDown;
-    if (loading) {
-      SuffixIcon = Loading;
-    }
 
     return (
       <div>
@@ -130,6 +134,11 @@ function TypeSelect({
             {/* hack, can't apply getMenuProps to ActionList because ref prop is not supported */}
             <div {...getMenuProps()}>
               <PopoverActionList open={isOpen} maxHeight={maxHeight}>
+                {loading && (
+                  <Box ml="200">
+                    <Loading />
+                  </Box>
+                )}
                 {matches.map((item, index) => (
                   <ActionList.Action
                     {...getItemProps({
@@ -147,6 +156,7 @@ function TypeSelect({
             <TextField
               {...textFieldProps}
               suffix={<SuffixIcon color={tokens.color_blue_700} size={25} />}
+              {...rest}
             />
           </Box>
         </TypeaheadWrapper>
@@ -173,7 +183,7 @@ TypeSelect.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   itemToString: PropTypes.func,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   maxHeight: PropTypes.number,
   maxNumberOfResults: PropTypes.number,
   maxWidth: PropTypes.number,
