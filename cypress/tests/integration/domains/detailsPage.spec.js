@@ -23,159 +23,27 @@ describe('The domains details page', () => {
         });
       });
 
-      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-        cy.visit(PAGE_URL);
+      // it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+      //   cy.visit(PAGE_URL);
 
-        cy.wait('@accountDomainsReq');
+      //   cy.wait('@accountDomainsReq');
 
-        cy.title().should('include', 'Domain Details');
-        cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
-      });
-
-      it('renders snackbar after sharing and un-sharing the domain.', () => {
-        cy.stubRequest({
-          method: 'PUT',
-          url: '/api/v1/sending-domains/*',
-          fixture: 'sending-domains/200.put.json',
-          requestAlias: 'sendingDomainUpdate',
-        });
-
-        cy.visit(PAGE_URL);
-
-        cy.wait('@accountDomainsReq');
-        cy.findAllByText('Share this domain with all subaccounts').should('be.visible');
-        cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
-        cy.wait('@sendingDomainUpdate');
-        cy.withinSnackbar(() => {
-          cy.findAllByText('Successfully shared this domain with all subaccounts.').should(
-            'be.visible',
-          );
-        });
-        cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
-        cy.wait('@sendingDomainUpdate');
-        cy.withinSnackbar(() => {
-          cy.findAllByText('Successfully un-shared this domain with all subaccounts.').should(
-            'be.visible',
-          );
-        });
-      });
-
-      it('renders correct section for Blocked domains', () => {
-        cy.stubRequest({
-          url: '/api/v1/sending-domains/bounce.uat.sparkspam.com',
-          fixture: 'sending-domains/200.get.blocked-domain.json',
-          requestAlias: 'blockedSendingDomains',
-        });
-        cy.visit(`${BASE_UI_URL}/bounce.uat.sparkspam.com`);
-        cy.wait(['@accountDomainsReq', '@blockedSendingDomains']);
-
-        cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
-        cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Bounce' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Sending and Bounce' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Link Tracking Domain' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
-        cy.findAllByText('This domain has been blocked by SparkPost').should('be.visible');
-      });
-
-      it('renders correct sections for unverified domains', () => {
-        cy.stubRequest({
-          url: '/api/v1/sending-domains/hello-world-there.com',
-          fixture: 'sending-domains/200.get.unverified-dkim.json',
-          requestAlias: 'unverifieddkimSendingDomains',
-        });
-
-        cy.visit(`${BASE_UI_URL}/hello-world-there.com`);
-        cy.wait(['@accountDomainsReq', '@unverifieddkimSendingDomains']);
-
-        cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
-        cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
-        cy.findByRole('heading', { name: 'Email Verification' }).should('be.visible');
-        cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Bounce' }).should('be.visible');
-        cy.findByRole('heading', { name: 'Sending and Bounce' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Link Tracking Domain' }).should('not.be.visible');
-        cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
-        cy.findByRole('button', { name: 'Verify Domain' }).should('be.visible');
-      });
-
-      it('unverified domain renders success message on Verifying domain', () => {
-        cy.stubRequest({
-          url: '/api/v1/sending-domains/hello-world-there.com',
-          fixture: 'sending-domains/200.get.unverified-dkim.json',
-          requestAlias: 'unverifieddkimSendingDomains',
-        });
-        cy.stubRequest({
-          method: 'POST',
-          url: '/api/v1/sending-domains/hello-world-there.com/verify',
-          fixture: 'sending-domains/verify/200.post.json',
-          requestAlias: 'verifyDomain',
-        });
-
-        cy.visit(`${BASE_UI_URL}/hello-world-there.com`);
-        cy.wait(['@accountDomainsReq', '@unverifieddkimSendingDomains']);
-
-        cy.findAllByText('The TXT record has been added to the DNS provider').should('be.visible');
-
-        cy.findByRole('button', { name: 'Verify Domain' }).should('be.disabled');
-
-        cy.findByLabelText('The TXT record has been added to the DNS provider').check({
-          force: true,
-        });
-
-        cy.findByRole('button', { name: 'Verify Domain' }).click();
-
-        cy.wait('@verifyDomain');
-        cy.findAllByText(
-          'You have successfully verified DKIM record of hello-world-there.com',
-        ).should('be.visible');
-      });
-
-      it('unverified bounce domain renders success message on Verifying bounce domain', () => {
-        cy.stubRequest({
-          url: '/api/v1/tracking-domains',
-          fixture: 'tracking-domains/200.get.domain-details.json',
-          requestAlias: 'trackingDomainsList',
-        });
-        cy.stubRequest({
-          url: '/api/v1/sending-domains/prd2.splango.net',
-          fixture: 'sending-domains/200.get.unverified-bounce.json',
-          requestAlias: 'unverifiedBounceDomains',
-        });
-        cy.stubRequest({
-          method: 'POST',
-          url: '/api/v1/sending-domains/prd2.splango.net/verify',
-          fixture: 'sending-domains/verify/200.post.json',
-          requestAlias: 'verifyDomain',
-        });
-        cy.visit(`${BASE_UI_URL}/prd2.splango.net`);
-        cy.wait(['@unverifiedBounceDomains', '@trackingDomainsList']);
-        cy.wait('@accountDomainsReq');
-        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('be.disabled');
-        cy.findAllByLabelText('The CNAME record has been added to the DNS provider').click({
-          force: true,
-        });
-        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('not.be.disabled');
-        cy.findByRole('button', { name: 'Authenticate for Bounce' }).click();
-        cy.wait('@verifyDomain');
-        cy.findAllByText('You have successfully verified cname record of prd2.splango.net').should(
-          'be.visible',
-        );
-      });
-
-      it('if a domain is not found it redirects to the List Page', () => {
-        cy.stubRequest({
-          url: '/api/v1/tracking-domains',
-          fixture: 'tracking-domains/200.get.domain-details.json',
-          requestAlias: 'trackingDomainsList',
-        });
-        cy.visit(`${TRACKING_DETAILS_URL}/blah.com`);
-
-        cy.wait(['@accountDomainsReq', '@trackingDomainsList']);
-        cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
-      });
+      //   cy.title().should('include', 'Domain Details');
+      //   cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
+      // });
 
       describe('Domain Details Page for Tracking Domains', () => {
+        it('if a domain is not found it redirects to the List Page', () => {
+          cy.stubRequest({
+            url: '/api/v1/tracking-domains',
+            fixture: 'tracking-domains/200.get.domain-details.json',
+            requestAlias: 'trackingDomainsList',
+          });
+          cy.visit(`${TRACKING_DETAILS_URL}/blah.com`);
+
+          cy.wait(['@accountDomainsReq', '@trackingDomainsList']);
+          cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
+        });
         it('For unverified Tracking Domain sections are rendered correctly along with a unverified banner', () => {
           cy.stubRequest({
             url: '/api/v1/tracking-domains',
@@ -451,6 +319,9 @@ describe('The domains details page', () => {
 
           cy.visit(`${SENDING_BOUNCE_DETAILS_URL}/hello-world-there.com`);
           cy.wait(['@accountDomainsReq', '@unverifieddkimSendingDomains']);
+          cy.findByLabelText('The TXT record has been added to the DNS provider').check({
+            force: true,
+          });
           cy.findByRole('button', { name: 'Verify Domain' }).click();
           cy.wait('@verifyDomain');
           cy.findAllByText(
@@ -492,8 +363,10 @@ describe('The domains details page', () => {
             requestAlias: 'verifyDomain',
           });
           cy.visit(`${SENDING_BOUNCE_DETAILS_URL}/prd2.splango.net`);
-          cy.wait(['@unverifiedBounceDomains']);
-          cy.wait('@accountDomainsReq');
+          cy.wait(['@unverifiedBounceDomains', '@accountDomainsReq']);
+          cy.findAllByLabelText('The CNAME record has been added to the DNS provider').click({
+            force: true,
+          });
           cy.findByRole('button', { name: 'Authenticate for Bounce' }).click();
           cy.wait('@verifyDomain');
           cy.findAllByText(
@@ -561,6 +434,38 @@ describe('The domains details page', () => {
           cy.findByRole('button', { name: 'Authenticate for SPF' }).should('not.be.visible');
           cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
           cy.findByRole('heading', { name: 'Email Verification' }).should('be.visible');
+        });
+        it('renders snackbar after sharing and un-sharing the domain.', () => {
+          cy.stubRequest({
+            url: '/api/v1/sending-domains/bounce2.spappteam.com',
+            fixture: 'sending-domains/200.get.all-verified.json',
+            requestAlias: 'verifiedDomains',
+          });
+          cy.stubRequest({
+            method: 'PUT',
+            url: '/api/v1/sending-domains/*',
+            fixture: 'sending-domains/200.put.json',
+            requestAlias: 'sendingDomainUpdate',
+          });
+
+          cy.visit(`${SENDING_BOUNCE_DETAILS_URL}/bounce2.spappteam.com`);
+
+          cy.wait('@accountDomainsReq');
+          cy.findAllByText('Share this domain with all subaccounts').should('be.visible');
+          cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
+          cy.wait('@sendingDomainUpdate');
+          cy.withinSnackbar(() => {
+            cy.findAllByText('Successfully shared this domain with all subaccounts.').should(
+              'be.visible',
+            );
+          });
+          cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
+          cy.wait('@sendingDomainUpdate');
+          cy.withinSnackbar(() => {
+            cy.findAllByText('Successfully un-shared this domain with all subaccounts.').should(
+              'be.visible',
+            );
+          });
         });
         it('delete domain prompts confirmation modal first', () => {
           cy.stubRequest({
