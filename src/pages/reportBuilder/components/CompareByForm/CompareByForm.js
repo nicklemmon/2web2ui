@@ -127,6 +127,8 @@ function CompareByForm({
                     <Typeahead
                       id={`typeahead-${index}`}
                       lookaheadRequest={filterAction}
+                      label={filterLabel}
+                      labelHidden
                       dispatch={dispatch}
                       itemToString={item => (item?.value ? item.value : '')}
                       selectedItem={filter}
