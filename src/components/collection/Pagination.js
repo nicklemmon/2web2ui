@@ -1,12 +1,7 @@
 import React from 'react';
 import { Box, Pagination } from 'src/components/matchbox';
 import styles from './Pagination.module.scss';
-import {
-  DEFAULT_PER_PAGE_BUTTONS,
-  DEFAULT_PAGE_RANGE,
-  DEFAULT_PER_PAGE,
-  DEFAULT_CURRENT_PAGE,
-} from 'src/constants';
+import { DEFAULT_PER_PAGE_BUTTONS, DEFAULT_PAGE_RANGE } from 'src/constants';
 import PerPageButtons from './PerPageButtons';
 import SaveCSVButton from './SaveCSVButton';
 import { useHibana } from 'src/context/HibanaContext';
@@ -79,8 +74,6 @@ const CollectionPagination = ({
 };
 
 CollectionPagination.defaultProps = {
-  currentPage: DEFAULT_CURRENT_PAGE,
-  perPage: DEFAULT_PER_PAGE,
   pageRange: DEFAULT_PAGE_RANGE,
   perPageButtons: DEFAULT_PER_PAGE_BUTTONS,
   saveCsv: true,

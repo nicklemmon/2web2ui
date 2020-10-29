@@ -1,9 +1,7 @@
 import { useEffect, useReducer } from 'react';
-import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE as PER_PAGE } from 'src/constants';
+import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import _ from 'lodash';
 import { filterByCollectionValues } from 'src/helpers/array';
-
-const { log } = console;
 
 const initialState = {
   rawData: [],
@@ -12,7 +10,7 @@ const initialState = {
   sortBy: undefined,
   sortDirection: undefined,
   currentPage: DEFAULT_CURRENT_PAGE,
-  perPage: PER_PAGE,
+  perPage: DEFAULT_PER_PAGE,
 };
 
 function useTable(data = [], { paginate }) {
@@ -105,8 +103,6 @@ function reducer(state, action) {
     }
 
     case 'CHANGE_PAGE': {
-      log('CHANGE_PAGE', action.page);
-
       const start = getPaginationStart({
         currentPage: action.page,
         perPage: state.perPage,
