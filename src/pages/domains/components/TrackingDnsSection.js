@@ -10,10 +10,10 @@ import { useForm } from 'react-hook-form';
 
 import _ from 'lodash';
 
-
 export default function TrackingDnsSection({ domain, isSectionVisible, title }) {
   const { trackingDomainCname, verifyTrackingDomain, verifyingTrackingPending } = useDomains();
   const { unverified, domain: domainName, subaccount_id: subaccountId } = domain;
+  const { handleSubmit, watch, register } = useForm();
 
   const onSubmit = () => {
     return verifyTrackingDomain({
@@ -77,11 +77,7 @@ export default function TrackingDnsSection({ domain, isSectionVisible, title }) 
                     <Text as="p">TXT</Text>
                   </>
                 )}
-                <CopyField
-                  label="Hostname"
-                  value={trackingDomain.domainName}
-                  hideCopy={!unverified}
-                />
+                <CopyField label="Hostname" value={domainName} hideCopy={!unverified} />
                 <CopyField label="Value" value={trackingDomainCname} hideCopy={!unverified} />
               </Stack>
 
