@@ -9,6 +9,7 @@ import { Pagination } from 'src/components/collection';
 
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
+import { DEFAULT_CURRENT_PAGE } from 'src/constants';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 
@@ -102,14 +103,19 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
   const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+  // const [tableState, tableDispatch] = useTable(domains, {
+  //   sortBy: 'creationTime',
+  //   sortDirection: 'desc',
+  //   paginate: true,
+  // });
+  // const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
+  // const isEmpty = !listPending && tableState.rows?.length === 0;
 
   // const [tableState, tableDispatch] = useTable(domains, { paginate: true });
-  // const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
   // const isEmpty = !listPending && tableState.rows?.length === 0;
 
   // const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   // const [tableState, tableDispatch] = useTable(domains);
-  // const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
   // const isEmpty = !listPending && tableState.rows?.length === 0;
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   //resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
@@ -249,10 +255,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
                 const { target } = e;
                 const selectedOption = target.options[target.selectedIndex];
 
-                setSort({
-                  by: selectedOption.getAttribute('data-sort-by'),
-                  direction: selectedOption.getAttribute('data-sort-direction'),
-                });
+                // setSort({
+                //   by: selectedOption.getAttribute('data-sort-by'),
+                //   direction: selectedOption.getAttribute('data-sort-direction'),
+                // });
               }}
             />
           </TableFilters>
@@ -268,10 +274,12 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       {/*
       <Pagination
         data={tableState.rawData}
+        currentPage={DEFAULT_CURRENT_PAGE}
         perPage={tableState.perPage}
         saveCsv={false}
         onPageChange={page => {
-          page += 1; // because matchbox Pagination component gives back 0 base page argument, while it takes a 1 base currentPage prop
+          page += 1;
+
           // Only adding this if condition because this keeps firing on load
           if (tableState.currentPage !== page) {
             tableDispatch({
