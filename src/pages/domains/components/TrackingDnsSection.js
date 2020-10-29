@@ -10,21 +10,15 @@ import { useForm } from 'react-hook-form';
 
 import _ from 'lodash';
 
-export default function TrackingDnsSection({ id, isSectionVisible, title }) {
-  const {
-    trackingDomainCname,
-    trackingDomains,
-    verifyTrackingDomain,
-    verifyingTrackingPending,
-  } = useDomains();
-  let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
-  const { unverified } = trackingDomain;
-  const { handleSubmit, watch, register } = useForm();
+
+export default function TrackingDnsSection({ domain, isSectionVisible, title }) {
+  const { trackingDomainCname, verifyTrackingDomain, verifyingTrackingPending } = useDomains();
+  const { unverified, domain: domainName, subaccount_id: subaccountId } = domain;
 
   const onSubmit = () => {
-    verifyTrackingDomain({
-      domain: trackingDomain.domainName,
-      subaccountId: trackingDomain.subaccountId,
+    return verifyTrackingDomain({
+      domain: domainName,
+      subaccountId: subaccountId,
     });
   };
   if (!isSectionVisible) {

@@ -14,25 +14,20 @@ import { EXTERNAL_LINKS } from '../constants';
 import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
 
-export default function DomainStatusSection({ domain: sendingOrBounceDomain, id, isTracking }) {
+export default function DomainStatusSection({ domain, id, isTracking }) {
   const { closeModal, isModalOpen, openModal } = useModal();
   const {
     showAlert,
     allowDefault,
     allowSubaccountDefault,
     updateSendingDomain,
-    trackingDomains,
     updateTrackingDomain,
     listTrackingDomains,
     updateTrackingPending,
     subaccounts,
   } = useDomains();
 
-  let domain = isTracking
-    ? _.find(trackingDomains, ['domainName', id.toLowerCase()])
-    : sendingOrBounceDomain;
-
-  const subaccountId = isTracking ? domain.subaccountId : domain.subaccount_id;
+  const subaccountId = domain.subaccount_id;
 
   let subaccountName = _.find(subaccounts, ['id', subaccountId])?.name;
 
@@ -48,7 +43,7 @@ export default function DomainStatusSection({ domain: sendingOrBounceDomain, id,
 
   const toggleDefaultTracking = () => {
     return updateTrackingDomain({
-      domain: domain?.domainName,
+      domain: id,
       subaccount: subaccountId,
       default: !domain.defaultTrackingDomain,
     })
@@ -79,7 +74,6 @@ export default function DomainStatusSection({ domain: sendingOrBounceDomain, id,
 
   if (isTracking) {
     const isDefault = domain.defaultTrackingDomain;
-    const domainName = domain.domainName;
 
     return (
       <Layout>
@@ -99,7 +93,7 @@ export default function DomainStatusSection({ domain: sendingOrBounceDomain, id,
               <Columns space="100">
                 <Column>
                   <LabelValue label="Domain" orientation="vertical">
-                    {domainName}
+                    {id}
                   </LabelValue>
                 </Column>
                 <Column>
@@ -133,12 +127,12 @@ export default function DomainStatusSection({ domain: sendingOrBounceDomain, id,
 
                 <ConfirmationModal
                   open={isModalOpen}
-                  title={`${isDefault ? 'Remove' : 'Set'} default tracking domain (${domainName})`}
+                  title={`${isDefault ? 'Remove' : 'Set'} default tracking domain (${id})`}
                   content={
                     <p>
                       {isDefault
-                        ? `Transmissions and templates that don't specify a tracking domain will no longer use ${domainName}. Instead, they will use the system default until another default is selected.`
-                        : `Transmissions and templates that don't specify a tracking domain will now use ${domainName}.`}
+                        ? `Transmissions and templates that don't specify a tracking domain will no longer use ${id}. Instead, they will use the system default until another default is selected.`
+                        : `Transmissions and templates that don't specify a tracking domain will now use ${id}.`}
                     </p>
                   }
                   isPending={updateTrackingPending}

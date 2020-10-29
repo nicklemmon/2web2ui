@@ -18,8 +18,13 @@ describe('The verify bounce domain page', () => {
         });
       });
       it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-        cy.visit(PAGE_URL);
-        cy.wait('@accountDomainsReq');
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/prd2.splango.net',
+          fixture: 'sending-domains/200.get.unverified-bounce.json',
+          requestAlias: 'unverifiedBounceDomains',
+        });
+
+        cy.visit(BASE_URL + 'prd2.splango.net/verify-bounce');
 
         cy.title().should('include', 'Verify Bounce Domain');
         cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { selectDomain } from 'src/selectors/sendingDomains';
 import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
-import { getTrackingDomains } from 'src/selectors/trackingDomains';
+import { selectTrackingDomainsListHibana } from 'src/selectors/trackingDomains';
 import { selectTrackingDomainCname } from 'src/selectors/account';
 import { Loading } from 'src/components/loading/Loading';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
@@ -28,7 +28,7 @@ function DetailsPage(props) {
     history,
     sendingDomainsPending,
     trackingDomainListPending,
-    domain,
+    sendingOrBounceDomain,
     getDomain,
     listTrackingDomains,
     clearSendingDomain,
@@ -38,14 +38,14 @@ function DetailsPage(props) {
     hasSubaccounts,
     subaccounts,
     trackingDomainCname,
+    trackingDomainListError,
   } = props;
-  const resolvedStatus = resolveStatus(domain.status);
-  const [warningBanner, toggleBanner] = useState(true);
-  const readyFor = resolveReadyFor(domain.status);
-  const displaySendingAndBounceSection =
-    readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
-
   const [isTracking] = useState(useRouteMatch(`${DETAILS_BASE_URL}/tracking`));
+  const [warningBanner, toggleBanner] = useState(true);
+  const [trackingDomainNotFound, settrackingDomainNotFound] = useState(false);
+  let domain = isTracking
+    ? _.find(trackingDomainList, ['domain', match.params.id.toLowerCase()])
+    : sendingOrBounceDomain;
 
   const handleAllDomains = () => {
     if (isTracking) return history.push('/domains/list/tracking');
@@ -63,8 +63,13 @@ function DetailsPage(props) {
     };
   }, [clearSendingDomain, getDomain, isTracking, match.params.id]);
   useEffect(() => {
-    if (isTracking) listTrackingDomains();
-  }, [isTracking, listTrackingDomains]);
+    if (isTracking)
+      listTrackingDomains().then(res => {
+        if (!Boolean(_.find(res, ['domain', match.params.id.toLowerCase()]))) {
+          settrackingDomainNotFound(true);
+        }
+      });
+  }, [history, isTracking, listTrackingDomains, match.params.id]);
 
   useEffect(() => {
     if (hasSubaccounts && subaccounts?.length === 0) {
@@ -72,7 +77,7 @@ function DetailsPage(props) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
-  if (sendingDomainsGetError && !isTracking) {
+  if (!isTracking && sendingDomainsGetError) {
     return (
       <RedirectAndAlert
         to="/domains/list/sending"
@@ -81,12 +86,7 @@ function DetailsPage(props) {
     );
   }
 
-  if (
-    isTracking &&
-    !trackingDomainListPending &&
-    trackingDomainList &&
-    !Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]))
-  ) {
+  if (isTracking && (trackingDomainListError || trackingDomainNotFound)) {
     return (
       <RedirectAndAlert
         to="/domains/list/tracking"
@@ -95,16 +95,17 @@ function DetailsPage(props) {
     );
   }
 
-  if (
-    sendingDomainsPending ||
-    trackingDomainListPending ||
-    !(
-      Boolean(domain.dkim.signing_domain) ||
-      Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]))
-    )
-  ) {
+  if (sendingDomainsPending || trackingDomainListPending) {
     return <Loading />;
   }
+  if (!domain) {
+    return null;
+  }
+
+  const resolvedStatus = isTracking ? domain.status : resolveStatus(domain.status);
+  const readyFor = isTracking ? {} : resolveReadyFor(domain.status);
+  const displaySendingAndBounceSection =
+    readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
 
   return (
     <Domains.Container>
@@ -205,7 +206,7 @@ function DetailsPage(props) {
           isSectionVisible={resolvedStatus === 'unverified' && !isTracking}
         />
 
-        <Domains.TrackingDnsSection id={match.params.id} isSectionVisible={isTracking} />
+        <Domains.TrackingDnsSection domain={domain} isSectionVisible={isTracking} />
 
         <Domains.DeleteDomainSection
           domain={domain}
@@ -220,14 +221,15 @@ function DetailsPage(props) {
 
 export default connect(
   state => ({
-    domain: selectDomain(state),
-    trackingDomainList: getTrackingDomains(state),
+    trackingDomainList: selectTrackingDomainsListHibana(state),
+    trackingDomainCname: selectTrackingDomainCname(state),
+    trackingDomainListError: state.trackingDomains.error,
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
     hasSubaccounts: hasSubaccounts(state),
-    subaccounts: state.subaccounts.list,
     sendingDomainsGetError: state.sendingDomains.getError,
-    trackingDomainCname: selectTrackingDomainCname(state),
+    sendingOrBounceDomain: selectDomain(state),
+    subaccounts: state.subaccounts.list,
   }),
   { getDomain, listTrackingDomains, listSubaccounts, clearSendingDomain },
 )(DetailsPage);

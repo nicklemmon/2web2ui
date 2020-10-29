@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import _ from 'lodash';
 import { getSubaccountsIndexedById, getSubaccountName } from './subaccounts';
 
-export const getTrackingDomains = state => state.trackingDomains.list;
+const getTrackingDomains = state => state.trackingDomains.list;
 const selectSubaccountFromProps = (state, props) => _.get(props, 'domain.subaccount_id', null);
 
 export const selectDomains = createSelector(
@@ -37,6 +37,26 @@ export const selectTrackingDomainsList = createSelector(
       verified: item.status.verified,
       status: convertStatus(item.status),
     })),
+);
+
+export const selectTrackingDomainsListHibana = createSelector(
+  [getTrackingDomains],
+  trackingDomains => {
+    if (!trackingDomains) return undefined;
+
+    return trackingDomains.map(item => {
+      const resolvedStatus = convertStatus(item.status);
+
+      return {
+        ...item,
+        verified: item.status.verified,
+        status: convertStatus(item.status),
+        blocked: resolvedStatus === 'blocked',
+        unverified: resolvedStatus === 'unverified',
+        defaultTrackingDomain: item.default,
+      };
+    });
+  },
 );
 
 export const selectUnverifiedTrackingDomains = createSelector(

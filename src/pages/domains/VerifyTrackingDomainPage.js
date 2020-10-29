@@ -3,24 +3,20 @@ import { Page } from 'src/components/matchbox';
 import Domains from './components';
 import { connect } from 'react-redux';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
-import { getTrackingDomains } from 'src/selectors/trackingDomains';
+import { selectTrackingDomainsListHibana } from 'src/selectors/trackingDomains';
 import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
 import { Loading } from 'src/components';
 import _ from 'lodash';
 
 function VerifyTrackingDomainPage(props) {
   const { match, listTrackingDomains, error, trackingDomainsPending, trackingDomainList } = props;
+  const domain = _.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]);
+
   useEffect(() => {
     listTrackingDomains();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [listTrackingDomains]);
 
-  if (
-    error ||
-    (!trackingDomainsPending &&
-      trackingDomainList &&
-      !Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()])))
-  ) {
+  if (error || (!trackingDomainsPending && trackingDomainList && !Boolean(domain))) {
     return (
       <RedirectAndAlert
         to="/domains/list"
@@ -28,9 +24,11 @@ function VerifyTrackingDomainPage(props) {
       />
     );
   }
-
   if (trackingDomainsPending) {
     return <Loading />;
+  }
+  if (!domain) {
+    return null;
   }
   return (
     <Domains.Container>
@@ -43,7 +41,7 @@ function VerifyTrackingDomainPage(props) {
         subtitle={match.params.id}
       >
         <Domains.TrackingDnsSection
-          id={match.params.id}
+          domain={domain}
           isSectionVisible={true}
           title="DNS Verification"
         />
@@ -55,8 +53,8 @@ function VerifyTrackingDomainPage(props) {
 export default connect(
   state => ({
     trackingDomainsPending: state.trackingDomains.listLoading,
-    error: state.trackingDomains.getError,
-    trackingDomainList: getTrackingDomains(state),
+    error: state.trackingDomains.error,
+    trackingDomainList: selectTrackingDomainsListHibana(state),
   }),
   { listTrackingDomains },
 )(VerifyTrackingDomainPage);

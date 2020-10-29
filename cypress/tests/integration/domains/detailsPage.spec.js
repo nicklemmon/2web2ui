@@ -244,7 +244,7 @@ describe('The domains details page', () => {
             cy.wait('@deleteDomain');
           });
 
-          cy.findAllByText(`Domain ${domainName} deleted.`);
+          cy.findAllByText(`Successfully deleted ${domainName}`);
           cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
         });
 

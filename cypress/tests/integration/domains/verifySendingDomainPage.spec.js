@@ -19,8 +19,14 @@ describe('The verify sending domain page', () => {
       });
 
       it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-        cy.visit(PAGE_URL);
-        cy.wait('@accountDomainsReq');
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/hello-world-there.com',
+          fixture: 'sending-domains/200.get.unverified-dkim.json',
+          requestAlias: 'unverifieddkimSendingDomains',
+        });
+
+        cy.visit('/domains/details/hello-world-there.com/verify-sending');
+        cy.wait(['@accountDomainsReq', '@unverifieddkimSendingDomains']);
 
         cy.title().should('include', 'Verify Sending Domain');
         cy.findByRole('heading', { name: 'Verify Sending Domain' }).should('be.visible');
