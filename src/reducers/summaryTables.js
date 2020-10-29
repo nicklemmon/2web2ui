@@ -1,11 +1,11 @@
-import { DEFAULT_PER_PAGE as PER_PAGE, DEFAULT_CURRENT_PAGE } from 'src/constants';
+import { DEFAULT_PER_PAGE, DEFAULT_CURRENT_PAGE } from 'src/constants';
 export const DEFAULT = '@@DEFAULT_TABLE';
 
 const initialState = {
   [DEFAULT]: {
     currentPage: DEFAULT_CURRENT_PAGE,
     order: undefined, // example, { ascending: true, dataKey: 'example_column' }
-    perPage: PER_PAGE,
+    perPage: DEFAULT_PER_PAGE,
   },
 };
 
