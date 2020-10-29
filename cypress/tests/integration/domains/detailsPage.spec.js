@@ -112,7 +112,17 @@ describe('The domains details page', () => {
 
         cy.visit(`${BASE_UI_URL}/hello-world-there.com`);
         cy.wait(['@accountDomainsReq', '@unverifieddkimSendingDomains']);
+
+        cy.findAllByText('The TXT record has been added to the DNS provider').should('be.visible');
+
+        cy.findByRole('button', { name: 'Verify Domain' }).should('be.disabled');
+
+        cy.findByLabelText('The TXT record has been added to the DNS provider').check({
+          force: true,
+        });
+
         cy.findByRole('button', { name: 'Verify Domain' }).click();
+
         cy.wait('@verifyDomain');
         cy.findAllByText(
           'You have successfully verified DKIM record of hello-world-there.com',
