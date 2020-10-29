@@ -1,8 +1,7 @@
 import React from 'react';
 import { Page, Stack, Tabs } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
-import { useHistory, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import Domains from './components';
 import { SENDING_DOMAINS_URL, BOUNCE_DOMAINS_URL, TRACKING_DOMAINS_URL } from './constants';
 

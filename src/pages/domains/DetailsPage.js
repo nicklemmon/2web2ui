@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Page, Banner, Button, Box } from 'src/components/matchbox';
-import { get as getDomain, clearSendingDomain } from 'src/actions/sendingDomains';
 import { useRouteMatch } from 'react-router-dom';
-import Domains from './components';
 import { connect } from 'react-redux';
-import { selectDomain } from 'src/selectors/sendingDomains';
-import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
-import { ExternalLink, SupportTicketLink } from 'src/components/links';
-import { selectTrackingDomainsListHibana } from 'src/selectors/trackingDomains';
-import { selectTrackingDomainCname } from 'src/selectors/account';
-import { Loading } from 'src/components/loading/Loading';
+import { get as getDomain, clearSendingDomain } from 'src/actions/sendingDomains';
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { listTrackingDomains } from 'src/actions/trackingDomains';
-import _ from 'lodash';
-import { Bold, TranslatableText } from 'src/components/text';
-import styled from 'styled-components';
-import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
-import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
+import { selectDomain } from 'src/selectors/sendingDomains';
+import { selectTrackingDomainsListHibana } from 'src/selectors/trackingDomains';
+import { selectTrackingDomainCname } from 'src/selectors/account';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
+import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
+import { ExternalLink, SupportTicketLink } from 'src/components/links';
+import { Bold, TranslatableText } from 'src/components/text';
+import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
+import { Loading } from 'src/components/loading/Loading';
+import _ from 'lodash';
+import styled from 'styled-components';
+import Domains from './components';
+import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
 
 const StyledBox = styled(Box)`
   max-width: 600px;

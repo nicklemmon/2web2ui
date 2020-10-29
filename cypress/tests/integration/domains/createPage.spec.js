@@ -35,6 +35,11 @@ describe('The domains create page', () => {
     it('creates a new sending domain assigned to all subaccounts', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
@@ -54,6 +59,8 @@ describe('The domains create page', () => {
         cy.wrap(shared_with_subaccounts).should('be.eq', true);
       });
 
+      cy.wait('@unverifieddkimSendingDomains');
+
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
       cy.title().should('include', 'Verify Sending/Bounce Domain | Domains');
@@ -63,6 +70,11 @@ describe('The domains create page', () => {
     it('creates a new sending domain for the Assign to Master Account', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
@@ -81,6 +93,7 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
       });
+      cy.wait('@unverifieddkimSendingDomains');
 
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
@@ -92,6 +105,11 @@ describe('The domains create page', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
       stubSubaccountsReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
@@ -114,7 +132,7 @@ describe('The domains create page', () => {
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
         cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
       });
-
+      cy.wait('@unverifieddkimSendingDomains');
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
       cy.title().should('include', 'Verify Sending/Bounce Domain | Domains');
@@ -151,6 +169,11 @@ describe('The domains create page', () => {
     it('creates a new bounce domain assigned to all subaccounts', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
@@ -163,7 +186,7 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(shared_with_subaccounts).should('be.eq', true);
       });
-
+      cy.wait('@unverifieddkimSendingDomains');
       cy.findByText('Bounce Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-bounce');
       cy.title().should('include', 'Verify Bounce Domain | Domains');
@@ -172,6 +195,11 @@ describe('The domains create page', () => {
     it('creates a new bounce domain for the Assign to Master Account', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
@@ -184,6 +212,7 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
       });
+      cy.wait('@unverifieddkimSendingDomains');
 
       cy.findByText('Bounce Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-bounce');
@@ -194,6 +223,11 @@ describe('The domains create page', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
       stubSubaccountsReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
@@ -210,6 +244,7 @@ describe('The domains create page', () => {
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
         cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
       });
+      cy.wait('@unverifieddkimSendingDomains');
 
       cy.findByText('Bounce Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-bounce');
@@ -219,6 +254,11 @@ describe('The domains create page', () => {
     it('creates a new tracking domain', () => {
       commonBeforeSteps();
       stubTrackingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/tracking-domains',
+        fixture: 'tracking-domains/200.get.domain-details.json',
+        requestAlias: 'trackingDomainsList',
+      });
 
       cy.findByLabelText(/Tracking Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
@@ -231,6 +271,7 @@ describe('The domains create page', () => {
 
         cy.wrap(domain).should('be.eq', 'example.com');
       });
+      cy.wait('@trackingDomainsList');
 
       cy.findByText('Successfully added example.com').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-tracking');
@@ -263,6 +304,11 @@ describe('The domains create page', () => {
       commonBeforeSteps();
       stubTrackingDomainsPostReq();
       stubSubaccountsReq();
+      cy.stubRequest({
+        url: '/api/v1/tracking-domains',
+        fixture: 'tracking-domains/200.get.domain-details.json',
+        requestAlias: 'trackingDomainsList',
+      });
 
       cy.findByLabelText(/Tracking Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
@@ -278,6 +324,7 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
       });
+      cy.wait('@trackingDomainsList');
 
       cy.findByText('Successfully added example.com').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-tracking');

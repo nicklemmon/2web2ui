@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Page } from 'src/components/matchbox';
 import Domains from './components';
 import { connect } from 'react-redux';
@@ -11,12 +11,21 @@ import _ from 'lodash';
 function VerifyTrackingDomainPage(props) {
   const { match, listTrackingDomains, error, trackingDomainsPending, trackingDomainList } = props;
   const domain = _.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]);
+  const [trackingDomainNotFound, settrackingDomainNotFound] = useState(false);
 
   useEffect(() => {
     listTrackingDomains();
   }, [listTrackingDomains]);
 
-  if (error || (!trackingDomainsPending && trackingDomainList && !Boolean(domain))) {
+  useEffect(() => {
+    listTrackingDomains().then(res => {
+      if (!Boolean(_.find(res, ['domain', match.params.id.toLowerCase()]))) {
+        settrackingDomainNotFound(true);
+      }
+    });
+  }, [listTrackingDomains, match.params.id]);
+
+  if (error || trackingDomainNotFound) {
     return (
       <RedirectAndAlert
         to="/domains/list"
