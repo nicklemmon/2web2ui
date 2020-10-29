@@ -3,28 +3,36 @@ import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import _ from 'lodash';
 import { filterByCollectionValues } from 'src/helpers/array';
 
+const { log } = console;
+
 const initialState = {
   rawData: [],
   rows: [],
-  paginateData: false,
+  paginate: false,
   sortBy: undefined,
   sortDirection: undefined,
   currentPage: DEFAULT_CURRENT_PAGE,
   perPage: DEFAULT_PER_PAGE,
 };
 
-function useTable(data = [], { paginate }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const shouldPaginate = paginate || state.paginateData;
+function useTable(data = [], stateOverride = {}) {
+  let newInitialState = {
+    ...initialState,
+    ...stateOverride,
+  };
+
+  const [state, dispatch] = useReducer(reducer, newInitialState);
 
   useEffect(() => {
-    dispatch({ type: 'DATA_LOADED', data, paginateData: shouldPaginate });
-  }, [data, shouldPaginate]);
+    dispatch({ type: 'DATA_LOADED', data });
+  }, [data]);
 
   return [state, dispatch];
 }
 
 function getSortedRows({ rows, sortBy, sortDirection }) {
+  log('rows, sortBy, sortDirection: ', rows, sortBy, sortDirection);
+
   if (sortBy) {
     return _.orderBy(rows, sortBy, sortDirection || 'asc');
   }
@@ -33,6 +41,7 @@ function getSortedRows({ rows, sortBy, sortDirection }) {
 }
 
 function getSortDirection({ state, column }) {
+  log('state, column: ', state, column);
   if (state.sortBy === column) {
     return state.sortDirection === 'asc' ? 'desc' : 'asc';
   }
@@ -57,21 +66,36 @@ function getPaginationStart({ currentPage, perPage }) {
 function reducer(state, action) {
   switch (action.type) {
     case 'DATA_LOADED': {
-      let rows = action.data.map(i => i);
+      const column = state.sortBy;
+      const direction = state.direction || getSortDirection({ state, column });
+      let paginatedRows;
 
-      if (action.paginateData) {
+      log(column, direction);
+
+      const sortedRows = getSortedRows({
+        rows: action.data,
+        sortBy: column,
+        sortDirection: direction,
+      });
+
+      log('sortedRows: ', sortedRows);
+
+      if (state.paginate) {
         const start = getPaginationStart(state);
-        rows = slicePage(rows, start, state.perPage);
+        paginatedRows = slicePage(sortedRows, start, state.perPage);
       }
+
+      log('paginatedRows: ', paginatedRows);
 
       return {
         ...state,
-        rawData: action.data,
-        rows,
-        paginateData: action.paginateData,
+        rawData: sortedRows,
+        rows: state.paginate ? paginatedRows : sortedRows,
+        paginate: state.paginate,
       };
     }
 
+    // TODO: Filtering needs to reset pagination state
     case 'FILTER': {
       const sortedFilteredRows = getSortedRows({
         rows: filterByCollectionValues(state.rawData, { filters: action.filters }),
@@ -85,6 +109,7 @@ function reducer(state, action) {
       };
     }
 
+    // TODO: Double check sorting takes into account the correct page number they're on if it has pagination
     case 'SORT': {
       const column = action.sortBy;
       const direction = action.direction || getSortDirection({ state, column });
@@ -103,29 +128,52 @@ function reducer(state, action) {
     }
 
     case 'CHANGE_PAGE': {
+      const column = action.sortBy;
+      const direction = action.direction || getSortDirection({ state, column });
+
+      const sortedRows = getSortedRows({
+        rows: state.rawData,
+        sortBy: column,
+        sortDirection: direction,
+      });
+
+      log('sortedRows: ', sortedRows);
+
       const start = getPaginationStart({
         currentPage: action.page,
         perPage: state.perPage,
       });
 
+      log('start: ', start);
+
       const rows = slicePage(
-        state.rawData.map(i => i),
+        sortedRows.map(i => i),
         start,
         state.perPage,
       );
 
+      log(rows);
+
       return {
         ...state,
         rows,
+        currentPage: action.page,
       };
     }
 
     case 'CHANGE_PER_PAGE': {
-      const rows = slicePage(
-        state.rawData.map(i => i),
-        0,
-        action.perPage,
-      );
+      const column = action.sortBy;
+      const direction = action.direction || getSortDirection({ state, column });
+
+      const sortedRows = getSortedRows({
+        rows: state.rawData,
+        sortBy: column,
+        sortDirection: direction,
+      });
+
+      const rows = slicePage(sortedRows, 0, action.perPage);
+
+      log(rows);
 
       return {
         ...state,

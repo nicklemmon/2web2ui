@@ -6,6 +6,7 @@ import { Pagination } from 'src/components/collection';
 import { useTable } from 'src/hooks';
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
+import { DEFAULT_CURRENT_PAGE } from 'src/constants';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
 
@@ -42,7 +43,11 @@ export default function TrackingDomainsTab() {
     trackingDomainsListError,
   } = useDomains();
   const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
-  const [tableState, tableDispatch] = useTable(trackingDomains, { paginate: true });
+  const [tableState, tableDispatch] = useTable(trackingDomains, {
+    sortBy: 'domainName',
+    sortDirection: 'asc',
+    paginate: true,
+  });
   const isEmpty = !listPending && tableState.rows?.length === 0;
 
   // Make initial requests
@@ -141,10 +146,11 @@ export default function TrackingDomainsTab() {
 
       <Pagination
         data={tableState.rawData}
+        currentPage={DEFAULT_CURRENT_PAGE}
         perPage={tableState.perPage}
         saveCsv={false}
         onPageChange={page => {
-          page += 1; // because matchbox Pagination component gives back 0 base page argument, while it takes a 1 base currentPage prop
+          page += 1;
           // Only adding this if condition because this keeps firing on load
           if (tableState.currentPage !== page) {
             tableDispatch({
