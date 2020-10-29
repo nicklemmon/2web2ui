@@ -17,15 +17,16 @@ import { initializeAccessControl } from './accessControl';
  *
  */
 export function login({ authData = {}, saveCookie = false }) {
-  if (saveCookie) { // save auth cookie
+  if (saveCookie) {
+    // save auth cookie
     authCookie.save(authData);
   }
 
-  return (dispatch) => {
+  return dispatch => {
     dispatch(websiteAuth.login(saveCookie)); // Complete the website cookie set up process
     dispatch({
       type: 'LOGIN_SUCCESS',
-      payload: authData
+      payload: authData,
     });
     dispatch(initializeAccessControl());
   };
@@ -51,10 +52,12 @@ export function authenticate(username, password, rememberMe = false, access_toke
 
     dispatch({ type: 'LOGIN_PENDING' });
 
-    const maybeLogin = isTokenLogin ? Promise.resolve({ data: { access_token }}) : sparkpostLogin(username, password, rememberMe);
+    const maybeLogin = isTokenLogin
+      ? Promise.resolve({ data: { access_token } })
+      : sparkpostLogin(username, password, rememberMe);
 
     return maybeLogin
-      .then(({ data = {}} = {}) => {
+      .then(({ data = {} } = {}) => {
         const authData = { ...data, username };
 
         //Skips website login if token login
@@ -64,7 +67,10 @@ export function authenticate(username, password, rememberMe = false, access_toke
         }
         // Start website auth token cookie setup process
 
-        return Promise.all([authData, getTfaStatusBeforeLoggedIn({ username, token: authData.access_token })]);
+        return Promise.all([
+          authData,
+          getTfaStatusBeforeLoggedIn({ username, token: authData.access_token }),
+        ]);
       })
       .then(([authData, tfaResponse]) => {
         const { enabled: tfaEnabled, required: tfaRequired } = tfaResponse.data.results;
@@ -77,29 +83,29 @@ export function authenticate(username, password, rememberMe = false, access_toke
 
         return { auth: true, tfaRequired };
       })
-      .catch((err) => {
-        const { response = {}} = err;
+      .catch(err => {
+        const { response = {} } = err;
         const { data = {}, status } = response;
         let { error_description: errorDescription } = data;
 
         // TODO: handle a timeout error better
 
         if (status === 403) {
-          errorDescription = `${errorDescription || 'Something went wrong.'} Please email compliance@sparkpost.com if you need assistance.`;
+          errorDescription = `${errorDescription ||
+            'Something went wrong.'} Please email compliance@sparkpost.com if you need assistance.`;
         }
 
         dispatch({
           type: 'LOGIN_FAIL',
           payload: {
-            errorDescription
-          }
+            errorDescription,
+          },
         });
 
         return { auth: false };
       });
   };
 }
-
 
 function actOnTfaStatus(tfaEnabled, tfaRequired, authData) {
   if (tfaEnabled) {
@@ -112,29 +118,29 @@ function actOnTfaStatus(tfaEnabled, tfaRequired, authData) {
 }
 
 export function confirmPassword(username, password) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({ type: 'CONFIRM_PASSWORD' });
 
     return sparkpostLogin(username, password, false)
-      .then(({ data = {}} = {}) => {
+      .then(({ data = {} } = {}) => {
         const payload = { ...data, username };
 
         // dispatch login success event
         dispatch({
           type: 'CONFIRM_PASSWORD_SUCCESS',
-          payload
+          payload,
         });
       })
-      .catch((err) => {
-        const { response = {}} = err;
-        const { data = {}} = response;
+      .catch(err => {
+        const { response = {} } = err;
+        const { data = {} } = response;
         const { error_description: errorDescription } = data;
 
         dispatch({
           type: 'CONFIRM_PASSWORD_FAIL',
           payload: {
-            errorDescription
-          }
+            errorDescription,
+          },
         });
 
         // To match sparkpostApiRequest behavior
@@ -151,8 +157,8 @@ export function ssoCheck(username) {
     meta: {
       method: 'GET',
       url: `/v1/users/${username}/saml`,
-      username
-    }
+      username,
+    },
   });
 }
 
@@ -165,14 +171,14 @@ export function invalidateAuthToken(token) {
       data: `token=${token}`,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `${token}`
-      }
-    }
+        Authorization: `${token}`,
+      },
+    },
   });
 }
 
 export function refresh(token, refreshToken) {
-  return (dispatch) => {
+  return dispatch => {
     const newCookie = authCookie.merge({ access_token: token, refresh_token: refreshToken });
     dispatch(websiteAuth.refresh());
     return dispatch(login({ authData: newCookie }));
@@ -196,7 +202,7 @@ export function logout() {
     removeHerokuToolbar();
     authCookie.remove();
     dispatch({
-      type: 'LOGOUT'
+      type: 'LOGOUT',
     });
   };
 }

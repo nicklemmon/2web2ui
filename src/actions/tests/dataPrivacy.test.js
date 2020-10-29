@@ -1,6 +1,6 @@
 import * as dataPrivacyRequests from '../dataPrivacy';
 jest.mock('src/helpers/axiosInstances');
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn(a => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: dataPrivacy', () => {
   it('submitRTBFRequest should make the appropriate request', () => {

@@ -1,18 +1,14 @@
 import React from 'react';
-import { Button, Layout, Stack, TextField, Text } from 'src/components/matchbox';
-import { Panel } from 'src/components/matchbox';
+import { Button, Layout, Stack, Text } from 'src/components/matchbox';
+import { Panel, Checkbox } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import useDomains from '../hooks/useDomains';
 import { CopyField } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
+import { useForm } from 'react-hook-form';
 
 import _ from 'lodash';
-
-const Field = ({ verified, label, value }) => {
-  if (!verified) return <CopyField label={label} value={value} />;
-  return <TextField label={label} value={value} readOnly />;
-};
 
 export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   const {
@@ -23,9 +19,10 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
   } = useDomains();
   let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]) || {};
   const { unverified } = trackingDomain;
+  const { handleSubmit, watch, register } = useForm();
 
-  const handleVerify = () => {
-    return verifyTrackingDomain({
+  const onSubmit = () => {
+    verifyTrackingDomain({
       domain: trackingDomain.domainName,
       subaccountId: trackingDomain.subaccountId,
     });
@@ -56,47 +53,69 @@ export default function TrackingDnsSection({ id, isSectionVisible, title }) {
         </Stack>
       </Layout.Section>
       <Layout.Section>
-        <Panel>
-          {unverified ? (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Panel>
+            {unverified ? (
+              <Panel.Section>
+                Add the{' '}
+                <Text as="span" fontWeight="semibold">
+                  CNAME
+                </Text>{' '}
+                records, Hostnames and Values for this domain in the settings section of your DNS
+                provider.
+              </Panel.Section>
+            ) : (
+              <Panel.Section>
+                Below is the{' '}
+                <Text as="span" fontWeight="semibold">
+                  CNAME
+                </Text>{' '}
+                record for this domain at your DNS provider.
+              </Panel.Section>
+            )}
             <Panel.Section>
-              Add these{' '}
-              <Text as="span" fontWeight="semibold">
-                CNAME
-              </Text>{' '}
-              records, Hostnames and Values for this domain in the settings section of your DNS
-              provider.
-            </Panel.Section>
-          ) : (
-            <Panel.Section>
-              Below is the{' '}
-              <Text as="span" fontWeight="semibold">
-                CNAME
-              </Text>{' '}
-              record for this domain at your DNS provider.
-            </Panel.Section>
-          )}
-          <Panel.Section>
-            <Stack>
+              <Stack>
+                {unverified && (
+                  <>
+                    <Text as="label" fontWeight="500" fontSize="200">
+                      Type
+                    </Text>
+                    <Text as="p">TXT</Text>
+                  </>
+                )}
+                <CopyField
+                  label="Hostname"
+                  value={trackingDomain.domainName}
+                  hideCopy={!unverified}
+                />
+                <CopyField label="Value" value={trackingDomainCname} hideCopy={!unverified} />
+              </Stack>
+
               {unverified && (
-                <>
-                  <Text as="label" fontWeight="500" fontSize="200">
-                    Type
-                  </Text>
-                  <Text as="p">TXT</Text>
-                </>
+                <Checkbox
+                  mt="600"
+                  mb="100"
+                  name="ack-checkbox-tracking"
+                  ref={register({ required: true })}
+                  label={<>The CNAME record has been added to the DNS provider</>}
+                />
               )}
-              <Field label="Hostname" value={trackingDomain.domainName} verified={!unverified} />
-              <Field label="Value" value={trackingDomainCname} verified={!unverified} />
-            </Stack>
-          </Panel.Section>
-          {unverified && (
-            <Panel.Section>
-              <Button variant="primary" onClick={handleVerify} loading={verifyingTrackingPending}>
-                Verify Domain
-              </Button>
             </Panel.Section>
-          )}
-        </Panel>
+
+            {unverified && (
+              <Panel.Section>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={!Boolean(watch('ack-checkbox-tracking'))}
+                  loading={verifyingTrackingPending}
+                >
+                  Verify Domain
+                </Button>
+              </Panel.Section>
+            )}
+          </Panel>
+        </form>
       </Layout.Section>
     </Layout>
   );

@@ -1,7 +1,7 @@
 import * as messageEvents from '../messageEvents';
 import { fn as mockMoment } from 'moment';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: MessageEvents', () => {
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('Action Creator: MessageEvents', () => {
       const recipients = [1, 2, 3];
       const dateOptions = {
         from: '2018-02-15T12:00:00',
-        to: '2018-02-16T12:00:00'
+        to: '2018-02-16T12:00:00',
       };
 
       expect(messageEvents.getMessageEvents({ dateOptions, recipients })).toMatchSnapshot();
@@ -25,7 +25,7 @@ describe('Action Creator: MessageEvents', () => {
 
     it('should dispatch get action with only from', () => {
       const dateOptions = {
-        from: '2018-02-15T12:00:00'
+        from: '2018-02-15T12:00:00',
       };
 
       expect(messageEvents.getMessageEvents({ dateOptions })).toMatchSnapshot();
@@ -33,7 +33,7 @@ describe('Action Creator: MessageEvents', () => {
 
     it('should dispatch get action with only to', () => {
       const dateOptions = {
-        to: '2018-02-16T12:00:00'
+        to: '2018-02-16T12:00:00',
       };
 
       expect(messageEvents.getMessageEvents({ dateOptions })).toMatchSnapshot();
@@ -51,7 +51,7 @@ describe('Action Creator: MessageEvents', () => {
     it('should dispatch get action with from/to', () => {
       const dateOptions = {
         from: '2018-02-15T12:00:00',
-        to: '2018-02-16T12:00:00'
+        to: '2018-02-16T12:00:00',
       };
 
       expect(messageEvents.getMessageEventsCSV({ dateOptions })).toMatchSnapshot();
@@ -60,7 +60,7 @@ describe('Action Creator: MessageEvents', () => {
     it('should dispatch get action with a limit of 5000 results', () => {
       const dateOptions = {
         from: '2018-02-15T12:00:00',
-        to: '2018-02-16T12:00:00'
+        to: '2018-02-16T12:00:00',
       };
 
       expect(messageEvents.getMessageEventsCSV({ dateOptions }).meta.params.per_page).toEqual(5000);
@@ -79,11 +79,13 @@ describe('Action Creator: MessageEvents', () => {
     let testState;
 
     beforeEach(() => {
-      testState = { messageEvents: {
-        cachedResultsByPage: [[]],
-        linkByPage: ['foo=bar1', 'for=bar2&cursor=foo==']
-      }};
-      dispatchMock = jest.fn((a) => a);
+      testState = {
+        messageEvents: {
+          cachedResultsByPage: [[]],
+          linkByPage: ['foo=bar1', 'for=bar2&cursor=foo=='],
+        },
+      };
+      dispatchMock = jest.fn(a => a);
       getStateMock = jest.fn(() => testState);
     });
     it('should dispatch change page action', () => {
@@ -98,12 +100,11 @@ describe('Action Creator: MessageEvents', () => {
           method: 'GET',
           params: {
             for: 'bar2',
-            cursor: 'foo=='
+            cursor: 'foo==',
           },
           showErrorAlert: false,
-          url: '/v1/events/message'
-        }
-
+          url: '/v1/events/message',
+        },
       });
     });
 
@@ -114,7 +115,7 @@ describe('Action Creator: MessageEvents', () => {
       expect(dispatchMock).toHaveBeenCalledTimes(1);
       expect(dispatchMock).toHaveBeenCalledWith({
         type: 'LOAD_EVENTS_FROM_CACHE',
-        payload: currentPage - 1
+        payload: currentPage - 1,
       });
     });
   });
@@ -133,12 +134,14 @@ describe('Action Creator: MessageEvents', () => {
 
   describe('updateMessageEventsSearchOptions', () => {
     it('dedupes filters', () => {
-      expect(messageEvents.updateMessageEventsSearchOptions({
-        subaccounts: ['1','4','1','2','3'],
-        message_ids: ['1'],
-        campaigns: [],
-        dateOptions: {}
-      })).toMatchSnapshot();
+      expect(
+        messageEvents.updateMessageEventsSearchOptions({
+          subaccounts: ['1', '4', '1', '2', '3'],
+          message_ids: ['1'],
+          campaigns: [],
+          dateOptions: {},
+        }),
+      ).toMatchSnapshot();
     });
   });
 });

@@ -30,6 +30,34 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
       });
 
+      it('renders snackbar after sharing and un-sharing the domain.', () => {
+        cy.stubRequest({
+          method: 'PUT',
+          url: '/api/v1/sending-domains/*',
+          fixture: 'sending-domains/200.put.json',
+          requestAlias: 'sendingDomainUpdate',
+        });
+
+        cy.visit(PAGE_URL);
+
+        cy.wait('@accountDomainsReq');
+        cy.findAllByText('Share this domain with all subaccounts').should('be.visible');
+        cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
+        cy.wait('@sendingDomainUpdate');
+        cy.withinSnackbar(() => {
+          cy.findAllByText('Successfully shared this domain with all subaccounts.').should(
+            'be.visible',
+          );
+        });
+        cy.findAllByLabelText('Share this domain with all subaccounts').click({ force: true });
+        cy.wait('@sendingDomainUpdate');
+        cy.withinSnackbar(() => {
+          cy.findAllByText('Successfully un-shared this domain with all subaccounts.').should(
+            'be.visible',
+          );
+        });
+      });
+
       it('renders correct section for Blocked domains', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/bounce.uat.sparkspam.com',
@@ -84,7 +112,17 @@ describe('The domains details page', () => {
 
         cy.visit(`${BASE_UI_URL}/hello-world-there.com`);
         cy.wait(['@accountDomainsReq', '@unverifieddkimSendingDomains']);
+
+        cy.findAllByText('The TXT record has been added to the DNS provider').should('be.visible');
+
+        cy.findByRole('button', { name: 'Verify Domain' }).should('be.disabled');
+
+        cy.findByLabelText('The TXT record has been added to the DNS provider').check({
+          force: true,
+        });
+
         cy.findByRole('button', { name: 'Verify Domain' }).click();
+
         cy.wait('@verifyDomain');
         cy.findAllByText(
           'You have successfully verified DKIM record of hello-world-there.com',
@@ -137,6 +175,11 @@ describe('The domains details page', () => {
         cy.visit(`${BASE_UI_URL}/prd2.splango.net`);
         cy.wait(['@unverifiedBounceDomains', '@trackingDomainsList']);
         cy.wait('@accountDomainsReq');
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('be.disabled');
+        cy.findAllByLabelText('The CNAME record has been added to the DNS provider').click({
+          force: true,
+        });
+        cy.findByRole('button', { name: 'Authenticate for Bounce' }).should('not.be.disabled');
         cy.findByRole('button', { name: 'Authenticate for Bounce' }).click();
         cy.wait('@verifyDomain');
         cy.findAllByText('You have successfully verified cname record of prd2.splango.net').should(
@@ -196,6 +239,7 @@ describe('The domains details page', () => {
         cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
         cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
       });
+
       it('renders correct sections for verified bounce domain and unverified sending domain', () => {
         cy.stubRequest({
           url: '/api/v1/tracking-domains',

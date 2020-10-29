@@ -4,7 +4,7 @@ import {
   createRecipientList,
   updateRecipientList,
   deleteRecipientList,
-  getRecipientList
+  getRecipientList,
 } from '../recipientLists';
 
 jest.mock('src/actions/helpers/sparkpostApiRequest');
@@ -13,58 +13,52 @@ describe('Recipient List Actions', () => {
   snapshotActionCases('.createRecipientList', [
     {
       name: 'when uploading csv',
-      action: () => (
+      actionCreator: () =>
         createRecipientList({
-          data: 'csv-file'
-        })
-      )
-    }
+          data: 'csv-file',
+        }),
+    },
   ]);
 
   snapshotActionCases('.listRecipientLists', [
     {
       name: 'when list is not loaded',
-      action: () => (
-        listRecipientLists()
-      ),
+      actionCreator: () => listRecipientLists(),
       state: {
         recipientLists: {
-          listLoaded: false
-        }
-      }
-    }
+          listLoaded: false,
+        },
+      },
+    },
   ]);
 
   snapshotActionCases('.updateRecipientList', [
     {
       name: 'when passing and id',
-      action: () => (
+      actionCreator: () =>
         updateRecipientList({
-          id: 'update-me'
-        })
-      )
-    }
+          id: 'update-me',
+        }),
+    },
   ]);
 
   snapshotActionCases('.deleteRecipientList', [
     {
       name: 'when passing and id',
-      action: () => (
+      actionCreator: () =>
         deleteRecipientList({
-          id: 'delete-me'
-        })
-      )
-    }
+          id: 'delete-me',
+        }),
+    },
   ]);
 
   snapshotActionCases('.getRecipientList', [
     {
       name: 'when passing and id',
-      action: () => (
+      actionCreator: () =>
         getRecipientList({
-          id: 'get-me'
-        })
-      )
-    }
+          id: 'get-me',
+        }),
+    },
   ]);
 });

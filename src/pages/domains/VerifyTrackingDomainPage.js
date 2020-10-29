@@ -11,6 +11,7 @@ function VerifyTrackingDomainPage(props) {
     listTrackingDomains();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Domains.Container>
       <Page
@@ -19,6 +20,7 @@ function VerifyTrackingDomainPage(props) {
           content: 'Domains',
           onClick: () => props.history.push('/domains/list/tracking'),
         }}
+        subtitle={match.params.id}
       >
         <Domains.TrackingDnsSection
           id={match.params.id}

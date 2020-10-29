@@ -9,8 +9,7 @@ import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
 
 export default function LinkTrackingDomainSection({ domain, isSectionVisible }) {
-  const { control, handleSubmit } = useForm();
-
+  const { control, handleSubmit, watch } = useForm();
   const { trackingDomainOptions, updateSendingDomain, showAlert } = useDomains();
 
   const onSubmit = ({ trackingDomain }) => {
@@ -30,9 +29,11 @@ export default function LinkTrackingDomainSection({ domain, isSectionVisible }) 
         }),
       );
   };
+
   if (!isSectionVisible) {
     return null;
   }
+
   return (
     <Layout>
       <Layout.Section annotated>
@@ -67,10 +68,16 @@ export default function LinkTrackingDomainSection({ domain, isSectionVisible }) 
               />
             </Panel.Section>
             <Panel.Section>
-              <Button variant="primary" type="submit">
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={
+                  watch('trackingDomain') === domain.tracking_domain ||
+                  !Boolean(watch('trackingDomain'))
+                }
+              >
                 Update Tracking Domain
               </Button>
-              {/* Functionality not available */}
             </Panel.Section>
           </Panel>
         </form>

@@ -5,23 +5,23 @@ jest.mock('src/actions/helpers/sparkpostApiRequest');
 
 snapshotActionCases('Action: Current User', {
   getAccountSingleSignOnDetails: {
-    action: actions.getAccountSingleSignOnDetails
+    actionCreator: actions.getAccountSingleSignOnDetails,
   },
   provisionAccountSingleSignOn: {
-    action: () => actions.provisionAccountSingleSignOn('abc==')
+    actionCreator: () => actions.provisionAccountSingleSignOn('abc=='),
   },
   reprovisionAccountSingleSignOn: {
-    action: () => actions.reprovisionAccountSingleSignOn('abc==')
+    actionCreator: () => actions.reprovisionAccountSingleSignOn('abc=='),
   },
   updateAccountSingleSignOn: {
-    action: () => {
+    actionCreator: () => {
       const args = {
         cert: 'abc==',
         enabled: true,
-        provider: 'https://sso.sparkpost.com/redirect'
+        provider: 'https://sso.sparkpost.com/redirect',
       };
 
       return actions.updateAccountSingleSignOn(args);
-    }
-  }
+    },
+  },
 });

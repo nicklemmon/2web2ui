@@ -2,7 +2,7 @@ import * as support from '../support';
 import * as formActions from 'redux-form';
 import { selectSupportIssues } from 'src/selectors/support';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+jest.mock('../helpers/sparkpostApiRequest');
 jest.mock('src/selectors/support');
 
 describe('Action Creator: Support', () => {
@@ -10,9 +10,9 @@ describe('Action Creator: Support', () => {
   let getStateMock;
 
   beforeEach(() => {
-    dispatchMock = jest.fn((a) => a);
+    dispatchMock = jest.fn(a => a);
     getStateMock = jest.fn();
-    formActions.change = jest.fn((a) => a);
+    formActions.change = jest.fn(a => a);
   });
 
   it('should close support panel', () => {
@@ -45,9 +45,7 @@ describe('Action Creator: Support', () => {
     it('should open support panel and set support ticket issue', () => {
       const stateMock = {};
       getStateMock.mockImplementation(() => stateMock);
-      selectSupportIssues.mockImplementation(() => [
-        { id: 'technical_errors' }
-      ]);
+      selectSupportIssues.mockImplementation(() => [{ id: 'technical_errors' }]);
       support.openSupportTicketForm({ issueId: 'technical_errors' })(dispatchMock, getStateMock);
       expect(formActions.change).toHaveBeenCalledWith('supportForm', 'issueId', 'technical_errors');
       expect(formActions.change).toHaveBeenCalledTimes(1);

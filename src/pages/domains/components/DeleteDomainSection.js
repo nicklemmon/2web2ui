@@ -56,7 +56,7 @@ export default function DeleteDomainSection({ domain, isTracking, id, history })
           </Panel.Section>
 
           <Panel.Section>
-            <Button variant="destructive" onClick={() => openModal()}>
+            <Button color="red" outlineBorder size="default" onClick={() => openModal()}>
               Delete Domain
             </Button>
 

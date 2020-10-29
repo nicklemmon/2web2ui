@@ -4,7 +4,7 @@ import * as billingHelpers from 'src/helpers/billing';
 import _ from 'lodash';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn(a => a));
+jest.mock('../helpers/sparkpostApiRequest');
 jest.mock('../helpers/zuoraRequest', () => jest.fn(a => a));
 jest.mock('src/helpers/billing');
 jest.mock('src/helpers/conditions/account');

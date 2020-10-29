@@ -1,6 +1,6 @@
 import * as scimTokenRequests from '../scimToken';
 jest.mock('src/helpers/axiosInstances');
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn(a => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: scimToken', () => {
   it('generateScimToken should make the appropriate request', () => {

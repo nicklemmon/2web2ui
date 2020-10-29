@@ -1,7 +1,7 @@
 import { createMockStore } from 'src/__testHelpers__/mockStore';
 import * as webhooks from '../webhooks';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: Webhooks', () => {
   let mockStore;

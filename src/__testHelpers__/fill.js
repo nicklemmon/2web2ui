@@ -4,7 +4,7 @@ function getControl({
   type,
   mounted,
   name,
-  selector = `${type === 'select' ? 'select' : 'input'}[name="${name}"]`
+  selector = `${type === 'select' ? 'select' : 'input'}[name="${name}"]`,
 }) {
   if (type === 'typeahead' || type === 'downshift') {
     const field = mounted.find(`Field[name="${name}"]`);
@@ -23,7 +23,7 @@ function getControl({
   }
 
   if (control.length > 1) {
-    control.forEach((el) => debugLog(selector, el.html()));
+    control.forEach(el => debugLog(selector, el.html()));
   }
 
   return control;
@@ -33,8 +33,8 @@ function selectRadioOption({ radios, value, index }) {
   let control;
 
   if (value) {
-    const options = radios.map((option) => option);
-    control = options.find((option) => option.props().value === value);
+    const options = radios.map(option => option);
+    control = options.find(option => option.props().value === value);
   }
 
   if (!control && typeof index === 'number') {
@@ -42,16 +42,18 @@ function selectRadioOption({ radios, value, index }) {
   }
 
   if (!control || control.length !== 1) {
-    throw new Error(`Single radio not found for this field, instead found ${control.length} for ${value || index}`);
+    throw new Error(
+      `Single radio not found for this field, instead found ${control.length} for ${value ||
+        index}`,
+    );
   }
 
   // redux form seems to be watching for currentTarget for radio buttons lol no idea why
-  control.simulate('change', { currentTarget: { checked: true }});
+  control.simulate('change', { currentTarget: { checked: true } });
 }
 
 export default function getFiller(mounted) {
   return function fill(options) {
-
     if (Array.isArray(options)) {
       options.forEach(fill);
       return;
@@ -63,7 +65,6 @@ export default function getFiller(mounted) {
 
     try {
       switch (type) {
-
         case 'radio': {
           selectRadioOption({ radios: control, ...args });
           updated = true;
@@ -82,7 +83,7 @@ export default function getFiller(mounted) {
         case 'select':
         case 'text':
         default: {
-          control.simulate('change', { target: { value: args.value }});
+          control.simulate('change', { target: { value: args.value } });
           updated = true;
         }
       }

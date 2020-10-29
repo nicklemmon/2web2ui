@@ -8,56 +8,57 @@ describe('Metrics Actions', () => {
   snapshotActionCases('fetch', [
     {
       name: 'metrics domains',
-      action: metrics.fetchMetricsDomains,
+      actionCreator: metrics.fetchMetricsDomains,
     },
     {
       name: 'metrics campaigns',
-      action: metrics.fetchMetricsCampaigns,
+      actionCreator: metrics.fetchMetricsCampaigns,
     },
     {
       name: 'metrics sending ips',
-      action: metrics.fetchMetricsSendingIps,
+      actionCreator: metrics.fetchMetricsSendingIps,
     },
     {
       name: 'metrics ip pools',
-      action: metrics.fetchMetricsIpPools,
+      actionCreator: metrics.fetchMetricsIpPools,
     },
     {
       name: 'metrics templates',
-      action: metrics.fetchMetricsTemplates,
+      actionCreator: metrics.fetchMetricsTemplates,
     },
     {
       name: 'metrics (time series)',
-      action: metrics.getTimeSeries,
+      actionCreator: metrics.getTimeSeries,
     },
     {
       name: 'Deliverability',
-      action: () => metrics.fetchDeliverability({ params: {}, type: 'GET_ACCEPTED_AGGREGATES' }),
+      actionCreator: () =>
+        metrics.fetchDeliverability({ params: {}, type: 'GET_ACCEPTED_AGGREGATES' }),
     },
     {
       name: 'Bounce Classifications',
-      action: metrics.fetchBounceClassifications,
+      actionCreator: metrics.fetchBounceClassifications,
     },
     {
       name: 'Bounce Reasons',
-      action: metrics.fetchBounceReasons,
+      actionCreator: metrics.fetchBounceReasons,
     },
     {
       name: 'Bounce Reasons By Domain',
-      action: () =>
+      actionCreator: () =>
         metrics.fetchBounceReasonsByDomain({}, 'FETCH_METRICS_BOUNCE_REASONS_BY_DOMAIN'),
     },
     {
       name: 'Rejection Reasons By Domain',
-      action: metrics.fetchRejectionReasonsByDomain,
+      actionCreator: metrics.fetchRejectionReasonsByDomain,
     },
     {
       name: 'Delay Reasons By Domain',
-      action: metrics.fetchDelayReasonsByDomain,
+      actionCreator: metrics.fetchDelayReasonsByDomain,
     },
     {
       name: 'Deliveries By Attempt',
-      action: metrics.fetchDeliveriesByAttempt,
+      actionCreator: metrics.fetchDeliveriesByAttempt,
     },
   ]);
 

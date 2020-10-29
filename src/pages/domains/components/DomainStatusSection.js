@@ -17,6 +17,7 @@ import _ from 'lodash';
 export default function DomainStatusSection({ domain, id, isTracking }) {
   const { closeModal, isModalOpen, openModal } = useModal();
   const {
+    showAlert,
     allowDefault,
     allowSubaccountDefault,
     updateSendingDomain,
@@ -55,13 +56,24 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
   };
 
   const toggleShareWithSubaccounts = () => {
+    const currentlyShared = domain.shared_with_subaccounts;
+
     return updateSendingDomain({
       id,
       subaccount: domain.subaccount_id,
-      shared_with_subaccounts: !domain.shared_with_subaccounts,
-    }).catch(err => {
-      throw err; // for error reporting
-    });
+      shared_with_subaccounts: !currentlyShared,
+    })
+      .then(() => {
+        showAlert({
+          type: 'success',
+          message: `Successfully ${
+            !currentlyShared ? 'shared' : 'un-shared'
+          } this domain with all subaccounts.`,
+        });
+      })
+      .catch(err => {
+        throw err; // for error reporting
+      });
   };
 
   if (isTracking && trackingDomain) {
