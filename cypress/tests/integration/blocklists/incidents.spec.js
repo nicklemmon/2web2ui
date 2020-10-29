@@ -92,7 +92,7 @@ describe('The blocklist incidents page', () => {
     });
   });
 
-  it.skip('changes the date range and makes the correct http call', () => {
+  it('changes the date range and makes the correct http call', () => {
     cy.stubRequest({
       method: 'GET',
       url: 'api/v1/blocklist-monitors',
