@@ -24,9 +24,10 @@ export function ReportOptions(props) {
     selectedReport,
     setReport,
   } = props;
-  const drawerTabsFeatureFlag = isCompareByEnabled
-    ? [...drawerTabs, { content: 'Compare' }]
-    : drawerTabs;
+
+  const drawerTabsFeatureFlag = useMemo(() => {
+    return isCompareByEnabled ? [...drawerTabs, { content: 'Compare' }] : drawerTabs;
+  }, [isCompareByEnabled]);
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
   const { refreshReportOptions, removeFilter, removeFilterV2 } = actions;
   const {
