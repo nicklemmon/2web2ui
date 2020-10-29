@@ -36,7 +36,6 @@ export const FEATURE_COMPARISON = {
       'Premier Plans': true,
     },
     'Saved Reports': {
-      conditionFlag: 'allow_saved_reports',
       'Test Account': true,
       'Starter Plans': 30,
       'Premier Plans': 100,

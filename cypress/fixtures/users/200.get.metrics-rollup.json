@@ -13,8 +13,7 @@
     "access_level": "admin",
     "options": {
       "ui": {
-        "use-metrics-rollup": true,
-        "allow_saved_reports": true
+        "use-metrics-rollup": true
       }
     },
     "created": "2015-07-29T17:59:48.477Z",

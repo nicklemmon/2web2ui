@@ -8,7 +8,7 @@ if (IS_HIBANA_ENABLED) {
       commonBeforeSteps();
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.metrics-rollup-and-saved-reports.json',
+        fixture: 'users/200.get.metrics-rollup.json',
       });
 
       cy.stubRequest({

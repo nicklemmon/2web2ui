@@ -39,12 +39,21 @@ export function stubSubaccounts(requestAlias = 'getSubaccounts') {
   });
 }
 
+export function stubReports(requestAlias = 'getReports') {
+  cy.stubRequest({
+    url: '/api/v1/reports',
+    fixture: 'reports/200.get.json',
+    requestAlias,
+  });
+}
+
 export function commonBeforeSteps() {
   cy.stubAuth();
   cy.login({ isStubbed: true });
 
   stubSubaccounts();
   stubDeliverability();
+  stubReports();
   stubTimeSeries();
   stubUTCDeliverability();
   stubUTCTimeSeries();

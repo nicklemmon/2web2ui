@@ -5,8 +5,6 @@ import TypeSelect from 'src/components/typeahead/TypeSelect';
 import { Button, Column, Columns } from 'src/components/matchbox';
 import { Bold, TranslatableText } from 'src/components/text';
 import { Edit, FolderOpen, Save } from '@sparkpost/matchbox-icons';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import SaveReportModal from './SaveReportModal';
 import { deleteReport, getReports } from 'src/actions/reports';
 import ReportsListModal from './ReportsListModal';
@@ -69,66 +67,65 @@ const SavedReportsSection = props => {
           selectedItem={props.selectedItem}
         />
       </Column>
-      {props.isSavedReportsEnabled && (
-        <Column width="content">
-          <Button
-            data-id="edit-report-details-button"
-            variant="tertiary"
-            onClick={() => {
-              setFocusedReport(props.selectedItem);
-              setModalStatus('edit');
-            }}
-            disabled={
-              !props.selectedItem ||
-              !props.selectedItem.current_user_can_edit ||
-              props.selectedItem.type === 'preset'
-            }
-          >
-            <TranslatableText>Edit Details</TranslatableText>
-            <Button.Icon as={Edit} ml="100" />
-          </Button>
-          <SaveReportModal
-            open={modalStatus === 'edit'}
-            report={focusedReport}
-            onCancel={() => {
-              setModalStatus('');
-              setFocusedReport({});
-            }}
-          />
-          <Button
-            data-id="save-report-changes-button"
-            variant="tertiary"
-            onClick={() => {
-              setFocusedReport(props.selectedItem);
-              setModalStatus('save');
-            }}
-            disabled={
-              !props.selectedItem ||
-              !props.selectedItem.current_user_can_edit ||
-              props.selectedItem.type === 'preset'
-            }
-          >
-            <TranslatableText>Save Changes</TranslatableText>
-            <Button.Icon as={Save} ml="100" />
-          </Button>
+      <Column width="content">
+        <Button
+          data-id="edit-report-details-button"
+          variant="tertiary"
+          onClick={() => {
+            setFocusedReport(props.selectedItem);
+            setModalStatus('edit');
+          }}
+          disabled={
+            !props.selectedItem ||
+            !props.selectedItem.current_user_can_edit ||
+            props.selectedItem.type === 'preset'
+          }
+        >
+          <TranslatableText>Edit Details</TranslatableText>
+          <Button.Icon as={Edit} ml="100" />
+        </Button>
+        <SaveReportModal
+          open={modalStatus === 'edit'}
+          report={focusedReport}
+          onCancel={() => {
+            setModalStatus('');
+            setFocusedReport({});
+          }}
+        />
+        <Button
+          data-id="save-report-changes-button"
+          variant="tertiary"
+          onClick={() => {
+            setFocusedReport(props.selectedItem);
+            setModalStatus('save');
+          }}
+          disabled={
+            !props.selectedItem ||
+            !props.selectedItem.current_user_can_edit ||
+            props.selectedItem.type === 'preset'
+          }
+        >
+          <TranslatableText>Save Changes</TranslatableText>
+          <Button.Icon as={Save} ml="100" />
+        </Button>
 
-          <SaveReportModal
-            open={modalStatus === 'save'}
-            saveQuery
-            isOwner={props.currentUser.userName === focusedReport.creator}
-            report={focusedReport}
-            onCancel={() => {
-              setModalStatus('');
-              setFocusedReport({});
-            }}
-          />
+        <Button variant="tertiary" onClick={() => setModalStatus('view')}>
+          <TranslatableText>View All Reports</TranslatableText>
+          <Button.Icon as={FolderOpen} ml="100" />
+        </Button>
+      </Column>
 
-          <Button variant="tertiary" onClick={() => setModalStatus('view')}>
-            <TranslatableText>View All Reports</TranslatableText>
-            <Button.Icon as={FolderOpen} ml="100" />
-          </Button>
-        </Column>
-      )}
+      <SaveReportModal
+        open={modalStatus === 'save'}
+        saveQuery
+        isOwner={props.currentUser.userName === focusedReport.creator}
+        report={focusedReport}
+        onCancel={() => {
+          setModalStatus('');
+          setFocusedReport({});
+        }}
+      />
+
       <DeleteModal
         title="Are you sure you want to delete your saved report?"
         confirmVerb="Delete"
@@ -146,6 +143,7 @@ const SavedReportsSection = props => {
         }}
         onConfirm={onDelete}
       />
+
       <ReportsListModal
         open={modalStatus === 'view'}
         onClose={() => {
@@ -162,7 +160,6 @@ const SavedReportsSection = props => {
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser,
-  isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
   reports: state.reports.list,
   status: state.reports.status,
   isDeletePending: state.reports.deletePending,

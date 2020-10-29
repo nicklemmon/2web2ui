@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Panel, Table, Modal } from 'src/components/matchbox';
 import { FEATURE_COMPARISON, PLANS } from './../constants';
 import _ from 'lodash';
@@ -8,9 +7,6 @@ import HibanaStyles from './FeatureComparisonModalHibana.module.scss';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import classNames from 'classnames';
 import { Check, Close } from '@sparkpost/matchbox-icons';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
-
 export function Row({ featureName, ...featureValues }) {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
@@ -85,7 +81,7 @@ export function RenderCell({ cellValue }) {
   }
   return <>{cellValue}</>;
 }
-export function ComparisonModal({ flags, open, handleClose }) {
+function ComparisonModal({ open, handleClose }) {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   return (
     <Modal.LEGACY open={open} showCloseButton={true} onClose={handleClose}>
@@ -100,13 +96,9 @@ export function ComparisonModal({ flags, open, handleClose }) {
             <Table key={groupName}>
               <tbody>
                 <GroupHeading groupName={groupName} colSpan={PLANS.length + 1} />
-                {_.map(featureObj, (featureValues, featureName) => {
-                  const { conditionFlag, ...planValues } = featureValues;
-                  if (conditionFlag && !flags[conditionFlag]) {
-                    return;
-                  }
-                  return <Row key={featureName} featureName={featureName} {...planValues} />;
-                })}
+                {_.map(featureObj, (featureValues, featureName) => (
+                  <Row key={featureName} featureName={featureName} {...featureValues} />
+                ))}
               </tbody>
             </Table>
           ))}
@@ -115,10 +107,4 @@ export function ComparisonModal({ flags, open, handleClose }) {
     </Modal.LEGACY>
   );
 }
-
-const mapStateToProps = state => ({
-  flags: {
-    allow_saved_reports: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
-  },
-});
-export default connect(mapStateToProps, {})(ComparisonModal);
+export default ComparisonModal;

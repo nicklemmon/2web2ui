@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
@@ -13,7 +12,6 @@ import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
 import { selectCondition } from 'src/selectors/accessConditionState';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { dehydrateFilters } from '../helpers';
 import { ActiveFilters, ActiveFiltersV2 } from './ActiveFilters';
 
@@ -224,7 +222,6 @@ export function ReportOptions(props) {
 
 const mapStateToProps = state => ({
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
-  isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
   isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
   isCompareByEnabled: selectCondition(isAccountUiOptionSet('allow_compare_by'))(state), //Comparing different filters
 });
