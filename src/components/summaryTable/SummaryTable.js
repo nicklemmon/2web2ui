@@ -1,14 +1,16 @@
 import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'src/components/matchbox';
-import { Pagination } from 'src/components/pagination';
-import { DEFAULT_PAGE_RANGE as PAGE_RANGE } from 'src/constants';
+import useHibanaOverride from 'src/hooks/useHibanaOverride';
+import { Pagination, Table } from 'src/components/matchbox';
 import Body from './Body';
 import Column from './Column';
 import Head from './Head';
+import PerPageControl from './PerPageControl';
 import { getColumnProps, pickPageProps } from './utils';
 import OGStyles from './SummaryTable.module.scss';
+import HibanaStyles from './SummaryTableHibana.module.scss';
+import { DEFAULT_PAGE_RANGE } from 'src/constants';
 
 export class SummaryTableClassComponent extends React.Component {
   static defaultProps = {
@@ -80,12 +82,13 @@ export class SummaryTableClassComponent extends React.Component {
       order,
       perPage,
       totalCount,
+      styles,
     } = this.props;
     const columnProps = getColumnProps(children);
     const pages = Math.ceil(totalCount / perPage);
 
     return (
-      <div className={OGStyles.SummaryTable}>
+      <div className={styles.SummaryTable}>
         <Table p="400">
           <Head columns={columnProps} onSort={this.handleSort} order={order} />
           <Body
@@ -97,21 +100,32 @@ export class SummaryTableClassComponent extends React.Component {
             perPage={perPage}
           />
         </Table>
-
-        {/* TODO?: Replace this with src/components/collection/pagination? probably.... since it appears this is the only spot that does it's own (only spot that doesn't use the src/components/collection/* ) */}
-        {/* TODO?: Or just undo this change completely.... */}
-        <Pagination
-          pages={pages}
-          pageRange={PAGE_RANGE}
-          currentPage={currentPage}
-          perPage={perPage}
-          totalCount={totalCount}
-          handlePagination={this.handlePagination}
-          handlePerPageChange={this.handlePerPageChange}
-        />
+        <div className={styles.PaginationWrapper}>
+          <div className={styles.PageButtons}>
+            <Pagination
+              currentPage={currentPage}
+              pageRange={DEFAULT_PAGE_RANGE}
+              pages={pages}
+              onChange={this.handlePagination}
+              flat
+              className={styles.Pagination}
+            />
+          </div>
+          <div>
+            <PerPageControl
+              onChange={this.handlePerPageChange}
+              perPage={perPage}
+              totalCount={totalCount}
+            />
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default SummaryTableClassComponent;
+export default function SummaryTable(props) {
+  const styles = useHibanaOverride(OGStyles, HibanaStyles);
+
+  return <SummaryTableClassComponent styles={styles} {...props} />;
+}

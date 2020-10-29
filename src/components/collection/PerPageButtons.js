@@ -3,15 +3,12 @@ import classnames from 'classnames';
 import styles from './Pagination.module.scss';
 import React from 'react';
 import { ScreenReaderOnly } from 'src/components/matchbox';
-import {
-  DEFAULT_PER_PAGE_BUTTONS as PER_PAGE_BUTTONS,
-  DEFAULT_PER_PAGE as PER_PAGE,
-} from 'src/constants';
+import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
 import { useHibana } from 'src/context/HibanaContext';
 
 const PerPageButtons = ({
-  perPage = PER_PAGE,
-  perPageButtons = PER_PAGE_BUTTONS,
+  perPage,
+  perPageButtons = DEFAULT_PER_PAGE_BUTTONS,
   onPerPageChange,
   totalCount,
 }) => {
