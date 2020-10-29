@@ -65,6 +65,7 @@ function DetailsPage(props) {
   useEffect(() => {
     if (isTracking)
       listTrackingDomains().then(res => {
+        //this logic redirects to list page when the tracking domain is not found in the list
         if (!Boolean(_.find(res, ['domain', match.params.id.toLowerCase()]))) {
           settrackingDomainNotFound(true);
         }

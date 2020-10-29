@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
 import { useTable, usePageFilters } from 'src/hooks';
@@ -100,8 +99,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const [tableState, tableDispatch] = useTable(domains);
   const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
   const isEmpty = !listPending && tableState.rows?.length === 0;
-  const location = useLocation();
-  const { updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
+  const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   //resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
     filtersDispatch({ type: 'RESET', state: filtersInitialState });
@@ -121,25 +119,11 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   //sync the params with filters on page load
   useEffect(() => {
-    const validateFilters = filters => {
-      return filters.filter(x => initFiltersForSending.hasOwnProperty(x));
-    };
-    let queryParams = new URLSearchParams(location.search);
-    let tempFilters = {};
-    let filterKeys = validateFilters(Array.from(queryParams.keys()));
-    for (var key of filterKeys) {
-      tempFilters[key] = queryParams.get(key);
-    }
-    for (let key in tempFilters) {
-      switch (key) {
-        case 'domainName':
-          filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: tempFilters['domainName'] });
-          break;
-        default:
-          if (tempFilters[key] === 'true') filtersDispatch({ type: 'TOGGLE', name: key });
-          break;
-      }
-    }
+    Object.keys(filters).forEach(key => {
+      if (key === 'domainName')
+        filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] });
+      else if (filters[key] === 'true') filtersDispatch({ type: 'TOGGLE', name: key });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
