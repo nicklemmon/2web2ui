@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import {
@@ -54,14 +54,7 @@ export const formatFormValues = formValues => {
   };
 };
 
-export const ScheduledReportForm = ({
-  report,
-  handleSubmit: parentHandleSubmit,
-  listUsers,
-  loading,
-  users,
-  usersLoading,
-}) => {
+export const ScheduledReportForm = ({ report, handleSubmit: parentHandleSubmit }) => {
   const { control, handleSubmit, errors, register, setValue, watch } = useForm({
     defaultValues: {
       timing: 'daily',
@@ -71,10 +64,14 @@ export const ScheduledReportForm = ({
   });
   const [timezone, setTimezone] = useState(getLocalTimezone());
   const history = useHistory();
+  const users = useSelector(state => selectUsers(state));
+  const usersLoading = useSelector(state => state.users.loading);
+  const loading = useSelector(state => state.reports.saveScheduledReportStatus === 'loading');
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    listUsers();
-  }, [listUsers]);
+    dispatch(listUsers());
+  }, [dispatch]);
 
   const Typeahead = (
     <ComboBoxTypeaheadWrapper
@@ -275,10 +272,5 @@ export const ScheduledReportForm = ({
     </form>
   );
 };
-const mapStateToProps = state => ({
-  users: selectUsers(state),
-  usersLoading: state.users.loading,
-  loading: state.reports.saveScheduledReportStatus === 'loading',
-});
 
-export default connect(mapStateToProps, { listUsers })(ScheduledReportForm);
+export default ScheduledReportForm;

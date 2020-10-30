@@ -1,25 +1,34 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+
 import { ScheduledReportForm, formatFormValues } from '../ScheduledReportForm';
+import { listUsers } from 'src/actions/users';
 import TestApp from 'src/__testHelpers__/TestApp';
+
+jest.mock('src/selectors/users', () => ({
+  selectUsers: jest.fn().mockReturnValue([
+    { username: 'bob', email: 'bob@theBuilder.com' },
+    { username: 'bob2', email: 'bob2@theBuilder.com' },
+  ]),
+}));
+jest.mock('src/actions/users');
+
+const store = {
+  users: { loading: false },
+  reports: { saveScheduledReportStatus: 'idle' },
+};
 
 describe('ScheduledReportForm', () => {
   const mockSubmit = jest.fn();
-  const mockListUsers = jest.fn();
+  listUsers.mockImplementation(() => jest.fn());
   const subject = props => {
     const defaults = {
       report: { name: 'test report', id: 'abc123' },
       handleSubmit: mockSubmit,
-      listUsers: mockListUsers,
-      loading: false,
-      users: [
-        { username: 'bob', email: 'bob@theBuilder.com' },
-        { username: 'bob2', email: 'bob2@theBuilder.com' },
-      ],
     };
 
     return render(
-      <TestApp isHibanaEnabled={true}>
+      <TestApp isHibanaEnabled={true} store={store}>
         <ScheduledReportForm {...defaults} {...props} />
       </TestApp>,
     );

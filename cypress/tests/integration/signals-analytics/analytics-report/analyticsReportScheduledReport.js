@@ -83,7 +83,7 @@ if (IS_HIBANA_ENABLED) {
       cy.findByRole('button', { name: 'Schedule Report' }).click();
       cy.findByRole('button', { name: 'Schedule Report' }).should('be.disabled');
       cy.findByRole('button', { name: 'Cancel' }).should('be.disabled');
-
+      cy.wait('@createNewScheduledReport');
       cy.get('@createNewScheduledReport')
         .its('requestBody')
         .should('deep.equal', {
