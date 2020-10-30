@@ -6,8 +6,8 @@ if (IS_HIBANA_ENABLED) {
     beforeEach(() => {
       commonBeforeSteps();
       cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.saved-reports-and-scheduled-reports',
+        url: '/api/v1/account',
+        fixture: 'account/200.get.has-scheduled-reports',
       });
 
       cy.stubRequest({
@@ -36,6 +36,9 @@ if (IS_HIBANA_ENABLED) {
         url: 'api/v1/reports/**/schedules',
         fixture: 'blank',
         requestAlias: 'createNewScheduledReport',
+        //This could cause CI tests to fail.
+        //If this is flaky, delete this and the check for submit button being disabled after submit
+        delay: 500,
       });
     });
 
@@ -78,6 +81,9 @@ if (IS_HIBANA_ENABLED) {
         .clear()
         .type('12:00');
       cy.findByRole('button', { name: 'Schedule Report' }).click();
+      cy.findByRole('button', { name: 'Schedule Report' }).should('be.disabled');
+      cy.findByRole('button', { name: 'Cancel' }).should('be.disabled');
+
       cy.get('@createNewScheduledReport')
         .its('requestBody')
         .should('deep.equal', {
