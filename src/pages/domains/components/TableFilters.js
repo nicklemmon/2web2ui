@@ -8,7 +8,7 @@ import {
   TextField,
   ScreenReaderOnly,
   Select,
-  LabelValue,
+  Label,
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
@@ -96,7 +96,8 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
   const hasCheckedCheckboxes = checkedCheckboxes?.length > 0;
 
   return (
-    <LabelValue label="Domain Status" orientation="vertical">
+    <Box>
+      <Label label="Domain Status" />
       <Popover
         left
         id={uniqueId}
@@ -150,7 +151,7 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
           </Button>
         </Box>
       </Popover>
-    </LabelValue>
+    </Box>
   );
 }
 
