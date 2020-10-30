@@ -15,7 +15,7 @@ import {
 import { formatDateTime } from 'src/helpers/date';
 import { ButtonLink, PageLink } from 'src/components/links';
 import { selectCondition } from 'src/selectors/accessConditionState';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
 const allReportsColumns = [
   { label: 'Name', sortKey: 'name' },
@@ -172,7 +172,9 @@ export function ReportsListModal(props) {
 const mapStateToProps = state => {
   return {
     currentUser: state.currentUser.username,
-    isScheduledReportsEnabled: selectCondition(isUserUiOptionSet('allow_scheduled_reports'))(state),
+    isScheduledReportsEnabled: selectCondition(isAccountUiOptionSet('allow_scheduled_reports'))(
+      state,
+    ),
   };
 };
 export default connect(mapStateToProps)(ReportsListModal);
