@@ -67,6 +67,7 @@ export function SaveReportModal(props) {
     updateReport,
     create,
     saveQuery,
+    setReport,
     isComparatorsEnabled,
   } = props;
   const { handleSubmit, control, errors, setValue, reset } = useForm({
@@ -96,10 +97,17 @@ export function SaveReportModal(props) {
     }
 
     const saveAction = create ? createReport : updateReport;
-    return saveAction({ ...data, id: report?.id }).then(() => {
+    return saveAction({ ...data, id: report?.id }).then(response => {
       showAlert({ type: 'success', message: `You have successfully saved ${data.name}` });
       onCancel();
-      getReports();
+      if (report) {
+        setReport({ ...report, ...data });
+        getReports();
+      } else {
+        getReports().then(reports => {
+          setReport(reports.find(({ id }) => id === response?.id));
+        });
+      }
     });
   };
 

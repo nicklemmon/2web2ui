@@ -129,6 +129,12 @@ if (IS_HIBANA_ENABLED) {
         cy.findByRole('button', { name: 'Save Report' }).click();
         cy.findAllByText('Required').should('have.length', 2);
 
+        cy.stubRequest({
+          url: '/api/v1/reports',
+          fixture: 'reports/200.get.new-report',
+          requestAlias: 'newGetSavedReports',
+        });
+
         // Check submission
         cy.findByLabelText('Name').type('Hello There');
         cy.findByLabelText('Description').type('General Kenobi');
@@ -136,6 +142,10 @@ if (IS_HIBANA_ENABLED) {
         cy.findByRole('button', { name: 'Save Report' }).click();
       });
       cy.wait('@saveNewReport');
+      cy.wait('@newGetSavedReports');
+
+      cy.findByLabelText('Report').should('have.value', 'Hello There');
+
       cy.findByText('You have successfully saved Hello There').click();
     });
 
@@ -265,9 +275,24 @@ if (IS_HIBANA_ENABLED) {
           fixture: 'blank.json',
           requestAlias: 'deleteReport',
         });
-
         cy.visit(PAGE_URL);
         cy.wait('@getSavedReports');
+
+        cy.findByLabelText('Report').focus(); // open typeahead
+
+        cy.findListBoxByLabelText('Report').within(() => {
+          cy.findAllByRole('option')
+            .eq(0)
+            .should('have.contain', 'My Bounce Report')
+            .click();
+        });
+
+        cy.stubRequest({
+          url: '/api/v1/reports',
+          fixture: 'reports/200.get.deleted-report',
+          requestAlias: 'newGetSavedReports',
+        });
+
         cy.findByRole('button', { name: 'View All Reports' }).click();
         //Avoid flakey test by waiting for modal to render. Might be some other issue as well.
         /* eslint-disable-next-line */
@@ -279,7 +304,16 @@ if (IS_HIBANA_ENABLED) {
           cy.findByText('Delete').click({ force: true });
         });
         cy.wait('@deleteReport');
-        cy.wait('@getSavedReports');
+        cy.wait('@newGetSavedReports');
+
+        cy.findByLabelText('Report').focus(); // open typeahead
+
+        cy.findByLabelText('Report').should('not.have.value', 'My Bounce Report');
+        cy.findListBoxByLabelText('Report').within(() => {
+          cy.findAllByRole('option')
+            .eq(0)
+            .should('not.contain', 'My Bounce Report');
+        });
         cy.findByText('You have successfully deleted My Bounce Report').should('be.visible');
       });
 
