@@ -1,10 +1,14 @@
+/***
+ * DEPRICATE!
+ */
 import React from 'react';
 import classnames from 'classnames';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import { Box, Button } from 'src/components/matchbox';
 import styles from './SummaryTable.module.scss';
+import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
 
-const SIZES = [10, 25, 50, 100];
+const SIZES = DEFAULT_PER_PAGE_BUTTONS;
 
 function OGPerPageControl({ onChange, perPage, totalCount }) {
   if (!totalCount || totalCount < SIZES[0]) {

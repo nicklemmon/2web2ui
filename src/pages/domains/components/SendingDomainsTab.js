@@ -3,7 +3,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 
 import { usePageFilters } from 'src/hooks';
-import { Panel, Pagination } from 'src/components/matchbox';
+import { Panel } from 'src/components/matchbox';
 import { Pagination } from 'src/components/collection';
 
 import { useTable } from 'react-table';
@@ -163,7 +163,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] });
       } else if (filters[key] === 'true') {
         // filtersDispatch({ type: 'TOGGLE', name: key })
-      };
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -201,7 +201,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       //   ],
       // });
     }
-  }, [filtersState, listPending, tableDispatch, updateFilters]);
+  }, [filtersState, listPending, updateFilters]);
+  // tableDispatch
 
   useEffect(() => {
     if (!listPending) {
@@ -211,7 +212,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       //   direction: sort.direction,
       // });
     }
-  }, [sort, listPending]);
+  }, [listPending]);
+  // sort,
   //, tableDispatch
 
   if (sendingDomainsListError) {
@@ -232,9 +234,9 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
             <TableFilters.DomainField
               disabled={listPending}
               value={filtersState.domainNameFilter}
-              onChange={e =>
+              onChange={e => {
                 // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })
-              }
+              }}
             />
 
             <TableFilters.StatusPopover
@@ -243,10 +245,11 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
             />
 
+            {/* value={sort.by} */}
             <TableFilters.SortSelect
               disabled={listPending}
               defaultValue="creationTime"
-              value={sort.by}
+              value=""
               options={[
                 {
                   label: 'Date Added (Newest - Oldest)',
