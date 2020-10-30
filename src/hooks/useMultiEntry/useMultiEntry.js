@@ -13,10 +13,18 @@ function reducer(state, action) {
       if (action.value.includes(' ')) {
         const additionalValues = action.value.split(' ');
 
-        return { ...state, value: '', valueList: [...state.valueList, ...additionalValues] };
+        return {
+          ...state,
+          value: '',
+          valueList: [...state.valueList, ...additionalValues],
+        };
       }
 
-      return { ...state, value: '', valueList: [...state.valueList, action.value] };
+      return {
+        ...state,
+        value: '',
+        valueList: [...state.valueList, action.value],
+      };
 
     case 'SET_VALUE_LIST': {
       return { ...state, valueList: action.valueList };
@@ -31,18 +39,19 @@ function reducer(state, action) {
       return { ...state, valueList };
     }
 
-    case 'REMOVE_LAST_VALUE': {
-      const valueList = state.valueList.filter(
-        (_value, index) => index + 1 !== state.valueList.length,
-      );
-
-      return {
-        ...state,
-        valueList,
-      };
+    case 'ERROR': {
+      return { ...state, error: action.error };
     }
 
     case 'VALUE_CHANGE': {
+      // Remove the minimum length error as the user's entry changes, but only when the problem is fixed
+      if (
+        state.minLength &&
+        (action.value.length === 0 || action.value.length >= state.minLength)
+      ) {
+        return { ...state, value: action.value, error: undefined };
+      }
+
       return { ...state, value: action.value };
     }
 
@@ -54,6 +63,7 @@ function reducer(state, action) {
 const defaultInitialState = {
   value: '',
   valueList: [],
+  error: undefined, // TODO: If other error scenarios are introduced, this should be an object that contains each type of error
 };
 
 export default function useMultiEntry(initialState) {
@@ -72,6 +82,14 @@ export default function useMultiEntry(initialState) {
     // Spacebar or enter key
     if (e.keyCode === 32 || e.keyCode === 13) {
       e.preventDefault();
+
+      // Configurable min length returns an error when attempting to update valueList before meeting the requirement
+      if (state.minLength && e.target.value.length < state.minLength) {
+        return dispatch({
+          type: 'ERROR',
+          error: `${state.minLength} or more characters required`,
+        });
+      }
 
       return dispatch({ type: 'UPDATE_VALUES', value: e.target.value });
     }
@@ -92,6 +110,8 @@ export default function useMultiEntry(initialState) {
   return {
     value: state.value,
     valueList: state.valueList,
+    minLength: state.minLength,
+    error: state.error,
     handleKeyDown,
     handleBlur,
     handleChange,

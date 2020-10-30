@@ -30,7 +30,7 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('clears current filter values when the user swaps between "compare by" values', () => {
+    it('validates the user\'s entry performing a "contains" or "does not contain" filter', () => {
       navigateToForm();
 
       cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
@@ -41,6 +41,30 @@ if (IS_HIBANA_ENABLED) {
       cy.findByLabelText(COMPARE_BY_LABEL).select('does not contain');
       cy.findByText('hello.com').should('not.be.visible');
       cy.findByText('world.org').should('not.be.visible');
+    });
+
+    it('clears current filter values when the user swaps between "compare by" values', () => {
+      navigateToForm();
+
+      cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+      cy.findByLabelText('Sending Domain').type('hello.com ');
+      cy.findByText('hello.com').should('be.visible');
+
+      // Verify that the error renders until the user resolves the length bug
+      cy.findByLabelText('Sending Domain').type('h ');
+      cy.findByText('3 or more characters required').should('be.visible');
+      cy.findByLabelText('Sending Domain').type('e');
+      cy.findByText('3 or more characters required').should('be.visible');
+      cy.findByLabelText('Sending Domain').type('l');
+      cy.findByText('3 or more characters required').should('not.be.visible');
+      cy.findByLabelText('Sending Domain').clear();
+
+      // The error is removed when the user deletes all of their entry
+      cy.findByLabelText('Sending Domain').type('he ');
+      cy.findByText('3 or more characters required').should('be.visible');
+      cy.findByLabelText('Sending Domain').clear();
+      cy.findByText('3 or more characters required').should('not.be.visible');
     });
 
     it('only renders the "is equal to" and "is not equal to" comparison options when the user selects the "Subaccount" filter type', () => {

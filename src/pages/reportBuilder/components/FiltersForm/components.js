@@ -72,11 +72,12 @@ export function MultiEntryController({
   const {
     value,
     valueList,
+    error,
     handleKeyDown,
     handleChange,
     handleBlur,
     handleRemove,
-  } = useMultiEntry({ valueList: initialValueList });
+  } = useMultiEntry({ valueList: initialValueList, minLength: 3 });
 
   useEffect(() => {
     setFilterValues({
@@ -90,6 +91,7 @@ export function MultiEntryController({
     id,
     value,
     valueList,
+    error,
     handleKeyDown,
     handleChange,
     handleBlur,
