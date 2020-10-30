@@ -15,9 +15,10 @@ jest.mock('src/pages/reportBuilder/context/ReportBuilderContext', () => ({
 }));
 
 const mockOnCancel = jest.fn();
-const mockCreateReport = jest.fn(() => Promise.resolve());
-const mockGetReports = jest.fn(() => Promise.resolve());
+const mockCreateReport = jest.fn(() => Promise.resolve({ id: 1 }));
+const mockGetReports = jest.fn(() => Promise.resolve([{ id: 1 }]));
 const mockShowAlert = jest.fn();
+const mockSetReport = jest.fn();
 
 describe('SaveNewReportModal', () => {
   const subject = props => {
@@ -29,6 +30,7 @@ describe('SaveNewReportModal', () => {
       showAlert: mockShowAlert,
       loading: false,
       create: true,
+      setReport: mockSetReport,
     };
 
     return shallow(<SaveReportModal {...defaults} {...props} />);
@@ -74,6 +76,7 @@ describe('UpdateReportModal', () => {
     loading: false,
     isOwner: true,
     report: {},
+    setReport: jest.fn(),
   };
   const subject = props => {
     return shallow(<SaveReportModal {...defaults} {...props} />);
