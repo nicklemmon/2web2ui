@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import useRouter from 'src/hooks/useRouter';
+import { useHistory } from 'react-router-dom';
 import { getReport, createScheduledReport } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
 import { Page } from 'src/components/matchbox';
@@ -10,6 +11,8 @@ const ScheduledReportCreatePage = props => {
   const {
     requestParams: { reportId },
   } = useRouter();
+
+  const history = useHistory();
 
   const { createScheduledReport, getReport, report, showAlert } = props;
 
@@ -23,7 +26,7 @@ const ScheduledReportCreatePage = props => {
         type: 'success',
         message: `Successfully scheduled ${values.name} for report: ${report.name}`,
       });
-      props.history.push('/signals/analytics');
+      history.push('/signals/analytics');
     });
   };
   return (

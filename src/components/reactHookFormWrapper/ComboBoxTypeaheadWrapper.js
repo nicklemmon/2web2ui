@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ComboBoxTypeahead } from 'src/components/typeahead/ComboBoxTypeahead';
 
-export default function CheckboxWrapper(props) {
+export default function ComboboxTypeaheadWrapper(props) {
   const { name, setValue, value = [], ...rest } = props;
   const [componentValue, setComponentValue] = useState(value);
   const handleChange = e => {

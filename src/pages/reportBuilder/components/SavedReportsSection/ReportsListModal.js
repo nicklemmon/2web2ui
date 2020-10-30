@@ -75,7 +75,7 @@ export function ReportsListModal(props) {
               <ActionList.Action
                 content="Schedule"
                 to={`/signals/schedule/${report.id}`}
-                component={PageLink}
+                as={PageLink}
               />
             )}
             <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />

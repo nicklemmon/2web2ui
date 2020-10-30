@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Box,
@@ -14,7 +15,7 @@ import {
 } from 'src/components/matchbox';
 import { Heading, Uppercase } from 'src/components/text';
 import { getLocalTimezone } from 'src/helpers/date';
-import { RadioButtonGroup } from 'src/components';
+import { ButtonWrapper, RadioButtonGroup } from 'src/components';
 import { ComboBoxTypeaheadWrapper } from 'src/components/reactHookFormWrapper';
 import { TimezoneTypeahead } from 'src/components/typeahead/TimezoneTypeahead';
 import { listUsers } from 'src/actions/users';
@@ -60,15 +61,17 @@ export const ScheduledReportForm = ({
   listUsers,
   loading,
   users,
+  usersLoading,
 }) => {
   const { control, handleSubmit, errors, register, setValue, watch } = useForm({
     defaultValues: {
       timing: 'daily',
       recipients: [],
+      period: 'AM',
     },
   });
-  const [period, setPeriod] = useState('AM');
   const [timezone, setTimezone] = useState(getLocalTimezone());
+  const history = useHistory();
 
   useEffect(() => {
     listUsers();
@@ -76,7 +79,7 @@ export const ScheduledReportForm = ({
 
   const Typeahead = (
     <ComboBoxTypeaheadWrapper
-      disabled={loading}
+      disabled={loading || usersLoading}
       error={errors.recipients && 'At least 1 recipient must be selected'}
       id="to-address"
       itemToString={item => (item ? `Name: ${item.name} ---- Email: ${item.email}` : '')}
@@ -88,10 +91,11 @@ export const ScheduledReportForm = ({
   );
 
   const onSubmit = formValues => {
-    parentHandleSubmit(formatFormValues({ ...formValues, period, timezone }));
+    parentHandleSubmit(formatFormValues({ ...formValues, timezone }));
   };
 
-  const currentTiming = watch('timing');
+  const timingFormValue = watch('timing');
+  const periodFormValue = watch('period');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} id="newScheduledReportForm">
@@ -104,6 +108,7 @@ export const ScheduledReportForm = ({
             <Panel.Section>
               <TextField
                 ref={register({ required: 'Required' })}
+                disabled={loading}
                 label="Scheduled Report Name"
                 name="name"
                 helpText="Title for the scheduling of this report"
@@ -130,6 +135,7 @@ export const ScheduledReportForm = ({
             <Panel.Section>
               <TextField
                 ref={register({ required: 'Required' })}
+                disabled={loading}
                 label="Email Subject"
                 name="subject"
                 helpText="Text which will appear as subject line in report email"
@@ -157,28 +163,52 @@ export const ScheduledReportForm = ({
           <Panel>
             <Panel.Section>
               <Radio.Group label="Send Report">
-                <Radio id="daily" ref={register} label="Daily" value="daily" name="timing" />
-                <Radio id="weekly" ref={register} label="Weekly" value="weekly" name="timing" />
-                <Radio id="monthly" ref={register} label="Monthly" value="monthly" name="timing" />
+                <Radio
+                  id="daily"
+                  disabled={loading}
+                  ref={register}
+                  label="Daily"
+                  value="daily"
+                  name="timing"
+                />
+                <Radio
+                  id="weekly"
+                  disabled={loading}
+                  ref={register}
+                  label="Weekly"
+                  value="weekly"
+                  name="timing"
+                />
+                <Radio
+                  id="monthly"
+                  disabled={loading}
+                  ref={register}
+                  label="Monthly"
+                  value="monthly"
+                  name="timing"
+                />
               </Radio.Group>
             </Panel.Section>
             <Panel.Section>
               <Inline>
                 <Select
+                  id="week"
                   ref={register}
                   label="Week"
                   name="week"
                   options={[`First`, 'Second', 'Third', 'Fourth']}
-                  disabled={currentTiming === 'weekly' || currentTiming === 'daily'}
+                  disabled={timingFormValue === 'weekly' || timingFormValue === 'daily' || loading}
                 />
                 <Select
+                  id="day"
                   ref={register}
                   label="Day"
                   name="day"
                   options={DAY_OF_WEEK_OPTIONS}
-                  disabled={currentTiming === 'daily'}
+                  disabled={timingFormValue === 'daily' || loading}
                 />
                 <TextField
+                  disabled={loading}
                   ref={register({
                     required: 'Required',
                     pattern: {
@@ -196,23 +226,23 @@ export const ScheduledReportForm = ({
                     <RadioButtonGroup id="period" label="Grouping Type">
                       <RadioButtonGroup.Button
                         id="am"
-                        name="am"
-                        checked={period === 'AM'}
-                        onChange={() => {
-                          setPeriod('AM');
-                        }}
+                        disabled={loading}
+                        name="period"
+                        checked={periodFormValue === 'AM'}
+                        onChange={() => setValue('period', 'AM')}
+                        ref={register}
                         value="AM"
                       >
                         <Uppercase>AM</Uppercase>
                       </RadioButtonGroup.Button>
                       <RadioButtonGroup.Button
                         id="pm"
-                        name="pm"
-                        checked={period === 'PM'}
-                        onChange={() => {
-                          setPeriod('PM');
-                        }}
-                        value="AM"
+                        disabled={loading}
+                        name="period"
+                        checked={periodFormValue === 'PM'}
+                        onChange={() => setValue('period', 'PM')}
+                        ref={register}
+                        value="PM"
                       >
                         <Uppercase>PM</Uppercase>
                       </RadioButtonGroup.Button>
@@ -220,17 +250,27 @@ export const ScheduledReportForm = ({
                   }
                 />
                 <Box minWidth="19rem">
-                  <TimezoneTypeahead initialValue={timezone} onChange={setTimezone} />
+                  <TimezoneTypeahead
+                    disabled={loading}
+                    initialValue={timezone}
+                    onChange={setTimezone}
+                  />
                 </Box>
               </Inline>
             </Panel.Section>
           </Panel>
-          <Inline>
-            <Button type="submit" variant="primary">
+          <ButtonWrapper>
+            <Button type="submit" variant="primary" disabled={loading}>
               Schedule Report
             </Button>
-            <Button variant="secondary">Cancel</Button>
-          </Inline>
+            <Button
+              variant="secondary"
+              onClick={() => history.push('/signals/analytics')}
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+          </ButtonWrapper>
         </Layout.Section>
       </Layout>
     </form>
@@ -238,7 +278,8 @@ export const ScheduledReportForm = ({
 };
 const mapStateToProps = state => ({
   users: selectUsers(state),
-  loading: state.users.loading,
+  usersLoading: state.users.loading,
+  loading: state.reports.saveScheduledReportStatus === 'loading',
 });
 
 export default connect(mapStateToProps, { listUsers })(ScheduledReportForm);
