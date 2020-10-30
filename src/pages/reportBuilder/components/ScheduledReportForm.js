@@ -10,10 +10,9 @@ import {
   Panel,
   Radio,
   Select,
-  Text,
   TextField,
 } from 'src/components/matchbox';
-import { Heading, Uppercase } from 'src/components/text';
+import { Definition, Uppercase } from 'src/components/text';
 import { getLocalTimezone } from 'src/helpers/date';
 import { ButtonWrapper, RadioButtonGroup } from 'src/components';
 import { ComboBoxTypeaheadWrapper } from 'src/components/reactHookFormWrapper';
@@ -119,16 +118,16 @@ export const ScheduledReportForm = ({
             <Panel.Section>
               <Inline space="800">
                 <div>
-                  <Heading as="h3" looksLike="h5">
-                    Report
-                  </Heading>
-                  <Text as="p">{report.name}</Text>
+                  <Definition>
+                    <Definition.Label>Report</Definition.Label>
+                    <Definition.Value>{report.name}</Definition.Value>
+                  </Definition>
                 </div>
                 <div>
-                  <Heading as="h3" looksLike="h5">
-                    From Address
-                  </Heading>
-                  <Text as="p">reports@sparkpost.com</Text>
+                  <Definition>
+                    <Definition.Label> From Address</Definition.Label>
+                    <Definition.Value>reports@sparkpost.com</Definition.Value>
+                  </Definition>
                 </div>
               </Inline>
             </Panel.Section>
