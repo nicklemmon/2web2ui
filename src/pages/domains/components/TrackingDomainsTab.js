@@ -5,6 +5,7 @@ import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
 import { usePageFilters } from 'src/hooks';
 import { Pagination } from 'src/components/collection';
+import { useTable } from 'react-table';
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
 import { DEFAULT_CURRENT_PAGE } from 'src/constants';
@@ -202,8 +203,7 @@ export default function TrackingDomainsTab() {
         {/* {!listPending && !isEmpty && <TrackingDomainsTable rows={tableState.rows} />} */}
       </Panel>
 
-      {/*
-      <Pagination
+      {/* <Pagination
         data={tableState.rawData}
         currentPage={DEFAULT_CURRENT_PAGE}
         perPage={tableState.perPage}
@@ -212,17 +212,17 @@ export default function TrackingDomainsTab() {
           page += 1;
           // Only adding this if condition because this keeps firing on load
           if (tableState.currentPage !== page) {
-            tableDispatch({
-              type: 'CHANGE_PAGE',
-              page: page,
-            });
+            // tableDispatch({
+            //   type: 'CHANGE_PAGE',
+            //   page: page,
+            // });
           }
         }}
         onPerPageChange={perPage => {
-          tableDispatch({
-            type: 'CHANGE_PER_PAGE',
-            perPage,
-          });
+          // tableDispatch({
+          //   type: 'CHANGE_PER_PAGE',
+          //   perPage,
+          // });
         }}
       /> */}
     </>

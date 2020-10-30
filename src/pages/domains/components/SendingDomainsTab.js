@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 
@@ -5,7 +6,7 @@ import { usePageFilters } from 'src/hooks';
 import { Panel, Pagination } from 'src/components/matchbox';
 import { Pagination } from 'src/components/collection';
 
-//
+import { useTable } from 'react-table';
 
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
@@ -100,7 +101,27 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listPending,
     listSubaccounts,
   } = useDomains();
-  const domains = renderBounceOnly ? bounceDomains : sendingDomains;
+  const domains = renderBounceOnly ? bounceDomains : sendingDomains; // data = domains in the react-table docs
+  const data = React.useMemo(() => domains, [domains]);
+
+  const columns = React.useMemo(
+    () => [
+      { Header: 'Blocked', accessor: 'blocked' },
+      { Header: 'CreationTime', accessor: 'creationTime' },
+      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain' },
+      { Header: 'DomainName', accessor: 'domainName' },
+      { Header: 'ReadyForBounce', accessor: 'readyForBounce' },
+      { Header: 'ReadyForDKIM', accessor: 'readyForDKIM' },
+      { Header: 'ReadyForSending', accessor: 'readyForSending' },
+      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
+      { Header: 'SubaccountId', accessor: 'subaccountId' },
+      { Header: 'SubaccountName', accessor: 'subaccountName' },
+      { Header: 'Unverified', accessor: 'unverified' },
+      { Header: 'ValidSPF', accessor: 'validSPF' },
+    ],
+    [],
+  );
+  const tableInstance = useTable({ columns, data });
 
   const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   // const [tableState, tableDispatch] = useTable(domains, {
@@ -190,7 +211,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       //   direction: sort.direction,
       // });
     }
-  }, [sort, listPending, tableDispatch]);
+  }, [sort, listPending]);
+  //, tableDispatch
 
   if (sendingDomainsListError) {
     return (
@@ -271,8 +293,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         {/* {!listPending && !isEmpty && <SendingDomainsTable rows={tableState.rows} />} */}
       </Panel>
 
-      {/*
-      <Pagination
+      {/* <Pagination
         data={tableState.rawData}
         currentPage={DEFAULT_CURRENT_PAGE}
         perPage={tableState.perPage}
@@ -282,17 +303,17 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
           // Only adding this if condition because this keeps firing on load
           if (tableState.currentPage !== page) {
-            tableDispatch({
-              type: 'CHANGE_PAGE',
-              page: page,
-            });
+            // tableDispatch({
+            //   type: 'CHANGE_PAGE',
+            //   page: page,
+            // });
           }
         }}
         onPerPageChange={perPage => {
-          tableDispatch({
-            type: 'CHANGE_PER_PAGE',
-            perPage,
-          });
+          // tableDispatch({
+          //   type: 'CHANGE_PER_PAGE',
+          //   perPage,
+          // });
         }}
       /> */}
     </>
