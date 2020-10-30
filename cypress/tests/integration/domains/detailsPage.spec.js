@@ -23,14 +23,19 @@ describe('The domains details page', () => {
         });
       });
 
-      // it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-      //   cy.visit(PAGE_URL);
+      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+        cy.stubRequest({
+          url: '/api/v1/tracking-domains',
+          fixture: 'tracking-domains/200.get.domain-details.json',
+          requestAlias: 'trackingDomainsList',
+        });
+        cy.visit(`${TRACKING_DETAILS_URL}/blah231231231.gmail.com`);
 
-      //   cy.wait('@accountDomainsReq');
+        cy.wait('@accountDomainsReq');
 
-      //   cy.title().should('include', 'Domain Details');
-      //   cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
-      // });
+        cy.title().should('include', 'Domain Details');
+        cy.findByRole('heading', { name: 'Domain Details' }).should('be.visible');
+      });
 
       describe('Domain Details Page for Tracking Domains', () => {
         it('if a domain is not found it redirects to the List Page', () => {
@@ -43,6 +48,7 @@ describe('The domains details page', () => {
 
           cy.wait(['@accountDomainsReq', '@trackingDomainsList']);
           cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
+          cy.url().should('include', '/domains/list');
         });
         it('For unverified Tracking Domain sections are rendered correctly along with a unverified banner', () => {
           cy.stubRequest({
@@ -114,6 +120,7 @@ describe('The domains details page', () => {
 
           cy.findAllByText(`Successfully deleted ${domainName}`);
           cy.findByRole('heading', { name: 'Domains' }).should('be.visible');
+          cy.url().should('include', '/domains/list');
         });
 
         it('renders correct section for Tracking Domains Details Section', () => {
