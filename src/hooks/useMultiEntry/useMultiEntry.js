@@ -69,6 +69,8 @@ const defaultInitialState = {
 export default function useMultiEntry(initialState) {
   const prevInitialState = usePrevious(initialState);
   const [state, dispatch] = useReducer(reducer, { ...defaultInitialState, ...initialState });
+  const hasMinLengthError = value =>
+    state.minLength && value.length > 0 && value.length < state.minLength;
 
   // If the initial state updates (i.e., through an external source of state),
   // update the value list accordingly
@@ -84,7 +86,7 @@ export default function useMultiEntry(initialState) {
       e.preventDefault();
 
       // Configurable min length returns an error when attempting to update valueList before meeting the requirement
-      if (state.minLength && e.target.value.length < state.minLength) {
+      if (hasMinLengthError(e.target.value)) {
         return dispatch({
           type: 'ERROR',
           error: `${state.minLength} or more characters required`,
@@ -104,6 +106,14 @@ export default function useMultiEntry(initialState) {
   }
 
   function handleBlur(e) {
+    // Configurable min length returns an error when attempting to update valueList before meeting the requirement
+    if (hasMinLengthError(e.target.value)) {
+      return dispatch({
+        type: 'ERROR',
+        error: `${state.minLength} or more characters required`,
+      });
+    }
+
     return dispatch({ type: 'UPDATE_VALUES', value: e.target.value });
   }
 
