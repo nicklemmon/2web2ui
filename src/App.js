@@ -1,4 +1,5 @@
 import React from 'react';
+import { ReactQueryDevtools } from 'react-query-devtools';
 import { AuthenticationGate, SuspensionAlerts } from 'src/components/auth';
 import { CookieConsent, GlobalAlertWrapper, BoomerangBanner, SiftScience } from 'src/components';
 import VisualWebsiteOptimizer from './components/vwo/VisualWebsiteOptimizer';
@@ -15,26 +16,30 @@ import config from 'src/config';
 import { BrowserRouter } from 'react-router-dom';
 
 const App = ({ RouterComponent = BrowserRouter }) => (
-  <RouterComponent>
-    <div>
-      {config.siftScience && <SiftScience config={config.siftScience} />}
-      <BoomerangBanner />
-      {config.gtmId && <GoogleTagManager id={config.gtmId} />}
-      <Pendo />
-      <VisualWebsiteOptimizer />
-      <Segment />
-      <AuthenticationGate />
-      <SuspensionAlerts />
-      <CookieConsent />
-      <GlobalBanner>
-        <Layout>
-          <AppRoutes />
-        </Layout>
-      </GlobalBanner>
-      <Support />
-      <GlobalAlertWrapper />
-    </div>
-  </RouterComponent>
+  <>
+    <RouterComponent>
+      <div>
+        {config.siftScience && <SiftScience config={config.siftScience} />}
+        <BoomerangBanner />
+        {config.gtmId && <GoogleTagManager id={config.gtmId} />}
+        <Pendo />
+        <VisualWebsiteOptimizer />
+        <Segment />
+        <AuthenticationGate />
+        <SuspensionAlerts />
+        <CookieConsent />
+        <GlobalBanner>
+          <Layout>
+            <AppRoutes />
+          </Layout>
+        </GlobalBanner>
+        <Support />
+        <GlobalAlertWrapper />
+      </div>
+    </RouterComponent>
+
+    <ReactQueryDevtools initialIsOpen={false} />
+  </>
 );
 
 export default App;

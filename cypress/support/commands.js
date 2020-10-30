@@ -43,15 +43,18 @@ Cypress.Commands.add('login', (options = {}) => {
 /**
  * Used to stub network responses for basic user, account, and auth requests
  */
-Cypress.Commands.add('stubAuth', () => {
+Cypress.Commands.add('stubAuth', ({ hasRefreshToken = false } = {}) => {
+  const authFixture = hasRefreshToken
+    ? 'authenticate/200.post.with-refresh-token.json'
+    : 'authenticate/200.post.json';
   cy.server();
 
-  cy.fixture('authenticate/200.post.json').as('authenticatePost');
+  cy.fixture(authFixture).as('authenticatePost');
   cy.fixture('users/two-factor/200.get.json').as('twoFactorGet');
   cy.fixture('users/200.get.json').as('usersGet');
   cy.fixture('account/200.get.json').as('accountGet');
   cy.fixture('billing/plans/200.get.json').as('plansGet');
-  cy.fixture('billing/subscription/200.get.json').as('billingSubscriptionGet');
+  cy.fixture('billing/subscription/200.get.json').as('subscriptionGet');
   cy.fixture('billing/bundles/200.get.json').as('bundlesGet');
   cy.fixture('authenticate/grants/200.get.admin.json').as('grantsGet');
   cy.fixture('suppression-list/200.get.json').as('suppressionsGet');
@@ -86,8 +89,8 @@ Cypress.Commands.add('stubAuth', () => {
     method: 'GET',
     url: '/api/v1/billing/subscription',
     status: 200,
-    response: '@plansGet',
-  }).as('stubbedBillingSubsriptionRequest');
+    response: '@subscriptionGet',
+  }).as('stubbedBillingSubscriptionRequest');
   cy.route({
     method: 'GET',
     url: '/api/v1/billing/bundles',

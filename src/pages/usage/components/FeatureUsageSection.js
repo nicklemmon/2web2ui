@@ -1,7 +1,8 @@
 import React from 'react';
 import { Layout, Box, ProgressBar, Stack } from 'src/components/matchbox';
 import { SubduedText, Heading } from 'src/components/text';
-export const FeatureUsageSection = ({ billingSubscription }) => {
+
+export default function FeatureUsageSection({ billingSubscription }) {
   const { products } = billingSubscription;
 
   const getProduct = product_name => products.find(x => x.product === product_name);
@@ -55,4 +56,4 @@ export const FeatureUsageSection = ({ billingSubscription }) => {
       </Layout.Section>
     </>
   );
-};
+}
