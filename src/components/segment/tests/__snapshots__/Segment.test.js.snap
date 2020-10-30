@@ -14,8 +14,8 @@ analytics.load("abcdefg1234567");
 }}();
     </script>
   </HelmetWrapper>
-  <Connect(SegmentIdentify) />
-  <Connect(SegmentPage) />
+  <Component />
+  <Component />
 </Fragment>
 `;
 

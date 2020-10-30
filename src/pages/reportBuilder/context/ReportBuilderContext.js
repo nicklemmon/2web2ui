@@ -80,7 +80,7 @@ const reducer = (state, action) => {
 
       //old version of update
 
-      const rollupPrecision = useMetricsRollup && update.precision;
+      const rollupPrecision = useMetricsRollup && (update.precision || 'hour'); //Default to hour since it's the recommended rollup precision for 7 days
       if (update.relativeRange !== 'custom') {
         const { from, to } = getRelativeDates(update.relativeRange, {
           precision: rollupPrecision,
@@ -145,7 +145,7 @@ const reducerV2 = (state, action) => {
 
       //old version of update
 
-      const rollupPrecision = useMetricsRollup && update.precision;
+      const rollupPrecision = useMetricsRollup && (update.precision || 'hour'); //Default to hour since it's the recommended rollup precision for 7 days
       if (update.relativeRange !== 'custom') {
         const { from, to } = getRelativeDates(update.relativeRange, {
           precision: rollupPrecision,

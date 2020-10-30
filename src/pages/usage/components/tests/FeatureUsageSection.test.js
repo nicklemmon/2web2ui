@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { FeatureUsageSection } from '../FeatureUsageSection';
+import FeatureUsageSection from '../FeatureUsageSection';
 describe('FeatureUsageSection', () => {
   const defaultProps = {
     billingSubscription: {

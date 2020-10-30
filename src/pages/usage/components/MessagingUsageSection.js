@@ -3,10 +3,16 @@ import { Box, Grid, Inline, Layout, Stack } from 'src/components/matchbox';
 import { ExternalLink, PageLink } from 'src/components/links';
 import { Heading, SubduedText } from 'src/components/text';
 import { formatDate } from 'src/helpers/date';
+import config from 'src/config';
 import { LINKS } from 'src/constants';
-import { LabelAndKeyPair } from './LabelAndKeyPair';
+import { LabelAndKeyPair } from '.';
 
-export const MessagingUsageSection = ({ usage, subscription }) => {
+export default function MessagingUsageSection({
+  usage,
+  subscription,
+  endOfBillingPeriod,
+  startOfBillingPeriod,
+}) {
   const remaining = usage && subscription && subscription.plan_volume - usage.month.used;
   const overage = remaining < 0 ? Math.abs(remaining) : 0;
   const hasDailyLimit = usage && usage.day.limit && usage.day.limit > 0;
@@ -58,7 +64,10 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
                   <Box id="date">
                     <LabelAndKeyPair
                       label="Billing Cycle"
-                      value={`${formatDate(usage.month.start)} - ${formatDate(usage.month.end)}`}
+                      value={`${formatDate(startOfBillingPeriod, config.dateFormat)} - ${formatDate(
+                        endOfBillingPeriod,
+                        config.dateFormat,
+                      )}`}
                     ></LabelAndKeyPair>
                   </Box>
                 </Grid.Column>
@@ -124,4 +133,4 @@ export const MessagingUsageSection = ({ usage, subscription }) => {
       </Layout.Section>
     </>
   );
-};
+}

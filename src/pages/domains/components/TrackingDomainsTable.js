@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subaccount } from 'src/components';
+import { SubaccountShrinkWrapper } from 'src/components';
 import { ScreenReaderOnly, Stack, Table } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { TranslatableText } from 'src/components/text';
@@ -41,13 +41,16 @@ function MainCell({ row }) {
 
   return (
     <Stack space="100">
-      <PageLink to={`${DETAILS_BASE_URL}/${domainName}`}>{domainName}</PageLink>
+      <PageLink to={`${DETAILS_BASE_URL}/tracking/${domainName}`}>{domainName}</PageLink>
 
       {subaccountId && (
-        <div>
+        <SubaccountShrinkWrapper
+          sharedWithSubaccounts={sharedWithSubaccounts}
+          subaccountId={subaccountId}
+          subaccountName={subaccountName}
+        >
           <TranslatableText>Assignment: </TranslatableText>
-          <Subaccount all={sharedWithSubaccounts} id={subaccountId} name={subaccountName} />
-        </div>
+        </SubaccountShrinkWrapper>
       )}
     </Stack>
   );

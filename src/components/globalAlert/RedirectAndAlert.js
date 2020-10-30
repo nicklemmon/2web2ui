@@ -14,7 +14,4 @@ export class RedirectAndAlert extends Component {
   }
 }
 
-const RedirectAndAlertContainer = connect(undefined, { showAlert })(RedirectAndAlert);
-RedirectAndAlertContainer.displayName = 'RedirectAndAlert';
-
-export default RedirectAndAlertContainer;
+export default connect(undefined, { showAlert })(RedirectAndAlert);

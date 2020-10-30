@@ -2,7 +2,7 @@ import { createMockStore } from 'src/__testHelpers__/mockStore';
 
 import * as sendingIps from '../sendingIps';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: Sending IPs', () => {
   let mockStore;

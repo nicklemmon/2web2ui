@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[
-  `StatusDescription component Shallow tests does not render subaccount details on master account domains 1`
-] = `
+exports[`StatusDescription component Shallow tests does not render subaccount details on master account domains 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <LabelledValue
@@ -37,15 +35,14 @@ exports[`StatusDescription component Shallow tests renders subaccount details 1`
         isDefault={false}
         master={false}
         receiveAll={false}
+        shrinkLength={12}
       />
     </LabelledValue>
   </Panel.LEGACY.Section>
 </Fragment>
 `;
 
-exports[
-  `StatusDescription component Shallow tests renders verification status correctly blocked 1`
-] = `
+exports[`StatusDescription component Shallow tests renders verification status correctly blocked 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <LabelledValue
@@ -59,9 +56,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `StatusDescription component Shallow tests renders verification status correctly pending 1`
-] = `
+exports[`StatusDescription component Shallow tests renders verification status correctly pending 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <LabelledValue
@@ -75,9 +70,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `StatusDescription component Shallow tests renders verification status correctly unverified 1`
-] = `
+exports[`StatusDescription component Shallow tests renders verification status correctly unverified 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <LabelledValue
@@ -91,9 +84,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `StatusDescription component Shallow tests renders verification status correctly verified 1`
-] = `
+exports[`StatusDescription component Shallow tests renders verification status correctly verified 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <LabelledValue

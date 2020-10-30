@@ -25,12 +25,15 @@ function OGToggleBlock({ input, label, helpText, ...rest }) {
 }
 
 function HibanaToggleBlock(props) {
-  const { input, label, helpText, ...rest } = props;
+  /* variant prop helps adjusting the spacing between toggle and label text*/
+  const { input, label, helpText, variant, ...rest } = props;
+  const columns = variant === 'dense' ? 4 : 8;
+  const justifyContent = variant === 'dense' ? 'flex-start' : 'flex-end';
 
   return (
     <Box data-id="toggle-block">
       <Grid middle="xs">
-        <Grid.Column xs={8}>
+        <Grid.Column xs={columns}>
           {/* actual label for ScreenReaders made available via the `Toggle` component */}
           <div aria-hidden="true">
             <Label label={label} fontSize="200" />
@@ -38,7 +41,7 @@ function HibanaToggleBlock(props) {
         </Grid.Column>
 
         <Grid.Column xs={4}>
-          <Box display="flex" alignItems="center" justifyContent="flex-end">
+          <Box display="flex" alignItems="center" justifyContent={justifyContent}>
             <Toggle
               id={input.name}
               label={label}

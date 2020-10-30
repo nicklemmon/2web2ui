@@ -64,7 +64,7 @@ export class ListPage extends Component {
     const rowData = [this.getLabel(key), <ShortKeyCode shortKey={short_key} />];
 
     if (hasSubaccounts) {
-      rowData.push(<Subaccount id={subaccount_id} name={subaccount_name} />);
+      rowData.push(<Subaccount id={subaccount_id} name={subaccount_name} shrinkLength={12} />);
     }
 
     return rowData;

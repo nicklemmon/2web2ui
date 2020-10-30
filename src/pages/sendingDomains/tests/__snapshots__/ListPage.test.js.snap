@@ -196,6 +196,7 @@ Array [
       isDefault={false}
       master={false}
       receiveAll={false}
+      shrinkLength={12}
     />,
   ],
   Array [

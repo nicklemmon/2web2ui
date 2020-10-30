@@ -1,20 +1,21 @@
 import React from 'react';
+import _ from 'lodash';
 import { Box, Grid, Inline, Layout } from 'src/components/matchbox';
-import { SubduedText } from 'src/components/text';
+import { SubduedText, TranslatableText } from 'src/components/text';
 import { PageLink } from 'src/components/links';
 import { formatDate } from 'src/helpers/date';
 import totalRecipientValidationCost from 'src/helpers/recipientValidation';
-import { LabelAndKeyPair } from './LabelAndKeyPair';
-import _ from 'lodash';
+import { LabelAndKeyPair } from '.';
 
-export const RVUsageSection = ({ rvUsage: { recipient_validation } = {} }) => {
-  const volumeUsed = _.get(recipient_validation, 'month.used', 0);
+export default function RVUsageSection({ rvUsage }) {
+  const volumeUsed = _.get(rvUsage, 'month.used', 0);
+
   return (
     <>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Recipient Validation Usage</Layout.SectionTitle>
         <SubduedText>
-          Validate email addresses by going to{' '}
+          <TranslatableText>Validate email addresses by going to </TranslatableText>
           <PageLink to="/recipient-validation/list">Recipient Validation</PageLink>
         </SubduedText>
       </Layout.Section>
@@ -22,20 +23,18 @@ export const RVUsageSection = ({ rvUsage: { recipient_validation } = {} }) => {
         <Box padding="400" backgroundColor="gray.1000">
           <Grid>
             <Grid.Column sm={3}>
-              {recipient_validation && (
+              {rvUsage && (
                 <Box id="date">
                   <LabelAndKeyPair
                     label="Date Range"
-                    value={`${formatDate(recipient_validation.month.start)} - ${formatDate(
-                      recipient_validation.month.end,
-                    )}`}
+                    value={`${formatDate(rvUsage.month.start)} - ${formatDate(rvUsage.month.end)}`}
                   ></LabelAndKeyPair>
                 </Box>
               )}
             </Grid.Column>
             <Grid.Column sm={9}>
               <Inline space="400">
-                {recipient_validation && (
+                {rvUsage && (
                   <Box>
                     <LabelAndKeyPair
                       label="Current Cycle Validations"
@@ -43,7 +42,7 @@ export const RVUsageSection = ({ rvUsage: { recipient_validation } = {} }) => {
                     ></LabelAndKeyPair>
                   </Box>
                 )}
-                {recipient_validation && (
+                {rvUsage && (
                   <Box>
                     <LabelAndKeyPair
                       label="Current Cycle Expenses"
@@ -58,4 +57,4 @@ export const RVUsageSection = ({ rvUsage: { recipient_validation } = {} }) => {
       </Layout.Section>
     </>
   );
-};
+}

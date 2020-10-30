@@ -19,6 +19,7 @@ const PanelLoading = props => {
       accent={accent}
       data-id="panel-loading"
       title={title}
+      minHeight={minHeight}
     >
       <Loading minHeight={minHeight} />
     </StyledPanel>

@@ -8,10 +8,9 @@ import { Select } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
 
-export default function LinkTrackingDomainSection({ domain, trackingDomains, isSectionVisible }) {
-  const { control, handleSubmit } = useForm();
-
-  const { updateSendingDomain, showAlert } = useDomains();
+export default function LinkTrackingDomainSection({ domain, isSectionVisible }) {
+  const { control, handleSubmit, watch } = useForm();
+  const { trackingDomainOptions, updateSendingDomain, showAlert } = useDomains();
 
   const onSubmit = ({ trackingDomain }) => {
     const { id, subaccount_id: subaccount } = domain;
@@ -30,16 +29,22 @@ export default function LinkTrackingDomainSection({ domain, trackingDomains, isS
         }),
       );
   };
+
   if (!isSectionVisible) {
     return null;
   }
+
   return (
     <Layout>
       <Layout.Section annotated>
         <Layout.SectionTitle as="h2">Link Tracking Domain</Layout.SectionTitle>
         <Stack>
-          <SubduedText>Assign a tracking domain?</SubduedText>
-          <SubduedLink as={ExternalLink} to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+          <SubduedText fontSize="200">Assign a tracking domain?</SubduedText>
+          <SubduedLink
+            as={ExternalLink}
+            to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}
+            fontSize="200"
+          >
             Tracking Domain Documentation
           </SubduedLink>
         </Stack>
@@ -54,7 +59,7 @@ export default function LinkTrackingDomainSection({ domain, trackingDomains, isS
                   <Select
                     onChange={onChange}
                     value={value || domain.tracking_domain}
-                    options={trackingDomains || []}
+                    options={trackingDomainOptions || []}
                     label="Linked Tracking Domain"
                     helpText="Domains must be verified to be linked to a sending domain."
                   />
@@ -63,10 +68,16 @@ export default function LinkTrackingDomainSection({ domain, trackingDomains, isS
               />
             </Panel.Section>
             <Panel.Section>
-              <Button variant="primary" type="submit">
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={
+                  watch('trackingDomain') === domain.tracking_domain ||
+                  !Boolean(watch('trackingDomain'))
+                }
+              >
                 Update Tracking Domain
               </Button>
-              {/* Functionality not available */}
             </Panel.Section>
           </Panel>
         </form>

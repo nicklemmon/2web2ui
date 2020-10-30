@@ -81,7 +81,7 @@ Array [
     formattedDate="Never Triggered"
     timestamp={0}
   />,
-  <Connect(AlertToggle)
+  <Memo(Connect(AlertToggle))
     id="id-1"
     muted={true}
   />,
@@ -113,7 +113,7 @@ Array [
     formattedDate="Jun 5 2019, 10:48am"
     timestamp={1559746080000}
   />,
-  <Connect(AlertToggle)
+  <Memo(Connect(AlertToggle))
     id="id-2"
     muted={false}
   />,
@@ -145,7 +145,7 @@ Array [
     formattedDate="Jun 15 2019, 10:48am"
     timestamp={1560610080000}
   />,
-  <Connect(AlertToggle)
+  <Memo(Connect(AlertToggle))
     id="id-3"
     muted={true}
   />,

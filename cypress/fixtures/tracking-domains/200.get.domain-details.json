@@ -202,6 +202,17 @@
         "compliance_status": "valid"
       },
       "subaccount_id": 12189
+    },
+    {
+      "domain": "example.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": {
+        "verified": false,
+        "cname_status": "unverified",
+        "compliance_status": "valid"
+      }
     }
   ]
 }

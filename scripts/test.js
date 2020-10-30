@@ -15,7 +15,7 @@ process.on('unhandledRejection', err => {
 // Ensure environment variables are read.
 require('../config/env');
 
-
+// eslint-disable-next-line jest/no-jest-import
 const jest = require('jest');
 const execSync = require('child_process').execSync;
 let argv = process.argv.slice(2);
@@ -39,11 +39,7 @@ function isInMercurialRepository() {
 }
 
 // Watch unless on CI, in coverage mode, or explicitly running all tests
-if (
-  !process.env.CI &&
-  argv.indexOf('--coverage') === -1 &&
-  argv.indexOf('--watchAll') === -1
-) {
+if (!process.env.CI && argv.indexOf('--coverage') === -1 && argv.indexOf('--watchAll') === -1) {
   // https://github.com/facebook/create-react-app/issues/5210
   const hasSourceControl = isInGitRepository() || isInMercurialRepository();
   argv.push(hasSourceControl ? '--watch' : '--watchAll');

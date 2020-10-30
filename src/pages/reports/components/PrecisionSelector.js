@@ -10,9 +10,12 @@ const PrecisionSelector = ({ from, to, changeTime, selectedPrecision, disabled }
   const uniqueId = useUniqueId('precision-selector');
 
   useEffect(() => {
-    const updatedPrecision = getRollupPrecision({ from, to, precision: selectedPrecision });
-    if (updatedPrecision !== selectedPrecision) {
-      changeTime({ precision: updatedPrecision });
+    if (from && to && selectedPrecision) {
+      const updatedPrecision = getRollupPrecision({ from, to, precision: selectedPrecision });
+      if (updatedPrecision !== selectedPrecision) {
+        //Bug showed up during unit tests, wasn't showing up in actual page though.
+        changeTime({ precision: updatedPrecision });
+      }
     }
   }, [changeTime, from, precisionOptions, selectedPrecision, to]);
 

@@ -1,61 +1,112 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Banner, Button } from 'src/components/matchbox';
-import { get as getDomain } from 'src/actions/sendingDomains';
-import Domains from './components';
+import { Page, Banner, Button, Box } from 'src/components/matchbox';
+import { useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  selectAllowDefaultBounceDomains,
-  selectAllSubaccountDefaultBounceDomains,
-} from 'src/selectors/account';
+import { get as getDomain, clearSendingDomain } from 'src/actions/sendingDomains';
+import { list as listSubaccounts } from 'src/actions/subaccounts';
+import { listTrackingDomains } from 'src/actions/trackingDomains';
 import { selectDomain } from 'src/selectors/sendingDomains';
+import { selectTrackingDomainsListHibana } from 'src/selectors/trackingDomains';
+import { selectTrackingDomainCname } from 'src/selectors/account';
+import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { resolveReadyFor, resolveStatus } from 'src/helpers/domains';
 import { ExternalLink, SupportTicketLink } from 'src/components/links';
-import {
-  selectTrackingDomainsOptions,
-  selectTrackingDomainsList,
-} from 'src/selectors/trackingDomains';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
-import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
+import { Bold, TranslatableText } from 'src/components/text';
+import RedirectAndAlert from 'src/components/globalAlert/RedirectAndAlert';
 import { Loading } from 'src/components/loading/Loading';
-import { listTrackingDomains } from 'src/actions/trackingDomains';
 import _ from 'lodash';
-import { TranslatableText } from 'src/components/text';
-import { EXTERNAL_LINKS } from './constants';
+import styled from 'styled-components';
+import Domains from './components';
+import { DETAILS_BASE_URL, EXTERNAL_LINKS } from './constants';
 
+const StyledBox = styled(Box)`
+  max-width: 600px;
+`;
 function DetailsPage(props) {
   const {
-    trackingDomainList,
     match,
     history,
     sendingDomainsPending,
     trackingDomainListPending,
-    allowSubaccountDefault,
-    allowDefault,
-    domain,
-    isByoipAccount,
-    trackingDomains,
-    hasAnyoneAtEnabled,
+    sendingOrBounceDomain,
     getDomain,
     listTrackingDomains,
+    clearSendingDomain,
+    trackingDomainList,
+    sendingDomainsGetError,
+    listSubaccounts,
+    hasSubaccounts,
+    subaccounts,
+    trackingDomainCname,
+    trackingDomainListError,
   } = props;
-  const resolvedStatus = resolveStatus(domain.status);
+  const [isTracking] = useState(useRouteMatch(`${DETAILS_BASE_URL}/tracking`));
   const [warningBanner, toggleBanner] = useState(true);
-  const readyFor = resolveReadyFor(domain.status);
-  const displaySendingAndBounceSection =
-    resolvedStatus === 'verified' && readyFor.bounce && domain.status.spf_status === 'valid';
-  const isTracking = Boolean(_.find(trackingDomainList, ['domain', match.params.id.toLowerCase()]));
+  const [trackingDomainNotFound, settrackingDomainNotFound] = useState(false);
+  let domain = isTracking
+    ? _.find(trackingDomainList, ['domain', match.params.id.toLowerCase()])
+    : sendingOrBounceDomain;
+
+  const handleAllDomains = () => {
+    if (isTracking) return history.push('/domains/list/tracking');
+
+    if (readyFor.bounce) return history.push('/domains/list/bounce');
+
+    return history.push('/domains/list/sending');
+  };
 
   useEffect(() => {
-    getDomain(match.params.id);
-  }, [getDomain, match.params.id]);
+    if (!isTracking) getDomain(match.params.id);
+    return () => {
+      //reset the domain
+      clearSendingDomain();
+    };
+  }, [clearSendingDomain, getDomain, isTracking, match.params.id]);
   useEffect(() => {
-    listTrackingDomains();
-  }, [listTrackingDomains]);
+    if (isTracking)
+      listTrackingDomains().then(res => {
+        //this logic redirects to list page when the tracking domain is not found in the list
+        if (!Boolean(_.find(res, ['domain', match.params.id.toLowerCase()]))) {
+          settrackingDomainNotFound(true);
+        }
+      });
+  }, [history, isTracking, listTrackingDomains, match.params.id]);
+
+  useEffect(() => {
+    if (hasSubaccounts && subaccounts?.length === 0) {
+      listSubaccounts();
+    }
+  }, [hasSubaccounts, listSubaccounts, subaccounts]);
+
+  if (!isTracking && sendingDomainsGetError) {
+    return (
+      <RedirectAndAlert
+        to="/domains/list/sending"
+        alert={{ type: 'error', message: sendingDomainsGetError.message }}
+      />
+    );
+  }
+
+  if (isTracking && (trackingDomainListError || trackingDomainNotFound)) {
+    return (
+      <RedirectAndAlert
+        to="/domains/list/tracking"
+        alert={{ type: 'error', message: 'Resource could not be found' }}
+      />
+    );
+  }
 
   if (sendingDomainsPending || trackingDomainListPending) {
     return <Loading />;
   }
+  if (!domain) {
+    return null;
+  }
+
+  const resolvedStatus = isTracking ? domain.status : resolveStatus(domain.status);
+  const readyFor = isTracking ? {} : resolveReadyFor(domain.status);
+  const displaySendingAndBounceSection =
+    readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
 
   return (
     <Domains.Container>
@@ -63,10 +114,7 @@ function DetailsPage(props) {
         title="Domain Details"
         breadcrumbAction={{
           content: 'All Domains',
-          onClick: () =>
-            isTracking
-              ? history.push('/domains/list/tracking')
-              : history.push('/domains/list/sending'),
+          onClick: handleAllDomains,
         }}
       >
         {resolvedStatus === 'unverified' && warningBanner && !isTracking && (
@@ -82,13 +130,41 @@ function DetailsPage(props) {
               It can take 24 to 48 hours for the DNS records to propogate and verify the domain.
             </TranslatableText>
             <Banner.Actions>
-              <ExternalLink to="/">Domains Documentation</ExternalLink>
+              <ExternalLink to={EXTERNAL_LINKS.VERIFY_SENDING_DOMAIN_OWNERSHIP}>
+                Domains Documentation
+              </ExternalLink>
             </Banner.Actions>
           </Banner>
         )}
+        {resolvedStatus === 'unverified' && warningBanner && isTracking && (
+          <Banner
+            status="warning"
+            title="Unverified domains will be removed two weeks after being added."
+            onDismiss={() => {
+              toggleBanner(false);
+            }}
+            mb="500"
+          >
+            <TranslatableText>
+              To verify a tracking domain, edit its DNS settings to <Bold>add a CNAME record</Bold>{' '}
+              with the value of <strong>{trackingDomainCname}</strong>.
+            </TranslatableText>
+            <Banner.Actions>
+              <ExternalLink to={EXTERNAL_LINKS.TRACKING_DOMAIN_DOCUMENTATION}>
+                Domains Documentation
+              </ExternalLink>
+            </Banner.Actions>
+          </Banner>
+        )}
+
         {resolvedStatus === 'blocked' && (
           <Banner status="danger" title="This domain has been blocked by SparkPost" mb="500">
-            ??
+            <StyledBox>
+              If your domain’s status is “Blocked”, it’s generally because your domain is already in
+              use by another SparkPost account, your domain has been previously blocked for sending
+              abusive traffic through our service or another provider, or because one or more of our
+              requirements are not met.
+            </StyledBox>
             <Banner.Actions>
               <SupportTicketLink as={Button}>Create Support ticket</SupportTicketLink>
               <ExternalLink to={EXTERNAL_LINKS.BLOCKED_DOMAIN_DOCUMENTATION}>
@@ -98,32 +174,22 @@ function DetailsPage(props) {
           </Banner>
         )}
 
-        <Domains.DomainStatusSection
-          domain={domain}
-          id={match.params.id}
-          allowSubaccountDefault={allowSubaccountDefault}
-          allowDefault={allowDefault}
-          isTracking={isTracking}
-        />
+        <Domains.DomainStatusSection domain={domain} id={match.params.id} isTracking={isTracking} />
 
         <Domains.SetupForSending
           domain={domain}
-          id={match.params.id}
-          resolvedStatus={resolvedStatus}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && !displaySendingAndBounceSection
           }
         />
         <Domains.SetupBounceDomainSection
           domain={domain}
-          isByoipAccount={isByoipAccount}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && !displaySendingAndBounceSection
           }
         />
         <Domains.SendingAndBounceDomainSection
           domain={domain}
-          isByoipAccount={isByoipAccount}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && displaySendingAndBounceSection
           }
@@ -131,7 +197,6 @@ function DetailsPage(props) {
 
         <Domains.LinkTrackingDomainSection
           domain={domain}
-          trackingDomains={trackingDomains}
           isSectionVisible={
             resolvedStatus !== 'blocked' && !isTracking && resolvedStatus !== 'unverified'
           }
@@ -139,11 +204,10 @@ function DetailsPage(props) {
 
         <Domains.VerifyEmailSection
           domain={domain}
-          hasAnyoneAtEnabled={hasAnyoneAtEnabled}
           isSectionVisible={resolvedStatus === 'unverified' && !isTracking}
         />
 
-        <Domains.TrackingDnsSection id={match.params.id} isSectionVisible={isTracking} />
+        <Domains.TrackingDnsSection domain={domain} isSectionVisible={isTracking} />
 
         <Domains.DeleteDomainSection
           domain={domain}
@@ -158,15 +222,15 @@ function DetailsPage(props) {
 
 export default connect(
   state => ({
-    domain: selectDomain(state),
-    allowDefault: selectAllowDefaultBounceDomains(state),
-    allowSubaccountDefault: selectAllSubaccountDefaultBounceDomains(state),
-    trackingDomains: selectTrackingDomainsOptions(state),
-    trackingDomainList: selectTrackingDomainsList(state),
-    isByoipAccount: selectCondition(hasAccountOptionEnabled('byoip_customer'))(state),
-    hasAnyoneAtEnabled: selectHasAnyoneAtDomainVerificationEnabled(state),
+    trackingDomainList: selectTrackingDomainsListHibana(state),
+    trackingDomainCname: selectTrackingDomainCname(state),
+    trackingDomainListError: state.trackingDomains.error,
     sendingDomainsPending: state.sendingDomains.getLoading,
     trackingDomainListPending: state.trackingDomains.listLoading,
+    hasSubaccounts: hasSubaccounts(state),
+    sendingDomainsGetError: state.sendingDomains.getError,
+    sendingOrBounceDomain: selectDomain(state),
+    subaccounts: state.subaccounts.list,
   }),
-  { getDomain, listTrackingDomains },
+  { getDomain, listTrackingDomains, listSubaccounts, clearSendingDomain },
 )(DetailsPage);

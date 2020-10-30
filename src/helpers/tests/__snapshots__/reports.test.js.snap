@@ -20,6 +20,8 @@ Array [
 ]
 `;
 
+exports[`report helpers mapFiltersToComparators returns an empty array when no mapped filters are returned 1`] = `Array []`;
+
 exports[`report helpers mapFiltersToComparators returns the new structure for filters 1`] = `
 Array [
   Object {

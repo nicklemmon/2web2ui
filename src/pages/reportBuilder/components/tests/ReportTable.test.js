@@ -2,18 +2,13 @@ import React from 'react';
 import { render, within } from '@testing-library/react';
 import { ReportTable } from '../ReportTable';
 import { shallow } from 'enzyme';
-import { MemoryRouter } from 'react-router-dom';
+import TestApp from 'src/__testHelpers__/TestApp';
 
 jest.mock('../../context/ReportBuilderContext', () => ({
   useReportBuilderContext: jest.fn(() => [{ foo: 'bar' }]),
 }));
 
 jest.mock('../AddFilterLink', () => jest.fn(({ newFilter }) => <>{newFilter.value}</>));
-
-//Hibana will be enabled in actual component but this should only affect layout
-jest.mock('src/context/HibanaContext', () => ({
-  useHibana: jest.fn().mockReturnValue([{ isHibanaEnabled: false }]),
-}));
 
 describe('Summary Table', () => {
   let wrapper;
@@ -41,9 +36,9 @@ describe('Summary Table', () => {
 
   const subject = (givenProps = {}) =>
     render(
-      <MemoryRouter>
+      <TestApp isHibanaEnabled={true}>
         <ReportTable {...props} {...givenProps} />
-      </MemoryRouter>,
+      </TestApp>,
     );
 
   beforeEach(() => {

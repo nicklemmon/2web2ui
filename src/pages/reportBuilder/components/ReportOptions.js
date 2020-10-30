@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import { Heading } from 'src/components/text';
 import { Button, Drawer, Inline, Panel } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
@@ -13,7 +12,6 @@ import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
 import { selectCondition } from 'src/selectors/accessConditionState';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { dehydrateFilters } from '../helpers';
 import { ActiveFilters, ActiveFiltersV2 } from './ActiveFilters';
 
@@ -41,6 +39,9 @@ export function ReportOptions(props) {
   const isEmpty = useMemo(() => {
     return !Boolean(processedMetrics.length);
   }, [processedMetrics]);
+
+  // Render filters when metrics are not empty and when the filters array is not empty
+  const hasFilters = !isEmpty && Boolean(reportOptions.filters.length);
 
   // Updates the query params with incoming search option changes
   useEffect(() => {
@@ -194,35 +195,33 @@ export function ReportOptions(props) {
         </Panel.Section>
       )}
 
-      {!isEmpty &&
-      Boolean(reportOptions.filters.length) && ( // Only show if there are active filters
-          <Panel.Section>
-            <Inline>
-              <Heading as="h2" looksLike="h5">
-                Filters
-              </Heading>
+      {hasFilters && (
+        <Panel.Section>
+          <Inline>
+            <Heading as="h2" looksLike="h5">
+              Filters
+            </Heading>
 
-              {isComparatorsEnabled ? (
-                <ActiveFiltersV2
-                  filters={reportOptions.filters}
-                  handleFilterRemove={handleFilterRemoveV2}
-                />
-              ) : (
-                <ActiveFilters
-                  filters={reportOptions.filters}
-                  handleFilterRemove={handleFilterRemove}
-                />
-              )}
-            </Inline>
-          </Panel.Section>
-        )}
+            {isComparatorsEnabled ? (
+              <ActiveFiltersV2
+                filters={reportOptions.filters}
+                handleFilterRemove={handleFilterRemoveV2}
+              />
+            ) : (
+              <ActiveFilters
+                filters={reportOptions.filters}
+                handleFilterRemove={handleFilterRemove}
+              />
+            )}
+          </Inline>
+        </Panel.Section>
+      )}
     </div>
   );
 }
 
 const mapStateToProps = state => ({
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
-  isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
   isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
   isCompareByEnabled: selectCondition(isAccountUiOptionSet('allow_compare_by'))(state), //Comparing different filters
 });

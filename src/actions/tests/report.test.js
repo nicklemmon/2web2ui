@@ -1,7 +1,7 @@
 import * as reports from '../reports';
 import sparkpostApiRequest from '../helpers/sparkpostApiRequest';
 
-jest.mock('src/actions/helpers/sparkpostApiRequest', () => jest.fn(a => a));
+jest.mock('src/actions/helpers/sparkpostApiRequest');
 
 describe('Action Creator: Reports', () => {
   it('it makes request to save a new report', async () => {

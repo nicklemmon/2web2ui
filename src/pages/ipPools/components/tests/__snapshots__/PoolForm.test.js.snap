@@ -16,7 +16,7 @@ exports[`PoolForm should render form 1`] = `
           placeholder="My IP Pool"
           validate={[Function]}
         />
-        <AccessControl
+        <Component
           condition={[Function]}
         >
           <Field
@@ -25,7 +25,7 @@ exports[`PoolForm should render form 1`] = `
             label="Default Signing Domain"
             name="signing_domain"
           />
-        </AccessControl>
+        </Component>
         <Field
           component={[Function]}
           disabled={false}

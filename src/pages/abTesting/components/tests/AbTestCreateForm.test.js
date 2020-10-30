@@ -10,15 +10,11 @@ describe('A/B Test Create Form Component', () => {
     submitting: false,
     pristine: true,
     hasSubaccounts: false,
-    templates: ['fake']
+    templates: ['fake'],
   };
 
   beforeEach(() => {
     wrapper = shallow(<AbTestCreateForm {...props} />);
-  });
-
-  it('should render correctly', () => {
-    expect(wrapper).toMatchSnapshot();
   });
 
   it('should handle submit', () => {
@@ -37,12 +33,15 @@ describe('A/B Test Create Form Component', () => {
   });
 
   it('should handle ID fill', () => {
-    wrapper.find('Field').at(0).simulate('change', { target: { value: 'test 1 2!' }});
+    wrapper
+      .find('Field')
+      .at(0)
+      .simulate('change', { target: { value: 'test 1 2!' } });
     expect(wrapper.instance().props.change).toHaveBeenCalledWith('id', 'test-1-2');
   });
 
   it('should render when no available templates', () => {
-    wrapper.setProps({ templates: []});
+    wrapper.setProps({ templates: [] });
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.find('Button').props().disabled).toEqual(true);
   });
@@ -56,6 +55,5 @@ describe('A/B Test Create Form Component', () => {
       wrapper.setProps({ submitting: true, pristine: false });
       expect(wrapper.find('Button').props().children).toEqual('Submitting...');
     });
-
   });
 });

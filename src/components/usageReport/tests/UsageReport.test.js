@@ -19,6 +19,8 @@ describe('UsageReport Component', () => {
       subscription: {
         plan_volume: 10000,
       },
+      endOfBillingPeriod: '2017-08-31T08:00:00.000Z',
+      startOfBillingPeriod: '2017-08-01T08:00:00.000Z',
       usage: {
         month: {
           used: 1000,

@@ -9,7 +9,7 @@ exports[`EditTab Render loading 1`] = `
 
 exports[`EditTab Render normal props 1`] = `
 <Panel.LEGACY>
-  <Connect(ReduxForm)
+  <Component
     onSubmit={[Function]}
     subaccount={
       Object {

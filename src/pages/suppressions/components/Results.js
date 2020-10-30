@@ -25,7 +25,14 @@ export function Results(props) {
     ];
 
     if (hasSubaccounts) {
-      rowData.push(<Subaccount id={subaccountId} master={!subaccountId} name={subaccount_name} />);
+      rowData.push(
+        <Subaccount
+          id={subaccountId}
+          master={!subaccountId}
+          name={subaccount_name}
+          shrinkLength={12}
+        />,
+      );
     }
 
     rowData.push(

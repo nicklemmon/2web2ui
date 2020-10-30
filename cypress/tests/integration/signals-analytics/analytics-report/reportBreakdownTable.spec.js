@@ -209,12 +209,14 @@ if (IS_HIBANA_ENABLED) {
 
     it('renders data broken down by "Subaccount"', () => {
       cy.clock(STABLE_UNIX_DATE);
+
       cy.stubRequest({
         url: '/api/v1/metrics/deliverability/subaccount**/*',
         fixture: 'metrics/deliverability/subaccount/200.get.json',
         requestAlias: 'getSubaccount',
       });
-
+      cy.visit(PAGE_URL);
+      cy.wait('@getSubaccountList');
       cy.findByLabelText('Break Down By')
         .scrollIntoView()
         .select('Subaccount', { force: true });
@@ -245,7 +247,7 @@ if (IS_HIBANA_ENABLED) {
 
       verifyRow({
         rowIndex: 2,
-        firstCell: 'Subaccount 2',
+        firstCell: 'Fake Subaccount 2 (ID 102)',
         secondCell: '500',
         thirdCell: '600',
         fourthCell: '700',
@@ -254,7 +256,7 @@ if (IS_HIBANA_ENABLED) {
 
       verifyRow({
         rowIndex: 3,
-        firstCell: 'Subaccount 1',
+        firstCell: 'Fake Subaccount 1 (ID 101)',
         secondCell: '100',
         thirdCell: '200',
         fourthCell: '300',

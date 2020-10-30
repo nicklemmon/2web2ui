@@ -22,9 +22,20 @@ import {
   verifyTrackingDomain,
 } from 'src/actions/trackingDomains';
 import { selectSendingDomainsRows, selectBounceDomainsRows } from 'src/selectors/sendingDomains';
-import { selectTrackingDomainsRows } from 'src/selectors/trackingDomains';
+import {
+  selectTrackingDomainsRows,
+  selectTrackingDomainsOptions,
+} from 'src/selectors/trackingDomains';
+import { selectTrackingDomainCname } from 'src/selectors/account';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { DomainsProvider } from '../context/DomainsContext';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { hasAccountOptionEnabled } from 'src/helpers/conditions/account';
+import { selectHasAnyoneAtDomainVerificationEnabled } from 'src/selectors/account';
+import {
+  selectAllowDefaultBounceDomains,
+  selectAllSubaccountDefaultBounceDomains,
+} from 'src/selectors/account';
 
 function mapStateToProps(state) {
   return {
@@ -41,8 +52,18 @@ function mapStateToProps(state) {
     hasSubaccounts: hasSubaccounts(state),
     subaccounts: state.subaccounts.list,
     trackingDomains: selectTrackingDomainsRows(state),
+    trackingDomainOptions: selectTrackingDomainsOptions(state),
     trackingDomainsListError: state.trackingDomains.error,
     userName: state.currentUser.username,
+    isByoipAccount: selectCondition(hasAccountOptionEnabled('byoip_customer'))(state),
+    hasAnyoneAtEnabled: selectHasAnyoneAtDomainVerificationEnabled(state),
+    allowDefault: selectAllowDefaultBounceDomains(state),
+    allowSubaccountDefault: selectAllSubaccountDefaultBounceDomains(state),
+    verifyDkimLoading: state.sendingDomains.verifyDkimLoading,
+    verifyEmailLoading: state.sendingDomains.verifyEmailLoading,
+    verifyBounceLoading: state.sendingDomains.verifyBounceLoading,
+    verifyingTrackingPending: state.trackingDomains.verifyingTrackingPending,
+    trackingDomainCname: selectTrackingDomainCname(state),
   };
 }
 

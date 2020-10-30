@@ -133,6 +133,7 @@ export class TrackingDomainRow extends Component {
                     className={styles.Tag}
                     id={subaccountId}
                     isDefault={!!subaccountId && isDefault}
+                    shrinkLength={12}
                   />
                 )}
               </div>

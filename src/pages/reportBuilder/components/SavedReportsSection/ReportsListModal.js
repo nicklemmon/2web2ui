@@ -119,7 +119,7 @@ export function ReportsListModal(props) {
       <div>{formatDateTime(modified)}</div>,
       <div>{creator}</div>,
       <Tag>
-        <Subaccount id={subaccount_id} master={subaccount_id === 0} />
+        <Subaccount id={subaccount_id} master={subaccount_id === 0} shrinkLength={12} />
       </Tag>,
       action,
     ];

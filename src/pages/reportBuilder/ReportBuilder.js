@@ -24,7 +24,6 @@ import {
   RejectionReasonsTable,
 } from './components/tabs';
 import { selectCondition } from 'src/selectors/accessConditionState';
-import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportBuilder.module.scss';
 import { getSubscription } from 'src/actions/billing';
@@ -49,7 +48,6 @@ const MetricDefinition = ({ label, children }) => {
 
 export function ReportBuilder({
   chart,
-  isSavedReportsEnabled,
   isComparatorsEnabled,
   getSubscription,
   refreshReportBuilder,
@@ -93,45 +91,44 @@ export function ReportBuilder({
   }, [getSubscription]);
 
   useEffect(() => {
-    if (isComparatorsEnabled) {
-      getSubaccountsList();
-    }
-  }, [isComparatorsEnabled, getSubaccountsList]);
+    getSubaccountsList();
+  }, [getSubaccountsList]);
 
   useEffect(() => {
-    if (isSavedReportsEnabled) {
-      getReports();
-    }
-  }, [isSavedReportsEnabled, getReports]);
+    getReports();
+  }, [getReports]);
 
-  //Initializes the report options with the search
+  //Grabs report options from the URL query params (as well as report ID)
   useEffect(() => {
-    const { report: reportId, filters: optionsFilters = [], ...options } = parseSearch(
+    const { report: reportId, filters: urlFilters = [], ...urlOptions } = parseSearch(
       location.search,
     );
 
+    //Looks for report with report ID
     const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
     const report = allReports.find(({ id }) => id === reportId);
 
-    //Waiting on reports (if enabled) to initialize
+    //Waiting on reports to load (if enabled) to finish initializeing
+    //Waiting on subaccounts (if using comparators) to finish initializing
     if (
-      (reportId && isSavedReportsEnabled && reportsStatus !== 'success') ||
+      (reportId && reportsStatus !== 'success') ||
       (isComparatorsEnabled && !subaccountsReady) ||
       reportOptions.isReady //Already ran once
     ) {
       return;
     }
 
-    // Initializes once it finds relavant report
+    // If report is found from ID, consolidates reportOptions from URL and report
     if (report) {
       const { filters: reportFilters = [], ...reportOptions } = parseSearch(report.query_string);
       setReport(report);
-      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...optionsFilters] });
+      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...urlFilters] });
     } else {
-      refreshReportOptions(options);
+      //Initializes w/ just URL options
+      refreshReportOptions({ ...urlOptions, filters: urlFilters });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSavedReportsEnabled, reportsStatus, reports, subaccountsReady]);
+  }, [reportsStatus, reports, subaccountsReady]);
 
   const isMaxReports = useMemo(() => {
     const reportsProduct = subscription?.products?.find(({ product }) => product === 'reports');
@@ -193,28 +190,26 @@ export function ReportBuilder({
     <Page
       title="Analytics Report"
       primaryArea={
-        isSavedReportsEnabled && (
-          <Box display="flex" alignItems="center">
-            {isMaxReports && (
-              <Tooltip
-                id="reports_limit_tooltip"
-                content="Your account has reached its limit on custom saved reports. You either need to delete a report or upgrade your plan."
-              >
-                <div tabIndex="0" data-id="reports-limit-tooltip-icon">
-                  <Error color="gray.700" />
-                </div>
-              </Tooltip>
-            )}
-            <Button
-              ml="300"
-              disabled={isMaxReports}
-              variant="primary"
-              onClick={() => setShowSaveNewReportModal(true)}
+        <Box display="flex" alignItems="center">
+          {isMaxReports && (
+            <Tooltip
+              id="reports_limit_tooltip"
+              content="Your account has reached its limit on custom saved reports. You either need to delete a report or upgrade your plan."
             >
-              Save New Report
-            </Button>
-          </Box>
-        )
+              <div tabIndex="0" data-id="reports-limit-tooltip-icon">
+                <Error color="gray.700" />
+              </div>
+            </Tooltip>
+          )}
+          <Button
+            ml="300"
+            disabled={isMaxReports}
+            variant="primary"
+            onClick={() => setShowSaveNewReportModal(true)}
+          >
+            Save New Report
+          </Button>
+        </Box>
       }
     >
       <Panel>
@@ -297,13 +292,11 @@ export function ReportBuilder({
           <ReportTable />
         </div>
       )}
-      {isSavedReportsEnabled && (
-        <SaveReportModal
-          create
-          open={showSaveNewReportModal}
-          onCancel={() => setShowSaveNewReportModal(false)}
-        />
-      )}
+      <SaveReportModal
+        create
+        open={showSaveNewReportModal}
+        onCancel={() => setShowSaveNewReportModal(false)}
+      />
     </Page>
   );
 }
@@ -311,7 +304,6 @@ export function ReportBuilder({
 //Redux
 const mapStateToProps = state => ({
   chart: state.summaryChart,
-  isSavedReportsEnabled: selectCondition(isUserUiOptionSet('allow_saved_reports'))(state),
   isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
   reports: state.reports.list,
   reportsStatus: state.reports.status,

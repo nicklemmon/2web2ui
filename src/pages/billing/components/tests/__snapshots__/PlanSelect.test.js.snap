@@ -16,7 +16,7 @@ exports[`Plan Select: should render correctly 1`] = `
   }
   title="Select a Plan"
 >
-  <Connect(ComparisonModal)
+  <ComparisonModal
     handleClose={[Function]}
     open={false}
   />

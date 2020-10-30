@@ -1,7 +1,7 @@
 import { createMockStore } from 'src/__testHelpers__/mockStore';
 import * as alerts from '../alerts';
 
-jest.mock('../helpers/sparkpostApiRequest', () => jest.fn((a) => a));
+jest.mock('../helpers/sparkpostApiRequest');
 
 describe('Action Creator: Alerts', () => {
   let mockStore;
@@ -21,12 +21,12 @@ describe('Action Creator: Alerts', () => {
   });
 
   it('should dispatch a create action', () => {
-    mockStore.dispatch(alerts.createAlert({ data: { name: 'Mock Name' }}));
+    mockStore.dispatch(alerts.createAlert({ data: { name: 'Mock Name' } }));
     expect(mockStore.getActions()).toMatchSnapshot();
   });
 
   it('should dispatch an update action', () => {
-    mockStore.dispatch(alerts.updateAlert({ id: 'alert-id', data: { name: 'Updated Name' }}));
+    mockStore.dispatch(alerts.updateAlert({ id: 'alert-id', data: { name: 'Updated Name' } }));
     expect(mockStore.getActions()).toMatchSnapshot();
   });
 

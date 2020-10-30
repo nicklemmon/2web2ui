@@ -9,9 +9,7 @@ exports[`Component: TrackingDomainRow Tag component should render the IsDefaultT
 </Tag>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to master account should render a "currently verifying" domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to master account should render a "currently verifying" domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -91,9 +89,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to master account should render a blocked domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to master account should render a blocked domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -173,9 +169,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to master account should render a default unverified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to master account should render a default unverified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -262,9 +256,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to master account should render a default verified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to master account should render a default verified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -347,9 +339,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to master account should render a non-default unverified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to master account should render a non-default unverified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -424,9 +414,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to master account should render a non-default verified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to master account should render a non-default verified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -501,9 +489,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to master account should render a pending domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to master account should render a pending domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -583,9 +569,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to subaccount should render a "currently verifying" domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to subaccount should render a "currently verifying" domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -612,6 +596,7 @@ exports[
             isDefault={false}
             master={false}
             receiveAll={false}
+            shrinkLength={12}
           />
         </div>
       </Grid.Column>
@@ -673,9 +658,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to subaccount should render a blocked domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to subaccount should render a blocked domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -702,6 +685,7 @@ exports[
             isDefault={false}
             master={false}
             receiveAll={false}
+            shrinkLength={12}
           />
         </div>
       </Grid.Column>
@@ -763,9 +747,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to subaccount should render a default unverified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to subaccount should render a default unverified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -792,6 +774,7 @@ exports[
             isDefault={true}
             master={false}
             receiveAll={false}
+            shrinkLength={12}
           />
         </div>
       </Grid.Column>
@@ -859,9 +842,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to subaccount should render a default verified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to subaccount should render a default verified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -884,6 +865,7 @@ exports[
             isDefault={true}
             master={false}
             receiveAll={false}
+            shrinkLength={12}
           />
         </div>
       </Grid.Column>
@@ -951,9 +933,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to subaccount should render a non-default unverified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to subaccount should render a non-default unverified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -980,6 +960,7 @@ exports[
             isDefault={false}
             master={false}
             receiveAll={false}
+            shrinkLength={12}
           />
         </div>
       </Grid.Column>
@@ -1041,9 +1022,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to subaccount should render a non-default verified domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to subaccount should render a non-default verified domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -1066,6 +1045,7 @@ exports[
             isDefault={false}
             master={false}
             receiveAll={false}
+            shrinkLength={12}
           />
         </div>
       </Grid.Column>
@@ -1127,9 +1107,7 @@ exports[
 </Fragment>
 `;
 
-exports[
-  `Component: TrackingDomainRow rendering when assigned to subaccount should render a pending domain 1`
-] = `
+exports[`Component: TrackingDomainRow rendering when assigned to subaccount should render a pending domain 1`] = `
 <Fragment>
   <Panel.LEGACY.Section>
     <Grid>
@@ -1156,6 +1134,7 @@ exports[
             isDefault={false}
             master={false}
             receiveAll={false}
+            shrinkLength={12}
           />
         </div>
       </Grid.Column>

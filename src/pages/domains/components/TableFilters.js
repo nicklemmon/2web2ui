@@ -8,15 +8,18 @@ import {
   TextField,
   ScreenReaderOnly,
   Select,
+  Label,
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
-import {
-  StyledFilterFields,
-  StyledLabelSpacer,
-  StatusPopoverContent,
-  StyledGridCell,
-} from './styles';
+import { StyledFilterFields, StatusPopoverContent, StyledGridCell } from './styles';
+import { ChevronRight } from '@sparkpost/matchbox-icons';
+import styled from 'styled-components';
+
+const Chevron = styled(ChevronRight)`
+  color: ${props => props.theme.colors.blue['700']};
+  transform: rotate(90deg);
+`;
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -47,6 +50,9 @@ export function reducer(state, action) {
       };
     }
 
+    case 'RESET':
+      return action.state;
+
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -71,13 +77,15 @@ function SortSelect({ options, onChange, disabled }) {
   const uniqueId = useUniqueId('domains-sort-select');
 
   return (
-    <Select
-      id={uniqueId}
-      label="Sort By"
-      options={options}
-      onChange={onChange}
-      disabled={disabled}
-    />
+    <StyledGridCell>
+      <Select
+        id={uniqueId}
+        label="Sort By"
+        options={options}
+        onChange={onChange}
+        disabled={disabled}
+      />
+    </StyledGridCell>
   );
 }
 
@@ -88,9 +96,8 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
   const hasCheckedCheckboxes = checkedCheckboxes?.length > 0;
 
   return (
-    <StyledGridCell>
-      <StyledLabelSpacer />
-
+    <Box>
+      <Label label="Domain Status" />
       <Popover
         left
         id={uniqueId}
@@ -98,7 +105,8 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
         onClose={() => setIsPopoverOpen(false)}
         trigger={
           <Button
-            variant="secondary"
+            outline
+            variant="monochrome"
             aria-expanded={isPopoverOpen}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
             disabled={disabled}
@@ -116,6 +124,7 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
             </StatusPopoverContent>
 
             <ScreenReaderOnly>Domain Status</ScreenReaderOnly>
+            <Button.Icon as={Chevron} ml="100" size={25} />
           </Button>
         }
       >
@@ -142,7 +151,7 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
           </Button>
         </Box>
       </Popover>
-    </StyledGridCell>
+    </Box>
   );
 }
 

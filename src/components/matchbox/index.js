@@ -43,3 +43,5 @@ export { default as Toggle } from './Toggle';
 export { default as Tooltip } from './Tooltip';
 export { default as UnstyledLink } from './UnstyledLink';
 export { default as WindowEvent } from './WindowEvent';
+
+export { useResizeObserver } from '@sparkpost/matchbox-hibana';

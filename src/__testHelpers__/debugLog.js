@@ -1,4 +1,5 @@
+const { log } = console;
+
 export default function debugLog(...args) {
-  // eslint-disable-next-line no-console
-  process.env.DEBUG && console.log(...args);
+  process.env.DEBUG && log(...args);
 }
