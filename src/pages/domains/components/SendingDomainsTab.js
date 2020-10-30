@@ -101,9 +101,12 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listPending,
     listSubaccounts,
   } = useDomains();
-  const domains = renderBounceOnly ? bounceDomains : sendingDomains; // data = domains in the react-table docs
-  const data = React.useMemo(() => domains, [domains]);
 
+  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+
+  const domains = renderBounceOnly ? bounceDomains : sendingDomains;
+  const data = React.useMemo(() => domains, [domains]);
+  // TODO: Generate this using Object.keys? Make that a re-usable function?
   const columns = React.useMemo(
     () => [
       { Header: 'Blocked', accessor: 'blocked' },
@@ -122,22 +125,9 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     [],
   );
   const tableInstance = useTable({ columns, data });
+  const { rows } = tableInstance;
+  const isEmpty = !listPending && rows?.length === 0;
 
-  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
-  // const [tableState, tableDispatch] = useTable(domains, {
-  //   sortBy: 'creationTime',
-  //   sortDirection: 'desc',
-  //   paginate: true,
-  // });
-  // const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
-  // const isEmpty = !listPending && tableState.rows?.length === 0;
-
-  // const [tableState, tableDispatch] = useTable(domains, { paginate: true });
-  // const isEmpty = !listPending && tableState.rows?.length === 0;
-
-  // const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
-  // const [tableState, tableDispatch] = useTable(domains);
-  // const isEmpty = !listPending && tableState.rows?.length === 0;
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   //resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
@@ -289,11 +279,11 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
           </TableFilters>
         </Panel.Section>
 
-        {/* {listPending && <Loading />} */}
+        {listPending && <Loading />}
 
-        {/* {isEmpty && <Empty message="There is no data to display" />} */}
+        {isEmpty && <Empty message="There is no data to display" />}
 
-        {/* {!listPending && !isEmpty && <SendingDomainsTable rows={tableState.rows} />} */}
+        {!listPending && !isEmpty && <SendingDomainsTable tableInstance={tableInstance} />}
       </Panel>
 
       {/* <Pagination

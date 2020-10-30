@@ -6,7 +6,9 @@ import { TranslatableText } from 'src/components/text';
 import { DETAILS_BASE_URL } from '../constants';
 import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 
-export default function TrackingDomainsTable({ rows }) {
+export default function TrackingDomainsTable({ tableInstance }) {
+  const { rows, prepareRow } = tableInstance;
+
   return (
     <Table title="Tracking Domains">
       <ScreenReaderOnly as="thead">
@@ -18,15 +20,16 @@ export default function TrackingDomainsTable({ rows }) {
       </ScreenReaderOnly>
 
       <tbody>
-        {rows?.map((domain, index) => {
+        {rows?.map((row, index) => {
+          prepareRow(row);
           return (
             <Table.Row key={`table-row-${index}`}>
               <Table.Cell>
-                <MainCell row={domain} />
+                <MainCell row={row.values} />
               </Table.Cell>
 
               <Table.Cell>
-                <TrackingDomainStatusCell row={domain} />
+                <TrackingDomainStatusCell row={row.values} />
               </Table.Cell>
             </Table.Row>
           );

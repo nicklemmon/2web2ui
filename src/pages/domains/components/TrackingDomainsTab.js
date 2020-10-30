@@ -65,19 +65,28 @@ export default function TrackingDomainsTab() {
     trackingDomains,
     trackingDomainsListError,
   } = useDomains();
-  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
 
-  // const [tableState, tableDispatch] = useTable(trackingDomains);
-  // const isEmpty = !listPending && tableState.rows?.length === 0;
+  const data = React.useMemo(() => trackingDomains, [trackingDomains]);
+  // TODO: Generate this using Object.keys? Make that a re-usable function?
+  const columns = React.useMemo(
+    () => [
+      { Header: 'Blocked', accessor: 'blocked' },
+      { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain' },
+      { Header: 'DomainName', accessor: 'domainName' },
+      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
+      { Header: 'SubaccountId', accessor: 'subaccountId' },
+      { Header: 'SubaccountName', accessor: 'subaccountName' },
+      { Header: 'Unverified', accessor: 'unverified' },
+      { Header: 'Verified', accessor: 'verified' },
+    ],
+    [],
+  );
+  const tableInstance = useTable({ columns, data });
+  const { rows, prepareRow } = tableInstance;
+
+  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
-  // const [tableState, tableDispatch] = useTable(trackingDomains, { paginate: true });
-  // const isEmpty = !listPending && tableState.rows?.length === 0;
-  // const [tableState, tableDispatch] = useTable(trackingDomains, {
-  //   sortBy: 'domainName',
-  //   sortDirection: 'asc',
-  //   paginate: true,
-  // });
-  // const isEmpty = !listPending && tableState.rows?.length === 0;
+  const isEmpty = !listPending && rows?.length === 0;
 
   // Make initial requests
   useEffect(() => {
@@ -198,9 +207,9 @@ export default function TrackingDomainsTab() {
 
         {listPending && <Loading />}
 
-        {/* {isEmpty && <Empty message="There is no data to display" />} */}
+        {isEmpty && <Empty message="There is no data to display" />}
 
-        {/* {!listPending && !isEmpty && <TrackingDomainsTable rows={tableState.rows} />} */}
+        {!listPending && !isEmpty && <TrackingDomainsTable tableInstance={tableInstance} />}
       </Panel>
 
       {/* <Pagination
