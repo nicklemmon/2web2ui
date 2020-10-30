@@ -25,20 +25,25 @@ describe('The domains create page', () => {
       cy.verifyLink({ href: LINKS.SENDING_REQS, content: 'Domains Documentation' });
       cy.findByRole('heading', { name: 'Domain and Assignment' }).should('be.visible');
       cy.findByLabelText('Domain').should('be.visible');
-      cy.findByLabelText('Principal and all Subaccounts')
+      cy.findByLabelText('Share with all Subaccounts')
         .should('be.visible')
         .should('be.checked');
-      cy.findByLabelText('Principal Account only').should('be.visible');
-      cy.findByLabelText('Single Subaccount').should('be.visible');
+      cy.findByLabelText('Assign to Master Account').should('be.visible');
+      cy.findByLabelText('Assign to Subaccount').should('be.visible');
     });
 
     it('creates a new sending domain assigned to all subaccounts', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal and all Subaccounts').should('be.checked');
+      cy.findByLabelText('Share with all Subaccounts').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.withinModal(() => {
@@ -54,19 +59,26 @@ describe('The domains create page', () => {
         cy.wrap(shared_with_subaccounts).should('be.eq', true);
       });
 
+      cy.wait('@unverifieddkimSendingDomains');
+
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
       cy.title().should('include', 'Verify Sending/Bounce Domain | Domains');
       cy.findByRole('heading', { name: 'Verify Sending/Bounce Domain' }).should('be.visible');
     });
 
-    it('creates a new sending domain for the principal account only', () => {
+    it('creates a new sending domain for the Assign to Master Account', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal Account only').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Master Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.withinModal(() => {
@@ -81,6 +93,7 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
       });
+      cy.wait('@unverifieddkimSendingDomains');
 
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
@@ -92,10 +105,15 @@ describe('The domains create page', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
       stubSubaccountsReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Sending Domain/g).check();
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Single Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.wait('@subaccountsReq');
       cy.findByLabelText('Subaccount').click();
       cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
@@ -114,7 +132,7 @@ describe('The domains create page', () => {
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
         cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
       });
-
+      cy.wait('@unverifieddkimSendingDomains');
       cy.findByText('Sending Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-sending');
       cy.title().should('include', 'Verify Sending/Bounce Domain | Domains');
@@ -151,10 +169,15 @@ describe('The domains create page', () => {
     it('creates a new bounce domain assigned to all subaccounts', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal and all Subaccounts').should('be.checked');
+      cy.findByLabelText('Share with all Subaccounts').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.wait('@sendingDomainsReq').then(xhr => {
@@ -163,19 +186,24 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(shared_with_subaccounts).should('be.eq', true);
       });
-
+      cy.wait('@unverifieddkimSendingDomains');
       cy.findByText('Bounce Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-bounce');
       cy.title().should('include', 'Verify Bounce Domain | Domains');
       cy.findByRole('heading', { name: 'Verify Bounce Domain' }).should('be.visible');
     });
-    it('creates a new bounce domain for the principal account only', () => {
+    it('creates a new bounce domain for the Assign to Master Account', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal Account only').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Master Account').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.wait('@sendingDomainsReq').then(xhr => {
@@ -184,6 +212,7 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
       });
+      cy.wait('@unverifieddkimSendingDomains');
 
       cy.findByText('Bounce Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-bounce');
@@ -194,10 +223,15 @@ describe('The domains create page', () => {
       commonBeforeSteps();
       stubSendingDomainsPostReq();
       stubSubaccountsReq();
+      cy.stubRequest({
+        url: '/api/v1/sending-domains/example.com',
+        fixture: 'sending-domains/200.get.unverified-dkim.json',
+        requestAlias: 'unverifieddkimSendingDomains',
+      });
 
       cy.findByLabelText(/Bounce Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Single Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.wait('@subaccountsReq');
       cy.findByLabelText('Subaccount').click();
       cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
@@ -210,6 +244,7 @@ describe('The domains create page', () => {
         cy.wrap(shared_with_subaccounts).should('be.eq', false);
         cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
       });
+      cy.wait('@unverifieddkimSendingDomains');
 
       cy.findByText('Bounce Domain example.com created').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-bounce');
@@ -219,11 +254,16 @@ describe('The domains create page', () => {
     it('creates a new tracking domain', () => {
       commonBeforeSteps();
       stubTrackingDomainsPostReq();
+      cy.stubRequest({
+        url: '/api/v1/tracking-domains',
+        fixture: 'tracking-domains/200.get.domain-details.json',
+        requestAlias: 'trackingDomainsList',
+      });
 
       cy.findByLabelText(/Tracking Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Principal and all Subaccounts').should('not.be.visible'); // This field is hidden when "Tracking Domains" is selected as the primary use
-      cy.findByLabelText('Principal Account only').should('be.checked');
+      cy.findByLabelText('Share with all Subaccounts').should('not.be.visible'); // This field is hidden when "Tracking Domains" is selected as the primary use
+      cy.findByLabelText('Assign to Master Account').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
       cy.wait('@trackingDomainsReq').then(xhr => {
@@ -231,6 +271,7 @@ describe('The domains create page', () => {
 
         cy.wrap(domain).should('be.eq', 'example.com');
       });
+      cy.wait('@trackingDomainsList');
 
       cy.findByText('Successfully added example.com').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-tracking');
@@ -263,10 +304,15 @@ describe('The domains create page', () => {
       commonBeforeSteps();
       stubTrackingDomainsPostReq();
       stubSubaccountsReq();
+      cy.stubRequest({
+        url: '/api/v1/tracking-domains',
+        fixture: 'tracking-domains/200.get.domain-details.json',
+        requestAlias: 'trackingDomainsList',
+      });
 
       cy.findByLabelText(/Tracking Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Single Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
+      cy.findByLabelText('Assign to Subaccount').check({ force: true }); // `force` required to workaround Matchbox CSS implementation
       cy.wait('@subaccountsReq');
       cy.findByLabelText('Subaccount').click();
       cy.findByRole('option', { name: /Fake Subaccount 1/g }).click();
@@ -278,6 +324,7 @@ describe('The domains create page', () => {
         cy.wrap(domain).should('be.eq', 'example.com');
         cy.wrap(xhr.request.headers['x-msys-subaccount']).should('be.eq', 101);
       });
+      cy.wait('@trackingDomainsList');
 
       cy.findByText('Successfully added example.com').should('be.visible');
       cy.url().should('include', '/domains/details/example.com/verify-tracking');
@@ -288,7 +335,7 @@ describe('The domains create page', () => {
     it('renders form validation errors when skipping required fields', () => {
       commonBeforeSteps();
 
-      cy.findByLabelText('Single Subaccount').check({ force: true });
+      cy.findByLabelText('Assign to Subaccount').check({ force: true });
       cy.findByRole('button', { name: 'Save and Continue' }).click();
       cy.findByText('A valid domain is required.').should('be.visible');
       cy.findByText('A valid subdomain is required.').should('be.visible');

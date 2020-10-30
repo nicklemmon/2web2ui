@@ -8,25 +8,13 @@ import _ from 'lodash';
 
 export default function DeleteDomainSection({ domain, isTracking, id, history }) {
   const { closeModal, isModalOpen, openModal } = useModal();
-  const {
-    deleteDomain,
-    deleteTrackingDomain,
-    showAlert,
-    trackingDomains,
-    deletePending,
-  } = useDomains();
+  const { deleteDomain, deleteTrackingDomain, showAlert, deletePending } = useDomains();
   const handleDeleteDomain = () => {
     if (isTracking) {
-      let trackingDomain = _.find(trackingDomains, ['domainName', id.toLowerCase()]);
-
       return deleteTrackingDomain({
         domain: id,
-        subaccount: trackingDomain.subaccountId,
+        subaccountId: domain.subaccount_id,
       }).then(() => {
-        showAlert({
-          type: 'success',
-          message: `Domain ${id} deleted.`,
-        });
         history.push('/domains/list/tracking');
       });
     } else {

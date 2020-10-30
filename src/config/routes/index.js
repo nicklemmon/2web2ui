@@ -716,9 +716,8 @@ const appRoutes = [
     subcategory: 'Recipient Validation',
   },
   {
-    path: '/domains/list/*',
+    path: '/domains/list/:domainType',
     component: domains.ListPage,
-    exact: false,
     title: 'Domains',
     condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
     layout: App,
@@ -735,7 +734,16 @@ const appRoutes = [
     subcategory: 'Domains',
   },
   {
-    path: '/domains/details/:id',
+    path: '/domains/details/sending-bounce/:id',
+    component: domains.DetailsPage,
+    condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
+    layout: App,
+    title: 'Domain Details | Domains',
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/details/tracking/:id',
     component: domains.DetailsPage,
     condition: all(isAccountUiOptionSet('allow_domains_v2'), isUserUiOptionSet('isHibanaEnabled')),
     layout: App,
