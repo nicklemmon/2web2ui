@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Stack } from 'src/components/matchbox';
-import { Checkbox, Columns, Column, Panel, Tooltip, LabelValue } from 'src/components/matchbox';
+import { Checkbox, Columns, Column, Panel, Tooltip } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { SendingDomainStatusCell as StatusCell } from './SendingDomainStatusCell';
 import TrackingDomainStatusCell from './TrackingDomainStatusCell';
@@ -13,6 +13,22 @@ import { ToggleBlock, Subaccount } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
 import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
+import { Definition } from 'src/components/text';
+import { Box } from 'src/components/matchbox';
+
+//Remove the usage of this component once matchbox LabelValue is available
+function LabelValue({ label, children }) {
+  return (
+    <Definition>
+      <Definition.Label>
+        <Box>{label}</Box>
+      </Definition.Label>
+      <Definition.Value>
+        <Box>{children}</Box>
+      </Definition.Value>
+    </Definition>
+  );
+}
 
 export default function DomainStatusSection({ domain, id, isTracking }) {
   const { closeModal, isModalOpen, openModal } = useModal();
