@@ -45,11 +45,6 @@ describe('SaveNewReportModal', () => {
     expect(wrapper).toHaveTextContent('Cancel');
   });
 
-  it('shows loading symbol when loading', () => {
-    const wrapper = subject({ loading: true });
-    expect(wrapper.find('Loading')).toExist();
-  });
-
   it('calls onCancel when clicking cancel button', () => {
     const wrapper = subject();
     wrapper.find('Button[variant="secondary"]').simulate('click');
@@ -71,11 +66,11 @@ describe('UpdateReportModal', () => {
     open: true,
     onCancel: jest.fn(),
     updateReport: jest.fn(() => Promise.resolve()),
-    getReports: jest.fn(() => Promise.resolve()),
+    getReports: jest.fn(() => Promise.resolve([{ id: 1 }])),
     showAlert: jest.fn(),
     loading: false,
     isOwner: true,
-    report: {},
+    report: { id: 1 },
     setReport: jest.fn(),
   };
   const subject = props => {
@@ -89,11 +84,6 @@ describe('UpdateReportModal', () => {
     expect(wrapper).toHaveTextContent('Editable');
     expect(wrapper).toHaveTextContent('Save Report');
     expect(wrapper).toHaveTextContent('Cancel');
-  });
-
-  it('shows loading symbol when loading', () => {
-    const wrapper = subject({ loading: true });
-    expect(wrapper.find('Loading')).toExist();
   });
 
   it('calls onCancel when clicking cancel button', () => {
