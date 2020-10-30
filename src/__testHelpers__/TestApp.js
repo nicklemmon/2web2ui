@@ -3,7 +3,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import Providers from 'src/Providers';
 import store from 'src/store';
 
-const TestApp = ({ children, history, isHibanaEnabled = false }) => {
+const TestApp = ({ children, history, isHibanaEnabled = false, store: reduxStore = {} }) => {
   const state = {
     currentUser: {
       options: {
@@ -12,6 +12,7 @@ const TestApp = ({ children, history, isHibanaEnabled = false }) => {
         },
       },
     },
+    ...reduxStore,
   };
 
   return (
