@@ -102,7 +102,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listSubaccounts,
   } = useDomains();
 
+  // filtersState, UI -> data struct
   const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+
+  const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
   const data = React.useMemo(() => domains, [domains]);
@@ -158,14 +161,13 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     useFilters,
     useSortBy,
   );
-  const { rows, toggleSortBy } = tableInstance;
+  const { rows, setFilter, toggleSortBy } = tableInstance;
   const isEmpty = !listPending && rows?.length === 0;
 
-  const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
   // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
     // filtersDispatch({ type: 'RESET', state: filtersInitialState });
-    resetFilters();
+    // resetFilters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderBounceOnly]);
   // Make initial requests
@@ -181,13 +183,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   // sync the params with filters on page load
   useEffect(() => {
-    Object.keys(filters).forEach(key => {
-      if (key === 'domainName') {
-        // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] });
-      } else if (filters[key] === 'true') {
-        // filtersDispatch({ type: 'TOGGLE', name: key })
-      }
-    });
+    // TODO: This part is important - come back to it
+    // Object.keys(filters).forEach(key => {
+    //   if (key === 'domainName') {
+    //     // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] });
+    //   } else if (filters[key] === 'true') {
+    //     // filtersDispatch({ type: 'TOGGLE', name: key })
+    //   }
+    // });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -226,18 +229,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   // updateFilters
   // tableDispatch
 
-  useEffect(() => {
-    if (!listPending) {
-      // tableDispatch({
-      //   type: 'SORT',
-      //   sortBy: sort.by,
-      //   direction: sort.direction,
-      // });
-    }
-  }, [listPending]);
-  // sort,
-  //, tableDispatch
-
   if (sendingDomainsListError) {
     return (
       <ApiErrorBanner
@@ -257,17 +248,19 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               disabled={listPending}
               value={filtersState.domainNameFilter}
               onChange={e => {
-                // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })
+                filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+                setFilter('domainName', e.target.value);
               }}
             />
 
             <TableFilters.StatusPopover
               disabled={listPending}
               checkboxes={filtersState.checkboxes}
-              onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
+              onCheckboxChange={e => {
+                filtersDispatch({ type: 'TOGGLE', name: e.target.name });
+              }}
             />
 
-            {/* value={sort.by} */}
             <TableFilters.SortSelect
               disabled={listPending}
               defaultValue="creationTime"
