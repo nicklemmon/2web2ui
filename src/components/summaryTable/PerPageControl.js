@@ -8,10 +8,8 @@ import { Box, Button } from 'src/components/matchbox';
 import styles from './SummaryTable.module.scss';
 import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
 
-const SIZES = DEFAULT_PER_PAGE_BUTTONS;
-
 function OGPerPageControl({ onChange, perPage, totalCount }) {
-  if (!totalCount || totalCount < SIZES[0]) {
+  if (!totalCount || totalCount < DEFAULT_PER_PAGE_BUTTONS[0]) {
     return null;
   }
 
@@ -19,7 +17,7 @@ function OGPerPageControl({ onChange, perPage, totalCount }) {
     <div className={styles.PerPageGroup}>
       <Button.Group>
         <span className={styles.PerPageLabel}>Per Page</span>
-        {SIZES.map(size => (
+        {DEFAULT_PER_PAGE_BUTTONS.map(size => (
           <Button
             flat
             className={classnames(perPage === size && styles.Selected)}
@@ -35,7 +33,7 @@ function OGPerPageControl({ onChange, perPage, totalCount }) {
 }
 
 function HibanaPerPageControl({ onChange, perPage, totalCount }) {
-  if (!totalCount || totalCount < SIZES[0]) {
+  if (!totalCount || totalCount < DEFAULT_PER_PAGE_BUTTONS[0]) {
     return null;
   }
 
@@ -44,7 +42,7 @@ function HibanaPerPageControl({ onChange, perPage, totalCount }) {
       <Button.Group>
         <Box as="span">Per Page</Box>
 
-        {SIZES.map(size => {
+        {DEFAULT_PER_PAGE_BUTTONS.map(size => {
           const isActive = perPage === size;
 
           return (
