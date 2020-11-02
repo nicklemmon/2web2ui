@@ -19,6 +19,28 @@ describe('Account Settings Page', () => {
     cy.visit(PAGE_URL);
     cy.title().should('include', 'Account settings');
   });
+  //proof checks if the 2FA toggle is switched on for starter plans
+  it('renders the two factor toggle and it is checked for starter plans', () => {
+    cy.stubRequest({
+      url: '/api/v1/account',
+      fixture: 'account/200.get.100k-starter-plan.json',
+      requestAlias: 'accountRequest',
+    });
+    cy.stubRequest({
+      url: '/api/v1/billing/subscription',
+      fixture: 'billing/subscription/200.get.starter-plan-higher-subaccounts-limitoverride.json',
+      requestAlias: 'starterSubscription',
+    });
+    cy.visit(PAGE_URL);
+    cy.wait(['@accountRequest', '@starterSubscription']);
+    cy.findAllByText('Two-factor Authentication').should('be.visible');
+    cy.findAllByRole('checkbox', { id: 'enforceTfa' })
+      .first()
+      .should('be.checked');
+    cy.findAllByText(
+      'All users must have two-factor authentication enabled to login to this account.',
+    ).should('be.visible');
+  });
 
   describe('Single Sign On Panel', () => {
     describe('SCIM Token Section', () => {
