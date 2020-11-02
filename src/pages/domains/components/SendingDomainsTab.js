@@ -109,7 +109,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const columns = React.useMemo(
     () => [
       { Header: 'Blocked', accessor: 'blocked' },
-      { Header: 'CreationTime', accessor: 'creationTime' },
+      { Header: 'CreationTime', accessor: 'creationTime', sortDescFirst: true },
       { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain' },
       { Header: 'DomainName', accessor: 'domainName' },
       { Header: 'ReadyForBounce', accessor: 'readyForBounce' },
@@ -158,7 +158,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     useFilters,
     useSortBy,
   );
-  const { rows, setSortBy } = tableInstance;
+  const { rows, toggleSortBy } = tableInstance;
   const isEmpty = !listPending && rows?.length === 0;
 
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
@@ -301,11 +301,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               onChange={e => {
                 const { target } = e;
                 const selectedOption = target.options[target.selectedIndex];
-
-                // setSort({
-                //   by: selectedOption.getAttribute('data-sort-by'),
-                //   direction: selectedOption.getAttribute('data-sort-direction'),
-                // });
+                const selectedAttribute = selectedOption.getAttribute('data-sort-by');
+                const selectedDirection = selectedOption.getAttribute('data-sort-direction');
+                const desc = selectedDirection === 'desc' ? true : false;
+                toggleSortBy(selectedAttribute, desc);
               }}
             />
           </TableFilters>
