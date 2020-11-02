@@ -13,11 +13,27 @@ import TooltipWrapper from 'src/components/charts/Tooltip';
  *      tooltipContent={(payload) => <div>Hits: {payload.value}</div>} />
  */
 
-const Sparkline = ({ timeSeries, height, width, yKey, dot, yRange, activeDot, stroke, onClick, tooltipContent }) => (
-  <div className='LiftTooltip'>
+const Sparkline = ({
+  timeSeries,
+  height,
+  width,
+  yKey,
+  dot,
+  yRange,
+  activeDot,
+  stroke,
+  onClick,
+  tooltipContent,
+  tooltipWidth,
+}) => (
+  <div className="LiftTooltip">
     <ResponsiveContainer height={height} width={width}>
-      <LineChart data={timeSeries} onClick={onClick} margin={{ top: 2, left: 18, bottom: 2, right: 18 }}>
-        <YAxis hide dataKey={yKey} type='number' domain={yRange} />
+      <LineChart
+        data={timeSeries}
+        onClick={onClick}
+        margin={{ top: 2, left: 18, bottom: 2, right: 18 }}
+      >
+        <YAxis hide dataKey={yKey} type="number" domain={yRange} />
         <Line
           activeDot={activeDot}
           dataKey={yKey}
@@ -31,6 +47,7 @@ const Sparkline = ({ timeSeries, height, width, yKey, dot, yRange, activeDot, st
           cursor={false}
           content={<TooltipWrapper children={tooltipContent} />}
           position={{ x: 0, y: 0 }}
+          width={tooltipWidth}
         />
       </LineChart>
     </ResponsiveContainer>
@@ -39,9 +56,10 @@ const Sparkline = ({ timeSeries, height, width, yKey, dot, yRange, activeDot, st
 
 Sparkline.propTypes = {
   tooltipContent: PropTypes.func,
+  tooltipWidth: PropTypes.string,
   timeSeries: PropTypes.array.isRequired,
   yKey: PropTypes.string,
-  yRange: PropTypes.array
+  yRange: PropTypes.array,
 };
 
 Sparkline.defaultProps = {
@@ -50,7 +68,7 @@ Sparkline.defaultProps = {
   stroke: '#000000',
   width: '100%',
   yKey: 'value',
-  yRange: ['auto', 'auto']
+  yRange: ['auto', 'auto'],
 };
 
 export default Sparkline;

@@ -37,6 +37,7 @@ const SparklineDataCell = ({ data, dataKey, label, onClick = () => {}, relative 
         }
       }}
       timeSeries={data}
+      tooltipWidth="15rem"
       tooltipContent={({ payload, value = null }) => {
         if (value === null) {
           return null;
