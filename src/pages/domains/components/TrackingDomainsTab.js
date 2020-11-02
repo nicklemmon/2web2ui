@@ -71,27 +71,27 @@ export default function TrackingDomainsTab() {
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
   const columns = React.useMemo(
     () => [
-      { Header: 'Blocked', accessor: 'blocked' },
-      { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain' },
-      { Header: 'DomainName', accessor: 'domainName' },
-      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
-      { Header: 'SubaccountId', accessor: 'subaccountId' },
-      { Header: 'SubaccountName', accessor: 'subaccountName' },
-      { Header: 'Unverified', accessor: 'unverified' },
-      { Header: 'Verified', accessor: 'verified' },
+      { Header: 'Blocked', accessor: 'blocked', sortDescFirst: false },
+      { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain', sortDescFirst: false },
+      { Header: 'DomainName', accessor: 'domainName', sortDescFirst: false },
+      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', sortDescFirst: false },
+      { Header: 'SubaccountId', accessor: 'subaccountId', sortDescFirst: false },
+      { Header: 'SubaccountName', accessor: 'subaccountName', sortDescFirst: false },
+      { Header: 'Unverified', accessor: 'unverified', sortDescFirst: false },
+      { Header: 'Verified', accessor: 'verified', sortDescFirst: false },
     ],
     [],
   );
   const sortBy = React.useMemo(
     () => [
-      { id: 'blocked', desc: true, sortDescFirst: false },
-      { id: 'defaultTrackingDomain', desc: true, sortDescFirst: false },
-      { id: 'domainName', desc: false, sortDescFirst: false },
-      { id: 'sharedWithSubaccounts', desc: true, sortDescFirst: false },
-      { id: 'subaccountId', desc: true, sortDescFirst: false, canFilter: false },
-      { id: 'subaccountName', desc: true, sortDescFirst: false, canFilter: false },
-      { id: 'unverified', desc: true, sortDescFirst: false },
-      { id: 'verified', desc: true, sortDescFirst: false },
+      { id: 'blocked', desc: true },
+      { id: 'defaultTrackingDomain', desc: true },
+      { id: 'domainName', desc: false },
+      { id: 'sharedWithSubaccounts', desc: true },
+      { id: 'subaccountId', desc: true, canFilter: false },
+      { id: 'subaccountName', desc: true, canFilter: false },
+      { id: 'unverified', desc: true },
+      { id: 'verified', desc: true },
     ],
     [],
   );
@@ -247,10 +247,9 @@ export default function TrackingDomainsTab() {
               onChange={e => {
                 const { target } = e;
                 const selectedOption = target.options[target.selectedIndex];
-                const selectedAttribute = selectedOption.getAttribute('data-sort-by');
                 const selectedDirection = selectedOption.getAttribute('data-sort-direction');
                 const desc = selectedDirection === 'desc' ? true : false;
-                toggleSortBy(selectedAttribute, desc);
+                toggleSortBy('domainName', desc);
               }}
             />
           </TableFilters>

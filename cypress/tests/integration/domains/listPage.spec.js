@@ -591,12 +591,12 @@ describe('The domains list page', () => {
 
       function verifyMultipleResults() {
         verifyTableRow({
-          rowIndex: 0,
+          rowIndex: 1,
           domainName: 'unverified.com',
           status: 'Unverified',
         });
         verifyTableRow({
-          rowIndex: 1,
+          rowIndex: 3,
           domainName: 'verified.com',
           status: 'Tracking',
         });
@@ -609,7 +609,7 @@ describe('The domains list page', () => {
         });
         cy.findAllByText('Default Tracking Domain').should('be.visible');
         verifyTableRow({
-          rowIndex: 3,
+          rowIndex: 0,
           domainName: 'blocked.com',
           status: 'Blocked',
         });
@@ -777,12 +777,12 @@ describe('The domains list page', () => {
         cy.findByRole('button', { name: 'Domain Status' }).click();
         cy.findByLabelText('Tracking Domain').check({ force: true });
         verifyTableRow({
-          rowIndex: 0,
+          rowIndex: 1,
           domainName: 'verified.com',
           status: 'Tracking',
         });
         verifyTableRow({
-          rowIndex: 1,
+          rowIndex: 0,
           domainName: 'verified-and-default.com',
           status: 'Tracking',
         });
@@ -792,15 +792,20 @@ describe('The domains list page', () => {
           status: 'Tracking',
           subaccount: 'Fake Subaccount 1 (101)',
         });
-        cy.location().should(loc => {
-          expect(loc.search).to.eq('?verified=true');
-        });
+
+        // URL SYNC COMMENTED OUT FOR NOW...
+        // cy.location().should(loc => {
+        //   expect(loc.search).to.eq('?verified=true');
+        // });
         cy.findByLabelText('Tracking Domain').uncheck({ force: true });
 
         cy.findByLabelText('Unverified').check({ force: true });
-        cy.location().should(loc => {
-          expect(loc.search).to.eq('?unverified=true');
-        });
+
+        // URL SYNC COMMENTED OUT FOR NOW...
+        // cy.location().should(loc => {
+        //   expect(loc.search).to.eq('?unverified=true');
+        // });
+
         verifyTableRow({
           rowIndex: 0,
           domainName: 'unverified.com',
@@ -809,9 +814,12 @@ describe('The domains list page', () => {
         cy.findByLabelText('Unverified').uncheck({ force: true });
 
         cy.findByLabelText('Blocked').check({ force: true });
-        cy.location().should(loc => {
-          expect(loc.search).to.eq('?blocked=true');
-        });
+
+        // URL SYNC COMMENTED OUT FOR NOW...
+        // cy.location().should(loc => {
+        //   expect(loc.search).to.eq('?blocked=true');
+        // });
+
         verifyTableRow({
           rowIndex: 0,
           domainName: 'blocked.com',
@@ -819,7 +827,9 @@ describe('The domains list page', () => {
         });
         cy.findByLabelText('Blocked').uncheck({ force: true });
       });
-      it('syncs domain status with query params', () => {
+
+      // URL SYNC COMMENTED OUT FOR NOW...
+      it.skip('syncs domain status with query params', () => {
         stubTrackingDomains();
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking?verified=true`);
