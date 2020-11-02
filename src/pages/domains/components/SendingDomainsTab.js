@@ -6,7 +6,7 @@ import { usePageFilters } from 'src/hooks';
 import { Panel } from 'src/components/matchbox';
 import { Pagination } from 'src/components/collection';
 
-import { useTable } from 'react-table';
+import { useTable, useSortBy, useFilters } from 'react-table';
 
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
@@ -106,7 +106,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
   const data = React.useMemo(() => domains, [domains]);
-  // TODO: Generate this using Object.keys? Make that a re-usable function?
   const columns = React.useMemo(
     () => [
       { Header: 'Blocked', accessor: 'blocked' },
@@ -124,12 +123,46 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     ],
     [],
   );
-  const tableInstance = useTable({ columns, data });
-  const { rows } = tableInstance;
+  const sortBy = React.useMemo(
+    () => [
+      { id: 'creationTime', desc: true },
+      { id: 'blocked', desc: true },
+      { id: 'creationTime', desc: true },
+      { id: 'defaultBounceDomain', desc: true },
+      { id: 'domainName', desc: true },
+      { id: 'readyForBounce', desc: true },
+      { id: 'readyForDKIM', desc: true },
+      { id: 'readyForSending', desc: true },
+      { id: 'sharedWithSubaccounts', desc: true },
+      { id: 'subaccountId', desc: true },
+      { id: 'subaccountName', desc: true },
+      { id: 'unverified', desc: true },
+      { id: 'validSPF', desc: true },
+    ],
+    [],
+  );
+  const tableInstance = useTable(
+    {
+      columns,
+      data,
+      sortBy,
+      initialState: {
+        sortBy: [
+          {
+            id: 'creationTime',
+            desc: true,
+          },
+        ],
+      },
+    },
+    useFilters,
+    useSortBy,
+  );
+  const { rows, setSortBy } = tableInstance;
   const isEmpty = !listPending && rows?.length === 0;
 
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
-  //resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
+  // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
     // filtersDispatch({ type: 'RESET', state: filtersInitialState });
     resetFilters();
@@ -161,23 +194,20 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   // When filter state updates, update table state and the query parameters
   useEffect(() => {
     if (!listPending) {
-      function getFilterFromCheckbox(name) {
-        return filtersState.checkboxes.find(item => item.name === name).isChecked
-          ? true
-          : undefined;
-      }
-      const filterStateToParams = () => {
-        let params = {};
-        for (let checkbox of filtersState.checkboxes) {
-          params[checkbox.name] = checkbox.isChecked;
-        }
-        params.domainName = filtersState.domainNameFilter;
-
-        return params;
-      };
-
-      updateFilters(filterStateToParams());
-
+      // function getFilterFromCheckbox(name) {
+      //   return filtersState.checkboxes.find(item => item.name === name).isChecked
+      //     ? true
+      //     : undefined;
+      // }
+      // const filterStateToParams = () => {
+      //   let params = {};
+      //   for (let checkbox of filtersState.checkboxes) {
+      //     params[checkbox.name] = checkbox.isChecked;
+      //   }
+      //   params.domainName = filtersState.domainNameFilter;
+      //   return params;
+      // };
+      // updateFilters(filterStateToParams());
       // tableDispatch({
       //   type: 'FILTER',
       //   filters: [
@@ -191,7 +221,9 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       //   ],
       // });
     }
-  }, [filtersState, listPending, updateFilters]);
+  }, [listPending]);
+  // filtersState
+  // updateFilters
   // tableDispatch
 
   useEffect(() => {
