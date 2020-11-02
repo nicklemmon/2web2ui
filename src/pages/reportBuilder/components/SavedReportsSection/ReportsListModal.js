@@ -35,18 +35,14 @@ const FilterBoxWrapper = props => (
   </Box>
 );
 
-const Actions = ({ handleDelete, handleEdit, reportType, report, ...rest }) => {
+const Actions = ({ id, handleDelete, handleEdit, reportType, report, ...rest }) => {
   return (
     <Popover
       left
       top={rest.isLast}
-      id={`popover-${reportType}-${report.id}`}
+      id={id}
       trigger={
-        <Button
-          variant="minimal"
-          aria-controls={`popover-${reportType}-${report.id}`}
-          data-id={`${reportType}-${report.id}`}
-        >
+        <Button variant="minimal" aria-controls={id} data-id={id}>
           <Button.Icon as={MoreHoriz} />
           <ScreenReaderOnly>Open Menu</ScreenReaderOnly>
         </Button>
@@ -91,7 +87,7 @@ export function ReportsListModal(props) {
   };
 
   const allReportsRows = report => {
-    const { name, modified, creator, subaccount_id, current_user_can_edit, index } = report;
+    const { name, modified, creator, subaccount_id, current_user_can_edit, isLast } = report;
     //conditionally render the actionlist
     const action = current_user_can_edit ? (
       <Actions
@@ -99,7 +95,7 @@ export function ReportsListModal(props) {
         handleDelete={handleDelete}
         handleEdit={handleEdit}
         report={report}
-        index={index}
+        isLast={isLast}
       />
     ) : (
       ''
