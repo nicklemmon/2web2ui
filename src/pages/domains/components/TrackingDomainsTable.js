@@ -7,7 +7,7 @@ import { DETAILS_BASE_URL } from '../constants';
 import TrackingDomainStatusCell from './TrackingDomainStatusCell';
 
 export default function TrackingDomainsTable({ tableInstance }) {
-  const { rows, prepareRow } = tableInstance;
+  const { prepareRow, page } = tableInstance;
 
   return (
     <Table title="Tracking Domains">
@@ -20,7 +20,7 @@ export default function TrackingDomainsTable({ tableInstance }) {
       </ScreenReaderOnly>
 
       <tbody>
-        {rows?.map((row, index) => {
+        {page?.map((row, index) => {
           prepareRow(row);
           return (
             <Table.Row key={`table-row-${index}`}>

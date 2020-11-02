@@ -5,10 +5,10 @@ import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
 import { usePageFilters } from 'src/hooks';
 import { Pagination } from 'src/components/collection';
-import { useTable } from 'react-table';
+import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
-import { DEFAULT_CURRENT_PAGE } from 'src/constants';
+import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
 
@@ -66,8 +66,10 @@ export default function TrackingDomainsTab() {
     trackingDomainsListError,
   } = useDomains();
 
+  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+  const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
+
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
-  // TODO: Generate this using Object.keys? Make that a re-usable function?
   const columns = React.useMemo(
     () => [
       { Header: 'Blocked', accessor: 'blocked' },
@@ -81,11 +83,50 @@ export default function TrackingDomainsTab() {
     ],
     [],
   );
-  const tableInstance = useTable({ columns, data });
-  const { rows, prepareRow } = tableInstance;
+  const sortBy = React.useMemo(
+    () => [
+      { id: 'blocked', desc: true, sortDescFirst: false },
+      { id: 'defaultTrackingDomain', desc: true, sortDescFirst: false },
+      { id: 'domainName', desc: false, sortDescFirst: false },
+      { id: 'sharedWithSubaccounts', desc: true, sortDescFirst: false },
+      { id: 'subaccountId', desc: true, sortDescFirst: false },
+      { id: 'subaccountName', desc: true, sortDescFirst: false },
+      { id: 'unverified', desc: true, sortDescFirst: false },
+      { id: 'verified', desc: true, sortDescFirst: false },
+    ],
+    [],
+  );
+  const tableInstance = useTable(
+    {
+      columns,
+      data,
+      sortBy,
+      initialState: {
+        pageIndex: DEFAULT_CURRENT_PAGE - 1, // react-table takes a 0 base pageIndex
+        pageSize: DEFAULT_PER_PAGE,
+        filters: [],
+        sortBy: [
+          {
+            id: 'domainName',
+            desc: false,
+          },
+        ], // TODO: Set default sortBy
+      },
+    },
+    useFilters,
+    useSortBy,
+    usePagination,
+  );
+  const {
+    rows,
+    setFilter,
+    setAllFilters,
+    toggleSortBy,
+    state,
+    gotoPage,
+    setPageSize,
+  } = tableInstance;
 
-  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
-  const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
   const isEmpty = !listPending && rows?.length === 0;
 
   // Make initial requests
@@ -102,6 +143,7 @@ export default function TrackingDomainsTab() {
 
   //sync the params with filters on page load
   useEffect(() => {
+    // TODO: This part is important - come back to it
     // Object.keys(filters).forEach(key => {
     //   if (key === 'domainName') {
     //     // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] });
@@ -114,36 +156,24 @@ export default function TrackingDomainsTab() {
 
   // When filter state updates, update table state and the query parameters
   useEffect(() => {
-    if (!listPending) {
-      function getFilterFromCheckbox(name) {
-        return filtersState.checkboxes.find(item => item.name === name).isChecked
-          ? true
-          : undefined;
-      }
-      const filterStateToParams = () => {
-        let params = {};
-        for (let checkbox of filtersState.checkboxes) {
-          params[checkbox.name] = checkbox.isChecked;
-        }
-        params.domainName = filtersState.domainNameFilter;
-
-        return params;
-      };
-
-      updateFilters(filterStateToParams());
-
-      // tableDispatch({
-      //   type: 'FILTER',
-      //   filters: [
-      //     { name: 'domainName', value: filtersState.domainNameFilter },
-      //     { name: 'verified', value: getFilterFromCheckbox('verified') },
-      //     { name: 'unverified', value: getFilterFromCheckbox('unverified') },
-      //     { name: 'blocked', value: getFilterFromCheckbox('blocked') },
-      //   ],
-      // });
-    }
+    // TODO: This part is important - come back to it
+    // if (!listPending) {
+    //   function getFilterFromCheckbox(name) {
+    //     return filtersState.checkboxes.find(item => item.name === name).isChecked
+    //       ? true
+    //       : undefined;
+    //   }
+    //   const filterStateToParams = () => {
+    //     let params = {};
+    //     for (let checkbox of filtersState.checkboxes) {
+    //       params[checkbox.name] = checkbox.isChecked;
+    //     }
+    //     params.domainName = filtersState.domainNameFilter;
+    //     return params;
+    //   };
+    //   updateFilters(filterStateToParams());
+    // }
   }, [filtersState, listPending, updateFilters]);
-  // tableDispatch
 
   if (trackingDomainsListError) {
     return (
@@ -164,7 +194,11 @@ export default function TrackingDomainsTab() {
               disabled={listPending}
               value={filtersState.domainNameFilter}
               onChange={e => {
-                // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })
+                filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+
+                // TODO: Take into account domainStatus filter too
+
+                setFilter('domainName', e.target.value);
               }}
             />
 
@@ -172,7 +206,18 @@ export default function TrackingDomainsTab() {
               disabled={listPending}
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
-                // filtersDispatch({ type: 'TOGGLE', name: e.target.name });
+                filtersDispatch({ type: 'TOGGLE', name: e.target.name });
+                const newFilters = filtersState.checkboxes.map(i => {
+                  if (e.target.name === i.name) {
+                    return { id: i.name, value: e.target.checked };
+                  }
+
+                  return { id: i.name, value: i.isChecked };
+                });
+
+                // TODO: Take into account domainStatus filter too
+
+                setAllFilters(newFilters); // multi-filter apply [ { id: name, value: true | false } ]
               }}
             />
 
@@ -194,12 +239,10 @@ export default function TrackingDomainsTab() {
               onChange={e => {
                 const { target } = e;
                 const selectedOption = target.options[target.selectedIndex];
-
-                // return tableDispatch({
-                //   type: 'SORT',
-                //   sortBy: target.value,
-                //   direction: selectedOption.getAttribute('data-sort-direction'),
-                // });
+                const selectedAttribute = selectedOption.getAttribute('data-sort-by');
+                const selectedDirection = selectedOption.getAttribute('data-sort-direction');
+                const desc = selectedDirection === 'desc' ? true : false;
+                toggleSortBy(selectedAttribute, desc);
               }}
             />
           </TableFilters>
@@ -212,28 +255,23 @@ export default function TrackingDomainsTab() {
         {!listPending && !isEmpty && <TrackingDomainsTable tableInstance={tableInstance} />}
       </Panel>
 
-      {/* <Pagination
-        data={tableState.rawData}
-        currentPage={DEFAULT_CURRENT_PAGE}
-        perPage={tableState.perPage}
+      <Pagination
+        data={rows}
+        pageBaseZero={true}
+        currentPage={state.pageIndex}
+        perPage={state.pageSize}
         saveCsv={false}
         onPageChange={page => {
-          page += 1;
+          // TODO: Try to see if this is firing because of a mistake I made.... otherwise leave condition in place
           // Only adding this if condition because this keeps firing on load
-          if (tableState.currentPage !== page) {
-            // tableDispatch({
-            //   type: 'CHANGE_PAGE',
-            //   page: page,
-            // });
+          if (state.pageIndex !== page) {
+            gotoPage(page);
           }
         }}
         onPerPageChange={perPage => {
-          // tableDispatch({
-          //   type: 'CHANGE_PER_PAGE',
-          //   perPage,
-          // });
+          setPageSize(perPage);
         }}
-      /> */}
+      />
     </>
   );
 }

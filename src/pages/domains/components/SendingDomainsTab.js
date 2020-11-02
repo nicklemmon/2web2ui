@@ -99,9 +99,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listSubaccounts,
   } = useDomains();
 
-  // filtersState, UI -> data struct
+  // filtersState, UI -> data struct (might be replacable with react-table too)
   const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
-
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
@@ -163,10 +162,8 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     useSortBy,
     usePagination,
   );
-
   const {
     rows,
-    page,
     setFilter,
     setAllFilters,
     toggleSortBy,
@@ -174,6 +171,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     gotoPage,
     setPageSize,
   } = tableInstance;
+
   const isEmpty = !listPending && rows?.length === 0;
 
   // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
@@ -240,9 +238,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       }); */
     }
   }, [listPending]);
-  // filtersState
-  // updateFilters
-  // tableDispatch
 
   if (sendingDomainsListError) {
     return (
@@ -264,6 +259,9 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               value={filtersState.domainNameFilter}
               onChange={e => {
                 filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+
+                // TODO: Take into account domainStatus filter too
+
                 setFilter('domainName', e.target.value);
               }}
             />
@@ -280,6 +278,9 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
                   return { id: i.name, value: i.isChecked };
                 });
+
+                // TODO: Take into account domainName filter too
+
                 setAllFilters(newFilters); // multi-filter apply [ { id: name, value: true | false } ]
               }}
             />
