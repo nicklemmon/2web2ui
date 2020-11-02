@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { usePageFilters } from 'src/hooks';
 import { Panel } from 'src/components/matchbox';
 import { Pagination } from 'src/components/collection';
-import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
+import { useTable, useSortBy, useFilters, usePagination } from 'react-table'; // https://react-table.tanstack.com/docs/api/overview
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
@@ -101,6 +100,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   // filtersState, UI -> data struct (might be replacable with react-table too)
   const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+  // eslint-disable-next-line no-unused-vars
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
@@ -162,15 +162,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     useSortBy,
     usePagination,
   );
-  const {
-    rows,
-    setFilter,
-    setAllFilters,
-    toggleSortBy,
-    state,
-    gotoPage,
-    setPageSize,
-  } = tableInstance;
+  const { rows, setAllFilters, toggleSortBy, state, gotoPage, setPageSize } = tableInstance;
 
   const isEmpty = !listPending && rows?.length === 0;
 

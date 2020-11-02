@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import React, { useEffect, useReducer } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Panel } from 'src/components/matchbox';
 import { usePageFilters } from 'src/hooks';
 import { Pagination } from 'src/components/collection';
-import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
+import { useTable, useSortBy, useFilters, usePagination } from 'react-table'; // https://react-table.tanstack.com/docs/api/overview
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
@@ -117,15 +115,7 @@ export default function TrackingDomainsTab() {
     useSortBy,
     usePagination,
   );
-  const {
-    rows,
-    setFilter,
-    setAllFilters,
-    toggleSortBy,
-    state,
-    gotoPage,
-    setPageSize,
-  } = tableInstance;
+  const { rows, setAllFilters, toggleSortBy, state, gotoPage, setPageSize } = tableInstance;
 
   const isEmpty = !listPending && rows?.length === 0;
 
@@ -209,7 +199,6 @@ export default function TrackingDomainsTab() {
                   };
                 });
 
-                console.log('newFilters: ', newFilters);
                 setAllFilters(newFilters);
               }}
             />
@@ -235,8 +224,6 @@ export default function TrackingDomainsTab() {
                   };
                 });
 
-                // TODO: Take into account domainStatus filter too
-                console.log('newFilters: ', newFilters);
                 setAllFilters(newFilters);
               }}
             />
