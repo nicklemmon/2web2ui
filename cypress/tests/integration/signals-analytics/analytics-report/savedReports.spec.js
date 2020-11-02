@@ -187,7 +187,7 @@ if (IS_HIBANA_ENABLED) {
         cy.findByLabelText('Report').should('have.value', 'My Bounce Report');
         cy.findByLabelText('Time Zone').should(
           'have.value',
-          `(UTC-0${todaysDate.getTimezoneOffset() / 60}:00) America/New York`,
+          `(UTC-0${todaysDate.getTimezoneOffset() / 60}:00) America/New York`, //calculation here is to adjust for the day light saving
         );
         cy.findByLabelText('Precision').should('have.value', 'hour');
 
