@@ -154,6 +154,7 @@ export function SaveReportModal(props) {
           )}
           <TextField
             multiline
+            ref={register}
             rows="5"
             label="Description"
             name="description"

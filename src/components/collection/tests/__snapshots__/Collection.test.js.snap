@@ -7,76 +7,106 @@ exports[`Component: Collection should render correctly with basic props 1`] = `
     <PassThroughWrapper>
       <rowComponent
         id={0}
+        index={0}
+        isLast={false}
         key="row-0"
         name="row-name--0"
       />
       <rowComponent
         id={1}
+        index={1}
+        isLast={false}
         key="1-1"
         name="row-name--1"
       />
       <rowComponent
         id={2}
+        index={2}
+        isLast={false}
         key="2-2"
         name="row-name--2"
       />
       <rowComponent
         id={3}
+        index={3}
+        isLast={false}
         key="3-3"
         name="row-name--3"
       />
       <rowComponent
         id={4}
+        index={4}
+        isLast={false}
         key="4-4"
         name="row-name--4"
       />
       <rowComponent
         id={5}
+        index={5}
+        isLast={false}
         key="5-5"
         name="row-name--5"
       />
       <rowComponent
         id={6}
+        index={6}
+        isLast={false}
         key="6-6"
         name="row-name--6"
       />
       <rowComponent
         id={7}
+        index={7}
+        isLast={false}
         key="7-7"
         name="row-name--7"
       />
       <rowComponent
         id={8}
+        index={8}
+        isLast={false}
         key="8-8"
         name="row-name--8"
       />
       <rowComponent
         id={9}
+        index={9}
+        isLast={false}
         key="9-9"
         name="row-name--9"
       />
       <rowComponent
         id={10}
+        index={10}
+        isLast={false}
         key="10-10"
         name="row-name--10"
       />
       <rowComponent
         id={11}
+        index={11}
+        isLast={false}
         key="11-11"
         name="row-name--11"
       />
       <rowComponent
         id={12}
+        index={12}
+        isLast={false}
         key="12-12"
         name="row-name--12"
       />
       <rowComponent
         id={13}
+        index={13}
+        isLast={false}
         key="13-13"
         name="row-name--13"
       />
       <rowComponent
         id={14}
+        index={14}
+        isLast={true}
         key="14-14"
         name="row-name--14"
       />
@@ -92,16 +122,22 @@ exports[`Component: Collection should render pagination 1`] = `
     <PassThroughWrapper>
       <rowComponent
         id={0}
+        index={0}
+        isLast={false}
         key="row-0"
         name="row-name--0"
       />
       <rowComponent
         id={1}
+        index={1}
+        isLast={false}
         key="1-1"
         name="row-name--1"
       />
       <rowComponent
         id={2}
+        index={2}
+        isLast={true}
         key="2-2"
         name="row-name--2"
       />
@@ -215,76 +251,106 @@ exports[`Component: Collection should render the filter box 1`] = `
     <PassThroughWrapper>
       <rowComponent
         id={0}
+        index={0}
+        isLast={false}
         key="row-0"
         name="row-name--0"
       />
       <rowComponent
         id={1}
+        index={1}
+        isLast={false}
         key="1-1"
         name="row-name--1"
       />
       <rowComponent
         id={2}
+        index={2}
+        isLast={false}
         key="2-2"
         name="row-name--2"
       />
       <rowComponent
         id={3}
+        index={3}
+        isLast={false}
         key="3-3"
         name="row-name--3"
       />
       <rowComponent
         id={4}
+        index={4}
+        isLast={false}
         key="4-4"
         name="row-name--4"
       />
       <rowComponent
         id={5}
+        index={5}
+        isLast={false}
         key="5-5"
         name="row-name--5"
       />
       <rowComponent
         id={6}
+        index={6}
+        isLast={false}
         key="6-6"
         name="row-name--6"
       />
       <rowComponent
         id={7}
+        index={7}
+        isLast={false}
         key="7-7"
         name="row-name--7"
       />
       <rowComponent
         id={8}
+        index={8}
+        isLast={false}
         key="8-8"
         name="row-name--8"
       />
       <rowComponent
         id={9}
+        index={9}
+        isLast={false}
         key="9-9"
         name="row-name--9"
       />
       <rowComponent
         id={10}
+        index={10}
+        isLast={false}
         key="10-10"
         name="row-name--10"
       />
       <rowComponent
         id={11}
+        index={11}
+        isLast={false}
         key="11-11"
         name="row-name--11"
       />
       <rowComponent
         id={12}
+        index={12}
+        isLast={false}
         key="12-12"
         name="row-name--12"
       />
       <rowComponent
         id={13}
+        index={13}
+        isLast={false}
         key="13-13"
         name="row-name--13"
       />
       <rowComponent
         id={14}
+        index={14}
+        isLast={true}
         key="14-14"
         name="row-name--14"
       />
@@ -300,16 +366,22 @@ exports[`Component: Collection should render with custom wrappers 1`] = `
     <CustomBodyWrapper>
       <rowComponent
         id={0}
+        index={0}
+        isLast={false}
         key="row-0"
         name="row-name--0"
       />
       <rowComponent
         id={1}
+        index={1}
+        isLast={false}
         key="1-1"
         name="row-name--1"
       />
       <rowComponent
         id={2}
+        index={2}
+        isLast={true}
         key="2-2"
         name="row-name--2"
       />
@@ -331,16 +403,22 @@ exports[`Component: Collection should use custom render function when child is a
       <PassThroughWrapper>
         <rowComponent
           id={0}
+          index={0}
+          isLast={false}
           key="row-0"
           name="row-name--0"
         />
         <rowComponent
           id={1}
+          index={1}
+          isLast={false}
           key="1-1"
           name="row-name--1"
         />
         <rowComponent
           id={2}
+          index={2}
+          isLast={true}
           key="2-2"
           name="row-name--2"
         />

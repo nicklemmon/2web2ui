@@ -127,7 +127,7 @@ if (IS_HIBANA_ENABLED) {
 
         // Check validation
         cy.findByRole('button', { name: 'Save Report' }).click();
-        cy.findAllByText('Required').should('have.length', 2);
+        cy.findAllByText('Required').should('have.length', 1);
 
         cy.stubRequest({
           url: '/api/v1/reports',
@@ -194,7 +194,7 @@ if (IS_HIBANA_ENABLED) {
         });
 
         cy.findByLabelText('Report').should('have.value', 'My Bounce Report');
-        cy.findByLabelText('Time Zone').should('have.value', '(UTC-04:00) America/New York');
+        cy.findByLabelText('Time Zone').should('contain.value', 'America/New York');
         cy.findByLabelText('Precision').should('have.value', 'hour');
 
         cy.get('[data-id="metric-tag"]')
