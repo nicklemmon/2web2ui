@@ -108,18 +108,18 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const data = React.useMemo(() => domains, [domains]);
   const columns = React.useMemo(
     () => [
-      { Header: 'Blocked', accessor: 'blocked', filterValue: false },
-      { Header: 'CreationTime', accessor: 'creationTime', filterValue: false },
-      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain', filterValue: false },
-      { Header: 'DomainName', accessor: 'domainName', filterValue: '' },
-      { Header: 'ReadyForBounce', accessor: 'readyForBounce', filterValue: false },
-      { Header: 'ReadyForDKIM', accessor: 'readyForDKIM', filterValue: false },
-      { Header: 'ReadyForSending', accessor: 'readyForSending', filterValue: false },
-      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', filterValue: false },
+      { Header: 'Blocked', accessor: 'blocked' },
+      { Header: 'CreationTime', accessor: 'creationTime' },
+      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain' },
+      { Header: 'DomainName', accessor: 'domainName' },
+      { Header: 'ReadyForBounce', accessor: 'readyForBounce' },
+      { Header: 'ReadyForDKIM', accessor: 'readyForDKIM' },
+      { Header: 'ReadyForSending', accessor: 'readyForSending' },
+      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
       { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
-      { Header: 'Unverified', accessor: 'unverified', filterValue: false },
-      { Header: 'ValidSPF', accessor: 'validSPF', filterValue: false },
+      { Header: 'Unverified', accessor: 'unverified' },
+      { Header: 'ValidSPF', accessor: 'validSPF' },
     ],
     [],
   );
@@ -258,11 +258,23 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               disabled={listPending}
               value={filtersState.domainNameFilter}
               onChange={e => {
+                // TODO: Probably want to add a debounce event for as they're typing so we dont update on every keystroke
                 filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
 
-                // TODO: Take into account domainStatus filter too
+                const newFilters = Object.keys(filters).map(i => {
+                  if ('domainName' === i) {
+                    return { id: i, value: e.target.value };
+                  }
 
-                setFilter('domainName', e.target.value);
+                  return {
+                    id: i,
+                    value:
+                      filtersState.checkboxes[filtersState.checkboxes.map(i => i.name).indexOf(i)]
+                        .isChecked || false,
+                  };
+                });
+
+                setAllFilters(newFilters);
               }}
             />
 
@@ -271,17 +283,23 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
                 filtersDispatch({ type: 'TOGGLE', name: e.target.name });
-                const newFilters = filtersState.checkboxes.map(i => {
-                  if (e.target.name === i.name) {
-                    return { id: i.name, value: e.target.checked };
+
+                const newFilters = Object.keys(filters).map(i => {
+                  if ('domainName' === i) {
+                    return { id: 'domainName', value: filtersState.domainNameFilter };
+                  } else if (e.target.name === i) {
+                    return { id: i, value: e.target.checked };
                   }
 
-                  return { id: i.name, value: i.isChecked };
+                  return {
+                    id: i,
+                    value:
+                      filtersState.checkboxes[filtersState.checkboxes.map(i => i.name).indexOf(i)]
+                        .isChecked || false,
+                  };
                 });
 
-                // TODO: Take into account domainName filter too
-
-                setAllFilters(newFilters); // multi-filter apply [ { id: name, value: true | false } ]
+                setAllFilters(newFilters);
               }}
             />
 

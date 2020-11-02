@@ -89,8 +89,8 @@ export default function TrackingDomainsTab() {
       { id: 'defaultTrackingDomain', desc: true, sortDescFirst: false },
       { id: 'domainName', desc: false, sortDescFirst: false },
       { id: 'sharedWithSubaccounts', desc: true, sortDescFirst: false },
-      { id: 'subaccountId', desc: true, sortDescFirst: false },
-      { id: 'subaccountName', desc: true, sortDescFirst: false },
+      { id: 'subaccountId', desc: true, sortDescFirst: false, canFilter: false },
+      { id: 'subaccountName', desc: true, sortDescFirst: false, canFilter: false },
       { id: 'unverified', desc: true, sortDescFirst: false },
       { id: 'verified', desc: true, sortDescFirst: false },
     ],
@@ -194,11 +194,23 @@ export default function TrackingDomainsTab() {
               disabled={listPending}
               value={filtersState.domainNameFilter}
               onChange={e => {
+                // TODO: Probably want to add a debounce event for as they're typing so we dont update on every keystroke
                 filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
 
-                // TODO: Take into account domainStatus filter too
+                const newFilters = Object.keys(filters).map(i => {
+                  if ('domainName' === i) {
+                    return { id: i, value: e.target.value };
+                  }
+                  return {
+                    id: i,
+                    value:
+                      filtersState.checkboxes[filtersState.checkboxes.map(i => i.name).indexOf(i)]
+                        .isChecked || false,
+                  };
+                });
 
-                setFilter('domainName', e.target.value);
+                console.log('newFilters: ', newFilters);
+                setAllFilters(newFilters);
               }}
             />
 
@@ -207,17 +219,25 @@ export default function TrackingDomainsTab() {
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
                 filtersDispatch({ type: 'TOGGLE', name: e.target.name });
-                const newFilters = filtersState.checkboxes.map(i => {
-                  if (e.target.name === i.name) {
-                    return { id: i.name, value: e.target.checked };
+
+                const newFilters = Object.keys(filters).map(i => {
+                  if ('domainName' === i) {
+                    return { id: 'domainName', value: filtersState.domainNameFilter };
+                  } else if (e.target.name === i) {
+                    return { id: i, value: e.target.checked };
                   }
 
-                  return { id: i.name, value: i.isChecked };
+                  return {
+                    id: i,
+                    value:
+                      filtersState.checkboxes[filtersState.checkboxes.map(i => i.name).indexOf(i)]
+                        .isChecked || false,
+                  };
                 });
 
                 // TODO: Take into account domainStatus filter too
-
-                setAllFilters(newFilters); // multi-filter apply [ { id: name, value: true | false } ]
+                console.log('newFilters: ', newFilters);
+                setAllFilters(newFilters);
               }}
             />
 
