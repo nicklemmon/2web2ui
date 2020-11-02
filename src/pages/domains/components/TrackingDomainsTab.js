@@ -64,6 +64,7 @@ export default function TrackingDomainsTab() {
     trackingDomainsListError,
   } = useDomains();
 
+  // filtersState, UI -> data struct (might be replacable with react-table too)
   const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
 
@@ -108,7 +109,7 @@ export default function TrackingDomainsTab() {
             id: 'domainName',
             desc: false,
           },
-        ], // TODO: Set default sortBy
+        ],
       },
     },
     useFilters,
