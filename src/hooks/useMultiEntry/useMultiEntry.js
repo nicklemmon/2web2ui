@@ -1,4 +1,5 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
+import { usePrevious } from 'src/hooks';
 import _ from 'lodash';
 
 function reducer(state, action) {
@@ -16,6 +17,10 @@ function reducer(state, action) {
       }
 
       return { ...state, value: '', valueList: [...state.valueList, action.value] };
+
+    case 'SET_VALUE_LIST': {
+      return { ...state, valueList: action.valueList };
+    }
 
     case 'REMOVE_VALUE': {
       // Filter out any values that match the target for removal
@@ -37,11 +42,12 @@ function reducer(state, action) {
       };
     }
 
-    case 'VALUE_CHANGE':
+    case 'VALUE_CHANGE': {
       return { ...state, value: action.value };
+    }
 
     default:
-      throw new Error(`${action.type} is not supported by useComboBox.`);
+      throw new Error(`${action.type} is not supported by useMultiEntry.`);
   }
 }
 
@@ -50,8 +56,17 @@ const defaultInitialState = {
   valueList: [],
 };
 
-export default function useComboBox(initialState) {
+export default function useMultiEntry(initialState) {
+  const prevInitialState = usePrevious(initialState);
   const [state, dispatch] = useReducer(reducer, { ...defaultInitialState, ...initialState });
+
+  // If the initial state updates (i.e., through an external source of state),
+  // update the value list accordingly
+  useEffect(() => {
+    if (!_.isEqual(prevInitialState, initialState)) {
+      return dispatch({ type: 'SET_VALUE_LIST', valueList: initialState.valueList });
+    }
+  }, [prevInitialState, initialState]);
 
   function handleKeyDown(e) {
     // Spacebar or enter key
