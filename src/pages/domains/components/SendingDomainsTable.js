@@ -19,7 +19,7 @@ import { useUniqueId } from 'src/hooks';
 import { DETAILS_BASE_URL } from '../constants';
 
 export default function SendingDomainsTable({ tableInstance }) {
-  const { rows, prepareRow } = tableInstance;
+  const { prepareRow, page } = tableInstance;
 
   return (
     <Table title="Sending Domains">
@@ -31,7 +31,7 @@ export default function SendingDomainsTable({ tableInstance }) {
       </ScreenReaderOnly>
 
       <tbody>
-        {rows?.map((row, index) => {
+        {page?.map((row, index) => {
           prepareRow(row);
           return (
             <Table.Row key={`table-row-${index}`}>

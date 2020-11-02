@@ -1,16 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useReducer, useState } from 'react';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
-
 import { usePageFilters } from 'src/hooks';
 import { Panel } from 'src/components/matchbox';
 import { Pagination } from 'src/components/collection';
-
-import { useTable, useSortBy, useFilters } from 'react-table';
-
+import { useTable, useSortBy, useFilters, usePagination } from 'react-table';
 import useDomains from '../hooks/useDomains';
 import { API_ERROR_MESSAGE } from '../constants';
-import { DEFAULT_CURRENT_PAGE } from 'src/constants';
+import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 
@@ -108,21 +105,22 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
+
   const data = React.useMemo(() => domains, [domains]);
   const columns = React.useMemo(
     () => [
-      { Header: 'Blocked', accessor: 'blocked' },
-      { Header: 'CreationTime', accessor: 'creationTime', sortDescFirst: true },
-      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain' },
-      { Header: 'DomainName', accessor: 'domainName' },
-      { Header: 'ReadyForBounce', accessor: 'readyForBounce' },
-      { Header: 'ReadyForDKIM', accessor: 'readyForDKIM' },
-      { Header: 'ReadyForSending', accessor: 'readyForSending' },
-      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
-      { Header: 'SubaccountId', accessor: 'subaccountId' },
-      { Header: 'SubaccountName', accessor: 'subaccountName' },
-      { Header: 'Unverified', accessor: 'unverified' },
-      { Header: 'ValidSPF', accessor: 'validSPF' },
+      { Header: 'Blocked', accessor: 'blocked', filterValue: false },
+      { Header: 'CreationTime', accessor: 'creationTime', filterValue: false },
+      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain', filterValue: false },
+      { Header: 'DomainName', accessor: 'domainName', filterValue: '' },
+      { Header: 'ReadyForBounce', accessor: 'readyForBounce', filterValue: false },
+      { Header: 'ReadyForDKIM', accessor: 'readyForDKIM', filterValue: false },
+      { Header: 'ReadyForSending', accessor: 'readyForSending', filterValue: false },
+      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', filterValue: false },
+      { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
+      { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
+      { Header: 'Unverified', accessor: 'unverified', filterValue: false },
+      { Header: 'ValidSPF', accessor: 'validSPF', filterValue: false },
     ],
     [],
   );
@@ -150,6 +148,9 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       data,
       sortBy,
       initialState: {
+        pageIndex: DEFAULT_CURRENT_PAGE - 1, // react-table takes a 0 base pageIndex
+        pageSize: DEFAULT_PER_PAGE,
+        filters: [],
         sortBy: [
           {
             id: 'creationTime',
@@ -160,16 +161,29 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     },
     useFilters,
     useSortBy,
+    usePagination,
   );
-  const { rows, setFilter, toggleSortBy } = tableInstance;
+
+  const {
+    rows,
+    page,
+    setFilter,
+    setAllFilters,
+    toggleSortBy,
+    state,
+    gotoPage,
+    setPageSize,
+  } = tableInstance;
   const isEmpty = !listPending && rows?.length === 0;
 
   // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
-    // filtersDispatch({ type: 'RESET', state: filtersInitialState });
-    // resetFilters();
+    filtersDispatch({ type: 'RESET', state: filtersInitialState });
+    resetFilters();
+    // useTables reset
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderBounceOnly]);
+
   // Make initial requests
   useEffect(() => {
     listSendingDomains();
@@ -197,32 +211,33 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   // When filter state updates, update table state and the query parameters
   useEffect(() => {
     if (!listPending) {
-      // function getFilterFromCheckbox(name) {
-      //   return filtersState.checkboxes.find(item => item.name === name).isChecked
-      //     ? true
-      //     : undefined;
-      // }
-      // const filterStateToParams = () => {
-      //   let params = {};
-      //   for (let checkbox of filtersState.checkboxes) {
-      //     params[checkbox.name] = checkbox.isChecked;
-      //   }
-      //   params.domainName = filtersState.domainNameFilter;
-      //   return params;
-      // };
-      // updateFilters(filterStateToParams());
-      // tableDispatch({
-      //   type: 'FILTER',
-      //   filters: [
-      //     { name: 'domainName', value: filtersState.domainNameFilter },
-      //     { name: 'readyForSending', value: getFilterFromCheckbox('readyForSending') },
-      //     { name: 'readyForDKIM', value: getFilterFromCheckbox('readyForDKIM') },
-      //     { name: 'readyForBounce', value: getFilterFromCheckbox('readyForBounce') },
-      //     { name: 'validSPF', value: getFilterFromCheckbox('validSPF') },
-      //     { name: 'unverified', value: getFilterFromCheckbox('unverified') },
-      //     { name: 'blocked', value: getFilterFromCheckbox('blocked') },
-      //   ],
-      // });
+      /** TODO: This part is important - come back to it
+      function getFilterFromCheckbox(name) {
+        return filtersState.checkboxes.find(item => item.name === name).isChecked
+          ? true
+          : undefined;
+      }
+      const filterStateToParams = () => {
+        let params = {};
+        for (let checkbox of filtersState.checkboxes) {
+          params[checkbox.name] = checkbox.isChecked;
+        }
+        params.domainName = filtersState.domainNameFilter;
+        return params;
+      };
+      updateFilters(filterStateToParams());
+      tableDispatch({
+        type: 'FILTER',
+        filters: [
+          { name: 'domainName', value: filtersState.domainNameFilter },
+          { name: 'readyForSending', value: getFilterFromCheckbox('readyForSending') },
+          { name: 'readyForDKIM', value: getFilterFromCheckbox('readyForDKIM') },
+          { name: 'readyForBounce', value: getFilterFromCheckbox('readyForBounce') },
+          { name: 'validSPF', value: getFilterFromCheckbox('validSPF') },
+          { name: 'unverified', value: getFilterFromCheckbox('unverified') },
+          { name: 'blocked', value: getFilterFromCheckbox('blocked') },
+        ],
+      }); */
     }
   }, [listPending]);
   // filtersState
@@ -258,6 +273,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
                 filtersDispatch({ type: 'TOGGLE', name: e.target.name });
+                const newFilters = filtersState.checkboxes.map(i => {
+                  if (e.target.name === i.name) {
+                    return { id: i.name, value: e.target.checked };
+                  }
+
+                  return { id: i.name, value: i.isChecked };
+                });
+                setAllFilters(newFilters); // multi-filter apply [ { id: name, value: true | false } ]
               }}
             />
 
@@ -310,29 +333,23 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         {!listPending && !isEmpty && <SendingDomainsTable tableInstance={tableInstance} />}
       </Panel>
 
-      {/* <Pagination
-        data={tableState.rawData}
-        currentPage={DEFAULT_CURRENT_PAGE}
-        perPage={tableState.perPage}
+      <Pagination
+        data={rows}
+        pageBaseZero={true}
+        currentPage={state.pageIndex}
+        perPage={state.pageSize}
         saveCsv={false}
         onPageChange={page => {
-          page += 1;
-
+          // TODO: Try to see if this is firing because of a mistake I made.... otherwise leave condition in place
           // Only adding this if condition because this keeps firing on load
-          if (tableState.currentPage !== page) {
-            // tableDispatch({
-            //   type: 'CHANGE_PAGE',
-            //   page: page,
-            // });
+          if (state.pageIndex !== page) {
+            gotoPage(page);
           }
         }}
         onPerPageChange={perPage => {
-          // tableDispatch({
-          //   type: 'CHANGE_PER_PAGE',
-          //   perPage,
-          // });
+          setPageSize(perPage);
         }}
-      /> */}
+      />
     </>
   );
 }
