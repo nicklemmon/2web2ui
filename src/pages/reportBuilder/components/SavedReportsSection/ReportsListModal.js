@@ -13,7 +13,9 @@ import {
   Tag,
 } from 'src/components/matchbox';
 import { formatDateTime } from 'src/helpers/date';
-import { ButtonLink } from 'src/components/links';
+import { ButtonLink, PageLink } from 'src/components/links';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
 const allReportsColumns = [
   { label: 'Name', sortKey: 'name' },
@@ -50,6 +52,13 @@ const Actions = ({ id, handleDelete, handleEdit, reportType, report, ...rest }) 
     >
       <ActionList>
         <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />
+        {rest.isScheduledReportsEnabled && (
+          <ActionList.Action
+            content="Schedule"
+            to={`/signals/schedule/${report.id}`}
+            as={PageLink}
+          />
+        )}
         <ActionList.Action content="Edit" onClick={() => handleEdit(report)} />
       </ActionList>
     </Popover>
@@ -57,7 +66,15 @@ const Actions = ({ id, handleDelete, handleEdit, reportType, report, ...rest }) 
 };
 
 export function ReportsListModal(props) {
-  const { reports, open, onClose, currentUser, handleDelete, handleEdit } = props;
+  const {
+    reports,
+    open,
+    onClose,
+    currentUser,
+    handleDelete,
+    handleEdit,
+    isScheduledReportsEnabled,
+  } = props;
   const handleReportChange = report => {
     props.handleReportChange(report);
     onClose();
@@ -77,6 +94,7 @@ export function ReportsListModal(props) {
       </ButtonLink>,
       <div>{formatDateTime(modified)}</div>,
       <Actions
+        isScheduledReportsEnabled={isScheduledReportsEnabled}
         id={`popover-myreports-${report.id}`}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
@@ -91,6 +109,7 @@ export function ReportsListModal(props) {
     //conditionally render the actionlist
     const action = current_user_can_edit ? (
       <Actions
+        isScheduledReportsEnabled={isScheduledReportsEnabled}
         id={`popover-allreports-${report.id}`}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
@@ -165,6 +184,9 @@ export function ReportsListModal(props) {
 const mapStateToProps = state => {
   return {
     currentUser: state.currentUser.username,
+    isScheduledReportsEnabled: selectCondition(isAccountUiOptionSet('allow_scheduled_reports'))(
+      state,
+    ),
   };
 };
 export default connect(mapStateToProps)(ReportsListModal);

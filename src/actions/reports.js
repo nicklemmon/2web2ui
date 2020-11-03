@@ -41,3 +41,24 @@ export function deleteReport(id) {
     },
   });
 }
+
+export function getReport(id) {
+  return sparkpostApiRequest({
+    type: 'GET_REPORT',
+    meta: {
+      method: 'GET',
+      url: `/v1/reports/${id}`,
+    },
+  });
+}
+
+export function createScheduledReport(reportId, data) {
+  return sparkpostApiRequest({
+    type: 'CREATE_SCHEDULED_REPORT',
+    meta: {
+      method: 'POST',
+      url: `/v1/reports/${reportId}/schedules`,
+      data,
+    },
+  });
+}
