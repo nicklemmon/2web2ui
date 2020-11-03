@@ -9,6 +9,7 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
+import getReactTableFilters from './getReactTableFilters';
 
 const filtersInitialState = {
   domainName: '',
@@ -84,36 +85,6 @@ const initFiltersForSending = {
       return val === 'true' || val === 'false' || typeof val === 'boolean';
     },
   },
-};
-
-// TODO: Move and import here
-const getReactTableFilters = (
-  filters,
-  filtersState,
-  { domainName = null, targetName = undefined, targetChecked = undefined },
-) => {
-  const newFilters = Object.keys(filters).map(i => {
-    if (domainName && 'domainName' === i) {
-      return { id: 'domainName', value: domainName };
-    } else if (targetName && targetChecked !== undefined && targetName === i) {
-      return { id: i, value: targetChecked };
-    }
-    let index = filtersState.checkboxes.map(i => i.name).indexOf(i);
-    let filter = filtersState.checkboxes[index];
-
-    if (!filter) {
-      return null;
-    } else if (filter.isChecked) {
-      return {
-        id: i,
-        value: true,
-      };
-    }
-
-    return null;
-  });
-
-  return newFilters.filter(Boolean);
 };
 
 export default function SendingDomainsTab({ renderBounceOnly = false }) {
