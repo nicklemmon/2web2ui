@@ -819,7 +819,6 @@ describe('The domains list page', () => {
         cy.findByLabelText('Blocked').uncheck({ force: true });
       });
 
-      // URL SYNC COMMENTED OUT FOR NOW...
       it('syncs domain status with query params', () => {
         stubTrackingDomains();
         stubSubaccounts();
