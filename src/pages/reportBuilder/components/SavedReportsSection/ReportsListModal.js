@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { MoreHoriz } from '@sparkpost/matchbox-icons';
 import { Tabs, TableCollection, Subaccount } from 'src/components';
@@ -19,7 +19,7 @@ import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
 const allReportsColumns = [
   { label: 'Name', sortKey: 'name' },
-  { label: 'Last Modification', sortKey: 'modified' },
+  { label: 'Last Modification', width: '25%', sortKey: 'modified' },
   { label: 'Created By', sortKey: 'creator' },
   {},
   {},
@@ -37,6 +37,34 @@ const FilterBoxWrapper = props => (
   </Box>
 );
 
+const Actions = ({ id, handleDelete, handleEdit, reportType, report, ...rest }) => {
+  return (
+    <Popover
+      left
+      top={rest.isLast}
+      id={id}
+      trigger={
+        <Button variant="minimal" aria-controls={id} data-id={id}>
+          <Button.Icon as={MoreHoriz} />
+          <ScreenReaderOnly>Open Menu</ScreenReaderOnly>
+        </Button>
+      }
+    >
+      <ActionList>
+        <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />
+        {rest.isScheduledReportsEnabled && (
+          <ActionList.Action
+            content="Schedule"
+            to={`/signals/schedule/${report.id}`}
+            as={PageLink}
+          />
+        )}
+        <ActionList.Action content="Edit" onClick={() => handleEdit(report)} />
+      </ActionList>
+    </Popover>
+  );
+};
+
 export function ReportsListModal(props) {
   const {
     reports,
@@ -52,44 +80,10 @@ export function ReportsListModal(props) {
     onClose();
   };
 
-  const getActions = useCallback(
-    (reportType, report) => {
-      return (
-        <Popover
-          left
-          id={`popover-${reportType}-${report.id}`}
-          trigger={
-            <Button
-              variant="minimal"
-              aria-controls={`popover-${reportType}-${report.id}`}
-              data-id={`${reportType}-${report.id}`}
-            >
-              <Button.Icon as={MoreHoriz} />
-              <ScreenReaderOnly>Open Menu</ScreenReaderOnly>
-            </Button>
-          }
-        >
-          <ActionList>
-            <ActionList.Action content="Edit" onClick={() => handleEdit(report)} />
-            {isScheduledReportsEnabled && (
-              <ActionList.Action
-                content="Schedule"
-                to={`/signals/schedule/${report.id}`}
-                as={PageLink}
-              />
-            )}
-            <ActionList.Action content="Delete" onClick={() => handleDelete(report)} />
-          </ActionList>
-        </Popover>
-      );
-    },
-    [handleDelete, handleEdit, isScheduledReportsEnabled],
-  );
-
   const myReports = reports.filter(({ creator }) => creator === currentUser);
 
   const myReportsRows = report => {
-    const { name, modified } = report;
+    const { name, modified, isLast } = report;
     return [
       <ButtonLink
         onClick={() => {
@@ -99,14 +93,32 @@ export function ReportsListModal(props) {
         {name}
       </ButtonLink>,
       <div>{formatDateTime(modified)}</div>,
-      getActions('myReports', report),
+      <Actions
+        isScheduledReportsEnabled={isScheduledReportsEnabled}
+        id={`popover-myreports-${report.id}`}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        report={report}
+        isLast={isLast}
+      />,
     ];
   };
 
   const allReportsRows = report => {
-    const { name, modified, creator, subaccount_id, current_user_can_edit } = report;
+    const { name, modified, creator, subaccount_id, current_user_can_edit, isLast } = report;
     //conditionally render the actionlist
-    const action = current_user_can_edit ? getActions('allReports', report) : '';
+    const action = current_user_can_edit ? (
+      <Actions
+        isScheduledReportsEnabled={isScheduledReportsEnabled}
+        id={`popover-allreports-${report.id}`}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        report={report}
+        isLast={isLast}
+      />
+    ) : (
+      ''
+    );
 
     return [
       <ButtonLink

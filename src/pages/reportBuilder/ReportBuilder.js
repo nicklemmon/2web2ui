@@ -295,6 +295,7 @@ export function ReportBuilder({
       <SaveReportModal
         create
         open={showSaveNewReportModal}
+        setReport={setReport}
         onCancel={() => setShowSaveNewReportModal(false)}
       />
     </Page>
