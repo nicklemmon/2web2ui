@@ -1,25 +1,20 @@
 import styled from 'styled-components';
-import { LabelSpacer } from 'src/components/labels';
 
 export const StyledFilterFields = styled.div`
   display: grid;
   grid-gap: ${props => props.theme.space['500']};
-  grid-template-columns: 1fr;
+  grid-template-columns: 2fr 165px auto;
 
-  @media (min-width: ${props => props.theme.breakpoints[1]}) {
-    grid-template-columns: 1fr 1fr auto;
+  @media (max-width: ${props => props.theme.breakpoints[1]}) {
+    grid-template-columns: 1fr;
   }
 `;
 
 export const StyledGridCell = styled.div`
   justify-self: end;
-`;
 
-export const StyledLabelSpacer = styled(LabelSpacer)`
-  display: none;
-
-  @media (min-width: ${props => props.theme.breakpoints[1]}) {
-    display: flex;
+  @media (max-width: ${props => props.theme.breakpoints[1]}) {
+    justify-self: start;
   }
 `;
 

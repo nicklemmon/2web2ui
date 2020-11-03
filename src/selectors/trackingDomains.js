@@ -1,8 +1,18 @@
 import { createSelector } from 'reselect';
 import _ from 'lodash';
+import { getSubaccountsIndexedById, getSubaccountName } from './subaccounts';
 
 const getTrackingDomains = state => state.trackingDomains.list;
 const selectSubaccountFromProps = (state, props) => _.get(props, 'domain.subaccount_id', null);
+
+export const selectDomains = createSelector(
+  [getTrackingDomains, getSubaccountsIndexedById],
+  (domains = [], subaccounts) =>
+    domains.map(domain => ({
+      ...domain,
+      subaccount_name: getSubaccountName(subaccounts, domain['subaccount_id']),
+    })),
+);
 
 export const convertStatus = ({ verified, compliance_status }) => {
   if (compliance_status !== 'valid') {
@@ -27,6 +37,26 @@ export const selectTrackingDomainsList = createSelector(
       verified: item.status.verified,
       status: convertStatus(item.status),
     })),
+);
+
+export const selectTrackingDomainsListHibana = createSelector(
+  [getTrackingDomains],
+  trackingDomains => {
+    if (!trackingDomains) return undefined;
+
+    return trackingDomains.map(item => {
+      const resolvedStatus = convertStatus(item.status);
+
+      return {
+        ...item,
+        verified: item.status.verified,
+        status: convertStatus(item.status),
+        blocked: resolvedStatus === 'blocked',
+        unverified: resolvedStatus === 'unverified',
+        defaultTrackingDomain: item.default,
+      };
+    });
+  },
 );
 
 export const selectUnverifiedTrackingDomains = createSelector(
@@ -67,7 +97,7 @@ export const selectTrackingDomainsOptions = createSelector(
   (verified, defaultDomain) => defaultDomain.concat(verified),
 );
 
-export const selectTrackingDomainsRows = createSelector([getTrackingDomains], (domains = []) => {
+export const selectTrackingDomainsRows = createSelector([selectDomains], (domains = []) => {
   return domains.map(trackingDomain => {
     const {
       domain,

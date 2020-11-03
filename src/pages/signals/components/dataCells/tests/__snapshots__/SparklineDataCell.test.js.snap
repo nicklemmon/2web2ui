@@ -32,6 +32,7 @@ exports[`SparklineDataCell renders sparkline 1`] = `
     ]
   }
   tooltipContent={[Function]}
+  tooltipWidth="15rem"
   width="100%"
   yKey="example"
   yRange={

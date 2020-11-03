@@ -707,9 +707,7 @@ describe('Change Billing Plan Page', () => {
 
     cy.findByText('Your features have been updated').should('be.visible');
     cy.findByText('Authentication and Security').should('be.visible');
-    cy.findByText(
-      'Your new plan no longer allows for single sign-on and account-wide requirement of two-factor authentication.',
-    ).should('be.visible');
+    cy.findByText('Your new plan no longer allows for single sign-on.').should('be.visible');
 
     fillOutCreditCardForm();
 

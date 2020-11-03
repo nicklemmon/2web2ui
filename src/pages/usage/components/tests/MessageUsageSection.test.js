@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { MessagingUsageSection } from '../MessagingUsageSection';
+import MessagingUsageSection from '../MessagingUsageSection';
 
 describe('MessageUsageSection', () => {
   const defaultProps = {

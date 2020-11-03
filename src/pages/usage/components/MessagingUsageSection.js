@@ -5,14 +5,14 @@ import { Heading, SubduedText } from 'src/components/text';
 import { formatDate } from 'src/helpers/date';
 import config from 'src/config';
 import { LINKS } from 'src/constants';
-import { LabelAndKeyPair } from './LabelAndKeyPair';
+import { LabelAndKeyPair } from '.';
 
-export const MessagingUsageSection = ({
+export default function MessagingUsageSection({
   usage,
   subscription,
   endOfBillingPeriod,
   startOfBillingPeriod,
-}) => {
+}) {
   const remaining = usage && subscription && subscription.plan_volume - usage.month.used;
   const overage = remaining < 0 ? Math.abs(remaining) : 0;
   const hasDailyLimit = usage && usage.day.limit && usage.day.limit > 0;
@@ -133,4 +133,4 @@ export const MessagingUsageSection = ({
       </Layout.Section>
     </>
   );
-};
+}

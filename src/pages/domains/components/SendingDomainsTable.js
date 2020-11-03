@@ -53,7 +53,7 @@ function MainCell({ row }) {
 
   return (
     <Stack space="100">
-      <PageLink to={`${DETAILS_BASE_URL}/${domainName}`}>{domainName}</PageLink>
+      <PageLink to={`${DETAILS_BASE_URL}/sending-bounce/${domainName}`}>{domainName}</PageLink>
 
       {subaccountId ? (
         <Text fontSize="200" lineHeight="200">

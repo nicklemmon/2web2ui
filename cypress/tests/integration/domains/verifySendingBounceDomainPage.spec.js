@@ -19,8 +19,14 @@ describe('The verify sending/bounce domain page', () => {
       });
 
       it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
-        cy.visit(PAGE_URL);
-        cy.wait('@accountDomainsReq');
+        cy.stubRequest({
+          url: '/api/v1/sending-domains/sending-bounce.net',
+          fixture: 'sending-domains/200.get.unverified-dkim-bounce.json',
+          requestAlias: 'unverifiedDkimBounce',
+        });
+
+        cy.visit('/domains/details/sending-bounce.net/verify-sending-bounce');
+        cy.wait(['@accountDomainsReq', '@unverifiedDkimBounce']);
 
         cy.title().should('include', 'Verify Sending/Bounce Domain');
         cy.findByRole('heading', { name: 'Verify Sending/Bounce Domain' }).should('be.visible');
