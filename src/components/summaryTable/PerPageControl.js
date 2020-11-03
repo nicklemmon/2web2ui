@@ -1,5 +1,5 @@
 /***
- * DEPRECATED!
+ * DEPRECATED! Use src/components/collection/Pagination.js instead (also update this when a deprecation plan is in place)
  */
 import React from 'react';
 import classnames from 'classnames';
