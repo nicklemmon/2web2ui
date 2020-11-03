@@ -58,6 +58,7 @@ describe('The domains list page', () => {
       cy.url().should('include', `${PAGE_URL}/list/sending`);
     });
 
+    /** TODO: Add deep linking testing */
     describe('sending domains table', () => {
       function verifyTableRow({ rowIndex, domainName, creationDate, subaccount, statusTags }) {
         cy.get('tbody tr')
@@ -792,34 +793,24 @@ describe('The domains list page', () => {
           status: 'Tracking',
           subaccount: 'Fake Subaccount 1 (101)',
         });
-
-        // URL SYNC COMMENTED OUT FOR NOW...
-        // cy.location().should(loc => {
-        //   expect(loc.search).to.eq('?verified=true');
-        // });
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?verified=true');
+        });
         cy.findByLabelText('Tracking Domain').uncheck({ force: true });
-
         cy.findByLabelText('Unverified').check({ force: true });
-
-        // URL SYNC COMMENTED OUT FOR NOW...
-        // cy.location().should(loc => {
-        //   expect(loc.search).to.eq('?unverified=true');
-        // });
-
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?unverified=true');
+        });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'unverified.com',
           status: 'Unverified',
         });
         cy.findByLabelText('Unverified').uncheck({ force: true });
-
         cy.findByLabelText('Blocked').check({ force: true });
-
-        // URL SYNC COMMENTED OUT FOR NOW...
-        // cy.location().should(loc => {
-        //   expect(loc.search).to.eq('?blocked=true');
-        // });
-
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?blocked=true');
+        });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'blocked.com',
@@ -829,7 +820,7 @@ describe('The domains list page', () => {
       });
 
       // URL SYNC COMMENTED OUT FOR NOW...
-      it.skip('syncs domain status with query params', () => {
+      it('syncs domain status with query params', () => {
         stubTrackingDomains();
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking?verified=true`);

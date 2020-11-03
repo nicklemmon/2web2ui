@@ -11,7 +11,7 @@ import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
 
 const filtersInitialState = {
-  domainNameFilter: undefined,
+  domainName: undefined,
   checkboxes: [
     {
       label: 'Tracking Domain',
@@ -53,6 +53,36 @@ const initFiltersForTracking = {
   },
 };
 
+// TODO: Move and import here
+const getReactTableFilters = (
+  filters,
+  filtersState,
+  { domainName = null, targetName = undefined, targetChecked = undefined },
+) => {
+  const newFilters = Object.keys(filters).map(i => {
+    if (domainName && 'domainName' === i) {
+      return { id: 'domainName', value: domainName };
+    } else if (targetName && targetChecked !== undefined && targetName === i) {
+      return { id: i, value: targetChecked };
+    }
+    let index = filtersState.checkboxes.map(i => i.name).indexOf(i);
+    let filter = filtersState.checkboxes[index];
+
+    if (!filter) {
+      return null;
+    } else if (filter.isChecked) {
+      return {
+        id: i,
+        value: true,
+      };
+    }
+
+    return null;
+  });
+
+  return newFilters.filter(Boolean);
+};
+
 export default function TrackingDomainsTab() {
   const {
     listTrackingDomains,
@@ -65,7 +95,7 @@ export default function TrackingDomainsTab() {
   } = useDomains();
 
   // filtersState, UI -> data struct (might be replacable with react-table too)
-  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
+  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
 
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
@@ -132,39 +162,38 @@ export default function TrackingDomainsTab() {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
-  //sync the params with filters on page load
+  // sync the params with filters on page load
   useEffect(() => {
-    // TODO: This part is important - come back to it
-    // Object.keys(filters).forEach(key => {
-    //   if (key === 'domainName') {
-    //     // filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] });
-    //   } else if (filters[key] === 'true') {
-    //     filtersDispatch({ type: 'TOGGLE', name: key });
-    //   }
-    // });
+    Object.keys(filters).forEach(key => {
+      if (key === 'domainName') {
+        filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] }); // SET UI INPUT VALUES
+      } else if (filters[key] === 'true') {
+        filtersStateDispatch({ type: 'TOGGLE', name: key }); // SET UI INPUT VALUES
+      }
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // When filter state updates, update table state and the query parameters
   useEffect(() => {
-    // TODO: This part is important - come back to it
-    // if (!listPending) {
-    //   function getFilterFromCheckbox(name) {
-    //     return filtersState.checkboxes.find(item => item.name === name).isChecked
-    //       ? true
-    //       : undefined;
-    //   }
-    //   const filterStateToParams = () => {
-    //     let params = {};
-    //     for (let checkbox of filtersState.checkboxes) {
-    //       params[checkbox.name] = checkbox.isChecked;
-    //     }
-    //     params.domainName = filtersState.domainNameFilter;
-    //     return params;
-    //   };
-    //   updateFilters(filterStateToParams());
-    // }
-  }, [filtersState, listPending, updateFilters]);
+    if (!listPending) {
+      const filterStateToParams = () => {
+        let params = {};
+        for (let checkbox of filtersState.checkboxes) {
+          params[checkbox.name] = checkbox.isChecked;
+        }
+        params.domainName = filtersState.domainName;
+        return params;
+      };
+      const filterStateParams = filterStateToParams();
+      updateFilters(filterStateParams);
+      const reactTableFilters = getReactTableFilters(filterStateParams, filtersState, {
+        domainName: filterStateParams.domainName,
+      });
+      setAllFilters(reactTableFilters);
+    }
+  }, [filtersState, listPending, setAllFilters, updateFilters]);
 
   if (trackingDomainsListError) {
     return (
@@ -183,24 +212,14 @@ export default function TrackingDomainsTab() {
           <TableFilters>
             <TableFilters.DomainField
               disabled={listPending}
-              value={filtersState.domainNameFilter}
+              value={filtersState.domainName}
               onChange={e => {
-                // TODO: Probably want to add a debounce event for as they're typing so we dont update on every keystroke
-                filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
-
-                const newFilters = Object.keys(filters).map(i => {
-                  if ('domainName' === i) {
-                    return { id: i, value: e.target.value };
-                  }
-                  return {
-                    id: i,
-                    value:
-                      filtersState.checkboxes[filtersState.checkboxes.map(i => i.name).indexOf(i)]
-                        .isChecked || false,
-                  };
+                // TODO: debounce?
+                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+                const reactTableFilters = getReactTableFilters(filters, filtersState, {
+                  domainName: e.target.value,
                 });
-
-                setAllFilters(newFilters);
+                setAllFilters(reactTableFilters);
               }}
             />
 
@@ -208,24 +227,13 @@ export default function TrackingDomainsTab() {
               disabled={listPending}
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
-                filtersDispatch({ type: 'TOGGLE', name: e.target.name });
-
-                const newFilters = Object.keys(filters).map(i => {
-                  if ('domainName' === i) {
-                    return { id: 'domainName', value: filtersState.domainNameFilter };
-                  } else if (e.target.name === i) {
-                    return { id: i, value: e.target.checked };
-                  }
-
-                  return {
-                    id: i,
-                    value:
-                      filtersState.checkboxes[filtersState.checkboxes.map(i => i.name).indexOf(i)]
-                        .isChecked || false,
-                  };
+                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
+                const reactTableFilters = getReactTableFilters(filters, filtersState, {
+                  domainName: filtersState.domainName,
+                  targetName: e.target.name,
+                  targetChecked: e.target.checked,
                 });
-
-                setAllFilters(newFilters);
+                setAllFilters(reactTableFilters);
               }}
             />
 
