@@ -1,15 +1,19 @@
 import React from 'react';
-import classnames from 'classnames';
-import { tokens } from '@sparkpost/design-tokens-hibana';
+import styled from 'styled-components';
+import classNames from 'classnames';
 import styles from './TooltipMetric.module.scss';
 import { Box, Text } from 'src/components/matchbox';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 
+const TooltipMark = styled('div')`
+  background: ${props => props.color};
+`;
+
 export const OGTooltipMetric = ({ color = '#6e6e73', description, label, value }) => (
   <div className={styles.Wrapper}>
     <div className={styles.TooltipMetric}>
-      <div style={{ background: color }} className={styles.Color} />
-      <div className={classnames(styles.Content, description && styles.hasDescription)}>
+      <TooltipMark color={color} className={styles.Color} />
+      <div className={classNames(styles.Content, description && styles.hasDescription)}>
         <div className={styles.Label}>{label}</div>
         {description && <div className={styles.Description}>{description}</div>}
         <div className={styles.Value}>{value}</div>
@@ -18,8 +22,21 @@ export const OGTooltipMetric = ({ color = '#6e6e73', description, label, value }
   </div>
 );
 
+const LabelText = styled('div')`
+  transform: 'translateY(-2px)'; /* Fixes slight vertical centering problem */
+  font-size: ${props => props.theme.fontSizes['200']};
+  font-weight: ${props => props.theme.fontWeights.light};
+  line-height: ${props => props.theme.lineHeights['200']};
+`;
+
+const ValueText = styled('span')`
+  transform: 'translateY(-4px)';
+  font-size: ${props => props.theme.fontSizes['200']};
+  font-weight: ${props => props.theme.fontWeights.semibold};
+`;
+
 export const HibanaTooltipMetric = ({
-  color = tokens.color_gray_600,
+  color = 'gray.600',
   description = '',
   label = '',
   value = '',
@@ -43,15 +60,7 @@ export const HibanaTooltipMetric = ({
       width="100%"
     >
       <div>
-        <Text
-          as="div"
-          fontSize="200"
-          fontWeight="300"
-          lineHeight="200"
-          style={{ transform: 'translateY(-2px)' }} // Fixes slight vertical centering problem
-        >
-          {label}
-        </Text>
+        <LabelText>{label}</LabelText>
 
         {description && (
           <Text as="div" fontSize="100" fontWeight="300" margin-top="200">
@@ -60,11 +69,11 @@ export const HibanaTooltipMetric = ({
         )}
       </div>
 
-      <Text as="span" fontSize="200" fontWeight="600" style={{ transform: 'translateY(-4px)' }}>
-        {value}
-      </Text>
+      <ValueText>{value}</ValueText>
     </Box>
   </Box>
 );
+
 const TooltipMetric = props => useHibanaToggle(OGTooltipMetric, HibanaTooltipMetric)(props);
+
 export default TooltipMetric;

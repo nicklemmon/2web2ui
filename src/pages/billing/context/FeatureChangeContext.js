@@ -174,16 +174,15 @@ export const FeatureChangeProvider = ({
             return resObject;
           }
           case 'sso':
-          case 'tfa_required':
             if (actions.auth || !comparedPlan) {
               resObject.auth = {
                 label: 'Authentication and Security',
-                description:
-                  'Your new plan no longer allows for single sign-on and account-wide requirement of two-factor authentication.',
+                description: 'Your new plan no longer allows for single sign-on.',
                 condition: true,
               };
             }
             return resObject;
+          case 'tfa_required':
           case 'messaging':
           default:
             return resObject;

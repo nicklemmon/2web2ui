@@ -7,13 +7,9 @@ exports[`Signals TooltipMetric Component renders correctly 1`] = `
   <div
     className="TooltipMetric"
   >
-    <div
+    <styled.div
       className="Color"
-      style={
-        Object {
-          "background": "#6e6e73",
-        }
-      }
+      color="#6e6e73"
     />
     <div
       className="Content"
@@ -40,13 +36,9 @@ exports[`Signals TooltipMetric Component renders correctly with color 1`] = `
   <div
     className="TooltipMetric"
   >
-    <div
+    <styled.div
       className="Color"
-      style={
-        Object {
-          "background": "#abc",
-        }
-      }
+      color="#abc"
     />
     <div
       className="Content"
@@ -73,13 +65,9 @@ exports[`Signals TooltipMetric Component renders correctly with description 1`] 
   <div
     className="TooltipMetric"
   >
-    <div
+    <styled.div
       className="Color"
-      style={
-        Object {
-          "background": "#6e6e73",
-        }
-      }
+      color="#6e6e73"
     />
     <div
       className="Content hasDescription"

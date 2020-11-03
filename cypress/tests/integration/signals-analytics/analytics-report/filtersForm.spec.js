@@ -30,6 +30,19 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
+    it('clears current filter values when the user swaps between "compare by" values', () => {
+      navigateToForm();
+
+      cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+      cy.findByLabelText('Sending Domain').type('hello.com world.org ');
+      cy.findByText('hello.com').should('be.visible');
+      cy.findByText('world.org').should('be.visible');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('does not contain');
+      cy.findByText('hello.com').should('not.be.visible');
+      cy.findByText('world.org').should('not.be.visible');
+    });
+
     it('only renders the "is equal to" and "is not equal to" comparison options when the user selects the "Subaccount" filter type', () => {
       navigateToForm();
 

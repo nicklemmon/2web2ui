@@ -5,7 +5,7 @@ Object {
   "features": Array [
     Object {
       "condition": true,
-      "description": "Your new plan no longer allows for single sign-on and account-wide requirement of two-factor authentication.",
+      "description": "Your new plan no longer allows for single sign-on.",
       "key": "auth",
       "label": "Authentication and Security",
     },
