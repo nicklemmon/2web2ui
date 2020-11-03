@@ -1,12 +1,12 @@
 import React, { useEffect, useReducer } from 'react';
+import { useFilters, usePagination, useSortBy, useTable } from 'react-table'; // https://react-table.tanstack.com/docs/api/overview
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
-import { usePageFilters } from 'src/hooks';
-import { Panel } from 'src/components/matchbox';
 import { Pagination } from 'src/components/collection';
-import { useTable, useSortBy, useFilters, usePagination } from 'react-table'; // https://react-table.tanstack.com/docs/api/overview
-import useDomains from '../hooks/useDomains';
-import { API_ERROR_MESSAGE } from '../constants';
+import { Panel } from 'src/components/matchbox';
 import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
+import { usePageFilters } from 'src/hooks';
+import { API_ERROR_MESSAGE } from '../constants';
+import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 
@@ -267,7 +267,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               disabled={listPending}
               value={filtersState.domainName}
               onChange={e => {
-                // TODO: debounce?
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
                 const reactTableFilters = getReactTableFilters(filters, filtersState, {
                   domainName: e.target.value,
