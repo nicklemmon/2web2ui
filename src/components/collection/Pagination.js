@@ -44,8 +44,10 @@ const CollectionPagination = ({
   if (!isHibanaEnabled) {
     return (
       <div>
-        <div className={styles.PageButtons}>{renderPageButtons()}</div>
-        <div className={styles.PerPageButtons}>
+        <div className={styles.PageButtons} data-id="pagination-pages">
+          {renderPageButtons()}
+        </div>
+        <div className={styles.PerPageButtons} data-id="pagination-per-page">
           <PerPageButtons
             totalCount={data.length}
             data={data}
@@ -61,8 +63,8 @@ const CollectionPagination = ({
 
   return (
     <Box display="flex" justifyContent="space-between">
-      <Box>{renderPageButtons()}</Box>
-      <Box display="flex" alignItems="center">
+      <Box data-id="pagination-pages">{renderPageButtons()}</Box>
+      <Box display="flex" alignItems="center" data-id="pagination-per-page">
         <PerPageButtons
           totalCount={data.length}
           data={data}

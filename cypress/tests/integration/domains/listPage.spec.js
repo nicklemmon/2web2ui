@@ -58,7 +58,6 @@ describe('The domains list page', () => {
       cy.url().should('include', `${PAGE_URL}/list/sending`);
     });
 
-    /** TODO: Add deep linking testing */
     describe('sending domains table', () => {
       function verifyTableRow({ rowIndex, domainName, creationDate, subaccount, statusTags }) {
         cy.get('tbody tr')
@@ -144,6 +143,60 @@ describe('The domains list page', () => {
         });
         cy.findAllByText('Default Bounce Domain').should('be.visible');
       }
+
+      it('renders a table with pagination contgrols under it', () => {
+        const PAGES_SELECTOR = '[data-id="pagination-pages"]';
+        const PER_PAGE_SELECTOR = '[data-id="pagination-per-page"]';
+
+        stubSendingDomains({ fixture: 'sending-domains/200.get.paginated-results.json' });
+        stubSubaccounts();
+
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findAllByText('Per Page').should('be.visible');
+        cy.get(PAGES_SELECTOR).within(() => {
+          cy.findAllByText('1').should('be.visible');
+          cy.findAllByText('2').should('be.visible');
+          cy.findAllByText('3').should('not.be.visible');
+
+          cy.findAllByRole('button', { name: 'Previous' }).should('be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).should('not.be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).click();
+        });
+
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'wat5.com',
+          creationDate: 'Aug 7, 1958',
+          subaccount: 'Fake Subaccount 1 (101)',
+          statusTags: ['Unverified'],
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('25').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 14);
+        });
+
+        verifyTableRow({
+          rowIndex: 13,
+          domainName: 'wat5.com',
+          creationDate: 'Aug 7, 1958',
+          subaccount: 'Fake Subaccount 1 (101)',
+          statusTags: ['Unverified'],
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('10').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 10);
+        });
+      });
 
       it('renders a table after requesting sending domains', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
