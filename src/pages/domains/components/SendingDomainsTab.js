@@ -117,7 +117,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       { Header: 'ReadyForBounce', accessor: 'readyForBounce' },
       { Header: 'ReadyForDKIM', accessor: 'readyForDKIM' },
       { Header: 'ReadyForSending', accessor: 'readyForSending' },
-      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
+      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
       { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
       { Header: 'Unverified', accessor: 'unverified' },
@@ -128,18 +128,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const sortBy = React.useMemo(
     () => [
       { id: 'creationTime', desc: true },
-      { id: 'blocked', desc: true },
-      { id: 'creationTime', desc: true },
-      { id: 'defaultBounceDomain', desc: true },
       { id: 'domainName', desc: true },
-      { id: 'readyForBounce', desc: true },
-      { id: 'readyForDKIM', desc: true },
-      { id: 'readyForSending', desc: true },
-      { id: 'sharedWithSubaccounts', desc: true },
-      { id: 'subaccountId', desc: true },
-      { id: 'subaccountName', desc: true },
-      { id: 'unverified', desc: true },
-      { id: 'validSPF', desc: true },
     ],
     [],
   );
