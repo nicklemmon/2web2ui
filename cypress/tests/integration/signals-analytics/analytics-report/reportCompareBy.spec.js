@@ -25,5 +25,34 @@ if (IS_HIBANA_ENABLED) {
           .type('Fake Subaccount');
       });
     });
+
+    it('Clicking add filter adds a new field for a filter', () => {
+      cy.findByRole('button', { name: 'Add Comparison' }).click();
+      cy.withinDrawer(() => {
+        cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+        cy.findAllByLabelText('Subaccount').should('have.length', 2);
+        cy.findByRole('button', { name: 'Add Subaccount' }).click();
+        cy.findAllByLabelText('Subaccount').should('have.length', 3);
+      });
+    });
+
+    it('Clicking clear, resets the form filters', () => {
+      cy.findByRole('button', { name: 'Add Comparison' }).click();
+      cy.withinDrawer(() => {
+        cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+        cy.findAllByLabelText('Subaccount').should('have.length', 2);
+        cy.findAllByLabelText('Subaccount')
+          .eq(0)
+          .type('Fake Subaccount');
+        cy.findByText('Fake Subaccount 3 (ID 103)')
+          .should('be.visible')
+          .click();
+        cy.findByRole('button', { name: 'Add Subaccount' }).click();
+        cy.findAllByLabelText('Subaccount').should('have.length', 3);
+        cy.findByRole('button', { name: 'Clear Comparison' }).click();
+        cy.findAllByLabelText('Subaccount').should('have.length', 0);
+        cy.findByLabelText(TYPE_LABEL).should('have.value', null);
+      });
+    });
   });
 }
