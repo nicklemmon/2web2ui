@@ -11,7 +11,7 @@ const StyledLabel = styled.div`
 `;
 
 const StyledValue = styled.div`
-  font-size: ${props => (props.isHibanaEnabled ? props.theme.fontSizes[400] : '0.89rem')};
+  font-size: ${props => (props.isHibanaEnabled ? props.theme.fontSizes[300] : '0.89rem')};
   color: ${props => props.isHibanaEnabled && props.dark && tokens.color_white};
 `;
 

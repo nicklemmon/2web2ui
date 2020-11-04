@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Downshift from 'downshift';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -56,6 +56,7 @@ function TypeSelect({
   suffix,
 }) {
   const [matches, setMatches] = useState([]);
+  const inputRef = useRef(null);
   // Controlled input so that we can change the value after selecting dropdown.
   const [inputValue, setInputValue] = useState(selectedItem ? itemToString(selectedItem) : '');
   // note, sorting large result lists can be expensive
@@ -104,6 +105,7 @@ function TypeSelect({
     isOpen,
     selectedItem,
     openMenu,
+    closeMenu,
   }) => {
     const textFieldConfig = {
       disabled,
@@ -118,12 +120,24 @@ function TypeSelect({
         setMatches(results);
         openMenu();
       },
+      ref: inputRef,
     };
 
     const textFieldProps = getInputProps(textFieldConfig);
     textFieldProps['data-lpignore'] = true;
 
-    const SuffixIcon = isOpen ? KeyboardArrowUp : KeyboardArrowDown;
+    const SuffixIcon = isOpen ? (
+      <KeyboardArrowUp onClick={closeMenu} color={tokens.color_blue_700} size={25} />
+    ) : (
+      <KeyboardArrowDown
+        onClick={() => {
+          inputRef.current.focus();
+          openMenu();
+        }}
+        color={tokens.color_blue_700}
+        size={25}
+      />
+    );
 
     return (
       <div>

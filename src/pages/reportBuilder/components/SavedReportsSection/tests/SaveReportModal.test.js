@@ -15,9 +15,10 @@ jest.mock('src/pages/reportBuilder/context/ReportBuilderContext', () => ({
 }));
 
 const mockOnCancel = jest.fn();
-const mockCreateReport = jest.fn(() => Promise.resolve());
-const mockGetReports = jest.fn(() => Promise.resolve());
+const mockCreateReport = jest.fn(() => Promise.resolve({ id: 1 }));
+const mockGetReports = jest.fn(() => Promise.resolve([{ id: 1 }]));
 const mockShowAlert = jest.fn();
+const mockSetReport = jest.fn();
 
 describe('SaveNewReportModal', () => {
   const subject = props => {
@@ -29,6 +30,7 @@ describe('SaveNewReportModal', () => {
       showAlert: mockShowAlert,
       loading: false,
       create: true,
+      setReport: mockSetReport,
     };
 
     return shallow(<SaveReportModal {...defaults} {...props} />);
@@ -41,11 +43,6 @@ describe('SaveNewReportModal', () => {
     expect(wrapper).toHaveTextContent('Editable');
     expect(wrapper).toHaveTextContent('Save Report');
     expect(wrapper).toHaveTextContent('Cancel');
-  });
-
-  it('shows loading symbol when loading', () => {
-    const wrapper = subject({ loading: true });
-    expect(wrapper.find('Loading')).toExist();
   });
 
   it('calls onCancel when clicking cancel button', () => {
@@ -69,11 +66,12 @@ describe('UpdateReportModal', () => {
     open: true,
     onCancel: jest.fn(),
     updateReport: jest.fn(() => Promise.resolve()),
-    getReports: jest.fn(() => Promise.resolve()),
+    getReports: jest.fn(() => Promise.resolve([{ id: 1 }])),
     showAlert: jest.fn(),
     loading: false,
     isOwner: true,
-    report: {},
+    report: { id: 1 },
+    setReport: jest.fn(),
   };
   const subject = props => {
     return shallow(<SaveReportModal {...defaults} {...props} />);
@@ -86,11 +84,6 @@ describe('UpdateReportModal', () => {
     expect(wrapper).toHaveTextContent('Editable');
     expect(wrapper).toHaveTextContent('Save Report');
     expect(wrapper).toHaveTextContent('Cancel');
-  });
-
-  it('shows loading symbol when loading', () => {
-    const wrapper = subject({ loading: true });
-    expect(wrapper.find('Loading')).toExist();
   });
 
   it('calls onCancel when clicking cancel button', () => {

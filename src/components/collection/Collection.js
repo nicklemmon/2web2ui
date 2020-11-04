@@ -166,7 +166,12 @@ export class Collection extends Component {
             </tr>
           ) : (
             visibleRows.map((row, i) => (
-              <RowComponent key={`${row[rowKeyName] || 'row'}-${i}`} {...row} />
+              <RowComponent
+                key={`${row[rowKeyName] || 'row'}-${i}`}
+                {...row}
+                index={i}
+                isLast={visibleRows.length === i + 1} //Temporary. Would like to update the hook to include pagination
+              />
             ))
           )}
         </BodyWrapper>

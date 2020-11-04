@@ -10,9 +10,7 @@ import {
   Tag,
   TextField,
 } from 'src/components/matchbox';
-import { useForm, Controller } from 'react-hook-form';
-import { CheckboxWrapper } from 'src/components/reactHookFormWrapper';
-import { Loading } from 'src/components';
+import { useForm } from 'react-hook-form';
 import { Heading } from 'src/components/text';
 import useRouter from 'src/hooks/useRouter';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
@@ -67,9 +65,10 @@ export function SaveReportModal(props) {
     updateReport,
     create,
     saveQuery,
+    setReport,
     isComparatorsEnabled,
   } = props;
-  const { handleSubmit, control, errors, setValue, reset } = useForm({
+  const { handleSubmit, errors, setValue, reset, register } = useForm({
     defaultValues: {
       name: '',
       description: '',
@@ -96,29 +95,30 @@ export function SaveReportModal(props) {
     }
 
     const saveAction = create ? createReport : updateReport;
-    return saveAction({ ...data, id: report?.id }).then(() => {
+    return saveAction({ ...data, id: report?.id }).then(response => {
       showAlert({ type: 'success', message: `You have successfully saved ${data.name}` });
       onCancel();
-      getReports();
+      if (report) {
+        getReports().then(reports => {
+          setReport(reports.find(({ id }) => id === report?.id));
+        });
+      } else {
+        getReports().then(reports => {
+          setReport(reports.find(({ id }) => id === response?.id));
+        });
+      }
     });
   };
 
   const renderContent = () => {
-    if (loading) {
-      return <Loading />;
-    }
-
-    //TODO look into use ref={register}, Matchbox can forward refs after 4.2.1
     return (
       <form onSubmit={handleSubmit(onSubmit)} id="newReportForm">
         <Stack>
-          <Controller
-            as={TextField}
+          <TextField
             label="Name"
             name="name"
             id="saved-reports-name"
-            control={control}
-            rules={{ required: true }}
+            ref={register({ required: true })}
             error={errors.name && 'Required'}
           />
           {saveQuery && (
@@ -152,27 +152,23 @@ export function SaveReportModal(props) {
               </Box>
             </Stack>
           )}
-          <Controller
-            as={TextField}
+          <TextField
             multiline
+            ref={register}
             rows="5"
             label="Description"
             name="description"
             id="saved-reports-description"
-            control={control}
             placeholder="Enter short description for your report"
-            rules={{ required: true }}
-            error={errors.description && 'Required'}
           />
           {(isOwner || create) && (
             <Checkbox.Group label="Editable">
-              <Controller
-                as={CheckboxWrapper}
+              <Checkbox
+                ref={register}
                 label="Allow others to edit report"
                 id="saved-reports-allow-others-to-edit"
                 name="is_editable"
                 setValue={setValue}
-                control={control}
               />
             </Checkbox.Group>
           )}
@@ -187,16 +183,21 @@ export function SaveReportModal(props) {
         {create ? 'Save New Report' : saveQuery ? 'Save Report Changes' : 'Edit Report'}
       </Modal.Header>
       <Modal.Content>{renderContent()}</Modal.Content>
-      {!loading && (
-        <Modal.Footer>
-          <Button type="submit" form="newReportForm" variant="primary">
-            Save Report
-          </Button>
-          <Button onClick={onCancel} variant="secondary">
-            Cancel
-          </Button>
-        </Modal.Footer>
-      )}
+
+      <Modal.Footer>
+        <Button
+          type="submit"
+          loading={loading}
+          disabled={loading}
+          form="newReportForm"
+          variant="primary"
+        >
+          Save Report
+        </Button>
+        <Button onClick={onCancel} disabled={loading} variant="secondary">
+          Cancel
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 }

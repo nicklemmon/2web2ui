@@ -15,6 +15,7 @@ export { default as abTesting } from './abTesting';
 export { default as apiKeys } from './api-keys';
 export { default as RegisterPage } from './register/RegisterPage';
 export { default as JoinPage } from './join/JoinPage';
+export { default as reportBuilder } from './reportBuilder';
 export { default as reports } from './reports';
 export { default as recipientLists } from './recipientLists';
 export { default as sendingDomains } from './sendingDomains';

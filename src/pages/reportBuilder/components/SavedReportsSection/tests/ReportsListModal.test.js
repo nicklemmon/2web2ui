@@ -64,14 +64,14 @@ describe('ReportsListModal', () => {
   it('does not render action list for not editable reports', () => {
     subject();
     screen.getByText('All Reports').click();
-    expect(screen.queryByTestId('allReports-0')).toBeInTheDocument();
-    expect(screen.queryByTestId('allReports-1')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('popover-allreports-0')).toBeInTheDocument();
+    expect(screen.queryByTestId('popover-allreports-1')).not.toBeInTheDocument();
   });
 
   it('handles delete when clicking delete in the actionlist', () => {
     subject();
     screen.getByText('All Reports').click();
-    screen.getByTestId('allReports-0').click();
+    screen.getByTestId('popover-allreports-0').click();
     screen.getByText('Delete').click();
     expect(defaults.handleDelete).toHaveBeenCalledWith(
       expect.objectContaining({ id: 0, name: 'My Saved Report' }),
@@ -81,7 +81,7 @@ describe('ReportsListModal', () => {
   it('handles edit when clicking edit in the actionlist', () => {
     subject();
     screen.getByText('All Reports').click();
-    screen.getByTestId('allReports-0').click();
+    screen.getByTestId('popover-allreports-0').click();
     screen.getByText('Edit').click();
     expect(defaults.handleEdit).toHaveBeenCalledWith(
       expect.objectContaining({ id: 0, name: 'My Saved Report' }),
