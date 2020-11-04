@@ -9,7 +9,6 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
-import getReactTableFilters from './getReactTableFilters';
 
 const filtersInitialState = {
   domainName: '',
@@ -212,9 +211,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       };
       const filterStateParams = filterStateToParams();
       updateFilters(filterStateParams);
-      const reactTableFilters = getReactTableFilters(filterStateParams, filtersState, {
-        domainName: filterStateParams.domainName,
-      });
+      let reactTableFilters = Object.entries(filterStateParams).map(x => ({
+        id: x[0],
+        value: x[1],
+      }));
       setAllFilters(reactTableFilters);
     }
   }, [filtersState, listPending, setAllFilters, updateFilters]);
@@ -239,10 +239,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               value={filtersState.domainName}
               onChange={e => {
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
-                const reactTableFilters = getReactTableFilters(filters, filtersState, {
-                  domainName: e.target.value,
-                });
-                setAllFilters(reactTableFilters);
               }}
             />
 
@@ -251,12 +247,6 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
-                const reactTableFilters = getReactTableFilters(filters, filtersState, {
-                  domainName: filtersState.domainName,
-                  targetName: e.target.name,
-                  targetChecked: e.target.checked,
-                });
-                setAllFilters(reactTableFilters);
               }}
             />
 
@@ -311,17 +301,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
       <Pagination
         data={rows}
-        pageBaseZero={true}
-        currentPage={state.pageIndex}
+        currentPage={state.pageIndex + 1}
         perPage={state.pageSize}
         saveCsv={false}
-        onPageChange={page => {
-          // TODO: Try to see if this is firing because of a mistake I made.... otherwise leave condition in place
-          // Only adding this if condition because this keeps firing on load
-          if (state.pageIndex !== page) {
-            gotoPage(page);
-          }
-        }}
+        onPageChange={page => gotoPage(page)}
         onPerPageChange={perPage => {
           setPageSize(perPage);
         }}
