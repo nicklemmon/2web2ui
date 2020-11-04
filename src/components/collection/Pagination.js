@@ -7,7 +7,6 @@ import SaveCSVButton from './SaveCSVButton';
 import { useHibana } from 'src/context/HibanaContext';
 
 const CollectionPagination = ({
-  pageBaseZero = false,
   currentPage,
   data,
   onPageChange,
@@ -29,15 +28,13 @@ const CollectionPagination = ({
       <Pagination
         pages={Math.ceil(data.length / perPage)}
         pageRange={pageRange}
-        currentPage={pageBaseZero ? currentPage + 1 : currentPage}
+        currentPage={currentPage}
         onChange={onPageChange}
       />
     );
   };
 
-  if (!pageBaseZero && !currentPage) {
-    return null;
-  } else if (pageBaseZero && !currentPage && currentPage !== 0) {
+  if (!currentPage) {
     return null;
   }
 

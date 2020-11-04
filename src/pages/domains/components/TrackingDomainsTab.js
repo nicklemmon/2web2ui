@@ -10,7 +10,6 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
-import getReactTableFilters from './getReactTableFilters';
 
 const filtersInitialState = {
   domainName: undefined,
@@ -160,9 +159,10 @@ export default function TrackingDomainsTab() {
       };
       const filterStateParams = filterStateToParams();
       updateFilters(filterStateParams);
-      const reactTableFilters = getReactTableFilters(filterStateParams, filtersState, {
-        domainName: filterStateParams.domainName,
-      });
+      let reactTableFilters = Object.entries(filterStateParams).map(x => ({
+        id: x[0],
+        value: x[1],
+      }));
       setAllFilters(reactTableFilters);
     }
   }, [filtersState, listPending, setAllFilters, updateFilters]);
@@ -187,10 +187,6 @@ export default function TrackingDomainsTab() {
               value={filtersState.domainName}
               onChange={e => {
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
-                const reactTableFilters = getReactTableFilters(filters, filtersState, {
-                  domainName: e.target.value,
-                });
-                setAllFilters(reactTableFilters);
               }}
             />
 
@@ -199,12 +195,6 @@ export default function TrackingDomainsTab() {
               checkboxes={filtersState.checkboxes}
               onCheckboxChange={e => {
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
-                const reactTableFilters = getReactTableFilters(filters, filtersState, {
-                  domainName: filtersState.domainName,
-                  targetName: e.target.name,
-                  targetChecked: e.target.checked,
-                });
-                setAllFilters(reactTableFilters);
               }}
             />
 
