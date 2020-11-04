@@ -165,7 +165,7 @@ function CompareByForm({
         <Box display="flex">
           <Box pr="100" flex="1">
             <Button width="100%" type="submit" variant="primary">
-              Apply Filters
+              Compare
             </Button>
           </Box>
           <Box pl="100" flex="1">
@@ -176,7 +176,7 @@ function CompareByForm({
               }}
               variant="secondary"
             >
-              Clear Filters
+              Clear Comparison
             </Button>
           </Box>
         </Box>

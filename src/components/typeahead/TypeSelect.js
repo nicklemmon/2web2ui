@@ -53,7 +53,7 @@ function TypeSelect({
   selectedItem,
   onInputChange,
   loading,
-  ...rest
+  suffix,
 }) {
   const [matches, setMatches] = useState([]);
   // Controlled input so that we can change the value after selecting dropdown.
@@ -68,11 +68,9 @@ function TypeSelect({
   useEffect(() => {
     if (onInputChange) {
       //External trigger for filtering
-      onInputChange(inputValue);
-    } else {
-      //Internal trigger for filtering
-      updateMatches(inputValue);
+      return onInputChange(inputValue);
     }
+    return updateMatches(inputValue);
   }, [updateMatches, onInputChange, inputValue]);
 
   useEffect(() => {
@@ -125,7 +123,7 @@ function TypeSelect({
     const textFieldProps = getInputProps(textFieldConfig);
     textFieldProps['data-lpignore'] = true;
 
-    let SuffixIcon = isOpen ? KeyboardArrowUp : KeyboardArrowDown;
+    const SuffixIcon = isOpen ? KeyboardArrowUp : KeyboardArrowDown;
 
     return (
       <div>
@@ -155,8 +153,7 @@ function TypeSelect({
             </div>
             <TextField
               {...textFieldProps}
-              suffix={<SuffixIcon color={tokens.color_blue_700} size={25} />}
-              {...rest}
+              suffix={suffix ? suffix : <SuffixIcon color={tokens.color_blue_700} size={25} />}
             />
           </Box>
         </TypeaheadWrapper>
