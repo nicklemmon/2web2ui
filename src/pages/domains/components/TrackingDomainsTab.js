@@ -10,7 +10,7 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
-import { getReactTableFilters } from '../helpers/react-table-filters';
+import getReactTableFilters from '../helpers/getReactTableFilters';
 
 const filtersInitialState = {
   domainName: undefined,

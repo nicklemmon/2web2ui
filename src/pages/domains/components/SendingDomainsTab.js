@@ -9,7 +9,7 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
-import { getReactTableFilters } from '../helpers/react-table-filters';
+import getReactTableFilters from '../helpers/getReactTableFilters';
 
 const filtersInitialState = {
   domainName: '',
