@@ -675,6 +675,56 @@ describe('The domains list page', () => {
         });
       }
 
+      it('renders a table with pagination contgrols under it', () => {
+        const PAGES_SELECTOR = '[data-id="pagination-pages"]';
+        const PER_PAGE_SELECTOR = '[data-id="pagination-per-page"]';
+
+        stubTrackingDomains({ fixture: 'tracking-domains/200.get.paginated.json' });
+        stubSubaccounts();
+
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
+
+        cy.findAllByText('Per Page').should('be.visible');
+        cy.get(PAGES_SELECTOR).within(() => {
+          cy.findAllByText('1').should('be.visible');
+          cy.findAllByText('2').should('be.visible');
+          cy.findAllByText('3').should('not.be.visible');
+
+          cy.findAllByRole('button', { name: 'Previous' }).should('be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).should('not.be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).click();
+        });
+
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('25').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 14);
+        });
+
+        verifyTableRow({
+          rowIndex: 13,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('10').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 10);
+        });
+      });
+
       it('renders requested tracking domains data in a table', () => {
         stubTrackingDomains();
         stubSubaccounts();

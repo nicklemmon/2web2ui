@@ -1,0 +1,112 @@
+{
+  "results": [
+    {
+      "domain": "unverified.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": false, "cname_status": "", "compliance_status": "valid" }
+    },
+    {
+      "domain": "verified.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" }
+    },
+    {
+      "domain": "verified-and-default.com",
+      "port": 80,
+      "secure": false,
+      "default": true,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" }
+    },
+    {
+      "domain": "blocked.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": false, "cname_status": "", "compliance_status": "blocked" }
+    },
+    {
+      "domain": "with-subaccount-assignment.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat1.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat2.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat3.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat4.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat5.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat6.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat7.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    },
+    {
+      "domain": "wat8.com",
+      "port": 80,
+      "secure": false,
+      "default": false,
+      "status": { "verified": true, "cname_status": "", "compliance_status": "valid" },
+      "subaccount_id": 101
+    }
+  ]
+}
