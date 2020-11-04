@@ -7,9 +7,6 @@ import { tokens } from '@sparkpost/design-tokens-hibana';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@sparkpost/matchbox-icons';
 import { ActionList, Box, TextField } from 'src/components/matchbox';
 import sortMatch from 'src/helpers/sortMatch';
-import { LoadingSVG } from 'src/components';
-
-const Loading = () => <LoadingSVG size="XSmall" />;
 
 const PopoverActionList = styled(ActionList)`
   background: ${tokens.color_white};
@@ -51,9 +48,6 @@ function TypeSelect({
   renderItem,
   results,
   selectedItem,
-  onInputChange,
-  loading,
-  suffix,
 }) {
   const [matches, setMatches] = useState([]);
   const inputRef = useRef(null);
@@ -67,16 +61,8 @@ function TypeSelect({
   }, 300);
 
   useEffect(() => {
-    if (onInputChange) {
-      //External trigger for filtering
-      return onInputChange(inputValue);
-    }
-    return updateMatches(inputValue);
-  }, [updateMatches, onInputChange, inputValue]);
-
-  useEffect(() => {
-    setMatches(results);
-  }, [results]);
+    updateMatches(inputValue);
+  }, [updateMatches, inputValue, results]);
 
   const handleStateChange = (changes, downshift) => {
     // Highlights first item in list by default
@@ -87,15 +73,9 @@ function TypeSelect({
 
   useEffect(() => {
     if (selectedItem) {
-      const selectedValue = itemToString(selectedItem);
-      if (selectedValue !== inputValue) {
-        setInputValue(selectedValue);
-      }
-    } else if (selectedItem === null) {
-      setInputValue('');
+      setInputValue(itemToString(selectedItem));
     }
-    // eslint-disable-next-line
-  }, [selectedItem]);
+  }, [itemToString, selectedItem]);
 
   const typeaheadFn = ({
     getInputProps,
@@ -126,7 +106,7 @@ function TypeSelect({
     const textFieldProps = getInputProps(textFieldConfig);
     textFieldProps['data-lpignore'] = true;
 
-    const SuffixIcon = isOpen ? (
+    const suffixIcon = isOpen ? (
       <KeyboardArrowUp onClick={closeMenu} color={tokens.color_blue_700} size={25} />
     ) : (
       <KeyboardArrowDown
@@ -146,11 +126,6 @@ function TypeSelect({
             {/* hack, can't apply getMenuProps to ActionList because ref prop is not supported */}
             <div {...getMenuProps()}>
               <PopoverActionList open={isOpen} maxHeight={maxHeight}>
-                {loading && (
-                  <Box ml="200">
-                    <Loading />
-                  </Box>
-                )}
                 {matches.map((item, index) => (
                   <ActionList.Action
                     {...getItemProps({
@@ -165,10 +140,7 @@ function TypeSelect({
                 ))}
               </PopoverActionList>
             </div>
-            <TextField
-              {...textFieldProps}
-              suffix={suffix ? suffix : <SuffixIcon color={tokens.color_blue_700} size={25} />}
-            />
+            <TextField {...textFieldProps} suffix={suffixIcon} />
           </Box>
         </TypeaheadWrapper>
       </div>
@@ -194,7 +166,7 @@ TypeSelect.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   itemToString: PropTypes.func,
-  label: PropTypes.string,
+  label: PropTypes.string.isRequired,
   maxHeight: PropTypes.number,
   maxNumberOfResults: PropTypes.number,
   maxWidth: PropTypes.number,

@@ -127,23 +127,30 @@ function TypeSelect({
             {/* hack, can't apply getMenuProps to ActionList because ref prop is not supported */}
             <div {...getMenuProps()}>
               <PopoverActionList open={isMenuOpen} maxHeight={maxHeight}>
-                {loading && (
+                {loading ? (
                   <Box ml="200">
                     <Loading />
                   </Box>
+                ) : (
+                  <>
+                    {matches.map((item, index) => (
+                      <ActionList.Action
+                        {...getItemProps({
+                          highlighted: highlightedIndex === index,
+                          index,
+                          item,
+                          key: item.key,
+                        })}
+                      >
+                        {renderItem ? (
+                          renderItem(item)
+                        ) : (
+                          <TypeaheadItem label={itemToString(item)} />
+                        )}
+                      </ActionList.Action>
+                    ))}
+                  </>
                 )}
-                {matches.map((item, index) => (
-                  <ActionList.Action
-                    {...getItemProps({
-                      highlighted: highlightedIndex === index,
-                      index,
-                      item,
-                      key: item.key,
-                    })}
-                  >
-                    {renderItem ? renderItem(item) : <TypeaheadItem label={itemToString(item)} />}
-                  </ActionList.Action>
-                ))}
               </PopoverActionList>
             </div>
             <TextField
