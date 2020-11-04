@@ -144,7 +144,7 @@ describe('The domains list page', () => {
         cy.findAllByText('Default Bounce Domain').should('be.visible');
       }
 
-      it('renders a table with pagination contgrols under it', () => {
+      it('renders a table with pagination controls under it', () => {
         const PAGES_SELECTOR = '[data-id="pagination-pages"]';
         const PER_PAGE_SELECTOR = '[data-id="pagination-per-page"]';
 
@@ -675,7 +675,7 @@ describe('The domains list page', () => {
         });
       }
 
-      it('renders a table with pagination contgrols under it', () => {
+      it('renders a table with pagination controls under it', () => {
         const PAGES_SELECTOR = '[data-id="pagination-pages"]';
         const PER_PAGE_SELECTOR = '[data-id="pagination-per-page"]';
 
