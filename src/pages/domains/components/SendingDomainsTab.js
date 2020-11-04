@@ -9,6 +9,7 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
+import { getReactTableFilters } from '../helpers/react-table-filters';
 
 const filtersInitialState = {
   domainName: '',
@@ -98,11 +99,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listSubaccounts,
   } = useDomains();
 
-  // filtersState, UI -> data struct (might be replacable with react-table too)
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
-
-  /** note: usePageFilters is used to sync url/route to state... Cant use react-table for that */
-  // eslint-disable-next-line no-unused-vars
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
@@ -200,11 +197,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       };
       const filterStateParams = filterStateToParams();
       updateFilters(filterStateParams);
-      let reactTableFilters = Object.entries(filterStateParams).map(x => ({
-        id: x[0],
-        value: x[1],
-      }));
-      setAllFilters(reactTableFilters);
+      setAllFilters(getReactTableFilters(filterStateParams));
     }
   }, [filtersState, listPending, setAllFilters, updateFilters]);
 
@@ -294,9 +287,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         perPage={state.pageSize}
         saveCsv={false}
         onPageChange={page => gotoPage(page)}
-        onPerPageChange={perPage => {
-          setPageSize(perPage);
-        }}
+        onPerPageChange={perPage => setPageSize(perPage)}
       />
     </>
   );

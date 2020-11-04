@@ -10,6 +10,7 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
+import { getReactTableFilters } from '../helpers/react-table-filters';
 
 const filtersInitialState = {
   domainName: undefined,
@@ -65,7 +66,6 @@ export default function TrackingDomainsTab() {
     trackingDomainsListError,
   } = useDomains();
 
-  // filtersState, UI -> data struct (might be replacable with react-table too)
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
 
@@ -147,11 +147,7 @@ export default function TrackingDomainsTab() {
       };
       const filterStateParams = filterStateToParams();
       updateFilters(filterStateParams);
-      let reactTableFilters = Object.entries(filterStateParams).map(x => ({
-        id: x[0],
-        value: x[1],
-      }));
-      setAllFilters(reactTableFilters);
+      setAllFilters(getReactTableFilters(filterStateParams));
     }
   }, [filtersState, listPending, setAllFilters, updateFilters]);
 
@@ -221,20 +217,11 @@ export default function TrackingDomainsTab() {
 
       <Pagination
         data={rows}
-        pageBaseZero={true}
-        currentPage={state.pageIndex}
+        currentPage={state.pageIndex + 1}
         perPage={state.pageSize}
         saveCsv={false}
-        onPageChange={page => {
-          // TODO: Try to see if this is firing because of a mistake I made.... otherwise leave condition in place
-          // Only adding this if condition because this keeps firing on load
-          if (state.pageIndex !== page) {
-            gotoPage(page);
-          }
-        }}
-        onPerPageChange={perPage => {
-          setPageSize(perPage);
-        }}
+        onPageChange={page => gotoPage(page)}
+        onPerPageChange={perPage => setPageSize(perPage)}
       />
     </>
   );
