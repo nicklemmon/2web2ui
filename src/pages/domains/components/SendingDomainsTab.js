@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import { useFilters, usePagination, useSortBy, useTable } from 'react-table'; // https://react-table.tanstack.com/docs/api/overview
+import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
 import { Panel } from 'src/components/matchbox';

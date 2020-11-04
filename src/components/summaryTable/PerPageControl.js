@@ -7,6 +7,7 @@ import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import { Box, Button } from 'src/components/matchbox';
 import styles from './SummaryTable.module.scss';
 import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
+const { warn } = console;
 
 function OGPerPageControl({ onChange, perPage, totalCount }) {
   if (!totalCount || totalCount < DEFAULT_PER_PAGE_BUTTONS[0]) {
@@ -66,5 +67,6 @@ function HibanaPerPageControl({ onChange, perPage, totalCount }) {
 }
 
 export default function PerPageControl(props) {
+  warn('Deprecated Component! Use collections/Pagination instead.');
   return useHibanaToggle(OGPerPageControl, HibanaPerPageControl)(props);
 }
