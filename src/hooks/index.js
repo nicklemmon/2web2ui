@@ -9,6 +9,5 @@ export { default as usePrevious } from './usePrevious';
 export { default as useProvidedContext } from './useProvidedContext';
 export { default as useRouter } from './useRouter';
 export { default as useSparkPostQuery } from './useSparkPostQuery';
-export { default as useTable } from './useTable';
 export { default as useTabs } from './useTabs';
 export { default as useUniqueId } from './useUniqueId';

@@ -18,27 +18,28 @@ import { TranslatableText } from 'src/components/text';
 import { useUniqueId } from 'src/hooks';
 import { DETAILS_BASE_URL } from '../constants';
 
-export default function SendingDomainsTable({ rows }) {
+export default function SendingDomainsTable({ tableInstance }) {
+  const { prepareRow, page } = tableInstance;
+
   return (
     <Table title="Sending Domains">
       <ScreenReaderOnly as="thead">
         <Table.Row>
           <Table.HeaderCell>Domain</Table.HeaderCell>
-
           <Table.HeaderCell>Status</Table.HeaderCell>
         </Table.Row>
       </ScreenReaderOnly>
 
       <tbody>
-        {rows?.map((domain, index) => {
+        {page?.map((row, index) => {
+          prepareRow(row);
           return (
             <Table.Row key={`table-row-${index}`}>
               <Table.Cell>
-                <MainCell row={domain} />
+                <MainCell row={row.values} />
               </Table.Cell>
-
               <Table.Cell>
-                <StatusCell row={domain} />
+                <StatusCell row={row.values} />
               </Table.Cell>
             </Table.Row>
           );

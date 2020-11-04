@@ -26,7 +26,7 @@ export function reducer(state, action) {
     case 'DOMAIN_FILTER_CHANGE': {
       return {
         ...state,
-        domainNameFilter: action.value,
+        domainName: action.value,
       };
     }
 
