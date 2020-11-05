@@ -30,7 +30,7 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('validates the user\'s entry performing a "contains" or "does not contain" filter', () => {
+    it('clears current filter values when the user swaps between "compare by" values', () => {
       navigateToForm();
 
       cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
@@ -43,7 +43,7 @@ if (IS_HIBANA_ENABLED) {
       cy.findByText('world.org').should('not.be.visible');
     });
 
-    it('clears current filter values when the user swaps between "compare by" values', () => {
+    it('validates the user\'s entry performing a "contains" or "does not contain" filter', () => {
       navigateToForm();
 
       cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
