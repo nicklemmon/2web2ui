@@ -1,12 +1,6 @@
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
+import { usePrevious } from 'src/hooks';
 
-const usePrevious = (value, initialValue) => {
-  const ref = useRef(initialValue);
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-};
 // Used to see what props are retriggering an effect if it ends up retriggering too many times
 // From: https://stackoverflow.com/questions/55187563/determine-which-dependency-array-variable-caused-useeffect-hook-to-fire
 export const useEffectDebugger = (effectHook, dependencies, dependencyNames = []) => {
