@@ -10,8 +10,6 @@ import {
   GridOff,
 } from '@sparkpost/matchbox-icons';
 import { hasGrants } from 'src/helpers/conditions';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-
 import inboxPlacementNavItems from './inboxPlacement';
 
 const dashboard = {
@@ -200,7 +198,6 @@ const subaccounts = {
 const domains = {
   label: 'Domains',
   to: '/domains',
-  condition: isAccountUiOptionSet('allow_domains_v2'),
 };
 
 const configurationBase = {

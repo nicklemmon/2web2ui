@@ -15,7 +15,7 @@ describe('The domains list page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled and redirects to the sending domain view', () => {
+    it('renders with a relevant page title and redirects to the sending domain view', () => {
       cy.visit(PAGE_URL);
 
       cy.wait('@accountDomainsReq');

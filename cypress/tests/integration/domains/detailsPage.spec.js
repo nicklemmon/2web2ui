@@ -23,7 +23,7 @@ describe('The domains details page', () => {
         });
       });
 
-      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+      it('renders with a relevant page title', () => {
         cy.stubRequest({
           url: '/api/v1/tracking-domains',
           fixture: 'tracking-domains/200.get.domain-details.json',

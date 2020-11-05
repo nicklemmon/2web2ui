@@ -18,7 +18,7 @@ describe('The verify sending domain page', () => {
         });
       });
 
-      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+      it('renders with a relevant page title', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/hello-world-there.com',
           fixture: 'sending-domains/200.get.unverified-dkim.json',

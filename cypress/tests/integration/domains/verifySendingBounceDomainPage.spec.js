@@ -18,7 +18,7 @@ describe('The verify sending/bounce domain page', () => {
         });
       });
 
-      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+      it('renders with a relevant page title', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/sending-bounce.net',
           fixture: 'sending-domains/200.get.unverified-dkim-bounce.json',

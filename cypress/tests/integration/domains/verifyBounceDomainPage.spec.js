@@ -17,7 +17,7 @@ describe('The verify bounce domain page', () => {
           requestAlias: 'accountDomainsReq',
         });
       });
-      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+      it('renders with a relevant page title', () => {
         cy.stubRequest({
           url: '/api/v1/sending-domains/prd2.splango.net',
           fixture: 'sending-domains/200.get.unverified-bounce.json',

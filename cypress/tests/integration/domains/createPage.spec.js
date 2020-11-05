@@ -10,7 +10,7 @@ describe('The domains create page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders with a relevant page title and content when the "allow_domains_v2" account UI flag is enabled', () => {
+    it('renders with a relevant page title and content', () => {
       commonBeforeSteps();
 
       cy.title().should('include', 'Add a Domain');

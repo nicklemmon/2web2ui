@@ -187,7 +187,7 @@ if (IS_HIBANA_ENABLED) {
         },
       );
 
-      it('renders the "Domains" link when the user\'s account has the "allow_domains_v2" flag enabled', () => {
+      it('renders the "Domains" link', () => {
         cy.stubAuth();
         cy.stubRequest({
           url: '/api/v1/account*',
