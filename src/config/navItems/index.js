@@ -225,16 +225,7 @@ const OGConfiguration = {
 
 const hibanaConfiguration = {
   ...configurationBase,
-  children: [
-    domains,
-    sendingDomains,
-    trackingDomains,
-    webhooks,
-    IPPools,
-    APIKeys,
-    SMTPSettings,
-    signalsIntegration,
-  ],
+  children: [domains, webhooks, IPPools, APIKeys, SMTPSettings, signalsIntegration],
 };
 
 export const navItems = [
