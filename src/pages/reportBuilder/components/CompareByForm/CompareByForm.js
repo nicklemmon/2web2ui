@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import { connect } from 'react-redux';
-import { Box, Drawer, Stack, Button, Select } from 'src/components/matchbox';
-import { Add } from '@sparkpost/matchbox-icons';
+import { Box, Button, Drawer, ScreenReaderOnly, Select, Stack } from 'src/components/matchbox';
+import { Add, Close } from '@sparkpost/matchbox-icons';
 import { TranslatableText, Comparison } from 'src/components/text';
 import {
   fetchMetricsDomains,
@@ -14,11 +14,25 @@ import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCache';
 import Typeahead from './Typeahead';
+import styled from 'styled-components';
 
 const initialState = {
   filters: [null, null],
   filterType: undefined,
 };
+
+const StyledButton = styled(Button)`
+  position: absolute;
+  top: -40px;
+  right: 0;
+`;
+
+const RemoveButton = ({ onClick }) => (
+  <StyledButton padding="200" variant="minimal" onClick={onClick} size="small">
+    <ScreenReaderOnly>Remove Filter</ScreenReaderOnly>
+    <Button.Icon as={Close} />
+  </StyledButton>
+);
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -30,8 +44,9 @@ const reducer = (state, action) => {
         filters: state.filters.filter((_filter, filterIndex) => filterIndex !== action.index),
       };
     case 'SET_FILTER':
-      state.filters[action.index] = action.value;
-      return state;
+      const newFilters = state.filters;
+      newFilters[action.index] = action.value;
+      return { ...state, filters: newFilters };
     case 'SET_FILTER_TYPE':
       return { ...initialState, filterType: action.filterType };
     case 'RESET_FORM':
@@ -122,28 +137,38 @@ function CompareByForm({
           {filterType &&
             filters.map((filter, index) => {
               return (
-                <Stack key={`filter-typeahead-${index}`}>
-                  <Box>
-                    <Typeahead
-                      id={`typeahead-${index}`}
-                      lookaheadRequest={filterAction}
-                      label={filterLabel}
-                      labelHidden
-                      dispatch={dispatch}
-                      itemToString={item => (item?.value ? item.value : '')}
-                      selectedItem={filter}
-                      results={typeaheadCache[filterLabel]}
-                      onChange={value => {
-                        dispatch({ type: 'SET_FILTER', index, value });
+                <Box position="relative">
+                  {index > 0 && filter && filters.length > 2 ? (
+                    <RemoveButton
+                      onClick={() => {
+                        dispatch({ type: 'REMOVE_FILTER', index });
                       }}
                     />
-                  </Box>
-                  {index < filters.length - 1 && ( //not the last one
+                  ) : null}
+
+                  <Stack key={`filter-typeahead-${index}`} marginTop="200">
                     <Box>
-                      <Comparison>And</Comparison>
+                      <Typeahead
+                        id={`typeahead-${index}`}
+                        lookaheadRequest={filterAction}
+                        label={filterLabel}
+                        labelHidden
+                        dispatch={dispatch}
+                        itemToString={item => (item?.value ? item.value : '')}
+                        selectedItem={filter}
+                        results={typeaheadCache[filterLabel]}
+                        onChange={value => {
+                          dispatch({ type: 'SET_FILTER', index, value });
+                        }}
+                      />
                     </Box>
-                  )}
-                </Stack>
+                    {index < filters.length - 1 && ( //not the last one
+                      <Box>
+                        <Comparison>And</Comparison>
+                      </Box>
+                    )}
+                  </Stack>
+                </Box>
               );
             })}
           {filterType && (

@@ -6,7 +6,6 @@ import { useDebouncedCallback } from 'use-debounce';
 import Downshift from 'downshift';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { tokens } from '@sparkpost/design-tokens-hibana';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@sparkpost/matchbox-icons';
 import { ActionList, Box, TextField } from 'src/components/matchbox';
 import { LoadingSVG } from 'src/components';
@@ -14,21 +13,22 @@ import { LoadingSVG } from 'src/components';
 const Loading = () => <LoadingSVG size="XSmall" />;
 
 const PopoverActionList = styled(ActionList)`
-  background: ${tokens.color_white};
-  border: 1px solid ${tokens.color_gray_400};
-  box-shadow: ${tokens.boxShadow_200};
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.gray['400']};
+  box-shadow: ${props => props.theme.shadows['200']};
   left: 0;
   margin-top: 3px;
   max-height: 20rem;
   opacity: ${props => (props.open ? 1 : 0)};
   overflow-y: scroll;
   pointer-events: ${props => (props.open ? 'auto' : 'none')};
+  visibility: ${props => (props.open ? 'visible' : 'hidden')};
   position: absolute;
   right: 0;
   top: 100%;
   transform: ${props => (props.open ? 'scale(1)' : 'scale(0.97)')};
   transition: 0.1s ease-out;
-  z-index: ${tokens.zIndex_overlay + 1};
+  z-index: ${props => props.theme.zIndices['overlay'] + 1};
 `;
 
 const TypeaheadWrapper = styled.div`
@@ -55,6 +55,7 @@ function TypeSelect({
   onInputChange,
   loading,
   suffix,
+  labelHidden,
 }) {
   const [matches, setMatches] = useState([]);
   // Controlled input so that we can change the value after selecting dropdown.
@@ -104,6 +105,7 @@ function TypeSelect({
     const textFieldConfig = {
       disabled,
       label,
+      labelHidden,
       placeholder,
       helpText,
       onBlur: () => {
@@ -154,13 +156,7 @@ function TypeSelect({
               </PopoverActionList>
             </div>
             <TextField
-              suffix={
-                suffix !== undefined ? (
-                  suffix
-                ) : (
-                  <SuffixIcon color={tokens.color_blue_700} size={25} />
-                )
-              }
+              suffix={suffix !== undefined ? suffix : <SuffixIcon color="blue.700" size={25} />}
               {...textFieldProps}
             />
           </Box>
@@ -220,20 +216,20 @@ const ItemContainer = styled.span`
 `;
 
 const ItemText = styled.span`
-  color: ${tokens.color_grey_1000};
+  color: ${props => props.theme.colors.gray['1000']};
   flex-grow: 1;
   flex-shrink: 1;
-  font-size: ${tokens.fontSize_200};
+  font-size: ${props => props.theme.fontSizes['200']};
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `;
 
 const ItemMetaText = styled.span`
-  color: ${tokens.color_grey_700};
+  color: ${props => props.theme.colors.gray['700']};
   flex-shrink: 0;
-  font-size: ${tokens.fontSize_100};
-  margin-left: ${tokens.spacing_300};
+  font-size: ${props => props.theme.fontSizes['100']};
+  margin-left: ${props => props.theme.space['300']};
 `;
 
 function TypeaheadItem({ label, meta }) {
