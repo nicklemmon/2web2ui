@@ -55,6 +55,27 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
+    it('Changing filter type unsets all existing fields', () => {
+      cy.findByRole('button', { name: 'Add Comparison' }).click();
+      cy.withinDrawer(() => {
+        cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+        cy.findAllByLabelText('Subaccount').should('have.length', 2);
+        cy.findAllByLabelText('Subaccount')
+          .eq(0)
+          .type('Fake Subaccount');
+        cy.findByText('Fake Subaccount 3 (ID 103)')
+          .should('be.visible')
+          .click();
+        cy.findByRole('button', { name: 'Add Subaccount' }).click();
+        cy.findAllByLabelText('Subaccount').should('have.length', 3);
+        cy.findByLabelText(TYPE_LABEL).select('Recipient Domain');
+        cy.findAllByLabelText('Recipient Domain').should('have.length', 2);
+        cy.findAllByLabelText('Recipient Domain')
+          .eq(0)
+          .should('have.value', '');
+      });
+    });
+
     it('Clicking remove removes the appropriate field', () => {
       cy.findByRole('button', { name: 'Add Comparison' }).click();
       cy.withinDrawer(() => {

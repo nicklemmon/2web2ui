@@ -48,9 +48,9 @@ const reducer = (state, action) => {
       newFilters[action.index] = action.value;
       return { ...state, filters: newFilters };
     case 'SET_FILTER_TYPE':
-      return { ...initialState, filterType: action.filterType };
+      return { filters: [null, null], filterType: action.filterType };
     case 'RESET_FORM':
-      return initialState;
+      return { filters: [null, null], filterType: undefined };
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -137,7 +137,7 @@ function CompareByForm({
           {filterType &&
             filters.map((filter, index) => {
               return (
-                <Box position="relative">
+                <Box key={`filter-typeahead-${index}`} position="relative">
                   {index > 0 && filter && filters.length > 2 ? (
                     <RemoveButton
                       onClick={() => {
@@ -145,8 +145,7 @@ function CompareByForm({
                       }}
                     />
                   ) : null}
-
-                  <Stack key={`filter-typeahead-${index}`} marginTop="200">
+                  <Stack marginTop="200">
                     <Box>
                       <Typeahead
                         id={`typeahead-${index}`}
@@ -162,7 +161,7 @@ function CompareByForm({
                         }}
                       />
                     </Box>
-                    {index < filters.length - 1 && ( //not the last one
+                    {index < filters.length - 1 && ( //Only the last one
                       <Box>
                         <Comparison>And</Comparison>
                       </Box>
