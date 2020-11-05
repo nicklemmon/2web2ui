@@ -74,19 +74,14 @@ export default function TrackingDomainsTab() {
   const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters } = usePageFilters(initFiltersForTracking);
 
+  const filter = React.useMemo(() => customDomainStatusFilter, []);
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
   const columns = React.useMemo(
     () => [
       {
         Header: 'Blocked',
         accessor: 'blocked',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain' },
       { Header: 'DomainName', accessor: 'domainName' },
@@ -96,27 +91,15 @@ export default function TrackingDomainsTab() {
       {
         Header: 'Unverified',
         accessor: 'unverified',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       {
         Header: 'Verified',
         accessor: 'verified',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
     ],
-    [],
+    [filter],
   );
   const sortBy = React.useMemo(() => [{ id: 'domainName', desc: false }], []);
   const tableInstance = useTable(

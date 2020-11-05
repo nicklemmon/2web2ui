@@ -110,65 +110,37 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
+  const filter = React.useMemo(() => customDomainStatusFilter, []);
+
   const data = React.useMemo(() => domains, [domains]);
   const columns = React.useMemo(
     () => [
       {
         Header: 'Blocked',
         accessor: 'blocked',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       { Header: 'CreationTime', accessor: 'creationTime' },
       {
         Header: 'DefaultBounceDomain',
         accessor: 'defaultBounceDomain',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       { Header: 'DomainName', accessor: 'domainName' },
       {
         Header: 'ReadyForBounce',
         accessor: 'readyForBounce',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       {
         Header: 'ReadyForDKIM',
         accessor: 'readyForDKIM',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       {
         Header: 'ReadyForSending',
         accessor: 'readyForSending',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
@@ -176,27 +148,15 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
       {
         Header: 'Unverified',
         accessor: 'unverified',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
       {
         Header: 'ValidSPF',
         accessor: 'validSPF',
-        filter: (rows, columnIds, value) => {
-          const column = columnIds[0];
-          const mappedRows = rows
-            .map(row => (row.values[column] === value ? row : false))
-            .filter(Boolean);
-          return mappedRows;
-        },
+        filter,
       },
     ],
-    [],
+    [filter],
   );
   const sortBy = React.useMemo(
     () => [
