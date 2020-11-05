@@ -7,7 +7,7 @@ import Downshift from 'downshift';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@sparkpost/matchbox-icons';
-import { ActionList, Box, TextField } from 'src/components/matchbox';
+import { ActionList, Box, Inline, TextField } from 'src/components/matchbox';
 import { LoadingSVG } from 'src/components';
 
 const Loading = () => <LoadingSVG size="XSmall" />;
@@ -17,7 +17,7 @@ const PopoverActionList = styled(ActionList)`
   border: 1px solid ${props => props.theme.colors.gray['400']};
   box-shadow: ${props => props.theme.shadows['200']};
   left: 0;
-  margin-top: 3px;
+  margin-top: 4px;
   max-height: 20rem;
   opacity: ${props => (props.open ? 1 : 0)};
   overflow-y: scroll;
@@ -26,8 +26,7 @@ const PopoverActionList = styled(ActionList)`
   position: absolute;
   right: 0;
   top: 100%;
-  transform: ${props => (props.open ? 'scale(1)' : 'scale(0.97)')};
-  transition: 0.1s ease-out;
+  transition: opacity ${props => props.theme.motion.duration['fast']} ease-out;
   z-index: ${props => props.theme.zIndices['overlay'] + 1};
 `;
 
@@ -135,22 +134,27 @@ function TypeSelect({
                   </Box>
                 ) : (
                   <>
-                    {matches.map((item, index) => (
-                      <ActionList.Action
-                        {...getItemProps({
-                          highlighted: highlightedIndex === index,
-                          index,
-                          item,
-                          key: item.key,
-                        })}
-                      >
-                        {renderItem ? (
-                          renderItem(item)
-                        ) : (
-                          <TypeaheadItem label={itemToString(item)} />
-                        )}
-                      </ActionList.Action>
-                    ))}
+                    {matches.length ? (
+                      matches.map((item, index) => (
+                        <ActionList.Action
+                          {...getItemProps({
+                            highlighted: highlightedIndex === index,
+                            index,
+                            item,
+                            key: `${id}_item_${index}`,
+                          })}
+                        >
+                          {renderItem ? (
+                            renderItem(item)
+                          ) : (
+                            <TypeaheadItem label={itemToString(item)} />
+                          )}
+                        </ActionList.Action>
+                      ))
+                    ) : (
+                      <Box p="200">No Results</Box>
+                    )}
+                    {}
                   </>
                 )}
               </PopoverActionList>
@@ -191,11 +195,7 @@ TypeSelect.propTypes = {
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
   renderItem: PropTypes.func,
-  results: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-    }),
-  ),
+  results: PropTypes.array,
 };
 
 TypeSelect.defaultProps = {
@@ -208,45 +208,14 @@ TypeSelect.defaultProps = {
   results: [],
 };
 
-// todo, prefer to use Matchbox either Columns or Inline, but they both use <div>'s and this is rendered inside <a>'s
-// see, https://css-tricks.com/flexbox-truncated-text/
-const ItemContainer = styled.span`
-  display: flex;
-  min-width: 0;
-`;
-
-const ItemText = styled.span`
-  color: ${props => props.theme.colors.gray['1000']};
-  flex-grow: 1;
-  flex-shrink: 1;
-  font-size: ${props => props.theme.fontSizes['200']};
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-`;
-
-const ItemMetaText = styled.span`
-  color: ${props => props.theme.colors.gray['700']};
-  flex-shrink: 0;
-  font-size: ${props => props.theme.fontSizes['100']};
-  margin-left: ${props => props.theme.space['300']};
-`;
-
-function TypeaheadItem({ label, meta }) {
-  return (
-    <ItemContainer>
-      <ItemText>{label}</ItemText>
-      {meta && <ItemMetaText>{meta}</ItemMetaText>}
-    </ItemContainer>
-  );
+function TypeaheadItem({ label }) {
+  return <Inline as="span">{label}</Inline>;
 }
 
 TypeaheadItem.propTypes = {
   label: PropTypes.string.isRequired,
   meta: PropTypes.string,
 };
-
-TypeSelect.Item = TypeaheadItem;
 
 const initState = {
   omitResults: false,
