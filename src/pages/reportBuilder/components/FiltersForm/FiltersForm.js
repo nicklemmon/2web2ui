@@ -11,7 +11,7 @@ import {
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCache';
-import { ButtonWrapper, RadioButtonGroup } from 'src/components';
+import { RadioButtonGroup } from 'src/components';
 import {
   Button,
   Box,
@@ -211,6 +211,7 @@ function FiltersForm({
                                         onKeyDown={props.handleKeyDown}
                                         onChange={props.handleChange}
                                         value={props.value}
+                                        error={props.error}
                                         selectedItems={props.valueList}
                                         itemToString={item => (item ? item : '')}
                                       />
@@ -311,15 +312,18 @@ function FiltersForm({
         </Stack>
 
         <Drawer.Footer>
-          <ButtonWrapper>
-            <Button variant="primary" type="submit">
-              Apply Filters
-            </Button>
-
-            <Button variant="secondary" onClick={() => clearFilters()}>
-              Clear Filters
-            </Button>
-          </ButtonWrapper>
+          <Box display="flex">
+            <Box pr="100" flex="1">
+              <Button width="100%" variant="primary" type="submit">
+                Apply Filters
+              </Button>
+            </Box>
+            <Box pl="100" flex="1">
+              <Button width="100%" variant="secondary" onClick={() => clearFilters()}>
+                Clear Filters
+              </Button>
+            </Box>
+          </Box>
         </Drawer.Footer>
       </Box>
     </form>

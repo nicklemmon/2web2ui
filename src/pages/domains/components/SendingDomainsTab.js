@@ -1,14 +1,18 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
+import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
+import { Pagination } from 'src/components/collection';
 import { Panel } from 'src/components/matchbox';
-import { useTable, usePageFilters } from 'src/hooks';
-import useDomains from '../hooks/useDomains';
+import { DEFAULT_CURRENT_PAGE, DEFAULT_PER_PAGE } from 'src/constants';
+import { usePageFilters } from 'src/hooks';
 import { API_ERROR_MESSAGE } from '../constants';
+import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
+import getReactTableFilters from '../helpers/getReactTableFilters';
 
 const filtersInitialState = {
-  domainNameFilter: '',
+  domainName: '',
   checkboxes: [
     {
       label: 'Sending Domain',
@@ -94,18 +98,69 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     listPending,
     listSubaccounts,
   } = useDomains();
-  const domains = renderBounceOnly ? bounceDomains : sendingDomains;
-  const [filtersState, filtersDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
-  const [tableState, tableDispatch] = useTable(domains);
-  const [sort, setSort] = useState({ by: 'creationTime', direction: 'desc' });
-  const isEmpty = !listPending && tableState.rows?.length === 0;
+
+  const [filtersState, filtersStateDispatch] = useReducer(tableFiltersReducer, filtersInitialState);
   const { filters, updateFilters, resetFilters } = usePageFilters(initFiltersForSending);
-  //resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
+
+  const domains = renderBounceOnly ? bounceDomains : sendingDomains;
+
+  const data = React.useMemo(() => domains, [domains]);
+  const columns = React.useMemo(
+    () => [
+      { Header: 'Blocked', accessor: 'blocked' },
+      { Header: 'CreationTime', accessor: 'creationTime' },
+      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain' },
+      { Header: 'DomainName', accessor: 'domainName' },
+      { Header: 'ReadyForBounce', accessor: 'readyForBounce' },
+      { Header: 'ReadyForDKIM', accessor: 'readyForDKIM' },
+      { Header: 'ReadyForSending', accessor: 'readyForSending' },
+      { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
+      { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
+      { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
+      { Header: 'Unverified', accessor: 'unverified' },
+      { Header: 'ValidSPF', accessor: 'validSPF' },
+    ],
+    [],
+  );
+  const sortBy = React.useMemo(
+    () => [
+      { id: 'creationTime', desc: true },
+      { id: 'domainName', desc: true },
+    ],
+    [],
+  );
+  const tableInstance = useTable(
+    {
+      columns,
+      data,
+      sortBy,
+      initialState: {
+        pageIndex: DEFAULT_CURRENT_PAGE - 1, // react-table takes a 0 base pageIndex
+        pageSize: DEFAULT_PER_PAGE,
+        filters: [],
+        sortBy: [
+          {
+            id: 'creationTime',
+            desc: true,
+          },
+        ],
+      },
+    },
+    useFilters,
+    useSortBy,
+    usePagination,
+  );
+  const { rows, setAllFilters, toggleSortBy, state, gotoPage, setPageSize } = tableInstance;
+
+  const isEmpty = !listPending && rows?.length === 0;
+
+  // resets state when tabs tabs switched from Sending -> Bounce or Bounce -> Sending
   useEffect(() => {
-    filtersDispatch({ type: 'RESET', state: filtersInitialState });
+    filtersStateDispatch({ type: 'RESET', state: filtersInitialState });
     resetFilters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [renderBounceOnly]);
+
   // Make initial requests
   useEffect(() => {
     listSendingDomains();
@@ -117,12 +172,14 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
-  //sync the params with filters on page load
+  // sync the params with filters on page load
   useEffect(() => {
     Object.keys(filters).forEach(key => {
-      if (key === 'domainName')
-        filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] });
-      else if (filters[key] === 'true') filtersDispatch({ type: 'TOGGLE', name: key });
+      if (key === 'domainName') {
+        filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] }); // SET UI INPUT VALUES
+      } else if (filters[key] === 'true') {
+        filtersStateDispatch({ type: 'TOGGLE', name: key }); // SET UI INPUT VALUES
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -130,47 +187,19 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   // When filter state updates, update table state and the query parameters
   useEffect(() => {
     if (!listPending) {
-      function getFilterFromCheckbox(name) {
-        return filtersState.checkboxes.find(item => item.name === name).isChecked
-          ? true
-          : undefined;
-      }
       const filterStateToParams = () => {
         let params = {};
         for (let checkbox of filtersState.checkboxes) {
           params[checkbox.name] = checkbox.isChecked;
         }
-        params.domainName = filtersState.domainNameFilter;
-
+        params.domainName = filtersState.domainName;
         return params;
       };
-
-      updateFilters(filterStateToParams());
-
-      tableDispatch({
-        type: 'FILTER',
-        filters: [
-          { name: 'domainName', value: filtersState.domainNameFilter },
-          { name: 'readyForSending', value: getFilterFromCheckbox('readyForSending') },
-          { name: 'readyForDKIM', value: getFilterFromCheckbox('readyForDKIM') },
-          { name: 'readyForBounce', value: getFilterFromCheckbox('readyForBounce') },
-          { name: 'validSPF', value: getFilterFromCheckbox('validSPF') },
-          { name: 'unverified', value: getFilterFromCheckbox('unverified') },
-          { name: 'blocked', value: getFilterFromCheckbox('blocked') },
-        ],
-      });
+      const filterStateParams = filterStateToParams();
+      updateFilters(filterStateParams);
+      setAllFilters(getReactTableFilters(filterStateParams));
     }
-  }, [filtersState, listPending, tableDispatch, updateFilters]);
-
-  useEffect(() => {
-    if (!listPending) {
-      tableDispatch({
-        type: 'SORT',
-        sortBy: sort.by,
-        direction: sort.direction,
-      });
-    }
-  }, [sort, listPending, tableDispatch]);
+  }, [filtersState, listPending, setAllFilters, updateFilters]);
 
   if (sendingDomainsListError) {
     return (
@@ -183,69 +212,83 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
   }
 
   return (
-    <Panel mb="0">
-      <Panel.Section>
-        <TableFilters>
-          <TableFilters.DomainField
-            disabled={listPending}
-            value={filtersState.domainNameFilter}
-            onChange={e => filtersDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value })}
-          />
+    <>
+      <Panel mb="400">
+        <Panel.Section>
+          <TableFilters>
+            <TableFilters.DomainField
+              disabled={listPending}
+              value={filtersState.domainName}
+              onChange={e => {
+                filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
+              }}
+            />
 
-          <TableFilters.StatusPopover
-            disabled={listPending}
-            checkboxes={filtersState.checkboxes}
-            onCheckboxChange={e => filtersDispatch({ type: 'TOGGLE', name: e.target.name })}
-          />
+            <TableFilters.StatusPopover
+              disabled={listPending}
+              checkboxes={filtersState.checkboxes}
+              onCheckboxChange={e => {
+                filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
+              }}
+            />
 
-          <TableFilters.SortSelect
-            disabled={listPending}
-            defaultValue="creationTime"
-            value={sort.by}
-            options={[
-              {
-                label: 'Date Added (Newest - Oldest)',
-                value: 'creationTimeDesc',
-                'data-sort-by': 'creationTime',
-                'data-sort-direction': 'desc',
-              },
-              {
-                label: 'Date Added (Oldest - Newest)',
-                value: 'creationTimeAsc',
-                'data-sort-by': 'creationTime',
-                'data-sort-direction': 'asc',
-              },
-              {
-                label: 'Domain Name (A - Z)',
-                value: 'domainNameAsc',
-                'data-sort-by': 'domainName',
-                'data-sort-direction': 'asc',
-              },
-              {
-                label: 'Domain Name (Z - A)',
-                value: 'domainNameDesc',
-                'data-sort-by': 'domainName',
-                'data-sort-direction': 'desc',
-              },
-            ]}
-            onChange={e => {
-              const { target } = e;
-              const selectedOption = target.options[target.selectedIndex];
+            <TableFilters.SortSelect
+              disabled={listPending}
+              defaultValue="creationTime"
+              value=""
+              options={[
+                {
+                  label: 'Date Added (Newest - Oldest)',
+                  value: 'creationTimeDesc',
+                  'data-sort-by': 'creationTime',
+                  'data-sort-direction': 'desc',
+                },
+                {
+                  label: 'Date Added (Oldest - Newest)',
+                  value: 'creationTimeAsc',
+                  'data-sort-by': 'creationTime',
+                  'data-sort-direction': 'asc',
+                },
+                {
+                  label: 'Domain Name (A - Z)',
+                  value: 'domainNameAsc',
+                  'data-sort-by': 'domainName',
+                  'data-sort-direction': 'asc',
+                },
+                {
+                  label: 'Domain Name (Z - A)',
+                  value: 'domainNameDesc',
+                  'data-sort-by': 'domainName',
+                  'data-sort-direction': 'desc',
+                },
+              ]}
+              onChange={e => {
+                const { target } = e;
+                const selectedOption = target.options[target.selectedIndex];
+                const selectedAttribute = selectedOption.getAttribute('data-sort-by');
+                const selectedDirection = selectedOption.getAttribute('data-sort-direction');
+                const desc = selectedDirection === 'desc' ? true : false;
+                toggleSortBy(selectedAttribute, desc);
+              }}
+            />
+          </TableFilters>
+        </Panel.Section>
 
-              setSort({
-                by: selectedOption.getAttribute('data-sort-by'),
-                direction: selectedOption.getAttribute('data-sort-direction'),
-              });
-            }}
-          />
-        </TableFilters>
-      </Panel.Section>
+        {listPending && <Loading />}
 
-      {listPending && <Loading />}
+        {isEmpty && <Empty message="There is no data to display" />}
 
-      {isEmpty && <Empty message="There is no data to display" />}
+        {!listPending && !isEmpty && <SendingDomainsTable tableInstance={tableInstance} />}
+      </Panel>
 
-      {!listPending && !isEmpty && <SendingDomainsTable rows={tableState.rows} />}
-    </Panel>
+      <Pagination
+        data={rows}
+        currentPage={state.pageIndex + 1}
+        perPage={state.pageSize}
+        saveCsv={false}
+        onPageChange={page => gotoPage(page)}
+        onPerPageChange={perPage => setPageSize(perPage)}
+      />
+    </>
   );
 }

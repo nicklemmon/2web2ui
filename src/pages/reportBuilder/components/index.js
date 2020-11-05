@@ -1,5 +1,5 @@
 export { default as AddFiltersSection } from './AddFiltersSection';
-export { default as CompareByDrawer } from './CompareByDrawer';
+export { default as CompareByForm } from './CompareByForm';
 export { default as FiltersForm } from './FiltersForm';
 export { default as Legend } from './Legend';
 export { default as MetricsDrawer } from './MetricsDrawer';

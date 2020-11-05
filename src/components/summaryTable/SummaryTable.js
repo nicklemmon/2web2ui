@@ -10,8 +10,7 @@ import PerPageControl from './PerPageControl';
 import { getColumnProps, pickPageProps } from './utils';
 import OGStyles from './SummaryTable.module.scss';
 import HibanaStyles from './SummaryTableHibana.module.scss';
-
-const PAGE_RANGE = 5;
+import { DEFAULT_PAGE_RANGE } from 'src/constants';
 
 export class SummaryTableClassComponent extends React.Component {
   static defaultProps = {
@@ -105,7 +104,7 @@ export class SummaryTableClassComponent extends React.Component {
           <div className={styles.PageButtons}>
             <Pagination
               currentPage={currentPage}
-              pageRange={PAGE_RANGE}
+              pageRange={DEFAULT_PAGE_RANGE}
               pages={pages}
               onChange={this.handlePagination}
               flat

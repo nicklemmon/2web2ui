@@ -144,6 +144,60 @@ describe('The domains list page', () => {
         cy.findAllByText('Default Bounce Domain').should('be.visible');
       }
 
+      it('renders a table with pagination controls under it', () => {
+        const PAGES_SELECTOR = '[data-id="pagination-pages"]';
+        const PER_PAGE_SELECTOR = '[data-id="pagination-per-page"]';
+
+        stubSendingDomains({ fixture: 'sending-domains/200.get.paginated-results.json' });
+        stubSubaccounts();
+
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findAllByText('Per Page').should('be.visible');
+        cy.get(PAGES_SELECTOR).within(() => {
+          cy.findAllByText('1').should('be.visible');
+          cy.findAllByText('2').should('be.visible');
+          cy.findAllByText('3').should('not.be.visible');
+
+          cy.findAllByRole('button', { name: 'Previous' }).should('be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).should('not.be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).click();
+        });
+
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'wat5.com',
+          creationDate: 'Aug 7, 1958',
+          subaccount: 'Fake Subaccount 1 (101)',
+          statusTags: ['Unverified'],
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('25').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 14);
+        });
+
+        verifyTableRow({
+          rowIndex: 13,
+          domainName: 'wat5.com',
+          creationDate: 'Aug 7, 1958',
+          subaccount: 'Fake Subaccount 1 (101)',
+          statusTags: ['Unverified'],
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('10').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 10);
+        });
+      });
+
       it('renders a table after requesting sending domains', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
@@ -591,12 +645,12 @@ describe('The domains list page', () => {
 
       function verifyMultipleResults() {
         verifyTableRow({
-          rowIndex: 0,
+          rowIndex: 1,
           domainName: 'unverified.com',
           status: 'Unverified',
         });
         verifyTableRow({
-          rowIndex: 1,
+          rowIndex: 3,
           domainName: 'verified.com',
           status: 'Tracking',
         });
@@ -609,7 +663,7 @@ describe('The domains list page', () => {
         });
         cy.findAllByText('Default Tracking Domain').should('be.visible');
         verifyTableRow({
-          rowIndex: 3,
+          rowIndex: 0,
           domainName: 'blocked.com',
           status: 'Blocked',
         });
@@ -620,6 +674,56 @@ describe('The domains list page', () => {
           subaccount: 'Fake Subaccount 1 (101)',
         });
       }
+
+      it('renders a table with pagination controls under it', () => {
+        const PAGES_SELECTOR = '[data-id="pagination-pages"]';
+        const PER_PAGE_SELECTOR = '[data-id="pagination-per-page"]';
+
+        stubTrackingDomains({ fixture: 'tracking-domains/200.get.paginated.json' });
+        stubSubaccounts();
+
+        cy.visit(`${PAGE_URL}/list/tracking`);
+        cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
+
+        cy.findAllByText('Per Page').should('be.visible');
+        cy.get(PAGES_SELECTOR).within(() => {
+          cy.findAllByText('1').should('be.visible');
+          cy.findAllByText('2').should('be.visible');
+          cy.findAllByText('3').should('not.be.visible');
+
+          cy.findAllByRole('button', { name: 'Previous' }).should('be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).should('not.be.disabled');
+          cy.findAllByRole('button', { name: 'Next' }).click();
+        });
+
+        verifyTableRow({
+          rowIndex: 3,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('25').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 14);
+        });
+
+        verifyTableRow({
+          rowIndex: 13,
+          domainName: 'with-subaccount-assignment.com',
+          status: 'Tracking',
+        });
+
+        cy.get(PER_PAGE_SELECTOR).within(() => {
+          cy.findAllByText('10').click();
+        });
+
+        cy.get('tbody').within(() => {
+          cy.get('tr').should('have.length', 10);
+        });
+      });
 
       it('renders requested tracking domains data in a table', () => {
         stubTrackingDomains();
@@ -777,12 +881,12 @@ describe('The domains list page', () => {
         cy.findByRole('button', { name: 'Domain Status' }).click();
         cy.findByLabelText('Tracking Domain').check({ force: true });
         verifyTableRow({
-          rowIndex: 0,
+          rowIndex: 1,
           domainName: 'verified.com',
           status: 'Tracking',
         });
         verifyTableRow({
-          rowIndex: 1,
+          rowIndex: 0,
           domainName: 'verified-and-default.com',
           status: 'Tracking',
         });
@@ -796,7 +900,6 @@ describe('The domains list page', () => {
           expect(loc.search).to.eq('?verified=true');
         });
         cy.findByLabelText('Tracking Domain').uncheck({ force: true });
-
         cy.findByLabelText('Unverified').check({ force: true });
         cy.location().should(loc => {
           expect(loc.search).to.eq('?unverified=true');
@@ -807,7 +910,6 @@ describe('The domains list page', () => {
           status: 'Unverified',
         });
         cy.findByLabelText('Unverified').uncheck({ force: true });
-
         cy.findByLabelText('Blocked').check({ force: true });
         cy.location().should(loc => {
           expect(loc.search).to.eq('?blocked=true');
@@ -819,6 +921,7 @@ describe('The domains list page', () => {
         });
         cy.findByLabelText('Blocked').uncheck({ force: true });
       });
+
       it('syncs domain status with query params', () => {
         stubTrackingDomains();
         stubSubaccounts();

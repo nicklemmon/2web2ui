@@ -43,6 +43,42 @@ if (IS_HIBANA_ENABLED) {
       cy.findByText('world.org').should('not.be.visible');
     });
 
+    it('validates the user\'s entry performing a "contains" or "does not contain" filter', () => {
+      navigateToForm();
+
+      cy.findByLabelText(TYPE_LABEL).select('Sending Domain');
+      cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
+      cy.findByLabelText('Sending Domain').type('hello.com ');
+      cy.findByText('hello.com').should('be.visible');
+
+      // The error renders until the user resolves the length bug on change
+      cy.findByLabelText('Sending Domain').type('h ');
+      cy.findByText('3 or more characters required').should('be.visible');
+      cy.findByLabelText('Sending Domain').type('e');
+      cy.findByText('3 or more characters required').should('be.visible');
+      cy.findByLabelText('Sending Domain').type('l');
+      cy.findByText('3 or more characters required').should('not.be.visible');
+      cy.findByLabelText('Sending Domain').clear();
+
+      // The error is removed when the user deletes all of their entry
+      cy.findByLabelText('Sending Domain').type('he ');
+      cy.findByText('3 or more characters required').should('be.visible');
+      cy.findByLabelText('Sending Domain').clear();
+      cy.findByText('3 or more characters required').should('not.be.visible');
+
+      // The error also renders on blur when the user's entry violates the requirements
+      cy.findByLabelText('Sending Domain')
+        .type('he')
+        .blur();
+      cy.findByText('3 or more characters required').should('be.visible');
+      cy.findByLabelText('Sending Domain').type('l');
+      cy.findByText('3 or more characters required').should('not.be.visible');
+      cy.findByLabelText('Sending Domain')
+        .type('lo.net')
+        .blur();
+      cy.findByText('hello.net').should('be.visible');
+    });
+
     it('only renders the "is equal to" and "is not equal to" comparison options when the user selects the "Subaccount" filter type', () => {
       navigateToForm();
 
@@ -86,7 +122,7 @@ if (IS_HIBANA_ENABLED) {
         // Verifying remove button rendering within the first group
         cy.findByLabelText(TYPE_LABEL).select('Campaign');
         cy.findByLabelText(COMPARE_BY_LABEL).select('does not contain');
-        cy.findByLabelText('Campaign').type('my-campaign is the best ');
+        cy.findByLabelText('Campaign').type('my-campaign will work well ');
         cy.findByRole('button', { name: 'Add And Filter' }).click();
         getGroupingByIndex(0).within(() => {
           cy.findAllByRole('button', { name: 'Remove Filter' }).should('have.length', 2);
@@ -107,7 +143,7 @@ if (IS_HIBANA_ENABLED) {
         getGroupingByIndex(1).within(() => {
           cy.findByLabelText(TYPE_LABEL).select('Template');
           cy.findByLabelText(COMPARE_BY_LABEL).select('contains');
-          cy.findByLabelText('Template').type('this is a template ');
+          cy.findByLabelText('Template').type('my favorite template ');
         });
         cy.findByRole('button', { name: 'Add And Grouping' }).click();
         getGroupingByIndex(2).within(() => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Pagination } from 'src/components/matchbox';
 import styles from './Pagination.module.scss';
-import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
+import { DEFAULT_PER_PAGE_BUTTONS, DEFAULT_PAGE_RANGE } from 'src/constants';
 import PerPageButtons from './PerPageButtons';
 import SaveCSVButton from './SaveCSVButton';
 import { useHibana } from 'src/context/HibanaContext';
@@ -41,8 +41,10 @@ const CollectionPagination = ({
   if (!isHibanaEnabled) {
     return (
       <div>
-        <div className={styles.PageButtons}>{renderPageButtons()}</div>
-        <div className={styles.PerPageButtons}>
+        <div className={styles.PageButtons} data-id="pagination-pages">
+          {renderPageButtons()}
+        </div>
+        <div className={styles.PerPageButtons} data-id="pagination-per-page">
           <PerPageButtons
             totalCount={data.length}
             data={data}
@@ -58,8 +60,8 @@ const CollectionPagination = ({
 
   return (
     <Box display="flex" justifyContent="space-between">
-      <Box>{renderPageButtons()}</Box>
-      <Box display="flex" alignItems="center">
+      <Box data-id="pagination-pages">{renderPageButtons()}</Box>
+      <Box display="flex" alignItems="center" data-id="pagination-per-page">
         <PerPageButtons
           totalCount={data.length}
           data={data}
@@ -74,7 +76,7 @@ const CollectionPagination = ({
 };
 
 CollectionPagination.defaultProps = {
-  pageRange: 5,
+  pageRange: DEFAULT_PAGE_RANGE,
   perPageButtons: DEFAULT_PER_PAGE_BUTTONS,
   saveCsv: true,
 };

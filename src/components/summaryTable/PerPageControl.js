@@ -1,13 +1,16 @@
+/***
+ * DEPRECATED! Use src/components/collection/Pagination.js instead (also update this when a deprecation plan is in place)
+ */
 import React from 'react';
 import classnames from 'classnames';
 import useHibanaToggle from 'src/hooks/useHibanaToggle';
 import { Box, Button } from 'src/components/matchbox';
 import styles from './SummaryTable.module.scss';
-
-const SIZES = [10, 25, 50, 100];
+import { DEFAULT_PER_PAGE_BUTTONS } from 'src/constants';
+const { warn } = console;
 
 function OGPerPageControl({ onChange, perPage, totalCount }) {
-  if (!totalCount || totalCount < SIZES[0]) {
+  if (!totalCount || totalCount < DEFAULT_PER_PAGE_BUTTONS[0]) {
     return null;
   }
 
@@ -15,7 +18,7 @@ function OGPerPageControl({ onChange, perPage, totalCount }) {
     <div className={styles.PerPageGroup}>
       <Button.Group>
         <span className={styles.PerPageLabel}>Per Page</span>
-        {SIZES.map(size => (
+        {DEFAULT_PER_PAGE_BUTTONS.map(size => (
           <Button
             flat
             className={classnames(perPage === size && styles.Selected)}
@@ -31,7 +34,7 @@ function OGPerPageControl({ onChange, perPage, totalCount }) {
 }
 
 function HibanaPerPageControl({ onChange, perPage, totalCount }) {
-  if (!totalCount || totalCount < SIZES[0]) {
+  if (!totalCount || totalCount < DEFAULT_PER_PAGE_BUTTONS[0]) {
     return null;
   }
 
@@ -40,7 +43,7 @@ function HibanaPerPageControl({ onChange, perPage, totalCount }) {
       <Button.Group>
         <Box as="span">Per Page</Box>
 
-        {SIZES.map(size => {
+        {DEFAULT_PER_PAGE_BUTTONS.map(size => {
           const isActive = perPage === size;
 
           return (
@@ -64,5 +67,6 @@ function HibanaPerPageControl({ onChange, perPage, totalCount }) {
 }
 
 export default function PerPageControl(props) {
+  warn('Deprecated Component! Use collections/Pagination instead.');
   return useHibanaToggle(OGPerPageControl, HibanaPerPageControl)(props);
 }
