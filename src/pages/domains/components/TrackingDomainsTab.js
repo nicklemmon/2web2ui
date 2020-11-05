@@ -1,4 +1,5 @@
-import React, { useEffect, useReducer } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
@@ -9,7 +10,12 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
 import TrackingDomainsTable from './TrackingDomainsTable';
-import getReactTableFilters from '../helpers/getReactTableFilters';
+import {
+  getReactTableFilters,
+  customDomainStatusFilter,
+  getActiveStatusFilters,
+  filterStateToParams,
+} from '../helpers';
 
 const filtersInitialState = {
   domainName: undefined,
@@ -17,17 +23,17 @@ const filtersInitialState = {
     {
       label: 'Tracking Domain',
       name: 'verified',
-      isChecked: false,
+      isChecked: true,
     },
     {
       label: 'Unverified',
       name: 'unverified',
-      isChecked: false,
+      isChecked: true,
     },
     {
       label: 'Blocked',
       name: 'blocked',
-      isChecked: false,
+      isChecked: true,
     },
   ],
 };
@@ -71,14 +77,44 @@ export default function TrackingDomainsTab() {
   const data = React.useMemo(() => trackingDomains, [trackingDomains]);
   const columns = React.useMemo(
     () => [
-      { Header: 'Blocked', accessor: 'blocked' },
+      {
+        Header: 'Blocked',
+        accessor: 'blocked',
+        filter: (rows, columnIds, value) => {
+          const column = columnIds[0];
+          const mappedRows = rows
+            .map(row => (row.values[column] === value ? row : false))
+            .filter(Boolean);
+          return mappedRows;
+        },
+      },
       { Header: 'DefaultTrackingDomain', accessor: 'defaultTrackingDomain' },
       { Header: 'DomainName', accessor: 'domainName' },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts' },
       { Header: 'SubaccountId', accessor: 'subaccountId' },
       { Header: 'SubaccountName', accessor: 'subaccountName' },
-      { Header: 'Unverified', accessor: 'unverified' },
-      { Header: 'Verified', accessor: 'verified' },
+      {
+        Header: 'Unverified',
+        accessor: 'unverified',
+        filter: (rows, columnIds, value) => {
+          const column = columnIds[0];
+          const mappedRows = rows
+            .map(row => (row.values[column] === value ? row : false))
+            .filter(Boolean);
+          return mappedRows;
+        },
+      },
+      {
+        Header: 'Verified',
+        accessor: 'verified',
+        filter: (rows, columnIds, value) => {
+          const column = columnIds[0];
+          const mappedRows = rows
+            .map(row => (row.values[column] === value ? row : false))
+            .filter(Boolean);
+          return mappedRows;
+        },
+      },
     ],
     [],
   );
@@ -120,35 +156,34 @@ export default function TrackingDomainsTab() {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
-  // sync the params with filters on page load
-  useEffect(() => {
-    Object.keys(filters).forEach(key => {
-      if (key === 'domainName') {
-        filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] }); // SET UI INPUT VALUES
-      } else if (filters[key] === 'true') {
-        filtersStateDispatch({ type: 'TOGGLE', name: key }); // SET UI INPUT VALUES
-      }
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // When filter state updates, update table state and the query parameters
+  const firstLoad = useRef(true);
   useEffect(() => {
     if (!listPending) {
-      const filterStateToParams = () => {
-        let params = {};
-        for (let checkbox of filtersState.checkboxes) {
-          params[checkbox.name] = checkbox.isChecked;
-        }
-        params.domainName = filtersState.domainName;
-        return params;
-      };
-      const filterStateParams = filterStateToParams();
-      updateFilters(filterStateParams);
-      setAllFilters(getReactTableFilters(filterStateParams));
+      const statusFilterNames = Object.keys(filters).filter(i => i !== 'domainName');
+      const activeStatusFilters = getActiveStatusFilters(filters);
+      const domainNameFilter = filters['domainName'];
+
+      if (firstLoad.current) {
+        firstLoad.current = false;
+
+        filtersStateDispatch({
+          type: 'LOAD',
+          names: !activeStatusFilters.length
+            ? statusFilterNames
+            : activeStatusFilters.map(i => i.name),
+          domainName: domainNameFilter,
+        });
+
+        setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+
+        return;
+      }
+
+      updateFilters(filterStateToParams(filtersState));
+      setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
     }
-  }, [filtersState, listPending, setAllFilters, updateFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtersState, listPending]);
 
   if (trackingDomainsListError) {
     return (
