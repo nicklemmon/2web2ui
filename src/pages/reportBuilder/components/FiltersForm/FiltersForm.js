@@ -313,12 +313,12 @@ function FiltersForm({
         <Drawer.Footer>
           <Box display="flex">
             <Box pr="100" flex="1">
-              <Button variant="primary" type="submit">
+              <Button width="100%" variant="primary" type="submit">
                 Apply Filters
               </Button>
             </Box>
             <Box pl="100" flex="1">
-              <Button variant="secondary" onClick={() => clearFilters()}>
+              <Button width="100%" variant="secondary" onClick={() => clearFilters()}>
                 Clear Filters
               </Button>
             </Box>
