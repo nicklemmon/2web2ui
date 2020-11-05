@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useContext } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import { Box, Button, Drawer, Grid, Inline, Select } from 'src/components/matchbox';
 import Typeahead from './Typeahead';
 import { Add, Close } from '@sparkpost/matchbox-icons';
