@@ -6,7 +6,7 @@ import { ComboBoxTextField } from 'src/components/matchbox';
 import TestApp from 'src/__testHelpers__/TestApp';
 
 function UseMultiEntryDemo(props) {
-  const { initialValue = '', initialValueList = [] } = props;
+  const { initialValue = '', initialValueList = [], minLength } = props;
   const {
     value,
     valueList,
@@ -14,7 +14,8 @@ function UseMultiEntryDemo(props) {
     handleChange,
     handleBlur,
     handleRemove,
-  } = useMultiEntry({ value: initialValue, valueList: initialValueList });
+    error,
+  } = useMultiEntry({ value: initialValue, valueList: initialValueList, minLength });
 
   return (
     <TestApp isHibanaEnabled={true}>
@@ -27,6 +28,7 @@ function UseMultiEntryDemo(props) {
         label="Filters"
         value={value}
         selectedItems={valueList}
+        error={error}
         itemToString={value => value}
       />
     </TestApp>
@@ -158,5 +160,25 @@ describe('useMultiEntry', () => {
     userEvent.click(removeButtons[0]);
 
     expect(screen.queryByText('again')).not.toBeInTheDocument();
+  });
+
+  it('renders an error when the user violates the passed in minLength as the user types', () => {
+    render(<UseMultiEntryDemo minLength={3} />);
+    userEvent.type(getComboBox(), 'h{space}');
+    expect(screen.getByText('3 or more characters required')).toBeInTheDocument();
+    userEvent.type(getComboBox(), 'e{enter}');
+    expect(screen.getByText('3 or more characters required')).toBeInTheDocument();
+    userEvent.type(getComboBox(), 'l'); // The user has typed `hel` by this point
+    expect(screen.queryByText('3 or more characters required')).not.toBeInTheDocument();
+  });
+
+  it('renders an error when the user violates the passed in minLength when the user blurs the field', () => {
+    render(<UseMultiEntryDemo minLength={3} />);
+    userEvent.type(getComboBox(), 'he');
+    userEvent.tab();
+    expect(screen.getByText('3 or more characters required')).toBeInTheDocument();
+    userEvent.type(getComboBox(), 'l');
+    userEvent.tab();
+    expect(screen.queryByText('3 or more characters required')).not.toBeInTheDocument();
   });
 });

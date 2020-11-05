@@ -211,6 +211,7 @@ function FiltersForm({
                                         onKeyDown={props.handleKeyDown}
                                         onChange={props.handleChange}
                                         value={props.value}
+                                        error={props.error}
                                         selectedItems={props.valueList}
                                         itemToString={item => (item ? item : '')}
                                       />
