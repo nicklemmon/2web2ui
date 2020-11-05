@@ -54,5 +54,27 @@ if (IS_HIBANA_ENABLED) {
         cy.findByLabelText(TYPE_LABEL).should('have.value', null);
       });
     });
+
+    it('Clicking remove removes the appropriate field', () => {
+      cy.findByRole('button', { name: 'Add Comparison' }).click();
+      cy.withinDrawer(() => {
+        cy.findByLabelText(TYPE_LABEL).select('Subaccount');
+        cy.findAllByLabelText('Subaccount').should('have.length', 2);
+        cy.findAllByLabelText('Subaccount')
+          .eq(1)
+          .type('Fake Subaccount');
+        cy.findByText('Fake Subaccount 3 (ID 103)')
+          .should('be.visible')
+          .click();
+        cy.findByRole('button', { name: 'Remove Filter' }).should('not.be.visible');
+
+        cy.findByRole('button', { name: 'Add Subaccount' }).click();
+        cy.findAllByLabelText('Subaccount').should('have.length', 3);
+        cy.findByRole('button', { name: 'Remove Filter' })
+          .should('be.visible')
+          .click();
+        cy.findAllByLabelText('Subaccount').should('have.length', 2);
+      });
+    });
   });
 }

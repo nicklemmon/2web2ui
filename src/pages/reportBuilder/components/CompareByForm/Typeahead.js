@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
+import React, { useEffect, useCallback, useState, useMemo, useReducer } from 'react';
 import { METRICS_API_LIMIT } from 'src/constants';
 import sortMatch from 'src/helpers/sortMatch';
 import { useDebouncedCallback } from 'use-debounce';
@@ -248,33 +248,51 @@ TypeaheadItem.propTypes = {
 
 TypeSelect.Item = TypeaheadItem;
 
+const initState = {
+  omitResults: false,
+  loading: false,
+  inputValue: '',
+};
+
+const AsyncTypeaheadReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_INPUT':
+      return { ...state, inputValue: action.value };
+    case 'SET_LOADING':
+      return { ...state, loading: true, omitResults: true };
+    case 'SET_EMPTY':
+      return { ...state, loading: false, omitResults: true };
+    case 'SET_READY':
+      return { ...state, loading: false, omitResults: false };
+    default:
+      throw new Error(`${action.type} is not supported.`);
+  }
+};
+
 function Typeahead({ id, onChange, lookaheadRequest, results = [], ...rest }) {
-  const [omitResults, setOmitResults] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [state, dispatch] = useReducer(AsyncTypeaheadReducer, initState);
+  const { omitResults, loading, inputValue } = state;
 
   const updateLookahead = useCallback(
     pattern => {
-      setInputValue(pattern);
+      dispatch({ type: 'SET_INPUT', value: pattern });
       if (!lookaheadRequest) return;
 
       if (!pattern || pattern.length <= 2) {
-        setLoading(false);
-        setOmitResults(true);
+        dispatch({ type: 'SET_EMPTY' });
         return;
       }
 
-      setOmitResults(false);
-      setLoading(true);
+      dispatch({ type: 'SET_LOADING' });
       const options = {
         match: pattern,
         limit: METRICS_API_LIMIT,
       };
       lookaheadRequest(options).then(() => {
-        setLoading(false);
+        dispatch({ type: 'SET_READY' });
       });
     },
-    [setLoading, setOmitResults, lookaheadRequest, setInputValue],
+    [lookaheadRequest, dispatch],
   );
 
   const filteredResults = useMemo(() => {
