@@ -141,8 +141,11 @@ export default function TrackingDomainsTab() {
   const firstLoad = useRef(true);
   useEffect(() => {
     if (!listPending) {
-      const statusFilterNames = Object.keys(filters).filter(i => i !== 'domainName');
+      const allStatusFilterNames = Object.keys(filters).filter(i => i !== 'domainName');
       const activeStatusFilters = getActiveStatusFilters(filters);
+      const statusFiltersToApply = !activeStatusFilters.length
+        ? allStatusFilterNames
+        : activeStatusFilters.map(i => i.name);
       const domainNameFilter = filters['domainName'];
 
       if (firstLoad.current) {
@@ -150,9 +153,7 @@ export default function TrackingDomainsTab() {
 
         filtersStateDispatch({
           type: 'LOAD',
-          names: !activeStatusFilters.length
-            ? statusFilterNames
-            : activeStatusFilters.map(i => i.name),
+          names: statusFiltersToApply,
           domainName: domainNameFilter,
         });
 
