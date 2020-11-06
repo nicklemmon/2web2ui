@@ -45,7 +45,7 @@ if (IS_HIBANA_ENABLED) {
           cy.verifyLink({ content: 'Content', href: '/templates' });
           cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
           cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
-          cy.verifyLink({ content: 'Configuration', href: '/account/sending-domains' });
+          cy.verifyLink({ content: 'Configuration', href: '/domains' });
         });
       });
 
@@ -174,11 +174,10 @@ if (IS_HIBANA_ENABLED) {
             cy.findByText('Configuration').click();
           });
 
-          cy.url().should('include', '/account/sending-domains');
+          cy.url().should('include', '/domains');
 
           cy.get(secondaryNavSelector).within(() => {
-            cy.verifyLink({ content: 'Sending Domains', href: '/account/sending-domains' });
-            cy.verifyLink({ content: 'Tracking Domains', href: '/account/tracking-domains' });
+            cy.verifyLink({ content: 'Domains', href: '/domains' });
             cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
             cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
             cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
@@ -312,8 +311,7 @@ if (IS_HIBANA_ENABLED) {
           cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
           cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
           cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
-          cy.verifyLink({ content: 'Sending Domains', href: '/account/sending-domains' });
-          cy.verifyLink({ content: 'Tracking Domains', href: '/account/tracking-domains' });
+          cy.verifyLink({ content: 'Domains', href: '/domains' });
           cy.findByText('Configuration').click();
 
           cy.verifyLink({ content: 'Profile', href: '/account/profile' });
