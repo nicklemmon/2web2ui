@@ -9,7 +9,7 @@ describe('The domains list page', () => {
 
     cy.stubRequest({
       url: '/api/v1/account',
-      fixture: 'account/200.get.has-domains-v2.json',
+      fixture: 'account/200.get.json',
       requestAlias: 'accountDomainsReq',
     });
   });
