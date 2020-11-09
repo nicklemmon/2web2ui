@@ -13,13 +13,11 @@ import {
 import { useForm } from 'react-hook-form';
 import { Heading } from 'src/components/text';
 import { useLocation } from 'react-router-dom';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import { selectCondition } from 'src/selectors/accessConditionState';
 import { createReport, updateReport, getReports } from 'src/actions/reports';
 import { showAlert } from 'src/actions/globalAlert';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
-import { ActiveFilters, ActiveFiltersV2 } from '../ActiveFilters';
+import { ActiveFilters } from '../index';
 
 import { formatDateTime, relativeDateOptionsIndexed } from 'src/helpers/date';
 
@@ -66,7 +64,6 @@ export function SaveReportModal(props) {
     create,
     saveQuery,
     setReport,
-    isComparatorsEnabled,
   } = props;
   const { handleSubmit, errors, setValue, reset, register } = useForm({
     defaultValues: {
@@ -131,11 +128,7 @@ export function SaveReportModal(props) {
                 <Box>
                   <Heading as="h6">Filters</Heading>
 
-                  {isComparatorsEnabled ? (
-                    <ActiveFiltersV2 filters={reportOptions.filters} />
-                  ) : (
-                    <ActiveFilters filters={reportOptions.filters} />
-                  )}
+                  <ActiveFilters filters={reportOptions.filters} />
                 </Box>
               )}
 
@@ -201,7 +194,6 @@ export function SaveReportModal(props) {
 }
 const mapStateToProps = state => ({
   loading: state.reports.saveStatus === 'loading',
-  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
 });
 const mapDispatchToProps = { createReport, getReports, updateReport, showAlert };
 

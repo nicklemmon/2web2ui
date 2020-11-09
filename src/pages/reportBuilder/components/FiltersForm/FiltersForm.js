@@ -25,7 +25,7 @@ import {
 } from 'src/components/matchbox';
 import { Uppercase, Comparison } from 'src/components/text';
 import { getGroupingFields, getApiFormattedGroupings } from '../../helpers';
-import Typeahead from '../TypeaheadV2';
+import Typeahead from '../Typeahead';
 import {
   TypeSelect,
   CompareBySelect,

@@ -1,38 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
-import { Box, Inline, Stack, Tag, Text } from 'src/components/matchbox';
+import { Box, Inline, Tag, Text } from 'src/components/matchbox';
 import { Comparison, Emphasized } from 'src/components/text';
 import { getIterableFormattedGroupings, getActiveFilterTagGroups } from '../helpers';
-import styles from './ReportOptions.module.scss';
 
-export function ActiveFilters({ filters, handleFilterRemove }) {
-  const filtersWithIndex = filters.map((value, index) => ({ ...value, index }));
-  const groupedFilters = _.groupBy(filtersWithIndex, 'type');
-
-  return (
-    <Stack>
-      {Object.keys(groupedFilters).map(key => (
-        <Inline key={`filter_group_${key}`}>
-          <div>{key}</div>
-          <div>
-            <strong className={styles.Conditional}>equals</strong>
-            {groupedFilters[key].map(({ value, index }) => (
-              <Tag
-                className={styles.TagWrapper}
-                key={`tag_${index}`}
-                onRemove={handleFilterRemove ? () => handleFilterRemove(index) : undefined}
-              >
-                {value}
-              </Tag>
-            ))}
-          </div>
-        </Inline>
-      ))}
-    </Stack>
-  );
-}
-
-export function ActiveFiltersV2({ filters, handleFilterRemove }) {
+export default function ActiveFilters({ filters, handleFilterRemove }) {
   const iterableGroupings = getIterableFormattedGroupings(filters);
   const groupings = getActiveFilterTagGroups(iterableGroupings);
 

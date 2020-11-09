@@ -1,5 +1,5 @@
 import React from 'react';
-import { GroupByOption } from '../GroupByOption';
+import GroupByOption from '../GroupByOption';
 import { shallow } from 'enzyme';
 import { dehydrateFilters } from '../../helpers';
 
@@ -97,7 +97,6 @@ describe('Group By Option', () => {
   });
 
   it('should dehydrate filters if on new comparators filters', () => {
-    wrapper.setProps({ isComparatorsEnabled: true });
     expect(wrapper.find('Checkbox')).toBeChecked();
     wrapper.find('Checkbox').simulate('change');
     expect(wrapper.find('Checkbox')).not.toBeChecked();
