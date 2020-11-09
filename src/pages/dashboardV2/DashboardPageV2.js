@@ -116,85 +116,87 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              <Dashboard.Panel>
-                <ScreenReaderOnly>
-                  <Heading as="h3">Next Steps</Heading>
-                </ScreenReaderOnly>
+              {isAdminOrDev && (
+                <Dashboard.Panel>
+                  <ScreenReaderOnly>
+                    <Heading as="h3">Next Steps</Heading>
+                  </ScreenReaderOnly>
 
-                {addSendingDomainOnboarding && (
-                  <Columns>
-                    <Column>
-                      <Panel.Section>
-                        <Panel.Headline>
-                          <TranslatableText>Get Started!</TranslatableText>
-                        </Panel.Headline>
-                        <Text pb="600">
-                          <TranslatableText>At least one </TranslatableText>
-                          <Bold>verified sending domain </Bold>
-                          <TranslatableText>
-                            is required in order to start or enable analytics.
-                          </TranslatableText>
-                        </Text>
-                        <PageLink
-                          variant="primary"
-                          size="default"
-                          color="blue"
-                          to="/domains/list/sending"
-                          target="_blank"
-                          as={Button}
-                        >
-                          Add Sending Domain
-                        </PageLink>
-                      </Panel.Section>
-                    </Column>
-                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={SendingMailWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={SendingMail} seeThrough />
-                        </Picture>
+                  {addSendingDomainOnboarding && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>
+                            <TranslatableText>Get Started!</TranslatableText>
+                          </Panel.Headline>
+                          <Text pb="600">
+                            <TranslatableText>At least one </TranslatableText>
+                            <Bold>verified sending domain </Bold>
+                            <TranslatableText>
+                              is required in order to start or enable analytics.
+                            </TranslatableText>
+                          </Text>
+                          <PageLink
+                            variant="primary"
+                            size="default"
+                            color="blue"
+                            to="/domains/list/sending"
+                            target="_blank"
+                            as={Button}
+                          >
+                            Add Sending Domain
+                          </PageLink>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={SendingMailWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={SendingMail} seeThrough />
+                          </Picture>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Columns>
-                )}
+                    </Columns>
+                  )}
 
-                {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
-                {/* !verifySendingDomainOnboarding */}
-                {/* !createApiKeyOnboarding */}
-                {!addSendingDomainOnboarding && (
-                  <Columns>
-                    <Column>
-                      <Panel.Section>
-                        <Panel.Headline>
-                          <TranslatableText>Start Sending!</TranslatableText>
-                        </Panel.Headline>
-                        <Text pb="600">
-                          Follow the Getting Started documentation to set up sending via API or
-                          SMTP.
-                        </Text>
-                        <ExternalLink
-                          variant="primary"
-                          size="default"
-                          color="blue"
-                          showIcon={false}
-                          to={LINKS.ONBOARDING_SENDING_EMAIL}
-                          as={Button}
-                        >
-                          Getting Started Documentation
-                        </ExternalLink>
-                      </Panel.Section>
-                    </Column>
-                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={ConfigurationWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={Configuration} seeThrough />
-                        </Picture>
+                  {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
+                  {/* !verifySendingDomainOnboarding */}
+                  {/* !createApiKeyOnboarding */}
+                  {!addSendingDomainOnboarding && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>
+                            <TranslatableText>Start Sending!</TranslatableText>
+                          </Panel.Headline>
+                          <Text pb="600">
+                            Follow the Getting Started documentation to set up sending via API or
+                            SMTP.
+                          </Text>
+                          <ExternalLink
+                            variant="primary"
+                            size="default"
+                            color="blue"
+                            showIcon={false}
+                            to={LINKS.ONBOARDING_SENDING_EMAIL}
+                            as={Button}
+                          >
+                            Getting Started Documentation
+                          </ExternalLink>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={ConfigurationWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={Configuration} seeThrough />
+                          </Picture>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Columns>
-                )}
-              </Dashboard.Panel>
+                    </Columns>
+                  )}
+                </Dashboard.Panel>
+              )}
 
               <Dashboard.Panel>
                 <Panel.Section>
@@ -259,7 +261,6 @@ export default function DashboardPageV2() {
                     <Panel.Section>
                       <Panel.Headline>
                         <Panel.HeadlineIcon as={ChatBubble} />
-
                         <TranslatableText>Need Help?</TranslatableText>
                       </Panel.Headline>
 
