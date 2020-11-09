@@ -1,4 +1,5 @@
 import { IS_HIBANA_ENABLED } from 'cypress/constants';
+import { LINKS } from 'src/constants';
 
 const PAGE_URL = '/dashboardV2';
 
@@ -9,6 +10,22 @@ describe('Version 2 of the dashboard page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
+    it.skip('onboarding step one', () => {
+      // FE-1209, FE-1213
+    });
+
+    it.skip('onboarding step two', () => {
+      // FE-1211, FE-1213
+    });
+
+    it.skip('onboarding step three', () => {
+      // FE-1213, FE-1213
+    });
+
+    it.skip('onboarding step four', () => {
+      // FE-1209, FE-1213
+    });
+
     it('renders with a relevant page title, relevant headings, and links when the `allow_dashboard_v2` account flag is enabled', () => {
       commonBeforeSteps();
       cy.title().should('include', 'Dashboard');
@@ -24,23 +41,10 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('button', { name: 'Contact our Support Team' }).click();
       cy.withinModal(() => cy.findByRole('button', { name: 'Close' }).click());
 
-      // "Next Steps" Panel (the one with the artwork!);
       cy.findByRole('heading', { name: 'Next Steps' }).should('exist'); // Screen reader only heading
       cy.verifyLink({
-        content: 'Add a Sending Domain',
-        href: '/account/sending-domains/create',
-      });
-      cy.verifyLink({
-        content: 'Generate an API Key',
-        href: '/account/api-keys/create',
-      });
-      cy.verifyLink({
-        content: 'Analyze your Data',
-        href: '/signals/analytics',
-      });
-      cy.verifyLink({
-        content: 'Create an Alert',
-        href: '/alerts/create',
+        content: 'Getting Started Documentation',
+        href: LINKS.ONBOARDING_SENDING_EMAIL,
       });
     });
 

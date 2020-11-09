@@ -56,6 +56,8 @@ export const LINKS = {
     'https://www.sparkpost.com/docs/my-account-and-profile/enabling-two-factor-authentication',
   ONBOARDING_SENDING:
     'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#preparing-your-from-address',
+  ONBOARDING_SENDING_EMAIL:
+    'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-email',
   RECAPTCHA_LIB_URL: 'https://www.google.com/recaptcha/api.js',
   DAILY_MONTHLY_QUOTA_LIMIT_DOC: 'https://support.sparkpost.com/customer/portal/articles/2030894',
   GETTING_STARTED_GUIDE: 'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost',

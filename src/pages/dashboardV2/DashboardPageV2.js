@@ -22,6 +22,7 @@ import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links'
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
+import { LINKS } from 'src/constants';
 import styled from 'styled-components';
 
 const OnboardingPicture = styled(Picture.Image)`
@@ -176,7 +177,7 @@ export default function DashboardPageV2() {
                           size="default"
                           color="blue"
                           showIcon={false}
-                          to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-email"
+                          to={LINKS.ONBOARDING_SENDING_EMAIL}
                           as={Button}
                         >
                           Getting Started Documentation
