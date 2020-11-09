@@ -35,7 +35,6 @@ export { default as RecipientValidationPriceTable } from './recipientValidation/
 export { default as ButtonWrapper } from './buttonWrapper/ButtonWrapper';
 export { default as Tabs } from './tabs/Tabs';
 export { default as LegendCircle } from './legendCircle/LegendCircle';
-export { default as Picture } from './picture';
 export * from './toggleBlock';
 export * from './breadcrumbs';
 export * from './collection';

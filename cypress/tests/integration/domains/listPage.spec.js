@@ -488,16 +488,20 @@ describe('The domains list page', () => {
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
 
-        cy.findByLabelText('Blocked').check({ force: true });
         verifyTableRow({
-          rowIndex: 0,
+          rowIndex: 1,
           domainName: 'blocked.com',
           creationDate: 'Aug 6, 2017',
           statusTags: ['Blocked'],
         });
         cy.findByLabelText('Blocked').uncheck({ force: true });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'spf-valid.com',
+          creationDate: 'Aug 5, 2017',
+          statusTags: ['Sending', 'SPF Valid'],
+        });
 
-        cy.findByLabelText('Unverified').check({ force: true });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'with-a-subaccount.com',
@@ -505,45 +509,64 @@ describe('The domains list page', () => {
           statusTags: ['Unverified'],
         });
         verifyTableRow({
-          rowIndex: 1,
+          rowIndex: 3,
           domainName: 'failed-verification.com',
           creationDate: 'Aug 3, 2017',
           statusTags: ['Unverified'],
         });
         cy.findByLabelText('Unverified').uncheck({ force: true });
-
-        cy.findByLabelText('SPF Valid').check({ force: true });
         verifyTableRow({
           rowIndex: 0,
-          domainName: 'blocked.com',
-          creationDate: 'Aug 6, 2017',
-          statusTags: ['Blocked'],
-        });
-        verifyTableRow({
-          rowIndex: 1,
           domainName: 'spf-valid.com',
           creationDate: 'Aug 5, 2017',
-          statusTags: ['SPF Valid'],
+          statusTags: ['Sending', 'SPF Valid'],
         });
-        cy.findByLabelText('SPF Valid').uncheck({ force: true });
-
-        cy.findByLabelText('Bounce').check({ force: true });
         verifyTableRow({
-          rowIndex: 0,
+          rowIndex: 3,
           domainName: 'default-bounce.com',
           creationDate: 'Aug 1, 2017',
           statusTags: ['Sending', 'Bounce'],
         });
-        cy.findByLabelText('Bounce').uncheck({ force: true });
 
-        cy.findByLabelText('DKIM Signing').check({ force: true });
+        cy.findByLabelText('SPF Valid').uncheck({ force: true });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'dkim-signing.com',
           creationDate: 'Aug 4, 2017',
           statusTags: ['Sending', 'DKIM Signing'],
         });
+
+        cy.findByLabelText('Bounce').uncheck({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'dkim-signing.com',
+          creationDate: 'Aug 4, 2017',
+          statusTags: ['Sending', 'DKIM Signing'],
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 2, 2017',
+          statusTags: ['Sending'],
+        });
+        cy.get('tbody tr')
+          .eq(2)
+          .should('not.exist');
+
         cy.findByLabelText('DKIM Signing').uncheck({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'ready-for-sending.com',
+          creationDate: 'Aug 2, 2017',
+          statusTags: ['Sending'],
+        });
+        cy.get('tbody tr')
+          .eq(1)
+          .should('not.exist');
+
+        cy.findByLabelText('Sending Domain').uncheck({ force: true });
+
+        cy.findByText('There is no data to display').should('be.visible');
       });
     });
 
@@ -879,38 +902,22 @@ describe('The domains list page', () => {
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
-        cy.findByLabelText('Tracking Domain').check({ force: true });
+        cy.findByLabelText('Tracking Domain').uncheck({ force: true });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'blocked.com',
+          status: 'Blocked',
+        });
         verifyTableRow({
           rowIndex: 1,
-          domainName: 'verified.com',
-          status: 'Tracking',
-        });
-        verifyTableRow({
-          rowIndex: 0,
-          domainName: 'verified-and-default.com',
-          status: 'Tracking',
-        });
-        verifyTableRow({
-          rowIndex: 2,
-          domainName: 'with-subaccount-assignment.com',
-          status: 'Tracking',
-          subaccount: 'Fake Subaccount 1 (101)',
-        });
-        cy.location().should(loc => {
-          expect(loc.search).to.eq('?verified=true');
-        });
-        cy.findByLabelText('Tracking Domain').uncheck({ force: true });
-        cy.findByLabelText('Unverified').check({ force: true });
-        cy.location().should(loc => {
-          expect(loc.search).to.eq('?unverified=true');
-        });
-        verifyTableRow({
-          rowIndex: 0,
           domainName: 'unverified.com',
           status: 'Unverified',
         });
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?unverified=true&blocked=true');
+        });
+
         cy.findByLabelText('Unverified').uncheck({ force: true });
-        cy.findByLabelText('Blocked').check({ force: true });
         cy.location().should(loc => {
           expect(loc.search).to.eq('?blocked=true');
         });
@@ -920,6 +927,28 @@ describe('The domains list page', () => {
           status: 'Blocked',
         });
         cy.findByLabelText('Blocked').uncheck({ force: true });
+        cy.findByLabelText('Unverified').check({ force: true });
+
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?unverified=true');
+        });
+        verifyTableRow({
+          rowIndex: 0,
+          domainName: 'unverified.com',
+          status: 'Unverified',
+        });
+
+        cy.findByLabelText('Unverified').uncheck({ force: true });
+        cy.findByLabelText('Tracking Domain').check({ force: true });
+
+        cy.location().should(loc => {
+          expect(loc.search).to.eq('?verified=true');
+        });
+        verifyTableRow({
+          rowIndex: 1,
+          domainName: 'verified.com',
+          status: 'Tracking',
+        });
       });
 
       it('syncs domain status with query params', () => {

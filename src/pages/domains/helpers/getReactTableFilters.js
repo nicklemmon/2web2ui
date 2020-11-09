@@ -3,21 +3,22 @@
  *
  * @param {object} params - The object of key value pairs
  *
- * @returns {array} {id: "keyName", value: true}
+ * @returns {array} {id: "keyName", value: false}
  */
 export default params => {
   return Object.entries(params)
-    .map(keyValueArr => {
-      // keyValueArr[0] = params key
-      // keyValueArr[1] = params value
-      if (!keyValueArr[1]) {
-        // if the value of the object key is falsy -> return null so the filter(Boolean removes)
+    .map(([key, value]) => {
+      if (value === true) {
+        return null;
+      }
+
+      if (('domainName' === key && !value) || (typeof value === 'string' && value.length === 0)) {
         return null;
       }
 
       return {
-        id: keyValueArr[0],
-        value: keyValueArr[1],
+        id: key,
+        value: value,
       };
     })
     .filter(Boolean);

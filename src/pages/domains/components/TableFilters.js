@@ -50,6 +50,23 @@ export function reducer(state, action) {
       };
     }
 
+    case 'LOAD': {
+      const checkboxes = state.checkboxes.map(filter => {
+        const isChecked = action.names.indexOf(filter.name) >= 0;
+
+        return {
+          ...filter,
+          isChecked: isChecked,
+        };
+      });
+
+      return {
+        ...state,
+        domainName: action.domainName,
+        checkboxes,
+      };
+    }
+
     case 'RESET':
       return action.state;
 

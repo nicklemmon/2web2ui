@@ -23,6 +23,7 @@ export { default as Page } from './Page';
 export { default as Pager } from './Pager';
 export { default as Pagination } from './Pagination';
 export { default as Panel } from './Panel';
+export { default as Picture } from './Picture';
 export { default as Popover } from './Popover';
 export { default as Portal } from './Portal';
 export { default as ProgressBar } from './ProgressBar';
@@ -42,6 +43,7 @@ export { default as ThemeProvider } from './ThemeProvider';
 export { default as Toggle } from './Toggle';
 export { default as Tooltip } from './Tooltip';
 export { default as UnstyledLink } from './UnstyledLink';
+export { default as Video } from './Video';
 export { default as WindowEvent } from './WindowEvent';
 
 export { useResizeObserver } from '@sparkpost/matchbox-hibana';
