@@ -13,15 +13,13 @@ describe('Version 2 of the dashboard page', () => {
     it('onboarding step one', () => {
       stubAccountsReq({ fixture: 'account/200.get.has-dashboard-v2.json' });
       stubUsageReq({ fixture: 'usage/200.get.no-last-sent.json' });
-      stubAlertsReq({ fixture: 'alerts/200.get.json' });
       cy.stubRequest({
         url: '/api/v1/sending-domains**',
         fixture: 'sending-domains/200.get.no-results.json',
         requestAlias: 'sendingDomains',
       });
-
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@alertsReq', '@usageReq', '@sendingDomains']);
+      cy.wait(['@accountReq', '@usageReq', '@sendingDomains']);
 
       cy.title().should('include', 'Dashboard');
 
