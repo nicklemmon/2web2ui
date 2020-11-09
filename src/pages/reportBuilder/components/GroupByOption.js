@@ -4,15 +4,12 @@ import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
-
 import { dehydrateFilters } from '../helpers';
 
 export default function GroupByOption(props) {
   const { groupBy, hasSubaccounts, tableLoading, _getTableData } = props;
   const { state: reportOptions } = useReportBuilderContext();
-
   const selectId = useUniqueId('break-down-by');
-
   const [topDomainsOnly, setTopDomainsOnly] = useState(true);
 
   const handleGroupChange = e => {
