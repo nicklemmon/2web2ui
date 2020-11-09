@@ -15,7 +15,7 @@ export default function ActiveFilters({ filters, handleFilterRemove }) {
       <Inline space="200">
         {groupings.map((grouping, groupingIndex) => {
           return (
-            <div data-id="active-filter-group">
+            <div data-id="active-filter-group" key={`active-filter-tag-${groupingIndex}`}>
               <Inline
                 key={`grouping-${groupingIndex}`}
                 as="span"
