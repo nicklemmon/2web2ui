@@ -38,8 +38,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  isAdmin,
-  hasRole,
   getAccount,
   getUsage,
   listAlerts,
