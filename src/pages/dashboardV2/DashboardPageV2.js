@@ -119,7 +119,7 @@ export default function DashboardPageV2() {
                           variant="primary"
                           size="default"
                           color="blue"
-                          to="/domains"
+                          to="/domains/list/sending"
                           target="_blank"
                           as={Button}
                         >
