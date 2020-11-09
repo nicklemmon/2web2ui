@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useRef, useReducer } from 'react';
 import { useFilters, usePagination, useSortBy, useTable } from 'react-table';
 import { ApiErrorBanner, Empty, Loading } from 'src/components';
 import { Pagination } from 'src/components/collection';
@@ -9,7 +9,12 @@ import { API_ERROR_MESSAGE } from '../constants';
 import useDomains from '../hooks/useDomains';
 import SendingDomainsTable from './SendingDomainsTable';
 import TableFilters, { reducer as tableFiltersReducer } from './TableFilters';
-import getReactTableFilters from '../helpers/getReactTableFilters';
+import {
+  getReactTableFilters,
+  customDomainStatusFilter,
+  getActiveStatusFilters,
+  filterStateToParams,
+} from '../helpers';
 
 const filtersInitialState = {
   domainName: '',
@@ -17,32 +22,32 @@ const filtersInitialState = {
     {
       label: 'Sending Domain',
       name: 'readyForSending',
-      isChecked: false,
+      isChecked: true,
     },
     {
       label: 'DKIM Signing',
       name: 'readyForDKIM',
-      isChecked: false,
+      isChecked: true,
     },
     {
       label: 'Bounce',
       name: 'readyForBounce',
-      isChecked: false,
+      isChecked: true,
     },
     {
       label: 'SPF Valid',
       name: 'validSPF',
-      isChecked: false,
+      isChecked: true,
     },
     {
       label: 'Unverified',
       name: 'unverified',
-      isChecked: false,
+      isChecked: true,
     },
     {
       label: 'Blocked',
       name: 'blocked',
-      isChecked: false,
+      isChecked: true,
     },
   ],
 };
@@ -104,23 +109,53 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
 
   const domains = renderBounceOnly ? bounceDomains : sendingDomains;
 
+  const filter = React.useMemo(() => customDomainStatusFilter, []);
+
   const data = React.useMemo(() => domains, [domains]);
   const columns = React.useMemo(
     () => [
-      { Header: 'Blocked', accessor: 'blocked' },
+      {
+        Header: 'Blocked',
+        accessor: 'blocked',
+        filter,
+      },
       { Header: 'CreationTime', accessor: 'creationTime' },
-      { Header: 'DefaultBounceDomain', accessor: 'defaultBounceDomain' },
+      {
+        Header: 'DefaultBounceDomain',
+        accessor: 'defaultBounceDomain',
+        filter,
+      },
       { Header: 'DomainName', accessor: 'domainName' },
-      { Header: 'ReadyForBounce', accessor: 'readyForBounce' },
-      { Header: 'ReadyForDKIM', accessor: 'readyForDKIM' },
-      { Header: 'ReadyForSending', accessor: 'readyForSending' },
+      {
+        Header: 'ReadyForBounce',
+        accessor: 'readyForBounce',
+        filter,
+      },
+      {
+        Header: 'ReadyForDKIM',
+        accessor: 'readyForDKIM',
+        filter,
+      },
+      {
+        Header: 'ReadyForSending',
+        accessor: 'readyForSending',
+        filter,
+      },
       { Header: 'SharedWithSubaccounts', accessor: 'sharedWithSubaccounts', canFilter: false },
       { Header: 'SubaccountId', accessor: 'subaccountId', canFilter: false },
       { Header: 'SubaccountName', accessor: 'subaccountName', canFilter: false },
-      { Header: 'Unverified', accessor: 'unverified' },
-      { Header: 'ValidSPF', accessor: 'validSPF' },
+      {
+        Header: 'Unverified',
+        accessor: 'unverified',
+        filter,
+      },
+      {
+        Header: 'ValidSPF',
+        accessor: 'validSPF',
+        filter,
+      },
     ],
-    [],
+    [filter],
   );
   const sortBy = React.useMemo(
     () => [
@@ -172,34 +207,35 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
     }
   }, [hasSubaccounts, listSubaccounts, subaccounts]);
 
-  // sync the params with filters on page load
-  useEffect(() => {
-    Object.keys(filters).forEach(key => {
-      if (key === 'domainName') {
-        filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: filters['domainName'] }); // SET UI INPUT VALUES
-      } else if (filters[key] === 'true') {
-        filtersStateDispatch({ type: 'TOGGLE', name: key }); // SET UI INPUT VALUES
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // When filter state updates, update table state and the query parameters
+  const firstLoad = useRef(true);
   useEffect(() => {
     if (!listPending) {
-      const filterStateToParams = () => {
-        let params = {};
-        for (let checkbox of filtersState.checkboxes) {
-          params[checkbox.name] = checkbox.isChecked;
-        }
-        params.domainName = filtersState.domainName;
-        return params;
-      };
-      const filterStateParams = filterStateToParams();
-      updateFilters(filterStateParams);
-      setAllFilters(getReactTableFilters(filterStateParams));
+      const allStatusFilterNames = Object.keys(filters).filter(i => i !== 'domainName');
+      const activeStatusFilters = getActiveStatusFilters(filters);
+      const statusFiltersToApply = !activeStatusFilters.length
+        ? allStatusFilterNames
+        : activeStatusFilters.map(i => i.name);
+      const domainNameFilter = filters['domainName'];
+
+      if (firstLoad.current) {
+        firstLoad.current = false;
+
+        filtersStateDispatch({
+          type: 'LOAD',
+          names: statusFiltersToApply,
+          domainName: domainNameFilter,
+        });
+
+        setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
+
+        return;
+      }
+
+      updateFilters(filterStateToParams(filtersState));
+      setAllFilters(getReactTableFilters(filterStateToParams(filtersState)));
     }
-  }, [filtersState, listPending, setAllFilters, updateFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtersState, listPending]);
 
   if (sendingDomainsListError) {
     return (
