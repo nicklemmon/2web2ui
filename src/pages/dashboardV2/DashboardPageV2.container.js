@@ -21,18 +21,6 @@ function mapStateToProps(state) {
   const isAdminOrDev = isAdmin(state) || hasRole(ROLES.DEVELOPER)(state);
   const hasSetupDocumentationPanel = isAdminOrDev;
   const addSendingDomainOnboarding = isAdminOrDev && hasGrants('sending_domains/manage')(state);
-  const verifySendingDomainOnboarding =
-    isAdminOrDev && hasGrants('sending_domains/manage')(state) && !addSendingDomainOnboarding;
-  const createApiKeyOnboarding =
-    isAdminOrDev &&
-    hasGrants('api_keys/manage')(state) &&
-    !addSendingDomainOnboarding &&
-    !verifySendingDomainOnboarding;
-  const startSendingOnboarding =
-    isAdminOrDev &&
-    !addSendingDomainOnboarding &&
-    !verifySendingDomainOnboarding &&
-    !createApiKeyOnboarding;
 
   return {
     currentUser: state.currentUser,
@@ -45,9 +33,6 @@ function mapStateToProps(state) {
     pending: isPending,
     hasSetupDocumentationPanel,
     addSendingDomainOnboarding,
-    verifySendingDomainOnboarding,
-    createApiKeyOnboarding,
-    startSendingOnboarding,
     hasUpgradeLink: hasGrants('account/manage')(state),
     hasUsageSection: isAdmin(state),
   };

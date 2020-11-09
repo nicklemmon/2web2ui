@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
-import ConfigurationImgWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
-import ConfigurationImg from '@sparkpost/matchbox-media/images/Configuration@small.jpg';
+import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
+import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import { Loading } from 'src/components';
 import {
   Box,
+  Button,
   Columns,
   Column,
   Layout,
@@ -28,6 +29,7 @@ export default function DashboardPageV2() {
     currentUser,
     pending,
     hasSetupDocumentationPanel,
+    addSendingDomainOnboarding,
     hasUsageSection,
   } = useDashboardContext();
 
@@ -63,22 +65,39 @@ export default function DashboardPageV2() {
                 <ScreenReaderOnly>
                   <Heading as="h3">Next Steps</Heading>
                 </ScreenReaderOnly>
-                <Columns space="0">
-                  <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.55]}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      backgroundColor="gray.100"
-                      height="100%"
-                      borderRight="400"
-                    >
-                      <Picture role="presentation" seeThrough>
-                        <source srcSet={ConfigurationImgWebp} type="image/webp" />
-                        <Picture.Image src={ConfigurationImg} alt="" />
-                      </Picture>
+
+                {addSendingDomainOnboarding && (
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <TranslatableText>Get Started!</TranslatableText>
+                        </Panel.Headline>
+                        <Text pb="600">
+                          At least one verified sending domain is required in order to start sending
+                          or enable analytics.
+                        </Text>
+                        <PageLink
+                          variant="primary"
+                          size="default"
+                          color="blue"
+                          to="/domains"
+                          as={Button}
+                        >
+                          Add Sending Domain
+                        </PageLink>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.55]}>
+                      <Box height="100%">
+                        <Picture role="presentation">
+                          <source srcset={SendingMailWebp} type="image/webp" />
+                          <Picture.Image alt="" src={SendingMail} seeThrough />
+                        </Picture>
+                      </Box>
                     </Box>
-                  </Box>
-                </Columns>
+                  </Columns>
+                )}
               </Dashboard.Panel>
 
               <Dashboard.Panel>
