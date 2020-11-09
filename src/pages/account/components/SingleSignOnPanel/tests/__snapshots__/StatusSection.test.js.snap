@@ -6,14 +6,14 @@ exports[`StatusSection disables buttons when updating 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": <ForwardRef(styled.span)>
+        "content": <styled.span>
           <span>
             Enable SSO
           </span>
-          <ForwardRef(styled.span)
+          <styled.span
             as={[Function]}
           />
-        </ForwardRef(styled.span)>,
+        </styled.span>,
         "disabled": true,
         "onClick": [Function],
       },
@@ -49,14 +49,14 @@ exports[`StatusSection renders when disabled 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": <ForwardRef(styled.span)>
+        "content": <styled.span>
           <span>
             Enable SSO
           </span>
-          <ForwardRef(styled.span)
+          <styled.span
             as={[Function]}
           />
-        </ForwardRef(styled.span)>,
+        </styled.span>,
         "disabled": false,
         "onClick": [Function],
       },
@@ -91,14 +91,14 @@ exports[`StatusSection renders when enabled 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": <ForwardRef(styled.span)>
+        "content": <styled.span>
           <span>
             Disable SSO
           </span>
-          <ForwardRef(styled.span)
+          <styled.span
             as={[Function]}
           />
-        </ForwardRef(styled.span)>,
+        </styled.span>,
         "disabled": false,
         "onClick": [Function],
       },
@@ -141,14 +141,14 @@ exports[`StatusSection renders when readOnly 1`] = `
     Array [
       Object {
         "color": "orange",
-        "content": <ForwardRef(styled.span)>
+        "content": <styled.span>
           <span>
             Enable SSO
           </span>
-          <ForwardRef(styled.span)
+          <styled.span
             as={[Function]}
           />
-        </ForwardRef(styled.span)>,
+        </styled.span>,
         "disabled": true,
         "onClick": [Function],
       },

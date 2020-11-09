@@ -8,7 +8,7 @@ exports[`Component: DatePicker handleFormDates should use a date field format if
   >
     Narrow Date Range
   </label>
-  <ForwardRef
+  <TextField
     connectLeft={
       <React.Fragment>
         <label
@@ -17,7 +17,7 @@ exports[`Component: DatePicker handleFormDates should use a date field format if
         >
           Broad Date Range
         </label>
-        <ForwardRef
+        <Select
           disabled={false}
           id="range-select-date-picker"
           onChange={[MockFunction]}
@@ -55,7 +55,7 @@ exports[`Component: DatePicker should not render range select if showPresets is 
   >
     Narrow Date Range
   </label>
-  <ForwardRef
+  <TextField
     connectLeft={null}
     disabled={false}
     id="date-field-date-picker"
@@ -81,7 +81,7 @@ exports[`Component: DatePicker should render ok by default 1`] = `
       >
         Narrow Date Range
       </label>
-      <ForwardRef
+      <TextField
         connectLeft={
           <React.Fragment>
             <label
@@ -90,7 +90,7 @@ exports[`Component: DatePicker should render ok by default 1`] = `
             >
               Broad Date Range
             </label>
-            <ForwardRef
+            <Select
               disabled={false}
               id="range-select-date-picker"
               onChange={[Function]}
