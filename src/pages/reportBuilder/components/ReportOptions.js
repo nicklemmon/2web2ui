@@ -28,19 +28,13 @@ const initFilters = {
   report: {},
 };
 export function ReportOptions(props) {
-  const {
-    reportLoading,
-    isComparatorsEnabled,
-    isCompareByEnabled,
-    selectedReport,
-    setReport,
-  } = props;
+  const { reportLoading, isCompareByEnabled, selectedReport, setReport } = props;
 
   const drawerTabsFeatureFlag = useMemo(() => {
     return isCompareByEnabled ? [...drawerTabs, { content: 'Compare' }] : drawerTabs;
   }, [isCompareByEnabled]);
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
-  const { refreshReportOptions, removeFilter, removeFilterV2 } = actions;
+  const { refreshReportOptions, removeFilter } = actions;
   const {
     selectSummaryMetricsProcessed: processedMetrics,
     selectSummaryChartSearchOptions,
@@ -97,13 +91,8 @@ export function ReportOptions(props) {
     openDrawer();
   };
 
-  // TODO: Remove when the filter groupings feature flag is removed
-  const handleFilterRemove = index => {
-    removeFilter(index);
-  };
-
-  const handleFilterRemoveV2 = ({ groupingIndex, filterIndex, valueIndex }) => {
-    return removeFilterV2({ groupingIndex, filterIndex, valueIndex });
+  const handleFilterRemove = ({ groupingIndex, filterIndex, valueIndex }) => {
+    return removeFilter({ groupingIndex, filterIndex, valueIndex });
   };
 
   const handleTimezoneSelect = useCallback(
@@ -211,17 +200,10 @@ export function ReportOptions(props) {
               Filters
             </Heading>
 
-            {isComparatorsEnabled ? (
-              <ActiveFilters
-                filters={reportOptions.filters}
-                handleFilterRemove={handleFilterRemoveV2}
-              />
-            ) : (
-              <ActiveFilters
-                filters={reportOptions.filters}
-                handleFilterRemove={handleFilterRemove}
-              />
-            )}
+            <ActiveFilters
+              filters={reportOptions.filters}
+              handleFilterRemove={handleFilterRemove}
+            />
           </Inline>
         </Panel.Section>
       )}

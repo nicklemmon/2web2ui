@@ -25,10 +25,16 @@ export const FILTER_KEY_MAP = {
 
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
-export function getQueryFromOptions(
-  { from, to, timezone, precision, metrics, filters = [], match = '', limit },
-  { isComparatorsEnabled } = {},
-) {
+export function getQueryFromOptions({
+  from,
+  to,
+  timezone,
+  precision,
+  metrics,
+  filters = [],
+  match = '',
+  limit,
+}) {
   from = moment(from);
   to = moment(to);
 
@@ -42,11 +48,8 @@ export function getQueryFromOptions(
     timezone,
     precision,
   };
-  if (isComparatorsEnabled) {
-    options.query_filters = filters.length ? JSON.stringify({ groupings: filters }) : undefined;
-  } else {
-    Object.assign(options, getFilterSets(filters, delimiter));
-  }
+  options.query_filters = filters.length ? JSON.stringify({ groupings: filters }) : undefined;
+
   if (match.length > 0) {
     options.match = match;
   }

@@ -404,11 +404,6 @@ if (IS_HIBANA_ENABLED) {
 
     it('clicking on a resource adds it as a filter (with new comparators)', () => {
       cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-report-filters-v2.json',
-        requestAlias: 'accountReq',
-      });
-      cy.stubRequest({
         url: '/api/v1/metrics/deliverability/template**/*',
         fixture: 'metrics/deliverability/template/200.get.json',
         requestAlias: 'getTemplate',
@@ -438,11 +433,6 @@ if (IS_HIBANA_ENABLED) {
     });
 
     it('selecting on a group by properly attaches filters (with new comparators)', () => {
-      cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-report-filters-v2.json',
-        requestAlias: 'accountReq',
-      });
       cy.stubRequest({
         url: '/api/v1/metrics/deliverability/template**/*',
         fixture: 'metrics/deliverability/template/200.get.json',
