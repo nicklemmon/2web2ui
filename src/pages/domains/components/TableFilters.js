@@ -143,11 +143,13 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
       <Popover
         left
         id={uniqueId}
+        as="div"
         open={isPopoverOpen}
         onClose={() => setIsPopoverOpen(false)}
         trigger={
           <Button
             outline
+            fullWidth
             variant="monochrome"
             aria-expanded={isPopoverOpen}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}

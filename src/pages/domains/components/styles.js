@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledFilterFields = styled.div`
   display: grid;
   grid-gap: ${props => props.theme.space['500']};
-  grid-template-columns: 2fr 165px auto;
+  grid-template-columns: 2fr auto 250px;
 
   @media (max-width: ${props => props.theme.breakpoints[1]}) {
     grid-template-columns: 1fr;
@@ -11,6 +11,7 @@ export const StyledFilterFields = styled.div`
 `;
 
 export const StyledGridCell = styled.div`
+  width: 250px;
   justify-self: end;
 
   @media (max-width: ${props => props.theme.breakpoints[1]}) {

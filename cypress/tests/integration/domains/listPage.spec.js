@@ -288,7 +288,8 @@ describe('The domains list page', () => {
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
-        cy.findByLabelText('Sort By').select('Domain Name (A - Z)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Domain Name (A - Z)').click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -334,7 +335,8 @@ describe('The domains list page', () => {
           statusTags: ['Unverified'],
         });
 
-        cy.findByLabelText('Sort By').select('Domain Name (Z - A)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Domain Name (Z - A)').click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -387,7 +389,8 @@ describe('The domains list page', () => {
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
-        cy.findByLabelText('Sort By').select('Date Added (Newest - Oldest)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Date Added (Newest - Oldest)').click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -433,7 +436,8 @@ describe('The domains list page', () => {
           statusTags: ['Sending', 'Bounce'],
         });
 
-        cy.findByLabelText('Sort By').select('Date Added (Oldest - Newest)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByAltText('Date Added (Oldest - Newest)').click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -884,7 +888,8 @@ describe('The domains list page', () => {
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
-        cy.findByLabelText('Sort By').select('Domain Name (Z - A)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Domain Name (Z - A)').click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -913,7 +918,8 @@ describe('The domains list page', () => {
           status: 'Blocked',
         });
 
-        cy.findByLabelText('Sort By').select('Domain Name (A - Z)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Domain Name (A - Z)').click();
 
         verifyTableRow({
           rowIndex: 0,
