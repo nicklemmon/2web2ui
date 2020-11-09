@@ -51,8 +51,27 @@ export default function DashboardPageV2() {
     setlastUsageDate(lastUsageDate);
     setHasSetupDocumentationPanel(isAdminOrDev);
     setAddSendingDomainOnboarding(
-      isAdminOrDev && canManageSendingDomains && sendingDomains.length === 0,
+      isAdminOrDev &&
+        canManageSendingDomains &&
+        sendingDomains.length === 0 &&
+        lastUsageDate === null,
     );
+    // TODO: FE-1211
+    /**
+        setVerifySendingDomainOnboarding(
+          !addSendingDomainOnboarding &&
+          verifiedSendingDomains.length === 0 &&
+        )
+     */
+    // TODO: FE-1212
+    /**
+        setCreateApiKeyOnboarding(
+          !addSendingDomainOnboarding &&
+          !verifySendingDomainOnboarding &&
+          lastUsageDate === null,
+          accountApiKeys.length === 0
+        )
+     */
   }
 
   function init(lastUsageDate) {
@@ -139,6 +158,8 @@ export default function DashboardPageV2() {
                 )}
 
                 {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
+                {/* !verifySendingDomainOnboarding */}
+                {/* !createApiKeyOnboarding */}
                 {!addSendingDomainOnboarding && (
                   <Columns>
                     <Column>
