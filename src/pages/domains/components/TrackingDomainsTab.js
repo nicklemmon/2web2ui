@@ -15,6 +15,7 @@ import {
   getActiveStatusFilters,
   filterStateToParams,
 } from '../helpers';
+import _ from 'lodash';
 
 const filtersInitialState = {
   domainName: undefined,
@@ -69,6 +70,19 @@ const initFiltersForTracking = {
     },
   },
 };
+
+const options = [
+  {
+    label: 'Domain Name (A - Z)',
+    value: 'domainNameAsc',
+    'data-sort-direction': 'asc',
+  },
+  {
+    label: 'Domain Name (Z - A)',
+    value: 'domainNameDesc',
+    'data-sort-direction': 'desc',
+  },
+];
 
 export default function TrackingDomainsTab() {
   const {
@@ -220,22 +234,11 @@ export default function TrackingDomainsTab() {
             <TableFilters.SortSelect
               disabled={listPending}
               defaultValue="domainName"
-              options={[
-                {
-                  label: 'Domain Name (A - Z)',
-                  value: 'domainName',
-                  'data-sort-direction': 'asc',
-                },
-                {
-                  label: 'Domain Name (Z - A)',
-                  value: 'domainName',
-                  'data-sort-direction': 'desc',
-                },
-              ]}
+              options={options}
               onChange={e => {
-                const { target } = e;
-                const selectedOption = target.options[target.selectedIndex];
-                const selectedDirection = selectedOption.getAttribute('data-sort-direction');
+                const { currentTarget } = e;
+                const selectedOption = _.find(options, { value: currentTarget.value });
+                const selectedDirection = selectedOption['data-sort-direction'];
                 const desc = selectedDirection === 'desc' ? true : false;
                 toggleSortBy('domainName', desc);
               }}

@@ -7,7 +7,7 @@ import {
   Popover,
   TextField,
   ScreenReaderOnly,
-  Select,
+  ListBox,
   Label,
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
@@ -116,13 +116,17 @@ function SortSelect({ options, onChange, disabled }) {
 
   return (
     <StyledGridCell>
-      <Select
+      <ListBox
         id={uniqueId}
         label="Sort By"
-        options={options}
         onChange={onChange}
         disabled={disabled}
-      />
+        defaultValue={options[0].value}
+      >
+        {options.map(option => {
+          return <ListBox.Option value={option.value}>{option.label}</ListBox.Option>;
+        })}
+      </ListBox>
     </StyledGridCell>
   );
 }
