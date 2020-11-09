@@ -289,7 +289,9 @@ describe('The domains list page', () => {
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Domain Name (A - Z)').click();
+        cy.findAllByText('Domain Name (A - Z)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -336,7 +338,9 @@ describe('The domains list page', () => {
         });
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Domain Name (Z - A)').click();
+        cy.findAllByText('Domain Name (Z - A)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -390,7 +394,9 @@ describe('The domains list page', () => {
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Date Added (Newest - Oldest)').click();
+        cy.findAllByText('Date Added (Newest - Oldest)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -437,7 +443,9 @@ describe('The domains list page', () => {
         });
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByAltText('Date Added (Oldest - Newest)').click();
+        cy.findAllByText('Date Added (Oldest - Newest)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -889,7 +897,9 @@ describe('The domains list page', () => {
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Domain Name (Z - A)').click();
+        cy.findAllByText('Domain Name (Z - A)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -919,7 +929,9 @@ describe('The domains list page', () => {
         });
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Domain Name (A - Z)').click();
+        cy.findAllByText('Domain Name (A - Z)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,

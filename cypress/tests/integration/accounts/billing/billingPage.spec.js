@@ -304,7 +304,7 @@ describe('Billing Page', () => {
         cy.findByRole('button', { name: /Update Payment Information/i }).click();
       });
 
-      it('closes the modal when clicking "Cancel"', { retries: 2 }, () => {
+      it('closes the modal when clicking "Cancel"', { retries: 3 }, () => {
         cy.withinModal(() => {
           cy.findAllByText('Update Payment Information').should('be.visible');
           cy.findByRole('button', { name: 'Cancel' }).click();
@@ -511,7 +511,7 @@ describe('Billing Page', () => {
         cy.findByRole('button', { name: 'Update Billing Contact' }).click();
       });
 
-      it('closes the modal when clicking "Cancel"', { retries: 2 }, () => {
+      it('closes the modal when clicking "Cancel"', { retries: 3 }, () => {
         cy.withinModal(() => {
           cy.findByLabelText('First Name').should('be.visible');
           cy.findByRole('button', { name: 'Cancel' }).click({ force: true });
