@@ -5,6 +5,7 @@ import hasGrants from 'src/helpers/conditions/hasGrants';
 import { hasRole, isAdmin } from 'src/helpers/conditions/user';
 import { fetch as getAccount, getUsage } from 'src/actions/account';
 import { listAlerts } from 'src/actions/alerts';
+import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { selectRecentlyTriggeredAlerts } from 'src/selectors/alerts';
 import {
   currentPlanNameSelector,
@@ -19,10 +20,10 @@ import DashboardPageV2 from './DashboardPageV2';
 function mapStateToProps(state) {
   const isPending = state.account.loading || state.account.usageLoading || state.alerts.listPending;
   const isAdminOrDev = isAdmin(state) || hasRole(ROLES.DEVELOPER)(state);
-  const hasSetupDocumentationPanel = isAdminOrDev;
-  const addSendingDomainOnboarding = isAdminOrDev && hasGrants('sending_domains/manage')(state);
 
   return {
+    canManageSendingDomains: hasGrants('sending_domains/manage')(state),
+    isAdminOrDev,
     currentUser: state.currentUser,
     currentPlanName: currentPlanNameSelector(state),
     recentAlerts: selectRecentlyTriggeredAlerts(state),
@@ -31,17 +32,18 @@ function mapStateToProps(state) {
     validationsThisMonth: selectMonthlyRecipientValidationUsage(state),
     endOfBillingPeriod: selectEndOfBillingPeriod(state),
     pending: isPending,
-    hasSetupDocumentationPanel,
-    addSendingDomainOnboarding,
     hasUpgradeLink: hasGrants('account/manage')(state),
     hasUsageSection: isAdmin(state),
   };
 }
 
 const mapDispatchToProps = {
+  isAdmin,
+  hasRole,
   getAccount,
   getUsage,
   listAlerts,
+  listSendingDomains,
 };
 
 export default connect(

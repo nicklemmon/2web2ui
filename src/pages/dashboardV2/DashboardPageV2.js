@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
+import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
+import Configuration from '@sparkpost/matchbox-media/images/Configuration@medium.jpg';
 import { Loading } from 'src/components';
 import {
   Box,
@@ -15,34 +17,67 @@ import {
   Stack,
   Text,
 } from 'src/components/matchbox';
-import { Heading, TranslatableText } from 'src/components/text';
+import { Bold, Heading, TranslatableText } from 'src/components/text';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
+import styled from 'styled-components';
+
+const OnboardingPicture = styled(Picture.Image)`
+  vertical-align: bottom;
+`;
 
 export default function DashboardPageV2() {
   const {
     getAccount,
     listAlerts,
+    isAdminOrDev,
+    canManageSendingDomains,
     getUsage,
     currentUser,
     pending,
-    hasSetupDocumentationPanel,
-    addSendingDomainOnboarding,
     hasUsageSection,
+    listSendingDomains,
   } = useDashboardContext();
+
+  // TODO: useReducer instead
+  const [hasSetupDocumentationPanel, setHasSetupDocumentationPanel] = useState();
+  const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState();
+  const [lastUsageDate, setlastUsageDate] = useState(-1);
+
+  // TODO: useReducer instead
+  function setupState(lastUsageDate, sendingDomains) {
+    setlastUsageDate(lastUsageDate);
+    setHasSetupDocumentationPanel(isAdminOrDev);
+    setAddSendingDomainOnboarding(
+      isAdminOrDev && canManageSendingDomains && sendingDomains.length === 0,
+    );
+  }
+
+  function init(lastUsageDate) {
+    listSendingDomains().then(sendingDomains => {
+      setupState(lastUsageDate, sendingDomains);
+    });
+  }
 
   useEffect(() => {
     getAccount({ include: 'usage' });
     listAlerts();
     if (hasUsageSection) {
-      getUsage(); // this is needed to display the rv usage section which should only be visible to admins
+      // !IMPORTANT - this is needed to display the rv usage section which should only be visible to admins
+      getUsage()
+        .then(res => {
+          init(res?.messaging?.last_usage_date);
+        })
+        .catch(e => {
+          throw e;
+        });
     }
     // eslint-disable-next-line
   }, []);
 
-  if (pending) return <Loading />;
+  if (pending || lastUsageDate === -1) return <Loading />;
 
   return (
     <Dashboard>
@@ -74,25 +109,64 @@ export default function DashboardPageV2() {
                           <TranslatableText>Get Started!</TranslatableText>
                         </Panel.Headline>
                         <Text pb="600">
-                          At least one verified sending domain is required in order to start sending
-                          or enable analytics.
+                          <TranslatableText>At least one </TranslatableText>
+                          <Bold>verified sending domain </Bold>
+                          <TranslatableText>
+                            is required in order to start or enable analytics.
+                          </TranslatableText>
                         </Text>
                         <PageLink
                           variant="primary"
                           size="default"
                           color="blue"
                           to="/domains"
+                          target="_blank"
                           as={Button}
                         >
                           Add Sending Domain
                         </PageLink>
                       </Panel.Section>
                     </Column>
-                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.55]}>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
                       <Box height="100%">
                         <Picture role="presentation">
                           <source srcset={SendingMailWebp} type="image/webp" />
-                          <Picture.Image alt="" src={SendingMail} seeThrough />
+                          <OnboardingPicture alt="" src={SendingMail} seeThrough />
+                        </Picture>
+                      </Box>
+                    </Box>
+                  </Columns>
+                )}
+
+                {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
+                {!addSendingDomainOnboarding && (
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <TranslatableText>Start Sending!</TranslatableText>
+                        </Panel.Headline>
+                        <Text pb="600">
+                          Follow the Getting Started documentation to set up sending via API or
+                          SMTP.
+                        </Text>
+                        <ExternalLink
+                          variant="primary"
+                          size="default"
+                          color="blue"
+                          showIcon={false}
+                          to="https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-email"
+                          as={Button}
+                        >
+                          Getting Started Documentation
+                        </ExternalLink>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Box height="100%">
+                        <Picture role="presentation">
+                          <source srcset={ConfigurationWebp} type="image/webp" />
+                          <OnboardingPicture alt="" src={Configuration} seeThrough />
                         </Picture>
                       </Box>
                     </Box>
