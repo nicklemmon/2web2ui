@@ -25,10 +25,6 @@ describe('Group By Option', () => {
     wrapper = shallow(<GroupByOption {...props} />);
   });
 
-  it('should render correctly with both selector and checkbox', () => {
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it('should render correctly with selector only and not the checkbox', () => {
     wrapper.setProps({ groupBy: 'campaign' });
     expect(wrapper.find('Checkbox')).not.toExist();
@@ -47,7 +43,7 @@ describe('Group By Option', () => {
     wrapper.find('Select').simulate('change', { target: { value: 'campaign' } });
     expect(props._getTableData).toHaveBeenCalledWith({
       groupBy: 'campaign',
-      reportOptions: { foo: 'bar', filters: [] },
+      reportOptions: { foo: 'bar', filters: undefined },
     });
   });
   it('should handle select change when its just a placeholder value', () => {
@@ -78,7 +74,7 @@ describe('Group By Option', () => {
     wrapper.find('Checkbox').simulate('change');
     expect(props._getTableData).toHaveBeenCalledWith({
       groupBy: 'domain',
-      reportOptions: { foo: 'bar', filters: [] },
+      reportOptions: { foo: 'bar', filters: undefined },
     });
     expect(wrapper.find('Checkbox')).not.toBeChecked();
   });
@@ -91,7 +87,7 @@ describe('Group By Option', () => {
     expect(props._getTableData).toHaveBeenCalledTimes(2);
     expect(props._getTableData).toHaveBeenCalledWith({
       groupBy: 'watched-domain',
-      reportOptions: { foo: 'bar', filters: [] },
+      reportOptions: { foo: 'bar', filters: undefined },
     });
     expect(wrapper.find('Checkbox')).toBeChecked();
   });
