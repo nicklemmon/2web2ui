@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
 import ConfigurationImgWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
 import ConfigurationImg from '@sparkpost/matchbox-media/images/Configuration@small.jpg';
-import { Loading, Picture } from 'src/components';
+import { Loading } from 'src/components';
 import {
   Box,
   Columns,
   Column,
   Layout,
   Panel,
+  Picture,
   ScreenReaderOnly,
   Stack,
   Text,
@@ -67,11 +68,17 @@ export default function DashboardPageV2() {
 
                 <Columns space="0">
                   <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.55]}>
-                    <Box backgroundColor="gray.100" height="100%" borderRight="400">
-                      <Picture role="presentation">
-                        <Picture.Source srcSet={ConfigurationImgWebp} type="image/webp" />
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      backgroundColor="gray.100"
+                      height="100%"
+                      borderRight="400"
+                    >
+                      <Picture role="presentation" seeThrough>
+                        <source srcSet={ConfigurationImgWebp} type="image/webp" />
 
-                        <Picture.Img src={ConfigurationImg} alt="" seeThrough />
+                        <Picture.Image src={ConfigurationImg} alt="" />
                       </Picture>
                     </Box>
                   </Box>
