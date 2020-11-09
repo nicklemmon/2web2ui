@@ -1,4 +1,4 @@
-export { default as AddFiltersSection } from './AddFiltersSection';
+export { default as ActiveFilters } from './ActiveFilters';
 export { default as CompareByForm } from './CompareByForm';
 export { default as FiltersForm } from './FiltersForm';
 export { default as Legend } from './Legend';

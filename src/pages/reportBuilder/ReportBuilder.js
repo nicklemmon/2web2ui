@@ -23,8 +23,6 @@ import {
   LinksTable,
   RejectionReasonsTable,
 } from './components/tabs';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportBuilder.module.scss';
 import { getSubscription } from 'src/actions/billing';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
@@ -48,7 +46,6 @@ const MetricDefinition = ({ label, children }) => {
 
 export function ReportBuilder({
   chart,
-  isComparatorsEnabled,
   getSubscription,
   refreshReportBuilder,
   subscription,
@@ -73,16 +70,12 @@ export function ReportBuilder({
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
-      if (isComparatorsEnabled) {
-        refreshReportBuilder({
-          ...reportOptions,
-          filters: dehydrateFilters(reportOptions.filters),
-        });
-      } else {
-        refreshReportBuilder(reportOptions);
-      }
+      refreshReportBuilder({
+        ...reportOptions,
+        filters: dehydrateFilters(reportOptions.filters),
+      });
     }
-  }, [refreshReportBuilder, reportOptions, isEmpty, isComparatorsEnabled]);
+  }, [refreshReportBuilder, reportOptions, isEmpty]);
 
   const { location } = useRouter();
 
@@ -108,11 +101,11 @@ export function ReportBuilder({
     const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
     const report = allReports.find(({ id }) => id === reportId);
 
-    //Waiting on reports to load (if enabled) to finish initializeing
+    //Waiting on reports to load (if enabled) to finish initializing
     //Waiting on subaccounts (if using comparators) to finish initializing
     if (
       (reportId && reportsStatus !== 'success') ||
-      (isComparatorsEnabled && !subaccountsReady) ||
+      !subaccountsReady ||
       reportOptions.isReady //Already ran once
     ) {
       return;
@@ -305,7 +298,6 @@ export function ReportBuilder({
 //Redux
 const mapStateToProps = state => ({
   chart: state.summaryChart,
-  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
   reports: state.reports.list,
   reportsStatus: state.reports.status,
   subaccountsReady: state.subaccounts.ready,

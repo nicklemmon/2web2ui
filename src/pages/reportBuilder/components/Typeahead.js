@@ -3,18 +3,37 @@ import { ComboBoxTypeahead } from 'src/components/typeahead/AsyncComboBoxTypeahe
 import { METRICS_API_LIMIT } from 'src/constants';
 import sortMatch from 'src/helpers/sortMatch';
 
-function Typeahead(props) {
-  const { dispatch, index, lookaheadRequest, reportOptions, value, results = [], ...rest } = props;
+function getItemToStr({ filterType, item }) {
+  if (filterType === 'Subaccount') {
+    return item.id;
+  }
 
+  return item.value;
+}
+
+function Typeahead(props) {
+  const {
+    id,
+    setFilterValues,
+    index,
+    lookaheadRequest,
+    value,
+    results = [],
+    itemToString,
+    groupingIndex,
+    filterIndex,
+    filterType,
+    ...rest
+  } = props;
   const [omitResults, setOmitResults] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
   const onFilterChange = useCallback(
-    newValue => {
-      dispatch({ type: 'ADD_FILTER', index, value: newValue });
+    newValues => {
+      setFilterValues({ groupingIndex, filterIndex, values: newValues });
     },
-    [index, dispatch],
+    [groupingIndex, filterIndex, setFilterValues],
   );
 
   const updateLookahead = useCallback(
@@ -31,7 +50,6 @@ function Typeahead(props) {
       setOmitResults(false);
       setLoading(true);
       const options = {
-        ...reportOptions,
         match: pattern,
         limit: METRICS_API_LIMIT,
       };
@@ -39,7 +57,7 @@ function Typeahead(props) {
         setLoading(false);
       });
     },
-    [setLoading, setOmitResults, lookaheadRequest, reportOptions, setInputValue],
+    [setLoading, setOmitResults, lookaheadRequest, setInputValue],
   );
 
   const filteredResults = useMemo(() => {
@@ -48,9 +66,10 @@ function Typeahead(props) {
 
   return (
     <ComboBoxTypeahead
+      id={id}
       onChange={onFilterChange}
       onInputChange={updateLookahead}
-      itemToString={item => (item ? item.value : '')}
+      itemToString={item => (item ? getItemToStr({ filterType, item }) : '')}
       value={value}
       results={omitResults ? [] : filteredResults}
       loading={loading}
