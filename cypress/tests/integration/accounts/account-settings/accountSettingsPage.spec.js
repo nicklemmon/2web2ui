@@ -58,7 +58,7 @@ describe('Account Settings Page', () => {
         });
         it(
           'opens Generate SCIM token Modal when a token is not present and clicking on Continue dismisses the Modal and new token can be found',
-          { retries: 2 },
+          { retries: 3 },
           () => {
             cy.stubRequest({
               method: 'POST',
