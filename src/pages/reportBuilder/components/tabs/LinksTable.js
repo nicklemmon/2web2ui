@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Percent, TableCollection } from 'src/components';
-import { refreshEngagementReport } from 'src/actions/engagementReport';
+import { refreshEngagementReportV2 as refreshEngagementReport } from 'src/actions/engagementReport';
 import { connect } from 'react-redux';
 import {
   EmptyWrapper,

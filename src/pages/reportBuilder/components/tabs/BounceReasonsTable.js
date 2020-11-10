@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { refreshBounceReport } from 'src/actions/bounceReport';
+import { refreshBounceReportV2 as refreshBounceReport } from 'src/actions/bounceReport';
 import { LongTextContainer, Percent, TableCollection } from 'src/components';
 import { mapStateToProps } from 'src/selectors/bounceReport';
 import { Tag } from 'src/components/matchbox';
