@@ -35,10 +35,67 @@ describe('Version 2 of the dashboard page', () => {
         .should('not.be.disabled');
     });
 
-    it.skip('onboarding step two', () => {
-      // TODO: FE-1211, FE-1213
+    it('onboarding step two - one unverified sending domain', () => {
+      stubAccountsReq({ fixture: 'account/200.get.has-dashboard-v2.json' });
+      stubUsageReq({ fixture: 'usage/200.get.no-last-sent.json' });
+      cy.stubRequest({
+        url: '/api/v1/sending-domains**',
+        fixture: 'sending-domains/200.get.unverified-sending.json',
+        requestAlias: 'sendingDomains',
+      });
+      cy.visit(PAGE_URL);
+      cy.wait(['@accountReq', '@usageReq', '@sendingDomains']);
+
+      cy.title().should('include', 'Dashboard');
+
+      cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
+
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should('be.visible');
+      cy.findAllByText('verified.').should('be.visible');
+      cy.findAllByText(
+        'Follow the instructions on the domain details page to configure your',
+      ).should('be.visible');
+      cy.findAllByText('DNS settings.').should('be.visible');
+
+      cy.get('[data-id="onboarding-verify-sending-button"]')
+        .should('be.visible')
+        .should('not.be.disabled')
+        .should('have.attr', 'href')
+        .and('include', '/details/sending-bounce/sparkspam.com');
+      cy.get('[data-id="onboarding-verify-sending-button"]').contains('Verify Sending Domain');
     });
 
+    it('onboarding step two - more than one unverified sending domain', () => {
+      stubAccountsReq({ fixture: 'account/200.get.has-dashboard-v2.json' });
+      stubUsageReq({ fixture: 'usage/200.get.no-last-sent.json' });
+      cy.stubRequest({
+        url: '/api/v1/sending-domains**',
+        fixture: 'sending-domains/200.get.multiple-unverified-sending.json',
+        requestAlias: 'sendingDomains',
+      });
+      cy.visit(PAGE_URL);
+      cy.wait(['@accountReq', '@usageReq', '@sendingDomains']);
+
+      cy.title().should('include', 'Dashboard');
+
+      cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
+
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should('be.visible');
+      cy.findAllByText('verified.').should('be.visible');
+      cy.findAllByText(
+        'Follow the instructions on the domain details page to configure your',
+      ).should('be.visible');
+      cy.findAllByText('DNS settings.').should('be.visible');
+
+      cy.get('[data-id="onboarding-verify-sending-button"]')
+        .should('be.visible')
+        .should('not.be.disabled')
+        .should('have.attr', 'href')
+        .and('include', '/domains/list/sending');
+      cy.get('[data-id="onboarding-verify-sending-button"]').contains('Verify Sending Domain');
+    });
+
+    // eslint-disable-next-line jest/no-disabled-tests
     it.skip('onboarding step three', () => {
       // TODO: FE-1213, FE-1213
     });
@@ -86,7 +143,7 @@ describe('Version 2 of the dashboard page', () => {
       });
     });
 
-    // TODO: Fix, something is wrong here
+    // TODO: FE-1211 OR FE-1212 Fix, something is wrong here
     it.skip('does not render certain links when grants are not available for a user', () => {
       commonBeforeSteps();
       cy.stubRequest({
@@ -118,7 +175,7 @@ describe('Version 2 of the dashboard page', () => {
       // });
     });
 
-    // TODO: Fix, something is wrong here
+    // TODO: FE-1211 OR FE-1212 Fix, something is wrong here
     it.skip('does not render the "Setup Documentation" or the usage section panel when the user is not an admin, developer, or super user', () => {
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
