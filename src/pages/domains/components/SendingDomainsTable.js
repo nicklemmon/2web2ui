@@ -57,7 +57,7 @@ function MainCell({ row }) {
       <PageLink to={`${DETAILS_BASE_URL}/sending-bounce/${domainName}`}>{domainName}</PageLink>
 
       {subaccountId ? (
-        <Text fontSize="200" lineHeight="200">
+        <Text fontSize="200" lineHeight="200" as="div">
           <SubaccountShrinkWrapper
             sharedWithSubaccounts={sharedWithSubaccounts}
             subaccountId={subaccountId}

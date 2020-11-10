@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { ListBox as HibanaListBox } from '@sparkpost/matchbox-hibana';
 import { useHibana } from 'src/context/HibanaContext';
 
-function ListBox(props) {
+const ListBox = forwardRef((props, ref) => {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -12,10 +12,10 @@ function ListBox(props) {
     );
   }
 
-  return <HibanaListBox {...props} />;
-}
+  return <HibanaListBox ref={ref} {...props} />;
+});
 
-function Option(props) {
+const Option = forwardRef((props, ref) => {
   const [state] = useHibana();
   const { isHibanaEnabled } = state;
 
@@ -25,8 +25,8 @@ function Option(props) {
     );
   }
 
-  return <HibanaListBox.Option {...props} />;
-}
+  return <HibanaListBox.Option ref={ref} {...props} />;
+});
 
 ListBox.Option = Option;
 Option.displayName = 'ListBox.Option';

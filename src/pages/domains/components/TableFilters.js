@@ -7,8 +7,8 @@ import {
   Popover,
   TextField,
   ScreenReaderOnly,
-  ListBox,
   Label,
+  ListBox,
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
@@ -104,7 +104,7 @@ function DomainField({ onChange, value, disabled, placeholder = '' }) {
       label="Filter Domains"
       prefix={<Search />}
       onChange={onChange}
-      value={value}
+      value={value || ''}
       disabled={disabled}
       placeholder={placeholder}
     />
@@ -123,8 +123,12 @@ function SortSelect({ options, onChange, disabled }) {
         disabled={disabled}
         defaultValue={options[0].value}
       >
-        {options.map(option => {
-          return <ListBox.Option value={option.value}>{option.label}</ListBox.Option>;
+        {options.map((option, i) => {
+          return (
+            <ListBox.Option key={i} value={option.value}>
+              {option.label}
+            </ListBox.Option>
+          );
         })}
       </ListBox>
     </StyledGridCell>
