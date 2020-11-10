@@ -141,7 +141,6 @@ export default function DashboardPageV2() {
                             size="default"
                             color="blue"
                             to="/domains/list/sending"
-                            target="_blank"
                             as={Button}
                           >
                             Add Sending Domain
