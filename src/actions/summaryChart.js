@@ -1,5 +1,9 @@
 import { fetch as fetchMetrics } from 'src/actions/metrics';
-import { getQueryFromOptions, getMetricsFromKeys } from 'src/helpers/metrics';
+import {
+  getQueryFromOptions,
+  getQueryFromOptionsV2,
+  getMetricsFromKeys,
+} from 'src/helpers/metrics';
 import { getRelativeDates } from 'src/helpers/date';
 
 // second argument is only for mocking local functions that can't be otherwise mocked or spied on in jest-land
@@ -62,7 +66,7 @@ export function refreshReportBuilder(
       ...getRelativeDates(updates.relativeRange, { precision: updates.precision }),
     };
 
-    const params = getQueryFromOptions(merged);
+    const params = getQueryFromOptionsV2(merged);
     const isCurrentGroupingAggregates = summaryChart.groupBy === 'aggregate';
     return Promise.all([
       dispatch(getChartData({ params, metrics: merged.metrics })),
