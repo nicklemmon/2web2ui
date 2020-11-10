@@ -48,6 +48,40 @@ export function getQueryFromOptions({
     timezone,
     precision,
   };
+  Object.assign(options, getFilterSets(filters, delimiter));
+  if (match.length > 0) {
+    options.match = match;
+  }
+  if (limit) {
+    options.limit = limit;
+  }
+  return options;
+}
+
+// TODO: Replace original once original theme removed.
+export function getQueryFromOptionsV2({
+  from,
+  to,
+  timezone,
+  precision,
+  metrics,
+  filters = [],
+  match = '',
+  limit,
+}) {
+  from = moment(from);
+  to = moment(to);
+
+  const apiMetricsKeys = getKeysFromMetrics(metrics);
+  const delimiter = getDelimiter(filters);
+  const options = {
+    metrics: apiMetricsKeys.join(delimiter),
+    from: from.format(apiDateFormat),
+    to: to.format(apiDateFormat),
+    delimiter,
+    timezone,
+    precision,
+  };
   options.query_filters = filters.length ? JSON.stringify({ groupings: filters }) : undefined;
 
   if (match.length > 0) {

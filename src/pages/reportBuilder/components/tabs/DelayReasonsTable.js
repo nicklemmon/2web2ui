@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { LongTextContainer, Percent, TableCollection } from 'src/components';
-import { refreshDelayReport } from 'src/actions/delayReport';
+import { refreshDelayReportV2 as refreshDelayReport } from 'src/actions/delayReport';
 import {
   EmptyWrapper,
   FilterBoxWrapper,
