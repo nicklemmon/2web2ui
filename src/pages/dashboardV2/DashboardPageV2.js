@@ -222,8 +222,8 @@ export default function DashboardPageV2() {
                           <TranslatableText>Start Sending!</TranslatableText>
                         </Panel.Headline>
                         <Text pb="600">
-                          Once a sending domain has been added, it needs to be verified. Follow the
-                          instructions on the domain details page to configure your DNS settings.
+                          Follow the Getting Started documentation to set up sending via API or
+                          SMTP.
                         </Text>
                         <ExternalLink
                           variant="primary"
