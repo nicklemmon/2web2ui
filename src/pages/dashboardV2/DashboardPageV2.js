@@ -24,6 +24,7 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
+import { resolveStatus } from 'src/helpers/domains';
 
 const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
@@ -43,8 +44,12 @@ export default function DashboardPageV2() {
   } = useDashboardContext();
 
   // TODO: useReducer instead
-  const [hasSetupDocumentationPanel, setHasSetupDocumentationPanel] = useState();
-  const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState();
+  const [hasSetupDocumentationPanel, setHasSetupDocumentationPanel] = useState(false);
+  const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState(false);
+  const [verifySendingDomainOnboarding, setVerifySendingDomainOnboarding] = useState(false);
+  const [linkForVerifySendingDomainButton, setLinkForVerifySendingDomainButton] = useState(
+    '/domains/list/sending',
+  );
   const [lastUsageDate, setlastUsageDate] = useState(-1);
 
   // TODO: useReducer instead
@@ -57,13 +62,22 @@ export default function DashboardPageV2() {
         sendingDomains.length === 0 &&
         lastUsageDate === null,
     );
-    // TODO: FE-1211
-    /**
-        setVerifySendingDomainOnboarding(
-          !addSendingDomainOnboarding &&
-          verifiedSendingDomains.length === 0 &&
-        )
-     */
+
+    const verifiedSendingDomains = sendingDomains
+      .map(i => {
+        return resolveStatus(i.status) === 'verified' ? i : null;
+      })
+      .filter(Boolean);
+    setVerifySendingDomainOnboarding(
+      !addSendingDomainOnboarding && verifiedSendingDomains.length === 0,
+    );
+
+    if (sendingDomains.length === 1 && verifiedSendingDomains.length === 0) {
+      setLinkForVerifySendingDomainButton(
+        `/domains/details/sending-bounce/${sendingDomains[0].domain}`,
+      );
+    }
+
     // TODO: FE-1212
     /**
         setCreateApiKeyOnboarding(
@@ -116,86 +130,124 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {isAdminOrDev && (
-                <Dashboard.Panel>
-                  <ScreenReaderOnly>
-                    <Heading as="h3">Next Steps</Heading>
-                  </ScreenReaderOnly>
+              <Dashboard.Panel>
+                <ScreenReaderOnly>
+                  <Heading as="h3">Next Steps</Heading>
+                </ScreenReaderOnly>
 
-                  {addSendingDomainOnboarding && (
-                    <Columns>
-                      <Column>
-                        <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Get Started!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            <TranslatableText>At least one </TranslatableText>
-                            <Bold>verified sending domain </Bold>
-                            <TranslatableText>
-                              is required in order to start or enable analytics.
-                            </TranslatableText>
-                          </Text>
-                          <PageLink
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            to="/domains/list/sending"
-                            as={Button}
-                          >
-                            Add Sending Domain
-                          </PageLink>
-                        </Panel.Section>
-                      </Column>
-                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                        <Box height="100%">
-                          <Picture role="presentation">
-                            <source srcset={SendingMailWebp} type="image/webp" />
-                            <OnboardingPicture alt="" src={SendingMail} seeThrough />
-                          </Picture>
-                        </Box>
+                {addSendingDomainOnboarding && (
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <TranslatableText>Get Started!</TranslatableText>
+                        </Panel.Headline>
+                        <Text pb="600">
+                          <TranslatableText>At least one </TranslatableText>
+                          <Bold>verified sending domain </Bold>
+                          <TranslatableText>
+                            is required in order to start or enable analytics.
+                          </TranslatableText>
+                        </Text>
+                        <PageLink
+                          data-id="onboarding-add-sending-button"
+                          variant="primary"
+                          size="default"
+                          color="blue"
+                          to="/domains/list/sending"
+                          as={Button}
+                        >
+                          Add Sending Domain
+                        </PageLink>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Box height="100%">
+                        <Picture role="presentation">
+                          <source srcset={SendingMailWebp} type="image/webp" />
+                          <OnboardingPicture alt="" src={SendingMail} seeThrough />
+                        </Picture>
                       </Box>
-                    </Columns>
-                  )}
+                    </Box>
+                  </Columns>
+                )}
 
-                  {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
-                  {/* !verifySendingDomainOnboarding */}
-                  {/* !createApiKeyOnboarding */}
-                  {!addSendingDomainOnboarding && (
-                    <Columns>
-                      <Column>
-                        <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Start Sending!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            Follow the Getting Started documentation to set up sending via API or
-                            SMTP.
-                          </Text>
-                          <ExternalLink
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            showIcon={false}
-                            to={LINKS.ONBOARDING_SENDING_EMAIL}
-                            as={Button}
-                          >
-                            Getting Started Documentation
-                          </ExternalLink>
-                        </Panel.Section>
-                      </Column>
-                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                        <Box height="100%">
-                          <Picture role="presentation">
-                            <source srcset={ConfigurationWebp} type="image/webp" />
-                            <OnboardingPicture alt="" src={Configuration} seeThrough />
-                          </Picture>
-                        </Box>
+                {!addSendingDomainOnboarding && verifySendingDomainOnboarding && (
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <TranslatableText>Get Started!</TranslatableText>
+                        </Panel.Headline>
+                        <Text pb="600">
+                          <TranslatableText>
+                            Once a sending domain has been added, it needs to be
+                          </TranslatableText>
+                          <Bold> verified. </Bold>
+                          <TranslatableText>
+                            Follow the instructions on the domain details page to configure your
+                          </TranslatableText>
+                          <TranslatableText> DNS settings.</TranslatableText>
+                        </Text>
+                        <PageLink
+                          data-id="onboarding-verify-sending-button"
+                          variant="primary"
+                          size="default"
+                          color="blue"
+                          to={linkForVerifySendingDomainButton}
+                          as={Button}
+                        >
+                          Verify Sending Domain
+                        </PageLink>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Box height="100%">
+                        <Picture role="presentation">
+                          <source srcset={SendingMailWebp} type="image/webp" />
+                          <OnboardingPicture alt="" src={SendingMail} seeThrough />
+                        </Picture>
                       </Box>
-                    </Columns>
-                  )}
-                </Dashboard.Panel>
-              )}
+                    </Box>
+                  </Columns>
+                )}
+
+                {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
+                {/* !createApiKeyOnboarding */}
+                {!addSendingDomainOnboarding && !verifySendingDomainOnboarding && (
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <TranslatableText>Start Sending!</TranslatableText>
+                        </Panel.Headline>
+                        <Text pb="600">
+                          Once a sending domain has been added, it needs to be verified. Follow the
+                          instructions on the domain details page to configure your DNS settings.
+                        </Text>
+                        <ExternalLink
+                          variant="primary"
+                          size="default"
+                          color="blue"
+                          showIcon={false}
+                          to={LINKS.ONBOARDING_SENDING_EMAIL}
+                          as={Button}
+                        >
+                          Getting Started Documentation
+                        </ExternalLink>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Box height="100%">
+                        <Picture role="presentation">
+                          <source srcset={ConfigurationWebp} type="image/webp" />
+                          <OnboardingPicture alt="" src={Configuration} seeThrough />
+                        </Picture>
+                      </Box>
+                    </Box>
+                  </Columns>
+                )}
+              </Dashboard.Panel>
 
               <Dashboard.Panel>
                 <Panel.Section>
