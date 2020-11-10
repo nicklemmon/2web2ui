@@ -338,9 +338,7 @@ describe('The domains list page', () => {
         });
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Domain Name (Z - A)')
-          .last()
-          .click();
+        cy.findByRole('option', { name: 'Domain Name (Z - A)' }).click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -443,9 +441,7 @@ describe('The domains list page', () => {
         });
 
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Date Added (Oldest - Newest)')
-          .last()
-          .click();
+        cy.findByRole('option', { name: 'Date Added (Oldest - Newest)' }).click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -927,11 +923,8 @@ describe('The domains list page', () => {
           domainName: 'blocked.com',
           status: 'Blocked',
         });
-
         cy.findByLabelText('Sort By').click();
-        cy.findAllByText('Domain Name (A - Z)')
-          .last()
-          .click();
+        cy.findByRole('option', { name: 'Domain Name (A - Z)' }).click();
 
         verifyTableRow({
           rowIndex: 0,
