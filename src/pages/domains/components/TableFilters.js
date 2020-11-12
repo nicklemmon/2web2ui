@@ -189,7 +189,6 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
       >
         <Box padding="300">
           <Checkbox
-            key="select-all"
             label="Select All"
             id="select-all"
             name="selectAll"
