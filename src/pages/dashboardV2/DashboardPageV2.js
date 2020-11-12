@@ -115,12 +115,13 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {(isAnAdmin || isDev) && canManageSendingDomains && !lastUsageDate && (
+              {(isAnAdmin || isDev) && canManageSendingDomains && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
                   </ScreenReaderOnly>
 
+                  {/* Onboarding step #1 */}
                   {addSendingDomainOnboarding && (
                     <Columns>
                       <Column>
@@ -158,6 +159,7 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
+                  {/* Onboarding step #2 */}
                   {!addSendingDomainOnboarding && verifySendingDomainOnboarding && (
                     <Columns>
                       <Column>
@@ -198,6 +200,7 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
+                  {/* Onboarding step #3 */}
                   {!addSendingDomainOnboarding &&
                     !verifySendingDomainOnboarding &&
                     createApiKeyOnboarding && (
@@ -234,6 +237,7 @@ export default function DashboardPageV2() {
                       </Columns>
                     )}
 
+                  {/* Onboarding step #4 fallback if admin or dev and !lastUsageDate  */}
                   {!addSendingDomainOnboarding &&
                     !verifySendingDomainOnboarding &&
                     !createApiKeyOnboarding && (
@@ -269,6 +273,44 @@ export default function DashboardPageV2() {
                         </Box>
                       </Columns>
                     )}
+                </Dashboard.Panel>
+              )}
+
+              {!isAnAdmin && !isDev && !lastUsageDate && (
+                <Dashboard.Panel>
+                  <ScreenReaderOnly>
+                    <Heading as="h3">Next Steps</Heading>
+                  </ScreenReaderOnly>
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>
+                          <TranslatableText>Analytics Report</TranslatableText>
+                        </Panel.Headline>
+                        <Text pb="600">
+                          Build custom analytics, track engagement, diagnose errors, and more.
+                        </Text>
+                        <ExternalLink
+                          variant="primary"
+                          size="default"
+                          color="blue"
+                          showIcon={false}
+                          to="/signals/analytics"
+                          as={Button}
+                        >
+                          Go To Analytics Report
+                        </ExternalLink>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Box height="100%">
+                        <Picture role="presentation">
+                          <source srcset={ConfigurationWebp} type="image/webp" />
+                          <OnboardingPicture alt="" src={Configuration} seeThrough />
+                        </Picture>
+                      </Box>
+                    </Box>
+                  </Columns>
                 </Dashboard.Panel>
               )}
 
