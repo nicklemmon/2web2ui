@@ -21,6 +21,25 @@ const Chevron = styled(ChevronRight)`
   transform: rotate(90deg);
 `;
 
+/* https://allyjs.io/tutorials/hiding-elements.html#how-to-hide-elements-visually */
+const VisuallyHiddenBox = styled(Box)`
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+
+  white-space: nowrap;
+
+  clip: rect(0 0 0 0);
+  clip-path: inset(
+    100%
+  ); /* Added both since clip is deprecated now, but clip path isn't widely supported yet*/
+  overflow: hidden;
+`;
+
 export function reducer(state, action) {
   switch (action.type) {
     case 'DOMAIN_FILTER_CHANGE': {
@@ -162,11 +181,11 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
 
         <Divider />
 
-        <Box padding="300" display="flex" justifyContent="flex-end">
+        <VisuallyHiddenBox padding="300" display="flex" justifyContent="flex-end">
           <Button variant="primary" size="small" onClick={() => setIsPopoverOpen(false)}>
             Apply
           </Button>
-        </Box>
+        </VisuallyHiddenBox>
       </Popover>
     </Box>
   );
