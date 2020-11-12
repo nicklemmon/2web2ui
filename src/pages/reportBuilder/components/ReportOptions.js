@@ -7,13 +7,19 @@ import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import { AddFiltersSection, CompareByForm, FiltersForm, Legend, MetricsDrawer } from './index';
+import {
+  AddFiltersSection,
+  CompareByForm,
+  FiltersForm,
+  ActiveMetrics,
+  MetricsDrawer,
+} from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import useRouter from 'src/hooks/useRouter';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { dehydrateFilters } from '../helpers';
-import { ActiveFilters, ActiveFiltersV2 } from './ActiveFilters';
+import { ActiveFilters, ActiveFiltersV2 } from './ActiveFilters'; // TODO: Import from the component index when feature flag is removed
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 export function ReportOptions(props) {
@@ -192,7 +198,13 @@ export function ReportOptions(props) {
 
       {!isEmpty && (
         <Panel.Section>
-          <Legend metrics={processedMetrics} removeMetric={handleRemoveMetric} />
+          <Inline>
+            <Heading as="h2" looksLike="h5">
+              Metrics
+            </Heading>
+
+            <ActiveMetrics metrics={processedMetrics} removeMetric={handleRemoveMetric} />
+          </Inline>
         </Panel.Section>
       )}
 
