@@ -52,6 +52,19 @@ export function reducer(state, action) {
     case 'TOGGLE': {
       const isChecked = state.checkboxes.find(filter => filter.name === action.name).isChecked;
 
+      if (action.name === 'selectAll' && !isChecked) {
+        /* if Select All is Checked then all checkboxes should be checked */
+        return {
+          ...state,
+          checkboxes: state.checkboxes.map(filter => {
+            return {
+              ...filter,
+              isChecked: true,
+            };
+          }),
+        };
+      }
+
       return {
         ...state,
         // Return the relevant checked box and update its checked state,
@@ -165,17 +178,30 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
         }
       >
         <Box padding="300">
+          <Checkbox
+            key="select-all"
+            label="Select All"
+            id="select-all"
+            name="selectAll"
+            onChange={onCheckboxChange}
+            checked={checkboxes.find(filter => filter.name === 'selectAll').isChecked}
+          />
+        </Box>
+        <Divider />
+        <Box padding="300">
           <Checkbox.Group label="Status Filters" labelHidden>
-            {checkboxes.map((filter, index) => (
-              <Checkbox
-                key={`${filter.name}-${index}`}
-                label={filter.label}
-                id={filter.name}
-                name={filter.name}
-                onChange={onCheckboxChange}
-                checked={filter.isChecked}
-              />
-            ))}
+            {checkboxes
+              .filter(filter => filter.name !== 'selectAll')
+              .map((filter, index) => (
+                <Checkbox
+                  key={`${filter.name}-${index}`}
+                  label={filter.label}
+                  id={filter.name}
+                  name={filter.name}
+                  onChange={onCheckboxChange}
+                  checked={filter.isChecked}
+                />
+              ))}
           </Checkbox.Group>
         </Box>
 

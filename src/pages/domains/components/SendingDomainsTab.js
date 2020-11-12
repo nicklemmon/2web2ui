@@ -20,6 +20,11 @@ const filtersInitialState = {
   domainName: '',
   checkboxes: [
     {
+      label: 'Select All',
+      name: 'selectAll',
+      isChecked: true,
+    },
+    {
       label: 'Sending Domain',
       name: 'readyForSending',
       isChecked: true,
@@ -90,6 +95,12 @@ const initFiltersForSending = {
       return val === 'true' || val === 'false' || typeof val === 'boolean';
     },
   },
+  selectAll: {
+    defaultValue: undefined,
+    validate: val => {
+      return val === 'true' || val === 'false' || typeof val === 'boolean';
+    },
+  },
 };
 
 export default function SendingDomainsTab({ renderBounceOnly = false }) {
@@ -153,6 +164,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         Header: 'ValidSPF',
         accessor: 'validSPF',
         filter,
+      },
+      {
+        Header: 'SelectAll',
+        accessor: 'selectAll',
       },
     ],
     [filter],
