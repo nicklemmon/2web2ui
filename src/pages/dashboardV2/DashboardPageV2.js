@@ -252,6 +252,7 @@ export default function DashboardPageV2() {
                               SMTP.
                             </Text>
                             <ExternalLink
+                              data-id="onboarding-get-started-doc-button"
                               variant="primary"
                               size="default"
                               color="blue"
@@ -291,6 +292,7 @@ export default function DashboardPageV2() {
                           Build custom analytics, track engagement, diagnose errors, and more.
                         </Text>
                         <ExternalLink
+                          data-id="onboarding-go-to-analytics-button"
                           variant="primary"
                           size="default"
                           color="blue"

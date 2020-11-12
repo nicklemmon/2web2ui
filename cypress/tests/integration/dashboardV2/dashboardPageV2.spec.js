@@ -325,10 +325,55 @@ describe('Version 2 of the dashboard page', () => {
         'Follow the Getting Started documentation to set up sending via API or SMTP.',
       ).should('be.visible');
 
-      cy.get('a')
-        .contains('Getting Started Documentation')
+      cy.findByDataId('onboarding-get-started-doc-button')
         .should('be.visible')
-        .should('not.be.disabled');
+        .should('not.be.disabled')
+        .should('have.attr', 'href')
+        .and(
+          'include',
+          'https://www.sparkpost.com/docs/getting-started/getting-started-sparkpost/#sending-email',
+        );
+      cy.findByDataId('onboarding-get-started-doc-button').contains(
+        'Getting Started Documentation',
+      );
+    });
+
+    it('onboarding !admin && !dev && !lastUsageDate', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
+      cy.stubRequest({
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.reporting.json',
+        requestAlias: 'userReq',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait([
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+        '@userReq',
+      ]);
+
+      cy.title().should('include', 'Dashboard');
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      cy.findByDataId('onboarding-go-to-analytics-button')
+        .should('be.visible')
+        .should('not.be.disabled')
+        .should('have.attr', 'href')
+        .and('include', '/account/api-keys/create');
+      cy.findByDataId('onboarding-go-to-analytics-button').contains('Go To Analytics Report');
     });
 
     it('renders with a relevant page title, relevant headings, and links when the `allow_dashboard_v2` account flag is enabled', () => {
