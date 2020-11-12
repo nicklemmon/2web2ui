@@ -70,6 +70,7 @@ describe('Version 2 of the dashboard page', () => {
     });
 
     it('onboarding step one - add sending domain', () => {
+      stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' }); // would normally give them the first onboarding step, but this person doesnt have the manage grant
@@ -77,7 +78,14 @@ describe('Version 2 of the dashboard page', () => {
       stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq', '@apiKeysReq']);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
 
       cy.title().should('include', 'Dashboard');
 
@@ -94,6 +102,7 @@ describe('Version 2 of the dashboard page', () => {
     });
 
     it('onboarding step two.a - verify sending domain (one domain on account)', () => {
+      stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
@@ -101,7 +110,14 @@ describe('Version 2 of the dashboard page', () => {
       stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq', '@apiKeysReq']);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
 
       cy.title().should('include', 'Dashboard');
 
@@ -123,6 +139,7 @@ describe('Version 2 of the dashboard page', () => {
     });
 
     it('onboarding step two.b - verify sending domain (more than one domain on account)', () => {
+      stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
@@ -130,7 +147,14 @@ describe('Version 2 of the dashboard page', () => {
       stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq', '@apiKeysReq']);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
 
       cy.title().should('include', 'Dashboard');
 
@@ -152,6 +176,7 @@ describe('Version 2 of the dashboard page', () => {
     });
 
     it('onboarding step three - create api key', () => {
+      stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
@@ -159,7 +184,14 @@ describe('Version 2 of the dashboard page', () => {
       stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq', '@apiKeysReq']);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
 
       cy.title().should('include', 'Dashboard');
 
@@ -178,14 +210,22 @@ describe('Version 2 of the dashboard page', () => {
     });
 
     it('onboarding step four - start sending docs', () => {
+      stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
       stubAccountsReq();
-      stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
       stubApiKeyReq({ fixture: 'api-keys/200.get.json' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq', '@apiKeysReq']);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
 
       cy.title().should('include', 'Dashboard');
 
