@@ -43,8 +43,9 @@ export default function DashboardPageV2() {
     listApiKeys,
   } = useDashboardContext();
 
+  const hasSetupDocumentationPanel = isAdminOrDev;
+
   // TODO: useReducer instead
-  const [hasSetupDocumentationPanel, setHasSetupDocumentationPanel] = useState(false);
   const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState(false);
   const [verifySendingDomainOnboarding, setVerifySendingDomainOnboarding] = useState(false);
   const [createApiKeyOnboarding, setCreateApiKeyOnboarding] = useState(false);
@@ -55,11 +56,8 @@ export default function DashboardPageV2() {
 
   function setupOnboardingState(lastUsageDate, sendingDomains, apiKeys) {
     setlastUsageDate(lastUsageDate);
-    setHasSetupDocumentationPanel(isAdminOrDev);
 
-    setAddSendingDomainOnboarding(
-      isAdminOrDev && sendingDomains.length === 0 && lastUsageDate === null,
-    );
+    setAddSendingDomainOnboarding(isAdminOrDev && sendingDomains.length === 0);
 
     const verifiedSendingDomains = sendingDomains
       .map(i => {
@@ -78,7 +76,7 @@ export default function DashboardPageV2() {
     }
 
     setCreateApiKeyOnboarding(
-      !addSendingDomainOnboarding && !verifySendingDomainOnboarding && lastUsageDate === null,
+      !addSendingDomainOnboarding && !verifySendingDomainOnboarding,
       apiKeys.length === 0,
     );
   }
@@ -117,7 +115,7 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {isAdminOrDev && canManageSendingDomains && (
+              {isAdminOrDev && canManageSendingDomains && lastUsageDate === null && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
