@@ -7,7 +7,7 @@
   margin-bottom: spacing('large');
 
   @media (min-width: breakpoint('large')) {
-    grid-template-columns: 1fr 1fr 1fr 1fr; // This ensuers that each Panel is full width on wider screens
+    grid-template-columns: 1fr 1fr 1fr 1fr; // This ensures that each Panel is full width on wider screens
   }
 }
 

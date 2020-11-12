@@ -1,5 +1,10 @@
 @import '~@sparkpost/design-tokens-hibana/tokens';
 
+.RecentIncidents {
+  grid-gap: spacing(400);
+  margin-bottom: 0;
+}
+
 .LastTriggeredCard {
   height: auto;
 

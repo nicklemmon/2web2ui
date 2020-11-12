@@ -1,13 +1,13 @@
 @import '~@sparkpost/matchbox/src/styles/config.scss';
 
-.LastTriggeredCard {
-  height: 8rem;
-  word-wrap: break-word;
-  overflow: hidden;
+.RecentIncidents {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: spacing();
+  margin-bottom: spacing('large');
 
-  > div {
-    display: flex;
-    flex-direction: column;
+  @media (min-width: breakpoint('large')) {
+    grid-template-columns: 1fr 1fr 1fr 1fr; // This ensures that each Panel is full width on wider screens
   }
 }
 
@@ -25,10 +25,4 @@
   padding: spacing(base);
   color: color(gray, 3);
   font-size: rem(14);
-}
-
-.Description {
-  position: relative;
-  top: -20px;
-  width: 75%;
 }

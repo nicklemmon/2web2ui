@@ -60,7 +60,7 @@ describe('The usage page', () => {
       cy.findByRole('heading', { name: 'Recipient Validation Usage' }).should('not.be.visible');
     });
 
-    it('renders an error when a request fails, allowing the user to retry', () => {
+    it('renders an error when a request fails, allowing the user to retry', { retries: 3 }, () => {
       cy.visit(PAGE_URL);
       cy.stubRequest({
         url: '/api/v1/usage',
