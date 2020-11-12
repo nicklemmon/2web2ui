@@ -25,7 +25,7 @@ const filtersInitialState = {
       isChecked: true,
     },
     {
-      label: 'Tracking Domain',
+      label: 'Verified',
       name: 'verified',
       isChecked: true,
     },

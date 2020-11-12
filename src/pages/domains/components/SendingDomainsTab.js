@@ -25,7 +25,7 @@ const filtersInitialState = {
       isChecked: true,
     },
     {
-      label: 'Sending Domain',
+      label: 'Verified',
       name: 'readyForSending',
       isChecked: true,
     },
@@ -279,6 +279,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
             <TableFilters.StatusPopover
               disabled={listPending}
               checkboxes={filtersState.checkboxes}
+              domainType={renderBounceOnly ? 'bounce' : 'sending'}
               onCheckboxChange={e => {
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
               }}
