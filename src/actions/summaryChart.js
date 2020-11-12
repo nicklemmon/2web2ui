@@ -179,7 +179,7 @@ export function _getTableDataReportBuilder({ params, metrics, groupBy, reportOpt
 
     // Gets filters and metrics for params
     if (!params && reportOptions) {
-      params = getQueryFromOptions({ ...reportOptions, metrics: activeMetrics });
+      params = getQueryFromOptionsV2({ ...reportOptions, metrics: activeMetrics });
     }
 
     const path = activeGroup === 'aggregate' ? 'deliverability' : `deliverability/${activeGroup}`;

@@ -51,8 +51,8 @@ const reducer = (state, action) => {
       }
 
       // If queryFilters, then was converted over from older filters.
-      if (payload.queryFilters) {
-        update.filters = hydrateFilters(payload.queryFilters, { subaccounts });
+      if (payload.filters) {
+        update.filters = hydrateFilters(payload.filters, { subaccounts });
       }
 
       if (!update.relativeRange) {

@@ -127,8 +127,7 @@ export function parseSearchNew(search) {
       return { value, type, id };
     });
 
-    ret.queryFilters = mapFiltersToComparators(filtersList);
-    ret.filters = filtersList;
+    ret.filters = mapFiltersToComparators(filtersList);
   }
 
   if (compare) {

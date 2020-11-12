@@ -55,9 +55,9 @@ export function ReportBuilder({
   getSubaccountsList,
   subaccountsReady,
 }) {
-  const [showTable, setShowTable] = useState(true);
-  const [selectedReport, setReport] = useState(null);
-  const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false);
+  const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
+  const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
+  const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false); // TODO: Incorporate in to the context reducer due to state interaction
 
   const { state: reportOptions, selectors, actions } = useReportBuilderContext();
   const { refreshReportOptions } = actions;
@@ -93,9 +93,12 @@ export function ReportBuilder({
 
   //Grabs report options from the URL query params (as well as report ID)
   useEffect(() => {
-    const { report: reportId, filters: urlFilters = [], ...urlOptions } = parseSearch(
-      location.search,
-    );
+    const {
+      report: reportId,
+      filters: urlFiltersV1 = [],
+      queryFilters: urlFiltersV2 = [],
+      ...urlOptions
+    } = parseSearch(location.search);
 
     //Looks for report with report ID
     const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
@@ -113,12 +116,19 @@ export function ReportBuilder({
 
     // If report is found from ID, consolidates reportOptions from URL and report
     if (report) {
-      const { filters: reportFilters = [], ...reportOptions } = parseSearch(report.query_string);
-      setReport(report);
-      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...urlFilters] });
+      const {
+        filters: reportFiltersV1 = [],
+        queryFilters: reportFiltersV2 = [],
+        ...reportOptions
+      } = parseSearch(report.query_string);
+      setReport(report); // TODO: This needs to be incorporated in to the reducer since this causes state interaction
+      refreshReportOptions({
+        ...reportOptions,
+        filters: [...reportFiltersV1, ...reportFiltersV2, ...urlFiltersV1, ...urlFiltersV2],
+      });
     } else {
       //Initializes w/ just URL options
-      refreshReportOptions({ ...urlOptions, filters: urlFilters });
+      refreshReportOptions({ ...urlOptions, filters: [...urlFiltersV1, ...urlFiltersV2] });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportsStatus, reports, subaccountsReady]);

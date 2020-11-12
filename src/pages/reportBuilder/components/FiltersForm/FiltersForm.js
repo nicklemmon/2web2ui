@@ -25,6 +25,7 @@ import {
 } from 'src/components/matchbox';
 import { Uppercase, Comparison } from 'src/components/text';
 import { getGroupingFields, getApiFormattedGroupings } from '../../helpers';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import Typeahead from '../Typeahead';
 import {
   TypeSelect,
@@ -37,7 +38,6 @@ import useFiltersForm from './useFiltersForm';
 
 function FiltersForm({
   handleSubmit,
-  reportOptions,
   fetchMetricsDomains,
   listSubaccounts,
   fetchMetricsCampaigns,
@@ -60,6 +60,7 @@ function FiltersForm({
     setFilters,
   } = actions;
   const groupings = getGroupingFields(state.groupings);
+  const { state: reportOptions } = useReportBuilderContext();
   const { filters } = reportOptions;
 
   function handleFormSubmit(e) {

@@ -397,7 +397,7 @@ if (IS_HIBANA_ENABLED) {
       cy.findByDataId('report-options').within(() => {
         cy.findByText('Filters').should('be.visible');
         cy.findByText('Template').should('be.visible');
-        cy.findByText('equals').should('be.visible');
+        cy.findByText('is equal to').should('be.visible');
         cy.findByText('my-template-1').should('be.visible');
       });
     });

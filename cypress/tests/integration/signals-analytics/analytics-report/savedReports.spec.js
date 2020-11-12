@@ -66,7 +66,7 @@ if (IS_HIBANA_ENABLED) {
           cy.findByLabelText('Precision').should('have.value', 'day');
           cy.findByText('Filters').should('be.visible');
           cy.findByText('Campaign').should('be.visible');
-          cy.findByText('equals').should('be.visible');
+          cy.findByText('is equal to').should('be.visible');
           cy.findByText('test-campaign').should('be.visible');
         });
         cy.url().should('include', 'range=7days');

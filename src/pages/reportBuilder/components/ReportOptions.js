@@ -169,7 +169,7 @@ export function ReportOptions(props) {
                 <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
               </Tabs.Item>
               <Tabs.Item>
-                <FiltersForm handleSubmit={handleSubmit} reportOptions={reportOptions} />
+                <FiltersForm handleSubmit={handleSubmit} />
               </Tabs.Item>
               {isCompareByEnabled && (
                 <Tabs.Item>
