@@ -273,6 +273,7 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               onChange={e => {
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
               }}
+              placeholder={domains.length > 0 ? `e.g. ${domains[0]?.domainName}` : ''}
             />
 
             <TableFilters.StatusPopover

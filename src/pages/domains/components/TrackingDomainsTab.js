@@ -204,6 +204,9 @@ export default function TrackingDomainsTab() {
               onChange={e => {
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
               }}
+              placeholder={
+                trackingDomains.length > 0 ? `e.g. ${trackingDomains[0]?.domainName}` : ''
+              }
             />
 
             <TableFilters.StatusPopover

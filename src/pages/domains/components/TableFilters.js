@@ -107,7 +107,7 @@ export function reducer(state, action) {
   }
 }
 
-function DomainField({ onChange, value, disabled }) {
+function DomainField({ onChange, value, disabled, placeholder = '' }) {
   const uniqueId = useUniqueId('domains-name-filter');
 
   return (
@@ -118,6 +118,7 @@ function DomainField({ onChange, value, disabled }) {
       onChange={onChange}
       value={value}
       disabled={disabled}
+      placeholder={placeholder}
     />
   );
 }
