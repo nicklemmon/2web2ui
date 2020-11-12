@@ -57,7 +57,8 @@ export default function DashboardPageV2() {
   function setupOnboardingState(lastUsageDate, sendingDomains, apiKeys) {
     setlastUsageDate(lastUsageDate);
 
-    setAddSendingDomainOnboarding(isAdminOrDev && sendingDomains.length === 0);
+    const addSendingDomainNeeded = isAdminOrDev && sendingDomains.length === 0;
+    setAddSendingDomainOnboarding(addSendingDomainNeeded);
 
     const verifiedSendingDomains = sendingDomains
       .map(i => {
@@ -65,9 +66,8 @@ export default function DashboardPageV2() {
       })
       .filter(Boolean);
 
-    setVerifySendingDomainOnboarding(
-      !addSendingDomainOnboarding && verifiedSendingDomains.length === 0,
-    );
+    const verifySendingNeeded = !addSendingDomainOnboarding && verifiedSendingDomains.length === 0;
+    setVerifySendingDomainOnboarding(verifySendingNeeded);
 
     if (sendingDomains.length === 1 && verifiedSendingDomains.length === 0) {
       setLinkForVerifySendingDomainButton(
@@ -75,10 +75,9 @@ export default function DashboardPageV2() {
       );
     }
 
-    setCreateApiKeyOnboarding(
-      !addSendingDomainOnboarding && !verifySendingDomainOnboarding,
-      apiKeys.length === 0,
-    );
+    const createApiKeyNeeded =
+      !addSendingDomainOnboarding && !verifySendingDomainOnboarding && apiKeys.length === 0;
+    setCreateApiKeyOnboarding(createApiKeyNeeded);
   }
 
   useEffect(() => {
@@ -115,7 +114,7 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {isAdminOrDev && canManageSendingDomains && lastUsageDate === null && (
+              {isAdminOrDev && canManageSendingDomains && !lastUsageDate && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
