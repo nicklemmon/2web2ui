@@ -20,11 +20,13 @@ import DashboardPageV2 from './DashboardPageV2';
 
 function mapStateToProps(state) {
   const isPending = state.account.loading || state.account.usageLoading || state.alerts.listPending;
-  const isAdminOrDev = isAdmin(state) || hasRole(ROLES.DEVELOPER)(state);
+  const isAnAdmin = isAdmin(state);
+  const isDev = hasRole(ROLES.DEVELOPER)(state);
 
   return {
     canManageSendingDomains: hasGrants('sending_domains/manage')(state),
-    isAdminOrDev,
+    isAnAdmin,
+    isDev,
     currentUser: state.currentUser,
     currentPlanName: currentPlanNameSelector(state),
     recentAlerts: selectRecentlyTriggeredAlerts(state),

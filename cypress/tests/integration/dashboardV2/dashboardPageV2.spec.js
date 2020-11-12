@@ -10,6 +10,97 @@ describe('Version 2 of the dashboard page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
+    it('Helpful Shortcuts - Admin', () => {
+      stubGrantsRequest({ role: 'admin' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq', '@apiKeysReq']);
+
+      cy.title().should('include', 'Dashboard');
+
+      cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
+
+      cy.findByDataId('dashboard-helpful-shortcuts').within(() => {
+        cy.findByText('Invite a Team Member')
+          .closest('a')
+          .should('have.attr', 'href', '/account/users/create');
+        cy.findByText(
+          'Need help integrating? Want to share Analytics Report? Invite your team!',
+        ).should('be.visible');
+
+        cy.findByText('Events')
+          .closest('a')
+          .should('have.attr', 'href', '/reports/message-events');
+        cy.findByText(
+          'Robust searching capabilities with ready access to the raw event data from your emails.',
+        ).should('be.visible');
+
+        cy.findByText('Inbox Tracker')
+          .closest('a')
+          .should('have.attr', 'href', 'https://www.sparkpost.com/inbox-tracker/');
+        cy.findByText(
+          'Examine every element of deliverability with precision using Inbox Tracker.',
+        ).should('be.visible');
+      });
+    });
+
+    it('Helpful Shortcuts - Not Admin', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
+      cy.stubRequest({
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.reporting.json',
+        requestAlias: 'userReq',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait([
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+        '@userReq',
+      ]);
+
+      cy.title().should('include', 'Dashboard');
+
+      cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
+
+      cy.findByDataId('dashboard-helpful-shortcuts').within(() => {
+        cy.findByText('Templates')
+          .closest('a')
+          .should('have.attr', 'href', '/templates');
+        cy.findByText(
+          'Programmatically tailor each message with SparkPost’s flexible templates.',
+        ).should('be.visible');
+
+        cy.findByText('Events')
+          .closest('a')
+          .should('have.attr', 'href', '/reports/message-events');
+        cy.findByText(
+          'Robust searching capabilities with ready access to the raw event data from your emails.',
+        ).should('be.visible');
+
+        cy.findByText('Inbox Tracker')
+          .closest('a')
+          .should('have.attr', 'href', 'https://www.sparkpost.com/inbox-tracker/');
+
+        cy.findByText(
+          'Examine every element of deliverability with precision using Inbox Tracker.',
+        ).should('be.visible');
+      });
+    });
+
     it('users that are not an admin or developer will not see onboarding', () => {
       stubGrantsRequest({ role: 'templates' });
       stubAlertsReq();
