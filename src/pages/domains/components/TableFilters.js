@@ -76,6 +76,13 @@ export function reducer(state, action) {
               isChecked: !isChecked,
             };
           }
+          //if any checkbox is unchecked make sure selectAll is unchecked too
+          if (action.name !== 'selectAll' && isChecked && filter.name === 'selectAll') {
+            return {
+              ...filter,
+              isChecked: false,
+            };
+          }
 
           return filter;
         }),
@@ -139,7 +146,7 @@ function SortSelect({ options, onChange, disabled }) {
   );
 }
 
-function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
+function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
   const uniqueId = useUniqueId('domains-status-filter');
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
@@ -195,6 +202,10 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
           <Checkbox.Group label="Status Filters" labelHidden>
             {checkboxes
               .filter(filter => filter.name !== 'selectAll')
+              .filter(checkbox => {
+                if (domainType === 'bounce') return checkbox.name !== 'readyForBounce';
+                return true;
+              })
               .map((filter, index) => (
                 <Checkbox
                   key={`${filter.name}-${index}`}
