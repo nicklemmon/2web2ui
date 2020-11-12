@@ -34,7 +34,8 @@ export default function DashboardPageV2() {
   const {
     getAccount,
     listAlerts,
-    isAdminOrDev,
+    isAnAdmin,
+    isDev,
     canManageSendingDomains,
     getUsage,
     currentUser,
@@ -43,7 +44,7 @@ export default function DashboardPageV2() {
     listApiKeys,
   } = useDashboardContext();
 
-  const hasSetupDocumentationPanel = isAdminOrDev;
+  const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
   // TODO: useReducer instead
   const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState(false);
@@ -57,7 +58,7 @@ export default function DashboardPageV2() {
   function setupOnboardingState(lastUsageDate, sendingDomains, apiKeys) {
     setlastUsageDate(lastUsageDate);
 
-    const addSendingDomainNeeded = isAdminOrDev && sendingDomains.length === 0;
+    const addSendingDomainNeeded = (isAnAdmin || isDev) && sendingDomains.length === 0;
     setAddSendingDomainOnboarding(addSendingDomainNeeded);
 
     const verifiedSendingDomains = sendingDomains
@@ -114,7 +115,7 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {isAdminOrDev && canManageSendingDomains && !lastUsageDate && (
+              {(isAnAdmin || isDev) && canManageSendingDomains && !lastUsageDate && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
@@ -271,46 +272,52 @@ export default function DashboardPageV2() {
                 </Dashboard.Panel>
               )}
 
-              <Dashboard.Panel>
-                <Panel.Section>
-                  <Panel.Headline>
-                    <Panel.HeadlineIcon as={LightbulbOutline} />
-                    <TranslatableText>Helpful Shortcuts</TranslatableText>
-                  </Panel.Headline>
+              <div data-id="dashboard-helpful-shortcuts">
+                <Dashboard.Panel>
+                  <Panel.Section>
+                    <Panel.Headline>
+                      <Panel.HeadlineIcon as={LightbulbOutline} />
+                      <TranslatableText>Helpful Shortcuts</TranslatableText>
+                    </Panel.Headline>
 
-                  <Columns collapseBelow="md">
-                    <Dashboard.Tip>
-                      <PageLink to="/templates">Templates</PageLink>
-
-                      {/* TODO: Replace placeholder content */}
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      {/* TODO: Where does this go? */}
-                      <PageLink to="/">DKIM Authentication</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      {/* TODO: Where does this go? */}
-                      <PageLink to="/">SMTP Set-up</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-                  </Columns>
-                </Panel.Section>
-              </Dashboard.Panel>
+                    <Columns collapseBelow="md">
+                      {isAnAdmin && (
+                        <Dashboard.Tip>
+                          <PageLink to="/account/users/create">Invite a Team Member</PageLink>
+                          <Text>
+                            Need help integrating? Want to share Analytics Report? Invite your team!
+                          </Text>
+                        </Dashboard.Tip>
+                      )}
+                      {!isAnAdmin && (
+                        <Dashboard.Tip>
+                          <PageLink to="/templates">Templates</PageLink>
+                          <Text>
+                            Programmatically tailor each message with SparkPost’s flexible
+                            templates.
+                          </Text>
+                        </Dashboard.Tip>
+                      )}
+                      <Dashboard.Tip>
+                        <PageLink to="/reports/message-events">Events</PageLink>
+                        <Text>
+                          Robust searching capabilities with ready access to the raw event data from
+                          your emails.
+                        </Text>
+                      </Dashboard.Tip>
+                      <Dashboard.Tip>
+                        <ExternalLink to="https://www.sparkpost.com/inbox-tracker/">
+                          Inbox Tracker
+                        </ExternalLink>
+                        <Text>
+                          Examine every element of deliverability with precision using Inbox
+                          Tracker.
+                        </Text>
+                      </Dashboard.Tip>
+                    </Columns>
+                  </Panel.Section>
+                </Dashboard.Panel>
+              </div>
 
               <Columns collapseBelow="md" space="500">
                 {hasSetupDocumentationPanel && (
