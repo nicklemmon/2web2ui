@@ -165,9 +165,11 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
               {hasCheckedCheckboxes ? (
-                checkedCheckboxes.map((checkbox, index) => (
-                  <span key={`${checkbox.name}-${index}`}>{checkbox.label}&nbsp;</span>
-                ))
+                checkedCheckboxes
+                  .filter(checkbox => checkbox.name !== 'selectAll')
+                  .map((checkbox, index) => (
+                    <span key={`${checkbox.name}-${index}`}>{checkbox.label}&nbsp;</span>
+                  ))
               ) : (
                 <span>Domain Status</span>
               )}
