@@ -372,7 +372,7 @@ describe('Version 2 of the dashboard page', () => {
         .should('be.visible')
         .should('not.be.disabled')
         .should('have.attr', 'href')
-        .and('include', '/account/api-keys/create');
+        .and('include', '/signals/analytics');
       cy.findByDataId('onboarding-go-to-analytics-button').contains('Go To Analytics Report');
     });
 
