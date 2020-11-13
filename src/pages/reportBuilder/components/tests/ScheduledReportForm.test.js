@@ -56,11 +56,13 @@ describe('ScheduledReportForm', () => {
       name: 'test',
       recipients: [{ username: 'bob', email: 'bob@ross.com', extra: true }],
       subject: 'meh',
+      timezone: 'America/New_York',
     };
     const formattedValuesBase = {
       name: 'test',
       recipients: ['bob'],
       subject: 'meh',
+      timezone: 'America/New_York',
     };
 
     it('formats form values for daily schedule correctly', () => {
@@ -73,15 +75,15 @@ describe('ScheduledReportForm', () => {
       };
       const expected = {
         ...formattedValuesBase,
-        description: 'NA',
         schedule: {
-          day_of_month: '*',
+          day_of_month: '?',
           day_of_week: '*',
           hour: 0,
           minute: 0,
           month: '*',
           second: 0,
         },
+        schedule_type: 'daily',
       };
       expect(formatFormValues(rawFormValues)).toEqual(expected);
     });
@@ -96,15 +98,15 @@ describe('ScheduledReportForm', () => {
       };
       const expected = {
         ...formattedValuesBase,
-        description: 'NA',
         schedule: {
-          day_of_month: '*',
+          day_of_month: '?',
           day_of_week: '*',
           hour: 13,
           minute: 30,
           month: '*',
           second: 0,
         },
+        schedule_type: 'daily',
       };
       expect(formatFormValues(rawFormValues)).toEqual(expected);
     });
@@ -112,22 +114,47 @@ describe('ScheduledReportForm', () => {
     it('formats form values for weekly schedule correctly', () => {
       const rawFormValues = {
         ...formValuesBase,
-        day: '1',
+        week: '#2',
+        day: 'mon',
         period: 'PM',
         time: '1:30',
         timing: 'weekly',
       };
       const expected = {
         ...formattedValuesBase,
-        description: 'NA',
         schedule: {
-          day_of_month: '*',
-          day_of_week: '1',
+          day_of_month: '?',
+          day_of_week: 'mon',
           hour: 13,
           minute: 30,
           month: '*',
           second: 0,
         },
+        schedule_type: 'weekly',
+      };
+      expect(formatFormValues(rawFormValues)).toEqual(expected);
+    });
+
+    it('formats form values for monthly schedule correctly', () => {
+      const rawFormValues = {
+        ...formValuesBase,
+        week: 'l',
+        day: 'fri',
+        period: 'PM',
+        time: '1:30',
+        timing: 'monthly',
+      };
+      const expected = {
+        ...formattedValuesBase,
+        schedule: {
+          day_of_month: '?',
+          day_of_week: 'fril',
+          hour: 13,
+          minute: 30,
+          month: '*',
+          second: 0,
+        },
+        schedule_type: 'monthly',
       };
       expect(formatFormValues(rawFormValues)).toEqual(expected);
     });

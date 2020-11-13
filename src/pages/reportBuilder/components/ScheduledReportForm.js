@@ -21,36 +21,54 @@ import { listUsers } from 'src/actions/users';
 import { selectUsers } from 'src/selectors/users';
 
 const DAY_OF_WEEK_OPTIONS = [
-  { label: `Sunday`, value: 0 },
-  { label: 'Monday', value: 1 },
-  { label: 'Tuesday', value: 2 },
-  { label: 'Wednesday', value: 3 },
-  { label: 'Thursday', value: 4 },
-  { label: 'Friday', value: 5 },
-  { label: 'Saturday', value: 6 },
+  { label: 'Sunday', value: 'sun' },
+  { label: 'Monday', value: 'mon' },
+  { label: 'Tuesday', value: 'tue' },
+  { label: 'Wednesday', value: 'wed' },
+  { label: 'Thursday', value: 'thu' },
+  { label: 'Friday', value: 'fri' },
+  { label: 'Saturday', value: 'sun' },
+];
+
+const WEEK_OPTIONS = [
+  { label: 'First', value: '#1' },
+  { label: 'Second', value: '#2' },
+  { label: 'Third', value: '#3' },
+  { label: 'Fourth', value: '#4' },
+  { label: 'Fifth', value: '#5' },
+  { label: 'Last', value: 'l' },
 ];
 
 const hasAtLeastOneRecipient = recipientList => recipientList.length > 0;
 
 export const formatFormValues = formValues => {
-  const { name, description = 'NA', subject, period, ...rest } = formValues;
+  const { name, subject, period, timing, timezone, ...rest } = formValues;
   const recipients = rest.recipients.map(({ username }) => username);
   const [hour, minute] = rest.time.split(':');
-  const day_of_week = rest.day || '*';
+
+  /*
+  Monthly timing will be formatted like fri#2 for second friday of the month. Or monl for the last monday of the month.
+  For weekly timing, use the given day, EX: 'fri'
+  For daily reports, the day selector field is disabled meaning resulting in day = undefined. So in this case, we set it to '*'
+  */
+  const day_of_week = timing === 'monthly' ? `${rest.day}${rest.week}` : rest.day || '*';
+
   const schedule = {
     day_of_week,
     month: '*',
-    day_of_month: '*',
+    day_of_month: '?',
     hour: period === 'AM' ? parseInt(hour) % 12 : (parseInt(hour) % 12) + 12,
     minute: parseInt(minute),
     second: 0,
   };
+
   return {
     name,
-    description,
     subject,
     recipients,
     schedule,
+    schedule_type: timing,
+    timezone,
   };
 };
 
@@ -192,7 +210,7 @@ export const ScheduledReportForm = ({ report, handleSubmit: parentHandleSubmit }
                   ref={register}
                   label="Week"
                   name="week"
-                  options={[`First`, 'Second', 'Third', 'Fourth']}
+                  options={WEEK_OPTIONS}
                   disabled={timingFormValue === 'weekly' || timingFormValue === 'daily' || loading}
                 />
                 <Select

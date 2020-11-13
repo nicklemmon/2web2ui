@@ -2,7 +2,7 @@ import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import { commonBeforeSteps } from './helpers';
 
 if (IS_HIBANA_ENABLED) {
-  describe('Analytics Report Saved Reports', () => {
+  describe('Analytics Report Scheduled Reports', () => {
     beforeEach(() => {
       commonBeforeSteps();
       cy.stubRequest({
@@ -80,6 +80,11 @@ if (IS_HIBANA_ENABLED) {
         .focus()
         .clear()
         .type('12:00');
+      cy.findByLabelText('Time Zone')
+        .focus()
+        .clear()
+        .type('America/New');
+      cy.findByRole('option', { name: /\(UTC-0[45]:00\) America\/New York/ }).click(); ///Use regex for DST
       cy.findByRole('button', { name: 'Schedule Report' }).click();
       cy.findByRole('button', { name: 'Schedule Report' }).should('be.disabled');
       cy.findByRole('button', { name: 'Cancel' }).should('be.disabled');
@@ -87,18 +92,19 @@ if (IS_HIBANA_ENABLED) {
       cy.get('@createNewScheduledReport')
         .its('requestBody')
         .should('deep.equal', {
-          description: 'NA',
           name: 'My First Report',
           recipients: ['mockuser'],
           schedule: {
-            day_of_month: '*',
+            day_of_month: '?',
             day_of_week: '*',
             hour: 0,
             minute: 0,
             month: '*',
             second: 0,
           },
+          schedule_type: 'daily',
           subject: 'Free Macbook',
+          timezone: 'America/New_York',
         });
       cy.url().should('include', '/signals/analytics');
       cy.findByText('Successfully scheduled My First Report for report: My Bounce Report').should(
