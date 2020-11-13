@@ -105,9 +105,9 @@ export function parseSearchNew(search) {
 
   if (query_filters) {
     try {
-      ret.queryFilters = JSON.parse(decodeURI(query_filters));
+      ret.filters = JSON.parse(decodeURI(query_filters));
     } catch {
-      ret.queryFilters = [];
+      ret.filters = [];
     }
   } else {
     const filtersList = (typeof filters === 'string' ? [filters] : filters).map(filter => {

@@ -50,7 +50,6 @@ const reducer = (state, action) => {
         update.metrics = config.reportBuilder.defaultMetrics;
       }
 
-      // If queryFilters, then was converted over from older filters.
       if (payload.filters) {
         update.filters = hydrateFilters(payload.filters, { subaccounts });
       }
