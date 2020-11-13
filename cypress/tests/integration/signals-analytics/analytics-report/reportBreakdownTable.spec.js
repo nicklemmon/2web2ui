@@ -432,13 +432,12 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('selecting on a group by properly attaches filters (with new comparators)', () => {
+    it('filters with new comparators when selecting on a group by option', () => {
       cy.stubRequest({
         url: '/api/v1/metrics/deliverability/template**/*',
         fixture: 'metrics/deliverability/template/200.get.json',
         requestAlias: 'getTemplate',
       });
-
       cy.visit(
         '/signals/analytics?query_filters=%255B%257B%2522AND%2522%3A%257B%2522subaccounts%2522%3A%257B%2522eq%2522%3A%255B101%2C102%255D%257D%257D%257D%2C%257B%2522AND%2522%3A%257B%2522domains%2522%3A%257B%2522like%2522%3A%255B%2522hello%2522%2C%2522there%2522%2C%2522friend%2522%2C%2522these%2522%2C%2522are%2522%2C%2522some%2522%2C%2522tags%2522%255D%257D%257D%257D%255D',
       );

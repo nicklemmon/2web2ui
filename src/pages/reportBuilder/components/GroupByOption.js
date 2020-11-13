@@ -4,7 +4,6 @@ import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
-import { dehydrateFilters } from '../helpers';
 
 export default function GroupByOption(props) {
   const { groupBy, hasSubaccounts, tableLoading, _getTableData } = props;
@@ -14,11 +13,9 @@ export default function GroupByOption(props) {
 
   const handleGroupChange = e => {
     if (e.target.value !== 'placeholder') {
-      const { filters, ...options } = reportOptions;
-
       _getTableData({
         groupBy: e.target.value,
-        reportOptions: { ...options, filters: dehydrateFilters(filters) },
+        reportOptions,
       });
     }
   };
@@ -27,11 +24,10 @@ export default function GroupByOption(props) {
     const newTopDomainsOnly = !topDomainsOnly;
     setTopDomainsOnly(newTopDomainsOnly);
     const groupBy = newTopDomainsOnly ? 'watched-domain' : 'domain';
-    const { filters, ...options } = reportOptions;
 
     _getTableData({
       groupBy,
-      reportOptions: { ...options, filters: dehydrateFilters(filters) },
+      reportOptions,
     });
   };
 
@@ -85,6 +81,7 @@ export default function GroupByOption(props) {
           placeholderValue="placeholder"
         />
       </Grid.Column>
+
       <Grid.Column xs={12} md={4} mdOffset={3} lg={3} lgOffset={5}>
         {renderDomainsCheckbox()}
       </Grid.Column>

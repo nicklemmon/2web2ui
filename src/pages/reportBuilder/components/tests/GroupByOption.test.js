@@ -1,14 +1,9 @@
 import React from 'react';
 import GroupByOption from '../GroupByOption';
 import { shallow } from 'enzyme';
-import { dehydrateFilters } from '../../helpers';
 
 jest.mock('../../context/ReportBuilderContext', () => ({
   useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar', filters: [] } })),
-}));
-
-jest.mock('../../helpers', () => ({
-  dehydrateFilters: jest.fn(),
 }));
 
 describe('Group By Option', () => {
@@ -98,6 +93,5 @@ describe('Group By Option', () => {
     expect(wrapper.find('Checkbox')).not.toBeChecked();
     wrapper.find('Checkbox').simulate('change');
     expect(props._getTableData).toHaveBeenCalledTimes(2);
-    expect(dehydrateFilters).toHaveBeenCalled();
   });
 });
