@@ -402,7 +402,7 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('clicking on a resource adds it as a filter (with new comparators)', () => {
+    it('filters with new comparators when clicking on a resource', () => {
       cy.stubRequest({
         url: '/api/v1/metrics/deliverability/template**/*',
         fixture: 'metrics/deliverability/template/200.get.json',

@@ -88,16 +88,21 @@ export function ReportBuilder({
     getReports();
   }, [getReports]);
 
-  //Grabs report options from the URL query params (as well as report ID)
+  // Grabs report options from the URL query params (as well as report ID)
   useEffect(() => {
-    const { report: reportId, filters: urlFilters, ...urlOptions } = parseSearch(location.search);
+    const {
+      report: reportId,
+      filters: urlFilters = [],
+      queryFilters: urlQueryFilters = [],
+      ...urlOptions
+    } = parseSearch(location.search);
 
-    //Looks for report with report ID
+    // Looks for report with report ID
     const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
     const report = allReports.find(({ id }) => id === reportId);
 
-    //Waiting on reports to load (if enabled) to finish initializing
-    //Waiting on subaccounts (if using comparators) to finish initializing
+    // Waiting on reports to load (if enabled) to finish initializing
+    // Waiting on subaccounts (if using comparators) to finish initializing
     if (
       (reportId && reportsStatus !== 'success') ||
       !subaccountsReady ||
@@ -112,11 +117,11 @@ export function ReportBuilder({
       setReport(report); // TODO: This needs to be incorporated in to the reducer since this causes state interaction
       refreshReportOptions({
         ...reportOptions,
-        filters: [...reportFilters, ...urlFilters],
+        filters: [...reportFilters, ...urlFilters, ...urlQueryFilters],
       });
     } else {
-      //Initializes w/ just URL options
-      refreshReportOptions({ ...urlOptions, filters: urlFilters });
+      // Initializes w/ just URL options
+      refreshReportOptions({ ...urlOptions, filters: [...urlFilters, ...urlQueryFilters] });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportsStatus, reports, subaccountsReady]);

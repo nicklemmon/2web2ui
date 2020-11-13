@@ -27,9 +27,9 @@ const initFilters = {
   compare: {},
   report: {},
 };
+
 export function ReportOptions(props) {
   const { reportLoading, isCompareByEnabled, selectedReport, setReport } = props;
-
   const drawerTabsFeatureFlag = useMemo(() => {
     return isCompareByEnabled ? [...drawerTabs, { content: 'Compare' }] : drawerTabs;
   }, [isCompareByEnabled]);
@@ -39,15 +39,12 @@ export function ReportOptions(props) {
     selectSummaryMetricsProcessed: processedMetrics,
     selectSummaryChartSearchOptions,
   } = selectors;
-
   const { updateFilters } = usePageFilters(initFilters);
-
   const isEmpty = useMemo(() => {
     return !Boolean(processedMetrics.length);
   }, [processedMetrics]);
-
   // Render filters when metrics are not empty and when the filters array is not empty
-  const hasFilters = !isEmpty && Boolean(reportOptions.filters.length);
+  const hasFilters = !isEmpty && Boolean(reportOptions?.filters?.length);
 
   // Updates the query params with incoming search option changes
   useEffect(() => {

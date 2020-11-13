@@ -73,8 +73,8 @@ export function SaveReportModal(props) {
     },
   });
   const { search = '' } = useLocation();
-
   const { state: reportOptions } = useReportBuilderContext();
+  const hasFilters = Boolean(reportOptions.filters.length);
 
   React.useEffect(() => {
     if (!report) return;
@@ -124,13 +124,13 @@ export function SaveReportModal(props) {
                 <ActiveMetrics metrics={reportOptions.metrics} />
               </Box>
 
-              {Boolean(reportOptions.filters.length) && (
+              {hasFilters ? (
                 <Box>
                   <Heading as="h6">Filters</Heading>
 
                   <ActiveFilters filters={reportOptions.filters} />
                 </Box>
-              )}
+              ) : null}
 
               <Box>
                 <Heading as="h6">Date Range</Heading>
