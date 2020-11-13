@@ -91,6 +91,7 @@ export default function DashboardPageV2() {
     ]).then(responseArr => {
       // eslint-disable-next-line no-unused-vars
       const [account, alerts, usage, sendingDomains, apiKeys] = responseArr;
+      // TODO: Switch to a reducer and dispatch to it - to set state, then use a different useEffect block to listen for the state change and then call setupOnbaordingState?
       setupOnboardingState(usage?.messaging?.last_usage_date, sendingDomains, apiKeys);
     });
     // eslint-disable-next-line
