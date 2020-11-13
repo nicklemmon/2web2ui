@@ -7,8 +7,8 @@ import {
   Popover,
   TextField,
   ScreenReaderOnly,
-  Select,
   Label,
+  ListBox,
 } from 'src/components/matchbox';
 import { useUniqueId } from 'src/hooks';
 import Divider from 'src/components/divider';
@@ -104,7 +104,7 @@ function DomainField({ onChange, value, disabled, placeholder = '' }) {
       label="Filter Domains"
       prefix={<Search />}
       onChange={onChange}
-      value={value}
+      value={value || ''}
       disabled={disabled}
       placeholder={placeholder}
     />
@@ -116,13 +116,21 @@ function SortSelect({ options, onChange, disabled }) {
 
   return (
     <StyledGridCell>
-      <Select
+      <ListBox
         id={uniqueId}
         label="Sort By"
-        options={options}
         onChange={onChange}
         disabled={disabled}
-      />
+        defaultValue={options[0].value}
+      >
+        {options.map((option, i) => {
+          return (
+            <ListBox.Option key={i} value={option.value}>
+              {option.label}
+            </ListBox.Option>
+          );
+        })}
+      </ListBox>
     </StyledGridCell>
   );
 }
@@ -139,11 +147,13 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
       <Popover
         left
         id={uniqueId}
+        as="div"
         open={isPopoverOpen}
         onClose={() => setIsPopoverOpen(false)}
         trigger={
           <Button
             outline
+            fullWidth
             variant="monochrome"
             aria-expanded={isPopoverOpen}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}

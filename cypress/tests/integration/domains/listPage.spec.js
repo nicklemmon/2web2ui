@@ -9,13 +9,13 @@ describe('The domains list page', () => {
 
     cy.stubRequest({
       url: '/api/v1/account',
-      fixture: 'account/200.get.has-domains-v2.json',
+      fixture: 'account/200.get.json',
       requestAlias: 'accountDomainsReq',
     });
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled and redirects to the sending domain view', () => {
+    it('renders with a relevant page title and redirects to the sending domain view', () => {
       cy.visit(PAGE_URL);
 
       cy.wait('@accountDomainsReq');
@@ -288,7 +288,10 @@ describe('The domains list page', () => {
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
-        cy.findByLabelText('Sort By').select('Domain Name (A - Z)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Domain Name (A - Z)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -334,7 +337,8 @@ describe('The domains list page', () => {
           statusTags: ['Unverified'],
         });
 
-        cy.findByLabelText('Sort By').select('Domain Name (Z - A)');
+        cy.findByLabelText('Sort By').click();
+        cy.findByRole('option', { name: 'Domain Name (Z - A)' }).click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -387,7 +391,10 @@ describe('The domains list page', () => {
         cy.visit(PAGE_URL);
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
-        cy.findByLabelText('Sort By').select('Date Added (Newest - Oldest)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Date Added (Newest - Oldest)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -433,7 +440,8 @@ describe('The domains list page', () => {
           statusTags: ['Sending', 'Bounce'],
         });
 
-        cy.findByLabelText('Sort By').select('Date Added (Oldest - Newest)');
+        cy.findByLabelText('Sort By').click();
+        cy.findByRole('option', { name: 'Date Added (Oldest - Newest)' }).click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -884,7 +892,10 @@ describe('The domains list page', () => {
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
-        cy.findByLabelText('Sort By').select('Domain Name (Z - A)');
+        cy.findByLabelText('Sort By').click();
+        cy.findAllByText('Domain Name (Z - A)')
+          .last()
+          .click();
 
         verifyTableRow({
           rowIndex: 0,
@@ -912,8 +923,8 @@ describe('The domains list page', () => {
           domainName: 'blocked.com',
           status: 'Blocked',
         });
-
-        cy.findByLabelText('Sort By').select('Domain Name (A - Z)');
+        cy.findByLabelText('Sort By').click();
+        cy.findByRole('option', { name: 'Domain Name (A - Z)' }).click();
 
         verifyTableRow({
           rowIndex: 0,

@@ -15,6 +15,7 @@ import {
   getActiveStatusFilters,
   filterStateToParams,
 } from '../helpers';
+import _ from 'lodash';
 
 const filtersInitialState = {
   domainName: '',
@@ -102,6 +103,33 @@ const initFiltersForSending = {
     },
   },
 };
+
+const options = [
+  {
+    label: 'Date Added (Newest - Oldest)',
+    value: 'creationTimeDesc',
+    'data-sort-by': 'creationTime',
+    'data-sort-direction': 'desc',
+  },
+  {
+    label: 'Date Added (Oldest - Newest)',
+    value: 'creationTimeAsc',
+    'data-sort-by': 'creationTime',
+    'data-sort-direction': 'asc',
+  },
+  {
+    label: 'Domain Name (A - Z)',
+    value: 'domainNameAsc',
+    'data-sort-by': 'domainName',
+    'data-sort-direction': 'asc',
+  },
+  {
+    label: 'Domain Name (Z - A)',
+    value: 'domainNameDesc',
+    'data-sort-by': 'domainName',
+    'data-sort-direction': 'desc',
+  },
+];
 
 export default function SendingDomainsTab({ renderBounceOnly = false }) {
   const {
@@ -288,38 +316,12 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
             <TableFilters.SortSelect
               disabled={listPending}
               defaultValue="creationTime"
-              value=""
-              options={[
-                {
-                  label: 'Date Added (Newest - Oldest)',
-                  value: 'creationTimeDesc',
-                  'data-sort-by': 'creationTime',
-                  'data-sort-direction': 'desc',
-                },
-                {
-                  label: 'Date Added (Oldest - Newest)',
-                  value: 'creationTimeAsc',
-                  'data-sort-by': 'creationTime',
-                  'data-sort-direction': 'asc',
-                },
-                {
-                  label: 'Domain Name (A - Z)',
-                  value: 'domainNameAsc',
-                  'data-sort-by': 'domainName',
-                  'data-sort-direction': 'asc',
-                },
-                {
-                  label: 'Domain Name (Z - A)',
-                  value: 'domainNameDesc',
-                  'data-sort-by': 'domainName',
-                  'data-sort-direction': 'desc',
-                },
-              ]}
+              options={options}
               onChange={e => {
-                const { target } = e;
-                const selectedOption = target.options[target.selectedIndex];
-                const selectedAttribute = selectedOption.getAttribute('data-sort-by');
-                const selectedDirection = selectedOption.getAttribute('data-sort-direction');
+                const { currentTarget } = e;
+                const selectedOption = _.find(options, { value: currentTarget.value });
+                const selectedAttribute = selectedOption['data-sort-by'];
+                const selectedDirection = selectedOption['data-sort-direction'];
                 const desc = selectedDirection === 'desc' ? true : false;
                 toggleSortBy(selectedAttribute, desc);
               }}

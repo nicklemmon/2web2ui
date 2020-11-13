@@ -13,11 +13,11 @@ describe('The verify tracking domain page', () => {
       beforeEach(() => {
         cy.stubRequest({
           url: '/api/v1/account',
-          fixture: 'account/200.get.has-domains-v2.json',
+          fixture: 'account/200.get.json',
           requestAlias: 'accountDomainsReq',
         });
       });
-      it('renders with a relevant page title when the "allow_domains_v2" account UI flag is enabled', () => {
+      it('renders with a relevant page title', () => {
         let domainName = 'blah231231231.gmail.com';
         cy.stubRequest({
           url: '/api/v1/tracking-domains',

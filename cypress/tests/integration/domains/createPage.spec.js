@@ -10,7 +10,7 @@ describe('The domains create page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('renders with a relevant page title and content when the "allow_domains_v2" account UI flag is enabled', () => {
+    it('renders with a relevant page title and content', () => {
       commonBeforeSteps();
 
       cy.title().should('include', 'Add a Domain');
@@ -370,7 +370,7 @@ describe('The domains create page', () => {
 function commonBeforeSteps() {
   cy.stubRequest({
     url: '/api/v1/account',
-    fixture: 'account/200.get.has-domains-v2.json',
+    fixture: 'account/200.get.json',
     requestAlias: 'accountDomainsReq',
   });
   cy.visit(PAGE_URL);
