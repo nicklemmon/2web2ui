@@ -15,7 +15,10 @@ export default function GroupByOption(props) {
     if (e.target.value !== 'placeholder') {
       _getTableData({
         groupBy: e.target.value,
-        reportOptions,
+        reportOptions: {
+          ...reportOptions,
+          filters: Boolean(reportOptions.filters.length) ? reportOptions.filters : undefined,
+        },
       });
     }
   };
@@ -27,7 +30,10 @@ export default function GroupByOption(props) {
 
     _getTableData({
       groupBy,
-      reportOptions,
+      reportOptions: {
+        ...reportOptions,
+        filters: Boolean(reportOptions.filters.length) ? reportOptions.filters : undefined,
+      },
     });
   };
 
