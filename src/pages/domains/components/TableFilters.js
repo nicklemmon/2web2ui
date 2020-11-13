@@ -33,6 +33,19 @@ export function reducer(state, action) {
     case 'TOGGLE': {
       const isChecked = state.checkboxes.find(filter => filter.name === action.name).isChecked;
 
+      if (action.name === 'selectAll' && !isChecked) {
+        /* if Select All is Checked then all checkboxes should be checked */
+        return {
+          ...state,
+          checkboxes: state.checkboxes.map(filter => {
+            return {
+              ...filter,
+              isChecked: true,
+            };
+          }),
+        };
+      }
+
       return {
         ...state,
         // Return the relevant checked box and update its checked state,
@@ -42,6 +55,13 @@ export function reducer(state, action) {
             return {
               ...filter,
               isChecked: !isChecked,
+            };
+          }
+          //if any checkbox is unchecked make sure selectAll is unchecked too
+          if (action.name !== 'selectAll' && isChecked && filter.name === 'selectAll') {
+            return {
+              ...filter,
+              isChecked: false,
             };
           }
 
@@ -75,7 +95,7 @@ export function reducer(state, action) {
   }
 }
 
-function DomainField({ onChange, value, disabled }) {
+function DomainField({ onChange, value, disabled, placeholder = '' }) {
   const uniqueId = useUniqueId('domains-name-filter');
 
   return (
@@ -86,6 +106,7 @@ function DomainField({ onChange, value, disabled }) {
       onChange={onChange}
       value={value}
       disabled={disabled}
+      placeholder={placeholder}
     />
   );
 }
@@ -106,7 +127,7 @@ function SortSelect({ options, onChange, disabled }) {
   );
 }
 
-function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
+function StatusPopover({ checkboxes, onCheckboxChange, disabled, domainType }) {
   const uniqueId = useUniqueId('domains-status-filter');
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const checkedCheckboxes = checkboxes.filter(checkbox => checkbox.isChecked);
@@ -132,9 +153,11 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
             <StatusPopoverContent aria-hidden="true">
               {/* Render the checked filters that visually replace the button's content */}
               {hasCheckedCheckboxes ? (
-                checkedCheckboxes.map((checkbox, index) => (
-                  <span key={`${checkbox.name}-${index}`}>{checkbox.label}&nbsp;</span>
-                ))
+                checkedCheckboxes
+                  .filter(checkbox => checkbox.name !== 'selectAll')
+                  .map((checkbox, index) => (
+                    <span key={`${checkbox.name}-${index}`}>{checkbox.label}&nbsp;</span>
+                  ))
               ) : (
                 <span>Domain Status</span>
               )}
@@ -146,26 +169,38 @@ function StatusPopover({ checkboxes, onCheckboxChange, disabled }) {
         }
       >
         <Box padding="300">
-          <Checkbox.Group label="Status Filters" labelHidden>
-            {checkboxes.map((filter, index) => (
-              <Checkbox
-                key={`${filter.name}-${index}`}
-                label={filter.label}
-                id={filter.name}
-                name={filter.name}
-                onChange={onCheckboxChange}
-                checked={filter.isChecked}
-              />
-            ))}
-          </Checkbox.Group>
+          <ScreenReaderOnly as="p">
+            Checkboxes filter the table. When checked, table elements are visible, when unchecked
+            they are hidden from the table.
+          </ScreenReaderOnly>
+          <Checkbox
+            label="Select All"
+            id="select-all"
+            name="selectAll"
+            onChange={onCheckboxChange}
+            checked={checkboxes.find(filter => filter.name === 'selectAll').isChecked}
+          />
         </Box>
-
         <Divider />
-
-        <Box padding="300" display="flex" justifyContent="flex-end">
-          <Button variant="primary" size="small" onClick={() => setIsPopoverOpen(false)}>
-            Apply
-          </Button>
+        <Box padding="300">
+          <Checkbox.Group label="Status Filters" labelHidden>
+            {checkboxes
+              .filter(filter => filter.name !== 'selectAll')
+              .filter(checkbox => {
+                if (domainType === 'bounce') return checkbox.name !== 'readyForBounce';
+                return true;
+              })
+              .map((filter, index) => (
+                <Checkbox
+                  key={`${filter.name}-${index}`}
+                  label={filter.label}
+                  id={filter.name}
+                  name={filter.name}
+                  onChange={onCheckboxChange}
+                  checked={filter.isChecked}
+                />
+              ))}
+          </Checkbox.Group>
         </Box>
       </Popover>
     </Box>

@@ -20,7 +20,12 @@ const filtersInitialState = {
   domainName: '',
   checkboxes: [
     {
-      label: 'Sending Domain',
+      label: 'Select All',
+      name: 'selectAll',
+      isChecked: true,
+    },
+    {
+      label: 'Verified',
       name: 'readyForSending',
       isChecked: true,
     },
@@ -90,6 +95,12 @@ const initFiltersForSending = {
       return val === 'true' || val === 'false' || typeof val === 'boolean';
     },
   },
+  selectAll: {
+    defaultValue: undefined,
+    validate: val => {
+      return val === 'true' || val === 'false' || typeof val === 'boolean';
+    },
+  },
 };
 
 export default function SendingDomainsTab({ renderBounceOnly = false }) {
@@ -153,6 +164,10 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
         Header: 'ValidSPF',
         accessor: 'validSPF',
         filter,
+      },
+      {
+        Header: 'SelectAll',
+        accessor: 'selectAll',
       },
     ],
     [filter],
@@ -258,11 +273,13 @@ export default function SendingDomainsTab({ renderBounceOnly = false }) {
               onChange={e => {
                 filtersStateDispatch({ type: 'DOMAIN_FILTER_CHANGE', value: e.target.value });
               }}
+              placeholder={domains.length > 0 ? `e.g. ${domains[0]?.domainName}` : ''}
             />
 
             <TableFilters.StatusPopover
               disabled={listPending}
               checkboxes={filtersState.checkboxes}
+              domainType={renderBounceOnly ? 'bounce' : 'sending'}
               onCheckboxChange={e => {
                 filtersStateDispatch({ type: 'TOGGLE', name: e.target.name });
               }}

@@ -480,6 +480,32 @@ describe('The domains list page', () => {
         });
       });
 
+      it('all domain status are checked if select all is checked and select all is not checked if even one of checkbox is unchecked', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(PAGE_URL);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+
+        cy.findByLabelText('Verified').uncheck({ force: true });
+        cy.findByLabelText('Unverified').uncheck({ force: true });
+        cy.findByLabelText('Blocked').uncheck({ force: true });
+        cy.findByLabelText('SPF Valid').uncheck({ force: true });
+        cy.findByLabelText('Bounce').uncheck({ force: true });
+        cy.findByLabelText('DKIM Signing').uncheck({ force: true });
+        cy.findByLabelText('Select All').check({ force: true });
+        cy.findByLabelText('Verified').should('be.checked');
+        cy.findByLabelText('Unverified').should('be.checked');
+        cy.findByLabelText('Blocked').should('be.checked');
+        cy.findByLabelText('SPF Valid').should('be.checked');
+        cy.findByLabelText('Bounce').should('be.checked');
+        cy.findByLabelText('DKIM Signing').should('be.checked');
+
+        cy.findByLabelText('DKIM Signing').uncheck({ force: true });
+        cy.findByLabelText('Select All').should('not.be.checked');
+      });
+
       it('filters by domain status', () => {
         stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
         stubSubaccounts();
@@ -487,6 +513,13 @@ describe('The domains list page', () => {
         cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
+
+        cy.findByLabelText('Verified').should('be.visible');
+        cy.findByLabelText('Unverified').should('be.visible');
+        cy.findByLabelText('Blocked').should('be.visible');
+        cy.findByLabelText('SPF Valid').should('be.visible');
+        cy.findByLabelText('Bounce').should('be.visible');
+        cy.findByLabelText('DKIM Signing').should('be.visible');
 
         verifyTableRow({
           rowIndex: 1,
@@ -564,7 +597,7 @@ describe('The domains list page', () => {
           .eq(1)
           .should('not.exist');
 
-        cy.findByLabelText('Sending Domain').uncheck({ force: true });
+        cy.findByLabelText('Verified').uncheck({ force: true });
 
         cy.findByText('There is no data to display').should('be.visible');
       });
@@ -596,6 +629,21 @@ describe('The domains list page', () => {
                 cy.findByText('Bounce').should('be.visible');
               });
           });
+      });
+      it('renders correct status checkbox in domain status filter', () => {
+        stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-results.json' });
+        stubSubaccounts();
+        cy.visit(`${PAGE_URL}/list/bounce`);
+        cy.wait(['@sendingDomainsReq', '@subaccountsReq']);
+
+        cy.findByRole('button', { name: 'Domain Status' }).click();
+
+        cy.findByLabelText('Verified').should('be.visible');
+        cy.findByLabelText('Unverified').should('be.visible');
+        cy.findByLabelText('Blocked').should('be.visible');
+        cy.findByLabelText('SPF Valid').should('be.visible');
+        cy.findByLabelText('Bounce').should('not.be.visible');
+        cy.findByLabelText('DKIM Signing').should('be.visible');
       });
 
       it('renders an empty state when no results are returned', () => {
@@ -895,14 +943,18 @@ describe('The domains list page', () => {
         });
       });
 
-      it('filters by domain status', () => {
+      it('filters by domain status and renders correct status checkboxes', () => {
         stubTrackingDomains();
         stubSubaccounts();
         cy.visit(`${PAGE_URL}/list/tracking`);
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
-        cy.findByLabelText('Tracking Domain').uncheck({ force: true });
+
+        cy.findByLabelText('Verified').should('be.visible');
+        cy.findByLabelText('Unverified').should('be.visible');
+        cy.findByLabelText('Blocked').should('be.visible');
+        cy.findByLabelText('Verified').uncheck({ force: true });
         verifyTableRow({
           rowIndex: 0,
           domainName: 'blocked.com',
@@ -939,7 +991,7 @@ describe('The domains list page', () => {
         });
 
         cy.findByLabelText('Unverified').uncheck({ force: true });
-        cy.findByLabelText('Tracking Domain').check({ force: true });
+        cy.findByLabelText('Verified').check({ force: true });
 
         cy.location().should(loc => {
           expect(loc.search).to.eq('?verified=true');
@@ -958,7 +1010,7 @@ describe('The domains list page', () => {
         cy.wait(['@trackingDomainsReq', '@subaccountsReq']);
 
         cy.findByRole('button', { name: 'Domain Status' }).click();
-        cy.findByLabelText('Tracking Domain').should('be.checked');
+        cy.findByLabelText('Verified').should('be.checked');
       });
     });
   }
