@@ -4,6 +4,7 @@ import { list as METRICS_LIST } from 'src/config/metrics';
 import config from 'src/config';
 import { HIBANA_METRICS_COLORS } from 'src/constants/index';
 import { getRelativeDates } from 'src/helpers/date';
+import { dehydrateFilters } from 'src/pages/reportBuilder/helpers';
 import { safeDivide, safeRate } from './math';
 
 const {
@@ -82,14 +83,20 @@ export function getQueryFromOptionsV2({
     timezone,
     precision,
   };
-  options.query_filters = filters.length ? JSON.stringify({ groupings: filters }) : undefined;
+  const dehydratedFilters = dehydrateFilters(filters);
+
+  options.query_filters = filters.length
+    ? JSON.stringify({ groupings: dehydratedFilters })
+    : undefined;
 
   if (match.length > 0) {
     options.match = match;
   }
+
   if (limit) {
     options.limit = limit;
   }
+
   return options;
 }
 
