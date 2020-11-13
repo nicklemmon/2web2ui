@@ -131,7 +131,7 @@ export function ReportOptions(props) {
     <div data-id="report-options">
       <Panel.Section>
         <SavedReportsSection
-          selectedItem={selectedReport}
+          selectedReport={selectedReport}
           handleReportChange={handleReportChange}
         />
       </Panel.Section>

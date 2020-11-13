@@ -7,6 +7,7 @@ const initialState = {
   report: {},
   deletePending: false,
   getReportPending: false,
+  scheduledReports: [],
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -51,6 +52,13 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, saveScheduledReportStatus: 'success' };
     case 'CREATE_SCHEDULED_REPORT_FAIL':
       return { ...state, saveScheduledReportStatus: 'error' };
+
+    case 'GET_SCHEDULED_REPORTS_PENDING':
+      return { ...state, scheduledReports: [], getScheduledReportsStatus: 'loading' };
+    case 'GET_SCHEDULED_REPORTS_SUCCESS':
+      return { ...state, scheduledReports: payload, getScheduledReportsStatus: 'success' };
+    case 'GET_SCHEDULED_REPORTS_FAIL':
+      return { ...state, getScheduledReportsStatus: 'error' };
 
     default:
       return state;

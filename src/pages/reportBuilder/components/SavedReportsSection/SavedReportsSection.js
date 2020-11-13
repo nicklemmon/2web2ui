@@ -1,36 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { PRESET_REPORT_CONFIGS } from '../../constants/presetReport';
 import TypeSelect from 'src/components/typeahead/TypeSelect';
 import { Button, Column, Columns } from 'src/components/matchbox';
 import { Bold, TranslatableText } from 'src/components/text';
-import { Edit, FolderOpen, Save } from '@sparkpost/matchbox-icons';
+import { AccessTime, Edit, FolderOpen, Save } from '@sparkpost/matchbox-icons';
 import SaveReportModal from './SaveReportModal';
 import { deleteReport, getReports } from 'src/actions/reports';
+import useModal from 'src/hooks/useModal';
 import ReportsListModal from './ReportsListModal';
+import ScheduledReportsModal from './ScheduledReportsModal';
 import { DeleteModal } from 'src/components/modals';
 import { showAlert } from 'src/actions/globalAlert';
+import { selectCondition } from 'src/selectors/accessConditionState';
+import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 
-const SavedReportsSection = props => {
+export const SavedReportsSection = props => {
   /* eslint-disable no-unused-vars */
-  const [modalStatus, setModalStatus] = useState('');
-  const reports = props.reports.map(report => ({ ...report, key: report.id }));
-  const [focusedReport, setFocusedReport] = useState({});
+  const {
+    closeModal,
+    isModalOpen,
+    openModal,
+    meta: { type, focusedReport = {} } = {},
+  } = useModal();
 
+  const reports = props.reports.map(report => ({ ...report, key: report.id }));
   const { actions } = useReportBuilderContext();
   const { refreshReportOptions } = actions;
-
+  const { currentUser, handleReportChange, isScheduledReportsEnabled, selectedReport } = props;
   const onDelete = () => {
     const { deleteReport, getReports, showAlert } = props;
     deleteReport(focusedReport.id).then(() => {
-      setModalStatus('');
+      closeModal();
       showAlert({
         type: 'success',
         message: `You have successfully deleted ${focusedReport.name}`,
       });
       // Unsets the report if it's the report that's deleted.
-      if (focusedReport.id === props.selectedItem.id) {
+      if (focusedReport.id === selectedReport.id) {
         refreshReportOptions({
           metrics: undefined,
           filters: [],
@@ -38,111 +46,125 @@ const SavedReportsSection = props => {
           precision: undefined,
           timezone: undefined,
         });
-        props.handleReportChange(null);
+        handleReportChange(null);
       }
       getReports();
     });
   };
 
   const openDeleteModal = reportToDelete => {
-    setFocusedReport(reportToDelete);
-    setModalStatus('delete');
+    openModal({ type: 'delete', focusedReport: reportToDelete });
   };
 
   const openEditModal = reportToEdit => {
-    setFocusedReport(reportToEdit);
-    setModalStatus('edit');
+    openModal({ type: 'edit', focusedReport: reportToEdit });
   };
 
   return (
-    <Columns
-      alignY="bottom" // pull buttons to bottom when side by side
-      collapseBelow="md"
-    >
-      <Column>
-        <TypeSelect
-          disabled={props.status === 'loading'}
-          label="Report"
-          id="report-typeahead"
-          itemToString={report => (report ? report.name : '')} // return empty string when nothing is selected
-          onChange={props.handleReportChange}
-          placeholder="Select a Report"
-          renderItem={report => (
-            <TypeSelect.Item
-              label={report.name}
-              itemToString={item => item.key}
-              meta={report.creator || 'Default'}
-            />
+    <>
+      <Columns
+        alignY="bottom" // pull buttons to bottom when side by side
+        collapseBelow="md"
+      >
+        <Column>
+          <TypeSelect
+            disabled={props.status === 'loading'}
+            label="Report"
+            id="report-typeahead"
+            itemToString={report => (report ? report.name : '')} // return empty string when nothing is selected
+            onChange={handleReportChange}
+            placeholder="Select a Report"
+            renderItem={report => (
+              <TypeSelect.Item
+                label={report.name}
+                itemToString={item => item.key}
+                meta={report.creator || 'Default'}
+              />
+            )}
+            results={[
+              ...reports.filter(({ creator }) => creator === currentUser.username),
+              ...reports.filter(({ creator }) => creator !== currentUser.username),
+              ...PRESET_REPORT_CONFIGS,
+            ]}
+            selectedItem={selectedReport}
+          />
+        </Column>
+        <Column width="content">
+          <Button
+            data-id="edit-report-details-button"
+            variant="tertiary"
+            onClick={() => {
+              openModal({ type: 'edit', focusedReport: selectedReport });
+            }}
+            disabled={
+              !selectedReport ||
+              !selectedReport.current_user_can_edit ||
+              selectedReport.type === 'preset'
+            }
+          >
+            <TranslatableText>Edit Details</TranslatableText>
+            <Button.Icon as={Edit} ml="100" />
+          </Button>
+          <Button
+            data-id="save-report-changes-button"
+            variant="tertiary"
+            onClick={() => {
+              openModal({ type: 'save', focusedReport: selectedReport });
+            }}
+            disabled={
+              !selectedReport ||
+              !selectedReport.current_user_can_edit ||
+              selectedReport.type === 'preset'
+            }
+          >
+            <TranslatableText>Save Changes</TranslatableText>
+            <Button.Icon as={Save} ml="100" />
+          </Button>
+          {isScheduledReportsEnabled && selectedReport?.id && (
+            <Button
+              variant="tertiary"
+              onClick={() => openModal({ type: 'scheduled', focusedReport: selectedReport })}
+            >
+              <TranslatableText>Schedule Report</TranslatableText>
+              <Button.Icon as={AccessTime} ml="100" />
+            </Button>
           )}
-          results={[
-            ...reports.filter(({ creator }) => creator === props.currentUser.username),
-            ...reports.filter(({ creator }) => creator !== props.currentUser.username),
-            ...PRESET_REPORT_CONFIGS,
-          ]}
-          selectedItem={props.selectedItem}
-        />
-      </Column>
-      <Column width="content">
-        <Button
-          data-id="edit-report-details-button"
-          variant="tertiary"
-          onClick={() => {
-            setFocusedReport(props.selectedItem);
-            setModalStatus('edit');
-          }}
-          disabled={
-            !props.selectedItem ||
-            !props.selectedItem.current_user_can_edit ||
-            props.selectedItem.type === 'preset'
-          }
-        >
-          <TranslatableText>Edit Details</TranslatableText>
-          <Button.Icon as={Edit} ml="100" />
-        </Button>
-        <SaveReportModal
-          open={modalStatus === 'edit'}
-          report={focusedReport}
-          setReport={props.handleReportChange}
-          onCancel={() => {
-            setModalStatus('');
-            setFocusedReport({});
-          }}
-        />
-        <Button
-          data-id="save-report-changes-button"
-          variant="tertiary"
-          onClick={() => {
-            setFocusedReport(props.selectedItem);
-            setModalStatus('save');
-          }}
-          disabled={
-            !props.selectedItem ||
-            !props.selectedItem.current_user_can_edit ||
-            props.selectedItem.type === 'preset'
-          }
-        >
-          <TranslatableText>Save Changes</TranslatableText>
-          <Button.Icon as={Save} ml="100" />
-        </Button>
-
-        <Button variant="tertiary" onClick={() => setModalStatus('view')}>
-          <TranslatableText>View All Reports</TranslatableText>
-          <Button.Icon as={FolderOpen} ml="100" />
-        </Button>
-      </Column>
-
+          <Button variant="tertiary" onClick={() => openModal({ type: 'view' })}>
+            <TranslatableText>View All Reports</TranslatableText>
+            <Button.Icon as={FolderOpen} ml="100" />
+          </Button>
+        </Column>
+      </Columns>
       <SaveReportModal
-        open={modalStatus === 'save'}
-        saveQuery
-        isOwner={props.currentUser.userName === focusedReport.creator}
+        open={isModalOpen && type === 'edit'}
         report={focusedReport}
-        setReport={props.handleReportChange}
-        onCancel={() => {
-          setModalStatus('');
-          setFocusedReport({});
-        }}
+        setReport={handleReportChange}
+        onCancel={closeModal}
       />
-
+      <SaveReportModal
+        open={isModalOpen && type === 'save'}
+        saveQuery
+        isOwner={currentUser.userName === focusedReport.creator}
+        report={focusedReport}
+        setReport={handleReportChange}
+        onCancel={closeModal}
+      />
+      {isScheduledReportsEnabled && selectedReport?.id && (
+        <ScheduledReportsModal
+          open={isModalOpen && type === 'scheduled'}
+          onClose={closeModal}
+          handleReportChange={handleReportChange}
+          report={focusedReport}
+        />
+      )}
+      <ReportsListModal
+        open={isModalOpen && type === 'view'}
+        onClose={closeModal}
+        handleDelete={openDeleteModal}
+        handleEdit={openEditModal}
+        handleReportChange={handleReportChange}
+        reports={reports}
+      />
       <DeleteModal
         title="Are you sure you want to delete your saved report?"
         confirmVerb="Delete"
@@ -152,26 +174,12 @@ const SavedReportsSection = props => {
             be undone.
           </p>
         }
-        open={modalStatus === 'delete'}
+        open={isModalOpen && type === 'delete'}
         isPending={props.isDeletePending}
-        onCancel={() => {
-          setModalStatus('');
-          setFocusedReport({});
-        }}
+        onCancel={closeModal}
         onConfirm={onDelete}
       />
-
-      <ReportsListModal
-        open={modalStatus === 'view'}
-        onClose={() => {
-          setModalStatus('');
-        }}
-        handleDelete={openDeleteModal}
-        handleEdit={openEditModal}
-        handleReportChange={props.handleReportChange}
-        reports={reports}
-      />
-    </Columns>
+    </>
   );
 };
 
@@ -180,6 +188,9 @@ const mapStateToProps = state => ({
   reports: state.reports.list,
   status: state.reports.status,
   isDeletePending: state.reports.deletePending,
+  isScheduledReportsEnabled: selectCondition(isAccountUiOptionSet('allow_scheduled_reports'))(
+    state,
+  ),
 });
 
 export default connect(mapStateToProps, { getReports, deleteReport, showAlert })(

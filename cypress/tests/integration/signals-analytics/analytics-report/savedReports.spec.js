@@ -6,6 +6,12 @@ if (IS_HIBANA_ENABLED) {
   describe('Analytics Report Saved Reports', () => {
     beforeEach(() => {
       commonBeforeSteps();
+
+      cy.stubRequest({
+        url: '/api/v1/account',
+        fixture: 'account/200.get.has-scheduled-reports',
+      });
+
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.metrics-rollup.json',
@@ -269,6 +275,28 @@ if (IS_HIBANA_ENABLED) {
             .last()
             .should('be.visible');
           cy.findByText('Your Sending Report').should('be.visible');
+        });
+      });
+
+      it('opens scheduled reports modal', () => {
+        cy.visit(PAGE_URL);
+        cy.wait('@getSavedReports');
+        cy.withinMainContent(() => {
+          cy.findByLabelText('Report').type('engagement');
+          cy.findByText('Engagement Report').click({ force: true });
+        });
+
+        cy.stubRequest({
+          method: 'GET',
+          url: '/api/v1/reports/engagement/schedules',
+          fixture: 'reports/200.get.scheduled-reports',
+        });
+
+        cy.findByRole('button', { name: 'Schedule Report' }).click();
+        cy.withinModal(() => {
+          cy.findByText('Schedules For Reports').should('be.visible');
+          cy.findByText('Engagement Report').should('be.visible');
+          cy.findByText('My Scheduled Report').should('be.visible');
         });
       });
 

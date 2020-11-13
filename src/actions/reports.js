@@ -62,3 +62,13 @@ export function createScheduledReport(reportId, data) {
     },
   });
 }
+
+export function getScheduledReports(reportId) {
+  return sparkpostApiRequest({
+    type: 'GET_SCHEDULED_REPORTS',
+    meta: {
+      method: 'GET',
+      url: `/v1/reports/${reportId}/schedules`,
+    },
+  });
+}
