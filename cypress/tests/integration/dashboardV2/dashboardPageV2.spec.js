@@ -98,44 +98,6 @@ describe('Version 2 of the dashboard page', () => {
       });
     });
 
-    // DOUBLE CHECK
-    it("hides onboarding from users without hasGrants('sending_domains/manage')", () => {
-      stubGrantsRequest({ role: 'reporting' });
-      stubAlertsReq();
-      stubAccountsReq();
-      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
-      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
-      // FORCE NOT ADMIN HERE
-      cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.reporting.json',
-        requestAlias: 'userReq',
-      });
-
-      cy.visit(PAGE_URL);
-      cy.wait([
-        '@getGrants',
-        '@alertsReq',
-        '@accountReq',
-        '@usageReq',
-        '@sendingDomainsReq',
-        '@apiKeysReq',
-      ]);
-
-      cy.findByRole('heading', { name: 'Get Started!' }).should('not.be.visible');
-
-      cy.findAllByText('At least one').should('not.be.visible');
-      cy.findAllByText('verified sending domain').should('not.be.visible');
-      cy.findAllByText('is required in order to start or enable analytics.').should(
-        'not.be.visible',
-      );
-
-      cy.get('a')
-        .contains('Add Sending Domain')
-        .should('not.be.visible');
-    });
-
     it('Shows add sending domain onboarding step when the user has no sending domains on their account.', () => {
       stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
@@ -367,7 +329,7 @@ describe('Version 2 of the dashboard page', () => {
       });
     });
 
-    it('Shows the default onboarding step for non-admin and non-dev users with no last usage date.', () => {
+    it('Shows the default "Go To Analytics Report" onboarding step for non-admin and non-dev users with no last usage date.', () => {
       stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
       stubAccountsReq();
@@ -388,6 +350,56 @@ describe('Version 2 of the dashboard page', () => {
         '@sendingDomainsReq',
         '@apiKeysReq',
         '@userReq',
+      ]);
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text...
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.be.visible');
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+
+      cy.verifyLink({
+        content: 'Go To Analytics Report',
+        href: '/signals/analytics',
+      });
+    });
+
+    it('Shows the default "Go To Analytics Report" onboarding step for any user without the sending_domains/manage grant', () => {
+      stubGrantsRequest({ role: 'reporting' }); // canManageSendingDomains = false
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
       ]);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');

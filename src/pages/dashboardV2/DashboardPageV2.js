@@ -34,14 +34,6 @@ var verifySendingLink = '/domains/list/sending';
 
 const dashboardReducer = (state, action) => {
   switch (action.type) {
-    /**
-     * action.lastUsageDate
-     * action.isAnAdmin
-     * action.isDev
-     * action.sendingDomains
-     * action.addSendingDomainOnboarding
-     * action.apiKeys
-     */
     case 'INIT':
       state.lastUsageDate = action.lastUsageDate;
 
@@ -128,6 +120,14 @@ export default function DashboardPageV2() {
   }, []);
 
   if (pending || state.lastUsageDate === -1) return <Loading />;
+
+  let showOnboardingFallback = false;
+  if (
+    (!canManageSendingDomains && !state.lastUsageDate) ||
+    (!isAnAdmin && !isDev && !state.lastUsageDate)
+  ) {
+    showOnboardingFallback = true;
+  }
 
   return (
     <Dashboard>
@@ -282,7 +282,7 @@ export default function DashboardPageV2() {
                 </Dashboard.Panel>
               )}
 
-              {!isAnAdmin && !isDev && state.lastUsageDate === null && (
+              {showOnboardingFallback && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
