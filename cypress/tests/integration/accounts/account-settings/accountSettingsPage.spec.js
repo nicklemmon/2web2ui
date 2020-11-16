@@ -82,7 +82,6 @@ describe('Account Settings Page', () => {
             cy.findByText('Make sure to copy your SCIM token now.').should('be.visible');
             cy.findByText('Continue').click();
           });
-
           cy.findByText('123f••••••••').should('be.visible');
           cy.findByText('Delete Token').should('be.visible');
         });
