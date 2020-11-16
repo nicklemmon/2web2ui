@@ -146,7 +146,7 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {(isAnAdmin || isDev) && canManageSendingDomains && !state.lastUsageDate && (
+              {!showOnboardingFallback && !state.lastUsageDate && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
