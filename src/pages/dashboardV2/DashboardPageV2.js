@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
@@ -30,6 +30,62 @@ const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
+const dashboardReducer = (state, action) => {
+  switch (action.type) {
+    /**
+     * action.lastUsageDate
+     * action.isAnAdmin
+     * action.isDev
+     * action.sendingDomains
+     * action.addSendingDomainOnboarding
+     * action.apiKeys
+     */
+    case 'INIT':
+      state.lastUsageDate = action.lastUsageDate;
+
+      const addSendingDomainNeeded =
+        (action.isAnAdmin || action.isDev) && action.sendingDomains.length === 0;
+
+      if (addSendingDomainNeeded) state.onboarding = 'addSending';
+
+      const verifiedSendingDomains = action.sendingDomains
+        .map(i => {
+          return resolveStatus(i.status) === 'verified' ? i : null;
+        })
+        .filter(Boolean);
+
+      if (action.sendingDomains.length === 1 && verifiedSendingDomains.length === 0) {
+        state.verifySendingLink = `/domains/details/sending-bounce/${action.sendingDomains[0].domain}`;
+      }
+
+      const verifySendingNeeded = !addSendingDomainNeeded && verifiedSendingDomains.length === 0;
+
+      if (verifySendingNeeded) state.onboarding = 'verifySending';
+
+      const createApiKeyNeeded =
+        !addSendingDomainNeeded && !verifySendingNeeded && action.apiKeys.length === 0;
+
+      if (createApiKeyNeeded) state.onboarding = 'createApiKey';
+
+      if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
+        state.onboarding = 'startSending';
+
+      return {
+        ...state,
+      };
+    default:
+      return {
+        ...state,
+      };
+  }
+};
+
+const initialState = {
+  lastUsageDate: -1,
+  verifySendingLink: '/domains/list/sending',
+  onboarding: null,
+};
+
 export default function DashboardPageV2() {
   const {
     getAccount,
@@ -46,40 +102,7 @@ export default function DashboardPageV2() {
 
   const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
-  // TODO: useReducer instead
-  const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState(false);
-  const [verifySendingDomainOnboarding, setVerifySendingDomainOnboarding] = useState(false);
-  const [createApiKeyOnboarding, setCreateApiKeyOnboarding] = useState(false);
-  const [linkForVerifySendingDomainButton, setLinkForVerifySendingDomainButton] = useState(
-    '/domains/list/sending',
-  );
-  const [lastUsageDate, setlastUsageDate] = useState(-1);
-
-  function setupOnboardingState(lastUsageDate, sendingDomains, apiKeys) {
-    setlastUsageDate(lastUsageDate);
-
-    const addSendingDomainNeeded = (isAnAdmin || isDev) && sendingDomains.length === 0;
-    setAddSendingDomainOnboarding(addSendingDomainNeeded);
-
-    const verifiedSendingDomains = sendingDomains
-      .map(i => {
-        return resolveStatus(i.status) === 'verified' ? i : null;
-      })
-      .filter(Boolean);
-
-    const verifySendingNeeded = !addSendingDomainOnboarding && verifiedSendingDomains.length === 0;
-    setVerifySendingDomainOnboarding(verifySendingNeeded);
-
-    if (sendingDomains.length === 1 && verifiedSendingDomains.length === 0) {
-      setLinkForVerifySendingDomainButton(
-        `/domains/details/sending-bounce/${sendingDomains[0].domain}`,
-      );
-    }
-
-    const createApiKeyNeeded =
-      !addSendingDomainOnboarding && !verifySendingDomainOnboarding && apiKeys.length === 0;
-    setCreateApiKeyOnboarding(createApiKeyNeeded);
-  }
+  const [state, dispatch] = useReducer(dashboardReducer, initialState);
 
   useEffect(() => {
     return Promise.all([
@@ -91,13 +114,19 @@ export default function DashboardPageV2() {
     ]).then(responseArr => {
       // eslint-disable-next-line no-unused-vars
       const [account, alerts, usage, sendingDomains, apiKeys] = responseArr;
-      // TODO: Switch to a reducer and dispatch to it - to set state, then use a different useEffect block to listen for the state change and then call setupOnbaordingState?
-      setupOnboardingState(usage?.messaging?.last_usage_date, sendingDomains, apiKeys);
+      dispatch({
+        type: 'INIT',
+        lastUsageDate: usage?.messaging?.last_usage_date,
+        sendingDomains,
+        apiKeys,
+        isAnAdmin,
+        isDev,
+      });
     });
     // eslint-disable-next-line
   }, []);
 
-  if (pending || lastUsageDate === -1) return <Loading />;
+  if (pending || state.lastUsageDate === -1) return <Loading />;
 
   return (
     <Dashboard>
@@ -116,14 +145,13 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {(isAnAdmin || isDev) && canManageSendingDomains && (
+              {(isAnAdmin || isDev) && canManageSendingDomains && !state.lastUsageDate && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
                   </ScreenReaderOnly>
 
-                  {/* Onboarding step #1 */}
-                  {addSendingDomainOnboarding && (
+                  {state.onboarding === 'addSending' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
@@ -160,8 +188,7 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
-                  {/* Onboarding step #2 */}
-                  {!addSendingDomainOnboarding && verifySendingDomainOnboarding && (
+                  {state.onboarding === 'verifySending' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
@@ -183,7 +210,7 @@ export default function DashboardPageV2() {
                             variant="primary"
                             size="default"
                             color="blue"
-                            to={linkForVerifySendingDomainButton}
+                            to={state.verifySendingLink}
                             as={Button}
                           >
                             Verify Sending Domain
@@ -201,84 +228,78 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
-                  {/* Onboarding step #3 */}
-                  {!addSendingDomainOnboarding &&
-                    !verifySendingDomainOnboarding &&
-                    createApiKeyOnboarding && (
-                      <Columns>
-                        <Column>
-                          <Panel.Section>
-                            <Panel.Headline>
-                              <TranslatableText>Start Sending!</TranslatableText>
-                            </Panel.Headline>
-                            <Text pb="600">
-                              Create an API key in order to start sending via API or SMTP.
-                            </Text>
-                            <ExternalLink
-                              data-id="onboarding-create-api-key-button"
-                              variant="primary"
-                              size="default"
-                              color="blue"
-                              showIcon={false}
-                              to="/account/api-keys/create"
-                              as={Button}
-                            >
-                              Create API Key
-                            </ExternalLink>
-                          </Panel.Section>
-                        </Column>
-                        <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                          <Box height="100%">
-                            <Picture role="presentation">
-                              <source srcset={ConfigurationWebp} type="image/webp" />
-                              <OnboardingPicture alt="" src={Configuration} seeThrough />
-                            </Picture>
-                          </Box>
+                  {state.onboarding === 'createApiKey' && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>
+                            <TranslatableText>Start Sending!</TranslatableText>
+                          </Panel.Headline>
+                          <Text pb="600">
+                            Create an API key in order to start sending via API or SMTP.
+                          </Text>
+                          <ExternalLink
+                            data-id="onboarding-create-api-key-button"
+                            variant="primary"
+                            size="default"
+                            color="blue"
+                            showIcon={false}
+                            to="/account/api-keys/create"
+                            as={Button}
+                          >
+                            Create API Key
+                          </ExternalLink>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={ConfigurationWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={Configuration} seeThrough />
+                          </Picture>
                         </Box>
-                      </Columns>
-                    )}
+                      </Box>
+                    </Columns>
+                  )}
 
-                  {/* Onboarding step #4 fallback if admin or dev and !lastUsageDate  */}
-                  {!addSendingDomainOnboarding &&
-                    !verifySendingDomainOnboarding &&
-                    !createApiKeyOnboarding && (
-                      <Columns>
-                        <Column>
-                          <Panel.Section>
-                            <Panel.Headline>
-                              <TranslatableText>Start Sending!</TranslatableText>
-                            </Panel.Headline>
-                            <Text pb="600">
-                              Follow the Getting Started documentation to set up sending via API or
-                              SMTP.
-                            </Text>
-                            <ExternalLink
-                              data-id="onboarding-get-started-doc-button"
-                              variant="primary"
-                              size="default"
-                              color="blue"
-                              showIcon={false}
-                              to={LINKS.ONBOARDING_SENDING_EMAIL}
-                              as={Button}
-                            >
-                              Getting Started Documentation
-                            </ExternalLink>
-                          </Panel.Section>
-                        </Column>
-                        <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                          <Box height="100%">
-                            <Picture role="presentation">
-                              <source srcset={ConfigurationWebp} type="image/webp" />
-                              <OnboardingPicture alt="" src={Configuration} seeThrough />
-                            </Picture>
-                          </Box>
+                  {state.onboarding === 'startSending' && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>
+                            <TranslatableText>Start Sending!</TranslatableText>
+                          </Panel.Headline>
+                          <Text pb="600">
+                            Follow the Getting Started documentation to set up sending via API or
+                            SMTP.
+                          </Text>
+                          <ExternalLink
+                            data-id="onboarding-get-started-doc-button"
+                            variant="primary"
+                            size="default"
+                            color="blue"
+                            showIcon={false}
+                            to={LINKS.ONBOARDING_SENDING_EMAIL}
+                            as={Button}
+                          >
+                            Getting Started Documentation
+                          </ExternalLink>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={ConfigurationWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={Configuration} seeThrough />
+                          </Picture>
                         </Box>
-                      </Columns>
-                    )}
+                      </Box>
+                    </Columns>
+                  )}
                 </Dashboard.Panel>
               )}
 
-              {!isAnAdmin && !isDev && !lastUsageDate && (
+              {!isAnAdmin && !isDev && state.lastUsageDate === null && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>

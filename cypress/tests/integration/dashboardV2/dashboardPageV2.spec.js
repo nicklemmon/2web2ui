@@ -186,6 +186,21 @@ describe('Version 2 of the dashboard page', () => {
       cy.findAllByText('verified sending domain').should('be.visible');
       cy.findAllByText('is required in order to start or enable analytics.').should('be.visible');
 
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+
       cy.get('a')
         .contains('Add Sending Domain')
         .should('be.visible')
@@ -220,6 +235,21 @@ describe('Version 2 of the dashboard page', () => {
         'Follow the instructions on the domain details page to configure your',
       ).should('be.visible');
       cy.findAllByText('DNS settings.').should('be.visible');
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
 
       cy.findByDataId('onboarding-verify-sending-button')
         .should('be.visible')
@@ -258,6 +288,21 @@ describe('Version 2 of the dashboard page', () => {
       ).should('be.visible');
       cy.findAllByText('DNS settings.').should('be.visible');
 
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+
       cy.findByDataId('onboarding-verify-sending-button')
         .should('be.visible')
         .should('not.be.disabled')
@@ -292,6 +337,21 @@ describe('Version 2 of the dashboard page', () => {
         'be.visible',
       );
 
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 4 text
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+
       cy.findByDataId('onboarding-create-api-key-button')
         .should('be.visible')
         .should('not.be.disabled')
@@ -324,6 +384,21 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByText(
         'Follow the Getting Started documentation to set up sending via API or SMTP.',
       ).should('be.visible');
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
 
       cy.findByDataId('onboarding-get-started-doc-button')
         .should('be.visible')
