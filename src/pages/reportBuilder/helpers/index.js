@@ -262,14 +262,16 @@ export function hydrateFilters(groupings, { subaccounts } = {}) {
             case 'notEq': {
               if (filter === 'subaccounts') {
                 filterRet[comparison] = filterObj[comparison].map(rawValue => {
-                  const value = typeof rawValue === 'object' ? rawValue.value : rawValue;
+                  // Depending on the filters being parsed (old vs. newer grouped comparator filters),
+                  // the filters may be a an object instead of a string.
+                  const value = typeof rawValue === 'object' ? rawValue.id : rawValue;
                   const subaccount =
                     subaccounts.find(subaccount => subaccount.id === Number.parseInt(value)) || {};
                   const { name, id } = subaccount;
 
                   return {
                     value: name ? `${name} (ID ${id})` : value,
-                    id: value,
+                    id,
                     type: getFilterType(filter),
                   };
                 });

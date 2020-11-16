@@ -68,7 +68,10 @@ export function ReportBuilder({
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
-      refreshReportBuilder(reportOptions);
+      refreshReportBuilder({
+        ...reportOptions,
+        filters: reportOptions.filters,
+      });
     }
   }, [refreshReportBuilder, reportOptions, isEmpty]);
 
