@@ -666,10 +666,28 @@ const appRoutes = [
     subcategory: 'Recipient Validation',
   },
   {
-    path: '/domains/list/:domainType',
+    path: '/domains/list/sending',
     component: domains.ListPage,
     title: 'Domains',
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('sending_domains/manage')),
+    layout: App,
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/list/bounce',
+    component: domains.ListPage,
+    title: 'Domains',
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('sending_domains/manage')),
+    layout: App,
+    category: 'Configuration',
+    subcategory: 'Domains',
+  },
+  {
+    path: '/domains/list/tracking',
+    component: domains.ListPage,
+    title: 'Domains',
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('tracking_domains/manage')),
     layout: App,
     category: 'Configuration',
     subcategory: 'Domains',
@@ -677,7 +695,11 @@ const appRoutes = [
   {
     path: '/domains/create',
     component: domains.CreatePage,
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(
+      isUserUiOptionSet('isHibanaEnabled'),
+      hasGrants('tracking_domains/manage'),
+      hasGrants('sending_domains/manage'),
+    ),
     layout: App,
     title: 'Add a Domain | Domains',
     category: 'Configuration',
@@ -686,7 +708,7 @@ const appRoutes = [
   {
     path: '/domains/details/sending-bounce/:id',
     component: domains.DetailsPage,
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('sending_domains/manage')),
     layout: App,
     title: 'Domain Details | Domains',
     category: 'Configuration',
@@ -695,7 +717,7 @@ const appRoutes = [
   {
     path: '/domains/details/tracking/:id',
     component: domains.DetailsPage,
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('tracking_domains/manage')),
     layout: App,
     title: 'Domain Details | Domains',
     category: 'Configuration',
@@ -704,7 +726,7 @@ const appRoutes = [
   {
     path: '/domains/details/:id/verify-bounce',
     component: domains.VerifyBounceDomainPage,
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('sending_domains/manage')),
     layout: App,
     title: 'Verify Bounce Domain | Domains',
     category: 'Configuration',
@@ -713,7 +735,7 @@ const appRoutes = [
   {
     path: '/domains/details/:id/verify-sending',
     component: domains.VerifySendingDomainPage,
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('sending_domains/manage')),
     layout: App,
     title: 'Verify Sending Domain | Domains',
     category: 'Configuration',
@@ -722,7 +744,7 @@ const appRoutes = [
   {
     path: '/domains/details/:id/verify-sending-bounce',
     component: domains.VerifySendingBounceDomainPage,
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('sending_domains/manage')),
     layout: App,
     title: 'Verify Sending/Bounce Domain | Domains',
     category: 'Configuration',
@@ -731,7 +753,7 @@ const appRoutes = [
   {
     path: '/domains/details/:id/verify-tracking',
     component: domains.VerifyTrackingDomainPage,
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('tracking_domains/manage')),
     layout: App,
     title: 'Verify Tracking Domain | Domains',
     category: 'Configuration',
@@ -740,7 +762,7 @@ const appRoutes = [
   {
     path: '/domains*',
     redirect: '/domains/list/sending',
-    condition: all(isUserUiOptionSet('isHibanaEnabled')),
+    condition: all(isUserUiOptionSet('isHibanaEnabled'), hasGrants('sending_domains/manage')),
     category: 'Configuration',
     subcategory: 'Domains',
   },
