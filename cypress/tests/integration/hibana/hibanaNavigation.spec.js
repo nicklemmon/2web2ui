@@ -336,27 +336,23 @@ if (IS_HIBANA_ENABLED) {
         });
       });
 
-      it(
-        'routes to the recipient list page when the user does not have Recipient Validation grants when navigating using the "Recipients" nav item',
-        { retries: 2 },
-        () => {
-          cy.stubRequest({
-            url: '/api/v1/authenticate/grants*',
-            fixture: 'authenticate/grants/200.get.templates.json',
-            requestAlias: 'grantsReq',
-          });
+      it('routes to the recipient list page when the user does not have Recipient Validation grants when navigating using the "Recipients" nav item', () => {
+        cy.stubRequest({
+          url: '/api/v1/authenticate/grants*',
+          fixture: 'authenticate/grants/200.get.templates.json',
+          requestAlias: 'grantsReq',
+        });
 
-          commonBeforeSteps();
-          cy.wait('@grantsReq');
+        commonBeforeSteps();
+        cy.wait('@grantsReq');
 
-          cy.get(desktopNavSelector).within(() => {
-            cy.findByText('Recipients').click();
-          });
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Recipients').click();
+        });
 
-          cy.url().should('not.include', '/recipient-validation/list');
-          cy.url().should('include', '/lists/recipient-lists');
-        },
-      );
+        cy.url().should('not.include', '/recipient-validation/list');
+        cy.url().should('include', '/lists/recipient-lists');
+      });
 
       it('renders the subnav links when subsections within the "Recipient Validation" category when a subroute is visited', () => {
         commonBeforeSteps();
@@ -389,27 +385,23 @@ if (IS_HIBANA_ENABLED) {
         cy.get(secondaryNavSelector).should('not.be.visible');
       });
 
-      it(
-        'renders the subnav and routes to the sending domains when "Configuration" is active',
-        { retries: 2 },
-        () => {
-          commonBeforeSteps();
+      it('renders the subnav and routes to the sending domains when "Configuration" is active', () => {
+        commonBeforeSteps();
 
-          cy.get(desktopNavSelector).within(() => {
-            cy.findByText('Configuration').click();
-          });
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Configuration').click();
+        });
 
-          cy.url().should('include', '/domains');
+        cy.url().should('include', '/domains');
 
-          cy.get(secondaryNavSelector).within(() => {
-            cy.verifyLink({ content: 'Domains', href: '/domains' });
-            cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
-            cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
-            cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
-            cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
-          });
-        },
-      );
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Domains', href: '/domains' });
+          cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
+          cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
+          cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
+          cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
+        });
+      });
 
       it("renders the pending cancellation banner when the user's account is pending cancellation", () => {
         cy.stubAuth();
@@ -535,7 +527,7 @@ if (IS_HIBANA_ENABLED) {
         cy.findByText('Submit A Ticket').should('be.visible');
       });
 
-      it('moves focus to the menu when opened', { retries: 2 }, () => {
+      it('moves focus to the menu when opened', () => {
         commonBeforeSteps();
         toggleMobileMenu();
 

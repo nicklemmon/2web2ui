@@ -58,33 +58,29 @@ describe('Account Settings Page', () => {
 
           cy.findByText('No token generated').should('be.visible');
         });
-        it(
-          'opens Generate SCIM token Modal when a token is not present and clicking on Continue dismisses the Modal and new token can be found',
-          { retries: 4 },
-          () => {
-            cy.wait('@oldScimTokenGet');
-            cy.stubRequest({
-              method: 'POST',
-              url: 'api/v1/api-keys',
-              fixture: 'api-keys/200.post.json',
-              requestAlias: 'scimTokenCreate',
-            });
-            cy.stubRequest({
-              url: 'api/v1/api-keys?grant=scim/manage',
-              fixture: 'api-keys/200.get.scim-token-newtoken.json',
-              requestAlias: 'newScimTokenGet',
-            });
-            cy.findByText('Generate SCIM Token').click();
-            cy.wait(['@scimTokenCreate', '@newScimTokenGet']);
-            cy.withinModal(() => {
-              cy.findByText('Generate SCIM Token').should('be.visible');
-              cy.findByText('Make sure to copy your SCIM token now.').should('be.visible');
-              cy.findByText('Continue').click();
-            });
-            cy.findByText('123f••••••••').should('be.visible');
-            cy.findByText('Delete Token').should('be.visible');
-          },
-        );
+        it('opens Generate SCIM token Modal when a token is not present and clicking on Continue dismisses the Modal and new token can be found', () => {
+          cy.wait('@oldScimTokenGet');
+          cy.stubRequest({
+            method: 'POST',
+            url: 'api/v1/api-keys',
+            fixture: 'api-keys/200.post.json',
+            requestAlias: 'scimTokenCreate',
+          });
+          cy.stubRequest({
+            url: 'api/v1/api-keys?grant=scim/manage',
+            fixture: 'api-keys/200.get.scim-token-newtoken.json',
+            requestAlias: 'newScimTokenGet',
+          });
+          cy.findByText('Generate SCIM Token').click();
+          cy.wait(['@scimTokenCreate', '@newScimTokenGet']);
+          cy.withinModal(() => {
+            cy.findByText('Generate SCIM Token').should('be.visible');
+            cy.findByText('Make sure to copy your SCIM token now.').should('be.visible');
+            cy.findByText('Continue').click();
+          });
+          cy.findByText('123f••••••••').should('be.visible');
+          cy.findByText('Delete Token').should('be.visible');
+        });
       });
       describe('Generate token flow -> when a token is already present', () => {
         beforeEach(() => {
