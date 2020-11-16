@@ -450,6 +450,10 @@ if (IS_HIBANA_ENABLED) {
           cy.findByText('107').should('be.visible'); // The user's Customer ID
         });
 
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Configuration').should('not.be.visible');
+        });
+
         cy.get(accountActionlistSelector).within(() => {
           cy.verifyLink({ content: 'Profile', href: '/account/profile' });
           cy.verifyLink({ content: 'Alerts', href: '/alerts' });
@@ -467,6 +471,9 @@ if (IS_HIBANA_ENABLED) {
         cy.findByDataId('popover-content').within(() => {
           cy.findByText('mockuser@example.com').should('be.visible');
           cy.findByText('107').should('be.visible'); // The user's Customer ID
+        });
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Configuration').should('not.be.visible');
         });
 
         cy.get(accountActionlistSelector).within(() => {
@@ -496,6 +503,9 @@ if (IS_HIBANA_ENABLED) {
           cy.verifyLink({ content: 'API Docs', href: 'https://developers.sparkpost.com/api' });
           cy.findByText('Log Out').should('be.visible');
         });
+        cy.get(desktopNavSelector).within(() => {
+          cy.verifyLink({ content: 'Configuration', href: '/domains' });
+        });
       });
 
       it('renders with the "Upgrade" text when the user is on a free plan', () => {
@@ -506,6 +516,9 @@ if (IS_HIBANA_ENABLED) {
         });
         cy.visit('/');
         toggleAccountMenu();
+        cy.get(desktopNavSelector).within(() => {
+          cy.verifyLink({ content: 'Configuration', href: '/domains' });
+        });
 
         cy.get(accountActionlistSelector).within(() => {
           cy.findByText('Upgrade').should('be.visible');
