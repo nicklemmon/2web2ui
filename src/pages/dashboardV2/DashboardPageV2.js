@@ -30,6 +30,8 @@ const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
+var verifySendingLink = '/domains/list/sending';
+
 const dashboardReducer = (state, action) => {
   switch (action.type) {
     /**
@@ -55,7 +57,7 @@ const dashboardReducer = (state, action) => {
         .filter(Boolean);
 
       if (action.sendingDomains.length === 1 && verifiedSendingDomains.length === 0) {
-        state.verifySendingLink = `/domains/details/sending-bounce/${action.sendingDomains[0].domain}`;
+        verifySendingLink = `/domains/details/sending-bounce/${action.sendingDomains[0].domain}`;
       }
 
       const verifySendingNeeded = !addSendingDomainNeeded && verifiedSendingDomains.length === 0;
@@ -82,7 +84,6 @@ const dashboardReducer = (state, action) => {
 
 const initialState = {
   lastUsageDate: -1,
-  verifySendingLink: '/domains/list/sending',
   onboarding: null,
 };
 
@@ -155,26 +156,19 @@ export default function DashboardPageV2() {
                     <Columns>
                       <Column>
                         <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Get Started!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            <TranslatableText>At least one </TranslatableText>
-                            <Bold>verified sending domain </Bold>
-                            <TranslatableText>
-                              is required in order to start or enable analytics.
-                            </TranslatableText>
-                          </Text>
-                          <PageLink
-                            data-id="onboarding-add-sending-button"
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            to="/domains/list/sending"
-                            as={Button}
-                          >
-                            Add Sending Domain
-                          </PageLink>
+                          <Panel.Headline>Get Started!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              <TranslatableText>At least one </TranslatableText>
+                              <Bold>verified sending domain </Bold>
+                              <TranslatableText>
+                                is required in order to start or enable analytics.
+                              </TranslatableText>
+                            </Text>
+                            <PageLink variant="primary" to="/domains/list/sending" as={Button}>
+                              Add Sending Domain
+                            </PageLink>
+                          </Stack>
                         </Panel.Section>
                       </Column>
                       <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
@@ -192,29 +186,22 @@ export default function DashboardPageV2() {
                     <Columns>
                       <Column>
                         <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Get Started!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            <TranslatableText>
-                              Once a sending domain has been added, it needs to be
-                            </TranslatableText>
-                            <Bold> verified. </Bold>
-                            <TranslatableText>
-                              Follow the instructions on the domain details page to configure your
-                            </TranslatableText>
-                            <TranslatableText> DNS settings.</TranslatableText>
-                          </Text>
-                          <PageLink
-                            data-id="onboarding-verify-sending-button"
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            to={state.verifySendingLink}
-                            as={Button}
-                          >
-                            Verify Sending Domain
-                          </PageLink>
+                          <Panel.Headline>Get Started!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              <TranslatableText>
+                                Once a sending domain has been added, it needs to be
+                              </TranslatableText>
+                              <Bold> verified. </Bold>
+                              <TranslatableText>
+                                Follow the instructions on the domain details page to configure your
+                              </TranslatableText>
+                              <TranslatableText> DNS settings.</TranslatableText>
+                            </Text>
+                            <PageLink variant="primary" to={verifySendingLink} as={Button}>
+                              Verify Sending Domain
+                            </PageLink>
+                          </Stack>
                         </Panel.Section>
                       </Column>
                       <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
@@ -232,23 +219,21 @@ export default function DashboardPageV2() {
                     <Columns>
                       <Column>
                         <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Start Sending!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            Create an API key in order to start sending via API or SMTP.
-                          </Text>
-                          <ExternalLink
-                            data-id="onboarding-create-api-key-button"
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            showIcon={false}
-                            to="/account/api-keys/create"
-                            as={Button}
-                          >
-                            Create API Key
-                          </ExternalLink>
+                          <Panel.Headline>Start Sending!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              Create an API key in order to start sending via API or SMTP.
+                            </Text>
+                            <ExternalLink
+                              variant="primary"
+                              size="default"
+                              showIcon={false}
+                              to="/account/api-keys/create"
+                              as={Button}
+                            >
+                              Create API Key
+                            </ExternalLink>
+                          </Stack>
                         </Panel.Section>
                       </Column>
                       <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
@@ -266,24 +251,22 @@ export default function DashboardPageV2() {
                     <Columns>
                       <Column>
                         <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Start Sending!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            Follow the Getting Started documentation to set up sending via API or
-                            SMTP.
-                          </Text>
-                          <ExternalLink
-                            data-id="onboarding-get-started-doc-button"
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            showIcon={false}
-                            to={LINKS.ONBOARDING_SENDING_EMAIL}
-                            as={Button}
-                          >
-                            Getting Started Documentation
-                          </ExternalLink>
+                          <Panel.Headline>Start Sending!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              Follow the Getting Started documentation to set up sending via API or
+                              SMTP.
+                            </Text>
+                            <ExternalLink
+                              variant="primary"
+                              size="default"
+                              showIcon={false}
+                              to={LINKS.ONBOARDING_SENDING_EMAIL}
+                              as={Button}
+                            >
+                              Getting Started Documentation
+                            </ExternalLink>
+                          </Stack>
                         </Panel.Section>
                       </Column>
                       <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
@@ -307,23 +290,21 @@ export default function DashboardPageV2() {
                   <Columns>
                     <Column>
                       <Panel.Section>
-                        <Panel.Headline>
-                          <TranslatableText>Analytics Report</TranslatableText>
-                        </Panel.Headline>
-                        <Text pb="600">
-                          Build custom analytics, track engagement, diagnose errors, and more.
-                        </Text>
-                        <ExternalLink
-                          data-id="onboarding-go-to-analytics-button"
-                          variant="primary"
-                          size="default"
-                          color="blue"
-                          showIcon={false}
-                          to="/signals/analytics"
-                          as={Button}
-                        >
-                          Go To Analytics Report
-                        </ExternalLink>
+                        <Panel.Headline>Analytics Report</Panel.Headline>
+                        <Stack>
+                          <Text>
+                            Build custom analytics, track engagement, diagnose errors, and more.
+                          </Text>
+                          <ExternalLink
+                            variant="primary"
+                            size="default"
+                            showIcon={false}
+                            to="/signals/analytics"
+                            as={Button}
+                          >
+                            Go To Analytics Report
+                          </ExternalLink>
+                        </Stack>
                       </Panel.Section>
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
