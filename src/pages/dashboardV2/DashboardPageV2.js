@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
-import ConfigurationImgWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
-import ConfigurationImg from '@sparkpost/matchbox-media/images/Configuration@small.jpg';
+import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
+import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
+import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
+import Configuration from '@sparkpost/matchbox-media/images/Configuration@medium.jpg';
 import { Loading } from 'src/components';
 import {
   Box,
+  Button,
   Columns,
   Column,
   Layout,
@@ -14,35 +17,87 @@ import {
   Stack,
   Text,
 } from 'src/components/matchbox';
-import { Heading, TranslatableText } from 'src/components/text';
+import { Bold, Heading, TranslatableText } from 'src/components/text';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
+import { LINKS } from 'src/constants';
+import styled from 'styled-components';
+
+const OnboardingPicture = styled(Picture.Image)`
+  vertical-align: bottom;
+`;
 
 export default function DashboardPageV2() {
   const {
     getAccount,
     listAlerts,
+    isAdminOrDev,
+    canManageSendingDomains,
     getUsage,
     currentUser,
     pending,
-    hasSetupDocumentationPanel,
-    hasAddSendingDomainLink,
-    hasGenerateApiKeyLink,
     hasUsageSection,
+    listSendingDomains,
   } = useDashboardContext();
+
+  // TODO: useReducer instead
+  const [hasSetupDocumentationPanel, setHasSetupDocumentationPanel] = useState();
+  const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState();
+  const [lastUsageDate, setlastUsageDate] = useState(-1);
+
+  // TODO: useReducer instead
+  function setupState(lastUsageDate, sendingDomains) {
+    setlastUsageDate(lastUsageDate);
+    setHasSetupDocumentationPanel(isAdminOrDev);
+    setAddSendingDomainOnboarding(
+      isAdminOrDev &&
+        canManageSendingDomains &&
+        sendingDomains.length === 0 &&
+        lastUsageDate === null,
+    );
+    // TODO: FE-1211
+    /**
+        setVerifySendingDomainOnboarding(
+          !addSendingDomainOnboarding &&
+          verifiedSendingDomains.length === 0 &&
+        )
+     */
+    // TODO: FE-1212
+    /**
+        setCreateApiKeyOnboarding(
+          !addSendingDomainOnboarding &&
+          !verifySendingDomainOnboarding &&
+          lastUsageDate === null,
+          accountApiKeys.length === 0
+        )
+     */
+  }
+
+  function init(lastUsageDate) {
+    listSendingDomains().then(sendingDomains => {
+      setupState(lastUsageDate, sendingDomains);
+    });
+  }
 
   useEffect(() => {
     getAccount({ include: 'usage' });
     listAlerts();
     if (hasUsageSection) {
-      getUsage(); // this is needed to display the rv usage section which should only be visible to admins
+      // !IMPORTANT - this is needed to display the rv usage section which should only be visible to admins
+      getUsage()
+        .then(res => {
+          init(res?.messaging?.last_usage_date);
+        })
+        .catch(e => {
+          throw e;
+        });
     }
     // eslint-disable-next-line
   }, []);
 
-  if (pending) return <Loading />;
+  if (pending || lastUsageDate === -1) return <Loading />;
 
   return (
     <Dashboard>
@@ -61,57 +116,91 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              <Dashboard.Panel>
-                <ScreenReaderOnly>
-                  <Heading as="h3">Next Steps</Heading>
-                </ScreenReaderOnly>
+              {isAdminOrDev && (
+                <Dashboard.Panel>
+                  <ScreenReaderOnly>
+                    <Heading as="h3">Next Steps</Heading>
+                  </ScreenReaderOnly>
 
-                <Columns space="0">
-                  <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.55]}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      backgroundColor="gray.100"
-                      height="100%"
-                      borderRight="400"
-                    >
-                      <Picture role="presentation" seeThrough>
-                        <source srcSet={ConfigurationImgWebp} type="image/webp" />
+                  {addSendingDomainOnboarding && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>
+                            <TranslatableText>Get Started!</TranslatableText>
+                          </Panel.Headline>
+                          <Text pb="600">
+                            <TranslatableText>At least one </TranslatableText>
+                            <Bold>verified sending domain </Bold>
+                            <TranslatableText>
+                              is required in order to start or enable analytics.
+                            </TranslatableText>
+                          </Text>
+                          <PageLink
+                            variant="primary"
+                            size="default"
+                            color="blue"
+                            to="/domains/list/sending"
+                            as={Button}
+                          >
+                            Add Sending Domain
+                          </PageLink>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={SendingMailWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={SendingMail} seeThrough />
+                          </Picture>
+                        </Box>
+                      </Box>
+                    </Columns>
+                  )}
 
-                        <Picture.Image src={ConfigurationImg} alt="" />
-                      </Picture>
-                    </Box>
-                  </Box>
-
-                  <Column>
-                    <Box display="flex" flexDirection="column" height="100%">
-                      {hasAddSendingDomainLink && (
-                        <Dashboard.Shortcut to="/account/sending-domains/create">
-                          Add a Sending Domain
-                        </Dashboard.Shortcut>
-                      )}
-
-                      {hasGenerateApiKeyLink && (
-                        <Dashboard.Shortcut to="/account/api-keys/create">
-                          Generate an API Key
-                        </Dashboard.Shortcut>
-                      )}
-
-                      <Dashboard.Shortcut to="/signals/analytics">
-                        Analyze your Data
-                      </Dashboard.Shortcut>
-
-                      <Dashboard.Shortcut to="/alerts/create">Create an Alert</Dashboard.Shortcut>
-                    </Box>
-                  </Column>
-                </Columns>
-              </Dashboard.Panel>
+                  {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
+                  {/* !verifySendingDomainOnboarding */}
+                  {/* !createApiKeyOnboarding */}
+                  {!addSendingDomainOnboarding && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>
+                            <TranslatableText>Start Sending!</TranslatableText>
+                          </Panel.Headline>
+                          <Text pb="600">
+                            Follow the Getting Started documentation to set up sending via API or
+                            SMTP.
+                          </Text>
+                          <ExternalLink
+                            variant="primary"
+                            size="default"
+                            color="blue"
+                            showIcon={false}
+                            to={LINKS.ONBOARDING_SENDING_EMAIL}
+                            as={Button}
+                          >
+                            Getting Started Documentation
+                          </ExternalLink>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={ConfigurationWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={Configuration} seeThrough />
+                          </Picture>
+                        </Box>
+                      </Box>
+                    </Columns>
+                  )}
+                </Dashboard.Panel>
+              )}
 
               <Dashboard.Panel>
                 <Panel.Section>
                   <Panel.Headline>
                     <Panel.HeadlineIcon as={LightbulbOutline} />
-
                     <TranslatableText>Helpful Shortcuts</TranslatableText>
                   </Panel.Headline>
 
@@ -171,7 +260,6 @@ export default function DashboardPageV2() {
                     <Panel.Section>
                       <Panel.Headline>
                         <Panel.HeadlineIcon as={ChatBubble} />
-
                         <TranslatableText>Need Help?</TranslatableText>
                       </Panel.Headline>
 

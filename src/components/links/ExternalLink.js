@@ -12,6 +12,7 @@ const ExternalLink = ({
   as: Component = UnstyledLink,
   children,
   component: _component, // ignore, won't apply external props correctly if set
+  showIcon = true,
   icon: Icon = OpenInNew,
   ...props
 }) => {
@@ -26,7 +27,7 @@ const ExternalLink = ({
 
   return (
     <Component {...props} external={true}>
-      {children} <StyledIcon size={iconSize} as={Icon} iconMargin={iconMargin} />
+      {children} {showIcon && <StyledIcon size={iconSize} as={Icon} iconMargin={iconMargin} />}
     </Component>
   );
 };
@@ -35,6 +36,7 @@ ExternalLink.propTypes = {
   as: PropTypes.oneOf([Button, UnstyledLink]),
   children: PropTypes.node.isRequired,
   to: PropTypes.string.isRequired,
+  showIcon: PropTypes.bool,
 };
 
 export default ExternalLink;
