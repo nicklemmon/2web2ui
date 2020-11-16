@@ -37,7 +37,7 @@ export const AddFilterLink = ({ newFilter }) => {
   const newSearchOptions = { ...currentSearchOptions, filters: mergedFilters };
 
   //Use same method to change route from here src/context/RouterContext.js
-  const linkParams = qs.stringify(newSearchOptions, { arrayFormat: 'repeat' });
+  const linkParams = qs.stringify(newSearchOptions);
   const fullLink = `${pathname}?${linkParams}`;
 
   return (

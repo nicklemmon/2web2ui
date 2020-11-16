@@ -20,8 +20,8 @@ export const ProviderComponent = ({ children, ...routerProps }) => {
   );
 
   const updateRoute = useCallback(
-    newParams => {
-      const queryString = qs.stringify(newParams, { arrayFormat: 'repeat' });
+    (newParams, options) => {
+      const queryString = qs.stringify(newParams, { arrayFormat: 'repeat', ...options });
       routerProps.history.push(`${routerProps.location.pathname}?${queryString}`);
     },
     [routerProps.history, routerProps.location.pathname],

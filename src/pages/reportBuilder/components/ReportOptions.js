@@ -61,7 +61,7 @@ export function ReportOptions(props) {
         update.filters = selectedFilters;
       }
 
-      updateRoute({ ...update, report: selectedReport?.id });
+      updateRoute({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });
     }
   }, [
     selectSummaryChartSearchOptions,
@@ -188,7 +188,7 @@ export function ReportOptions(props) {
               </Tabs.Item>
               {isCompareByEnabled && (
                 <Tabs.Item>
-                  <CompareByForm />
+                  <CompareByForm handleSubmit={handleSubmit} />
                 </Tabs.Item>
               )}
             </Tabs>

@@ -26,6 +26,7 @@ const ReportOptionsContext = createContext({});
 
 const initialState = {
   filters: [],
+  compare: [],
 };
 
 const reducer = (state, action) => {
@@ -208,6 +209,10 @@ const getSelectors = reportOptions => {
     filters: (reportOptions.filters || []).map(stringifyTypeaheadfilter),
   };
 
+  const selectCompareFilters = {
+    compare: reportOptions.compare || [],
+  };
+
   const selectSummaryMetrics = {
     metrics: (reportOptions.metrics || []).map(metric =>
       typeof metric === 'string' ? metric : metric.key,
@@ -229,6 +234,7 @@ const getSelectors = reportOptions => {
     ...selectDateOptions,
     ...selectTypeaheadFilters,
     ...selectSummaryMetrics,
+    ...selectCompareFilters,
   };
 
   return {

@@ -38,7 +38,7 @@ describe('Add Filter Link', () => {
 
     expect(linkComponent).toHaveProp(
       'to',
-      '/report?filters=Campaign%3A%20shinynewfilter&filters=Subaccount%3Asubmarine%3A10&metrics=count_something',
+      '/report?filters%5B0%5D=Campaign%3A%20shinynewfilter&filters%5B1%5D=Subaccount%3Asubmarine%3A10&metrics%5B0%5D=count_something',
     );
     expect(addFilters).toHaveBeenCalledWith({ id: 10, type: 'Subaccount', value: 'submarine' });
   });

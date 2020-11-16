@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import qs from 'query-string';
+import qs from 'qs';
+import queryString from 'query-string'; //TODO: Deprecate
 import { getRelativeDates, relativeDateOptions } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import { FILTER_KEY_MAP } from './metrics';
@@ -22,7 +23,9 @@ export function parseSearch(search) {
     return { options: {} };
   }
 
-  const { from, to, range, metrics, timezone, precision, filters = [], report } = qs.parse(search);
+  const { from, to, range, metrics, timezone, precision, filters = [], report } = queryString.parse(
+    search,
+  );
   const filtersList = (typeof filters === 'string' ? [filters] : filters).map(filter => {
     const parts = filter.split(':');
     const type = parts.shift();
@@ -80,6 +83,7 @@ export function parseSearchNew(search) {
   if (!search) {
     return {};
   }
+
   const {
     from,
     to,
@@ -89,8 +93,9 @@ export function parseSearchNew(search) {
     precision,
     filters = [],
     query_filters,
+    compare,
     report,
-  } = qs.parse(search);
+  } = qs.parse(search, { ignoreQueryPrefix: true });
 
   let ret = {};
 
@@ -124,6 +129,10 @@ export function parseSearchNew(search) {
 
     ret.queryFilters = mapFiltersToComparators(filtersList);
     ret.filters = filtersList;
+  }
+
+  if (compare) {
+    ret.compare = compare;
   }
 
   if (metrics) {

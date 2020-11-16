@@ -1,6 +1,15 @@
 import React, { useReducer } from 'react';
 import { connect } from 'react-redux';
-import { Box, Button, Drawer, ScreenReaderOnly, Select, Stack } from 'src/components/matchbox';
+import {
+  Banner,
+  Box,
+  Button,
+  Drawer,
+  ScreenReaderOnly,
+  Select,
+  Stack,
+} from 'src/components/matchbox';
+import { FILTER_KEY_MAP } from 'src/helpers/metrics';
 import { Add, Close } from '@sparkpost/matchbox-icons';
 import { TranslatableText, Comparison } from 'src/components/text';
 import {
@@ -13,12 +22,14 @@ import {
 import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 import { selectCacheReportBuilder } from 'src/selectors/reportFilterTypeaheadCache';
+import { useReportBuilderContext } from '../../context/ReportBuilderContext';
 import Typeahead from './Typeahead';
 import styled from 'styled-components';
 
 const initialState = {
   filters: [null, null],
   filterType: undefined,
+  error: null,
 };
 
 const StyledButton = styled(Button)`
@@ -46,11 +57,13 @@ const reducer = (state, action) => {
     case 'SET_FILTER':
       const newFilters = state.filters;
       newFilters[action.index] = action.value;
-      return { ...state, filters: newFilters };
+      return { ...state, error: null, filters: newFilters };
     case 'SET_FILTER_TYPE':
-      return { filters: [null, null], filterType: action.filterType };
+      return { error: null, filters: [null, null], filterType: action.filterType };
     case 'RESET_FORM':
-      return { filters: [null, null], filterType: undefined };
+      return { ...initialState, filters: [null, null], filterType: undefined };
+    case 'SET_ERROR':
+      return { ...state, error: action.error };
     default:
       throw new Error(`${action.type} is not supported.`);
   }
@@ -66,16 +79,31 @@ function CompareByForm({
   listSubaccounts,
   listSendingDomains,
   typeaheadCache,
+  handleSubmit,
 }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { filters, filterType } = state;
+  const { state: reportOptions } = useReportBuilderContext();
+  const { compare } = reportOptions;
 
-  function handleSubmit(e) {
+  const getInitialState = compareFilters => {
+    if (!compareFilters || !compareFilters.length) {
+      return initialState;
+    }
+
+    return { filterType: FILTER_KEY_MAP[compare[0].type], filters: compare };
+  };
+  const [state, dispatch] = useReducer(reducer, getInitialState(compare));
+  const { filters, filterType, error } = state;
+
+  function handleFormSubmit(e) {
     e.preventDefault();
 
-    const cleanedFilters = filters.filter(filter => filter); //filters the filter filters
+    const cleanedFilters = filters.filter(filter => filter !== null); //filters the filter filters
+
+    if (cleanedFilters.length < 2 && cleanedFilters.length > 0) {
+      return dispatch({ type: 'SET_ERROR', error: 'Select more than one item to compare' });
+    }
     // eslint-disable-next-line
-    console.log(cleanedFilters);
+    handleSubmit({ compare: cleanedFilters });
   }
 
   const FILTER_TYPES = [
@@ -115,14 +143,22 @@ function CompareByForm({
       action: listSubaccounts,
     },
   ];
+
   const filterConfig = FILTER_TYPES.find(item => item.value === filterType);
   const filterAction = filterConfig?.action;
   const filterLabel = filterConfig?.label;
 
+  const areInputsFilled = filters.every(filter => filter !== null);
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleFormSubmit}>
       <Box padding="500" paddingBottom="8rem">
         <Stack>
+          {error && (
+            <Banner size="small" status="danger">
+              {error}
+            </Banner>
+          )}
           <Select
             placeholder="Select Resource"
             placeholderValue="Select Resource"
@@ -136,6 +172,11 @@ function CompareByForm({
           />
           {filterType &&
             filters.map((filter, index) => {
+              const filteredTypeaheadResults = typeaheadCache[filterLabel]?.filter(
+                typeaheadItem => {
+                  return !filters.some(filter => typeaheadItem.value === filter?.value);
+                },
+              );
               return (
                 <Box key={`filter-typeahead-${index}`} position="relative">
                   {index > 0 && filter && filters.length > 2 ? (
@@ -155,7 +196,7 @@ function CompareByForm({
                         dispatch={dispatch}
                         itemToString={item => (item?.value ? item.value : '')}
                         selectedItem={filter}
-                        results={typeaheadCache[filterLabel]}
+                        results={filteredTypeaheadResults}
                         onChange={value => {
                           dispatch({ type: 'SET_FILTER', index, value });
                         }}
@@ -170,7 +211,7 @@ function CompareByForm({
                 </Box>
               );
             })}
-          {filterType && (
+          {filterType && areInputsFilled && (
             <Box>
               <Button
                 onClick={() => {
