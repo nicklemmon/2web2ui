@@ -27,7 +27,6 @@ import styles from './ReportBuilder.module.scss';
 import { getSubscription } from 'src/actions/billing';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
-import { dehydrateFilters } from './helpers';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { useLocation } from 'react-router-dom';
 
@@ -69,10 +68,7 @@ export function ReportBuilder({
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
-      refreshReportBuilder({
-        ...reportOptions,
-        filters: dehydrateFilters(reportOptions.filters),
-      });
+      refreshReportBuilder(reportOptions);
     }
   }, [refreshReportBuilder, reportOptions, isEmpty]);
 
