@@ -160,7 +160,14 @@ export class EditPage extends Component {
   }
 
   render() {
-    const { loading, pool, showPurchaseCTA, isManuallyBilled, openSupportTicketForm } = this.props;
+    const {
+      loading,
+      deleteLoading,
+      pool,
+      showPurchaseCTA,
+      isManuallyBilled,
+      openSupportTicketForm,
+    } = this.props;
 
     if (loading) {
       return <Loading />;
@@ -216,6 +223,7 @@ export class EditPage extends Component {
           content={<p>IPs in this pool will be re-assigned to your Default pool.</p>}
           onCancel={this.toggleDelete}
           onDelete={this.onDeletePool}
+          deleting={deleteLoading}
         />
       </Page>
     );
@@ -223,10 +231,11 @@ export class EditPage extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const { listLoading, listError } = state.ipPools;
+  const { listLoading, deleteLoading, listError } = state.ipPools;
 
   return {
     loading: listLoading,
+    deleteLoading,
     error: listError,
     pool: selectCurrentPool(state, props),
     ips: selectIpsForCurrentPool(state, props),
