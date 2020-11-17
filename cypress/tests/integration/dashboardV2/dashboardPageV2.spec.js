@@ -21,14 +21,12 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
 
-      cy.findByRole('heading', { name: 'Next Steps' }).should('exist'); // Screen reader only onboarding heading
-
       cy.findByDataId('dashboard-helpful-shortcuts').within(() => {
         cy.findByText('Invite a Team Member')
           .closest('a')
           .should('have.attr', 'href', '/account/users/create');
         cy.findByText(
-          'Need help integrating? Want to share Analytics Report? Invite your team!',
+          'Need help integrating? Want to share an Analytics Report? Invite your team!',
         ).should('be.visible');
 
         cy.findByText('Events')
@@ -94,7 +92,7 @@ describe('Version 2 of the dashboard page', () => {
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' }); // would normally give them the first onboarding step, but this person doesnt have the manage grant
-      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
+      stubSendingDomains({ fixture: '/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
       cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
@@ -212,7 +210,7 @@ describe('Version 2 of the dashboard page', () => {
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
-      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
       cy.wait([
@@ -226,9 +224,9 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.findByRole('heading', { name: 'Start Sending!' }).should('be.visible');
 
-      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
-        'be.visible',
-      );
+      cy.findAllByText('Create an').should('be.visible');
+      // Don't look for the abbreviate API - doesnt make much of a diff we just want to make sure the right step is displaying for the right data state.
+      cy.findAllByText('key in order to start sending via API or SMTP.').should('be.visible');
 
       cy.verifyLink({
         content: 'Create API Key',
@@ -257,7 +255,7 @@ describe('Version 2 of the dashboard page', () => {
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
-      stubApiKeyReq({ fixture: 'api-keys/200.get.json' });
+      stubApiKeyReq({ fixture: 'api-keys/200.get.transmissions-modify.json' });
 
       cy.visit(PAGE_URL);
       cy.wait([
@@ -300,8 +298,8 @@ describe('Version 2 of the dashboard page', () => {
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
-      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
+      stubSendingDomains({ fixture: '/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
       // Force not admin here
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
@@ -320,8 +318,6 @@ describe('Version 2 of the dashboard page', () => {
       ]);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
-
-      cy.findByRole('heading', { name: 'Next Steps' }).should('exist'); // Screen reader only onboarding heading
 
       cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
         'be.visible',
@@ -359,8 +355,8 @@ describe('Version 2 of the dashboard page', () => {
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      stubSendingDomains({ fixture: 'sending-domains/200.get.no-results.json' });
-      stubApiKeyReq({ fixture: 'api-keys/200.get.no-results.json' });
+      stubSendingDomains({ fixture: '/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
       cy.wait([
@@ -418,8 +414,6 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
       cy.findByRole('button', { name: 'Contact our Support Team' }).click();
       cy.withinModal(() => cy.findByRole('button', { name: 'Close' }).click());
-
-      cy.findByRole('heading', { name: 'Next Steps' }).should('not.exist'); // Screen reader only onboarding heading
     });
 
     it('does not render the "Setup Documentation" or the usage section panel when the user is not an admin, developer, or super user', () => {

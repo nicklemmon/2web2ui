@@ -15,15 +15,15 @@ import {
 } from 'src/selectors/accountBillingInfo';
 import { DashboardContextProvider } from './context/DashboardContext';
 import DashboardPageV2 from './DashboardPageV2';
-import { resolveStatus } from 'src/helpers/domains';
-
+import { selectApiKeysForSending } from 'src/selectors/api-keys';
 import { listApiKeys } from 'src/actions/api-keys';
+import { selectVerifiedDomains } from 'src/selectors/sendingDomains';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 
 function mapStateToProps(state) {
-  const isPending = state.account.loading || state.account.usageLoading || state.alerts.listPending;
   const sendingDomains = state.sendingDomains.list;
-  const apiKeys = state.apiKeys.keys;
+  const verifiedDomains = selectVerifiedDomains(state);
+  const apiKeysForSending = selectApiKeysForSending(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
   const isAnAdmin = isAdmin(state);
   const isDev = hasRole(ROLES.DEVELOPER)(state);
@@ -35,23 +35,16 @@ function mapStateToProps(state) {
   const addSendingDomainNeeded = (isAnAdmin || isDev) && sendingDomains.length === 0;
   if (addSendingDomainNeeded) onboarding = 'addSending';
 
-  // Set onboarding step two
-  const verifiedSendingDomains = sendingDomains
-    .map(i => {
-      return resolveStatus(i.status) === 'verified' ? i : null;
-    })
-    .filter(Boolean);
-
-  if (sendingDomains.length === 1 && verifiedSendingDomains.length === 0) {
+  if (sendingDomains.length === 1 && verifiedDomains.length === 0) {
     verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
   }
 
-  const verifySendingNeeded = !addSendingDomainNeeded && verifiedSendingDomains.length === 0;
+  const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
   if (verifySendingNeeded) onboarding = 'verifySending';
 
   // Set onboarding step three
   const createApiKeyNeeded =
-    !addSendingDomainNeeded && !verifySendingNeeded && apiKeys.length === 0;
+    !addSendingDomainNeeded && !verifySendingNeeded && apiKeysForSending.length === 0;
 
   if (createApiKeyNeeded) onboarding = 'createApiKey';
 
@@ -66,6 +59,14 @@ function mapStateToProps(state) {
     (!isAnAdmin && !isDev && lastUsageDate === null)
   )
     onboarding = 'fallback';
+
+  const isPending =
+    state.account.loading ||
+    state.apiKeys.keysLoading ||
+    state.sendingDomains.listLoading ||
+    state.account.usageLoading ||
+    state.alerts.listPending ||
+    lastUsageDate === -1;
 
   return {
     lastUsageDate,

@@ -4,7 +4,7 @@ import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp'
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
 import Configuration from '@sparkpost/matchbox-media/images/Configuration@medium.jpg';
-import { Loading } from 'src/components';
+import { Loading, Abbreviation } from 'src/components';
 import {
   Box,
   Button,
@@ -55,7 +55,7 @@ export default function DashboardPageV2() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (pending || lastUsageDate === -1) return <Loading />;
+  if (pending) return <Loading />;
 
   return (
     <Dashboard>
@@ -76,10 +76,6 @@ export default function DashboardPageV2() {
             <Stack>
               {onboarding !== 'fallback' && lastUsageDate === null && (
                 <Dashboard.Panel>
-                  <ScreenReaderOnly>
-                    <Heading as="h3">Next Steps</Heading>
-                  </ScreenReaderOnly>
-
                   {onboarding === 'addSending' && (
                     <Columns>
                       <Column>
@@ -93,9 +89,11 @@ export default function DashboardPageV2() {
                                 is required in order to start or enable analytics.
                               </TranslatableText>
                             </Text>
-                            <PageLink variant="primary" to="/domains/list/sending" as={Button}>
-                              Add Sending Domain
-                            </PageLink>
+                            <div>
+                              <PageLink variant="primary" to="/domains/list/sending" as={Button}>
+                                Add Sending Domain
+                              </PageLink>
+                            </div>
                           </Stack>
                         </Panel.Section>
                       </Column>
@@ -126,9 +124,11 @@ export default function DashboardPageV2() {
                               </TranslatableText>
                               <TranslatableText> DNS settings.</TranslatableText>
                             </Text>
-                            <PageLink variant="primary" to={verifySendingLink} as={Button}>
-                              Verify Sending Domain
-                            </PageLink>
+                            <div>
+                              <PageLink variant="primary" to={verifySendingLink} as={Button}>
+                                Verify Sending Domain
+                              </PageLink>
+                            </div>
                           </Stack>
                         </Panel.Section>
                       </Column>
@@ -150,17 +150,26 @@ export default function DashboardPageV2() {
                           <Panel.Headline>Start Sending!</Panel.Headline>
                           <Stack>
                             <Text>
-                              Create an API key in order to start sending via API or SMTP.
+                              <TranslatableText>Create an </TranslatableText>
+                              <Abbreviation title="Application Programming Interface">
+                                API
+                              </Abbreviation>
+                              <span> </span>
+                              <TranslatableText>
+                                key in order to start sending via API or SMTP.
+                              </TranslatableText>
                             </Text>
-                            <ExternalLink
-                              variant="primary"
-                              size="default"
-                              showIcon={false}
-                              to="/account/api-keys/create"
-                              as={Button}
-                            >
-                              Create API Key
-                            </ExternalLink>
+                            <div>
+                              <ExternalLink
+                                variant="primary"
+                                size="default"
+                                showIcon={false}
+                                to="/account/api-keys/create"
+                                as={Button}
+                              >
+                                Create API Key
+                              </ExternalLink>
+                            </div>
                           </Stack>
                         </Panel.Section>
                       </Column>
@@ -185,15 +194,17 @@ export default function DashboardPageV2() {
                               Follow the Getting Started documentation to set up sending via API or
                               SMTP.
                             </Text>
-                            <ExternalLink
-                              variant="primary"
-                              size="default"
-                              showIcon={false}
-                              to={LINKS.ONBOARDING_SENDING_EMAIL}
-                              as={Button}
-                            >
-                              Getting Started Documentation
-                            </ExternalLink>
+                            <div>
+                              <ExternalLink
+                                variant="primary"
+                                size="default"
+                                showIcon={false}
+                                to={LINKS.ONBOARDING_SENDING_EMAIL}
+                                as={Button}
+                              >
+                                Getting Started Documentation
+                              </ExternalLink>
+                            </div>
                           </Stack>
                         </Panel.Section>
                       </Column>
@@ -211,9 +222,6 @@ export default function DashboardPageV2() {
               )}
               {onboarding === 'fallback' && lastUsageDate === null && (
                 <Dashboard.Panel>
-                  <ScreenReaderOnly>
-                    <Heading as="h3">Next Steps</Heading>
-                  </ScreenReaderOnly>
                   <Columns>
                     <Column>
                       <Panel.Section>
@@ -222,15 +230,17 @@ export default function DashboardPageV2() {
                           <Text>
                             Build custom analytics, track engagement, diagnose errors, and more.
                           </Text>
-                          <ExternalLink
-                            variant="primary"
-                            size="default"
-                            showIcon={false}
-                            to="/signals/analytics"
-                            as={Button}
-                          >
-                            Go To Analytics Report
-                          </ExternalLink>
+                          <div>
+                            <ExternalLink
+                              variant="primary"
+                              size="default"
+                              showIcon={false}
+                              to="/signals/analytics"
+                              as={Button}
+                            >
+                              Go To Analytics Report
+                            </ExternalLink>
+                          </div>
                         </Stack>
                       </Panel.Section>
                     </Column>
@@ -258,7 +268,8 @@ export default function DashboardPageV2() {
                         <Dashboard.Tip>
                           <PageLink to="/account/users/create">Invite a Team Member</PageLink>
                           <Text>
-                            Need help integrating? Want to share Analytics Report? Invite your team!
+                            Need help integrating? Want to share an Analytics Report? Invite your
+                            team!
                           </Text>
                         </Dashboard.Tip>
                       )}
