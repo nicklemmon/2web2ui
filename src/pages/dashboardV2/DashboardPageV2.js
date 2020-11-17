@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
@@ -24,110 +24,38 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
-import { resolveStatus } from 'src/helpers/domains';
 
 const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
-var verifySendingLink = '/domains/list/sending';
-
-const dashboardReducer = (state, action) => {
-  switch (action.type) {
-    case 'INIT':
-      state.lastUsageDate = action.lastUsageDate;
-
-      const addSendingDomainNeeded =
-        (action.isAnAdmin || action.isDev) && action.sendingDomains.length === 0;
-
-      if (addSendingDomainNeeded) state.onboarding = 'addSending';
-
-      const verifiedSendingDomains = action.sendingDomains
-        .map(i => {
-          return resolveStatus(i.status) === 'verified' ? i : null;
-        })
-        .filter(Boolean);
-
-      if (action.sendingDomains.length === 1 && verifiedSendingDomains.length === 0) {
-        verifySendingLink = `/domains/details/sending-bounce/${action.sendingDomains[0].domain}`;
-      }
-
-      const verifySendingNeeded = !addSendingDomainNeeded && verifiedSendingDomains.length === 0;
-
-      if (verifySendingNeeded) state.onboarding = 'verifySending';
-
-      const createApiKeyNeeded =
-        !addSendingDomainNeeded && !verifySendingNeeded && action.apiKeys.length === 0;
-
-      if (createApiKeyNeeded) state.onboarding = 'createApiKey';
-
-      if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
-        state.onboarding = 'startSending';
-
-      return {
-        ...state,
-      };
-    default:
-      return {
-        ...state,
-      };
-  }
-};
-
-const initialState = {
-  lastUsageDate: -1,
-  onboarding: null,
-};
-
 export default function DashboardPageV2() {
   const {
     getAccount,
     listAlerts,
+    getUsage,
+    verifySendingLink,
+    onboarding,
+    lastUsageDate,
     isAnAdmin,
     isDev,
-    canManageSendingDomains,
-    getUsage,
     currentUser,
     pending,
     listSendingDomains,
     listApiKeys,
   } = useDashboardContext();
-
   const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
-  const [state, dispatch] = useReducer(dashboardReducer, initialState);
-
   useEffect(() => {
-    return Promise.all([
-      getAccount({ include: 'usage' }),
-      listAlerts(),
-      getUsage(),
-      listSendingDomains(),
-      listApiKeys(),
-    ]).then(responseArr => {
-      // eslint-disable-next-line no-unused-vars
-      const [account, alerts, usage, sendingDomains, apiKeys] = responseArr;
-      dispatch({
-        type: 'INIT',
-        lastUsageDate: usage?.messaging?.last_usage_date,
-        sendingDomains,
-        apiKeys,
-        isAnAdmin,
-        isDev,
-      });
-    });
-    // eslint-disable-next-line
+    getAccount({ include: 'usage' });
+    listAlerts();
+    getUsage();
+    listSendingDomains();
+    listApiKeys();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (pending || state.lastUsageDate === -1) return <Loading />;
-
-  let showOnboardingFallback = false;
-  if (
-    (!canManageSendingDomains && !state.lastUsageDate) ||
-    (!isAnAdmin && !isDev && !state.lastUsageDate)
-  ) {
-    showOnboardingFallback = true;
-  }
+  if (pending || lastUsageDate === -1) return <Loading />;
 
   return (
     <Dashboard>
@@ -146,13 +74,13 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {!showOnboardingFallback && !state.lastUsageDate && (
+              {onboarding !== 'fallback' && lastUsageDate === null && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
                   </ScreenReaderOnly>
 
-                  {state.onboarding === 'addSending' && (
+                  {onboarding === 'addSending' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
@@ -182,7 +110,7 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
-                  {state.onboarding === 'verifySending' && (
+                  {onboarding === 'verifySending' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
@@ -215,7 +143,7 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
-                  {state.onboarding === 'createApiKey' && (
+                  {onboarding === 'createApiKey' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
@@ -247,7 +175,7 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
-                  {state.onboarding === 'startSending' && (
+                  {onboarding === 'startSending' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
@@ -281,8 +209,7 @@ export default function DashboardPageV2() {
                   )}
                 </Dashboard.Panel>
               )}
-
-              {showOnboardingFallback && (
+              {onboarding === 'fallback' && lastUsageDate === null && (
                 <Dashboard.Panel>
                   <ScreenReaderOnly>
                     <Heading as="h3">Next Steps</Heading>
@@ -318,7 +245,6 @@ export default function DashboardPageV2() {
                   </Columns>
                 </Dashboard.Panel>
               )}
-
               <div data-id="dashboard-helpful-shortcuts">
                 <Dashboard.Panel>
                   <Panel.Section>
@@ -365,7 +291,6 @@ export default function DashboardPageV2() {
                   </Panel.Section>
                 </Dashboard.Panel>
               </div>
-
               <Columns collapseBelow="md" space="500">
                 {hasSetupDocumentationPanel && (
                   <Column>
