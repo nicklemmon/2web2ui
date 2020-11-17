@@ -151,9 +151,8 @@ export default function DashboardPageV2() {
                             <Text>
                               <TranslatableText>Create an </TranslatableText>
                               <Abbreviation title="Application Programming Interface">
-                                API
+                                API&nbsp;
                               </Abbreviation>
-                              <span> </span>
                               <TranslatableText>
                                 key in order to start sending via API or SMTP.
                               </TranslatableText>
