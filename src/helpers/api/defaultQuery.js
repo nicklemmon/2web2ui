@@ -23,17 +23,10 @@ export default function defaultQuery(key, { method, params, headers, auth }) {
     },
   }).then(response => {
     const results = _.get(response, 'data.results', response.data);
-    const links = _.get(response, 'data.links', {});
-    const total_count = _.get(response, 'data.total_count');
+    //TODO: Remove or find place with usePaginatedQuery();
+    // const links = _.get(response, 'data.links', {});
+    // const total_count = _.get(response, 'data.total_count');
 
-    if (Array.isArray(results)) {
-      results.extra = { links, total_count };
-      return results;
-    }
-
-    return {
-      ...results,
-      extra: { links, total_count },
-    };
+    return results;
   });
 }

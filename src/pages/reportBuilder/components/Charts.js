@@ -9,11 +9,12 @@ import { useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api';
 import {
   getMetricsFromKeys,
-  getQueryFromOptions,
+  getQueryFromOptionsV2 as getQueryFromOptions,
   transformData,
   FILTER_KEY_MAP,
 } from 'src/helpers/metrics';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
+import { Heading } from 'src/components/text';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
@@ -39,7 +40,9 @@ export default function ChartGroup() {
         ];
         return (
           <Box>
-            <h2>{compareFilter.value}</h2>
+            <Heading as="h2" looksLike="h5">
+              {compareFilter.value}
+            </Heading>
             <Charts
               key={`chart_group_${index}`}
               reportOptions={{ ...reportOptions, filters: newFilters }}
