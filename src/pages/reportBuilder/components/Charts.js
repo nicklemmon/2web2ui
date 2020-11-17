@@ -7,9 +7,8 @@ import { Box, Stack } from 'src/components/matchbox';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api';
-import { transformData } from 'src/helpers/metrics';
+import { getMetricsFromKeys, getQueryFromOptions, transformData } from 'src/helpers/metrics';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
-import { getMetricsFromKeys, getQueryFromOptions } from '../../../helpers/metrics';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
@@ -25,11 +24,12 @@ export function Charts(props) {
   const { reportOptions } = props;
 
   const formattedMetrics = useMemo(() => {
-    return getMetricsFromKeys(reportOptions.metrics);
+    return getMetricsFromKeys(reportOptions.metrics, true);
   }, [reportOptions.metrics]);
   const formattedOptions = useMemo(() => {
     return getQueryFromOptions({ ...reportOptions, metrics: formattedMetrics });
   }, [reportOptions, formattedMetrics]);
+  const { precision, to } = formattedOptions;
 
   const { data: rawChartData, status: chartStatus } = useSparkPostQuery(
     () => {
@@ -41,8 +41,6 @@ export function Charts(props) {
   const chartData = useMemo(() => {
     return transformData(rawChartData, formattedMetrics);
   }, [rawChartData, formattedMetrics]);
-
-  const { precision, yScale, to } = props;
 
   // Keeps track of hovered chart for Tooltip
   const [activeChart, setActiveChart] = React.useState(null);
@@ -89,7 +87,6 @@ export function Charts(props) {
             }))}
             {...formatters}
             yTickFormatter={chart.yAxisFormatter}
-            yScale={yScale}
             yLabel={chart.label}
             tooltipValueFormatter={chart.yAxisFormatter}
             showXAxis={i === charts.length - 1}
