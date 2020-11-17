@@ -26,6 +26,11 @@ export default function defaultQuery(key, { method, params, headers, auth }) {
     const links = _.get(response, 'data.links', {});
     const total_count = _.get(response, 'data.total_count');
 
+    if (Array.isArray(results)) {
+      results.extra = { links, total_count };
+      return results;
+    }
+
     return {
       ...results,
       extra: { links, total_count },
