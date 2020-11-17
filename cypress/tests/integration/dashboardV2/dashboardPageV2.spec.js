@@ -124,7 +124,7 @@ describe('Version 2 of the dashboard page', () => {
       ).should('not.be.visible');
     });
 
-    it('Shows verify sending domain onboarding step when the user has no verified sending domains on their account. Links to the list page with one domain.', () => {
+    it('Shows verify sending domain onboarding step when the user has no verified sending domains on their account. Links to the domain details page with one domain.', () => {
       stubGrantsRequest({ role: 'developer' });
       stubAlertsReq();
       stubAccountsReq();
