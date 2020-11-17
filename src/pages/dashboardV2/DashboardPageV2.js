@@ -46,7 +46,7 @@ export default function DashboardPageV2() {
   const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
   useEffect(() => {
-    getAccount({ include: 'usage' });
+    getAccount();
     listAlerts();
     getUsage();
     listSendingDomains();
