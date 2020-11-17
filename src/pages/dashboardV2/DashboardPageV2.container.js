@@ -28,6 +28,7 @@ function mapStateToProps(state) {
   const isAnAdmin = isAdmin(state);
   const isDev = hasRole(ROLES.DEVELOPER)(state);
   let verifySendingLink = '/domains/list/sending';
+  // TODO: https://sparkpost.atlassian.net/browse/FE-1249 - rvUsage rename
   let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
   let onboarding;
 
