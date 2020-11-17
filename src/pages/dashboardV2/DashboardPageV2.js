@@ -36,7 +36,6 @@ export default function DashboardPageV2() {
     getUsage,
     verifySendingLink,
     onboarding,
-    lastUsageDate,
     isAnAdmin,
     isDev,
     currentUser,
@@ -74,7 +73,7 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {onboarding !== 'fallback' && lastUsageDate === null && (
+              {onboarding !== 'fallback' && onboarding !== undefined && (
                 <Dashboard.Panel>
                   {onboarding === 'addSending' && (
                     <Columns>
@@ -220,7 +219,7 @@ export default function DashboardPageV2() {
                   )}
                 </Dashboard.Panel>
               )}
-              {onboarding === 'fallback' && lastUsageDate === null && (
+              {onboarding === 'fallback' && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>

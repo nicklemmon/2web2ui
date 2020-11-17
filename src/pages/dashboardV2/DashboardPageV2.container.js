@@ -28,48 +28,39 @@ function mapStateToProps(state) {
   const isAnAdmin = isAdmin(state);
   const isDev = hasRole(ROLES.DEVELOPER)(state);
   let verifySendingLink = '/domains/list/sending';
-  let lastUsageDate = -1;
+  let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
   let onboarding;
 
-  // Set onboarding step one
-  const addSendingDomainNeeded = (isAnAdmin || isDev) && sendingDomains.length === 0;
-  if (addSendingDomainNeeded) onboarding = 'addSending';
+  if (lastUsageDate === null) {
+    const addSendingDomainNeeded = (isAnAdmin || isDev) && sendingDomains.length === 0;
+    if (addSendingDomainNeeded) onboarding = 'addSending';
 
-  if (sendingDomains.length === 1 && verifiedDomains.length === 0) {
-    verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
+    if (sendingDomains.length === 1 && verifiedDomains.length === 0) {
+      verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
+    }
+
+    const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
+    if (verifySendingNeeded) onboarding = 'verifySending';
+
+    const createApiKeyNeeded =
+      !addSendingDomainNeeded && !verifySendingNeeded && apiKeysForSending.length === 0;
+
+    if (createApiKeyNeeded) onboarding = 'createApiKey';
+
+    if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
+      onboarding = 'startSending';
+
+    if (!canManageSendingDomains || (!isAnAdmin && !isDev)) onboarding = 'fallback';
   }
-
-  const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
-  if (verifySendingNeeded) onboarding = 'verifySending';
-
-  // Set onboarding step three
-  const createApiKeyNeeded =
-    !addSendingDomainNeeded && !verifySendingNeeded && apiKeysForSending.length === 0;
-
-  if (createApiKeyNeeded) onboarding = 'createApiKey';
-
-  // Set onboarding step four
-  if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
-    onboarding = 'startSending';
-
-  lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
-
-  if (
-    (!canManageSendingDomains && lastUsageDate === null) ||
-    (!isAnAdmin && !isDev && lastUsageDate === null)
-  )
-    onboarding = 'fallback';
 
   const isPending =
     state.account.loading ||
     state.apiKeys.keysLoading ||
     state.sendingDomains.listLoading ||
     state.account.usageLoading ||
-    state.alerts.listPending ||
-    lastUsageDate === -1;
+    state.alerts.listPending;
 
   return {
-    lastUsageDate,
     verifySendingLink,
     onboarding,
     canManageSendingDomains,
