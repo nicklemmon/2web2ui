@@ -22,23 +22,26 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
 
       cy.findByDataId('dashboard-helpful-shortcuts').within(() => {
-        cy.findByText('Invite a Team Member')
-          .closest('a')
-          .should('have.attr', 'href', '/account/users/create');
+        cy.verifyLink({
+          content: 'Invite a Team Member',
+          href: '/account/users/create',
+        });
         cy.findByText(
           'Need help integrating? Want to share an Analytics Report? Invite your team!',
         ).should('be.visible');
 
-        cy.findByText('Events')
-          .closest('a')
-          .should('have.attr', 'href', '/reports/message-events');
+        cy.verifyLink({
+          content: 'Events',
+          href: '/reports/message-events',
+        });
         cy.findByText(
           'Robust searching capabilities with ready access to the raw event data from your emails.',
         ).should('be.visible');
 
-        cy.findByText('Inbox Tracker')
-          .closest('a')
-          .should('have.attr', 'href', 'https://www.sparkpost.com/inbox-tracker/');
+        cy.verifyLink({
+          content: 'Inbox Tracker',
+          href: 'https://www.sparkpost.com/inbox-tracker/',
+        });
         cy.findByText(
           'Examine every element of deliverability with precision using Inbox Tracker.',
         ).should('be.visible');
@@ -63,23 +66,26 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
 
       cy.findByDataId('dashboard-helpful-shortcuts').within(() => {
-        cy.findByText('Templates')
-          .closest('a')
-          .should('have.attr', 'href', '/templates');
+        cy.verifyLink({
+          content: 'Templates',
+          href: '/templates',
+        });
         cy.findByText(
           'Programmatically tailor each message with SparkPost’s flexible templates.',
         ).should('be.visible');
 
-        cy.findByText('Events')
-          .closest('a')
-          .should('have.attr', 'href', '/reports/message-events');
+        cy.verifyLink({
+          content: 'Events',
+          href: '/reports/message-events',
+        });
         cy.findByText(
           'Robust searching capabilities with ready access to the raw event data from your emails.',
         ).should('be.visible');
 
-        cy.findByText('Inbox Tracker')
-          .closest('a')
-          .should('have.attr', 'href', 'https://www.sparkpost.com/inbox-tracker/');
+        cy.verifyLink({
+          content: 'Inbox Tracker',
+          href: 'https://www.sparkpost.com/inbox-tracker/',
+        });
 
         cy.findByText(
           'Examine every element of deliverability with precision using Inbox Tracker.',
@@ -99,9 +105,9 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
 
-      cy.findAllByText('At least one').should('be.visible');
-      cy.findAllByText('verified sending domain').should('be.visible');
-      cy.findAllByText('is required in order to start or enable analytics.').should('be.visible');
+      cy.get('p').contains(
+        'At least one verified sending domain is required in order to start or enable analytics.',
+      );
 
       cy.verifyLink({
         content: 'Add Sending Domain',
@@ -136,12 +142,9 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
 
-      cy.findAllByText('Once a sending domain has been added, it needs to be').should('be.visible');
-      cy.findAllByText('verified.').should('be.visible');
-      cy.findAllByText(
-        'Follow the instructions on the domain details page to configure your',
-      ).should('be.visible');
-      cy.findAllByText('DNS settings.').should('be.visible');
+      cy.get('p').contains(
+        'Once a sending domain has been added, it needs to be verified. Follow the instructions on the domain details page to configure your DNS settings.',
+      );
 
       cy.verifyLink({
         content: 'Verify Sending Domain',
@@ -176,12 +179,9 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
 
-      cy.findAllByText('Once a sending domain has been added, it needs to be').should('be.visible');
-      cy.findAllByText('verified.').should('be.visible');
-      cy.findAllByText(
-        'Follow the instructions on the domain details page to configure your',
-      ).should('be.visible');
-      cy.findAllByText('DNS settings.').should('be.visible');
+      cy.get('p').contains(
+        'Once a sending domain has been added, it needs to be verified. Follow the instructions on the domain details page to configure your DNS settings.',
+      );
 
       cy.verifyLink({
         content: 'Verify Sending Domain',
@@ -224,9 +224,7 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.findByRole('heading', { name: 'Start Sending!' }).should('be.visible');
 
-      cy.findAllByText('Create an').should('be.visible');
-      // Don't look for the abbreviate API - doesnt make much of a diff we just want to make sure the right step is displaying for the right data state.
-      cy.findAllByText('key in order to start sending via API or SMTP.').should('be.visible');
+      cy.get('p').contains('Create an API key in order to start sending via API or SMTP.');
 
       cy.verifyLink({
         content: 'Create API Key',
@@ -268,9 +266,10 @@ describe('Version 2 of the dashboard page', () => {
       ]);
 
       cy.findByRole('heading', { name: 'Start Sending!' }).should('be.visible');
-      cy.findByText(
+
+      cy.get('p').contains(
         'Follow the Getting Started documentation to set up sending via API or SMTP.',
-      ).should('be.visible');
+      );
 
       cy.verifyLink({
         content: 'Getting Started Documentation',
@@ -369,6 +368,7 @@ describe('Version 2 of the dashboard page', () => {
       ]);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+
       cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
         'be.visible',
       );

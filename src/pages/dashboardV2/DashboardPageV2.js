@@ -82,8 +82,8 @@ export default function DashboardPageV2() {
                           <Panel.Headline>Get Started!</Panel.Headline>
                           <Stack>
                             <Text>
-                              <TranslatableText>At least one </TranslatableText>
-                              <Bold>verified sending domain </Bold>
+                              <TranslatableText>At least one&nbsp;</TranslatableText>
+                              <Bold>verified sending domain&nbsp;</Bold>
                               <TranslatableText>
                                 is required in order to start or enable analytics.
                               </TranslatableText>
@@ -117,11 +117,11 @@ export default function DashboardPageV2() {
                               <TranslatableText>
                                 Once a sending domain has been added, it needs to be
                               </TranslatableText>
-                              <Bold> verified. </Bold>
+                              <Bold>&nbsp;verified.&nbsp;</Bold>
                               <TranslatableText>
                                 Follow the instructions on the domain details page to configure your
                               </TranslatableText>
-                              <TranslatableText> DNS settings.</TranslatableText>
+                              <TranslatableText>&nbsp;DNS settings.</TranslatableText>
                             </Text>
                             <div>
                               <PageLink variant="primary" to={verifySendingLink} as={Button}>
@@ -149,24 +149,23 @@ export default function DashboardPageV2() {
                           <Panel.Headline>Start Sending!</Panel.Headline>
                           <Stack>
                             <Text>
-                              <TranslatableText>Create an </TranslatableText>
+                              <TranslatableText>Create an&nbsp;</TranslatableText>
                               <Abbreviation title="Application Programming Interface">
                                 API&nbsp;
                               </Abbreviation>
-                              <TranslatableText>
-                                key in order to start sending via API or SMTP.
-                              </TranslatableText>
+                              <TranslatableText>key in order to start sending via</TranslatableText>
+                              <Abbreviation title="Application Programming Interface">
+                                &nbsp;API&nbsp;
+                              </Abbreviation>
+                              <TranslatableText>or</TranslatableText>
+                              <Abbreviation title="Simple Mail Transfer Protocol">
+                                &nbsp;SMTP.
+                              </Abbreviation>
                             </Text>
                             <div>
-                              <ExternalLink
-                                variant="primary"
-                                size="default"
-                                showIcon={false}
-                                to="/account/api-keys/create"
-                                as={Button}
-                              >
+                              <PageLink variant="primary" to="/account/api-keys/create" as={Button}>
                                 Create API Key
-                              </ExternalLink>
+                              </PageLink>
                             </div>
                           </Stack>
                         </Panel.Section>
@@ -189,8 +188,16 @@ export default function DashboardPageV2() {
                           <Panel.Headline>Start Sending!</Panel.Headline>
                           <Stack>
                             <Text>
-                              Follow the Getting Started documentation to set up sending via API or
-                              SMTP.
+                              <TranslatableText>
+                                Follow the Getting Started documentation to set up sending via&nbsp;
+                              </TranslatableText>
+                              <Abbreviation title="Application Programming Interface">
+                                API&nbsp;
+                              </Abbreviation>
+                              <TranslatableText>or</TranslatableText>
+                              <Abbreviation title="Simple Mail Transfer Protocol">
+                                &nbsp;SMTP.
+                              </Abbreviation>
                             </Text>
                             <div>
                               <ExternalLink
@@ -229,15 +236,9 @@ export default function DashboardPageV2() {
                             Build custom analytics, track engagement, diagnose errors, and more.
                           </Text>
                           <div>
-                            <ExternalLink
-                              variant="primary"
-                              size="default"
-                              showIcon={false}
-                              to="/signals/analytics"
-                              as={Button}
-                            >
+                            <PageLink variant="primary" to="/signals/analytics" as={Button}>
                               Go To Analytics Report
-                            </ExternalLink>
+                            </PageLink>
                           </div>
                         </Stack>
                       </Panel.Section>
