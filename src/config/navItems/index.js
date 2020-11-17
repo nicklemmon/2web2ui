@@ -10,6 +10,7 @@ import {
   GridOff,
 } from '@sparkpost/matchbox-icons';
 import { hasGrants } from 'src/helpers/conditions';
+import { any } from 'src/helpers/conditions';
 import inboxPlacementNavItems from './inboxPlacement';
 
 const dashboard = {
@@ -198,6 +199,7 @@ const subaccounts = {
 const domains = {
   label: 'Domains',
   to: '/domains',
+  condition: any(hasGrants('sending_domains/manage'), hasGrants('tracking_domains/manage')),
 };
 
 const configurationBase = {

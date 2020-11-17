@@ -42,19 +42,24 @@ describe('The domains list page', () => {
       cy.wait('@accountDomainsReq');
 
       // Going right to left since the first tab is already active!
-      cy.findByRole('tab', { name: 'Tracking Domains' })
-        .click({ force: true })
-        .should('have.attr', 'aria-selected', 'true');
+      cy.findByRole('tab', { name: 'Tracking Domains' }).click({ force: true });
+      cy.findByRole('tab', { name: 'Tracking Domains' }).should(
+        'have.attr',
+        'aria-selected',
+        'true',
+      );
       cy.url().should('include', `${PAGE_URL}/list/tracking`);
 
-      cy.findByRole('tab', { name: 'Bounce Domains' })
-        .click({ force: true })
-        .should('have.attr', 'aria-selected', 'true');
+      cy.findByRole('tab', { name: 'Bounce Domains' }).click({ force: true });
+      cy.findByRole('tab', { name: 'Bounce Domains' }).should('have.attr', 'aria-selected', 'true');
       cy.url().should('include', `${PAGE_URL}/list/bounce`);
 
-      cy.findByRole('tab', { name: 'Sending Domains' })
-        .click({ force: true })
-        .should('have.attr', 'aria-selected', 'true');
+      cy.findByRole('tab', { name: 'Sending Domains' }).click({ force: true });
+      cy.findByRole('tab', { name: 'Sending Domains' }).should(
+        'have.attr',
+        'aria-selected',
+        'true',
+      );
       cy.url().should('include', `${PAGE_URL}/list/sending`);
     });
 
@@ -1031,7 +1036,6 @@ describe('The domains list page', () => {
       cy.visit(PAGE_URL);
 
       cy.findByRole('heading', { name: 'Page Not Found' }).should('be.visible');
-      cy.url().should('include', '404');
     });
   }
 });

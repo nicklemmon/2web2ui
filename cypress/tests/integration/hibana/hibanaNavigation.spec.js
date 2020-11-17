@@ -29,6 +29,231 @@ if (IS_HIBANA_ENABLED) {
         cy.viewport(960, 1024);
       });
 
+      it('all nav links renders correctly for admin', () => {
+        commonBeforeSteps();
+        stubGrantsRequest({ role: 'admin' });
+        cy.get(desktopNavSelector).within(() => {
+          cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
+          cy.verifyLink({ content: 'Content', href: '/templates' });
+          cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
+          cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
+          cy.verifyLink({ content: 'Configuration', href: '/domains' });
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Signals Analytics').click();
+        });
+        cy.url().should('include', '/signals/analytics');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
+          cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
+          cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
+        });
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Events').click();
+        });
+        cy.url().should('include', '/reports/message-events');
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Content').click();
+        });
+
+        cy.url().should('include', '/templates');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Templates', href: '/templates' });
+          cy.verifyLink({ content: 'A/B Testing', href: '/ab-testing' });
+          cy.verifyLink({ content: 'Snippets', href: '/snippets' });
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Recipients').click();
+        });
+
+        cy.url().should('include', '/recipient-validation/list');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Recipient Validation', href: '/recipient-validation/list' });
+          cy.verifyLink({ content: 'Recipient Lists', href: '/lists/recipient-lists' });
+          cy.verifyLink({ content: 'Suppressions', href: '/lists/suppressions' });
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Configuration').click();
+        });
+
+        cy.url().should('include', '/domains');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Domains', href: '/domains' });
+          cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
+          cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
+          cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
+          cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
+        });
+      });
+      it('all nav links renders correctly for developer', () => {
+        commonBeforeSteps();
+        stubGrantsRequest({ role: 'developer' });
+        cy.get(desktopNavSelector).within(() => {
+          cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
+          cy.verifyLink({ content: 'Content', href: '/templates' });
+          cy.verifyLink({ content: 'Recipients', href: '/recipient-validation/list' });
+          cy.verifyLink({ content: 'Inbox Placement', href: '/inbox-placement' });
+          cy.verifyLink({ content: 'Configuration', href: '/domains' });
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Signals Analytics').click();
+        });
+        cy.url().should('include', '/signals/analytics');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
+          cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
+          cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
+        });
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Events').click();
+        });
+        cy.url().should('include', '/reports/message-events');
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Content').click();
+        });
+
+        cy.url().should('include', '/templates');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Templates', href: '/templates' });
+          cy.verifyLink({ content: 'A/B Testing', href: '/ab-testing' });
+          cy.verifyLink({ content: 'Snippets', href: '/snippets' });
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Recipients').click();
+        });
+
+        cy.url().should('include', '/recipient-validation/list');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Recipient Validation', href: '/recipient-validation/list' });
+          cy.verifyLink({ content: 'Recipient Lists', href: '/lists/recipient-lists' });
+          cy.verifyLink({ content: 'Suppressions', href: '/lists/suppressions' });
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Configuration').click();
+        });
+
+        cy.url().should('include', '/domains');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Domains', href: '/domains' });
+          cy.verifyLink({ content: 'Webhooks', href: '/webhooks' });
+          cy.verifyLink({ content: 'IP Pools', href: '/account/ip-pools' });
+          cy.verifyLink({ content: 'API Keys', href: '/account/api-keys' });
+          cy.verifyLink({ content: 'SMTP Settings', href: '/account/smtp' });
+        });
+      });
+      it('all nav links renders correctly for templates', () => {
+        stubGrantsRequest({ role: 'templates' });
+        commonBeforeSteps();
+        cy.get(desktopNavSelector).within(() => {
+          cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
+          cy.verifyLink({ content: 'Content', href: '/templates' });
+          cy.verifyLink({ content: 'Recipients', href: '/lists/recipient-lists' });
+          cy.findByText('Configuration').should('not.be.visible');
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Signals Analytics').click();
+        });
+        cy.url().should('include', '/signals/analytics');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
+          cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
+          cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
+        });
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Events').click();
+        });
+        cy.url().should('include', '/reports/message-events');
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Content').click();
+        });
+
+        cy.url().should('include', '/templates');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Templates', href: '/templates' });
+          cy.verifyLink({ content: 'A/B Testing', href: '/ab-testing' });
+          cy.verifyLink({ content: 'Snippets', href: '/snippets' });
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Recipients').click();
+        });
+
+        cy.url().should('include', '/lists/recipient-list');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.findByText('Recipient Validation').should('not.be.visible');
+          cy.verifyLink({ content: 'Recipient Lists', href: '/lists/recipient-lists' });
+          cy.verifyLink({ content: 'Suppressions', href: '/lists/suppressions' });
+        });
+      });
+      it('all nav links renders correctly for reporting user', () => {
+        stubGrantsRequest({ role: 'reporting' });
+        commonBeforeSteps();
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.verifyLink({ content: 'Signals Analytics', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Events', href: '/reports/message-events' });
+          cy.verifyLink({ content: 'Content', href: '/templates' });
+          cy.findByText('Recipients').should('not.be.visible');
+          cy.findByText('Inbox Placement').should('not.be.visible');
+          cy.findByText('Configuration').should('not.be.visible');
+        });
+
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Signals Analytics').click();
+        });
+        cy.url().should('include', '/signals/analytics');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Analytics Report', href: '/signals/analytics' });
+          cy.verifyLink({ content: 'Health Score', href: '/signals/health-score' });
+          cy.verifyLink({ content: 'Spam Traps', href: '/signals/spam-traps' });
+          cy.verifyLink({ content: 'Engagement Recency', href: '/signals/engagement' });
+          cy.verifyLink({ content: 'Blocklist', href: '/signals/blocklist/incidents' });
+        });
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Events').click();
+        });
+        cy.url().should('include', '/reports/message-events');
+        cy.get(desktopNavSelector).within(() => {
+          cy.findByText('Content').click();
+        });
+
+        cy.url().should('include', '/templates');
+
+        cy.get(secondaryNavSelector).within(() => {
+          cy.verifyLink({ content: 'Templates', href: '/templates' });
+          cy.findByText('A/B Testing').should('not.be.visible');
+          cy.verifyLink({ content: 'Snippets', href: '/snippets' });
+        });
+      });
+
       it('does not render the mobile navigation at 960px viewport width and above', () => {
         commonBeforeSteps();
 
@@ -185,29 +410,6 @@ if (IS_HIBANA_ENABLED) {
           });
         },
       );
-
-      it('renders the "Domains" link', () => {
-        cy.stubAuth();
-        cy.stubRequest({
-          url: '/api/v1/account*',
-          fixture: 'account/200.get.json',
-          requestAlias: 'accountDomainsV2Req',
-        });
-        cy.login({ isStubbed: true });
-        cy.visit('/');
-
-        cy.wait('@accountDomainsV2Req');
-
-        cy.get(desktopNavSelector).within(() => {
-          cy.findByText('Configuration').click();
-        });
-
-        cy.url().should('include', '/domains');
-
-        cy.get(secondaryNavSelector).within(() => {
-          cy.verifyLink({ content: 'Domains', href: '/domains' });
-        });
-      });
 
       it("renders the pending cancellation banner when the user's account is pending cancellation", () => {
         cy.stubAuth();
@@ -506,7 +708,6 @@ if (IS_HIBANA_ENABLED) {
         });
         cy.visit('/');
         toggleAccountMenu();
-
         cy.get(accountActionlistSelector).within(() => {
           cy.findByText('Upgrade').should('be.visible');
         });

@@ -56,7 +56,6 @@ describe('The verify tracking domain page', () => {
       cy.visit(PAGE_URL);
 
       cy.findByRole('heading', { name: 'Page Not Found' }).should('be.visible');
-      cy.url().should('include', '404');
     });
   }
 });
