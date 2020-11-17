@@ -7,7 +7,12 @@ import { Box, Stack } from 'src/components/matchbox';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api';
-import { getMetricsFromKeys, getQueryFromOptions, transformData } from 'src/helpers/metrics';
+import {
+  getMetricsFromKeys,
+  getQueryFromOptions,
+  transformData,
+  FILTER_KEY_MAP,
+} from 'src/helpers/metrics';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 const DEFAULT_UNIT = 'number';
 
@@ -17,7 +22,33 @@ function getUniqueUnits(metrics) {
 
 export default function ChartGroup() {
   const { state: reportOptions } = useReportBuilderContext();
-  return <Charts reportOptions={reportOptions} />;
+  const { compare = [] } = reportOptions;
+
+  // No compare filters
+  if (!compare.length) {
+    return <Charts reportOptions={reportOptions} />;
+  }
+
+  return (
+    <Stack>
+      {compare.map((compareFilter, index) => {
+        const filterType = FILTER_KEY_MAP[compareFilter.type];
+        const newFilters = [
+          ...reportOptions.filters,
+          { AND: { [filterType]: { eq: [compareFilter] } } },
+        ];
+        return (
+          <Box>
+            <h2>{compareFilter.value}</h2>
+            <Charts
+              key={`chart_group_${index}`}
+              reportOptions={{ ...reportOptions, filters: newFilters }}
+            />
+          </Box>
+        );
+      })}
+    </Stack>
+  );
 }
 
 export function Charts(props) {
