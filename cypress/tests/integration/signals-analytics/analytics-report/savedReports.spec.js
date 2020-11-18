@@ -10,22 +10,25 @@ if (IS_HIBANA_ENABLED) {
       cy.stubRequest({
         url: '/api/v1/account',
         fixture: 'account/200.get.has-scheduled-reports',
+        requestAlias: 'accountReq',
       });
 
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.metrics-rollup.json',
+        requestAlias: 'userReq',
       });
 
       cy.stubRequest({
         url: '/api/v1/reports',
         fixture: '200.get.no-results',
+        requestAlias: 'reportsReq',
       });
 
       cy.stubRequest({
         url: '/api/v1/billing/subscription',
         fixture: 'billing/subscription/200.get',
-        requestAlias: 'getBillingSubscription',
+        requestAlias: 'billingSubscriptionReq',
       });
     });
 
@@ -46,6 +49,8 @@ if (IS_HIBANA_ENABLED) {
 
     it('Selecting a preset report works correctly', () => {
       cy.visit(PAGE_URL);
+      cy.wait('@reportsReq');
+
       cy.withinMainContent(() => {
         cy.findByLabelText('Report').type('engagement');
         cy.findByText('Engagement Report').should('be.visible');
