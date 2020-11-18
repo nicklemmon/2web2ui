@@ -215,17 +215,16 @@ export function ReportBuilder({
           reportLoading={chart.chartLoading}
           searchOptions={summarySearchOptions}
         />
+      </Panel>
+      <Panel>
         {isEmpty ? (
           <Empty message="No Data" description="Must select at least one metric." />
         ) : (
           <>
-            <hr className={styles.Line} />
             <div data-id="summary-chart">
               <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
                 <Tabs.Item>
-                  <Panel.Section className={styles.ChartSection}>
-                    <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
-                  </Panel.Section>
+                  <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
                   <Box padding="400" backgroundColor={tokens.color_gray_1000}>
                     <Grid>
                       <Grid.Column sm={3}>

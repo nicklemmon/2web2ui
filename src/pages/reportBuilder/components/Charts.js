@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from './LineChart';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
-import { Box, Stack } from 'src/components/matchbox';
+import { Box, Stack, Panel } from 'src/components/matchbox';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api';
@@ -21,17 +21,25 @@ function getUniqueUnits(metrics) {
   return _.uniq(metrics.map(({ unit = DEFAULT_UNIT }) => unit));
 }
 
-export default function ChartGroup() {
+export default function ChartContainer() {
   const { state: reportOptions } = useReportBuilderContext();
-  const { compare = [] } = reportOptions;
+  return <ChartGroups reportOptions={reportOptions} />;
+}
 
-  // No compare filters
+export function ChartGroups(props) {
+  const { reportOptions } = props;
+  const { compare } = reportOptions;
+
   if (!compare.length) {
-    return <Charts reportOptions={reportOptions} />;
+    return (
+      <Panel.Section>
+        <Charts reportOptions={reportOptions} />
+      </Panel.Section>
+    );
   }
 
   return (
-    <Stack>
+    <>
       {compare.map((compareFilter, index) => {
         const filterType = FILTER_KEY_MAP[compareFilter.type];
         const newFilters = [
@@ -39,27 +47,30 @@ export default function ChartGroup() {
           { AND: { [filterType]: { eq: [compareFilter] } } },
         ];
         return (
-          <Box>
-            <Heading as="h2" looksLike="h5">
-              {compareFilter.value}
-            </Heading>
-            <Charts
-              key={`chart_group_${index}`}
-              reportOptions={{ ...reportOptions, filters: newFilters }}
-            />
-          </Box>
+          <Panel.Section>
+            <Box key={`chart_group_${index}`}>
+              <Heading data-id={`heading_${index}`} as="h2" looksLike="h5">
+                {compareFilter.value}
+              </Heading>
+              <Charts
+                key={`chart_group_${index}`}
+                reportOptions={{ ...reportOptions, filters: newFilters }}
+              />
+            </Box>
+          </Panel.Section>
         );
       })}
-    </Stack>
+    </>
   );
 }
 
 export function Charts(props) {
   const { reportOptions } = props;
+  const { compare, metrics } = reportOptions;
 
   const formattedMetrics = useMemo(() => {
-    return getMetricsFromKeys(reportOptions.metrics, true);
-  }, [reportOptions.metrics]);
+    return getMetricsFromKeys(metrics, true);
+  }, [metrics]);
   const formattedOptions = useMemo(() => {
     return getQueryFromOptions({ ...reportOptions, metrics: formattedMetrics });
   }, [reportOptions, formattedMetrics]);
@@ -90,15 +101,14 @@ export function Charts(props) {
   }
 
   const formatters = getLineChartFormatters(precision, to);
-
   //Separates the metrics into their appropriate charts
   const charts = getUniqueUnits(formattedMetrics).map(unit => ({
     metrics: formattedMetrics.filter(metric => metric.unit === unit),
     ...METRICS_UNIT_CONFIG[unit],
   }));
-
   let height = 150;
-  switch (charts.length) {
+
+  switch (charts.length * (compare.length || 1)) {
     case 1:
       height = 400;
       break;
