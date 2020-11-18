@@ -45,11 +45,7 @@ export function refreshSummaryReport(
 
 export function refreshReportBuilder(
   updates = {},
-  {
-    getChartData = _getChartData,
-    getTableData = _getTableDataReportBuilder,
-    getAggregateData = _getAggregateData,
-  } = {},
+  { getTableData = _getTableDataReportBuilder, getAggregateData = _getAggregateData } = {},
 ) {
   return (dispatch, getState) => {
     const { summaryChart } = getState();
@@ -69,7 +65,6 @@ export function refreshReportBuilder(
     const params = getQueryFromOptionsV2(merged);
     const isCurrentGroupingAggregates = summaryChart.groupBy === 'aggregate';
     return Promise.all([
-      dispatch(getChartData({ params, metrics: merged.metrics })),
       dispatch(getAggregateData({ params, metrics: merged.metrics, isCurrentGroupingAggregates })),
       !isCurrentGroupingAggregates && dispatch(getTableData({ params, metrics: merged.metrics })),
     ]);
