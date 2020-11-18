@@ -78,7 +78,7 @@ if (IS_HIBANA_ENABLED) {
       cy.withinMainContent(() => {
         METRICS.forEach(metric => {
           cy.findAllByText(metric.name).should('have.length', 2);
-          cy.url().should('include', `metrics=${metric.queryParam}`);
+          cy.url().should('include', `=${metric.queryParam}`);
         });
       });
 
@@ -103,7 +103,7 @@ if (IS_HIBANA_ENABLED) {
       cy.withinMainContent(() => {
         uncheckedMetrics.forEach(metric => {
           cy.findAllByText(metric.name).should('not.be.visible');
-          cy.url().should('not.include', `metrics=${metric.queryParam}`);
+          cy.url().should('not.include', `=${metric.queryParam}`);
         });
       });
 
@@ -117,7 +117,7 @@ if (IS_HIBANA_ENABLED) {
         const timeSeriesAlias = `getTimeSeries${tagContent}`;
         const metric = METRICS.find(metric => metric.name === tagContent);
 
-        cy.url().should('include', `metrics=${metric.queryParam}`);
+        cy.url().should('include', `=${metric.queryParam}`);
 
         stubDeliverability(deliverabilityAlias);
         stubTimeSeries(timeSeriesAlias);
@@ -135,7 +135,7 @@ if (IS_HIBANA_ENABLED) {
         });
 
         cy.findByText(tagContent).should('not.be.visible');
-        cy.url().should('not.include', `metrics=${metric.queryParam}`);
+        cy.url().should('not.include', `=${metric.queryParam}`);
       }
 
       cy.findByDataId('report-options').within(() => {

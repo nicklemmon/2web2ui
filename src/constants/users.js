@@ -4,7 +4,7 @@ export const ROLES = {
   TEMPLATES: 'templates',
   REPORTING: 'reporting',
   SUBACCOUNT_REPORTING: 'subaccount_reporting',
-  SUPERUSER: 'superuser'
+  SUPERUSER: 'superuser',
 };
 
 export const ROLE_LABELS = {
@@ -14,6 +14,6 @@ export const ROLE_LABELS = {
   [ROLES.REPORTING]: 'Reporting',
   [ROLES.SUBACCOUNT_REPORTING]: 'Reporting',
   [ROLES.SUPERUSER]: 'Super User',
-  heroku: 'Heroku'
+  heroku: 'Heroku',
 };
 export const SUBACCOUNT_ROLES = [ROLES.SUBACCOUNT_REPORTING];

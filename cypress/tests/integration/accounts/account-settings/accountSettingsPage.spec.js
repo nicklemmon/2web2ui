@@ -54,12 +54,15 @@ describe('Account Settings Page', () => {
           cy.visit(PAGE_URL);
         });
         it('renders correct message when no prior scim token is present', () => {
+          cy.wait('@oldScimTokenGet');
+
           cy.findByText('No token generated').should('be.visible');
         });
         it(
           'opens Generate SCIM token Modal when a token is not present and clicking on Continue dismisses the Modal and new token can be found',
           { retries: 4 },
           () => {
+            cy.wait('@oldScimTokenGet');
             cy.stubRequest({
               method: 'POST',
               url: 'api/v1/api-keys',

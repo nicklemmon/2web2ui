@@ -117,7 +117,7 @@ if (IS_HIBANA_ENABLED) {
 
     it('Properly loads form with query parameter', () => {
       cy.visit(
-        '/signals/analytics?compare=Subaccount%3AFake%20Subaccount%201%20%28ID%20101%29%3A101&compare=Subaccount%3AFake%20Subaccount%203%20%28ID%20103%29%3A103',
+        '/signals/analytics?compare%5B0%5D%5Btype%5D=Subaccount&compare%5B0%5D%5Bvalue%5D=Fake%20Subaccount%201%20%28ID%20101%29&compare%5B0%5D%5Bid%5D=101&compare%5B1%5D%5Btype%5D=Subaccount&compare%5B1%5D%5Bvalue%5D=Fake%20Subaccount%203%20%28ID%20103%29&compare%5B1%5D%5Bid%5D=103',
       );
       cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
 

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
 import Configuration from '@sparkpost/matchbox-media/images/Configuration@medium.jpg';
-import { Loading } from 'src/components';
+import { Loading, Abbreviation } from 'src/components';
 import {
   Box,
   Button,
@@ -33,71 +33,28 @@ export default function DashboardPageV2() {
   const {
     getAccount,
     listAlerts,
-    isAdminOrDev,
-    canManageSendingDomains,
     getUsage,
+    verifySendingLink,
+    onboarding,
+    isAnAdmin,
+    isDev,
     currentUser,
     pending,
-    hasUsageSection,
     listSendingDomains,
+    listApiKeys,
   } = useDashboardContext();
-
-  // TODO: useReducer instead
-  const [hasSetupDocumentationPanel, setHasSetupDocumentationPanel] = useState();
-  const [addSendingDomainOnboarding, setAddSendingDomainOnboarding] = useState();
-  const [lastUsageDate, setlastUsageDate] = useState(-1);
-
-  // TODO: useReducer instead
-  function setupState(lastUsageDate, sendingDomains) {
-    setlastUsageDate(lastUsageDate);
-    setHasSetupDocumentationPanel(isAdminOrDev);
-    setAddSendingDomainOnboarding(
-      isAdminOrDev &&
-        canManageSendingDomains &&
-        sendingDomains.length === 0 &&
-        lastUsageDate === null,
-    );
-    // TODO: FE-1211
-    /**
-        setVerifySendingDomainOnboarding(
-          !addSendingDomainOnboarding &&
-          verifiedSendingDomains.length === 0 &&
-        )
-     */
-    // TODO: FE-1212
-    /**
-        setCreateApiKeyOnboarding(
-          !addSendingDomainOnboarding &&
-          !verifySendingDomainOnboarding &&
-          lastUsageDate === null,
-          accountApiKeys.length === 0
-        )
-     */
-  }
-
-  function init(lastUsageDate) {
-    listSendingDomains().then(sendingDomains => {
-      setupState(lastUsageDate, sendingDomains);
-    });
-  }
+  const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
   useEffect(() => {
-    getAccount({ include: 'usage' });
+    getAccount();
     listAlerts();
-    if (hasUsageSection) {
-      // !IMPORTANT - this is needed to display the rv usage section which should only be visible to admins
-      getUsage()
-        .then(res => {
-          init(res?.messaging?.last_usage_date);
-        })
-        .catch(e => {
-          throw e;
-        });
-    }
-    // eslint-disable-next-line
+    getUsage();
+    listSendingDomains();
+    listApiKeys();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (pending || lastUsageDate === -1) return <Loading />;
+  if (pending) return <Loading />;
 
   return (
     <Dashboard>
@@ -116,35 +73,27 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {isAdminOrDev && (
+              {onboarding !== 'fallback' && onboarding !== undefined && (
                 <Dashboard.Panel>
-                  <ScreenReaderOnly>
-                    <Heading as="h3">Next Steps</Heading>
-                  </ScreenReaderOnly>
-
-                  {addSendingDomainOnboarding && (
+                  {onboarding === 'addSending' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Get Started!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            <TranslatableText>At least one </TranslatableText>
-                            <Bold>verified sending domain </Bold>
-                            <TranslatableText>
-                              is required in order to start or enable analytics.
-                            </TranslatableText>
-                          </Text>
-                          <PageLink
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            to="/domains/list/sending"
-                            as={Button}
-                          >
-                            Add Sending Domain
-                          </PageLink>
+                          <Panel.Headline>Get Started!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              <TranslatableText>At least one&nbsp;</TranslatableText>
+                              <Bold>verified sending domain&nbsp;</Bold>
+                              <TranslatableText>
+                                is required in order to start or enable analytics.
+                              </TranslatableText>
+                            </Text>
+                            <div>
+                              <PageLink variant="primary" to="/domains/list/sending" as={Button}>
+                                Add Sending Domain
+                              </PageLink>
+                            </div>
+                          </Stack>
                         </Panel.Section>
                       </Column>
                       <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
@@ -158,30 +107,110 @@ export default function DashboardPageV2() {
                     </Columns>
                   )}
 
-                  {/* TODO: FE-1213 will be split out over the rest of them - add conditions here to meet 1213 requirements */}
-                  {/* !verifySendingDomainOnboarding */}
-                  {/* !createApiKeyOnboarding */}
-                  {!addSendingDomainOnboarding && (
+                  {onboarding === 'verifySending' && (
                     <Columns>
                       <Column>
                         <Panel.Section>
-                          <Panel.Headline>
-                            <TranslatableText>Start Sending!</TranslatableText>
-                          </Panel.Headline>
-                          <Text pb="600">
-                            Follow the Getting Started documentation to set up sending via API or
-                            SMTP.
-                          </Text>
-                          <ExternalLink
-                            variant="primary"
-                            size="default"
-                            color="blue"
-                            showIcon={false}
-                            to={LINKS.ONBOARDING_SENDING_EMAIL}
-                            as={Button}
-                          >
-                            Getting Started Documentation
-                          </ExternalLink>
+                          <Panel.Headline>Get Started!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              <TranslatableText>
+                                Once a sending domain has been added, it needs to be
+                              </TranslatableText>
+                              <Bold>&nbsp;verified.&nbsp;</Bold>
+                              <TranslatableText>
+                                Follow the instructions on the domain details page to configure your
+                              </TranslatableText>
+                              <TranslatableText>&nbsp;DNS settings.</TranslatableText>
+                            </Text>
+                            <div>
+                              <PageLink variant="primary" to={verifySendingLink} as={Button}>
+                                Verify Sending Domain
+                              </PageLink>
+                            </div>
+                          </Stack>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={SendingMailWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={SendingMail} seeThrough />
+                          </Picture>
+                        </Box>
+                      </Box>
+                    </Columns>
+                  )}
+
+                  {onboarding === 'createApiKey' && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>Start Sending!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              <TranslatableText>Create an&nbsp;</TranslatableText>
+                              <Abbreviation title="Application Programming Interface">
+                                API&nbsp;
+                              </Abbreviation>
+                              <TranslatableText>key in order to start sending via</TranslatableText>
+                              <Abbreviation title="Application Programming Interface">
+                                &nbsp;API&nbsp;
+                              </Abbreviation>
+                              <TranslatableText>or</TranslatableText>
+                              <Abbreviation title="Simple Mail Transfer Protocol">
+                                &nbsp;SMTP.
+                              </Abbreviation>
+                            </Text>
+                            <div>
+                              <PageLink variant="primary" to="/account/api-keys/create" as={Button}>
+                                Create API Key
+                              </PageLink>
+                            </div>
+                          </Stack>
+                        </Panel.Section>
+                      </Column>
+                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                        <Box height="100%">
+                          <Picture role="presentation">
+                            <source srcset={ConfigurationWebp} type="image/webp" />
+                            <OnboardingPicture alt="" src={Configuration} seeThrough />
+                          </Picture>
+                        </Box>
+                      </Box>
+                    </Columns>
+                  )}
+
+                  {onboarding === 'startSending' && (
+                    <Columns>
+                      <Column>
+                        <Panel.Section>
+                          <Panel.Headline>Start Sending!</Panel.Headline>
+                          <Stack>
+                            <Text>
+                              <TranslatableText>
+                                Follow the Getting Started documentation to set up sending via&nbsp;
+                              </TranslatableText>
+                              <Abbreviation title="Application Programming Interface">
+                                API&nbsp;
+                              </Abbreviation>
+                              <TranslatableText>or</TranslatableText>
+                              <Abbreviation title="Simple Mail Transfer Protocol">
+                                &nbsp;SMTP.
+                              </Abbreviation>
+                            </Text>
+                            <div>
+                              <ExternalLink
+                                variant="primary"
+                                size="default"
+                                showIcon={false}
+                                to={LINKS.ONBOARDING_SENDING_EMAIL}
+                                as={Button}
+                              >
+                                Getting Started Documentation
+                              </ExternalLink>
+                            </div>
+                          </Stack>
                         </Panel.Section>
                       </Column>
                       <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
@@ -196,48 +225,82 @@ export default function DashboardPageV2() {
                   )}
                 </Dashboard.Panel>
               )}
-
-              <Dashboard.Panel>
-                <Panel.Section>
-                  <Panel.Headline>
-                    <Panel.HeadlineIcon as={LightbulbOutline} />
-                    <TranslatableText>Helpful Shortcuts</TranslatableText>
-                  </Panel.Headline>
-
-                  <Columns collapseBelow="md">
-                    <Dashboard.Tip>
-                      <PageLink to="/templates">Templates</PageLink>
-
-                      {/* TODO: Replace placeholder content */}
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      {/* TODO: Where does this go? */}
-                      <PageLink to="/">DKIM Authentication</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
-
-                    <Dashboard.Tip>
-                      {/* TODO: Where does this go? */}
-                      <PageLink to="/">SMTP Set-up</PageLink>
-
-                      <Text>
-                        Get up and sending quickly using our sample templates. AMP for email, Yes we
-                        have it.
-                      </Text>
-                    </Dashboard.Tip>
+              {onboarding === 'fallback' && (
+                <Dashboard.Panel>
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>Analytics Report</Panel.Headline>
+                        <Stack>
+                          <Text>
+                            Build custom analytics, track engagement, diagnose errors, and more.
+                          </Text>
+                          <div>
+                            <PageLink variant="primary" to="/signals/analytics" as={Button}>
+                              Go To Analytics Report
+                            </PageLink>
+                          </div>
+                        </Stack>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Box height="100%">
+                        <Picture role="presentation">
+                          <source srcset={ConfigurationWebp} type="image/webp" />
+                          <OnboardingPicture alt="" src={Configuration} seeThrough />
+                        </Picture>
+                      </Box>
+                    </Box>
                   </Columns>
-                </Panel.Section>
-              </Dashboard.Panel>
+                </Dashboard.Panel>
+              )}
+              <div data-id="dashboard-helpful-shortcuts">
+                <Dashboard.Panel>
+                  <Panel.Section>
+                    <Panel.Headline>
+                      <Panel.HeadlineIcon as={LightbulbOutline} />
+                      <TranslatableText>Helpful Shortcuts</TranslatableText>
+                    </Panel.Headline>
 
+                    <Columns collapseBelow="md">
+                      {isAnAdmin && (
+                        <Dashboard.Tip>
+                          <PageLink to="/account/users/create">Invite a Team Member</PageLink>
+                          <Text>
+                            Need help integrating? Want to share an Analytics Report? Invite your
+                            team!
+                          </Text>
+                        </Dashboard.Tip>
+                      )}
+                      {!isAnAdmin && (
+                        <Dashboard.Tip>
+                          <PageLink to="/templates">Templates</PageLink>
+                          <Text>
+                            Programmatically tailor each message with SparkPost’s flexible
+                            templates.
+                          </Text>
+                        </Dashboard.Tip>
+                      )}
+                      <Dashboard.Tip>
+                        <PageLink to="/reports/message-events">Events</PageLink>
+                        <Text>
+                          Robust searching capabilities with ready access to the raw event data from
+                          your emails.
+                        </Text>
+                      </Dashboard.Tip>
+                      <Dashboard.Tip>
+                        <ExternalLink to="https://www.sparkpost.com/inbox-tracker/">
+                          Inbox Tracker
+                        </ExternalLink>
+                        <Text>
+                          Examine every element of deliverability with precision using Inbox
+                          Tracker.
+                        </Text>
+                      </Dashboard.Tip>
+                    </Columns>
+                  </Panel.Section>
+                </Dashboard.Panel>
+              </div>
               <Columns collapseBelow="md" space="500">
                 {hasSetupDocumentationPanel && (
                   <Column>

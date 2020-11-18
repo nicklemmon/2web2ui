@@ -10,58 +10,394 @@ describe('Version 2 of the dashboard page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
-    it('onboarding step one', () => {
-      stubAccountsReq({ fixture: 'account/200.get.has-dashboard-v2.json' });
-      stubUsageReq({ fixture: 'usage/200.get.no-last-sent.json' });
-      cy.stubRequest({
-        url: '/api/v1/sending-domains**',
-        fixture: 'sending-domains/200.get.no-results.json',
-        requestAlias: 'sendingDomains',
-      });
-      cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@usageReq', '@sendingDomains']);
+    it('Shows Helpful Shortcuts "invite team members" when admin', () => {
+      stubGrantsRequest({ role: 'admin' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
 
-      cy.title().should('include', 'Dashboard');
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq']);
+
+      cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
+
+      cy.findByDataId('dashboard-helpful-shortcuts').within(() => {
+        cy.verifyLink({
+          content: 'Invite a Team Member',
+          href: '/account/users/create',
+        });
+        cy.findByText(
+          'Need help integrating? Want to share an Analytics Report? Invite your team!',
+        ).should('be.visible');
+
+        cy.verifyLink({
+          content: 'Events',
+          href: '/reports/message-events',
+        });
+        cy.findByText(
+          'Robust searching capabilities with ready access to the raw event data from your emails.',
+        ).should('be.visible');
+
+        cy.verifyLink({
+          content: 'Inbox Tracker',
+          href: 'https://www.sparkpost.com/inbox-tracker/',
+        });
+        cy.findByText(
+          'Examine every element of deliverability with precision using Inbox Tracker.',
+        ).should('be.visible');
+      });
+    });
+
+    it('Shows Helpful Shortcuts "templates" when not admin', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      // FORCE NOT ADMIN HERE
+      cy.stubRequest({
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.reporting.json',
+        requestAlias: 'userReq',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@userReq']);
+
+      cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
+
+      cy.findByDataId('dashboard-helpful-shortcuts').within(() => {
+        cy.verifyLink({
+          content: 'Templates',
+          href: '/templates',
+        });
+        cy.findByText(
+          'Programmatically tailor each message with SparkPost’s flexible templates.',
+        ).should('be.visible');
+
+        cy.verifyLink({
+          content: 'Events',
+          href: '/reports/message-events',
+        });
+        cy.findByText(
+          'Robust searching capabilities with ready access to the raw event data from your emails.',
+        ).should('be.visible');
+
+        cy.verifyLink({
+          content: 'Inbox Tracker',
+          href: 'https://www.sparkpost.com/inbox-tracker/',
+        });
+
+        cy.findByText(
+          'Examine every element of deliverability with precision using Inbox Tracker.',
+        ).should('be.visible');
+      });
+    });
+
+    it('Shows add sending domain onboarding step when the user has no sending domains on their account.', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' }); // would normally give them the first onboarding step, but this person doesnt have the manage grant
+      stubSendingDomains({ fixture: '/200.get.no-results.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
 
       cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
 
-      cy.findAllByText('At least one').should('be.visible');
-      cy.findAllByText('verified sending domain').should('be.visible');
-      cy.findAllByText('is required in order to start or enable analytics.').should('be.visible');
+      cy.get('p').contains(
+        'At least one verified sending domain is required in order to start or enable analytics.',
+      );
 
-      cy.get('a')
-        .contains('Add Sending Domain')
-        .should('be.visible')
-        .should('not.be.disabled');
-    });
+      cy.verifyLink({
+        content: 'Add Sending Domain',
+        href: '/domains/list/sending',
+      });
 
-    it.skip('onboarding step two', () => {
-      // TODO: FE-1211, FE-1213
-    });
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
 
-    it.skip('onboarding step three', () => {
-      // TODO: FE-1213, FE-1213
-    });
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
 
-    it('onboarding step four', () => {
-      stubAccountsReq({ fixture: 'account/200.get.has-dashboard-v2.json' });
-      stubUsageReq({ fixture: 'usage/200.get.no-last-sent.json' });
-      stubAlertsReq({ fixture: 'alerts/200.get.json' });
-
-      cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@alertsReq', '@usageReq']);
-
-      cy.title().should('include', 'Dashboard');
-
-      cy.findByRole('heading', { name: 'Start Sending!' }).should('be.visible');
+      // step 4 text
       cy.findByText(
         'Follow the Getting Started documentation to set up sending via API or SMTP.',
-      ).should('be.visible');
+      ).should('not.be.visible');
+    });
 
-      cy.get('a')
-        .contains('Getting Started Documentation')
-        .should('be.visible')
-        .should('not.be.disabled');
+    it('Shows verify sending domain onboarding step when the user has no verified sending domains on their account. Links to the domain details page with one domain.', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.unverified-sending.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
+
+      cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
+
+      cy.get('p').contains(
+        'Once a sending domain has been added, it needs to be verified. Follow the instructions on the domain details page to configure your DNS settings.',
+      );
+
+      cy.verifyLink({
+        content: 'Verify Sending Domain',
+        href: '/domains/details/sending-bounce/sparkspam.com',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+    });
+
+    it('Shows verify sending domain onboarding step when the user has no verified sending domains on their account. Links to the list page with more than one domain.', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.multiple-unverified-sending.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@usageReq', '@sendingDomainsReq']);
+
+      cy.findByRole('heading', { name: 'Get Started!' }).should('be.visible');
+
+      cy.get('p').contains(
+        'Once a sending domain has been added, it needs to be verified. Follow the instructions on the domain details page to configure your DNS settings.',
+      );
+
+      cy.verifyLink({
+        content: 'Verify Sending Domain',
+        href: '/domains/list/sending',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+    });
+
+    it('Shows the create api key onboarding step when the user has no api keys on their account.', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
+      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
+
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('be.visible');
+
+      cy.get('p').contains('Create an API key in order to start sending via API or SMTP.');
+
+      cy.verifyLink({
+        content: 'Create API Key',
+        href: '/account/api-keys/create',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 4 text
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+    });
+
+    it('Shows the start sending onboarding step when the user has at least one verified sending domain and at least one api key but no last usage date.', () => {
+      stubGrantsRequest({ role: 'developer' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
+      stubApiKeyReq({ fixture: 'api-keys/200.get.transmissions-modify.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
+
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('be.visible');
+
+      cy.get('p').contains(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      );
+
+      cy.verifyLink({
+        content: 'Getting Started Documentation',
+        href: LINKS.ONBOARDING_SENDING_EMAIL,
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+    });
+
+    it('Shows the default "Go To Analytics Report" onboarding step for non-admin and non-dev users with no last usage date.', () => {
+      stubGrantsRequest({ role: 'reporting' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: '/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
+      // Force not admin here
+      cy.stubRequest({
+        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+        fixture: 'users/200.get.reporting.json',
+        requestAlias: 'userReq',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait([
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+        '@userReq',
+      ]);
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      cy.verifyLink({
+        content: 'Go To Analytics Report',
+        href: '/signals/analytics',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text...
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.be.visible');
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+    });
+
+    it('Shows the default "Go To Analytics Report" onboarding step for any user without the sending_domains/manage grant', () => {
+      stubGrantsRequest({ role: 'reporting' }); // canManageSendingDomains = false
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      stubSendingDomains({ fixture: '/200.get.no-results.json' });
+      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
+
+      cy.visit(PAGE_URL);
+      cy.wait([
+        '@getGrants',
+        '@alertsReq',
+        '@accountReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      cy.verifyLink({
+        content: 'Go To Analytics Report',
+        href: '/signals/analytics',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text...
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.be.visible');
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
     });
 
     it('renders with a relevant page title, relevant headings, and links when the `allow_dashboard_v2` account flag is enabled', () => {
@@ -78,57 +414,28 @@ describe('Version 2 of the dashboard page', () => {
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
       cy.findByRole('button', { name: 'Contact our Support Team' }).click();
       cy.withinModal(() => cy.findByRole('button', { name: 'Close' }).click());
-
-      cy.findByRole('heading', { name: 'Next Steps' }).should('exist'); // Screen reader only heading
-      cy.verifyLink({
-        content: 'Getting Started Documentation',
-        href: LINKS.ONBOARDING_SENDING_EMAIL,
-      });
     });
 
-    // TODO: Fix, something is wrong here
-    it.skip('does not render certain links when grants are not available for a user', () => {
-      commonBeforeSteps();
-      cy.stubRequest({
-        url: '/api/v1/authenticate/grants*',
-        fixture: 'authenticate/grants/200.get.reporting.json',
-        requestAlias: 'getGrants',
-      });
-      cy.visit(PAGE_URL);
-      cy.wait('@getGrants');
-
-      // TODO: Fix assertions here based on new onboarding flow
-      // The user cannot manage sending domains
-      // cy.findByRole('link', { name: 'Add a Sending Domain' }).should('not.be.visible');
-
-      // The user cannot manage API keys
-      // cy.findByRole('link', { name: 'Generate an API Key' }).should('not.be.visible');
-
-      // The user cannot manage the account
-      // cy.findByRole('link', { name: 'Upgrade' }).should('not.be.visible');
-
-      // Some links always render
-      // cy.verifyLink({
-      //   content: 'Analyze your Data',
-      //   href: '/signals/analytics',
-      // });
-      // cy.verifyLink({
-      //   content: 'Create an Alert',
-      //   href: '/alerts/create',
-      // });
-    });
-
-    // TODO: Fix, something is wrong here
-    it.skip('does not render the "Setup Documentation" or the usage section panel when the user is not an admin, developer, or super user', () => {
+    it('does not render the "Setup Documentation" or the usage section panel when the user is not an admin, developer, or super user', () => {
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
+      stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
+      stubApiKeyReq({ fixture: 'api-keys/200.get.json' });
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.reporting.json',
         requestAlias: 'userReq',
       });
-      stubAccountsReq();
-      stubAlertsReq();
       cy.visit(PAGE_URL);
-      cy.wait(['@accountReq', '@alertsReq', '@userReq']);
+      cy.wait([
+        '@accountReq',
+        '@alertsReq',
+        '@userReq',
+        '@usageReq',
+        '@sendingDomainsReq',
+        '@apiKeysReq',
+      ]);
 
       cy.findByRole('heading', { name: 'Setup Documentation' }).should('not.be.visible');
       cy.findByRole('heading', { name: 'Need Help?' }).should('be.visible');
@@ -266,5 +573,29 @@ function stubAlertsReq({ fixture = 'alerts/200.get.json' } = {}) {
     url: '/api/v1/alerts',
     fixture: fixture,
     requestAlias: 'alertsReq',
+  });
+}
+
+function stubApiKeyReq({ fixture = 'alerts/200.get.json' } = {}) {
+  cy.stubRequest({
+    url: '/api/v1/api-keys**',
+    fixture: fixture,
+    requestAlias: 'apiKeysReq',
+  });
+}
+
+function stubSendingDomains({ fixture = 'alerts/200.get.json' } = {}) {
+  cy.stubRequest({
+    url: '/api/v1/sending-domains**',
+    fixture: fixture,
+    requestAlias: 'sendingDomainsReq',
+  });
+}
+
+function stubGrantsRequest({ role }) {
+  cy.stubRequest({
+    url: '/api/v1/authenticate/grants*',
+    fixture: `authenticate/grants/200.get.${role}.json`,
+    requestAlias: 'getGrants',
   });
 }
