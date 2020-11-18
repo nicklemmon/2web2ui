@@ -381,28 +381,6 @@ describe('The domains details page', () => {
           ).should('be.visible');
         });
 
-        it('renders correct sections for unverified spf domains', () => {
-          cy.stubRequest({
-            url: '/api/v1/sending-domains/bounce.spappteam.com',
-            fixture: 'sending-domains/200.get.unverified-spf.json',
-            requestAlias: 'unverifiedSpfDomains',
-          });
-
-          cy.visit(`${SENDING_BOUNCE_DETAILS_URL}/bounce.spappteam.com`);
-          cy.wait(['@unverifiedSpfDomains']);
-          cy.wait('@accountDomainsReq');
-
-          cy.findByRole('heading', { name: 'Domain Status' }).should('be.visible');
-          cy.findByRole('heading', { name: 'Link Tracking Domain' }).should('be.visible');
-          cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
-          cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
-          cy.findByRole('heading', { name: 'Bounce' }).should('be.visible');
-          cy.findByRole('button', { name: 'Authenticate for SPF' }).should('be.visible');
-          cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
-          cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
-          cy.findByRole('heading', { name: 'Sending and Bounce' }).should('not.be.visible');
-        });
-
         it('renders correct sections for completely verified domains', () => {
           cy.stubRequest({
             url: '/api/v1/sending-domains/bounce2.spappteam.com',
@@ -419,7 +397,6 @@ describe('The domains details page', () => {
           cy.findByRole('heading', { name: 'Delete Domain' }).should('be.visible');
           cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
           cy.findByRole('heading', { name: 'Bounce' }).should('not.be.visible');
-          cy.findByRole('button', { name: 'Authenticate for SPF' }).should('not.be.visible');
           cy.findByRole('heading', { name: 'DNS Verification' }).should('not.be.visible');
           cy.findByRole('heading', { name: 'Email Verification' }).should('not.be.visible');
         });
@@ -438,7 +415,6 @@ describe('The domains details page', () => {
           cy.findByRole('heading', { name: 'Sending' }).should('not.be.visible');
           cy.findByRole('heading', { name: 'Bounce' }).should('be.visible');
           cy.findByRole('button', { name: 'Verify Domain' }).should('be.visible');
-          cy.findByRole('button', { name: 'Authenticate for SPF' }).should('not.be.visible');
           cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
           cy.findByRole('heading', { name: 'Email Verification' }).should('be.visible');
         });
