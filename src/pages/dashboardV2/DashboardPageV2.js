@@ -24,16 +24,25 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
+import { Charts } from 'src/pages/reportBuilder/components/Charts';
+
 
 const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
+const defaultReportOptions = {
+  filters: [],
+  timezone: 'America/New_York',
+  metrics: ['count_sent', 'count_unique_confirmed_opened_approx', 'count_accepted', 'count_bounce'],
+  relativeRange: '7days',
+  from: '2020-11-11T16:00:00.000Z',
+  to: '2020-11-18T16:51:24.504Z',
+  precision: 'hour',
+  isReady: true,
+};
 export default function DashboardPageV2() {
   const {
-    canViewUsage,
-    canManageSendingDomains,
-    canManageApiKeys,
     getAccount,
     listAlerts,
     getUsage,
@@ -51,9 +60,9 @@ export default function DashboardPageV2() {
   useEffect(() => {
     getAccount();
     listAlerts();
-    if (canViewUsage) getUsage();
-    if (canManageSendingDomains) listSendingDomains();
-    if (canManageApiKeys) listApiKeys();
+    getUsage();
+    listSendingDomains();
+    listApiKeys();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -76,7 +85,12 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {onboarding !== 'analyticsReportPromo' && onboarding !== undefined && (
+              <Dashboard.Panel>
+                <Box mt="100" mr="100">
+                  <Charts reportOptions={defaultReportOptions} />
+                </Box>
+              </Dashboard.Panel>
+              {onboarding !== 'fallback' && onboarding !== undefined && (
                 <Dashboard.Panel>
                   {onboarding === 'addSending' && (
                     <Columns>
@@ -156,10 +170,11 @@ export default function DashboardPageV2() {
                               <Abbreviation title="Application Programming Interface">
                                 API&nbsp;
                               </Abbreviation>
-                              <TranslatableText>
-                                key in order to start sending via API
-                              </TranslatableText>
-                              <TranslatableText>&nbsp;or</TranslatableText>
+                              <TranslatableText>key in order to start sending via</TranslatableText>
+                              <Abbreviation title="Application Programming Interface">
+                                &nbsp;API&nbsp;
+                              </Abbreviation>
+                              <TranslatableText>or</TranslatableText>
                               <Abbreviation title="Simple Mail Transfer Protocol">
                                 &nbsp;SMTP.
                               </Abbreviation>
@@ -227,7 +242,7 @@ export default function DashboardPageV2() {
                   )}
                 </Dashboard.Panel>
               )}
-              {onboarding === 'analyticsReportPromo' && (
+              {onboarding === 'fallback' && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
