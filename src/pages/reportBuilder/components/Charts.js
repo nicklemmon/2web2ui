@@ -15,6 +15,7 @@ import {
 } from 'src/helpers/metrics';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { Heading } from 'src/components/text';
+import { Loading } from 'src/components';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
@@ -80,7 +81,10 @@ export function Charts(props) {
     () => {
       return getTimeSeries(formattedOptions);
     },
-    { enabled: reportOptions.isReady, refetchOnWindowFocus: false, initialData: [] },
+    {
+      enabled: reportOptions.isReady,
+      refetchOnWindowFocus: false,
+    },
   );
 
   useEffect(() => {
@@ -96,8 +100,12 @@ export function Charts(props) {
   // Keeps track of hovered chart for Tooltip
   const [activeChart, setActiveChart] = React.useState(null);
 
-  if (!chartData.length || !formattedMetrics) {
-    return null;
+  if (chartStatus === 'loading' || chartStatus === 'idle') {
+    return (
+      <Box height="10rem">
+        <Loading />
+      </Box>
+    );
   }
 
   const formatters = getLineChartFormatters(precision, to);

@@ -99,6 +99,16 @@ if (IS_HIBANA_ENABLED) {
         .should('have.value', 'Fake Subaccount 3 (ID 103)');
     });
 
+    it('Properly submits the form and renders multiple charts', () => {
+      openCompareByModal();
+      fillOutForm();
+      cy.withinDrawer(() => {
+        cy.findByRole('button', { name: 'Compare' }).click();
+      });
+      cy.findByRole('heading', { name: 'Fake Subaccount 1 (ID 101)' }).should('exist');
+      cy.findByRole('heading', { name: 'Fake Subaccount 3 (ID 103)' }).should('exist');
+    });
+
     it('Shows form error if form contains less than 2 filters', () => {
       openCompareByModal();
       cy.withinDrawer(() => {

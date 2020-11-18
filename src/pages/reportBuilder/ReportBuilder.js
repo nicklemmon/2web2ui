@@ -23,7 +23,6 @@ import {
   LinksTable,
   RejectionReasonsTable,
 } from './components/tabs';
-import styles from './ReportBuilder.module.scss';
 import { getSubscription } from 'src/actions/billing';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
@@ -165,16 +164,6 @@ export function ReportBuilder({
     setShowTable(true);
   }, [tabs]);
 
-  const renderLoading = () => {
-    if (chart.chartLoading) {
-      return (
-        <div className={styles.Loading}>
-          <Loading />
-        </div>
-      );
-    }
-  };
-
   const { to, from } = summarySearchOptions;
   const dateValue = `${moment(from).format('MMM Do')} - ${moment(to).format('MMM Do, YYYY')}`;
 
@@ -255,7 +244,6 @@ export function ReportBuilder({
                       </Grid.Column>
                     </Grid>
                   </Box>
-                  {renderLoading()}
                 </Tabs.Item>
                 {hasBounceTab && (
                   <Tabs.Item>
