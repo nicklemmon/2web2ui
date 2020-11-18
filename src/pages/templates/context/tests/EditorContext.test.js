@@ -1,19 +1,19 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import useRouter from 'src/hooks/useRouter';
+import usePageFilters from 'src/hooks/usePageFilters';
 import { EditorContextProvider } from '../EditorContext';
 
-jest.mock('src/hooks/useRouter');
+jest.mock('src/hooks/usePageFilters');
 
 describe('EditorContext', () => {
   describe('EditorContextProvider', () => {
-    const subject = ({ render = shallow, value = {}, routerParams = {}} = {}) => {
-      useRouter.mockReturnValue({
-        requestParams: {
+    const subject = ({ render = shallow, value = {}, routerParams = {} } = {}) => {
+      usePageFilters.mockReturnValue({
+        filters: {
           id: 'test-template',
           subaccount: '123',
-          ...routerParams
-        }
+          ...routerParams,
+        },
       });
 
       return render(
@@ -23,11 +23,11 @@ describe('EditorContext', () => {
             getPublished: () => {},
             listDomains: () => {},
             listSubaccounts: () => {},
-            ...value
+            ...value,
           }}
         >
           <div>Hello</div>
-        </EditorContextProvider>
+        </EditorContextProvider>,
       );
     };
 
@@ -54,8 +54,8 @@ describe('EditorContext', () => {
           getDraft,
           getPublished,
           listDomains,
-          listSubaccounts
-        }
+          listSubaccounts,
+        },
       });
 
       expect(getDraft).toHaveBeenCalledWith('test-template', '123');
@@ -76,11 +76,11 @@ describe('EditorContext', () => {
           getDraft,
           getPublished,
           listDomains,
-          listSubaccounts
+          listSubaccounts,
         },
         routerParams: {
-          version: 'published'
-        }
+          version: 'published',
+        },
       });
 
       expect(getPublished).toHaveBeenCalledWith('test-template', '123');

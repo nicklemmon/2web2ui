@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import useRouter from 'src/hooks/useRouter';
 import qs from 'qs';
+import { useLocation } from 'react-router-dom';
 import { ButtonLink } from 'src/components/links';
 import { ScreenReaderOnly } from 'src/components/matchbox';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
@@ -11,9 +11,7 @@ export const AddFilterLink = ({ newFilter }) => {
   const { actions, selectors } = useReportBuilderContext();
   const { addFilters } = actions;
   const { selectSummaryChartSearchOptions: currentSearchOptions } = selectors;
-  const {
-    location: { pathname },
-  } = useRouter();
+  const { pathname } = useLocation();
 
   /**
    * Needs to first check if cmd/ctrl key is pressed when mouse is released
@@ -36,7 +34,6 @@ export const AddFilterLink = ({ newFilter }) => {
   const mergedFilters = [...currentFilters, stringifyTypeaheadfilter(newFilter)];
   const newSearchOptions = { ...currentSearchOptions, filters: mergedFilters };
 
-  //Use same method to change route from here src/context/RouterContext.js
   const linkParams = qs.stringify(newSearchOptions);
   const fullLink = `${pathname}?${linkParams}`;
 

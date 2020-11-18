@@ -12,7 +12,7 @@ import {
 } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import { Heading } from 'src/components/text';
-import useRouter from 'src/hooks/useRouter';
+import { useLocation } from 'react-router-dom';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { createReport, updateReport, getReports } from 'src/actions/reports';
@@ -75,9 +75,7 @@ export function SaveReportModal(props) {
       is_editable: false,
     },
   });
-  const {
-    location: { search = '' },
-  } = useRouter();
+  const { search = '' } = useLocation();
 
   const { state: reportOptions } = useReportBuilderContext();
 

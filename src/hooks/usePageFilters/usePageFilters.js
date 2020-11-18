@@ -1,6 +1,7 @@
 import { useCallback, useReducer, useRef, useEffect } from 'react';
 import _ from 'lodash';
-import useRouter from 'src/hooks/useRouter';
+import { useLocation, useRouteMatch, useHistory } from 'react-router-dom';
+import qs from 'qs';
 
 const PAGE_FILTER_ACTIONS = {
   RESET: 'reset',
@@ -126,7 +127,15 @@ const omitFiltersExcludedFromRoute = (filters, allowedList) => {
  *
  */
 const usePageFilters = allowedList => {
-  const { requestParams, updateRoute } = useRouter();
+  const location = useLocation();
+  const history = useHistory();
+  const match = useRouteMatch();
+  const currOptions = useRef({});
+  const requestParams = {
+    ...qs.parse(location.search, { ignoreQueryPrefix: true }),
+    ...match.params,
+  };
+
   const defaultFilters = useRef(
     Object.keys(allowedList).reduce((acc, key) => {
       acc[key] = allowedList[key].defaultValue;
@@ -149,19 +158,30 @@ const usePageFilters = allowedList => {
     ),
   });
 
-  const updateFilters = useCallback(
-    filters => dispatch({ type: PAGE_FILTER_ACTIONS.SPREAD, payload: filters }),
-    [],
-  );
+  const updateFilters = useCallback((filters, options) => {
+    currOptions.current = options;
+    return dispatch({ type: PAGE_FILTER_ACTIONS.SPREAD, payload: filters });
+  }, []);
   const resetFilters = useCallback(
     () => dispatch({ type: PAGE_FILTER_ACTIONS.RESET, payload: defaultFilters.current }),
     [],
   );
 
+  const updateRoute = useCallback(
+    newParams => {
+      const queryString = qs.stringify(newParams, {
+        arrayFormat: 'repeat',
+        ...currOptions.current,
+      });
+      history.push(`${location.pathname}?${queryString}`);
+    },
+    [history, location.pathname],
+  );
+
   useEffect(() => {
     const nonRouteFilters = omitFiltersExcludedFromRoute(filters, allowedList);
     updateRoute(flattenParameters(nonRouteFilters));
-  }, [updateRoute, filters, allowedList]);
+  }, [filters, allowedList, history, location.pathname, updateRoute]);
 
   return { filters, prevFilters, updateFilters, resetFilters };
 };

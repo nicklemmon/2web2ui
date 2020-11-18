@@ -2,40 +2,37 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import moment from 'moment';
 import { tests } from './mockTests';
-import useRouter from 'src/hooks/useRouter';
-
 import { TestListPage } from '../TestListPage';
 
 jest.mock('src/hooks/useHibanaOverride', () => styles => styles);
-jest.mock('src/hooks/useRouter');
+
+jest.mock('src/hooks/usePageFilters', () => {
+  return jest.fn(() => ({
+    filters: {},
+    updateFilters: jest.fn(),
+  }));
+});
 
 describe('Page: Test List', () => {
   const now = moment.utc(new Date('2019-08-10T12:30:00-04:00'));
   Date.now = jest.fn(() => now);
-  const subject = props => {
-    const from = moment(now).subtract(30, 'd');
-    const to = now;
-    useRouter.mockReturnValue({
-      requestParams: {
+  const from = moment(now).subtract(30, 'd');
+  const to = now;
+  const defaults = {
+    testsError: false,
+    testsPending: false,
+    tests: [],
+    listTests: jest.fn(),
+    filters: {
+      dateRange: {
         from,
         to,
       },
-      updateRoute: jest.fn(),
-    });
-    const defaults = {
-      testsError: false,
-      testsPending: false,
-      tests: [],
-      listTests: jest.fn(),
-      filters: {
-        dateRange: {
-          from,
-          to,
-        },
-        tags: {},
-      },
-    };
+      tags: {},
+    },
+  };
 
+  const subject = props => {
     return shallow(<TestListPage {...defaults} {...props} />);
   };
 

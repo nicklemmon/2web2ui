@@ -1,11 +1,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import useRouter from '../useRouter';
 import usePageFilters, { flattenParameters, unflattenParameters } from '../usePageFilters';
 
-jest.mock('src/hooks/useRouter');
-
+const mockHistoryPush = jest.fn();
+jest.mock('react-router-dom', () => ({
+  useLocation: () => ({ search: '', pathname: '' }),
+  useRouteMatch: () => ({ params: {} }),
+  useHistory: () => ({ push: mockHistoryPush }),
+}));
 const allowedList = {
   foo: {
     validate: Array.isArray,
@@ -41,13 +44,6 @@ const initFilterObject = {
     b: 3,
   },
   test: 5,
-};
-
-const initRouteObject = {
-  foo: ['a', 'b', 'c'],
-  page: 1,
-  a: 1,
-  b: 3,
 };
 
 const defaultFunc = () => {};
@@ -94,12 +90,7 @@ describe('unflattenParameters', () => {
 });
 
 describe('usePageFilters', () => {
-  const updateRoute = jest.fn();
   const MockComponent = ({ getFilters, getUpdateFilters, getResetFilters }) => {
-    useRouter.mockReturnValue({
-      requestParams: initFilterObject,
-      updateRoute,
-    });
     const { filters, updateFilters, resetFilters } = usePageFilters(allowedList);
 
     getUpdateFilters(updateFilters);
@@ -137,13 +128,6 @@ describe('usePageFilters', () => {
     subject({ getFilters, getUpdateFilters });
     act(() => updateFunc({ page: 2 }));
 
-    const expectedRoute = {
-      foo: ['a', 'b', 'c'],
-      page: 2,
-      a: 1,
-      b: 3,
-    };
-
     const expectedFilters = {
       foo: ['a', 'b', 'c'],
       page: 2,
@@ -154,7 +138,7 @@ describe('usePageFilters', () => {
       test: 5,
     };
 
-    expect(updateRoute).toHaveBeenCalledWith(expectedRoute);
+    expect(mockHistoryPush).toHaveBeenCalledWith('?foo=a&foo=b&foo=c&page=2&a=1&b=3');
     expect(filters).toEqual(expectedFilters);
   });
 
@@ -165,7 +149,7 @@ describe('usePageFilters', () => {
     const getUpdateFilters = f => (updateFunc = f);
     subject({ getFilters, getUpdateFilters });
     act(() => updateFunc({ page: 'abcdefg' }));
-    expect(updateRoute).toHaveBeenCalledWith(initRouteObject);
+    expect(mockHistoryPush).toHaveBeenCalledWith('?foo=a&foo=b&foo=c&page=1&a=1&b=3');
     expect(filters).toEqual(initFilterObject);
   });
 
@@ -180,6 +164,6 @@ describe('usePageFilters', () => {
     act(() => updateFunc({ page: 1, foo: ['bar', 'baz'] }));
     act(() => resetFunc());
     expect(filters).toEqual(initFilterObject);
-    expect(updateRoute).toHaveBeenCalledWith(initRouteObject);
+    expect(mockHistoryPush).toHaveBeenCalledWith('?foo=a&foo=b&foo=c&page=1&a=1&b=3');
   });
 });

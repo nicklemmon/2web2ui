@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
-import { RouterContextProvider } from 'src/context/RouterContext';
 import { Router, Route, Switch, Link } from 'react-router-dom';
 import RouteFocusHandler from '../RouteFocusHandler';
 
@@ -12,25 +11,23 @@ function Subject() {
 
   return (
     <Router history={history}>
-      <RouterContextProvider>
-        <RouteFocusHandler />
+      <RouteFocusHandler />
 
-        <nav>
-          <Link to="/">Landing</Link>
+      <nav>
+        <Link to="/">Landing</Link>
 
-          <Link to="/path/1">Path 1</Link>
+        <Link to="/path/1">Path 1</Link>
 
-          <Link to="/path/1?my=param">Add Query Params</Link>
-        </nav>
+        <Link to="/path/1?my=param">Add Query Params</Link>
+      </nav>
 
-        <Switch>
-          <Route exact path="/">
-            <h1>Landing Heading</h1>
-          </Route>
+      <Switch>
+        <Route exact path="/">
+          <h1>Landing Heading</h1>
+        </Route>
 
-          <Route exact path="/path/1" component={Page} />
-        </Switch>
-      </RouterContextProvider>
+        <Route exact path="/path/1" component={Page} />
+      </Switch>
     </Router>
   );
 }

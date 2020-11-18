@@ -14,14 +14,14 @@ import {
 } from 'src/components/matchbox';
 import { ExternalLink, SubduedLink } from 'src/components/links';
 import { SubduedText, TranslatableText } from 'src/components/text';
-import useRouter from 'src/hooks/useRouter';
+import { useHistory } from 'react-router-dom';
 import SubaccountTypeahead from 'src/components/typeahead/SubaccountTypeahead';
 import useDomains from '../hooks/useDomains';
 import { DomainAlignmentModal } from './DomainAlignmentModal';
 import useModal from 'src/hooks/useModal';
 
 export default function CreateForm() {
-  const { history } = useRouter();
+  const history = useHistory();
   const {
     createSendingDomain,
     createTrackingDomain,

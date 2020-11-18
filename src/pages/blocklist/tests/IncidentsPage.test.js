@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import useRouter from 'src/hooks/useRouter';
 import { IncidentsPage } from '../IncidentsPage';
 import IncidentsCollection from '../components/IncidentsCollection';
 import userEvent from '@testing-library/user-event';
@@ -13,14 +12,12 @@ IncidentsCollection.mockImplementation(({ updateDateRange }) => (
   </button>
 ));
 
-jest.mock('src/hooks/useRouter');
-useRouter.mockReturnValue({
-  requestParams: {
-    search: '',
-  },
-  updateRoute: jest.fn(),
+jest.mock('src/hooks/usePageFilters', () => {
+  return jest.fn(() => ({
+    filters: { search: '' },
+    updateFilters: jest.fn(),
+  }));
 });
-
 describe('IncidentsPage', () => {
   const incidents = [
     {

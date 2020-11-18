@@ -3,11 +3,10 @@ import { AddFilterLink } from '../AddFilterLink';
 import { shallow } from 'enzyme';
 import { useReportBuilderContext } from 'src/pages/reportBuilder/context/ReportBuilderContext';
 
-jest.mock('src/hooks/useRouter', () =>
-  jest.fn().mockReturnValue({
-    location: { pathname: '/report' },
-  }),
-);
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => ({ search: '', pathname: '/report' }),
+}));
 
 jest.mock('src/pages/reportBuilder/context/ReportBuilderContext');
 

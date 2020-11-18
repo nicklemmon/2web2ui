@@ -31,7 +31,7 @@ import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
 import { dehydrateFilters } from './helpers';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
-import useRouter from 'src/hooks/useRouter';
+import { useLocation } from 'react-router-dom';
 
 const MetricDefinition = ({ label, children }) => {
   return (
@@ -84,7 +84,7 @@ export function ReportBuilder({
     }
   }, [refreshReportBuilder, reportOptions, isEmpty, isComparatorsEnabled]);
 
-  const { location } = useRouter();
+  const location = useLocation();
 
   useEffect(() => {
     getSubscription();

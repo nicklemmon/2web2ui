@@ -1,28 +1,42 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
-import useRouter from 'src/hooks/useRouter';
 import useEditorNavigation from '../useEditorNavigation';
+import usePageFilters from 'src/hooks/usePageFilters';
 
-jest.mock('src/hooks/useRouter');
+jest.mock('src/hooks/usePageFilters');
+
+const mockHistoryPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useHistory: () => ({
+    push: mockHistoryPush,
+  }),
+}));
 
 describe('useEditorNavigation', () => {
   const useTestWrapper = ({ routerState } = {}) => {
-    useRouter.mockReturnValue({
-      requestParams: { id: 'test-template' },
-      ...routerState
-    });
-
-    const TestComponent = () => <div hooked={useEditorNavigation()}/>;
-    return mount(<TestComponent/>);
+    usePageFilters.mockReturnValue({ filters: routerState.requestParams });
+    const TestComponent = () => <div hooked={useEditorNavigation()} />;
+    return mount(<TestComponent />);
   };
-  const useHook = (wrapper) => wrapper.update().children().prop('hooked');
+  const useHook = wrapper =>
+    wrapper
+      .update()
+      .children()
+      .prop('hooked');
 
   it('returns first link by default', () => {
-    const wrapper = useTestWrapper();
+    const wrapper = useTestWrapper({
+      routerState: {
+        requestParams: { id: 'test-template' },
+      },
+    });
 
-    expect(useHook(wrapper))
-      .toEqual(expect.objectContaining({ currentNavigationIndex: 0, currentNavigationKey: 'content' }));
+    expect(useHook(wrapper)).toEqual(
+      expect.objectContaining({ currentNavigationIndex: 0, currentNavigationKey: 'content' }),
+    );
   });
 
   it('returns matched link', () => {
@@ -30,55 +44,56 @@ describe('useEditorNavigation', () => {
       routerState: {
         requestParams: {
           id: 'test-template',
-          navKey: 'settings'
-        }
-      }
+          navKey: 'settings',
+        },
+      },
     });
 
-    expect(useHook(wrapper))
-      .toEqual(expect.objectContaining({ currentNavigationIndex: 1, currentNavigationKey: 'settings' }));
+    expect(useHook(wrapper)).toEqual(
+      expect.objectContaining({ currentNavigationIndex: 1, currentNavigationKey: 'settings' }),
+    );
   });
 
   describe('redirections', () => {
-    let historyPush;
-    beforeEach(() => {
-      historyPush = jest.fn();
-    });
-
     afterEach(() => {
-      historyPush.mockReset();
+      mockHistoryPush.mockReset();
     });
 
-    const subject = (wrapper) => {
+    const subject = wrapper => {
       act(() => {
         useHook(wrapper).setNavigation('settings');
       });
     };
     const routeState = (overrides = {}) => ({
       routerState: {
-        history: { push: historyPush },
-        requestParams: { id: 'test-template', ...overrides }
-      }
+        requestParams: { id: 'test-template', ...overrides },
+      },
     });
 
     it('redirects when link is clicked (draft)', () => {
       subject(useTestWrapper(routeState()));
-      expect(historyPush).toHaveBeenCalledWith('/templates/edit/test-template/draft/settings');
+      expect(mockHistoryPush).toHaveBeenCalledWith('/templates/edit/test-template/draft/settings');
     });
 
     it('redirects with subaccount id (draft)', () => {
       subject(useTestWrapper(routeState({ subaccount: 102 })));
-      expect(historyPush).toHaveBeenCalledWith('/templates/edit/test-template/draft/settings?subaccount=102');
+      expect(mockHistoryPush).toHaveBeenCalledWith(
+        '/templates/edit/test-template/draft/settings?subaccount=102',
+      );
     });
 
     it('redirects when link is clicked (published)', () => {
       subject(useTestWrapper(routeState({ version: 'published' })));
-      expect(historyPush).toHaveBeenCalledWith('/templates/edit/test-template/published/settings');
+      expect(mockHistoryPush).toHaveBeenCalledWith(
+        '/templates/edit/test-template/published/settings',
+      );
     });
 
     it('redirects with subaccount id (published)', () => {
       subject(useTestWrapper(routeState({ version: 'published', subaccount: 102 })));
-      expect(historyPush).toHaveBeenCalledWith('/templates/edit/test-template/published/settings?subaccount=102');
+      expect(mockHistoryPush).toHaveBeenCalledWith(
+        '/templates/edit/test-template/published/settings?subaccount=102',
+      );
     });
   });
 });

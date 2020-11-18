@@ -1,11 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { SaveReportModal } from '../SaveReportModal';
-import useRouter from 'src/hooks/useRouter';
-jest.mock('src/hooks/useRouter');
-useRouter.mockReturnValue({
-  location: { search: '?metrics=sent_count' },
-});
+
+jest.mock('react-router-dom', () => ({
+  useLocation: () => ({ search: '?metrics=sent_count' }),
+}));
 jest.mock('src/context/HibanaContext', () => ({
   useHibana: jest.fn().mockReturnValue([{ isHibanaEnabled: true }]),
 }));

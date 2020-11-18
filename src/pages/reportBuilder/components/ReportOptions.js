@@ -16,12 +16,24 @@ import {
 } from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
-import useRouter from 'src/hooks/useRouter';
+import { usePageFilters } from 'src/hooks';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { dehydrateFilters } from '../helpers';
 import { ActiveFilters, ActiveFiltersV2 } from './ActiveFilters'; // TODO: Import from the component index when feature flag is removed
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
+const initFilters = {
+  from: {},
+  to: {},
+  range: {},
+  timezone: {},
+  precision: {},
+  filters: {},
+  metrics: {},
+  query_filters: {},
+  compare: {},
+  report: {},
+};
 export function ReportOptions(props) {
   const {
     reportLoading,
@@ -41,7 +53,7 @@ export function ReportOptions(props) {
     selectSummaryChartSearchOptions,
   } = selectors;
 
-  const { updateRoute } = useRouter();
+  const { updateFilters } = usePageFilters(initFilters);
 
   const isEmpty = useMemo(() => {
     return !Boolean(processedMetrics.length);
@@ -61,11 +73,11 @@ export function ReportOptions(props) {
         update.filters = selectedFilters;
       }
 
-      updateRoute({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });
+      updateFilters({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });
     }
   }, [
     selectSummaryChartSearchOptions,
-    updateRoute,
+    updateFilters,
     reportOptions.isReady,
     selectedReport,
     isComparatorsEnabled,

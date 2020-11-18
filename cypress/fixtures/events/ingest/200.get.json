@@ -1,0 +1,108 @@
+{
+  "results": [
+      {
+          "number_succeeded": 1,
+          "event_id": "972c2102-1736-47bf-bb49-1600b83e8207",
+          "batch_id": "704c1176-fa52-4ce0-81f5-290b6c917a15",
+          "expiration_timestamp": "2020-11-21T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-10T00:13:28.000Z"
+      },
+      {
+          "number_succeeded": 1,
+          "event_id": "504ce805-7704-414f-9c48-1db9024e0ecf",
+          "batch_id": "593fcdb3-c557-43d3-b058-504640c0d7fa",
+          "expiration_timestamp": "2020-11-21T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-10T00:12:23.000Z"
+      },
+      {
+          "number_succeeded": 3215,
+          "event_id": "b9ed1059-de54-4da0-a0cf-3d3a4fac62c8",
+          "batch_id": "4e08b68b-d645-4a4d-8161-a0dcc561774b",
+          "expiration_timestamp": "2020-11-21T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-10T00:11:07.000Z"
+      },
+      {
+          "number_succeeded": 1,
+          "event_id": "b45414d0-9f2a-4b66-a5e6-8493e218f143",
+          "batch_id": "92f27071-6655-40e9-9a5d-b80e285c6ab8",
+          "expiration_timestamp": "2020-11-21T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-10T00:08:50.000Z"
+      },
+      {
+          "number_succeeded": 1,
+          "event_id": "12938988-c4ef-45fa-8081-e57b16c770fb",
+          "batch_id": "c2545011-8f37-4744-8bd7-e3da61638e0e",
+          "expiration_timestamp": "2020-11-21T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-10T00:07:26.000Z"
+      },
+      {
+          "number_succeeded": 2,
+          "event_id": "c7b0f82c-a064-46f8-be11-a6e48cea4792",
+          "batch_id": "ad451de0-2830-4eb0-99cc-07d47a16e9a3",
+          "expiration_timestamp": "2020-11-21T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-10T00:05:04.000Z"
+      },
+      {
+          "number_succeeded": 1815,
+          "event_id": "f450f35e-4ce2-41be-95cb-d369945534fd",
+          "batch_id": "3d2dff22-8aad-43c1-a7df-bb3dd4f675ee",
+          "expiration_timestamp": "2020-11-21T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-10T00:01:08.000Z"
+      },
+      {
+          "number_succeeded": 2,
+          "event_id": "e64f0b3b-67ec-4c96-8b37-91bef5d86439",
+          "batch_id": "9d83aad3-97f5-4390-8f45-350ca25275b6",
+          "expiration_timestamp": "2020-11-20T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-09T23:57:30.000Z"
+      },
+      {
+          "number_succeeded": 3435,
+          "event_id": "87063369-22d1-4059-ad26-e1a7cddc6cfa",
+          "batch_id": "1bca0db0-5f9b-45ee-8070-ddc994bd8e4d",
+          "expiration_timestamp": "2020-11-20T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-09T23:51:09.000Z"
+      },
+      {
+          "number_succeeded": 1,
+          "event_id": "7929e278-5c4c-4535-bb62-c5dd71df63a8",
+          "batch_id": "a33a6de0-0158-462e-aed3-541638b673ef",
+          "expiration_timestamp": "2020-11-20T00:00:00.000Z",
+          "type": "success",
+          "customer_id": 264069,
+          "number_duplicates": 0,
+          "timestamp": "2020-11-09T23:47:25.000Z"
+      }
+  ],
+  "total_count": 4611,
+  "links": {
+      "next": "/api/v1/events/ingest?cursor=next-page-cursor=&from=2020-10-30T23:14:04&per_page=10&to=2020-11-10T00:14:04"
+  }
+}

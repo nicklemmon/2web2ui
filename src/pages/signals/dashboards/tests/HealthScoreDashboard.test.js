@@ -9,12 +9,12 @@ jest.mock('../components/HealthScoreChart/HealthScoreChart');
 jest.mock('../../components/filters/FacetFilter');
 jest.mock('../../components/filters/DateFilter');
 jest.mock('../../components/filters/SubaccountFilter');
-jest.mock('src/hooks/useRouter', () =>
-  jest.fn().mockReturnValue({
-    requestParams: {},
-    updateRoute: jest.fn(),
-  }),
-);
+jest.mock('src/hooks/usePageFilters', () => {
+  return jest.fn(() => ({
+    filters: {},
+    updateFilters: jest.fn(),
+  }));
+});
 
 describe('Signals Health Score Dashboard', () => {
   const subject = (props = {}) => {

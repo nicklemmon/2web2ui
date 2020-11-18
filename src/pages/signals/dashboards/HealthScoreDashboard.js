@@ -14,11 +14,16 @@ import HealthScoreChart from './components/HealthScoreChart/HealthScoreChart';
 import { changeSignalOptions } from 'src/actions/signalOptions';
 import { getValidSignalsDateRange } from 'src/helpers/signals';
 import { showAlert } from 'src/actions/globalAlert';
-import useRouter from 'src/hooks/useRouter';
+import { usePageFilters } from 'src/hooks';
 import facets from '../constants/facets';
 import { HEALTH_SCORE_INFO } from '../constants/info';
 import { PageDescription } from 'src/components/text';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
+
+const initFilters = {
+  from: { defaultValue: undefined },
+  to: { defaultValue: undefined },
+};
 
 export function HealthScoreDashboard(props) {
   const {
@@ -40,8 +45,10 @@ export function HealthScoreDashboard(props) {
 
   //If To and From are given as URL params, first update redux with the new date range and then remove
   //the params.
-  const { requestParams, updateRoute } = useRouter();
-  const { from: urlFrom, to: urlTo } = requestParams;
+  const {
+    filters: { from: urlFrom, to: urlTo },
+    resetFilters,
+  } = usePageFilters(initFilters);
 
   const hasDeeplinkDateRange = Boolean(urlFrom && urlTo);
 
@@ -60,7 +67,7 @@ export function HealthScoreDashboard(props) {
       } catch (e) {
         showAlert({ type: 'error', message: e.message });
       } finally {
-        updateRoute();
+        resetFilters();
       }
     }
   }, [
@@ -68,7 +75,7 @@ export function HealthScoreDashboard(props) {
     hasDeeplinkDateRange,
     props.history,
     showAlert,
-    updateRoute,
+    resetFilters,
     urlFrom,
     urlTo,
   ]);

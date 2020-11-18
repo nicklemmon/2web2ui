@@ -16,7 +16,7 @@ import { showAlert } from 'src/actions/globalAlert';
 import ApiErrorBanner from 'src/components/apiErrorBanner';
 import Loading from 'src/components/loading';
 import { prepareCardInfo } from 'src/helpers/billing';
-import useRouter from 'src/hooks/useRouter';
+import { usePageFilters } from 'src/hooks';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import { canUpdateBillingInfoSelector, getPromoCodeObject } from 'src/selectors/accountBillingInfo';
 import { getCurrentAccountPlan } from 'src/selectors/accessConditionState';
@@ -31,6 +31,11 @@ import { FeatureChangeContextProvider } from '../context/FeatureChangeContext';
 import OGStyles from './ChangePlanForm.module.scss';
 import HibanaStyles from './ChangePlanFormHibana.module.scss';
 import { segmentTrack, SEGMENT_EVENTS } from 'src/helpers/segment';
+
+const initFilters = {
+  promo: { defaultValue: undefined },
+  code: { defaultValue: undefined },
+};
 
 export const ChangePlanForm = ({
   location,
@@ -53,7 +58,7 @@ export const ChangePlanForm = ({
 }) => {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
   const { billingCountries, account, bundles, loading, error } = useChangePlanContext();
-  const { requestParams: { code, promo } = {}, updateRoute } = useRouter();
+  const { filters: { code, promo } = {}, resetFilters } = usePageFilters(initFilters);
   const [selectedBundleCode, selectBundle] = useState(code);
   const bundlesByCode = useMemo(() => _.keyBy(bundles, 'bundle'), [bundles]);
   const selectedBundle = bundlesByCode[selectedBundleCode];
@@ -63,7 +68,7 @@ export const ChangePlanForm = ({
   const onSelect = bundle => {
     if (!bundle) {
       clearPromoCode();
-      updateRoute({});
+      resetFilters();
     }
     selectBundle(bundle);
   };

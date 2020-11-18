@@ -28,6 +28,7 @@ const PerPageButtons = ({
             className={classnames(perPage === buttonAmount && styles.Selected)}
             key={buttonAmount}
             name="collection-per-page-button"
+            data-id={`collection-per-page-button-${buttonAmount}`}
             onClick={() => onPerPageChange(buttonAmount)}
           >
             {buttonAmount}
@@ -51,6 +52,7 @@ const PerPageButtons = ({
               flat={perPage !== buttonAmount}
               key={buttonAmount}
               name="collection-per-page-button"
+              data-id={`collection-per-page-button-${buttonAmount}`}
               onClick={() => onPerPageChange(buttonAmount)}
               size="small"
               marginX="100"

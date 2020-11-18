@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import useRouter from 'src/hooks/useRouter';
+import { useLocation } from 'react-router-dom';
 
 export default function RouteFocusHandler() {
-  const {
-    location: { pathname },
-  } = useRouter();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     document.querySelector('body').focus();
