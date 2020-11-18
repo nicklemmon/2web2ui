@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Layout, Stack, Text } from 'src/components/matchbox';
-import { Button, Checkbox, Panel, Tag } from 'src/components/matchbox';
+import { Layout, Stack, Text } from 'src/components/matchbox';
+import { Button, Checkbox, Panel } from 'src/components/matchbox';
 import { useForm } from 'react-hook-form';
 import LineBreak from 'src/components/lineBreak';
 import { Bold, SubduedText } from 'src/components/text';
@@ -13,10 +13,6 @@ import { Send } from '@sparkpost/matchbox-icons';
 import styled from 'styled-components';
 import { EXTERNAL_LINKS } from '../constants';
 
-const StyledBox = styled(Box)`
-  float: right;
-`;
-
 const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
 `;
@@ -24,7 +20,6 @@ const PlaneIcon = styled(Send)`
 export default function SendingAndBounceDomainSection({ domain, isSectionVisible }) {
   const { id, status, subaccount_id } = domain;
   const {
-    getDomain,
     verifyDkim,
     verify,
     showAlert,
@@ -42,7 +37,6 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
 
   const getButtonText = () => {
     if (!readyFor.dkim || !readyFor.bounce) return 'Authenticate Domain';
-    if (status.spf_status !== 'valid') return 'Authenticate for SPF';
   };
 
   const onSubmit = () => {
@@ -64,21 +58,6 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
         }
       });
     }
-
-    if (status.spf_status !== 'valid')
-      getDomain(id).then(result => {
-        if (result.status.spf_status === 'valid') {
-          showAlert({
-            type: 'success',
-            message: `You have successfully authenticated SPF`,
-          });
-        } else {
-          showAlert({
-            type: 'error',
-            message: `SPF authentication failed`,
-          });
-        }
-      });
 
     if (!readyFor.dkim) {
       const { id, subaccount_id: subaccount } = domain;
@@ -213,38 +192,6 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                 )}
               </Stack>
             </Panel.Section>
-            <Panel.Section>
-              <Stack>
-                <Box>
-                  {status.spf_status !== 'valid' ? (
-                    <Box>
-                      <Box display="inline">
-                        <Text as="span" fontSize="300" fontWeight="semibold" role="heading">
-                          Add SPF Record{' '}
-                        </Text>
-                        <Tag color="green" ml="400">
-                          Recommended
-                        </Tag>
-                      </Box>
-
-                      <StyledBox>
-                        <Text as="span" fontSize="200" color="gray.700" fontWeight="400">
-                          Optional
-                        </Text>
-                      </StyledBox>
-                    </Box>
-                  ) : (
-                    'TXT record for SPF'
-                  )}
-                </Box>
-                <CopyField label="Hostname" value={id} hideCopy={status.spf_status === 'valid'} />
-                <CopyField
-                  label="Value"
-                  value="v=spf1 mx a ~all"
-                  hideCopy={status.spf_status === 'valid'}
-                />
-              </Stack>
-            </Panel.Section>
             {(!readyFor.bounce || !readyFor.dkim) && (
               <Panel.Section>
                 <Checkbox
@@ -256,7 +203,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                 />
               </Panel.Section>
             )}
-            {(!readyFor.bounce || !readyFor.dkim || status.spf_status !== 'valid') && (
+            {(!readyFor.bounce || !readyFor.dkim) && (
               <Panel.Section>
                 <Button
                   variant="primary"

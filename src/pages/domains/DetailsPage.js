@@ -104,8 +104,7 @@ function DetailsPage(props) {
 
   const resolvedStatus = isTracking ? domain.status : resolveStatus(domain.status);
   const readyFor = isTracking ? {} : resolveReadyFor(domain.status);
-  const displaySendingAndBounceSection =
-    readyFor.dkim && readyFor.bounce && domain.status.spf_status === 'valid';
+  const displaySendingAndBounceSection = readyFor.dkim && readyFor.bounce;
 
   return (
     <Domains.Container>

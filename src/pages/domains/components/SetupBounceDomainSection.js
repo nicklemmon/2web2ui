@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Banner, Box, Button, Layout, Stack, Select, Tag, Text } from 'src/components/matchbox';
+import React from 'react';
+import { Button, Layout, Stack, Select, Text } from 'src/components/matchbox';
 import { Checkbox, Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
 import { Send } from '@sparkpost/matchbox-icons';
@@ -17,26 +17,14 @@ const PlaneIcon = styled(Send)`
   transform: translate(0, -25%) rotate(-45deg);
 `;
 
-const StyledBox = styled(Box)`
-  float: right;
-`;
-
 export default function SetupBounceDomainSection({ domain, isSectionVisible, title }) {
   const { id, status, subaccount_id } = domain;
-  const {
-    getDomain,
-    verify,
-    showAlert,
-    userName,
-    isByoipAccount,
-    verifyBounceLoading,
-  } = useDomains();
+  const { verify, showAlert, userName, isByoipAccount, verifyBounceLoading } = useDomains();
   const readyFor = resolveReadyFor(status);
   const initVerificationType = isByoipAccount && status.mx_status === 'valid' ? 'MX' : 'CNAME';
   const bounceDomainsConfig = getConfig('bounceDomains');
   const { control, handleSubmit, watch, register } = useForm();
   const watchVerificationType = watch('verificationType', initVerificationType);
-  const [warningBanner, toggleBanner] = useState(true);
 
   const onSubmit = () => {
     if (!readyFor.bounce) {
@@ -57,19 +45,6 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
         }
       });
     }
-    return getDomain(id).then(result => {
-      if (result.status.spf_status === 'valid') {
-        showAlert({
-          type: 'success',
-          message: `You have successfully autheticated SPF`,
-        });
-      } else {
-        showAlert({
-          type: 'error',
-          message: `SPF autheticated failed`,
-        });
-      }
-    });
   };
   if (!isSectionVisible) {
     return null;
@@ -81,25 +56,17 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
         <Stack>
           {!readyFor.bounce && (
             <SubduedText fontSize="200">
-              Once the CNAME record is added to the DNS provider settings, the domain will also be
-              setup for Bounce, resulting in Strict Alignment.
+              Adding the CNAME record in your DNS provider settings will set this domain up for
+              Bounce as well resulting in SPF (sender policy framework) authentication which is a
+              sending best practice.
             </SubduedText>
           )}
-
-          {domain.status.spf_status !== 'valid' && readyFor.bounce && warningBanner && (
-            <Banner status="warning" size="small" onDismiss={() => toggleBanner(false)}>
-              <Text fontWeight="normal" maxWidth="100">
-                This domain is not SPF authenticated.
-              </Text>
-            </Banner>
-          )}
-
-          {domain.status.spf_status !== 'valid' && (
+          {!readyFor.bounce && (
             <SubduedText fontSize="200">
-              SPF (Sender Policy Framework) is an email authentication method to determine if a
-              bounce domain is allowed to be used with in given sending IP. SPF failures can cause
-              mail to be rejected at some providers. To ensure they pass all SPF checks, publishing
-              SparkPost CNAME in DNS is required for all bounce domains.
+              SPF is an email authentication method used to determine if a bounce domain is allowed
+              to be used with a given sending IP. SPF failures can cause mail to be rejected at some
+              providers, so SparkPost requires our CNAME record to be published in DNS for all
+              bounce domains to ensure that they pass SPF checks.
             </SubduedText>
           )}
 
@@ -127,7 +94,7 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
               provider.
               <Panel.Action>
                 <ExternalLink
-                  to={`mailto:?subject=Assistance%20Requested%20Verifying%20a%20Sending%20Domain%20on%20SparkPost&body=${userName}%20has%20requested%20your%20assistance%20verifying%20a%20sending%20domain%20with%20SparkPost.%20Follow%20the%20link%20below%20to%20find%20the%20values%20you%E2%80%99ll%20need%20to%20add%20to%20the%20settings%20of%20your%20DNS%20provider.%0D%0A%5BGo%20to%20SparkPost%5D(${window.location})%0D%0A`}
+                  to={`mailto:?subject=Assistance%20Requested%20Verifying%20a%20Bounce%20Domain%20on%20SparkPost&body=${userName}%20has%20requested%20your%20assistance%20verifying%20a%20bounce%20domain%20with%20SparkPost.%20Follow%20the%20link%20below%20to%20find%20the%20values%20you%E2%80%99ll%20need%20to%20add%20to%20the%20settings%20of%20your%20DNS%20provider.%0D%0A%5BGo%20to%20SparkPost%5D(${window.location})%0D%0A`}
                   icon={PlaneIcon}
                 >
                   Forward to Colleague
@@ -207,76 +174,17 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
                 {/*API doesn't support it; Do we want to store this in ui option*/}
               </Stack>
             </Panel.Section>
-            <Panel.Section>
-              <Stack>
-                {domain.status.spf_status !== 'valid' && (
-                  <Box>
-                    <Box display="inline">
-                      <Text as="span" fontSize="300" fontWeight="semibold" role="heading">
-                        Add SPF Record{' '}
-                      </Text>
-                      <Tag color="green" ml="400">
-                        Recommended
-                      </Tag>
-                    </Box>
+            {!readyFor.bounce && (
+              <Panel.Section>
+                <Checkbox
+                  name="ack-checkbox-bounce"
+                  label={`The ${watchVerificationType} record has been added to the DNS provider`}
+                  disabled={verifyBounceLoading}
+                  ref={register({ required: true })}
+                />
+              </Panel.Section>
+            )}
 
-                    <StyledBox>
-                      <Text as="span" fontSize="200" color="gray.700" fontWeight="400">
-                        Optional
-                      </Text>
-                    </StyledBox>
-                  </Box>
-                )}
-                {domain.status.spf_status !== 'valid' && (
-                  <>
-                    <Text as="label" fontWeight="500" fontSize="200">
-                      Type
-                    </Text>
-                    <Text as="p">TXT</Text>
-                  </>
-                )}
-                <CopyField
-                  label="Hostname"
-                  value={id}
-                  hideCopy={domain.status.spf_status === 'valid'}
-                />
-                <CopyField
-                  label="Value"
-                  value="v=spf1 mx a ~all"
-                  hideCopy={domain.status.spf_status === 'valid'}
-                />
-              </Stack>
-            </Panel.Section>
-            {(!readyFor.bounce || domain.status.spf_status !== 'valid') && (
-              <Panel.Section>
-                {readyFor.bounce && domain.status.spf_status !== 'valid' ? (
-                  <Checkbox
-                    name="ack-checkbox-bounce"
-                    label="The TXT record has been added to the DNS provider"
-                    disabled={verifyBounceLoading}
-                    ref={register({ required: true })}
-                  />
-                ) : (
-                  <Checkbox
-                    name="ack-checkbox-bounce"
-                    label={`The ${watchVerificationType} record has been added to the DNS provider`}
-                    disabled={verifyBounceLoading}
-                    ref={register({ required: true })}
-                  />
-                )}
-              </Panel.Section>
-            )}
-            {readyFor.bounce && domain.status.spf_status !== 'valid' && (
-              <Panel.Section>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  disabled={!Boolean(watch('ack-checkbox-bounce'))}
-                >
-                  Authenticate for SPF
-                </Button>
-              </Panel.Section>
-            )}
             {!readyFor.bounce && (
               <Panel.Section>
                 <Button
