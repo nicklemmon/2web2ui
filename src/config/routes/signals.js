@@ -244,7 +244,7 @@ const signalsRoutes = [
     component: signals.IntegrationPage,
     condition: hasAccountOptionEnabled('allow_events_ingest'),
     layout: App,
-    title: 'Signals Integration | SparkPost',
+    title: 'Signals Integration',
     supportDocSearch: 'signals',
     category: 'Configuration',
   },
