@@ -136,7 +136,7 @@ describe('GettingStartedGuide full hibana', () => {
       </TestApp>,
     );
 
-  it('should navigate to sending domains page when Add Sending Domain is clicked - hibana', () => {
+  it('should navigate to /domains/create Add Sending Domain is clicked - hibana', () => {
     const { queryByText } = subject({ onboarding: { active_step: "Let's Code" } });
     userEvent.click(queryByText('Add Sending Domain'));
     expect(defaultProps.history.push).toHaveBeenCalledWith(`/domains/create`);
