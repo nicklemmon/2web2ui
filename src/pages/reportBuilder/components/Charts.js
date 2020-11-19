@@ -27,7 +27,7 @@ export default function ChartContainer() {
   return <ChartGroups reportOptions={reportOptions} />;
 }
 
-export function ChartGroups(props) {
+function ChartGroups(props) {
   const { reportOptions } = props;
   const { comparisons } = reportOptions;
 
@@ -43,21 +43,27 @@ export function ChartGroups(props) {
     <>
       {comparisons.map((compareFilter, index) => {
         const filterType = FILTER_KEY_MAP[compareFilter.type];
-        const newFilters = [
+
+        // Appends each compared filter as a new filter for individual requests
+        const comparedFilters = [
           ...reportOptions.filters,
           { AND: { [filterType]: { eq: [compareFilter] } } },
         ];
         return (
-          <Panel.Section>
-            <Box key={`chart_group_${index}`}>
-              <Heading data-id={`heading_${index}`} as="h2" looksLike="h5">
-                {compareFilter.value}
-              </Heading>
-              <Charts
-                key={`chart_group_${index}`}
-                reportOptions={{ ...reportOptions, filters: newFilters }}
-              />
-            </Box>
+          <Panel.Section key={`chart_group_${index}`}>
+            <Stack>
+              <Box>
+                <Heading data-id={`heading_${index}`} as="h3" looksLike="h4">
+                  {compareFilter.value}
+                </Heading>
+              </Box>
+              <Box>
+                <Charts
+                  key={`chart_group_${index}`}
+                  reportOptions={{ ...reportOptions, filters: comparedFilters }}
+                />
+              </Box>
+            </Stack>
           </Panel.Section>
         );
       })}
