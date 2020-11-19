@@ -149,7 +149,6 @@ jobs:
       # Restores the /build folder from the previous job
       - attach_workspace:
           at: ./
-      - run: mv build build
       - run:
           name: 'Run Cypress Integration Tests'
           command: |
@@ -175,7 +174,6 @@ jobs:
       # Restores the /build folder from the previous job
       - attach_workspace:
           at: ./
-      - run: mv build build
       - run:
           name: 'Run Cypress Integration Tests - Targeted'
           command: |
