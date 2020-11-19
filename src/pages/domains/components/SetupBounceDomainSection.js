@@ -27,24 +27,22 @@ export default function SetupBounceDomainSection({ domain, isSectionVisible, tit
   const watchVerificationType = watch('verificationType', initVerificationType);
 
   const onSubmit = () => {
-    if (!readyFor.bounce) {
-      const type = watchVerificationType.toLowerCase();
+    const type = watchVerificationType.toLowerCase();
 
-      return verify({ id, subaccount: subaccount_id, type }).then(result => {
-        if (result[`${type}_status`] === 'valid') {
-          showAlert({
-            type: 'success',
-            message: `You have successfully verified ${type} record of ${id}`,
-          });
-        } else {
-          showAlert({
-            type: 'error',
-            message: `Unable to verify ${type} record of ${id}`,
-            details: result.dns[`${type}_error`],
-          });
-        }
-      });
-    }
+    return verify({ id, subaccount: subaccount_id, type }).then(result => {
+      if (result[`${type}_status`] === 'valid') {
+        showAlert({
+          type: 'success',
+          message: `You have successfully verified ${type} record of ${id}`,
+        });
+      } else {
+        showAlert({
+          type: 'error',
+          message: `Unable to verify ${type} record of ${id}`,
+          details: result.dns[`${type}_error`],
+        });
+      }
+    });
   };
   if (!isSectionVisible) {
     return null;

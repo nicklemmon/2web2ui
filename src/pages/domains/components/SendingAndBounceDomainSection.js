@@ -35,10 +35,6 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
 
   const readyFor = resolveReadyFor(domain.status);
 
-  const getButtonText = () => {
-    if (!readyFor.dkim || !readyFor.bounce) return 'Authenticate Domain';
-  };
-
   const onSubmit = () => {
     if (!readyFor.bounce) {
       const type = watchVerificationType.toLowerCase();
@@ -212,7 +208,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
                   loading={verifyBounceLoading || verifyDkimLoading}
                   disabled={!watch('addToDns')}
                 >
-                  {getButtonText()}
+                  Authenticate Domain
                 </Button>
               </Panel.Section>
             )}
