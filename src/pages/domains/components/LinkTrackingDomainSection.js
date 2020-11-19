@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button, Layout, Stack } from 'src/components/matchbox';
 import { Panel } from 'src/components/matchbox';
 import { SubduedText } from 'src/components/text';
@@ -7,10 +8,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { Select } from 'src/components/matchbox';
 import useDomains from '../hooks/useDomains';
 import { EXTERNAL_LINKS } from '../constants';
+import { selectTrackingDomainsOptions } from 'src/selectors/trackingDomains';
 
-export default function LinkTrackingDomainSection({ domain, isSectionVisible }) {
+function LinkTrackingDomainSection({ domain, isSectionVisible, trackingDomainOptions }) {
   const { control, handleSubmit, watch } = useForm();
-  const { trackingDomainOptions, updateSendingDomain, showAlert } = useDomains();
+  const { updateSendingDomain, showAlert } = useDomains();
 
   const onSubmit = ({ trackingDomain }) => {
     const { id, subaccount_id: subaccount } = domain;
@@ -85,3 +87,10 @@ export default function LinkTrackingDomainSection({ domain, isSectionVisible }) 
     </Layout>
   );
 }
+
+export default connect(
+  (state, props) => ({
+    trackingDomainOptions: selectTrackingDomainsOptions(state, props),
+  }),
+  null,
+)(LinkTrackingDomainSection);
