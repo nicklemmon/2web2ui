@@ -2,6 +2,8 @@ import React, { createContext, useContext } from 'react';
 import { connect } from 'react-redux';
 import { updateUserUIOptions } from 'src/actions/currentUser';
 import { showAlert } from 'src/actions/globalAlert';
+import { isUserUiOptionSet } from 'src/helpers/conditions/user';
+import { selectCondition } from 'src/selectors/accessConditionState';
 import { segmentTrack, SEGMENT_EVENTS } from '../helpers/segment';
 
 const HibanaStateContext = createContext();
@@ -15,8 +17,8 @@ function Provider(props) {
 function mapStateToProps(state) {
   return {
     isCurrentUserPending: state.currentUser.loading,
-    isHibanaEnabled: true,
-    isBannerVisible: false,
+    isHibanaEnabled: selectCondition(isUserUiOptionSet('isHibanaEnabled'))(state),
+    isBannerVisible: selectCondition(isUserUiOptionSet('isHibanaBannerVisible'))(state),
   };
 }
 
