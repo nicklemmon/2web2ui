@@ -29,9 +29,9 @@ export default function ChartContainer() {
 
 export function ChartGroups(props) {
   const { reportOptions } = props;
-  const { compare } = reportOptions;
+  const { comparisons } = reportOptions;
 
-  if (!compare.length) {
+  if (!comparisons.length) {
     return (
       <Panel.Section>
         <Charts reportOptions={reportOptions} />
@@ -41,7 +41,7 @@ export function ChartGroups(props) {
 
   return (
     <>
-      {compare.map((compareFilter, index) => {
+      {comparisons.map((compareFilter, index) => {
         const filterType = FILTER_KEY_MAP[compareFilter.type];
         const newFilters = [
           ...reportOptions.filters,
@@ -67,7 +67,7 @@ export function ChartGroups(props) {
 
 export function Charts(props) {
   const { reportOptions } = props;
-  const { compare, metrics } = reportOptions;
+  const { comparisons, metrics } = reportOptions;
 
   const formattedMetrics = useMemo(() => {
     return getMetricsFromKeys(metrics, true);
@@ -82,7 +82,6 @@ export function Charts(props) {
       return getTimeSeries(formattedOptions);
     },
     {
-      enabled: reportOptions.isReady,
       refetchOnWindowFocus: false,
     },
   );
@@ -116,7 +115,7 @@ export function Charts(props) {
   }));
   let height = 150;
 
-  switch (charts.length * (compare.length || 1)) {
+  switch (charts.length * (comparisons.length || 1)) {
     case 1:
       height = 400;
       break;
