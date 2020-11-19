@@ -1,4 +1,4 @@
-import { IS_HIBANA_ENABLED } from 'cypres/constants';
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
 import moment from 'moment';
 const utcFormatMatcher = /\d+-\d+-\d+T/g;
 const PAGE_BASE_URL = '/signals/blocklist/incidents';
