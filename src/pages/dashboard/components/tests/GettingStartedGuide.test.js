@@ -1,5 +1,4 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TestApp from 'src/__testHelpers__/TestApp';
@@ -19,31 +18,6 @@ const defaultProps = {
   canManageSendingDomains: true,
   canManageUsers: true,
 };
-
-describe('GettingStartedGuide shallow', () => {
-  beforeEach(() => {
-    jest.mock('src/context/HibanaContext');
-  });
-
-  const subject = props => shallow(<GettingStartedGuide {...defaultProps} {...props} />);
-  const wrapper = subject();
-
-  it('should render ShowMeSparkpostStep inside "Start Sending with SparkPost" Expandable and this Expandable is open by default', () => {
-    expect(wrapper.find('Expandable')).toHaveTextContent('Start Sending with SparkPost');
-    expect(wrapper.find('Expandable').find('ShowMeSparkpostStep')).toHaveLength(1);
-    expect(wrapper.find('Expandable').first()).toHaveProp('defaultOpen');
-  });
-
-  it('should render LetsCodeStep inside SparkPost Analytics Expandable', () => {
-    expect(wrapper.find('Expandable')).toHaveTextContent('SparkPost Analytics');
-    expect(wrapper.find('Expandable').find('LetsCodeStep')).toHaveLength(1);
-  });
-
-  it('should not render the "Start Sending with SparkPost" Expandable when user does not have grants to manageKeys or manageSendingDomains', () => {
-    const wrapper = subject({ canManageKeys: false, canManageSendingDomains: false });
-    expect(wrapper.find({ title: 'Start Sending with SparkPost' })).not.toExist();
-  });
-});
 
 describe('GettingStartedGuide full', () => {
   const subject = (props, renderFn = render) =>

@@ -3,6 +3,7 @@ import { Expandable, Panel } from 'src/components/matchbox';
 import { GUIDE_IDS } from 'src/constants';
 import ShowMeSparkpostStep from './ShowMeSparkpostStep';
 import LetsCodeStep from './LetsCodeStep';
+import { useHibana } from 'src/context/HibanaContext';
 
 export const GuideContext = createContext();
 export const useGuideContext = () => useContext(GuideContext);
@@ -32,6 +33,8 @@ export const GettingStartedGuide = ({
     }
   };
 
+  const [{ isHibanaEnabled }] = useHibana();
+
   const handleAction = action => {
     switch (action) {
       case 'Send Test Email':
@@ -57,7 +60,8 @@ export const GettingStartedGuide = ({
         history.push('/account/api-keys');
         break;
       case 'Add Sending Domain':
-        history.push(`/account/sending-domains`, { triggerGuide: true });
+        if (!isHibanaEnabled) history.push(`/account/sending-domains`, { triggerGuide: true });
+        else history.push(`/domains/create`);
         break;
       default:
         break;
