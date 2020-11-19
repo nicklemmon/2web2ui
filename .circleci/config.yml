@@ -211,7 +211,6 @@ workflows:
             - 'Build'
       - 'Code coverage':
           requires:
-            - 'Unit Testing'
             - 'Integration Testing'
       # Uncomment these jobs to run targeted integration tests by passing in
       # the targeted filename to run an individual spec or groups of specs.
