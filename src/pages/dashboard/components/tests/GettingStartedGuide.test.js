@@ -27,6 +27,46 @@ describe('GettingStartedGuide full', () => {
       </TestApp>,
     );
 
+  it('should render ShowMeSparkpostStep inside "Start Sending with SparkPost" Expandable and this Expandable is open by default', () => {
+    const { queryByText, queryAllByTestId } = subject({
+      onboarding: { active_step: 'Show Me SparkPost' },
+    });
+
+    const expandables = queryAllByTestId('expandable-toggle');
+    expect(expandables[0]).toHaveAttribute('aria-expanded', 'true');
+    expect(expandables.length).toEqual(2);
+    expect(queryByText('SparkPost Analytics')).toBeInTheDocument();
+    expect(queryByText('Start Sending with SparkPost')).toBeInTheDocument();
+    expect(queryByText('Send a Test Email')).toBeInTheDocument(); // ShowMeSparkpostStep
+    expect(queryByText('Send a test email using our starter template.')).toBeInTheDocument(); // ShowMeSparkpostStep
+  });
+
+  it('should render LetsCodeStep inside SparkPost Analytics Expandable', () => {
+    const { queryByText, queryAllByTestId } = subject({
+      onboarding: { active_step: "Let's Code" },
+    });
+    const expandables = queryAllByTestId('expandable-toggle');
+    expect(expandables[1]).toHaveAttribute('aria-expanded', 'false');
+    expect(expandables.length).toEqual(2);
+    expect(queryByText('SparkPost Analytics')).toBeInTheDocument();
+    expect(queryByText('Start Sending with SparkPost')).toBeInTheDocument();
+    expect(
+      queryByText("You'll need to add a sending domain in order to start sending emails."),
+    ).toBeInTheDocument();
+  });
+
+  it('should not render the "Start Sending with SparkPost" Expandable when user does not have grants to manageKeys or manageSendingDomains', () => {
+    const { queryByText, queryAllByTestId } = subject({
+      canManageKeys: false,
+      canManageSendingDomains: false,
+      onboarding: { active_step: "Let's Code" },
+    });
+    const expandables = queryAllByTestId('expandable-toggle');
+    expect(expandables.length).toEqual(1);
+    expect(queryByText('SparkPost Analytics')).toBeInTheDocument();
+    expect(queryByText('Start Sending with SparkPost')).not.toBeInTheDocument();
+  });
+
   it('should navigate to templates page when Send a Test Email button is clicked', () => {
     const { queryByText } = subject({ onboarding: { active_step: 'Show Me SparkPost' } });
     userEvent.click(queryByText('Send Test Email'));
@@ -85,5 +125,20 @@ describe('GettingStartedGuide full', () => {
     expect(defaultProps.history.push).toHaveBeenCalledWith(`/account/sending-domains`, {
       triggerGuide: true,
     });
+  });
+});
+
+describe('GettingStartedGuide full hibana', () => {
+  const subject = (props, renderFn = render) =>
+    renderFn(
+      <TestApp isHibanaEnabled={true}>
+        <GettingStartedGuide {...defaultProps} {...props} />
+      </TestApp>,
+    );
+
+  it('should navigate to sending domains page when Add Sending Domain is clicked - hibana', () => {
+    const { queryByText } = subject({ onboarding: { active_step: "Let's Code" } });
+    userEvent.click(queryByText('Add Sending Domain'));
+    expect(defaultProps.history.push).toHaveBeenCalledWith(`/domains/create`);
   });
 });
