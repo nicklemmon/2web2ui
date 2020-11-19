@@ -133,7 +133,7 @@ jobs:
     steps:
       - setup
       - run: npm run build-ci
-      - run: mkdir -p workspace && mv build build && mv build workspace
+      - run: mkdir -p workspace && mv build workspace
       # Saves the build folder to a temporary workspace directory for use by later jobs
       - persist_to_workspace:
           root: workspace
