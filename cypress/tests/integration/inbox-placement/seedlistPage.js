@@ -1,3 +1,5 @@
+import { IS_HIBANA_ENABLED } from 'cypress/constants';
+
 describe('Seedlist Page', () => {
   beforeEach(() => {
     cy.stubAuth();
@@ -18,7 +20,7 @@ describe('Seedlist Page', () => {
     cy.findByText('Download CSV').should('be.visible');
   });
 
-  if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+  if (IS_HIBANA_ENABLED) {
     it.skip('has link to documentation website', () => {
       // Skip for now because documentation does not exist yet
       cy.verifyLink({

@@ -1,3 +1,4 @@
+import { IS_HIBANA_ENABLED } from 'cypres/constants';
 import moment from 'moment';
 const utcFormatMatcher = /\d+-\d+-\d+T/g;
 const PAGE_BASE_URL = '/signals/blocklist/incidents';
@@ -132,7 +133,7 @@ describe('The blocklist incidents page', () => {
       cy.wrap(url).should('include', 'to=' + todaysDate);
     });
 
-    if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+    if (IS_HIBANA_ENABLED) {
       const openDatePicker = () => {
         cy.findByLabelText('Date Range').focus();
         cy.findByLabelText('Date Range').click({ force: true });

@@ -142,7 +142,7 @@ jobs:
 
   'Integration Testing':
     <<: *defaults
-    parallelism: 5
+    parallelism: 6
     steps:
       - setup
       - cypress_dependencies
