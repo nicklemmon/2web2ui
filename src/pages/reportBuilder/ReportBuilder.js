@@ -36,19 +36,6 @@ import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { useLocation } from 'react-router-dom';
 
-const MetricDefinition = ({ label, children }) => {
-  return (
-    <LabelValue>
-      <LabelValue.Label>
-        <Box color="gray.600">{label}</Box>
-      </LabelValue.Label>
-      <LabelValue.Value>
-        <Box color="white">{children}</Box>
-      </LabelValue.Value>
-    </LabelValue>
-  );
-};
-
 export function ReportBuilder({
   chart,
   getSubscription,
@@ -219,11 +206,17 @@ export function ReportBuilder({
                   <Box padding="400" backgroundColor="gray.1000">
                     <Grid>
                       <Grid.Column sm={3}>
-                        <Box id="date">
-                          <MetricDefinition label="Date">
-                            <Unit value={dateValue} />
-                          </MetricDefinition>
-                        </Box>
+                        <LabelValue dark>
+                          <LabelValue.Label>
+                            <Box color="gray.600">Date</Box>
+                          </LabelValue.Label>
+
+                          <LabelValue.Value>
+                            <Box color="white">
+                              <Unit value={dateValue} />
+                            </Box>
+                          </LabelValue.Value>
+                        </LabelValue>
                       </Grid.Column>
 
                       <Grid.Column sm={9}>
@@ -235,12 +228,18 @@ export function ReportBuilder({
 
                             return (
                               <Box marginRight="600" key={key}>
-                                <MetricDefinition label={label}>
-                                  <Box display="flex" alignItems="center">
-                                    {stroke && <LegendCircle marginRight="200" color={stroke} />}
-                                    <Unit value={value} unit={unit} />
-                                  </Box>
-                                </MetricDefinition>
+                                <LabelValue dark>
+                                  <LabelValue.Label>
+                                    <Box color="gray.600">{label}</Box>
+                                  </LabelValue.Label>
+
+                                  <LabelValue.Value>
+                                    <Box display="flex" alignItems="center" color="white">
+                                      {stroke && <LegendCircle marginRight="200" color={stroke} />}
+                                      <Unit value={value} unit={unit} />
+                                    </Box>
+                                  </LabelValue.Value>
+                                </LabelValue>
                               </Box>
                             );
                           })}
@@ -249,6 +248,7 @@ export function ReportBuilder({
                     </Grid>
                   </Box>
                 </Tabs.Item>
+
                 {hasBounceTab && (
                   <Tabs.Item>
                     <BounceReasonsTable />
