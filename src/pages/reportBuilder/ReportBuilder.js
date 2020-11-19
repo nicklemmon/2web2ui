@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { Error } from '@sparkpost/matchbox-icons';
 import { refreshReportBuilder } from 'src/actions/summaryChart';
+import { getSubscription } from 'src/actions/billing';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
 import { Empty, Tabs, Loading, Unit, LegendCircle } from 'src/components';
@@ -16,25 +18,28 @@ import {
   Panel,
   Tooltip,
 } from 'src/components/matchbox';
-import { ReportOptions, ReportTable, SaveReportModal } from './components';
-import Charts from './components/Charts';
 import {
   bounceTabMetrics,
   rejectionTabMetrics,
   delayTabMetrics,
   linksTabMetrics,
 } from 'src/config/metrics';
+import { parseSearchNew as parseSearch } from 'src/helpers/reports';
+import {
+  Charts,
+  CompareByAggregates,
+  ReportOptions,
+  ReportTable,
+  SaveReportModal,
+} from './components';
 import {
   BounceReasonsTable,
   DelayReasonsTable,
   LinksTable,
   RejectionReasonsTable,
 } from './components/tabs';
-import { getSubscription } from 'src/actions/billing';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
-import { parseSearchNew as parseSearch } from 'src/helpers/reports';
-import { useLocation } from 'react-router-dom';
 
 export function ReportBuilder({
   chart,
@@ -247,6 +252,8 @@ export function ReportBuilder({
                       </Grid.Column>
                     </Grid>
                   </Box>
+
+                  <CompareByAggregates date={dateValue} />
                 </Tabs.Item>
 
                 {hasBounceTab && (
