@@ -63,13 +63,12 @@ function DetailsPage(props) {
     };
   }, [clearSendingDomain, getDomain, isTracking, match.params.id]);
   useEffect(() => {
-    if (isTracking)
-      listTrackingDomains().then(res => {
-        //this logic redirects to list page when the tracking domain is not found in the list
-        if (!Boolean(_.find(res, ['domain', match.params.id.toLowerCase()]))) {
-          settrackingDomainNotFound(true);
-        }
-      });
+    listTrackingDomains().then(res => {
+      //this logic redirects to list page when the tracking domain is not found in the list
+      if (isTracking && !Boolean(_.find(res, ['domain', match.params.id.toLowerCase()]))) {
+        settrackingDomainNotFound(true);
+      }
+    });
   }, [history, isTracking, listTrackingDomains, match.params.id]);
 
   useEffect(() => {
