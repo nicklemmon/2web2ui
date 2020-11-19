@@ -14,7 +14,6 @@
     "serve-app": "npx serve -s build",
     "build": "node scripts/build.js",
     "build-ci": "INSTRUMENT_CODE=true npm run build",
-    "build-ci-hibana": "REACT_APP_DEFAULT_TO_HIBANA=true npm run build-ci",
     "analyze": "source-map-explorer build/static/js/main.*",
     "test": "node scripts/test.js --env=jsdom --config=./jest.config.js",
     "test-ci": "CI=true npm test -- --coverage --colors --maxWorkers=2",
@@ -24,10 +23,8 @@
     "test-e2e-headless": "cypress run --config integrationFolder=cypress/tests/e2e",
     "test-e2e-ci": "npm run start-app & wait-on http://localhost:3100 && npm run test-e2e-headless",
     "test-integration": "npm run test-cy-env && TZ=America/New_York cypress open --config-file cypress.dev.json",
-    "test-integration-hibana": "npm run test-cy-env && TZ=America/New_York cypress open --config-file cypress.dev.json --env DEFAULT_TO_HIBANA=true",
     "test-integration-headless": "npm run test-cy-env && TZ=America/New_York cypress run --config-file cypress.dev.json",
     "test-integration-ci": "npm run serve-app & wait-on http://localhost:5000 && TZ=America/New_York cypress run --config-file cypress.ci.json",
-    "test-integration-ci-hibana": "npm run serve-app & wait-on http://localhost:5000 && TZ=America/New_York cypress run --config-file cypress.ci.json --env DEFAULT_TO_HIBANA=true",
     "storybook-dev": "start-storybook --port 3101 --config-dir .storybook --docs --quiet",
     "storybook-build": "build-storybook --config-dir .storybook --output-dir .out --docs"
   },
