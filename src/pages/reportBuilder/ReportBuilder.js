@@ -225,12 +225,14 @@ export function ReportBuilder({
                           </MetricDefinition>
                         </Box>
                       </Grid.Column>
+
                       <Grid.Column sm={9}>
                         <Inline space="600">
                           {chart.aggregateData.map(({ key, label, value, unit }) => {
                             const stroke = processedMetrics.find(({ key: newKey }) => {
                               return newKey === key;
                             })?.stroke;
+
                             return (
                               <Box marginRight="600" key={key}>
                                 <MetricDefinition label={label}>
