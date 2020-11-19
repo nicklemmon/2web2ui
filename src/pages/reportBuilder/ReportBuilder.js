@@ -64,7 +64,6 @@ export function ReportBuilder({
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
-  const { location } = useRouter();
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
