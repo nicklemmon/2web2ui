@@ -209,6 +209,7 @@ workflows:
       - 'Build'
       - 'Integration Testing':
           requires:
+            - 'Unit Testing'
             - 'Build'
       - 'Code coverage':
           requires:
