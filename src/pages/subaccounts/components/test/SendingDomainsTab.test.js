@@ -28,7 +28,7 @@ describe('SendingDomainsTab', () => {
     mockConsumer.mockReturnValue({ isHibanaEnabled: false });
     const wrapper = subject()
       .find(HibanaContext.HibanaStateContext.Consumer)
-      .renderProp('children')();
+      .renderProp('children')(mockConsumer());
     expect(wrapper).toHaveTextContent('Sending Domains assigned to this subaccount.');
     expect(wrapper.find('TableCollection')).toHaveProp('rows', defaultProps.domains);
   });
