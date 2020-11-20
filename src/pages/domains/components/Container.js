@@ -22,10 +22,7 @@ import {
   verifyTrackingDomain,
 } from 'src/actions/trackingDomains';
 import { selectSendingDomainsRows, selectBounceDomainsRows } from 'src/selectors/sendingDomains';
-import {
-  selectTrackingDomainsRows,
-  selectTrackingDomainsOptions,
-} from 'src/selectors/trackingDomains';
+import { selectTrackingDomainsRows } from 'src/selectors/trackingDomains';
 import { selectTrackingDomainCname } from 'src/selectors/account';
 import { hasSubaccounts } from 'src/selectors/subaccounts';
 import { DomainsProvider } from '../context/DomainsContext';
@@ -52,7 +49,6 @@ function mapStateToProps(state) {
     hasSubaccounts: hasSubaccounts(state),
     subaccounts: state.subaccounts.list,
     trackingDomains: selectTrackingDomainsRows(state),
-    trackingDomainOptions: selectTrackingDomainsOptions(state),
     trackingDomainsListError: state.trackingDomains.error,
     userName: state.currentUser.username,
     isByoipAccount: selectCondition(hasAccountOptionEnabled('byoip_customer'))(state),
