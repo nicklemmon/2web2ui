@@ -69,7 +69,7 @@ const config = identifier => ({
   ],
   metricsRollupPrecisionMap: [
     {
-      recommended: 60 * 4,
+      recommended: 60 * 8,
       min: 0,
       max: 60 * 24,
       value: '1min',
@@ -77,7 +77,6 @@ const config = identifier => ({
       uniqueLabel: 'per minute',
     },
     {
-      recommended: 60 * 12,
       min: 10,
       max: 60 * 24,
       value: '5min',
@@ -85,7 +84,6 @@ const config = identifier => ({
       uniqueLabel: 'per minute',
     },
     {
-      recommended: 60 * 24 * 2,
       min: 30,
       max: 60 * 24 * 2,
       value: '15min',

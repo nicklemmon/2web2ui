@@ -99,10 +99,18 @@ describe('metrics helpers', () => {
     const to = moment('2016-12-18T04:30').utc();
 
     it('should return recommended precision when no precision is given', () => {
-      expect(metricsHelpers.getRollupPrecision({ from, to, precision: undefined })).toEqual('5min');
+      expect(metricsHelpers.getRollupPrecision({ from, to, precision: undefined })).toEqual('1min');
+      expect(
+        metricsHelpers.getRollupPrecision({
+          from,
+          to: moment('2016-12-28T00:00').utc(),
+          precision: undefined,
+        }),
+      ).toEqual('hour');
     });
+
     it('should return correct precision', () => {
-      expect(metricsHelpers.getRollupPrecision({ from, to, precision: 'month' })).toEqual('5min');
+      expect(metricsHelpers.getRollupPrecision({ from, to, precision: 'month' })).toEqual('1min');
     });
     it('should return the same precision when it is still in the allowed precision options', () => {
       expect(metricsHelpers.getRollupPrecision({ from, to, precision: 'hour' })).toEqual('hour');
