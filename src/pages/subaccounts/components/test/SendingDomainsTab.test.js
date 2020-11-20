@@ -59,12 +59,10 @@ describe('SendingDomainsTab', () => {
   });
 
   it('snapshots getRowData without hibana', () => {
-    mockConsumer.mockReturnValue({ isHibanaEnabled: false });
-    expect(getRowData({ domain: 'foo.com' })).toMatchSnapshot();
+    expect(getRowData({ domain: 'foo.com' }, false)).toMatchSnapshot();
   });
 
   it('snapshots getRowData with hibana', () => {
-    mockConsumer.mockReturnValue({ isHibanaEnabled: true });
-    expect(getRowData({ domain: 'foo.com' })).toMatchSnapshot();
+    expect(getRowData({ domain: 'foo.com' }, true)).toMatchSnapshot();
   });
 });
