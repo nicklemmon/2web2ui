@@ -120,7 +120,7 @@ export default function SendingAndBounceDomainSection({ domain, isSectionVisible
               </Panel.Section>
             ) : (
               <Panel.Section>
-                'Below is the records for this domain at your DNS provider'
+                Below is the records for this domain at your DNS provider
               </Panel.Section>
             )}
 
