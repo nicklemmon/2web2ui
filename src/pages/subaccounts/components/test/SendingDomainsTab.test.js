@@ -53,7 +53,7 @@ describe('SendingDomainsTab', () => {
   });
 
   it('should show a link to /domains/list/sending when hibana is enabled', () => {
-    mockConsumer.mockReturnValue({ isHibanaEnabled: true });
+    mockConsumer.mockReturnValue({ isHibanaEnabled: false });
     const wrapper = subject({ domains: [] }).renderProp('children')(mockConsumer());
     expect(wrapper.find('PageLink')).toHaveProp('to', '/domains/list/sending');
   });
