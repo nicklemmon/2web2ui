@@ -1,6 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SendingDomainsTab getRowData 1`] = `
+exports[`SendingDomainsTab snapshots getRowData with hibana 1`] = `
+Array [
+  <PageLink
+    to="/domains/details/sending-bounce/foo.com"
+  >
+    foo.com
+  </PageLink>,
+  <DomainStatusCell
+    domain={
+      Object {
+        "domain": "foo.com",
+      }
+    }
+  />,
+]
+`;
+
+exports[`SendingDomainsTab snapshots getRowData without hibana 1`] = `
 Array [
   <PageLink
     to="/account/sending-domains/edit/foo.com"

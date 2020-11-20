@@ -7,7 +7,7 @@ import { Button, Panel, Stack } from 'src/components/matchbox';
 import { Loading } from 'src/components';
 import { TableCollection, DomainStatusCell, StatusTooltipHeader } from 'src/components';
 import { selectSendingDomainsForSubaccount } from 'src/selectors/sendingDomains';
-import { HibanaConsumer } from 'src/context/HibanaContext';
+import { HibanaStateContext } from 'src/context/HibanaContext';
 
 const StyledPanelContent = styled.div`
   text-align: center;
@@ -43,9 +43,8 @@ export class SendingDomainsTab extends Component {
     }
 
     const showEmpty = this.props.domains.length === 0;
-
     return (
-      <HibanaConsumer>
+      <HibanaStateContext.Consumer>
         {value => (
           <>
             {showEmpty ? (
@@ -57,7 +56,6 @@ export class SendingDomainsTab extends Component {
                         This subaccount has no sending domains assigned to it. You can assign an
                         existing one, or create a new one.
                       </p>
-
                       <div>
                         <PageLink as={Button} variant="secondary" to={getToLink(value)}>
                           Manage Sending Domains
@@ -84,7 +82,7 @@ export class SendingDomainsTab extends Component {
             )}
           </>
         )}
-      </HibanaConsumer>
+      </HibanaStateContext.Consumer>
     );
   }
 }
