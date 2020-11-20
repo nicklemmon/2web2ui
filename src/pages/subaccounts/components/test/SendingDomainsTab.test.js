@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { SendingDomainsTab, getRowData } from '../SendingDomainsTab';
-import * as HibanaContext from 'src/context/HibanaContext';
+import { HibanaStateContext } from 'src/context/HibanaContext';
 
 const mockConsumer = jest.fn();
 
@@ -27,7 +27,7 @@ describe('SendingDomainsTab', () => {
   it('should load domains in tab', () => {
     mockConsumer.mockReturnValue({ isHibanaEnabled: false });
     const wrapper = subject()
-      .find(HibanaContext.HibanaStateContext.Consumer)
+      .find(HibanaStateContext.Consumer)
       .renderProp('children')(mockConsumer());
     expect(wrapper).toHaveTextContent('Sending Domains assigned to this subaccount.');
     expect(wrapper.find('TableCollection')).toHaveProp('rows', defaultProps.domains);
@@ -43,7 +43,7 @@ describe('SendingDomainsTab', () => {
   it('should show empty message when 0 domains exist', () => {
     mockConsumer.mockReturnValue({ isHibanaEnabled: false });
     const wrapper = subject({ domains: [] })
-      .find(HibanaContext.HibanaStateContext.Consumer)
+      .find(HibanaStateContext.Consumer)
       .renderProp('children')(mockConsumer());
 
     expect(wrapper).toHaveTextContent(
