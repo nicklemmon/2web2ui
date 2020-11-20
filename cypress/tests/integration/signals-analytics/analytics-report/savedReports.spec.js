@@ -32,19 +32,38 @@ if (IS_HIBANA_ENABLED) {
       });
     });
 
-    it('loads a preset report with additional filters when given a report query param and filter param', () => {
-      cy.visit(PAGE_URL);
-      cy.findByText('Engagement Report').should('not.be.visible');
-
+    it('loads a preset report in addition to relevant query params', () => {
       cy.visit(`${PAGE_URL}&report=engagement`);
-      cy.findByText('Engagement Report').should('be.visible');
+      cy.wait([
+        '@accountReq',
+        '@userReq',
+        '@reportsReq',
+        '@billingSubscriptionReq',
+        '@getTimeSeries',
+        '@getDeliverability',
+      ]);
+      cy.findByLabelText('Report').should('have.value', 'Engagement Report');
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
       cy.findAllByText('Clicks').should('be.visible');
       cy.findAllByText('Open Rate').should('be.visible');
 
       cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
+      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      cy.findAllByText('Sent').should('be.visible');
+      cy.findAllByText('Accepted').should('be.visible');
+      cy.findAllByText('Clicks').should('be.visible');
+      cy.findAllByText('Open Rate').should('be.visible');
+      // Additional params
       cy.findAllByText('Christmas').should('be.visible');
+
+      cy.visit(
+        `${PAGE_URL}&report=engagement&metrics%5B0%5D=count_policy_rejection&filters=Campaign:Christmas`,
+      );
+      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      // Additional params
+      cy.findAllByText('Christmas').should('be.visible');
+      cy.findByText('Policy Rejections').should('be.visible');
     });
 
     it('Selecting a preset report works correctly', () => {

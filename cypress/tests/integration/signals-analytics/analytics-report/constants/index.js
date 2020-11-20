@@ -1,6 +1,6 @@
 export const STABLE_UNIX_DATE = 1581087062000; // Stable unix timestamp (2/6/2020)
 export const PAGE_URL =
-  '/signals/analytics?from=2020-06-22T19%3A00%3A00Z&to=2020-06-23T19%3A03%3A48Z&range=day&timezone=America%2FNew_York&precision=hour&metrics=count_targeted&metrics=count_accepted&metrics=count_bounce';
+  '/signals/analytics?from=2020-06-22T19%3A00%3A00Z&to=2020-06-23T19%3A03%3A48Z&range=day&timezone=America%2FNew_York&precision=hour';
 export const METRICS = [
   {
     name: 'Admin Bounce Rate',
