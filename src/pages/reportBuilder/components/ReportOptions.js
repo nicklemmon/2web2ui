@@ -7,19 +7,12 @@ import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import {
-  AddFiltersSection,
-  CompareByForm,
-  FiltersForm,
-  ActiveMetrics,
-  MetricsDrawer,
-} from './index';
+import { ActiveFilters, ActiveMetrics, CompareByForm, FiltersForm, MetricsDrawer } from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import { usePageFilters } from 'src/hooks';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { dehydrateFilters } from '../helpers';
-import { ActiveFilters, ActiveFiltersV2 } from './ActiveFilters'; // TODO: Import from the component index when feature flag is removed
 
 const drawerTabs = [{ content: 'Metrics' }, { content: 'Filters' }];
 const initFilters = {
@@ -34,45 +27,32 @@ const initFilters = {
   compare: {},
   report: {},
 };
-export function ReportOptions(props) {
-  const {
-    reportLoading,
-    isComparatorsEnabled,
-    isCompareByEnabled,
-    selectedReport,
-    setReport,
-  } = props;
 
+export function ReportOptions(props) {
+  const { reportLoading, isCompareByEnabled, selectedReport, setReport } = props;
   const drawerTabsFeatureFlag = useMemo(() => {
     return isCompareByEnabled ? [...drawerTabs, { content: 'Compare' }] : drawerTabs;
   }, [isCompareByEnabled]);
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
-  const { refreshReportOptions, removeFilter, removeFilterV2 } = actions;
+  const { refreshReportOptions, removeFilter } = actions;
   const {
     selectSummaryMetricsProcessed: processedMetrics,
     selectSummaryChartSearchOptions,
   } = selectors;
-
   const { updateFilters } = usePageFilters(initFilters);
-
   const isEmpty = useMemo(() => {
     return !Boolean(processedMetrics.length);
   }, [processedMetrics]);
-
   // Render filters when metrics are not empty and when the filters array is not empty
-  const hasFilters = !isEmpty && Boolean(reportOptions.filters.length);
+  const hasFilters = !isEmpty && Boolean(reportOptions?.filters?.length);
 
   // Updates the query params with incoming search option changes
   useEffect(() => {
     if (reportOptions.isReady) {
       const { filters: selectedFilters, ...update } = selectSummaryChartSearchOptions;
       const { filters } = reportOptions;
-      if (isComparatorsEnabled) {
-        update.query_filters = encodeURI(JSON.stringify(dehydrateFilters(filters)));
-      } else {
-        update.filters = selectedFilters;
-      }
 
+      update.query_filters = encodeURI(JSON.stringify(dehydrateFilters(filters)));
       updateFilters({ ...update, report: selectedReport?.id }, { arrayFormat: 'indices' });
     }
   }, [
@@ -80,7 +60,6 @@ export function ReportOptions(props) {
     updateFilters,
     reportOptions.isReady,
     selectedReport,
-    isComparatorsEnabled,
     reportOptions,
   ]);
 
@@ -109,13 +88,8 @@ export function ReportOptions(props) {
     openDrawer();
   };
 
-  // TODO: Remove when the filter groupings feature flag is removed
-  const handleFilterRemove = index => {
-    removeFilter(index);
-  };
-
-  const handleFilterRemoveV2 = ({ groupingIndex, filterIndex, valueIndex }) => {
-    return removeFilterV2({ groupingIndex, filterIndex, valueIndex });
+  const handleFilterRemove = ({ groupingIndex, filterIndex, valueIndex }) => {
+    return removeFilter({ groupingIndex, filterIndex, valueIndex });
   };
 
   const handleTimezoneSelect = useCallback(
@@ -192,11 +166,7 @@ export function ReportOptions(props) {
                 <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
               </Tabs.Item>
               <Tabs.Item>
-                {isComparatorsEnabled ? (
-                  <FiltersForm handleSubmit={handleSubmit} reportOptions={reportOptions} />
-                ) : (
-                  <AddFiltersSection handleSubmit={handleSubmit} reportOptions={reportOptions} />
-                )}
+                <FiltersForm handleSubmit={handleSubmit} />
               </Tabs.Item>
               {isCompareByEnabled && (
                 <Tabs.Item>
@@ -227,17 +197,10 @@ export function ReportOptions(props) {
               Filters
             </Heading>
 
-            {isComparatorsEnabled ? (
-              <ActiveFiltersV2
-                filters={reportOptions.filters}
-                handleFilterRemove={handleFilterRemoveV2}
-              />
-            ) : (
-              <ActiveFilters
-                filters={reportOptions.filters}
-                handleFilterRemove={handleFilterRemove}
-              />
-            )}
+            <ActiveFilters
+              filters={reportOptions.filters}
+              handleFilterRemove={handleFilterRemove}
+            />
           </Inline>
         </Panel.Section>
       )}
@@ -247,7 +210,6 @@ export function ReportOptions(props) {
 
 const mapStateToProps = state => ({
   featureFlaggedMetrics: selectFeatureFlaggedMetrics(state),
-  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
   isCompareByEnabled: selectCondition(isAccountUiOptionSet('allow_compare_by'))(state), //Comparing different filters
 });
 

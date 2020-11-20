@@ -197,90 +197,86 @@ describe('The health score dashboard page', () => {
       cy.wait('@getHealthScore');
     });
 
-    it(
-      'renders each subaccount along with the current health score for that subaccount',
-      { retries: 2 },
-      () => {
-        function getTableRow(rowIndex) {
-          return cy
-            .get('tbody tr')
-            .eq(rowIndex)
-            .scrollIntoView();
-        }
+    it('renders each subaccount along with the current health score for that subaccount', () => {
+      function getTableRow(rowIndex) {
+        return cy
+          .get('tbody tr')
+          .eq(rowIndex)
+          .scrollIntoView();
+      }
 
-        function verifyTableRow({
-          rowIndex,
-          subaccount,
-          currentScore,
-          currentInjections,
-          WoW,
-          averageScore,
-        }) {
-          getTableRow(rowIndex)
-            .find('td')
-            .eq(0)
-            .within(() => cy.findByText(subaccount).should('be.visible'));
+      function verifyTableRow({
+        rowIndex,
+        subaccount,
+        currentScore,
+        currentInjections,
+        WoW,
+        averageScore,
+      }) {
+        getTableRow(rowIndex)
+          .find('td')
+          .eq(0)
+          .within(() => cy.findByText(subaccount).should('be.visible'));
 
-          getTableRow(rowIndex)
-            .find('td')
-            .eq(2)
-            .within(() => cy.findByText(currentScore.toString()).should('be.visible'));
+        getTableRow(rowIndex)
+          .find('td')
+          .eq(2)
+          .within(() => cy.findByText(currentScore.toString()).should('be.visible'));
 
-          getTableRow(rowIndex)
-            .find('td')
-            .eq(3)
-            .within(() => cy.findByText(currentInjections.toString()).should('be.visible'));
+        getTableRow(rowIndex)
+          .find('td')
+          .eq(3)
+          .within(() => cy.findByText(currentInjections.toString()).should('be.visible'));
 
-          getTableRow(rowIndex)
-            .find('td')
-            .eq(4)
-            .within(() => cy.findByText(WoW).should('be.visible'));
+        getTableRow(rowIndex)
+          .find('td')
+          .eq(4)
+          .within(() => cy.findByText(WoW).should('be.visible'));
 
-          getTableRow(rowIndex)
-            .find('td')
-            .eq(5)
-            .within(() => cy.findByText(averageScore.toString()).should('be.visible'));
-        }
-        // Grabbing the data in each of the cells in the table row. The chart isn't interpretable
-        // by Cypress, which indicates an a11y problem.
+        getTableRow(rowIndex)
+          .find('td')
+          .eq(5)
+          .within(() => cy.findByText(averageScore.toString()).should('be.visible'));
+      }
+      // Grabbing the data in each of the cells in the table row. The chart isn't interpretable
+      // by Cypress, which indicates an a11y problem.
 
-        verifyTableRow({
-          rowIndex: 0,
-          subaccount: /Master Account/g,
-          currentScore: 10,
-          currentInjections: 12,
-          WoW: '10%',
-          averageScore: 15,
-        });
+      verifyTableRow({
+        rowIndex: 0,
+        subaccount: /Master Account/g,
+        currentScore: 10,
+        currentInjections: 12,
+        WoW: '10%',
+        averageScore: 15,
+      });
 
-        verifyTableRow({
-          rowIndex: 1,
-          subaccount: 'Fake Subaccount 1 (101)',
-          currentScore: 20,
-          currentInjections: 34,
-          WoW: '20%',
-          averageScore: 25,
-        });
+      verifyTableRow({
+        rowIndex: 1,
+        subaccount: 'Fake Subaccount 1 (101)',
+        currentScore: 20,
+        currentInjections: 34,
+        WoW: '20%',
+        averageScore: 25,
+      });
 
-        verifyTableRow({
-          rowIndex: 2,
-          subaccount: 'Fake Subaccount 2 (102)',
-          currentScore: 30,
-          currentInjections: 56,
-          WoW: '30%',
-          averageScore: 35,
-        });
+      verifyTableRow({
+        rowIndex: 2,
+        subaccount: 'Fake Subaccount 2 (102)',
+        currentScore: 30,
+        currentInjections: 56,
+        WoW: '30%',
+        averageScore: 35,
+      });
 
-        verifyTableRow({
-          rowIndex: 3,
-          subaccount: 'Fake Subaccount 3 (103)',
-          currentScore: 40,
-          currentInjections: 78,
-          WoW: '40%',
-          averageScore: 45,
-        });
-      },
-    );
+      verifyTableRow({
+        rowIndex: 3,
+        subaccount: 'Fake Subaccount 3 (103)',
+        currentScore: 40,
+        currentInjections: 78,
+        WoW: '40%',
+        averageScore: 45,
+      });
+    });
 
     describe('sorting re-rerequests health score data', () => {
       beforeEach(() => {

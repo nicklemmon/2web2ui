@@ -4,6 +4,7 @@ import { list as METRICS_LIST } from 'src/config/metrics';
 import config from 'src/config';
 import { HIBANA_METRICS_COLORS } from 'src/constants/index';
 import { getRelativeDates } from 'src/helpers/date';
+import { dehydrateFilters } from 'src/pages/reportBuilder/helpers';
 import { safeDivide, safeRate } from './math';
 
 const {
@@ -25,10 +26,16 @@ export const FILTER_KEY_MAP = {
 
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
-export function getQueryFromOptions(
-  { from, to, timezone, precision, metrics, filters = [], match = '', limit },
-  { isComparatorsEnabled } = {},
-) {
+export function getQueryFromOptions({
+  from,
+  to,
+  timezone,
+  precision,
+  metrics,
+  filters = [],
+  match = '',
+  limit,
+}) {
   from = moment(from);
   to = moment(to);
 
@@ -42,17 +49,54 @@ export function getQueryFromOptions(
     timezone,
     precision,
   };
-  if (isComparatorsEnabled) {
-    options.query_filters = filters.length ? JSON.stringify({ groupings: filters }) : undefined;
-  } else {
-    Object.assign(options, getFilterSets(filters, delimiter));
-  }
+  Object.assign(options, getFilterSets(filters, delimiter));
   if (match.length > 0) {
     options.match = match;
   }
   if (limit) {
     options.limit = limit;
   }
+  return options;
+}
+
+// TODO: Replace original once original theme removed.
+export function getQueryFromOptionsV2({
+  from,
+  to,
+  timezone,
+  precision,
+  metrics,
+  filters = [],
+  match = '',
+  limit,
+}) {
+  from = moment(from);
+  to = moment(to);
+
+  const apiMetricsKeys = getKeysFromMetrics(metrics);
+  const delimiter = getDelimiter(filters);
+  const options = {
+    metrics: apiMetricsKeys.join(delimiter),
+    from: from.format(apiDateFormat),
+    to: to.format(apiDateFormat),
+    delimiter,
+    timezone,
+    precision,
+  };
+  const dehydratedFilters = dehydrateFilters(filters);
+
+  options.query_filters = filters.length
+    ? JSON.stringify({ groupings: dehydratedFilters })
+    : undefined;
+
+  if (match.length > 0) {
+    options.match = match;
+  }
+
+  if (limit) {
+    options.limit = limit;
+  }
+
   return options;
 }
 

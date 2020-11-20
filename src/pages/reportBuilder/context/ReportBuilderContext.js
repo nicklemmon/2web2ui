@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useMemo, useReducer, createContext } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { getRelativeDates } from 'src/helpers/date';
 import {
@@ -10,10 +9,7 @@ import {
   getRollupPrecision,
 } from 'src/helpers/metrics';
 import { getLocalTimezone } from 'src/helpers/date';
-import { dedupeFilters } from 'src/helpers/reports';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import config from 'src/config';
 import { FILTER_KEY_MAP } from 'src/helpers/metrics';
 import {
@@ -30,87 +26,6 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-  switch (action.type) {
-    case 'ADD_FILTERS': {
-      const mergedFilters = dedupeFilters([...state.filters, action.payload]);
-      if (mergedFilters.length === state.filters.length) {
-        return state;
-      }
-      return { ...state, filters: mergedFilters };
-    }
-
-    case 'REMOVE_FILTER':
-      return {
-        ...state,
-        filters: [
-          ...state.filters.slice(0, action.payload),
-          ...state.filters.slice(action.payload + 1),
-        ],
-      };
-
-    case 'SET_FILTERS':
-      return {
-        ...state,
-        filters: action.payload,
-      };
-
-    case 'CLEAR_FILTERS':
-      return { ...state, filters: [] };
-
-    case 'UPDATE_REPORT_OPTIONS': {
-      const { payload, meta } = action;
-      const { useMetricsRollup } = meta;
-      let update = { ...state, ...payload };
-      const getPrecision = useMetricsRollup ? getRollupPrecision : getRawPrecision;
-
-      if (!update.timezone || !useMetricsRollup) {
-        update.timezone = getLocalTimezone();
-      }
-
-      if (!update.metrics) {
-        update.metrics = config.reportBuilder.defaultMetrics;
-      }
-
-      if (payload.filters) {
-        update.filters = dedupeFilters(payload.filters);
-      }
-
-      if (!update.relativeRange) {
-        update.relativeRange = '7days';
-      }
-
-      //old version of update
-
-      const rollupPrecision = useMetricsRollup && (update.precision || 'hour'); //Default to hour since it's the recommended rollup precision for 7 days
-      if (update.relativeRange !== 'custom') {
-        const { from, to } = getRelativeDates(update.relativeRange, {
-          precision: rollupPrecision,
-        });
-        //for metrics rollup, when using the relative dates, get the precision, else use the given precision
-        //If precision is not in the URL, get the recommended precision.
-        const precision = getPrecision({ from, to, precision: rollupPrecision });
-        update = { ...update, from, to, precision };
-      } else {
-        const precision = getPrecision({
-          from: update.from,
-          to: moment(update.to),
-          precision: rollupPrecision,
-        });
-
-        update = { ...update, precision };
-      }
-      return {
-        ...update,
-        isReady: true,
-      };
-    }
-
-    default:
-      throw new Error(`${action.type} is not supported.`);
-  }
-};
-
-const reducerV2 = (state, action) => {
   switch (action.type) {
     case 'ADD_FILTERS': {
       return {
@@ -135,9 +50,8 @@ const reducerV2 = (state, action) => {
         update.metrics = config.reportBuilder.defaultMetrics;
       }
 
-      // If queryFilters, then was converted over from older filters.
-      if (payload.queryFilters) {
-        update.filters = hydrateFilters(payload.queryFilters, { subaccounts });
+      if (payload.filters) {
+        update.filters = hydrateFilters(payload.filters, { subaccounts });
       }
 
       if (!update.relativeRange) {
@@ -245,8 +159,8 @@ const getSelectors = reportOptions => {
 };
 
 const ReportOptionsContextProvider = props => {
-  const { useMetricsRollup, isComparatorsEnabled, subaccounts } = props;
-  const [state, dispatch] = useReducer(isComparatorsEnabled ? reducerV2 : reducer, initialState);
+  const { useMetricsRollup, subaccounts } = props;
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const refreshReportOptions = useCallback(
     payload => {
@@ -269,18 +183,7 @@ const ReportOptionsContextProvider = props => {
     [dispatch],
   );
 
-  // TODO: Remove when old reducer is removed
   const removeFilter = useCallback(
-    payload => {
-      return dispatch({
-        type: 'REMOVE_FILTER',
-        payload,
-      });
-    },
-    [dispatch],
-  );
-
-  const removeFilterV2 = useCallback(
     payload => {
       return dispatch({
         type: 'REMOVE_FILTER',
@@ -312,8 +215,7 @@ const ReportOptionsContextProvider = props => {
     addFilters,
     clearFilters,
     setFilters,
-    removeFilter, // TODO: Remove when old reducer is removed
-    removeFilterV2,
+    removeFilter,
     refreshReportOptions,
   };
   const selectors = useMemo(() => getSelectors(state), [state]);
@@ -328,7 +230,6 @@ const ReportOptionsContextProvider = props => {
 const mapStateToProps = state => ({
   subaccounts: state.subaccounts.list,
   useMetricsRollup: selectFeatureFlaggedMetrics(state).useMetricsRollup,
-  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
 });
 
 export const ReportBuilderContextProvider = connect(mapStateToProps)(ReportOptionsContextProvider);

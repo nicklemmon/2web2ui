@@ -124,7 +124,7 @@ function reducer(state, action) {
   }
 }
 
-export default function useFiltersSection() {
+export default function useFiltersForm() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const setGroupingType = useCallback(

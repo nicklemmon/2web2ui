@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { LongTextContainer, TableCollection } from 'src/components';
-
-import { refreshRejectionReport } from 'src/actions/rejectionReport';
+import { refreshRejectionReportV2 as refreshRejectionReport } from 'src/actions/rejectionReport';
 import { connect } from 'react-redux';
 import {
   EmptyWrapper,

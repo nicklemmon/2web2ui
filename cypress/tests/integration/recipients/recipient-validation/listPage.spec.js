@@ -17,21 +17,17 @@ describe('The recipient validation page', () => {
   });
 
   describe('the tabbed view that allows the user to choose different means of running validations', () => {
-    it(
-      'renders the API Integration section when the user clicks on "API Integration"',
-      { retries: 3 },
-      () => {
-        cy.withinMainContent(() => {
-          cy.findByText('API Integration').click();
-          cy.findByText('Integrate Now').should('be.visible');
-          cy.findByText('/api/v1/recipient-validation/single/{address}').should('be.visible');
-          cy.verifyLink({
-            content: 'API Docs',
-            href: 'https://developers.sparkpost.com/api/recipient-validation/',
-          });
+    it('renders the API Integration section when the user clicks on "API Integration"', () => {
+      cy.withinMainContent(() => {
+        cy.findByText('API Integration').click();
+        cy.findByText('Integrate Now').should('be.visible');
+        cy.findByText('/api/v1/recipient-validation/single/{address}').should('be.visible');
+        cy.verifyLink({
+          content: 'API Docs',
+          href: 'https://developers.sparkpost.com/api/recipient-validation/',
         });
-      },
-    );
+      });
+    });
 
     it('renders the single address validation form when the user clicks on "Single Address"', () => {
       cy.findByText('Single Address').click();

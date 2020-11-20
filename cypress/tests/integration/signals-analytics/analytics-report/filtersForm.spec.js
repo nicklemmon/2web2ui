@@ -15,11 +15,6 @@ if (IS_HIBANA_ENABLED) {
   describe('Analytics Report filters form', () => {
     beforeEach(() => {
       commonBeforeSteps();
-      cy.stubRequest({
-        url: '/api/v1/account',
-        fixture: 'account/200.get.has-report-filters-v2.json',
-        requestAlias: 'accountReq',
-      });
     });
 
     it('allows the user to add a list of grouped filters and apply them by submitting the form', () => {

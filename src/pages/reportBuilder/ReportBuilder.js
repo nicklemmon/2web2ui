@@ -23,13 +23,10 @@ import {
   LinksTable,
   RejectionReasonsTable,
 } from './components/tabs';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 import styles from './ReportBuilder.module.scss';
 import { getSubscription } from 'src/actions/billing';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
-import { dehydrateFilters } from './helpers';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { useLocation } from 'react-router-dom';
 
@@ -48,7 +45,6 @@ const MetricDefinition = ({ label, children }) => {
 
 export function ReportBuilder({
   chart,
-  isComparatorsEnabled,
   getSubscription,
   refreshReportBuilder,
   subscription,
@@ -58,33 +54,26 @@ export function ReportBuilder({
   getSubaccountsList,
   subaccountsReady,
 }) {
-  const [showTable, setShowTable] = useState(true);
-  const [selectedReport, setReport] = useState(null);
-  const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false);
-
+  const [showTable, setShowTable] = useState(true); // TODO: Incorporate in to the context reducer due to state interaction
+  const [selectedReport, setReport] = useState(null); // TODO: Incorporate in to the context reducer due to state interaction
+  const [showSaveNewReportModal, setShowSaveNewReportModal] = useState(false); // TODO: Incorporate in to the context reducer due to state interaction
   const { state: reportOptions, selectors, actions } = useReportBuilderContext();
+  const location = useLocation();
   const { refreshReportOptions } = actions;
   const processedMetrics = selectors.selectSummaryMetricsProcessed;
   const summarySearchOptions = selectors.selectSummaryChartSearchOptions || {};
-
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
 
   useEffect(() => {
     if (reportOptions.isReady && !isEmpty) {
-      if (isComparatorsEnabled) {
-        refreshReportBuilder({
-          ...reportOptions,
-          filters: dehydrateFilters(reportOptions.filters),
-        });
-      } else {
-        refreshReportBuilder(reportOptions);
-      }
+      refreshReportBuilder({
+        ...reportOptions,
+        filters: reportOptions.filters,
+      });
     }
-  }, [refreshReportBuilder, reportOptions, isEmpty, isComparatorsEnabled]);
-
-  const location = useLocation();
+  }, [refreshReportBuilder, reportOptions, isEmpty]);
 
   useEffect(() => {
     getSubscription();
@@ -98,21 +87,24 @@ export function ReportBuilder({
     getReports();
   }, [getReports]);
 
-  //Grabs report options from the URL query params (as well as report ID)
+  // Grabs report options from the URL query params (as well as report ID)
   useEffect(() => {
-    const { report: reportId, filters: urlFilters = [], ...urlOptions } = parseSearch(
-      location.search,
-    );
+    const {
+      report: reportId,
+      filters: urlFilters = [],
+      queryFilters: urlQueryFilters = [],
+      ...urlOptions
+    } = parseSearch(location.search);
 
-    //Looks for report with report ID
+    // Looks for report with report ID
     const allReports = [...reports, ...PRESET_REPORT_CONFIGS];
     const report = allReports.find(({ id }) => id === reportId);
 
-    //Waiting on reports to load (if enabled) to finish initializeing
-    //Waiting on subaccounts (if using comparators) to finish initializing
+    // Waiting on reports to load (if enabled) to finish initializing
+    // Waiting on subaccounts (if using comparators) to finish initializing
     if (
       (reportId && reportsStatus !== 'success') ||
-      (isComparatorsEnabled && !subaccountsReady) ||
+      !subaccountsReady ||
       reportOptions.isReady //Already ran once
     ) {
       return;
@@ -120,12 +112,15 @@ export function ReportBuilder({
 
     // If report is found from ID, consolidates reportOptions from URL and report
     if (report) {
-      const { filters: reportFilters = [], ...reportOptions } = parseSearch(report.query_string);
-      setReport(report);
-      refreshReportOptions({ ...reportOptions, filters: [...reportFilters, ...urlFilters] });
+      const { filters: reportFilters, ...reportOptions } = parseSearch(report.query_string);
+      setReport(report); // TODO: This needs to be incorporated in to the reducer since this causes state interaction
+      refreshReportOptions({
+        ...reportOptions,
+        filters: [...reportFilters, ...urlFilters, ...urlQueryFilters],
+      });
     } else {
-      //Initializes w/ just URL options
-      refreshReportOptions({ ...urlOptions, filters: urlFilters });
+      // Initializes w/ just URL options
+      refreshReportOptions({ ...urlOptions, filters: [...urlFilters, ...urlQueryFilters] });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportsStatus, reports, subaccountsReady]);
@@ -305,7 +300,6 @@ export function ReportBuilder({
 //Redux
 const mapStateToProps = state => ({
   chart: state.summaryChart,
-  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
   reports: state.reports.list,
   reportsStatus: state.reports.status,
   subaccountsReady: state.subaccounts.ready,
