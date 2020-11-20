@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
+import { Code, ChatBubble, LightbulbOutline, ShowChart } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
@@ -25,14 +25,14 @@ import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
 import { Charts } from 'src/pages/reportBuilder/components/Charts';
-
+import { getRelativeDates } from 'src/helpers/date';
+import qs from 'qs';
 
 const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
 const defaultReportOptions = {
-  filters: [],
   timezone: 'America/New_York',
   metrics: ['count_sent', 'count_unique_confirmed_opened_approx', 'count_accepted', 'count_bounce'],
   relativeRange: '7days',
@@ -41,6 +41,8 @@ const defaultReportOptions = {
   precision: 'hour',
   isReady: true,
 };
+const defaultReport = 'Summary Report';
+
 export default function DashboardPageV2() {
   const {
     getAccount,
@@ -66,6 +68,22 @@ export default function DashboardPageV2() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleAnalyzeReport = newParams => {
+    const queryString = qs.stringify(newParams, {
+      arrayFormat: 'repeat',
+    });
+    return `/signals/analytics?${queryString}`;
+  };
+  const getRelativeDateRange = (
+    relativeRange = defaultReportOptions.relativeRange,
+    precision = defaultReportOptions.precision,
+  ) => {
+    const { from, to } = getRelativeDates(relativeRange, {
+      precision: precision,
+    });
+    return { from, to };
+  };
+
   if (pending) return <Loading />;
 
   return (
@@ -86,9 +104,24 @@ export default function DashboardPageV2() {
           <Layout.Section>
             <Stack>
               <Dashboard.Panel>
-                <Box mt="100" mr="100">
+                <Panel.Header>
+                  <Panel.Headline> {defaultReport}</Panel.Headline>
+                  <Panel.Action>
+                    <PageLink
+                      as={Button}
+                      to={handleAnalyzeReport({
+                        ...defaultReportOptions,
+                        ...getRelativeDateRange(),
+                      })}
+                      size="small"
+                    >
+                      Analyze Report <ShowChart size={25} />
+                    </PageLink>
+                  </Panel.Action>
+                </Panel.Header>
+                <Panel.Section>
                   <Charts reportOptions={defaultReportOptions} />
-                </Box>
+                </Panel.Section>
               </Dashboard.Panel>
               {onboarding !== 'fallback' && onboarding !== undefined && (
                 <Dashboard.Panel>
