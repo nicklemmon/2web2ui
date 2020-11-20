@@ -24,6 +24,8 @@ function mapStateToProps(state) {
   const sendingDomains = state.sendingDomains.list;
   const verifiedDomains = selectVerifiedDomains(state);
   const apiKeysForSending = selectApiKeysForSending(state);
+  const canViewUsage = hasGrants('usage/view')(state);
+  const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
   const isAnAdmin = isAdmin(state);
   const isDev = hasRole(ROLES.DEVELOPER)(state);
@@ -32,8 +34,8 @@ function mapStateToProps(state) {
   let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
   let onboarding;
 
-  if (lastUsageDate === null) {
-    const addSendingDomainNeeded = (isAnAdmin || isDev) && sendingDomains.length === 0;
+  if (canManageSendingDomains && canManageApiKeys && canViewUsage && lastUsageDate === null) {
+    const addSendingDomainNeeded = sendingDomains.length === 0;
     if (addSendingDomainNeeded) onboarding = 'addSending';
 
     if (sendingDomains.length === 1 && verifiedDomains.length === 0) {
@@ -50,8 +52,8 @@ function mapStateToProps(state) {
 
     if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
       onboarding = 'startSending';
-
-    if (!canManageSendingDomains || (!isAnAdmin && !isDev)) onboarding = 'fallback';
+  } else {
+    onboarding = 'fallback';
   }
 
   const isPending =
@@ -64,7 +66,9 @@ function mapStateToProps(state) {
   return {
     verifySendingLink,
     onboarding,
+    canViewUsage,
     canManageSendingDomains,
+    canManageApiKeys,
     isAnAdmin,
     isDev,
     currentUser: state.currentUser,

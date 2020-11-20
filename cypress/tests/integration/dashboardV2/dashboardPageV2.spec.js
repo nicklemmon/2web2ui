@@ -53,7 +53,7 @@ describe('Version 2 of the dashboard page', () => {
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      // FORCE NOT ADMIN HERE
+      // Force not admin here - Our mocked cypress state always has the user as admin
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.reporting.json',
@@ -296,10 +296,7 @@ describe('Version 2 of the dashboard page', () => {
       stubGrantsRequest({ role: 'reporting' });
       stubAlertsReq();
       stubAccountsReq();
-      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      stubSendingDomains({ fixture: '/200.get.no-results.json' });
-      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
-      // Force not admin here
+      // Force not admin here - Our mocked cypress state always has the user as admin
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.reporting.json',
@@ -307,14 +304,7 @@ describe('Version 2 of the dashboard page', () => {
       });
 
       cy.visit(PAGE_URL);
-      cy.wait([
-        '@alertsReq',
-        '@accountReq',
-        '@usageReq',
-        '@sendingDomainsReq',
-        '@apiKeysReq',
-        '@userReq',
-      ]);
+      cy.wait(['@alertsReq', '@accountReq', '@userReq']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -350,22 +340,12 @@ describe('Version 2 of the dashboard page', () => {
     });
 
     it('Shows the default "Go To Analytics Report" onboarding step for any user without the sending_domains/manage grant', () => {
-      stubGrantsRequest({ role: 'reporting' }); // canManageSendingDomains = false
+      stubGrantsRequest({ role: 'reporting' });
       stubAlertsReq();
       stubAccountsReq();
-      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      stubSendingDomains({ fixture: '/200.get.no-results.json' });
-      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
 
       cy.visit(PAGE_URL);
-      cy.wait([
-        '@getGrants',
-        '@alertsReq',
-        '@accountReq',
-        '@usageReq',
-        '@sendingDomainsReq',
-        '@apiKeysReq',
-      ]);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
