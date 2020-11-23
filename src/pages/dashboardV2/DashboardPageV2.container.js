@@ -27,8 +27,6 @@ function mapStateToProps(state) {
   // TODO: https://sparkpost.atlassian.net/browse/FE-1249 - rvUsage rename
   let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
 
-  // let onboarding = state?.onboarding;
-  // TODO: Move onboarding to a higher state/provider where it can be pulled into any area of the app
   const sendingDomains = state.sendingDomains.list;
   const verifiedDomains = selectVerifiedDomains(state);
   const apiKeysForSending = selectApiKeysForSending(state);
@@ -51,7 +49,7 @@ function mapStateToProps(state) {
 
     if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
       onboarding = 'startSending';
-  } else if (lastUsageDate === null) {
+  } else if (!canViewUsage || (canViewUsage && lastUsageDate === null)) {
     onboarding = 'fallback';
   } else {
     onboarding = 'done';
