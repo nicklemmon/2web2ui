@@ -24,7 +24,9 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
+import config from 'src/config';
 import { Charts } from 'src/pages/reportBuilder/components/Charts';
+import { getLocalTimezone } from 'src/helpers/date';
 import { getRelativeDates } from 'src/helpers/date';
 import qs from 'qs';
 
@@ -33,11 +35,9 @@ const OnboardingPicture = styled(Picture.Image)`
 `;
 
 const defaultReportOptions = {
-  timezone: 'America/New_York',
-  metrics: ['count_sent', 'count_unique_confirmed_opened_approx', 'count_accepted', 'count_bounce'],
+  timezone: getLocalTimezone(),
+  metrics: config.reportBuilder.defaultMetrics,
   relativeRange: '7days',
-  from: '2020-11-11T16:00:00.000Z',
-  to: '2020-11-18T16:51:24.504Z',
   precision: 'hour',
   isReady: true,
 };
@@ -68,7 +68,7 @@ export default function DashboardPageV2() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleAnalyzeReport = newParams => {
+  const getLinktoAnalyzeReport = newParams => {
     const queryString = qs.stringify(newParams, {
       arrayFormat: 'repeat',
     });
@@ -83,6 +83,11 @@ export default function DashboardPageV2() {
     });
     return { from, to };
   };
+
+  const reportOptionsWithDates = (reportOptions = defaultReportOptions) => ({
+    ...reportOptions,
+    ...getRelativeDateRange(),
+  });
 
   if (pending) return <Loading />;
 
@@ -103,26 +108,21 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              <Dashboard.Panel>
-                <Panel.Header>
-                  <Panel.Headline> {defaultReport}</Panel.Headline>
-                  <Panel.Action>
-                    <PageLink
-                      as={Button}
-                      to={handleAnalyzeReport({
-                        ...defaultReportOptions,
-                        ...getRelativeDateRange(),
-                      })}
-                      size="small"
-                    >
-                      Analyze Report <ShowChart size={25} />
-                    </PageLink>
-                  </Panel.Action>
-                </Panel.Header>
-                <Panel.Section>
-                  <Charts reportOptions={defaultReportOptions} />
-                </Panel.Section>
-              </Dashboard.Panel>
+              {onboarding === 'analytics' && (
+                <Dashboard.Panel>
+                  <Panel.Header>
+                    <Panel.Headline>{defaultReport}</Panel.Headline>
+                    <Panel.Action>
+                      <PageLink to={getLinktoAnalyzeReport(reportOptionsWithDates())} size="small">
+                        Analyze Report <ShowChart size={25} />
+                      </PageLink>
+                    </Panel.Action>
+                  </Panel.Header>
+                  <Panel.Section>
+                    <Charts reportOptions={reportOptionsWithDates()} />
+                  </Panel.Section>
+                </Dashboard.Panel>
+              )}
               {onboarding !== 'fallback' && onboarding !== undefined && (
                 <Dashboard.Panel>
                   {onboarding === 'addSending' && (
