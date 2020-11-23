@@ -49,10 +49,8 @@ function mapStateToProps(state) {
 
     if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
       onboarding = 'startSending';
-  } else if (!canViewUsage || (canViewUsage && lastUsageDate === null)) {
-    onboarding = 'fallback';
   } else {
-    onboarding = 'done';
+    onboarding = 'fallback';
   }
 
   if (onboarding && onboarding === 'verifySending' && sendingDomains.length === 1) {
