@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import _ from 'lodash';
 import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from './LineChart';
@@ -83,7 +83,7 @@ export function Charts(props) {
   }, [reportOptions, formattedMetrics]);
   const { precision, to } = formattedOptions;
 
-  const { data: rawChartData, status: chartStatus, refetch: refetchTimeSeries } = useSparkPostQuery(
+  const { data: rawChartData, status: chartStatus } = useSparkPostQuery(
     () => {
       return getTimeSeries(formattedOptions);
     },
@@ -91,12 +91,6 @@ export function Charts(props) {
       refetchOnWindowFocus: false,
     },
   );
-
-  useEffect(() => {
-    if (reportOptions.isReady) {
-      refetchTimeSeries();
-    }
-  }, [reportOptions.isReady, refetchTimeSeries]);
 
   const chartData = useMemo(() => {
     return transformData(rawChartData, formattedMetrics);
@@ -106,11 +100,7 @@ export function Charts(props) {
   const [activeChart, setActiveChart] = React.useState(null);
 
   if (chartStatus === 'loading' || chartStatus === 'idle') {
-    return (
-      <Box height="10rem">
-        <Loading />
-      </Box>
-    );
+    return <Loading />;
   }
 
   const formatters = getLineChartFormatters(precision, to);

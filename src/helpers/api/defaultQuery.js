@@ -23,9 +23,6 @@ export default function defaultQuery(key, { method, params, headers, auth }) {
     },
   }).then(response => {
     const results = _.get(response, 'data.results', response.data);
-    //TODO: Remove or find place with usePaginatedQuery();
-    // const links = _.get(response, 'data.links', {});
-    // const total_count = _.get(response, 'data.total_count');
 
     return results;
   });
