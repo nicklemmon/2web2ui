@@ -112,8 +112,8 @@ export default function DashboardPageV2() {
                   <Panel.Header>
                     <Panel.Headline>{defaultReport}</Panel.Headline>
                     <Panel.Action>
-                      <PageLink to={getLinktoAnalyzeReport(reportOptionsWithDates())} size="small">
-                        Analyze Report <ShowChart size={25} />
+                      <PageLink to={getLinktoAnalyzeReport(reportOptionsWithDates())}>
+                        <TranslatableText>Analyze Report</TranslatableText> <ShowChart size={25} />
                       </PageLink>
                     </Panel.Action>
                   </Panel.Header>

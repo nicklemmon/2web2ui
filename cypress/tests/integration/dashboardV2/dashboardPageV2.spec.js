@@ -10,6 +10,24 @@ describe('Version 2 of the dashboard page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
+    it('renders the Analytics Report step with "Summary Report" when last usage date is not null', () => {
+      stubGrantsRequest({ role: 'admin' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
+      cy.stubRequest({
+        method: 'GET',
+        url: '/api/v1/metrics/deliverability/time-series**/**',
+        fixture: 'metrics/deliverability/time-series/200.get.json',
+        requestAlias: 'dataGetTimeSeries',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq']);
+      cy.findByRole('heading', { name: 'Summary Report' });
+      cy.findByText('Analyze Report').click();
+      cy.findByRole('heading', { name: 'Analytics Report' });
+    });
     it('Shows Helpful Shortcuts "invite team members" when admin', () => {
       stubGrantsRequest({ role: 'admin' });
       stubAlertsReq();
