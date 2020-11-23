@@ -26,7 +26,7 @@ if (IS_HIBANA_ENABLED) {
           cy.findByLabelText('Accepted').uncheck({ force: true });
           cy.findByLabelText('Bounces').uncheck({ force: true });
           cy.findByLabelText('Bounces').check({ force: true });
-          cy.findByText('Apply Metrics').click();
+          cy.findByRole('button', { name: 'Apply Metrics' }).click();
 
           cy.wait(['@getDeliverability', '@getTimeSeries']);
         });
@@ -102,7 +102,7 @@ if (IS_HIBANA_ENABLED) {
           cy.findByLabelText('Generation Rejections').check({ force: true });
           cy.findByLabelText('Generation Failures').check({ force: true });
           cy.findByLabelText('Policy Rejections').check({ force: true });
-          cy.findByText('Apply Metrics').click({ force: true });
+          cy.findByRole('button', { name: 'Apply Metrics' }).click();
 
           cy.wait(['@getDeliverability', '@getTimeSeries']);
         });
@@ -181,8 +181,7 @@ if (IS_HIBANA_ENABLED) {
           cy.findByLabelText('Delivered 1st Attempt').check({ force: true });
           cy.findByLabelText('Delivered 2+ Attempts').check({ force: true });
 
-          cy.findByText('Apply Metrics').click({ force: true });
-
+          cy.findByRole('button', { name: 'Apply Metrics' }).click();
           cy.wait(['@getDeliverability', '@getTimeSeries']);
         });
       });

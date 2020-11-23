@@ -88,6 +88,8 @@ if (IS_HIBANA_ENABLED) {
       cy.withinDrawer(() => {
         cy.findByRole('button', { name: 'Compare' }).click();
       });
+      cy.wait(['@getDeliverability', '@getTimeSeries']);
+
       openCompareByModal();
 
       cy.findByLabelText(TYPE_LABEL).should('have.value', 'subaccounts');
@@ -105,8 +107,9 @@ if (IS_HIBANA_ENABLED) {
       cy.withinDrawer(() => {
         cy.findByRole('button', { name: 'Compare' }).click();
       });
-      cy.findByRole('heading', { name: 'Fake Subaccount 1 (ID 101)' }).should('exist');
-      cy.findByRole('heading', { name: 'Fake Subaccount 3 (ID 103)' }).should('exist');
+      cy.wait(['@getDeliverability', '@getTimeSeries']);
+      cy.findByRole('heading', { name: 'Fake Subaccount 1 (ID 101)' }).should('be.visible');
+      cy.findByRole('heading', { name: 'Fake Subaccount 3 (ID 103)' }).should('be.visible');
     });
 
     it('Shows form error if form contains less than 2 filters', () => {
