@@ -25,7 +25,7 @@ const ApiDetails = () => {
       <br />
       <Tab />
       <Tab />
-      "delivery_confidence": <White>99</White>,<br />
+      "delivery_confidence": <White>0</White>,<br />
       <Tab />
       <Tab />
       "valid": <White>false</White>,<br />
