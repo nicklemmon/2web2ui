@@ -58,11 +58,8 @@ const config = identifier => ({
   maxUploadSizeBytes: 20000000,
   maxRecipVerifUploadSizeBytes: 20971520, // NGNIX configures max upload size in megabytes, translating to this value in bytes
   metricsPrecisionMap: [
-    { time: 60, value: '1min', format: 'ha' },
-    { time: 60 * 2, value: '5min', format: 'ha' },
-    { time: 60 * 4, value: '15min', format: 'ha' },
-    { time: 60 * 24 * 2, value: 'hour', format: 'ha' },
-    { time: 60 * 24 * 7, value: 'day', format: 'MMM Do' },
+    { time: 60 * 8, value: '1min', format: 'ha' },
+    { time: 60 * 24 * 10, value: 'hour', format: 'ha' },
     { time: 60 * 24 * 33, value: 'day', format: 'MMM Do' },
     { time: 60 * 24 * 190, value: 'week', format: 'MMM Do' },
     { time: Infinity, value: 'month', format: 'MMM YY' },
