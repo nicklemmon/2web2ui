@@ -41,12 +41,8 @@ function DashboardHeading({ children }) {
   );
 }
 
-function DashboardPanel({ children, ...props }) {
-  return (
-    <Panel marginBottom="0" {...props}>
-      {children}
-    </Panel>
-  );
+function DashboardPanel({ children }) {
+  return <Panel marginBottom="0">{children}</Panel>;
 }
 
 function Tip({ children }) {
