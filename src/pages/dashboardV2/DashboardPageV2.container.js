@@ -21,26 +21,24 @@ import { selectVerifiedDomains } from 'src/selectors/sendingDomains';
 import { list as listSendingDomains } from 'src/actions/sendingDomains';
 
 function mapStateToProps(state) {
+  const isAnAdmin = isAdmin(state);
+  const isDev = hasRole(ROLES.DEVELOPER)(state);
+  let verifySendingLink = '/domains/list/sending';
+  // TODO: https://sparkpost.atlassian.net/browse/FE-1249 - rvUsage rename
+  let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
+
+  // TODO: Move onboarding to a higher state/provider where it can be pulled into any area of the app
   const sendingDomains = state.sendingDomains.list;
   const verifiedDomains = selectVerifiedDomains(state);
   const apiKeysForSending = selectApiKeysForSending(state);
   const canViewUsage = hasGrants('usage/view')(state);
   const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
-  const isAnAdmin = isAdmin(state);
-  const isDev = hasRole(ROLES.DEVELOPER)(state);
-  let verifySendingLink = '/domains/list/sending';
-  // TODO: https://sparkpost.atlassian.net/browse/FE-1249 - rvUsage rename
-  let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
-  let onboarding;
 
+  let onboarding;
   if (canManageSendingDomains && canManageApiKeys && canViewUsage && lastUsageDate === null) {
     const addSendingDomainNeeded = sendingDomains.length === 0;
     if (addSendingDomainNeeded) onboarding = 'addSending';
-
-    if (sendingDomains.length === 1 && verifiedDomains.length === 0) {
-      verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
-    }
 
     const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
     if (verifySendingNeeded) onboarding = 'verifySending';
@@ -54,6 +52,10 @@ function mapStateToProps(state) {
       onboarding = 'startSending';
   } else {
     onboarding = 'fallback';
+  }
+
+  if (onboarding && sendingDomains.length === 1 && onboarding === 'verifySending') {
+    verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
   }
 
   const isPending =
