@@ -26,8 +26,7 @@ import { LINKS } from 'src/constants';
 import styled from 'styled-components';
 import config from 'src/config';
 import { Charts } from 'src/pages/reportBuilder/components/Charts';
-import { getLocalTimezone } from 'src/helpers/date';
-import { getRelativeDates } from 'src/helpers/date';
+import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 import qs from 'qs';
 
 const OnboardingPicture = styled(Picture.Image)`
