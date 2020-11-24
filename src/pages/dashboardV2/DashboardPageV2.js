@@ -24,7 +24,6 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
-import config from 'src/config';
 import { ChartGroups } from 'src/pages/reportBuilder/components/Charts';
 import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 import { parseSearchNew } from 'src/helpers/reports';
@@ -37,15 +36,7 @@ const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
-const defaultReportOptions = {
-  timezone: getLocalTimezone(),
-  metrics: config.reportBuilder.defaultMetrics,
-  comparisons: [],
-  relativeRange: '7days',
-  precision: 'hour',
-  isReady: true,
-};
-const defaultReport = 'Summary Report';
+const defaultReportName = 'Summary Report';
 
 export default function DashboardPageV2() {
   const {
@@ -64,7 +55,7 @@ export default function DashboardPageV2() {
     subaccounts,
     getReports,
     reports,
-    pinnedReportId, //this is the id stored in user ui option "pinned_report"
+    pinnedReportId, //TODO: this is the id stored in user ui option "pinned_report"
   } = useDashboardContext();
   const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
@@ -84,27 +75,24 @@ export default function DashboardPageV2() {
     }
   }, [getReports, onboarding]);
 
-  const getRelativeDateRange = (
-    relativeRange = defaultReportOptions.relativeRange,
-    precision = defaultReportOptions.precision,
-  ) => {
-    const { from, to } = getRelativeDates(relativeRange, {
-      precision: precision,
-    });
-    return { from, to };
-  };
-
-  const reportOptionsWithDates = (reportOptions = defaultReportOptions) => ({
-    ...reportOptions,
-    ...getRelativeDateRange(),
-  });
   const getReportOptions = () => {
+    const getRelativeDateRange = ({ relativeRange, precision }) => {
+      const { from, to } = getRelativeDates(relativeRange, {
+        precision: precision,
+      });
+      return { from, to };
+    };
+    const reportOptionsWithDates = reportOptions => {
+      return {
+        ...reportOptions,
+        ...getRelativeDateRange(reportOptions),
+      };
+    };
     let reportOptions;
-    //if there is a pinned report then find the report filters
     const report = _.find(reports, { id: pinnedReportId });
     if (!report) {
       reportOptions = parseSearchNew(
-        PRESET_REPORT_CONFIGS.find(x => x.name === 'Summary Report').query_string,
+        PRESET_REPORT_CONFIGS.find(x => x.name === defaultReportName).query_string,
       );
       return reportOptionsWithDates({
         ...reportOptions,
@@ -148,9 +136,9 @@ export default function DashboardPageV2() {
               {onboarding === 'analytics' && (
                 <Dashboard.Panel>
                   <Panel.Header>
-                    <Panel.Headline>{defaultReport}</Panel.Headline>
+                    <Panel.Headline>{defaultReportName}</Panel.Headline>
                     <Panel.Action>
-                      <PageLink to={getLinktoAnalyzeReport(reportOptionsWithDates())}>
+                      <PageLink to={getLinktoAnalyzeReport(getReportOptions())}>
                         <TranslatableText>Analyze Report</TranslatableText> <ShowChart size={25} />
                       </PageLink>
                     </Panel.Action>
