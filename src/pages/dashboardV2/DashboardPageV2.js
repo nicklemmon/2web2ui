@@ -88,15 +88,15 @@ export default function DashboardPageV2() {
         ...getRelativeDateRange(reportOptions),
       };
     };
-    let reportOptions;
+    let reportOptions = {};
     const report = _.find(reports, { id: pinnedReportId });
     if (!report) {
       reportOptions = parseSearchNew(
         PRESET_REPORT_CONFIGS.find(x => x.name === defaultReportName).query_string,
       );
       return reportOptionsWithDates({
-        ...reportOptions,
         timezone: getLocalTimezone(),
+        metrics: reportOptions.metrics,
         comparisons: [],
         relativeRange: '7days',
         precision: 'hour',
@@ -104,7 +104,8 @@ export default function DashboardPageV2() {
         filters: hydrateFilters(reportOptions.filters, { subaccounts }),
       });
     }
-    return {};
+    //TODO: Change this when adding the functionality to support pinned reports
+    return reportOptions;
   };
 
   const getLinktoAnalyzeReport = newParams => {
