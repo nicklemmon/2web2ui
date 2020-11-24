@@ -27,7 +27,7 @@ import {
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import {
   Charts,
-  CompareByAggregates,
+  CompareByAggregatedMetrics,
   ReportOptions,
   ReportTable,
   SaveReportModal,
@@ -253,7 +253,7 @@ export function ReportBuilder({
                     </Grid>
                   </Box>
 
-                  <CompareByAggregates date={dateValue} />
+                  <CompareByAggregatedMetrics date={dateValue} />
                 </Tabs.Item>
 
                 {hasBounceTab && (
