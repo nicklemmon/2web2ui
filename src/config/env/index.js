@@ -4,16 +4,16 @@ import stagingConfig from './staging-config';
 import testConfig from './test-config';
 import uatConfig from './uat-config';
 
+
 export default (
   nodeEnv,
-  environment = 'production', // for enterprise tenants
+  environment = 'production' // for enterprise tenants
 ) => {
   if (nodeEnv === 'production') {
     const configByEnvironment = {
       production: productionConfig,
       staging: stagingConfig,
-      uat: uatConfig,
-      dev: devConfig,
+      uat: uatConfig
     };
 
     return configByEnvironment[environment];

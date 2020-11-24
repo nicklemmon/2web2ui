@@ -10,28 +10,20 @@ const config = identifier => ({
   apiRequestBodyMaxSizeBytes: 500 * 1000, // ~ 500 KB
   authentication: {
     app: {
-      // this is our first-party cookie
-      // see, https://web.dev/samesite-cookies-explained/
       cookie: {
         name: 'auth',
         options: {
-          domain: 'app.sparkpost.com',
           path: '/',
-          sameSite: 'strict',
-          secure: true,
         },
       },
       authHeader: 'Basic bXN5c1dlYlVJOmZhODZkNzJlLTYyODctNDUxMy1hZTdmLWVjOGM4ZmEwZDc2Ng==',
     },
     site: {
-      // this is our third-party cookie used by other web properties
       cookie: {
         name: 'website_auth',
         options: {
           domain: '.sparkpost.com',
           path: '/',
-          sameSite: 'strict',
-          secure: true,
         },
       },
       authHeader: 'Basic bXN5c1VJTGltaXRlZDphZjE0OTdkYS02NjI5LTQ3NTEtODljZS01ZDBmODE4N2MyMDQ=',

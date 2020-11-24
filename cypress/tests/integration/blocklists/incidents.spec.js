@@ -1,279 +1,279 @@
-import { IS_HIBANA_ENABLED } from 'cypress/constants';
-
+import moment from 'moment';
+const utcFormatMatcher = /\d+-\d+-\d+T/g;
 const PAGE_BASE_URL = '/signals/blocklist/incidents';
+const dateFormat = 'MMM D YYYY, h:mma';
+
+let nov = moment('2019-11-20T17:14:57.899Z');
+let novTime = nov.format(dateFormat);
+
+let sep = moment('2019-09-09T00:00:00.000Z');
+let sepTime = sep.format(dateFormat);
 
 describe('The blocklist incidents page', () => {
   beforeEach(() => {
-    cy.clock(Date.UTC(2019, 8, 11)); // freeze time
-
     cy.stubAuth();
     cy.login({ isStubbed: true });
-
-    cy.stubRequest({
-      url: 'api/v1/blocklist-monitors',
-      fixture: 'blocklists/incident/200.get.search.json',
-      requestAlias: 'getMonitors',
-    });
-
-    cy.stubRequest({
-      url: 'api/v1/blocklist-monitors/incidents*',
-      fixture: 'blocklists/incident/200.get.json',
-      requestAlias: 'getIncidents',
-    });
   });
 
-  it('loads incidents page', () => {
+  it('navigates to the blocklist state and renders with a relevant page title/text for the empty state.', () => {
     cy.visit(PAGE_BASE_URL);
     cy.url().should('include', PAGE_BASE_URL);
     cy.title().should('include', 'Blocklist Incidents');
+    cy.findByText(
+      'Keep an eye on your Domains and IPs and maintain a healthy sender reputation and improve your deliverability',
+    ).should('be.visible');
   });
 
-  it('filters incidents', () => {
+  it(`goes to add to watchlist page from the call to action on ${PAGE_BASE_URL} page`, () => {
     cy.visit(PAGE_BASE_URL);
 
-    cy.wait(['@getMonitors', '@getIncidents']);
+    cy.verifyLink({
+      content: 'Add to Monitored List',
+      href: '/signals/blocklist/monitors/add',
+    });
+  });
+
+  it('sets the search in the url', () => {
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors',
+      fixture: 'blocklists/incident/200.get.search.json',
+    });
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors/incidents*',
+      statusCode: 200,
+      fixture: 'blocklists/incident/200.get.json',
+    });
+
+    cy.visit(PAGE_BASE_URL);
+
+    cy.url().should('include', PAGE_BASE_URL);
+    cy.findByText('Blocklist Incidents').should('be.visible');
+    cy.findByText('View Monitored List').should('be.visible');
 
     cy.findByLabelText('Filter Results')
+      .should('be.visible')
       .type('2.2.8')
       .blur();
-
-    cy.tick(300); // ugh, run off for table collection debounce
-
-    cy.url().should('include', 'search=2.2.8');
-
+    cy.url().should('include', '2.2.8');
     cy.get('tbody > tr').should('have.length', 1);
-
-    cy.get('tbody tr')
-      .eq(0)
-      .within(() => {
-        cy.get('td')
-          .eq(0)
-          .should('contain', '2.2.8');
-        cy.get('td')
-          .eq(1)
-          .should('contain', 'new.spam.dnsbl.sorbs.net');
-        cy.get('td')
-          .eq(2)
-          .should('contain', 'Sep 8 2019');
-        cy.get('td')
-          .eq(3)
-          .should('contain', 'Active');
-      });
+    cy.get('tbody > tr').within(el => {
+      cy.findByText('2.2.8', { container: el }).should('be.visible');
+      cy.findByText('new.spam.dnsbl.sorbs.net', { container: el }).should('be.visible');
+      cy.findByText(sepTime, { container: el }).should('be.visible');
+      cy.findByText('Active', { container: el }).should('be.visible');
+    });
   });
 
   it('searches through url param', () => {
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors',
+      fixture: 'blocklists/incident/200.get.search.json',
+    });
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors/incidents*',
+      statusCode: 200,
+      fixture: 'blocklists/incident/200.get.json',
+    });
+
     cy.visit(`${PAGE_BASE_URL}?search=2.2.8`);
 
-    cy.wait(['@getMonitors', '@getIncidents']);
-
+    cy.url().should('include', `${PAGE_BASE_URL}?search=2.2.8`);
+    cy.url().should('include', '2.2.8');
     cy.get('tbody > tr').should('have.length', 1);
-    cy.get('tbody tr')
-      .eq(0)
-      .within(() => {
-        cy.get('td')
-          .eq(0)
-          .should('contain', '2.2.8');
-      });
-  });
-
-  it('filters by last 30 days by default', () => {
-    cy.visit(PAGE_BASE_URL);
-
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', 'from=2019-08-12');
-      cy.wrap(url).should('include', 'to=2019-09-11');
+    cy.get('tbody > tr').within(el => {
+      cy.findByText('2.2.8', { container: el }).should('be.visible');
+      cy.findByText('new.spam.dnsbl.sorbs.net', { container: el }).should('be.visible');
+      cy.findByText(sepTime, { container: el }).should('be.visible');
+      cy.findByText('Active', { container: el }).should('be.visible');
     });
   });
 
-  it('filter by last 24 hours', () => {
+  it('changes the date range and makes the correct http call', () => {
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors',
+      fixture: 'blocklists/incident/200.get.search.json',
+    });
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors/incidents*',
+      statusCode: 200,
+      fixture: 'blocklists/incident/200.get.json',
+      requestAlias: 'getIncidents',
+    });
     cy.visit(PAGE_BASE_URL);
-    cy.wait(['@getMonitors', '@getIncidents']);
 
-    if (IS_HIBANA_ENABLED) {
-      cy.findByLabelText('Date Range').click({ force: true });
-      cy.tick(300); // ugh, run off for popover animation
+    const todaysDate = moment()
+      .toISOString()
+      .match(utcFormatMatcher)[0];
+    const lastTwentyFour = moment()
+      .subtract(1, 'days')
+      .toISOString()
+      .match(utcFormatMatcher)[0];
+    const seven = moment()
+      .subtract(7, 'days')
+      .toISOString()
+      .match(utcFormatMatcher)[0];
+    const thirty = moment()
+      .subtract(30, 'days')
+      .toISOString()
+      .match(utcFormatMatcher)[0];
+    const ninety = moment()
+      .subtract(90, 'days')
+      .toISOString()
+      .match(utcFormatMatcher)[0];
+
+    cy.wait('@getIncidents').then(({ url }) => {
+      cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
+      cy.wrap(url).should('include', 'to=' + todaysDate);
+    });
+
+    if (Cypress.env('DEFAULT_TO_HIBANA') === true) {
+      const openDatePicker = () => {
+        cy.findByLabelText('Date Range').focus();
+        cy.findByLabelText('Date Range').click({ force: true });
+      };
+
+      openDatePicker();
       cy.findByText('Last 24 Hours').click({ force: true });
       cy.findByText('Apply').click();
-    } else {
-      cy.findByLabelText('Broad Date Range').select('Last 24 Hours');
-    }
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + lastTwentyFour);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
 
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', 'from=2019-09-10');
-      cy.wrap(url).should('include', 'to=2019-09-11');
-    });
-  });
-
-  it('filter by last 7 days', () => {
-    cy.visit(PAGE_BASE_URL);
-    cy.wait(['@getMonitors', '@getIncidents']);
-
-    if (IS_HIBANA_ENABLED) {
-      cy.findByLabelText('Date Range').click({ force: true });
-      cy.tick(300); // ugh, run off for popover animation
+      openDatePicker();
       cy.findByText('Last 7 Days').click({ force: true });
       cy.findByText('Apply').click();
-    } else {
-      cy.findByLabelText('Broad Date Range').select('Last 7 Days');
-    }
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + seven);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
 
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', 'from=2019-09-03');
-      cy.wrap(url).should('include', 'to=2019-09-11');
-    });
-  });
+      openDatePicker();
+      cy.findByText('Last 30 Days').click({ force: true });
+      cy.findByText('Apply').click();
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
 
-  it('filter by last 90 days', () => {
-    cy.visit(PAGE_BASE_URL);
-    cy.wait(['@getMonitors', '@getIncidents']);
-
-    if (IS_HIBANA_ENABLED) {
-      cy.findByLabelText('Date Range').click({ force: true });
-      cy.tick(300); // ugh, run off for popover animation
+      openDatePicker();
       cy.findByText('Last 90 Days').click({ force: true });
       cy.findByText('Apply').click();
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + ninety);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
     } else {
+      cy.findByLabelText('Broad Date Range').select('Last 24 Hours');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + lastTwentyFour);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+
+      cy.findByLabelText('Broad Date Range').select('Last 7 Days');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + seven);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+
+      cy.findByLabelText('Broad Date Range').select('Last 30 Days');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + thirty);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
+
       cy.findByLabelText('Broad Date Range').select('Last 90 Days');
+      cy.wait('@getIncidents').then(({ url }) => {
+        cy.wrap(url).should('include', '/blocklist-monitors/incidents?from=' + ninety);
+        cy.wrap(url).should('include', 'to=' + todaysDate);
+      });
     }
+  });
 
-    cy.wait('@getIncidents').then(({ url }) => {
-      cy.wrap(url).should('include', 'from=2019-06-12');
-      cy.wrap(url).should('include', 'to=2019-09-11');
+  it('sorts the table on resolved and listed', () => {
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors',
+      fixture: 'blocklists/incident/200.get.search.json',
     });
-  });
+    cy.stubRequest({
+      method: 'GET',
+      url: 'api/v1/blocklist-monitors/incidents*',
+      statusCode: 200,
+      fixture: 'blocklists/incident/200.get.json',
+    });
 
-  it('sorted descending by resource by default', () => {
-    cy.visit(PAGE_BASE_URL);
-    cy.wait(['@getMonitors', '@getIncidents']);
-
-    cy.get('tbody > tr')
-      .first()
-      .within(() => {
-        cy.findAllByText('127.0.0.2').should('be.visible');
-        cy.findAllByText('blocklist.lashback.com').should('be.visible');
-        cy.findAllByText('2 months from now').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-
-    cy.get('tbody > tr')
-      .last()
-      .within(() => {
-        cy.findAllByText('2.2.8').should('be.visible');
-        cy.findAllByText('new.spam.dnsbl.sorbs.net').should('be.visible');
-        cy.findAllByText('Sep 8 2019, 8:00pm').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-  });
-
-  it('sorted descending by date listed', () => {
     cy.visit(PAGE_BASE_URL);
 
-    cy.wait(['@getMonitors', '@getIncidents']);
+    cy.get('tbody > tr:first-child').then(el => {
+      cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
+      cy.findAllByText(novTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
+    });
+
+    cy.get('tbody > tr:last-child').then(el => {
+      cy.findAllByText('2.2.8', { container: el }).should('be.visible');
+      cy.findAllByText('new.spam.dnsbl.sorbs.net', { container: el }).should('be.visible');
+      cy.findAllByText(sepTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
+    });
 
     cy.findByText('Date Listed').click();
 
-    cy.get('tbody > tr')
-      .first()
-      .within(() => {
-        cy.findAllByText('2.2.8').should('be.visible');
-        cy.findAllByText('new.spam.dnsbl.sorbs.net').should('be.visible');
-        cy.findAllByText('Sep 8 2019, 8:00pm').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-
-    cy.get('tbody > tr')
-      .last()
-      .within(() => {
-        cy.findAllByText('127.0.0.2').should('be.visible');
-        cy.findAllByText('blocklist.lashback.com').should('be.visible');
-        cy.findAllByText('2 months from now').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-  });
-
-  it('sorted descending by date resolved', () => {
-    cy.visit(PAGE_BASE_URL);
-
-    cy.wait(['@getMonitors', '@getIncidents']);
-
-    cy.findByText('Date Resolved').click();
-
-    cy.get('tbody > tr')
-      .first()
-      .within(() => {
-        cy.findAllByText('127.0.0.2').should('be.visible');
-        cy.findAllByText('blocklist.lashback.com').should('be.visible');
-        cy.findAllByText('2 months from now').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-
-    cy.get('tbody > tr')
-      .last()
-      .within(() => {
-        cy.findAllByText('2.2.8').should('be.visible');
-        cy.findAllByText('new.spam.dnsbl.sorbs.net').should('be.visible');
-        cy.findAllByText('Sep 8 2019, 8:00pm').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-  });
-
-  it('sorted ascending by date resolved', () => {
-    cy.visit(PAGE_BASE_URL);
-
-    cy.wait(['@getMonitors', '@getIncidents']);
-
-    cy.findByText('Date Resolved').click();
-    cy.findByText('Date Resolved').click();
-
-    cy.get('tbody > tr')
-      .first()
-      .within(() => {
-        cy.findAllByText('127.0.0.2').should('be.visible');
-        cy.findAllByText('blocklist.lashback.com').should('be.visible');
-        cy.findAllByText('2 months from now').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-
-    cy.get('tbody > tr')
-      .last()
-      .within(() => {
-        cy.findAllByText('2.2.8').should('be.visible');
-        cy.findAllByText('new.spam.dnsbl.sorbs.net').should('be.visible');
-        cy.findAllByText('Sep 8 2019, 8:00pm').should('be.visible');
-        cy.findAllByText('Active').should('be.visible');
-      });
-  });
-
-  describe('with no monitors or incidents', () => {
-    beforeEach(() => {
-      cy.stubRequest({
-        url: 'api/v1/blocklist-monitors',
-        fixture: '200.get.no-results.json',
-        requestAlias: 'getMonitors',
-      });
-
-      cy.stubRequest({
-        url: 'api/v1/blocklist-monitors/incidents*',
-        fixture: '200.get.no-results.json',
-        requestAlias: 'getIncidents',
-      });
-
-      cy.visit(PAGE_BASE_URL);
-
-      cy.wait(['@getMonitors', '@getIncidents']);
+    cy.get('tbody > tr:last-child').then(el => {
+      cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
+      cy.findAllByText(novTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
     });
 
-    it('loads empty state page', () => {
-      cy.url().should('include', PAGE_BASE_URL);
-      cy.title().should('include', 'Blocklist Incidents');
-      cy.findByText(
-        'Keep an eye on your Domains and IPs and maintain a healthy sender reputation and improve your deliverability',
-      ).should('be.visible');
+    cy.get('tbody > tr:first-child').then(el => {
+      cy.findAllByText('2.2.8', { container: el }).should('be.visible');
+      cy.findAllByText('new.spam.dnsbl.sorbs.net', { container: el }).should('be.visible');
+      cy.findAllByText(sepTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
     });
 
-    it('loads add to watchlist form when call to action is clicked', () => {
-      cy.findByText('Add to Monitored List').click();
-      cy.url().should('include', '/signals/blocklist/monitors/add');
+    cy.findByText('Date Resolved').click();
+
+    cy.get('tbody > tr:first-child').then(el => {
+      cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
+      cy.findAllByText(novTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
+    });
+
+    cy.get('tbody > tr:last-child').then(el => {
+      cy.findAllByText('2.2.8', { container: el }).should('be.visible');
+      cy.findAllByText('new.spam.dnsbl.sorbs.net', { container: el }).should('be.visible');
+
+      cy.findAllByText(sepTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
+    });
+
+    cy.findByText('Date Resolved').click();
+
+    cy.get('tbody > tr:first-child').then(el => {
+      cy.findAllByText('127.0.0.2', { container: el }).should('be.visible');
+      cy.findAllByText('blocklist.lashback.com', { container: el }).should('be.visible');
+
+      cy.findAllByText(novTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
+    });
+
+    cy.get('tbody > tr:last-child').then(el => {
+      cy.findAllByText('2.2.8', { container: el }).should('be.visible');
+      cy.findAllByText('new.spam.dnsbl.sorbs.net', { container: el }).should('be.visible');
+
+      cy.findAllByText(sepTime, { container: el }).should('be.visible');
+      cy.findAllByText('Active', { container: el }).should('be.visible');
     });
   });
 });

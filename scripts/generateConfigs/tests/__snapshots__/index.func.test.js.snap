@@ -325,32 +325,6 @@ Object {
       "cnameValue": "track.demo-t.sparkpostelite.com",
     },
   },
-  "localhost": Object {
-    "authentication": Object {
-      "app": Object {
-        "cookie": Object {
-          "options": Object {
-            "domain": "localhost",
-          },
-        },
-      },
-      "site": Object {
-        "cookie": Object {
-          "options": Object {
-            "domain": "localhost",
-          },
-        },
-      },
-    },
-    "environment": "dev",
-    "featureFlags": Object {},
-    "smtpAuth": Object {
-      "enabled": true,
-      "port": 587,
-      "username": "localhost",
-    },
-    "tenantId": "localhost",
-  },
   "mtas4tenant.e.sparkpost.com": Object {
     "environment": "production",
     "featureFlags": Object {
