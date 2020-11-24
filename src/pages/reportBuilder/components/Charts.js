@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import _ from 'lodash';
 import { getLineChartFormatters } from 'src/helpers/chart';
-import LineChart from './LineChart';
+import LineChart from './async/LineChart';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
 import { Box, Stack, Panel } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
@@ -120,7 +120,7 @@ export function Charts(props) {
   }
 
   if (chartStatus === 'loading' || chartStatus === 'idle') {
-    return <Loading minHeight="300px" />;
+    return <Loading minHeight="200px" />;
   }
 
   return (
