@@ -1,10 +1,18 @@
 export default {
   apiBase: 'http://api.sparkpost.test/api',
   authentication: {
+    app: {
+      cookie: {
+        options: {
+          secure: false,
+        },
+      },
+    },
     site: {
       cookie: {
         options: {
           domain: '.sparkpost.test',
+          secure: false,
         },
       },
     },

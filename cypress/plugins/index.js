@@ -48,16 +48,17 @@ module.exports = (on, config) => {
 
   // Configuration options that do not change between environments
   config.blockHosts = [
-    'api.sparkpost.test',
-    'api-staging.sparkpost.com',
+    '*algolia.net',
     '*google-analytics.com',
+    '*googletagmanager.com',
     '*.storage.googleapis.com',
     '*pendo.io',
-    'api.analytics.sparkpost.com', // Our proxy for Segment API
-    'cdn.analytics.sparkpost.com', // Our proxy for Segment CDN
     '*siftscience.com',
-    '*googletagmanager.com',
+    '*sparkpost.com',
+    '*sparkpost.test',
     '*sentry.io',
+    '*siftscience.com',
+    '*visualwebsiteoptimizer.com',
     '*zuora.com',
   ];
   config.integrationFolder = 'cypress/tests/integration';

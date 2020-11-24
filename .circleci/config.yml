@@ -36,7 +36,7 @@ commands:
       - checkout
       - run:
           name: 'Configure /etc/hosts so that application tenant is defined for integration testing'
-          command: sudo echo 127.0.0.1 app-staging.sparkpost.com | sudo tee -a /etc/hosts
+          command: sudo echo 127.0.0.1 localhost | sudo tee -a /etc/hosts
       - restore_npm_cache
       - run: npm ci
       - save_npm_cache
