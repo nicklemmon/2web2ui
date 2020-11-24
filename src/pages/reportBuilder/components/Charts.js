@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import _ from 'lodash';
 import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from './LineChart';
@@ -29,11 +29,18 @@ export default function ChartContainer() {
 function ChartGroups(props) {
   const { reportOptions } = props;
   const { comparisons } = reportOptions;
+  const hasComparisons = Boolean(comparisons.length);
+  const [activeChart, setActiveChart] = useState(null);
 
-  if (!comparisons.length) {
+  if (!hasComparisons) {
     return (
       <Panel.Section>
-        <Charts reportOptions={reportOptions} />
+        <Charts
+          activeChart={activeChart}
+          setActiveChart={setActiveChart}
+          id="chart"
+          reportOptions={reportOptions}
+        />
       </Panel.Section>
     );
   }
@@ -58,7 +65,9 @@ function ChartGroups(props) {
               </Box>
               <Box>
                 <Charts
-                  key={`chart_group_${index}`}
+                  activeChart={activeChart}
+                  setActiveChart={setActiveChart}
+                  id={`chart_group_${index}`}
                   reportOptions={{ ...reportOptions, filters: comparedFilters }}
                 />
               </Box>
@@ -71,7 +80,7 @@ function ChartGroups(props) {
 }
 
 export function Charts(props) {
-  const { reportOptions } = props;
+  const { reportOptions, activeChart, setActiveChart, id } = props;
   const { comparisons, metrics } = reportOptions;
 
   // Prepares params for request
@@ -96,9 +105,6 @@ export function Charts(props) {
   const chartData = useMemo(() => {
     return transformData(rawChartData, formattedMetrics);
   }, [rawChartData, formattedMetrics]);
-
-  // Keeps track of hovered chart for Tooltip
-  const [activeChart, setActiveChart] = React.useState(null);
 
   const formatters = getLineChartFormatters(precision, to);
   //Separates the metrics into their appropriate charts
@@ -125,14 +131,14 @@ export function Charts(props) {
 
   return (
     <Stack>
-      {charts.map((chart, i) => (
-        <Box key={`chart-${i}`} onMouseOver={() => setActiveChart(i)}>
+      {charts.map((chart, index) => (
+        <Box key={`chart-${index}`} onMouseOver={() => setActiveChart(`${id}_chart_${index}`)}>
           <LineChart
             height={height}
             syncId="summaryChart"
             data={chartData}
             precision={precision}
-            showTooltip={activeChart === i}
+            showTooltip={activeChart === `${id}_chart_${index}`}
             lines={chart.metrics.map(({ name, label, stroke }) => ({
               key: name,
               dataKey: name,
@@ -143,7 +149,7 @@ export function Charts(props) {
             yTickFormatter={chart.yAxisFormatter}
             yLabel={chart.label}
             tooltipValueFormatter={chart.yAxisFormatter}
-            showXAxis={i === charts.length - 1}
+            showXAxis={index === charts.length - 1}
           />
         </Box>
       ))}

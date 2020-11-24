@@ -1,8 +1,3 @@
-/*
-  This component is meant to be loaded asynchronously, do not import directly.
-  See ../LineChart.js for async export
-*/
-
 import React from 'react';
 import {
   Bar,
