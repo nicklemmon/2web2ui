@@ -4,7 +4,6 @@ import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from './LineChart';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
 import { Box, Stack, Panel } from 'src/components/matchbox';
-import { tokens } from '@sparkpost/design-tokens-hibana';
 import { useSparkPostQuery } from 'src/hooks';
 import { getTimeSeries } from 'src/helpers/api';
 import {
@@ -75,6 +74,7 @@ export function Charts(props) {
   const { reportOptions } = props;
   const { comparisons, metrics } = reportOptions;
 
+  // Prepares params for request
   const formattedMetrics = useMemo(() => {
     return getMetricsFromKeys(metrics, true);
   }, [metrics]);
@@ -83,6 +83,7 @@ export function Charts(props) {
   }, [reportOptions, formattedMetrics]);
   const { precision, to } = formattedOptions;
 
+  // API request
   const { data: rawChartData, status: chartStatus } = useSparkPostQuery(
     () => {
       return getTimeSeries(formattedOptions);
@@ -98,10 +99,6 @@ export function Charts(props) {
 
   // Keeps track of hovered chart for Tooltip
   const [activeChart, setActiveChart] = React.useState(null);
-
-  if (chartStatus === 'loading' || chartStatus === 'idle') {
-    return <Loading />;
-  }
 
   const formatters = getLineChartFormatters(precision, to);
   //Separates the metrics into their appropriate charts
@@ -122,6 +119,10 @@ export function Charts(props) {
       break;
   }
 
+  if (chartStatus === 'loading' || chartStatus === 'idle') {
+    return <Loading minHeight="300px" />;
+  }
+
   return (
     <Stack>
       {charts.map((chart, i) => (
@@ -136,7 +137,7 @@ export function Charts(props) {
               key: name,
               dataKey: name,
               name: label,
-              stroke: chartStatus === 'loading' ? tokens.color_gray_100 : stroke,
+              stroke,
             }))}
             {...formatters}
             yTickFormatter={chart.yAxisFormatter}

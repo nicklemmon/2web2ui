@@ -24,7 +24,7 @@ const initFilters = {
   filters: {},
   metrics: {},
   query_filters: {},
-  compare: {},
+  comparisons: {},
   report: {},
 };
 
