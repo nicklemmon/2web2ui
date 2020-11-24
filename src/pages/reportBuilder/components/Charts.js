@@ -1,37 +1,120 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import _ from 'lodash';
 import { getLineChartFormatters } from 'src/helpers/chart';
 import LineChart from './LineChart';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
-import { Box, Stack } from 'src/components/matchbox';
-import { tokens } from '@sparkpost/design-tokens-hibana';
-
+import { Box, Stack, Panel } from 'src/components/matchbox';
+import { useSparkPostQuery } from 'src/hooks';
+import { getTimeSeries } from 'src/helpers/api';
+import {
+  getMetricsFromKeys,
+  getQueryFromOptionsV2 as getQueryFromOptions,
+  transformData,
+  FILTER_KEY_MAP,
+} from 'src/helpers/metrics';
+import { useReportBuilderContext } from '../context/ReportBuilderContext';
+import { Heading } from 'src/components/text';
+import { Loading } from 'src/components';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
   return _.uniq(metrics.map(({ unit = DEFAULT_UNIT }) => unit));
 }
 
-export default function Charts(props) {
-  const { chartData = [], metrics, chartLoading, precision, yScale, to } = props;
+export default function ChartContainer() {
+  const { state: reportOptions } = useReportBuilderContext();
+  return <ChartGroups reportOptions={reportOptions} />;
+}
 
-  // Keeps track of hovered chart for Tooltip
-  const [activeChart, setActiveChart] = React.useState(null);
+function ChartGroups(props) {
+  const { reportOptions } = props;
+  const { comparisons } = reportOptions;
+  const hasComparisons = Boolean(comparisons.length);
+  const [activeChart, setActiveChart] = useState(null);
 
-  if (!chartData.length || !metrics) {
-    return null;
+  if (!hasComparisons) {
+    return (
+      <Panel.Section>
+        <Charts
+          activeChart={activeChart}
+          setActiveChart={setActiveChart}
+          id="chart"
+          reportOptions={reportOptions}
+        />
+      </Panel.Section>
+    );
   }
 
-  const formatters = getLineChartFormatters(precision, to);
+  return (
+    <>
+      {comparisons.map((compareFilter, index) => {
+        const filterType = FILTER_KEY_MAP[compareFilter.type];
 
+        // Appends each compared filter as a new filter for individual requests
+        const comparedFilters = [
+          ...reportOptions.filters,
+          { AND: { [filterType]: { eq: [compareFilter] } } },
+        ];
+        return (
+          <Panel.Section key={`chart_group_${index}`}>
+            <Stack>
+              <Box>
+                <Heading data-id={`heading_${index}`} as="h3" looksLike="h4">
+                  {compareFilter.value}
+                </Heading>
+              </Box>
+              <Box>
+                <Charts
+                  activeChart={activeChart}
+                  setActiveChart={setActiveChart}
+                  id={`chart_group_${index}`}
+                  reportOptions={{ ...reportOptions, filters: comparedFilters }}
+                />
+              </Box>
+            </Stack>
+          </Panel.Section>
+        );
+      })}
+    </>
+  );
+}
+
+export function Charts(props) {
+  const { reportOptions, activeChart, setActiveChart, id } = props;
+  const { comparisons, metrics } = reportOptions;
+
+  // Prepares params for request
+  const formattedMetrics = useMemo(() => {
+    return getMetricsFromKeys(metrics, true);
+  }, [metrics]);
+  const formattedOptions = useMemo(() => {
+    return getQueryFromOptions({ ...reportOptions, metrics: formattedMetrics });
+  }, [reportOptions, formattedMetrics]);
+  const { precision, to } = formattedOptions;
+
+  // API request
+  const { data: rawChartData, status: chartStatus } = useSparkPostQuery(
+    () => {
+      return getTimeSeries(formattedOptions);
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const chartData = useMemo(() => {
+    return transformData(rawChartData, formattedMetrics);
+  }, [rawChartData, formattedMetrics]);
+
+  const formatters = getLineChartFormatters(precision, to);
   //Separates the metrics into their appropriate charts
-  const charts = getUniqueUnits(metrics).map(unit => ({
-    metrics: metrics.filter(metric => metric.unit === unit),
+  const charts = getUniqueUnits(formattedMetrics).map(unit => ({
+    metrics: formattedMetrics.filter(metric => metric.unit === unit),
     ...METRICS_UNIT_CONFIG[unit],
   }));
-
   let height = 150;
-  switch (charts.length) {
+
+  switch (charts.length * (comparisons.length || 1)) {
     case 1:
       height = 400;
       break;
@@ -42,28 +125,31 @@ export default function Charts(props) {
       break;
   }
 
+  if (chartStatus === 'loading' || chartStatus === 'idle') {
+    return <Loading minHeight="200px" />;
+  }
+
   return (
     <Stack>
-      {charts.map((chart, i) => (
-        <Box key={`chart-${i}`} onMouseOver={() => setActiveChart(i)}>
+      {charts.map((chart, index) => (
+        <Box key={`chart-${index}`} onMouseOver={() => setActiveChart(`${id}_chart_${index}`)}>
           <LineChart
             height={height}
             syncId="summaryChart"
             data={chartData}
             precision={precision}
-            showTooltip={activeChart === i}
+            showTooltip={activeChart === `${id}_chart_${index}`}
             lines={chart.metrics.map(({ name, label, stroke }) => ({
               key: name,
               dataKey: name,
               name: label,
-              stroke: chartLoading ? tokens.color_gray_100 : stroke,
+              stroke,
             }))}
             {...formatters}
             yTickFormatter={chart.yAxisFormatter}
-            yScale={yScale}
             yLabel={chart.label}
             tooltipValueFormatter={chart.yAxisFormatter}
-            showXAxis={i === charts.length - 1}
+            showXAxis={index === charts.length - 1}
           />
         </Box>
       ))}

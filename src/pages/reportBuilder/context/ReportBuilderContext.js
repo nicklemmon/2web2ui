@@ -22,7 +22,7 @@ const ReportOptionsContext = createContext({});
 
 const initialState = {
   filters: [],
-  compare: [],
+  comparisons: [],
 };
 
 const reducer = (state, action) => {
@@ -124,7 +124,7 @@ const getSelectors = reportOptions => {
   };
 
   const selectCompareFilters = {
-    compare: reportOptions.compare || [],
+    comparisons: reportOptions.comparisons || [],
   };
 
   const selectSummaryMetrics = {

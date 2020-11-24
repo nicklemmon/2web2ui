@@ -93,7 +93,7 @@ export function parseSearchNew(search) {
     precision,
     filters = [],
     query_filters,
-    compare,
+    comparisons,
     report,
   } = qs.parse(search, { ignoreQueryPrefix: true });
 
@@ -130,8 +130,8 @@ export function parseSearchNew(search) {
     ret.filters = mapFiltersToComparators(filtersList);
   }
 
-  if (compare) {
-    ret.compare = compare;
+  if (comparisons) {
+    ret.comparisons = comparisons;
   }
 
   if (metrics) {
