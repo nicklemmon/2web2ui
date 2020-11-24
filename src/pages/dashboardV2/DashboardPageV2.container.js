@@ -23,6 +23,8 @@ import { list as listSendingDomains } from 'src/actions/sendingDomains';
 function mapStateToProps(state) {
   const isAnAdmin = isAdmin(state);
   const isDev = hasRole(ROLES.DEVELOPER)(state);
+  const isTemplatesUser = hasRole(ROLES.TEMPLATES)(state);
+  const isReportingUser = hasRole(ROLES.REPORTING)(state);
   let verifySendingLink = '/domains/list/sending';
   // TODO: https://sparkpost.atlassian.net/browse/FE-1249 - rvUsage rename
   let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
@@ -35,22 +37,37 @@ function mapStateToProps(state) {
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
 
   let onboarding;
-  if (canManageSendingDomains && canManageApiKeys && canViewUsage && lastUsageDate === null) {
-    const addSendingDomainNeeded = sendingDomains.length === 0;
-    if (addSendingDomainNeeded) onboarding = 'addSending';
+  if (canViewUsage && lastUsageDate === null) {
+    if (isAnAdmin || isDev) {
+      let addSendingDomainNeeded;
+      let verifySendingNeeded;
+      let createApiKeyNeeded;
 
-    const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
-    if (verifySendingNeeded) onboarding = 'verifySending';
+      if (canManageSendingDomains) {
+        addSendingDomainNeeded = sendingDomains.length === 0;
+        if (addSendingDomainNeeded) onboarding = 'addSending';
 
-    const createApiKeyNeeded =
-      !addSendingDomainNeeded && !verifySendingNeeded && apiKeysForSending.length === 0;
+        verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
+        if (verifySendingNeeded) onboarding = 'verifySending';
+      }
 
-    if (createApiKeyNeeded) onboarding = 'createApiKey';
+      // TODO: Has d12y + free sending, "no";
+      if (!addSendingDomainNeeded && !verifySendingNeeded && canManageApiKeys) {
+        createApiKeyNeeded = !verifySendingNeeded && apiKeysForSending.length === 0;
+        if (createApiKeyNeeded) onboarding = 'createApiKey';
+      } else {
+        // TODO: Has d12y + free sending, "yes" -> onboarding = 'analyticsReportPromo';
+      }
 
-    if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
-      onboarding = 'startSending';
+      if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
+        onboarding = 'startSending';
+    }
+
+    if (isTemplatesUser || isReportingUser) {
+      onboarding = 'analyticsReportPromo';
+    }
   } else {
-    onboarding = 'fallback';
+    onboarding = 'done';
   }
 
   if (onboarding && onboarding === 'verifySending' && sendingDomains.length === 1) {

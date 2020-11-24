@@ -76,7 +76,7 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {onboarding !== 'fallback' && onboarding !== undefined && (
+              {onboarding !== 'analyticsReportPromo' && onboarding !== undefined && (
                 <Dashboard.Panel>
                   {onboarding === 'addSending' && (
                     <Columns>
@@ -227,7 +227,7 @@ export default function DashboardPageV2() {
                   )}
                 </Dashboard.Panel>
               )}
-              {onboarding === 'fallback' && (
+              {onboarding === 'analyticsReportPromo' && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
