@@ -26,7 +26,7 @@ export default function ChartContainer() {
   return <ChartGroups reportOptions={reportOptions} />;
 }
 
-function ChartGroups(props) {
+export function ChartGroups(props) {
   const { reportOptions } = props;
   const { comparisons } = reportOptions;
   const hasComparisons = Boolean(comparisons.length);

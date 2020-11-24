@@ -25,9 +25,13 @@ import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
 import config from 'src/config';
-import { Charts } from 'src/pages/reportBuilder/components/Charts';
+import { ChartGroups } from 'src/pages/reportBuilder/components/Charts';
 import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
+import { parseSearchNew } from 'src/helpers/reports';
+import { hydrateFilters } from 'src/pages/reportBuilder/helpers';
+import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants/presetReport';
 import qs from 'qs';
+import _ from 'lodash';
 
 const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
@@ -36,6 +40,7 @@ const OnboardingPicture = styled(Picture.Image)`
 const defaultReportOptions = {
   timezone: getLocalTimezone(),
   metrics: config.reportBuilder.defaultMetrics,
+  comparisons: [],
   relativeRange: '7days',
   precision: 'hour',
   isReady: true,
@@ -54,7 +59,12 @@ export default function DashboardPageV2() {
     currentUser,
     pending,
     listSendingDomains,
+    listSubaccounts,
     listApiKeys,
+    subaccounts,
+    getReports,
+    reports,
+    pinnedReportId, //this is the id stored in user ui option "pinned_report"
   } = useDashboardContext();
   const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
@@ -64,15 +74,16 @@ export default function DashboardPageV2() {
     getUsage();
     listSendingDomains();
     listApiKeys();
+    listSubaccounts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getLinktoAnalyzeReport = newParams => {
-    const queryString = qs.stringify(newParams, {
-      arrayFormat: 'repeat',
-    });
-    return `/signals/analytics?${queryString}`;
-  };
+  useEffect(() => {
+    if (onboarding === 'analytics') {
+      getReports();
+    }
+  }, [getReports, onboarding]);
+
   const getRelativeDateRange = (
     relativeRange = defaultReportOptions.relativeRange,
     precision = defaultReportOptions.precision,
@@ -87,6 +98,33 @@ export default function DashboardPageV2() {
     ...reportOptions,
     ...getRelativeDateRange(),
   });
+  const getReportOptions = () => {
+    let reportOptions;
+    //if there is a pinned report then find the report filters
+    const report = _.find(reports, { id: pinnedReportId });
+    if (!report) {
+      reportOptions = parseSearchNew(
+        PRESET_REPORT_CONFIGS.find(x => x.name === 'Summary Report').query_string,
+      );
+      return reportOptionsWithDates({
+        ...reportOptions,
+        timezone: getLocalTimezone(),
+        comparisons: [],
+        relativeRange: '7days',
+        precision: 'hour',
+        isReady: true,
+        filters: hydrateFilters(reportOptions.filters, { subaccounts }),
+      });
+    }
+    return {};
+  };
+
+  const getLinktoAnalyzeReport = newParams => {
+    const queryString = qs.stringify(newParams, {
+      arrayFormat: 'repeat',
+    });
+    return `/signals/analytics?${queryString}`;
+  };
 
   if (pending) return <Loading />;
 
@@ -118,7 +156,7 @@ export default function DashboardPageV2() {
                     </Panel.Action>
                   </Panel.Header>
                   <Panel.Section>
-                    <Charts reportOptions={reportOptionsWithDates()} />
+                    <ChartGroups reportOptions={getReportOptions()} />
                   </Panel.Section>
                 </Dashboard.Panel>
               )}
