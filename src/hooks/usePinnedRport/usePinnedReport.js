@@ -23,8 +23,7 @@ export default function usePinnedReport(onboarding) {
       dispatch(listSubaccounts());
       dispatch(getReports());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, onboarding]);
   const getLinktoReportBuilder = newParams => {
     const queryString = qs.stringify(newParams, {
       arrayFormat: 'repeat',
