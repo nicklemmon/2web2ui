@@ -297,14 +297,10 @@ describe('Version 2 of the dashboard page', () => {
       stubAlertsReq();
       stubAccountsReq();
       // Force not admin here - Our mocked cypress state always has the user as admin
-      cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.reporting.json',
-        requestAlias: 'userReq',
-      });
+      stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@userReq']);
+      cy.wait(['@alertsReq', '@accountReq', '@getUsers']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -343,9 +339,10 @@ describe('Version 2 of the dashboard page', () => {
       stubGrantsRequest({ role: 'reporting' });
       stubAlertsReq();
       stubAccountsReq();
+      stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@getGrants', '@alertsReq', '@accountReq']);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@getUsers']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -402,16 +399,12 @@ describe('Version 2 of the dashboard page', () => {
       stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
       stubApiKeyReq({ fixture: 'api-keys/200.get.json' });
-      cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.reporting.json',
-        requestAlias: 'userReq',
-      });
+      stubUsersRequest({ access_level: 'reporting' });
       cy.visit(PAGE_URL);
       cy.wait([
         '@accountReq',
         '@alertsReq',
-        '@userReq',
+        '@getUsers',
         '@usageReq',
         '@sendingDomainsReq',
         '@apiKeysReq',
@@ -577,5 +570,13 @@ function stubGrantsRequest({ role }) {
     url: '/api/v1/authenticate/grants*',
     fixture: `authenticate/grants/200.get.${role}.json`,
     requestAlias: 'getGrants',
+  });
+}
+
+function stubUsersRequest({ access_level }) {
+  cy.stubRequest({
+    url: '/api/v1/users/appteam',
+    fixture: `users/200.get.${access_level}.json`,
+    requestAlias: 'getUsers',
   });
 }
