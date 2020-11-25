@@ -25,10 +25,7 @@ import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
 import styled from 'styled-components';
 import { ChartGroups } from 'src/pages/reportBuilder/components/Charts';
-import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
-import { parseSearchNew } from 'src/helpers/reports';
-import { hydrateFilters } from 'src/pages/reportBuilder/helpers';
-import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants/presetReport';
+import { usePinnedReport } from 'src/hooks';
 import qs from 'qs';
 import _ from 'lodash';
 
@@ -74,39 +71,10 @@ export default function DashboardPageV2() {
       getReports();
     }
   }, [getReports, onboarding]);
-
-  const getReportOptions = () => {
-    const getRelativeDateRange = ({ relativeRange, precision }) => {
-      const { from, to } = getRelativeDates(relativeRange, {
-        precision: precision,
-      });
-      return { from, to };
-    };
-    const reportOptionsWithDates = reportOptions => {
-      return {
-        ...reportOptions,
-        ...getRelativeDateRange(reportOptions),
-      };
-    };
-    let reportOptions = {};
-    const report = _.find(reports, { id: pinnedReportId });
-    if (!report) {
-      reportOptions = parseSearchNew(
-        PRESET_REPORT_CONFIGS.find(x => x.name === defaultReportName).query_string,
-      );
-      return reportOptionsWithDates({
-        timezone: getLocalTimezone(),
-        metrics: reportOptions.metrics,
-        comparisons: [],
-        relativeRange: '7days',
-        precision: 'hour',
-        isReady: true,
-        filters: hydrateFilters(reportOptions.filters, { subaccounts }),
-      });
-    }
-    //TODO: Change this when adding the functionality to support pinned reports
-    return reportOptions;
-  };
+  const { pinnedReport } = usePinnedReport(
+    { pinnedReportId, reports, subaccounts },
+    { listSubaccounts, getReports },
+  );
 
   const getLinktoAnalyzeReport = newParams => {
     const queryString = qs.stringify(newParams, {
@@ -139,13 +107,13 @@ export default function DashboardPageV2() {
                   <Panel.Header>
                     <Panel.Headline>{defaultReportName}</Panel.Headline>
                     <Panel.Action>
-                      <PageLink to={getLinktoAnalyzeReport(getReportOptions())}>
+                      <PageLink to={getLinktoAnalyzeReport(pinnedReport.options)}>
                         <TranslatableText>Analyze Report</TranslatableText> <ShowChart size={25} />
                       </PageLink>
                     </Panel.Action>
                   </Panel.Header>
                   <Panel.Section>
-                    <ChartGroups reportOptions={getReportOptions()} />
+                    <ChartGroups reportOptions={pinnedReport.options} />
                   </Panel.Section>
                 </Dashboard.Panel>
               )}
