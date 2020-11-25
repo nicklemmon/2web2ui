@@ -53,15 +53,10 @@ describe('Version 2 of the dashboard page', () => {
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      // Force not admin here - Our mocked cypress state always has the user as admin
-      cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.reporting.json',
-        requestAlias: 'userReq',
-      });
+      stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@userReq']);
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@getUsers']);
 
       cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
 
