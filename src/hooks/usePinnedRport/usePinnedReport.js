@@ -4,16 +4,26 @@ import { parseSearchNew } from 'src/helpers/reports';
 import { hydrateFilters } from 'src/pages/reportBuilder/helpers';
 import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants/presetReport';
 import _ from 'lodash';
+import qs from 'qs';
 
 const defaultReportName = 'Summary Report';
 
 export default function usePinnedReport(state, actions) {
-  const pinnedReport = { options: {}, name: '' };
+  const pinnedReport = { options: {}, name: '', linkToReportBuilder: '/' };
+  const excludeOptionsFromLink = ['isReady'];
   useEffect(() => {
-    actions.listSubaccounts();
-    actions.getReports();
+    if (state.onboarding === 'analytics') {
+      actions.listSubaccounts();
+      actions.getReports();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const getLinktoReportBuilder = newParams => {
+    const queryString = qs.stringify(newParams, {
+      arrayFormat: 'repeat',
+    });
+    return `/signals/analytics?${queryString}`;
+  };
   const getRelativeDateRange = ({ relativeRange, precision }) => {
     const { from, to } = getRelativeDates(relativeRange, {
       precision: precision,
@@ -41,6 +51,9 @@ export default function usePinnedReport(state, actions) {
       isReady: true,
       filters: hydrateFilters(summaryReportOptions.filters, { subaccounts: state.subaccounts }),
     });
+    pinnedReport.linkToReportBuilder = getLinktoReportBuilder(
+      _.omitBy(pinnedReport.options, (_value, key) => excludeOptionsFromLink.includes(key)),
+    );
   }
   return { pinnedReport };
 }

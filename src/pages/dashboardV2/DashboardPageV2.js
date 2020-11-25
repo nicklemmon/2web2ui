@@ -26,14 +26,11 @@ import { LINKS } from 'src/constants';
 import styled from 'styled-components';
 import { ChartGroups } from 'src/pages/reportBuilder/components/Charts';
 import { usePinnedReport } from 'src/hooks';
-import qs from 'qs';
 import _ from 'lodash';
 
 const OnboardingPicture = styled(Picture.Image)`
   vertical-align: bottom;
 `;
-
-const defaultReportName = 'Summary Report';
 
 export default function DashboardPageV2() {
   const {
@@ -62,26 +59,13 @@ export default function DashboardPageV2() {
     getUsage();
     listSendingDomains();
     listApiKeys();
-    listSubaccounts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (onboarding === 'analytics') {
-      getReports();
-    }
-  }, [getReports, onboarding]);
   const { pinnedReport } = usePinnedReport(
-    { pinnedReportId, reports, subaccounts },
+    { pinnedReportId, reports, subaccounts, onboarding },
     { listSubaccounts, getReports },
   );
-
-  const getLinktoAnalyzeReport = newParams => {
-    const queryString = qs.stringify(newParams, {
-      arrayFormat: 'repeat',
-    });
-    return `/signals/analytics?${queryString}`;
-  };
 
   if (pending) return <Loading />;
 
@@ -105,9 +89,9 @@ export default function DashboardPageV2() {
               {onboarding === 'analytics' && (
                 <Dashboard.Panel>
                   <Panel.Header>
-                    <Panel.Headline>{defaultReportName}</Panel.Headline>
+                    <Panel.Headline>{pinnedReport.name}</Panel.Headline>
                     <Panel.Action>
-                      <PageLink to={getLinktoAnalyzeReport(pinnedReport.options)}>
+                      <PageLink to={pinnedReport.linkToReportBuilder}>
                         <TranslatableText>Analyze Report</TranslatableText> <ShowChart size={25} />
                       </PageLink>
                     </Panel.Action>
