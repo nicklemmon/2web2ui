@@ -23,39 +23,59 @@ import { list as listSubaccounts } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
 
 function mapStateToProps(state) {
-  const sendingDomains = state.sendingDomains.list;
-  const verifiedDomains = selectVerifiedDomains(state);
-  const apiKeysForSending = selectApiKeysForSending(state);
-  const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
   const isAnAdmin = isAdmin(state);
   const isDev = hasRole(ROLES.DEVELOPER)(state);
+  const isTemplatesUser = hasRole(ROLES.TEMPLATES)(state);
+  const isReportingUser = hasRole(ROLES.REPORTING)(state);
   let verifySendingLink = '/domains/list/sending';
   // TODO: https://sparkpost.atlassian.net/browse/FE-1249 - rvUsage rename
   let lastUsageDate = state?.account?.rvUsage?.messaging?.last_usage_date;
-  let onboarding;
 
-  if (lastUsageDate === null) {
-    const addSendingDomainNeeded = (isAnAdmin || isDev) && sendingDomains.length === 0;
-    if (addSendingDomainNeeded) onboarding = 'addSending';
+  const sendingDomains = state.sendingDomains.list;
+  const verifiedDomains = selectVerifiedDomains(state);
+  const apiKeysForSending = selectApiKeysForSending(state);
+  const canViewUsage = hasGrants('usage/view')(state);
+  const canManageApiKeys = hasGrants('api_keys/manage')(state);
+  const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
 
-    if (sendingDomains.length === 1 && verifiedDomains.length === 0) {
-      verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
+  let onboarding = 'done';
+  if (canViewUsage && lastUsageDate === null) {
+    if (isAnAdmin || isDev) {
+      let addSendingDomainNeeded;
+      let verifySendingNeeded;
+      let createApiKeyNeeded;
+
+      if (canManageSendingDomains) {
+        addSendingDomainNeeded = sendingDomains.length === 0;
+        if (addSendingDomainNeeded) onboarding = 'addSending';
+
+        verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
+        if (verifySendingNeeded) onboarding = 'verifySending';
+      }
+
+      // TODO: Has d12y + free sending, "no";
+      // TODO: Has d12y + free sending, "yes";
+      if (!addSendingDomainNeeded && !verifySendingNeeded && canManageApiKeys) {
+        createApiKeyNeeded = !verifySendingNeeded && apiKeysForSending.length === 0;
+        if (createApiKeyNeeded) onboarding = 'createApiKey';
+      }
+
+      if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
+        onboarding = 'startSending';
+    }
+  } else {
+    if (isTemplatesUser || isReportingUser) {
+      //TODO: revisit this condition if usage/view grant gets added for reporting & subaccount_reporting users
+      onboarding = 'analyticsReportPromo';
     }
 
-    const verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
-    if (verifySendingNeeded) onboarding = 'verifySending';
+    if (isAnAdmin || isDev) {
+      onboarding = 'analytics';
+    }
+  }
 
-    const createApiKeyNeeded =
-      !addSendingDomainNeeded && !verifySendingNeeded && apiKeysForSending.length === 0;
-
-    if (createApiKeyNeeded) onboarding = 'createApiKey';
-
-    if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
-      onboarding = 'startSending';
-
-    if (!canManageSendingDomains || (!isAnAdmin && !isDev)) onboarding = 'fallback';
-  } else {
-    onboarding = 'analytics';
+  if (onboarding && onboarding === 'verifySending' && sendingDomains.length === 1) {
+    verifySendingLink = `/domains/details/sending-bounce/${sendingDomains[0].domain}`;
   }
 
   const isPending =
