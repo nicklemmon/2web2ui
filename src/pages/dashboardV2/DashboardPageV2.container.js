@@ -36,7 +36,7 @@ function mapStateToProps(state) {
   const canManageApiKeys = hasGrants('api_keys/manage')(state);
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
 
-  let onboarding;
+  let onboarding = 'done';
   if (canViewUsage && lastUsageDate === null) {
     if (isAnAdmin || isDev) {
       let addSendingDomainNeeded;
@@ -52,22 +52,20 @@ function mapStateToProps(state) {
       }
 
       // TODO: Has d12y + free sending, "no";
+      // TODO: Has d12y + free sending, "yes";
       if (!addSendingDomainNeeded && !verifySendingNeeded && canManageApiKeys) {
         createApiKeyNeeded = !verifySendingNeeded && apiKeysForSending.length === 0;
         if (createApiKeyNeeded) onboarding = 'createApiKey';
-      } else {
-        // TODO: Has d12y + free sending, "yes" -> onboarding = 'analyticsReportPromo';
       }
 
       if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
         onboarding = 'startSending';
     }
-
+  } else {
     if (isTemplatesUser || isReportingUser) {
+      //TODO: revisit this condition if usage/view grant gets added for reporting & subaccount_reporting users
       onboarding = 'analyticsReportPromo';
     }
-  } else {
-    onboarding = 'done';
   }
 
   if (onboarding && onboarding === 'verifySending' && sendingDomains.length === 1) {
