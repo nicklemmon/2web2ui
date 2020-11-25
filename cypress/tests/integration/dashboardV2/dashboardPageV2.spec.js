@@ -56,7 +56,8 @@ describe('Version 2 of the dashboard page', () => {
       stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@getUsers']);
+
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@stubbedUsersRequest']);
 
       cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
 
@@ -295,7 +296,7 @@ describe('Version 2 of the dashboard page', () => {
       stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@getUsers']);
+      cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -337,7 +338,7 @@ describe('Version 2 of the dashboard page', () => {
       stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@getUsers']);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@stubbedUsersRequest']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -399,7 +400,7 @@ describe('Version 2 of the dashboard page', () => {
       cy.wait([
         '@accountReq',
         '@alertsReq',
-        '@getUsers',
+        '@stubbedUsersRequest',
         '@usageReq',
         '@sendingDomainsReq',
         '@apiKeysReq',
@@ -568,10 +569,11 @@ function stubGrantsRequest({ role }) {
   });
 }
 
+// this is an override of the stub set by stubAuth
 function stubUsersRequest({ access_level }) {
   cy.stubRequest({
-    url: '/api/v1/users/appteam',
+    url: `/api/v1/users/${Cypress.env('USERNAME')}`,
     fixture: `users/200.get.${access_level}.json`,
-    requestAlias: 'getUsers',
+    requestAlias: 'stubbedUsersRequest',
   });
 }
