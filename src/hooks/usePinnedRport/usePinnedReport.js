@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 import { parseSearchNew } from 'src/helpers/reports';
 import { hydrateFilters } from 'src/pages/reportBuilder/helpers';
 import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants/presetReport';
 import _ from 'lodash';
 import qs from 'qs';
+import { list as listSubaccounts } from 'src/actions/subaccounts';
+import { getReports } from 'src/actions/reports';
 
 const defaultReportName = 'Summary Report';
 
-export default function usePinnedReport(state, actions) {
+export default function usePinnedReport(onboarding) {
   const pinnedReport = { options: {}, name: '', linkToReportBuilder: '/' };
   const excludeOptionsFromLink = ['isReady'];
+  const dispatch = useDispatch();
+  const { reports = [] } = useSelector(state => state.reports.list);
+  const { subaccounts } = useSelector(state => state.subaccounts.list);
+  const pinnedReportId = null; //TODO: this is the id stored in user ui option "pinned_report"
   useEffect(() => {
-    if (state.onboarding === 'analytics') {
-      actions.listSubaccounts();
-      actions.getReports();
+    if (onboarding === 'analytics') {
+      dispatch(listSubaccounts());
+      dispatch(getReports());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -36,7 +43,7 @@ export default function usePinnedReport(state, actions) {
       ...getRelativeDateRange(reportOptions),
     };
   };
-  const report = _.find(state.reports, { id: state.pinnedReportId });
+  const report = _.find(reports, { id: pinnedReportId });
   if (!report) {
     let summaryReportOptions = parseSearchNew(
       PRESET_REPORT_CONFIGS.find(x => x.name === defaultReportName).query_string,
@@ -49,7 +56,7 @@ export default function usePinnedReport(state, actions) {
       relativeRange: '7days',
       precision: 'hour',
       isReady: true,
-      filters: hydrateFilters(summaryReportOptions.filters, { subaccounts: state.subaccounts }),
+      filters: hydrateFilters(summaryReportOptions.filters, { subaccounts }),
     });
     pinnedReport.linkToReportBuilder = getLinktoReportBuilder(
       _.omitBy(pinnedReport.options, (_value, key) => excludeOptionsFromLink.includes(key)),

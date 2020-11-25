@@ -44,12 +44,7 @@ export default function DashboardPageV2() {
     currentUser,
     pending,
     listSendingDomains,
-    listSubaccounts,
     listApiKeys,
-    subaccounts,
-    getReports,
-    reports,
-    pinnedReportId, //TODO: this is the id stored in user ui option "pinned_report"
   } = useDashboardContext();
   const hasSetupDocumentationPanel = isAnAdmin || isDev;
 
@@ -62,10 +57,7 @@ export default function DashboardPageV2() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { pinnedReport } = usePinnedReport(
-    { pinnedReportId, reports, subaccounts, onboarding },
-    { listSubaccounts, getReports },
-  );
+  const { pinnedReport } = usePinnedReport(onboarding);
 
   if (pending) return <Loading />;
 
