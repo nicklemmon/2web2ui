@@ -25,6 +25,7 @@ describe('Version 2 of the dashboard page', () => {
       cy.visit(PAGE_URL);
       cy.wait(['@alertsReq', '@accountReq', '@usageReq']);
       cy.findByRole('heading', { name: 'Summary Report' });
+      cy.get('.recharts-wrapper').should('be.visible');
       cy.findByText('Analyze Report').click();
       cy.findByRole('heading', { name: 'Analytics Report' });
     });
