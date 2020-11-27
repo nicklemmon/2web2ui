@@ -1,22 +1,22 @@
 {
   "results": [
     {
-      "count_targeted": 5000,
-      "count_rendered": 6000,
+      "count_sent": 5000,
+      "count_unique_confirmed_opened_approx": 6000,
       "count_accepted": 7000,
       "count_bounce": 8000,
       "ip_pool": "highway"
     },
     {
-      "count_targeted": 500,
-      "count_rendered": 600,
+      "count_sent": 500,
+      "count_unique_confirmed_opened_approx": 600,
       "count_accepted": 700,
       "count_bounce": 800,
       "ip_pool": "to"
     },
     {
-      "count_targeted": 50,
-      "count_rendered": 60,
+      "count_sent": 50,
+      "count_unique_confirmed_opened_approx": 60,
       "count_accepted": 70,
       "count_bounce": 80,
       "ip_pool": "thedangerzone"

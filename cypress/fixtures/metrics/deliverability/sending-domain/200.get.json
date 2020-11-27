@@ -1,15 +1,15 @@
 {
   "results": [
     {
-      "count_targeted": 1,
-      "count_rendered": 2,
+      "count_sent": 1,
+      "count_unique_confirmed_opened_approx": 2,
       "count_accepted": 3,
       "count_bounce": 4,
       "sending_domain": "ymail.com"
     },
     {
-      "count_targeted": 5500,
-      "count_rendered": 6500,
+      "count_sent": 5500,
+      "count_unique_confirmed_opened_approx": 6500,
       "count_accepted": 7500,
       "count_bounce": 8500,
       "sending_domain": "sparkpostbox.com"
