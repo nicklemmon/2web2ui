@@ -7,11 +7,11 @@ import {
   getMetricsFromKeys,
   getPrecision as getRawPrecision,
   getRollupPrecision,
+  FILTER_KEY_MAP,
 } from 'src/helpers/metrics';
 import { getLocalTimezone } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import config from 'src/config';
-import { FILTER_KEY_MAP } from 'src/helpers/metrics';
 import {
   getIterableFormattedGroupings,
   getApiFormattedGroupings,
@@ -99,6 +99,21 @@ const reducer = (state, action) => {
         ...state,
         filters,
       };
+    }
+
+    case 'REMOVE_COMPARISON_FILTER': {
+      const { payload } = action;
+      const { index } = payload;
+      const comparisons = state.comparisons;
+      comparisons.splice(index, 1);
+
+      if (comparisons.length >= 2) {
+        return { ...state, comparisons };
+      }
+      const lastFilter = comparisons[0];
+      const filters = [{ AND: { [FILTER_KEY_MAP[lastFilter.type]]: { eq: [lastFilter] } } }];
+
+      return { ...state, comparisons: [], filters: [...state.filters, ...filters] };
     }
 
     default:
@@ -211,11 +226,22 @@ const ReportOptionsContextProvider = props => {
     });
   }, [dispatch]);
 
+  const removeComparisonFilter = useCallback(
+    payload => {
+      return dispatch({
+        type: 'REMOVE_COMPARISON_FILTER',
+        payload,
+      });
+    },
+    [dispatch],
+  );
+
   const actions = {
     addFilters,
     clearFilters,
     setFilters,
     removeFilter,
+    removeComparisonFilter,
     refreshReportOptions,
   };
   const selectors = useMemo(() => getSelectors(state), [state]);

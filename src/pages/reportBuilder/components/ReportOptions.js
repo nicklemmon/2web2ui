@@ -1,13 +1,19 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { Heading } from 'src/components/text';
-import { Button, Drawer, Inline, Panel } from 'src/components/matchbox';
+import { Box, Button, Drawer, Expandable, Inline, Panel, Stack } from 'src/components/matchbox';
 import { Tabs, Loading } from 'src/components';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { selectFeatureFlaggedMetrics } from 'src/selectors/metrics';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
-import { ActiveFilters, ActiveMetrics, CompareByForm, FiltersForm, MetricsDrawer } from './index';
+import {
+  ActiveFilters,
+  ActiveMetrics,
+  ActiveComparisons,
+  CompareByForm,
+  FiltersForm,
+  MetricsDrawer,
+} from './index';
 import SavedReportsSection from './SavedReportsSection';
 import DateTimeSection from './DateTimeSection';
 import { usePageFilters } from 'src/hooks';
@@ -34,17 +40,12 @@ export function ReportOptions(props) {
     return isCompareByEnabled ? [...drawerTabs, { content: 'Compare' }] : drawerTabs;
   }, [isCompareByEnabled]);
   const { state: reportOptions, actions, selectors } = useReportBuilderContext();
-  const { refreshReportOptions, removeFilter } = actions;
+  const { refreshReportOptions, removeFilter, removeComparisonFilter } = actions;
   const {
     selectSummaryMetricsProcessed: processedMetrics,
     selectSummaryChartSearchOptions,
   } = selectors;
   const { updateFilters } = usePageFilters(initFilters);
-  const isEmpty = useMemo(() => {
-    return !Boolean(processedMetrics.length);
-  }, [processedMetrics]);
-  // Render filters when metrics are not empty and when the filters array is not empty
-  const hasFilters = !isEmpty && Boolean(reportOptions?.filters?.length);
 
   // Updates the query params with incoming search option changes
   useEffect(() => {
@@ -92,6 +93,10 @@ export function ReportOptions(props) {
     return removeFilter({ groupingIndex, filterIndex, valueIndex });
   };
 
+  const handleComparisonRemove = ({ index }) => {
+    return removeComparisonFilter({ index });
+  };
+
   const handleTimezoneSelect = useCallback(
     timezone => {
       refreshReportOptions({ timezone: timezone.value });
@@ -131,77 +136,91 @@ export function ReportOptions(props) {
         />
       </Panel.Section>
 
-      <Panel.Section>
-        <Inline space="300">
-          <Button {...getActivatorProps()} onClick={() => handleDrawerOpen(0)} variant="secondary">
-            Add Metrics
-          </Button>
-          <Button
-            {...getActivatorProps()}
-            onClick={() => {
-              handleDrawerOpen(1);
-            }}
-            variant="secondary"
-          >
-            Add Filters
-          </Button>
-          {isCompareByEnabled && (
-            <Button
-              {...getActivatorProps()}
-              onClick={() => {
-                handleDrawerOpen(2);
-              }}
-              variant="secondary"
-            >
-              Add Comparison
-            </Button>
-          )}
-        </Inline>
+      <Drawer {...getDrawerProps()} portalId="drawer-portal">
+        <Drawer.Header showCloseButton />
+        <Drawer.Content p="0">
+          <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabsFeatureFlag}>
+            <Tabs.Item>
+              <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
+            </Tabs.Item>
+            <Tabs.Item>
+              <FiltersForm handleSubmit={handleSubmit} />
+            </Tabs.Item>
+            {isCompareByEnabled && (
+              <Tabs.Item>
+                <CompareByForm handleSubmit={handleSubmit} />
+              </Tabs.Item>
+            )}
+          </Tabs>
+        </Drawer.Content>
+      </Drawer>
 
-        <Drawer {...getDrawerProps()} portalId="drawer-portal">
-          <Drawer.Header showCloseButton />
-          <Drawer.Content p="0">
-            <Tabs defaultTabIndex={drawerTab} forceRender fitted tabs={drawerTabsFeatureFlag}>
-              <Tabs.Item>
-                <MetricsDrawer selectedMetrics={processedMetrics} handleSubmit={handleSubmit} />
-              </Tabs.Item>
-              <Tabs.Item>
-                <FiltersForm handleSubmit={handleSubmit} />
-              </Tabs.Item>
-              {isCompareByEnabled && (
-                <Tabs.Item>
-                  <CompareByForm handleSubmit={handleSubmit} />
-                </Tabs.Item>
-              )}
-            </Tabs>
-          </Drawer.Content>
-        </Drawer>
+      <Panel.Section p="0">
+        <Expandable title="Metrics" variant="borderless">
+          <Stack>
+            <Inline>
+              <ActiveMetrics metrics={processedMetrics} removeMetric={handleRemoveMetric} />
+            </Inline>
+            <Box>
+              <Button
+                {...getActivatorProps()}
+                onClick={() => handleDrawerOpen(0)}
+                variant="secondary"
+              >
+                Add Metrics
+              </Button>
+            </Box>
+          </Stack>
+        </Expandable>
       </Panel.Section>
 
-      {!isEmpty && (
-        <Panel.Section>
-          <Inline>
-            <Heading as="h2" looksLike="h5">
-              Metrics
-            </Heading>
+      <Panel.Section p="0">
+        <Expandable title="Filters" variant="borderless">
+          <Stack>
+            {Boolean(reportOptions.filters.length) && (
+              <ActiveFilters
+                filters={reportOptions.filters}
+                handleFilterRemove={handleFilterRemove}
+              />
+            )}
+            <Box>
+              <Button
+                {...getActivatorProps()}
+                onClick={() => {
+                  handleDrawerOpen(1);
+                }}
+                variant="secondary"
+              >
+                Add Filters
+              </Button>
+            </Box>
+          </Stack>
+        </Expandable>
+      </Panel.Section>
 
-            <ActiveMetrics metrics={processedMetrics} removeMetric={handleRemoveMetric} />
-          </Inline>
-        </Panel.Section>
-      )}
-
-      {hasFilters && (
-        <Panel.Section>
-          <Inline>
-            <Heading as="h2" looksLike="h5">
-              Filters
-            </Heading>
-
-            <ActiveFilters
-              filters={reportOptions.filters}
-              handleFilterRemove={handleFilterRemove}
-            />
-          </Inline>
+      {isCompareByEnabled && (
+        <Panel.Section p="0">
+          <Expandable title="Comparisons" variant="borderless">
+            <Stack>
+              {Boolean(reportOptions.comparisons.length) && (
+                <ActiveComparisons
+                  comparisons={reportOptions.comparisons}
+                  handleFilterRemove={handleComparisonRemove}
+                />
+              )}
+              <Box>
+                <Button
+                  {...getActivatorProps()}
+                  onClick={() => {
+                    handleDrawerOpen(2);
+                  }}
+                  variant="secondary"
+                >
+                  Add Comparison
+                </Button>
+              </Box>
+            </Stack>
+          </Expandable>
         </Panel.Section>
       )}
     </div>
