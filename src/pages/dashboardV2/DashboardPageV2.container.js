@@ -37,44 +37,33 @@ function mapStateToProps(state) {
   const canManageSendingDomains = hasGrants('sending_domains/manage')(state);
 
   let onboarding = 'done';
-  if (canViewUsage && lastUsageDate === null) {
-    if (isAnAdmin || isDev) {
-      let addSendingDomainNeeded;
-      let verifySendingNeeded;
-      let createApiKeyNeeded;
+  if (canViewUsage && lastUsageDate === null && (isAnAdmin || isDev)) {
+    let addSendingDomainNeeded;
+    let verifySendingNeeded;
+    let createApiKeyNeeded;
 
-      if (canManageSendingDomains) {
-        addSendingDomainNeeded = sendingDomains.length === 0;
-        if (addSendingDomainNeeded) onboarding = 'addSending';
+    if (canManageSendingDomains) {
+      addSendingDomainNeeded = sendingDomains.length === 0;
+      if (addSendingDomainNeeded) onboarding = 'addSending';
 
-        verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
-        if (verifySendingNeeded) onboarding = 'verifySending';
-      }
-
-      // TODO: Has d12y + free sending, "no";
-      // TODO: Has d12y + free sending, "yes";
-      if (!addSendingDomainNeeded && !verifySendingNeeded && canManageApiKeys) {
-        createApiKeyNeeded = !verifySendingNeeded && apiKeysForSending.length === 0;
-        if (createApiKeyNeeded) onboarding = 'createApiKey';
-      }
-
-      if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
-        onboarding = 'startSending';
-
-      if (isTemplatesUser) {
-        //since templates user have view/usage grant
-        onboarding = 'analyticsReportPromo';
-      }
-    }
-  } else {
-    if (isTemplatesUser || isReportingUser) {
-      //TODO: revisit this condition if usage/view grant gets added for reporting & subaccount_reporting users
-      onboarding = 'analyticsReportPromo';
+      verifySendingNeeded = !addSendingDomainNeeded && verifiedDomains.length === 0;
+      if (verifySendingNeeded) onboarding = 'verifySending';
     }
 
-    if (isAnAdmin || isDev) {
-      onboarding = 'analytics';
+    // TODO: Has d12y + free sending, "no";
+    // TODO: Has d12y + free sending, "yes";
+    if (!addSendingDomainNeeded && !verifySendingNeeded && canManageApiKeys) {
+      createApiKeyNeeded = !verifySendingNeeded && apiKeysForSending.length === 0;
+      if (createApiKeyNeeded) onboarding = 'createApiKey';
     }
+
+    if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
+      onboarding = 'startSending';
+  } else if (canViewUsage && lastUsageDate !== null && (isAnAdmin || isDev)) {
+    onboarding = 'analytics';
+  } else if (isTemplatesUser || isReportingUser) {
+    //TODO: revisit this condition if usage/view grant gets added for reporting & subaccount_reporting users
+    onboarding = 'analyticsReportPromo';
   }
 
   if (onboarding && onboarding === 'verifySending' && sendingDomains.length === 1) {
