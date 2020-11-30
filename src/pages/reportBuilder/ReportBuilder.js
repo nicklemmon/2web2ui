@@ -60,6 +60,7 @@ export function ReportBuilder({
   const { refreshReportOptions } = actions;
   const processedMetrics = selectors.selectSummaryMetricsProcessed;
   const summarySearchOptions = selectors.selectSummaryChartSearchOptions || {};
+  const hasActiveComparisons = Boolean(reportOptions.comparisons.length);
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
@@ -208,52 +209,57 @@ export function ReportBuilder({
               <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
                 <Tabs.Item>
                   <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
-                  <Box padding="400" backgroundColor="gray.1000">
-                    <Grid>
-                      <Grid.Column sm={3}>
-                        <LabelValue dark>
-                          <LabelValue.Label>
-                            <Box color="gray.600">Date</Box>
-                          </LabelValue.Label>
 
-                          <LabelValue.Value>
-                            <Box color="white">
-                              <Unit value={dateValue} />
-                            </Box>
-                          </LabelValue.Value>
-                        </LabelValue>
-                      </Grid.Column>
+                  {hasActiveComparisons ? (
+                    <CompareByAggregatedMetrics date={dateValue} />
+                  ) : (
+                    <Box padding="400" backgroundColor="gray.1000">
+                      <Grid>
+                        <Grid.Column sm={3}>
+                          <LabelValue dark>
+                            <LabelValue.Label>
+                              <Box color="gray.600">Date</Box>
+                            </LabelValue.Label>
 
-                      <Grid.Column sm={9}>
-                        <Inline space="600">
-                          {chart.aggregateData.map(({ key, label, value, unit }) => {
-                            const stroke = processedMetrics.find(({ key: newKey }) => {
-                              return newKey === key;
-                            })?.stroke;
-
-                            return (
-                              <Box marginRight="600" key={key}>
-                                <LabelValue dark>
-                                  <LabelValue.Label>
-                                    <Box color="gray.600">{label}</Box>
-                                  </LabelValue.Label>
-
-                                  <LabelValue.Value>
-                                    <Box display="flex" alignItems="center" color="white">
-                                      {stroke && <LegendCircle marginRight="200" color={stroke} />}
-                                      <Unit value={value} unit={unit} />
-                                    </Box>
-                                  </LabelValue.Value>
-                                </LabelValue>
+                            <LabelValue.Value>
+                              <Box color="white">
+                                <Unit value={dateValue} />
                               </Box>
-                            );
-                          })}
-                        </Inline>
-                      </Grid.Column>
-                    </Grid>
-                  </Box>
+                            </LabelValue.Value>
+                          </LabelValue>
+                        </Grid.Column>
 
-                  <CompareByAggregatedMetrics date={dateValue} />
+                        <Grid.Column sm={9}>
+                          <Inline space="600">
+                            {chart.aggregateData.map(({ key, label, value, unit }) => {
+                              const stroke = processedMetrics.find(({ key: newKey }) => {
+                                return newKey === key;
+                              })?.stroke;
+
+                              return (
+                                <Box marginRight="600" key={key}>
+                                  <LabelValue dark>
+                                    <LabelValue.Label>
+                                      <Box color="gray.600">{label}</Box>
+                                    </LabelValue.Label>
+
+                                    <LabelValue.Value>
+                                      <Box display="flex" alignItems="center" color="white">
+                                        {stroke && (
+                                          <LegendCircle marginRight="200" color={stroke} />
+                                        )}
+                                        <Unit value={value} unit={unit} />
+                                      </Box>
+                                    </LabelValue.Value>
+                                  </LabelValue>
+                                </Box>
+                              );
+                            })}
+                          </Inline>
+                        </Grid.Column>
+                      </Grid>
+                    </Box>
+                  )}
                 </Tabs.Item>
 
                 {hasBounceTab && (
