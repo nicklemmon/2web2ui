@@ -12,7 +12,6 @@ import { Box, Column, Columns, Inline, Stack } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 
-// TODO: props can probably be replaced with context
 export default function CompareByAggregatedMetrics({ date }) {
   const {
     state: { comparisons },
