@@ -307,7 +307,7 @@ describe('Version 2 of the dashboard page', () => {
       );
     });
 
-    it('Shows the default "Go To Analytics Report" onboarding step for non-admin and non-dev users with no last usage date.', () => {
+    it('Shows the default "Go To Analytics Report" onboarding step for reporting users with no last usage date.', () => {
       stubGrantsRequest({ role: 'reporting' });
       stubAlertsReq();
       stubAccountsReq();
@@ -316,6 +316,50 @@ describe('Version 2 of the dashboard page', () => {
 
       cy.visit(PAGE_URL);
       cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest']);
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      cy.verifyLink({
+        content: 'Go To Analytics Report',
+        href: '/signals/analytics',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text...
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.be.visible');
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+    });
+
+    it('Shows the default "Go To Analytics Report" onboarding step for templates users.', () => {
+      stubGrantsRequest({ role: 'templates' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
+      // Force not admin here - Our mocked cypress state always has the user as admin
+      stubUsersRequest({ access_level: 'templates' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest', '@usageReq']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 

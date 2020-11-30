@@ -60,6 +60,11 @@ function mapStateToProps(state) {
 
       if (!addSendingDomainNeeded && !verifySendingNeeded && !createApiKeyNeeded)
         onboarding = 'startSending';
+
+      if (isTemplatesUser) {
+        //since templates user have view/usage grant
+        onboarding = 'analyticsReportPromo';
+      }
     }
   } else {
     if (isTemplatesUser || isReportingUser) {
