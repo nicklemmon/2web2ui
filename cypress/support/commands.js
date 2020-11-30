@@ -160,17 +160,16 @@ Cypress.Commands.add(
     statusCode = 200,
     url,
     fixture,
-    fixtureAlias = 'requestAlias',
     requestAlias = 'stubbedRequest',
     delay,
   }) => {
     cy.server();
-    cy.fixture(fixture).as(fixtureAlias);
+    cy.fixture(fixture).as('fixtureAlias');
     cy.route({
       method,
       url,
       status: statusCode,
-      response: `@${fixtureAlias}`,
+      response: '@fixtureAlias',
       onRequest,
       delay,
     }).as(requestAlias);
