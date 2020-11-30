@@ -12,10 +12,41 @@ import { Box, Column, Columns, Inline, Stack } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 
+// TODO put this somewhere more re-usable
+const COMPARISON_TYPES = [
+  {
+    label: 'Recipient Domain',
+    value: 'domains',
+  },
+  {
+    label: 'Sending IP',
+    value: 'sending_ips',
+  },
+  {
+    label: 'IP Pool',
+    value: 'ip_pools',
+  },
+  {
+    label: 'Campaign',
+    value: 'campaigns',
+  },
+  {
+    label: 'Template',
+    value: 'templates',
+  },
+  {
+    label: 'Sending Domain',
+    value: 'sending_domains',
+  },
+  {
+    label: 'Subaccount',
+    value: 'subaccounts',
+  },
+];
+
 export default function CompareByAggregatedMetrics({ date }) {
-  const {
-    state: { comparisons },
-  } = useReportBuilderContext();
+  const { state } = useReportBuilderContext();
+  const { comparisons } = state;
 
   return (
     <Box padding="400" backgroundColor="gray.1000">
@@ -50,7 +81,10 @@ export default function CompareByAggregatedMetrics({ date }) {
 
 function ComparisonRow({ comparison, hasDivider }) {
   const { state: reportOptions } = useReportBuilderContext();
-  const { metrics, comparisonType } = reportOptions;
+  const { metrics } = reportOptions;
+  const comparisonObj = COMPARISON_TYPES.find(
+    comparisonConfig => comparisonConfig.label === comparison.type,
+  );
   // Prepares params for request
   const formattedMetrics = useMemo(() => {
     return getMetricsFromKeys(metrics, true);
@@ -59,9 +93,9 @@ function ComparisonRow({ comparison, hasDivider }) {
     return getQueryFromOptions({
       ...reportOptions,
       metrics: formattedMetrics,
-      [comparisonType]: comparison.value,
+      [comparisonObj.value]: comparison.value,
     });
-  }, [reportOptions, formattedMetrics, comparisonType, comparison]);
+  }, [reportOptions, formattedMetrics, comparisonObj, comparison]);
   const { data, status } = useSparkPostQuery(() => getDeliverabilityMetrics(formattedOptions), {
     refetchOnWindowFocus: false,
   });
