@@ -13,13 +13,11 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing/bundles**',
       fixture: 'billing/bundles/200.get.json',
-      fixtureAlias: 'bundlesGet',
     });
 
     cy.stubRequest({
       url: '/api/v1/billing/plans',
       fixture: 'billing/plans/200.get.json',
-      fixtureAlias: 'billingPlansGet',
     });
   });
 
@@ -72,7 +70,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
       fixture: 'billing/subscription/200.get.json',
-      fixtureAlias: 'subscriptionGet',
     });
     cy.visit(PAGE_URL);
     cy.get('[data-id=select-plan-free500-0419]').click();
@@ -86,7 +83,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -129,7 +125,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -173,7 +168,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -205,7 +199,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -233,7 +226,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -275,7 +267,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -323,7 +314,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -361,7 +351,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -399,7 +388,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -442,7 +430,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -478,7 +465,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -518,7 +504,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -579,7 +564,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -625,7 +609,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.json',
-      fixtureAlias: 'billingGet',
       requestAlias: 'billingGet',
     });
     cy.stubRequest({
@@ -649,7 +632,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',
@@ -658,13 +640,11 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing/subscription/promo-codes/*',
       fixture: 'billing/subscription/promo-codes/200.get.json',
-      fixtureAlias: 'promoGet',
     });
     cy.stubRequest({
       method: 'POST',
       url: '/api/v1/billing/subscription/promo-codes/*',
       fixture: 'blank.json',
-      fixtureAlias: 'promoGet',
     });
 
     cy.visit(PAGE_URL);
@@ -694,7 +674,6 @@ describe('Change Billing Plan Page', () => {
     cy.stubRequest({
       url: '/api/v1/billing',
       fixture: 'billing/200.get.has-no-credit-card.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/subscription',

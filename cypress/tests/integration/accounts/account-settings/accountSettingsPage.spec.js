@@ -104,13 +104,11 @@ describe('Account Settings Page', () => {
             method: 'POST',
             url: 'api/v1/api-keys',
             fixture: 'api-keys/200.post.json',
-            fixtureAlias: 'scimTokenCreate',
             requestAlias: 'scimTokenCreate',
           });
           cy.stubRequest({
             url: 'api/v1/api-keys?grant=scim/manage',
             fixture: 'api-keys/200.get.scim-token-newtoken.json',
-            fixtureAlias: 'newScimTokenGet',
             requestAlias: 'newScimTokenGet',
           });
           cy.stubRequest({

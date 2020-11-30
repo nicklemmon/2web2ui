@@ -10,52 +10,38 @@ describe('Billing Page', () => {
     cy.stubRequest({
       url: BILLING_API_BASE_URL,
       fixture: 'billing/200.get.json',
-      fixtureAlias: 'billingGet',
     });
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/plans`,
       fixture: 'billing/plans/200.get.json',
-      fixtureAlias: 'plansGet',
     });
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/bundles`,
       fixture: 'billing/bundles/200.get.json',
-      fixtureAlias: 'bundlesGet',
     });
     cy.stubRequest({
       url: '/api/v1/sending-ips',
       fixture: 'sending-ips/200.get.json',
-      fixtureAlias: 'sendingipsGet',
     });
-
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/invoices`,
       fixture: 'billing/invoices/200.get.json',
-      fixtureAlias: 'invoicesGet',
     });
-
     cy.stubRequest({
       url: '/api/v1/usage',
       fixture: 'usage/200.get.json',
-      fixtureAlias: 'usageGet',
     });
-
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/bundles`,
       fixture: 'billing/bundles/200.get.json',
-      fixtureAlias: 'bundlesGet',
     });
-
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/plans`,
       fixture: 'billing/plans/200.get.json',
-      fixtureAlias: 'billingPlansGet',
     });
-
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/subscription`,
       fixture: 'billing/subscription/200.get.json',
-      fixtureAlias: 'billingSubscriptionGet',
     });
   });
 
@@ -84,13 +70,11 @@ describe('Billing Page', () => {
     cy.stubRequest({
       url: `${ACCOUNT_API_BASE_URL}`,
       fixture: 'account/200.get.include-pending-subscription.json',
-      fixtureAlias: 'accountPendingDowngradeGet',
     });
 
     cy.stubRequest({
       url: `${BILLING_API_BASE_URL}/subscription`,
       fixture: 'billing/subscription/200.get.include-pending-downgrades.json',
-      fixtureAlias: 'subscriptionPendingDowngradeGet',
     });
 
     cy.visit(PAGE_URL);
@@ -641,7 +625,6 @@ describe('Billing Page', () => {
       cy.stubRequest({
         url: `${BILLING_API_BASE_URL}/invoices`,
         fixture: '200.get.no-results',
-        fixtureAlias: 'invoicesGet',
       });
 
       cy.visit(PAGE_URL);
