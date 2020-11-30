@@ -62,7 +62,8 @@ function ComparisonRow({ comparison, hasDivider }) {
     return getQueryFromOptions({
       ...reportOptions,
       metrics: formattedMetrics,
-      [comparisonObj.value]: comparison.value,
+      [comparisonObj.value]:
+        comparisonObj.value === 'subaccounts' ? comparison.id : comparison.value, // Subaccount formatting means different data must be passed to the request
     });
   }, [reportOptions, formattedMetrics, comparisonObj, comparison]);
   const { data, status } = useSparkPostQuery(() => getDeliverabilityMetrics(formattedOptions), {
