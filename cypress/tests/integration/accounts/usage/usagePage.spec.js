@@ -57,7 +57,7 @@ describe('The usage page', () => {
       cy.wait(['@usageReq', '@subscriptionReq', '@accountReq']);
       cy.findByRole('heading', { name: 'Messaging Usage' }).should('be.visible');
       cy.findByRole('heading', { name: 'Feature Usage' }).should('be.visible');
-      cy.findByRole('heading', { name: 'Recipient Validation Usage' }).should('not.be.visible');
+      cy.findByRole('heading', { name: 'Recipient Validation Usage' }).should('not.exist');
     });
 
     it('renders an error when a request fails, allowing the user to retry', () => {

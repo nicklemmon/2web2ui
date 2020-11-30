@@ -87,7 +87,7 @@ if (IS_HIBANA_ENABLED) {
       it('renders an empty state when no results are returned', () => {
         cy.findByText('Bounce Reason').click();
 
-        cy.findByLabelText('Filter').should('not.be.visible');
+        cy.findByLabelText('Filter').should('not.exist');
         cy.findByText('No bounce reasons to report').should('be.visible');
       });
     });
@@ -166,7 +166,7 @@ if (IS_HIBANA_ENABLED) {
 
         cy.wait(['@getRejectionReasons', '@getDeliverability']);
 
-        cy.findByLabelText('Filter').should('not.be.visible');
+        cy.findByLabelText('Filter').should('not.exist');
         cy.findByText('No rejection reasons to report').should('be.visible');
       });
     });

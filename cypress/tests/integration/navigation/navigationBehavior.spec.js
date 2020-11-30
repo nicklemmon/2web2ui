@@ -25,7 +25,7 @@ function assertNavigationIsVisible() {
 }
 
 function assertNavigationIsNotVisible() {
-  cy.get(navigationListSelector).should('not.be.visible');
+  cy.get(navigationListSelector).should('not.exist');
 }
 
 function assertAccountMenuIsVisible() {
@@ -33,7 +33,7 @@ function assertAccountMenuIsVisible() {
 }
 
 function assertAccountMenuIsNotVisible() {
-  cy.get(accountDropdownListSelector).should('not.be.visible');
+  cy.get(accountDropdownListSelector).should('not.exist');
 }
 
 if (!IS_HIBANA_ENABLED) {

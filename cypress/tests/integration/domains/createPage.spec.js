@@ -262,7 +262,7 @@ describe('The domains create page', () => {
 
       cy.findByLabelText(/Tracking Domain/g).check({ force: true });
       cy.findByLabelText('Domain').type('example.com');
-      cy.findByLabelText('Share with all Subaccounts').should('not.be.visible'); // This field is hidden when "Tracking Domains" is selected as the primary use
+      cy.findByLabelText('Share with all Subaccounts').should('not.exist'); // This field is hidden when "Tracking Domains" is selected as the primary use
       cy.findByLabelText('Assign to Master Account').should('be.checked');
       cy.findByRole('button', { name: 'Save and Continue' }).click();
 
@@ -353,7 +353,7 @@ describe('The domains create page', () => {
       cy.findByLabelText(/Sending Domain/g).should('be.visible');
       cy.findByLabelText(/Tracking Domain/g).should('be.visible');
       cy.findByLabelText('Domain').should('be.visible');
-      cy.findByText('Subaccount Assignment').should('not.be.visible');
+      cy.findByText('Subaccount Assignment').should('not.exist');
     });
   }
 

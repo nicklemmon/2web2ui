@@ -56,17 +56,17 @@ if (IS_HIBANA_ENABLED) {
 
       cy.findByLabelText('Send To').click();
       cy.findByText('Name: mockuser ---- Email: mockuser@example.com').click();
-      cy.findByText('At least 1 recipient must be selected').should('not.be.visible');
+      cy.findByText('At least 1 recipient must be selected').should('not.exist');
 
       cy.findByLabelText('Time').type('Lunchtime');
-      cy.findByText('Required').should('not.be.visible');
+      cy.findByText('Required').should('not.exist');
       cy.findByText('Invalid time format, should be hh:mm 12 hour format').should('be.visible');
 
       cy.findByLabelText('Time')
         .focus()
         .clear()
         .type('12:00');
-      cy.findByText('Invalid time format, should be hh:mm 12 hour format').should('not.be.visible');
+      cy.findByText('Invalid time format, should be hh:mm 12 hour format').should('not.exist');
     });
 
     it('Submits form properly', () => {

@@ -288,7 +288,7 @@ if (IS_HIBANA_ENABLED) {
         cy.withinModal(() => {
           //Check that it only shows my reports
           cy.findByText('My Bounce Report').should('be.visible');
-          cy.findByText('Your Sending Report').should('not.be.visible');
+          cy.findByText('Your Sending Report').should('not.exist');
           //Check that it shows all reports
           cy.findByRole('tab', { name: 'All Reports' }).click();
           cy.findAllByText('My Bounce Report').should('have.length', 2); //For both tabs

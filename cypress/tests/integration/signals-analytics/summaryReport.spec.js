@@ -113,7 +113,7 @@ describe('Summary Report page', () => {
       });
 
       cy.findByDataId('summary-chart').within(() => {
-        cy.findByText('Accepted').should('not.be.visible');
+        cy.findByText('Accepted').should('not.exist');
         cy.findByText('Injected').should('be.visible');
       });
     });
