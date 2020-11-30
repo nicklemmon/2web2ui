@@ -1,15 +1,6 @@
 const METRICS_BASE_URL = `/v1/metrics`;
 const DELIVERABILITY_BASE_URL = `${METRICS_BASE_URL}/deliverability`;
 
-// TODO: Remove? Rename the other function?
-export function getTimeSeries(params) {
-  return {
-    method: 'GET',
-    url: '/v1/metrics/deliverability/time-series',
-    params,
-  };
-}
-
 export function getDomainsMetrics(params) {
   return {
     method: 'GET',
