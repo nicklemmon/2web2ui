@@ -6,7 +6,7 @@ import { isUserUiOptionSet } from 'src/helpers/conditions/user';
 import { selectCondition } from 'src/selectors/accessConditionState';
 import { segmentTrack, SEGMENT_EVENTS } from '../helpers/segment';
 
-const HibanaStateContext = createContext();
+export const HibanaStateContext = createContext();
 
 function Provider(props) {
   const { children, ...rest } = props;
@@ -40,16 +40,11 @@ const mapDispatchToProps = {
   showAlert,
 };
 
+export const HibanaProvider = connect(mapStateToProps, mapDispatchToProps)(Provider);
+
 export function useHibana() {
   const context = useContext(HibanaStateContext);
-
   if (context === undefined) throw new Error('useHibana must be used within a HibanaProvider');
 
   return [context];
-}
-
-export const HibanaProvider = connect(mapStateToProps, mapDispatchToProps)(Provider);
-
-export function HibanaConsumer({ children }) {
-  return <HibanaStateContext.Consumer>{children}</HibanaStateContext.Consumer>;
 }

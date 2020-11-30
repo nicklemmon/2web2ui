@@ -1,32 +1,19 @@
 import React from 'react';
-import { GroupByOption } from '../GroupByOption';
 import { shallow } from 'enzyme';
-import { dehydrateFilters } from '../../helpers';
+import GroupByOption from '../GroupByOption';
 
-jest.mock('../../context/ReportBuilderContext', () => ({
-  useReportBuilderContext: jest.fn(() => ({ state: { foo: 'bar', filters: [] } })),
-}));
-
-jest.mock('../../helpers', () => ({
-  dehydrateFilters: jest.fn(),
-}));
-
-describe('Group By Option', () => {
+describe('GroupByOption', () => {
   let wrapper;
 
   const props = {
-    _getTableData: jest.fn(),
     groupBy: 'watched-domain',
-    tableLoading: false,
     hasSubaccounts: false,
+    onChange: jest.fn(),
+    tableLoading: false,
   };
 
   beforeEach(() => {
     wrapper = shallow(<GroupByOption {...props} />);
-  });
-
-  it('should render correctly with both selector and checkbox', () => {
-    expect(wrapper).toMatchSnapshot();
   });
 
   it('should render correctly with selector only and not the checkbox', () => {
@@ -45,14 +32,12 @@ describe('Group By Option', () => {
 
   it('should handle select change', () => {
     wrapper.find('Select').simulate('change', { target: { value: 'campaign' } });
-    expect(props._getTableData).toHaveBeenCalledWith({
-      groupBy: 'campaign',
-      reportOptions: { foo: 'bar', filters: [] },
-    });
+    expect(props.onChange).toHaveBeenCalledWith('campaign');
   });
+
   it('should handle select change when its just a placeholder value', () => {
     wrapper.find('Select').simulate('change', { target: { value: 'placeholder' } });
-    expect(props._getTableData).not.toHaveBeenCalled();
+    expect(props.onChange).not.toHaveBeenCalled();
   });
 
   it('should correctly show watched domain in the select options when "Only Top Domains" is checked', () => {
@@ -76,10 +61,7 @@ describe('Group By Option', () => {
   it('should make new domain api call when unchecking the "Only Top Domains" checkbox', () => {
     expect(wrapper.find('Checkbox')).toBeChecked();
     wrapper.find('Checkbox').simulate('change');
-    expect(props._getTableData).toHaveBeenCalledWith({
-      groupBy: 'domain',
-      reportOptions: { foo: 'bar', filters: [] },
-    });
+    expect(props.onChange).toHaveBeenCalledWith('domain');
     expect(wrapper.find('Checkbox')).not.toBeChecked();
   });
 
@@ -88,21 +70,16 @@ describe('Group By Option', () => {
     wrapper.find('Checkbox').simulate('change');
     expect(wrapper.find('Checkbox')).not.toBeChecked();
     wrapper.find('Checkbox').simulate('change');
-    expect(props._getTableData).toHaveBeenCalledTimes(2);
-    expect(props._getTableData).toHaveBeenCalledWith({
-      groupBy: 'watched-domain',
-      reportOptions: { foo: 'bar', filters: [] },
-    });
+    expect(props.onChange).toHaveBeenCalledTimes(2);
+    expect(props.onChange).toHaveBeenCalledWith('watched-domain');
     expect(wrapper.find('Checkbox')).toBeChecked();
   });
 
   it('should dehydrate filters if on new comparators filters', () => {
-    wrapper.setProps({ isComparatorsEnabled: true });
     expect(wrapper.find('Checkbox')).toBeChecked();
     wrapper.find('Checkbox').simulate('change');
     expect(wrapper.find('Checkbox')).not.toBeChecked();
     wrapper.find('Checkbox').simulate('change');
-    expect(props._getTableData).toHaveBeenCalledTimes(2);
-    expect(dehydrateFilters).toHaveBeenCalled();
+    expect(props.onChange).toHaveBeenCalledTimes(2);
   });
 });

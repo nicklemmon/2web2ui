@@ -10,42 +10,66 @@ if (IS_HIBANA_ENABLED) {
       cy.stubRequest({
         url: '/api/v1/account',
         fixture: 'account/200.get.has-scheduled-reports',
+        requestAlias: 'accountReq',
       });
 
       cy.stubRequest({
         url: `/api/v1/users/${Cypress.env('USERNAME')}`,
         fixture: 'users/200.get.metrics-rollup.json',
+        requestAlias: 'userReq',
       });
 
       cy.stubRequest({
         url: '/api/v1/reports',
         fixture: '200.get.no-results',
+        requestAlias: 'reportsReq',
       });
 
       cy.stubRequest({
         url: '/api/v1/billing/subscription',
         fixture: 'billing/subscription/200.get',
-        requestAlias: 'getBillingSubscription',
+        requestAlias: 'billingSubscriptionReq',
       });
     });
 
-    it('loads a preset report with additional filters when given a report query param and filter param', () => {
-      cy.visit(PAGE_URL);
-      cy.findByText('Engagement Report').should('not.be.visible');
-
+    it('loads a preset report in addition to relevant query params', () => {
       cy.visit(`${PAGE_URL}&report=engagement`);
-      cy.findByText('Engagement Report').should('be.visible');
+      cy.wait([
+        '@accountReq',
+        '@userReq',
+        '@reportsReq',
+        '@billingSubscriptionReq',
+        '@getTimeSeries',
+        '@getDeliverability',
+      ]);
+      cy.findByLabelText('Report').should('have.value', 'Engagement Report');
       cy.findAllByText('Sent').should('be.visible');
       cy.findAllByText('Accepted').should('be.visible');
       cy.findAllByText('Clicks').should('be.visible');
       cy.findAllByText('Open Rate').should('be.visible');
 
       cy.visit(`${PAGE_URL}&report=engagement&filters=Campaign:Christmas`);
+      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      cy.findAllByText('Sent').should('be.visible');
+      cy.findAllByText('Accepted').should('be.visible');
+      cy.findAllByText('Clicks').should('be.visible');
+      cy.findAllByText('Open Rate').should('be.visible');
+      // Additional params
       cy.findAllByText('Christmas').should('be.visible');
+
+      cy.visit(
+        `${PAGE_URL}&report=engagement&metrics%5B0%5D=count_policy_rejection&filters=Campaign:Christmas`,
+      );
+      cy.wait(['@accountReq', '@userReq', '@reportsReq', '@billingSubscriptionReq']);
+      // Additional params
+      cy.findAllByText('Christmas').should('be.visible');
+      cy.findByText('Policy Rejections').should('be.visible');
     });
 
     it('Selecting a preset report works correctly', () => {
       cy.visit(PAGE_URL);
+      cy.wait('@reportsReq');
+
       cy.withinMainContent(() => {
         cy.findByLabelText('Report').type('engagement');
         cy.findByText('Engagement Report').should('be.visible');
@@ -66,7 +90,7 @@ if (IS_HIBANA_ENABLED) {
           cy.findByLabelText('Precision').should('have.value', 'day');
           cy.findByText('Filters').should('be.visible');
           cy.findByText('Campaign').should('be.visible');
-          cy.findByText('equals').should('be.visible');
+          cy.findByText('is equal to').should('be.visible');
           cy.findByText('test-campaign').should('be.visible');
         });
         cy.url().should('include', 'range=7days');

@@ -1,4 +1,5 @@
 {
-  "baseUrl": "http://app-staging.sparkpost.com:5000",
-  "numTestsKeptInMemory": 1
+  "baseUrl": "http://localhost:5000",
+  "numTestsKeptInMemory": 1,
+  "retries": 3
 }

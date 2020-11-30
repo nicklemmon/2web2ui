@@ -10,6 +10,25 @@ describe('Version 2 of the dashboard page', () => {
   });
 
   if (IS_HIBANA_ENABLED) {
+    it('renders the Analytics Report step with "Summary Report" when last usage date is not null', () => {
+      stubGrantsRequest({ role: 'admin' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
+      cy.stubRequest({
+        method: 'GET',
+        url: '/api/v1/metrics/deliverability/time-series**/**',
+        fixture: 'metrics/deliverability/time-series/200.get.json',
+        requestAlias: 'dataGetTimeSeries',
+      });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq']);
+      cy.findByRole('heading', { name: 'Summary Report' });
+      cy.get('.recharts-wrapper').should('be.visible');
+      cy.findByText('Analyze Report').click();
+      cy.findByRole('heading', { name: 'Analytics Report' });
+    });
     it('Shows Helpful Shortcuts "invite team members" when admin', () => {
       stubGrantsRequest({ role: 'admin' });
       stubAlertsReq();
@@ -53,15 +72,11 @@ describe('Version 2 of the dashboard page', () => {
       stubAlertsReq();
       stubAccountsReq();
       stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      // FORCE NOT ADMIN HERE
-      cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.reporting.json',
-        requestAlias: 'userReq',
-      });
+      stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@userReq']);
+
+      cy.wait(['@alertsReq', '@accountReq', '@usageReq', '@stubbedUsersRequest']);
 
       cy.findByRole('heading', { name: 'Helpful Shortcuts' }).should('be.visible');
 
@@ -292,29 +307,103 @@ describe('Version 2 of the dashboard page', () => {
       );
     });
 
-    it('Shows the default "Go To Analytics Report" onboarding step for non-admin and non-dev users with no last usage date.', () => {
+    it('Shows the default "Go To Analytics Report" onboarding step for reporting users with no last usage date.', () => {
       stubGrantsRequest({ role: 'reporting' });
       stubAlertsReq();
       stubAccountsReq();
-      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      stubSendingDomains({ fixture: '/200.get.no-results.json' });
-      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
-      // Force not admin here
-      cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.reporting.json',
-        requestAlias: 'userReq',
-      });
+      // Force not admin here - Our mocked cypress state always has the user as admin
+      stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait([
-        '@alertsReq',
-        '@accountReq',
-        '@usageReq',
-        '@sendingDomainsReq',
-        '@apiKeysReq',
-        '@userReq',
-      ]);
+      cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest']);
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      cy.verifyLink({
+        content: 'Go To Analytics Report',
+        href: '/signals/analytics',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text...
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.be.visible');
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+    });
+
+    it('Shows the default "Go To Analytics Report" onboarding step for templates users with last usage date', () => {
+      stubGrantsRequest({ role: 'templates' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
+      // Force not admin here - Our mocked cypress state always has the user as admin
+      stubUsersRequest({ access_level: 'templates' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest', '@usageReq']);
+
+      cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
+
+      cy.findByText('Build custom analytics, track engagement, diagnose errors, and more.').should(
+        'be.visible',
+      );
+
+      cy.verifyLink({
+        content: 'Go To Analytics Report',
+        href: '/signals/analytics',
+      });
+
+      // step 1 text...
+      cy.findAllByText('is required in order to start or enable analytics.').should(
+        'not.be.visible',
+      );
+
+      // step 2 text...
+      cy.findAllByText('Once a sending domain has been added, it needs to be').should(
+        'not.be.visible',
+      );
+
+      // step 3 text...
+      cy.findAllByText('Create an API key in order to start sending via API or SMTP.').should(
+        'not.be.visible',
+      );
+
+      // step 4 text...
+      cy.findByRole('heading', { name: 'Start Sending!' }).should('not.be.visible');
+      cy.findByText(
+        'Follow the Getting Started documentation to set up sending via API or SMTP.',
+      ).should('not.be.visible');
+    });
+
+    it('Shows the default "Go To Analytics Report" onboarding step for templates users without last usage date', () => {
+      stubGrantsRequest({ role: 'templates' });
+      stubAlertsReq();
+      stubAccountsReq();
+      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
+      // Force not admin here - Our mocked cypress state always has the user as admin
+      stubUsersRequest({ access_level: 'templates' });
+
+      cy.visit(PAGE_URL);
+      cy.wait(['@alertsReq', '@accountReq', '@stubbedUsersRequest', '@usageReq']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -350,22 +439,13 @@ describe('Version 2 of the dashboard page', () => {
     });
 
     it('Shows the default "Go To Analytics Report" onboarding step for any user without the sending_domains/manage grant', () => {
-      stubGrantsRequest({ role: 'reporting' }); // canManageSendingDomains = false
+      stubGrantsRequest({ role: 'reporting' });
       stubAlertsReq();
       stubAccountsReq();
-      stubUsageReq({ fixture: 'usage/200.get.messaging.no-last-sent.json' });
-      stubSendingDomains({ fixture: '/200.get.no-results.json' });
-      stubApiKeyReq({ fixture: '/200.get.no-results.json' });
+      stubUsersRequest({ access_level: 'reporting' });
 
       cy.visit(PAGE_URL);
-      cy.wait([
-        '@getGrants',
-        '@alertsReq',
-        '@accountReq',
-        '@usageReq',
-        '@sendingDomainsReq',
-        '@apiKeysReq',
-      ]);
+      cy.wait(['@getGrants', '@alertsReq', '@accountReq', '@stubbedUsersRequest']);
 
       cy.findByRole('heading', { name: 'Analytics Report' }).should('be.visible');
 
@@ -422,16 +502,12 @@ describe('Version 2 of the dashboard page', () => {
       stubUsageReq({ fixture: 'usage/200.get.messaging.json' });
       stubSendingDomains({ fixture: 'sending-domains/200.get.json' });
       stubApiKeyReq({ fixture: 'api-keys/200.get.json' });
-      cy.stubRequest({
-        url: `/api/v1/users/${Cypress.env('USERNAME')}`,
-        fixture: 'users/200.get.reporting.json',
-        requestAlias: 'userReq',
-      });
+      stubUsersRequest({ access_level: 'reporting' });
       cy.visit(PAGE_URL);
       cy.wait([
         '@accountReq',
         '@alertsReq',
-        '@userReq',
+        '@stubbedUsersRequest',
         '@usageReq',
         '@sendingDomainsReq',
         '@apiKeysReq',
@@ -597,5 +673,14 @@ function stubGrantsRequest({ role }) {
     url: '/api/v1/authenticate/grants*',
     fixture: `authenticate/grants/200.get.${role}.json`,
     requestAlias: 'getGrants',
+  });
+}
+
+// this is an override of the stub set by stubAuth
+function stubUsersRequest({ access_level }) {
+  cy.stubRequest({
+    url: `/api/v1/users/${Cypress.env('USERNAME')}`,
+    fixture: `users/200.get.${access_level}.json`,
+    requestAlias: 'stubbedUsersRequest',
   });
 }

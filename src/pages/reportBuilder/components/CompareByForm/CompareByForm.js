@@ -82,16 +82,16 @@ function CompareByForm({
   handleSubmit,
 }) {
   const { state: reportOptions } = useReportBuilderContext();
-  const { compare } = reportOptions;
+  const { comparisons } = reportOptions;
 
   const getInitialState = compareFilters => {
     if (!compareFilters || !compareFilters.length) {
       return initialState;
     }
 
-    return { filterType: FILTER_KEY_MAP[compare[0].type], filters: compare };
+    return { filterType: FILTER_KEY_MAP[comparisons[0].type], filters: comparisons };
   };
-  const [state, dispatch] = useReducer(reducer, getInitialState(compare));
+  const [state, dispatch] = useReducer(reducer, getInitialState(comparisons));
   const { filters, filterType, error } = state;
 
   function handleFormSubmit(e) {
@@ -103,7 +103,7 @@ function CompareByForm({
       return dispatch({ type: 'SET_ERROR', error: 'Select more than one item to compare' });
     }
     // eslint-disable-next-line
-    handleSubmit({ compare: cleanedFilters });
+    handleSubmit({ comparisons: cleanedFilters });
   }
 
   const FILTER_TYPES = [

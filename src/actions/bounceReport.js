@@ -3,7 +3,11 @@ import {
   fetchBounceClassifications,
   fetchBounceReasonsByDomain,
 } from 'src/actions/metrics';
-import { getMetricsFromKeys, getQueryFromOptions } from 'src/helpers/metrics';
+import {
+  getMetricsFromKeys,
+  getQueryFromOptions,
+  getQueryFromOptionsV2,
+} from 'src/helpers/metrics';
 
 const ADMIN_REASON_METRICS = getMetricsFromKeys(['count_admin_bounce']);
 const CLASSIFICATION_METRICS = getMetricsFromKeys(['count_bounce', 'count_admin_bounce']);
@@ -41,6 +45,37 @@ export function refreshBounceReport(updates = {}) {
       dispatch(
         fetchBounceReasonsByDomain(
           getQueryFromOptions({ ...updates, metrics: ADMIN_REASON_METRICS }),
+          'FETCH_METRICS_ADMIN_BOUNCE_REASONS_BY_DOMAIN',
+        ),
+      ),
+    ]);
+  };
+}
+
+export function refreshBounceReportV2(updates = {}) {
+  return dispatch => {
+    // get new data
+    return Promise.all([
+      dispatch(
+        fetchDeliverability({
+          type: 'GET_BOUNCE_REPORT_AGGREGATES',
+          params: getQueryFromOptionsV2({ ...updates, metrics: DELIVERABILITY_METRICS }),
+        }),
+      ),
+      dispatch(
+        fetchBounceClassifications(
+          getQueryFromOptionsV2({ ...updates, metrics: CLASSIFICATION_METRICS }),
+        ),
+      ),
+      dispatch(
+        fetchBounceReasonsByDomain(
+          getQueryFromOptionsV2({ ...updates, metrics: REASON_METRICS }),
+          'FETCH_METRICS_BOUNCE_REASONS_BY_DOMAIN',
+        ),
+      ),
+      dispatch(
+        fetchBounceReasonsByDomain(
+          getQueryFromOptionsV2({ ...updates, metrics: ADMIN_REASON_METRICS }),
           'FETCH_METRICS_ADMIN_BOUNCE_REASONS_BY_DOMAIN',
         ),
       ),

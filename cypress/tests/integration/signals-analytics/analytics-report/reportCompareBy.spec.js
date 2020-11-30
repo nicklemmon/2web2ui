@@ -88,6 +88,8 @@ if (IS_HIBANA_ENABLED) {
       cy.withinDrawer(() => {
         cy.findByRole('button', { name: 'Compare' }).click();
       });
+      cy.wait(['@getDeliverability', '@getTimeSeries']);
+
       openCompareByModal();
 
       cy.findByLabelText(TYPE_LABEL).should('have.value', 'subaccounts');
@@ -97,6 +99,17 @@ if (IS_HIBANA_ENABLED) {
       cy.findAllByLabelText('Subaccount')
         .eq(1)
         .should('have.value', 'Fake Subaccount 3 (ID 103)');
+    });
+
+    it('Properly submits the form and renders multiple charts', () => {
+      openCompareByModal();
+      fillOutForm();
+      cy.withinDrawer(() => {
+        cy.findByRole('button', { name: 'Compare' }).click();
+      });
+      cy.wait(['@getDeliverability', '@getTimeSeries']);
+      cy.findByRole('heading', { name: 'Fake Subaccount 1 (ID 101)' }).should('be.visible');
+      cy.findByRole('heading', { name: 'Fake Subaccount 3 (ID 103)' }).should('be.visible');
     });
 
     it('Shows form error if form contains less than 2 filters', () => {
@@ -117,7 +130,7 @@ if (IS_HIBANA_ENABLED) {
 
     it('Properly loads form with query parameter', () => {
       cy.visit(
-        '/signals/analytics?compare%5B0%5D%5Btype%5D=Subaccount&compare%5B0%5D%5Bvalue%5D=Fake%20Subaccount%201%20%28ID%20101%29&compare%5B0%5D%5Bid%5D=101&compare%5B1%5D%5Btype%5D=Subaccount&compare%5B1%5D%5Bvalue%5D=Fake%20Subaccount%203%20%28ID%20103%29&compare%5B1%5D%5Bid%5D=103',
+        '/signals/analytics?comparisons%5B0%5D%5Btype%5D=Subaccount&comparisons%5B0%5D%5Bvalue%5D=Fake%20Subaccount%201%20%28ID%20101%29&comparisons%5B0%5D%5Bid%5D=101&comparisons%5B1%5D%5Btype%5D=Subaccount&comparisons%5B1%5D%5Bvalue%5D=Fake%20Subaccount%203%20%28ID%20103%29&comparisons%5B1%5D%5Bid%5D=103',
       );
       cy.wait(['@getSubaccounts', '@getDeliverability', '@getTimeSeries']);
 

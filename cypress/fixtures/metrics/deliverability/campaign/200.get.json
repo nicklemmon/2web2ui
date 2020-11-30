@@ -1,8 +1,8 @@
 {
   "results": [
     {
-      "count_targeted": 8,
-      "count_rendered": 0,
+      "count_sent": 8,
+      "count_unique_confirmed_opened_approx": 0,
       "count_accepted": 8,
       "count_bounce": 0,
       "campaign_id": "Free Beer"

@@ -1,51 +1,27 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import styles from './ReportTable.module.scss';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
-import { useReportBuilderContext } from '../context/ReportBuilderContext';
-import { selectCondition } from 'src/selectors/accessConditionState';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
-import { dehydrateFilters } from '../helpers';
-
-export const GroupByOption = props => {
-  const { groupBy, hasSubaccounts, tableLoading, _getTableData, isComparatorsEnabled } = props;
-  const { state: reportOptions } = useReportBuilderContext();
-
+export default function GroupByOption(props) {
+  const { disabled, groupBy, hasSubaccounts, onChange } = props;
   const selectId = useUniqueId('break-down-by');
-
   const [topDomainsOnly, setTopDomainsOnly] = useState(true);
 
-  const handleGroupChange = e => {
-    if (e.target.value !== 'placeholder') {
-      if (isComparatorsEnabled) {
-        const { filters, ...options } = reportOptions;
-        _getTableData({
-          groupBy: e.target.value,
-          reportOptions: { ...options, filters: dehydrateFilters(filters) },
-        });
-      } else {
-        _getTableData({ groupBy: e.target.value, reportOptions });
-      }
+  const handleGroupChange = event => {
+    if (event.target.value === 'placeholder') {
+      return; // do nothing
     }
+
+    onChange(event.target.value);
   };
 
   const handleDomainsCheckboxChange = () => {
-    const newTopDomainsOnly = !topDomainsOnly;
-    setTopDomainsOnly(newTopDomainsOnly);
-    const groupBy = newTopDomainsOnly ? 'watched-domain' : 'domain';
-    const { filters, ...options } = reportOptions;
+    const nextState = !topDomainsOnly;
 
-    if (isComparatorsEnabled) {
-      _getTableData({
-        groupBy,
-        reportOptions: { ...options, filters: dehydrateFilters(filters) },
-      });
-    } else {
-      _getTableData({ groupBy, reportOptions });
-    }
+    setTopDomainsOnly(nextState);
+    onChange(nextState ? 'watched-domain' : 'domain');
   };
 
   const getSelectOptions = () => {
@@ -78,7 +54,7 @@ export const GroupByOption = props => {
           label="Top Domains Only"
           checked={topDomainsOnly}
           onChange={handleDomainsCheckboxChange}
-          disabled={tableLoading}
+          disabled={disabled}
         />
       </Box>
     );
@@ -91,20 +67,17 @@ export const GroupByOption = props => {
           label="Break Down By"
           id={selectId}
           options={getSelectOptions()}
-          value={groupBy}
-          disabled={tableLoading}
+          value={GROUP_CONFIG[groupBy] ? groupBy : 'placeholder'}
+          disabled={disabled}
           onChange={handleGroupChange}
           placeholder="Select Resource"
           placeholderValue="placeholder"
         />
       </Grid.Column>
+
       <Grid.Column xs={12} md={4} mdOffset={3} lg={3} lgOffset={5}>
         {renderDomainsCheckbox()}
       </Grid.Column>
     </Grid>
   );
-};
-
-export default connect(state => ({
-  isComparatorsEnabled: selectCondition(isAccountUiOptionSet('allow_report_filters_v2'))(state),
-}))(GroupByOption);
+}

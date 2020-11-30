@@ -1,7 +1,10 @@
 import { fetch as fetchMetrics } from 'src/actions/metrics';
-import { getQueryFromOptions, getMetricsFromKeys } from 'src/helpers/metrics';
+import {
+  getQueryFromOptions,
+  getQueryFromOptionsV2,
+  getMetricsFromKeys,
+} from 'src/helpers/metrics';
 import { getRelativeDates } from 'src/helpers/date';
-import { isAccountUiOptionSet } from 'src/helpers/conditions/account';
 
 // second argument is only for mocking local functions that can't be otherwise mocked or spied on in jest-land
 export function refreshSummaryReport(
@@ -42,17 +45,10 @@ export function refreshSummaryReport(
 
 export function refreshReportBuilder(
   updates = {},
-  {
-    getChartData = _getChartData,
-    getTableData = _getTableDataReportBuilder,
-    getAggregateData = _getAggregateData,
-  } = {},
+  { getTableData = _getTableDataReportBuilder, getAggregateData = _getAggregateData } = {},
 ) {
   return (dispatch, getState) => {
     const { summaryChart } = getState();
-    const isComparatorsEnabled = Boolean(
-      isAccountUiOptionSet('allow_report_filters_v2')(getState()),
-    );
 
     // if new metrics are included, convert them to their full representation from config
     if (updates.metrics) {
@@ -66,10 +62,9 @@ export function refreshReportBuilder(
       ...getRelativeDates(updates.relativeRange, { precision: updates.precision }),
     };
 
-    const params = getQueryFromOptions(merged, { isComparatorsEnabled });
+    const params = getQueryFromOptionsV2(merged);
     const isCurrentGroupingAggregates = summaryChart.groupBy === 'aggregate';
     return Promise.all([
-      dispatch(getChartData({ params, metrics: merged.metrics })),
       dispatch(getAggregateData({ params, metrics: merged.metrics, isCurrentGroupingAggregates })),
       !isCurrentGroupingAggregates && dispatch(getTableData({ params, metrics: merged.metrics })),
     ]);
@@ -170,7 +165,6 @@ export function _getTableData({ params, metrics, groupBy }) {
 export function _getTableDataReportBuilder({ params, metrics, groupBy, reportOptions }) {
   return (dispatch, getState) => {
     const state = getState();
-    const isComparatorsEnabled = Boolean(isAccountUiOptionSet('allow_report_filters_v2')(state));
 
     // The selected grouping
     const activeGroup = groupBy || state.summaryChart.groupBy;
@@ -180,10 +174,7 @@ export function _getTableDataReportBuilder({ params, metrics, groupBy, reportOpt
 
     // Gets filters and metrics for params
     if (!params && reportOptions) {
-      params = getQueryFromOptions(
-        { ...reportOptions, metrics: activeMetrics },
-        { isComparatorsEnabled },
-      );
+      params = getQueryFromOptionsV2({ ...reportOptions, metrics: activeMetrics });
     }
 
     const path = activeGroup === 'aggregate' ? 'deliverability' : `deliverability/${activeGroup}`;
