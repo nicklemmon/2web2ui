@@ -103,7 +103,7 @@ function CompareByForm({
       return dispatch({ type: 'SET_ERROR', error: 'Select more than one item to compare' });
     }
 
-    return handleSubmit({ comparisons: formattedFilters, comparisonType: filterType });
+    return handleSubmit({ comparisons: formattedFilters });
   }
 
   const FILTER_TYPES = [
