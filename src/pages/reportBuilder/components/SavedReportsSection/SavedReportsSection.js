@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PRESET_REPORT_CONFIGS } from '../../constants/presetReport';
+import { PRESET_REPORT_CONFIGS } from '../../constants';
 import TypeSelect from 'src/components/typeahead/TypeSelect';
 import { Button, Column, Columns } from 'src/components/matchbox';
 import { Bold, TranslatableText } from 'src/components/text';

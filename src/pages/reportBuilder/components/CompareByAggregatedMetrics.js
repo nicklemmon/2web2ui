@@ -11,38 +11,7 @@ import Divider from 'src/components/divider';
 import { Box, Column, Columns, Inline, Stack } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
-
-// TODO put this somewhere more re-usable
-const COMPARISON_TYPES = [
-  {
-    label: 'Recipient Domain',
-    value: 'domains',
-  },
-  {
-    label: 'Sending IP',
-    value: 'sending_ips',
-  },
-  {
-    label: 'IP Pool',
-    value: 'ip_pools',
-  },
-  {
-    label: 'Campaign',
-    value: 'campaigns',
-  },
-  {
-    label: 'Template',
-    value: 'templates',
-  },
-  {
-    label: 'Sending Domain',
-    value: 'sending_domains',
-  },
-  {
-    label: 'Subaccount',
-    value: 'subaccounts',
-  },
-];
+import { FILTER_TYPES } from '../constants';
 
 export default function CompareByAggregatedMetrics({ date }) {
   const { state } = useReportBuilderContext();
@@ -82,7 +51,7 @@ export default function CompareByAggregatedMetrics({ date }) {
 function ComparisonRow({ comparison, hasDivider }) {
   const { state: reportOptions } = useReportBuilderContext();
   const { metrics } = reportOptions;
-  const comparisonObj = COMPARISON_TYPES.find(
+  const comparisonObj = FILTER_TYPES.find(
     comparisonConfig => comparisonConfig.label === comparison.type,
   );
   // Prepares params for request
@@ -104,8 +73,9 @@ function ComparisonRow({ comparison, hasDivider }) {
 
   if (status === 'error') return null;
 
-  const aggregatedMetricsObj = data[0];
+  const aggregatedMetricsObj = data[0] || {};
   const aggregatedMetricsKeys = Object.keys(aggregatedMetricsObj);
+  const hasMetrics = Boolean(aggregatedMetricsKeys.length);
 
   return (
     <Stack>
@@ -115,19 +85,21 @@ function ComparisonRow({ comparison, hasDivider }) {
           <Definition.Value>{comparison.value}</Definition.Value>
         </Definition>
 
-        {aggregatedMetricsKeys.map((metricKey, metricKeyIndex) => {
-          const { label } = getMetricFromKey(metricKey);
-          const value = aggregatedMetricsObj[metricKey];
+        {hasMetrics
+          ? aggregatedMetricsKeys.map((metricKey, metricKeyIndex) => {
+              const { label } = getMetricFromKey(metricKey);
+              const value = aggregatedMetricsObj[metricKey];
 
-          return (
-            <Stack key={`metric-${metricKeyIndex}`}>
-              <Definition dark>
-                <Definition.Label>{label}</Definition.Label>
-                <Definition.Value>{value}</Definition.Value>
-              </Definition>
-            </Stack>
-          );
-        })}
+              return (
+                <Stack key={`metric-${metricKeyIndex}`}>
+                  <Definition dark>
+                    <Definition.Label>{label}</Definition.Label>
+                    <Definition.Value>{value}</Definition.Value>
+                  </Definition>
+                </Stack>
+              );
+            })
+          : null}
       </Inline>
 
       {hasDivider ? <Divider /> : null}

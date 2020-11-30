@@ -39,7 +39,7 @@ import {
   RejectionReasonsTable,
 } from './components/tabs';
 import { useReportBuilderContext } from './context/ReportBuilderContext';
-import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
+import { PRESET_REPORT_CONFIGS } from './constants';
 
 export function ReportBuilder({
   chart,
