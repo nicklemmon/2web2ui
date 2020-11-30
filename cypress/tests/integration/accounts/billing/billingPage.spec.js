@@ -307,7 +307,7 @@ describe('Billing Page', () => {
       it('closes the modal when clicking "Cancel"', () => {
         cy.withinModal(() => {
           cy.findAllByText('Update Payment Information').should('be.visible');
-          cy.findByRole('button', { name: 'Cancel' }).click();
+          cy.findByRole('button', { name: 'Cancel' }).click({ force: true });
           cy.findAllByText('Update Payment Information').should('not.be.visible');
         });
       });

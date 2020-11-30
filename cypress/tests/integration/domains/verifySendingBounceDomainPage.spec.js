@@ -50,7 +50,6 @@ describe('The verify sending/bounce domain page', () => {
         cy.findByRole('heading', { name: 'DNS Verification' }).should('be.visible');
         cy.findByRole('heading', { name: 'Add DKIM Record' }).should('be.visible');
         cy.findByRole('heading', { name: 'Add Bounce Record' }).should('be.visible');
-        cy.findByRole('heading', { name: 'Add SPF Record' }).should('be.visible');
         cy.findByRole('button', { name: 'Authenticate Domain' }).should('be.visible');
       });
 
@@ -82,8 +81,6 @@ describe('The verify sending/bounce domain page', () => {
         ).should('be.visible');
         cy.findByRole('heading', { name: 'TXT record for DKIM' }).should('be.visible');
         cy.findByRole('heading', { name: 'CNAME record for Bounce' }).should('be.visible');
-        cy.findByRole('heading', { name: 'Add SPF Record' }).should('be.visible');
-        cy.findByRole('button', { name: 'Authenticate for SPF' }).should('be.visible');
       });
 
       it('Authenticate Domain submit button is disabled until the user selects the confirmation checkbox', () => {

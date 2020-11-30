@@ -56,7 +56,9 @@ if (IS_HIBANA_ENABLED) {
 
       cy.wait('@getWatchedDomains');
 
-      cy.findByLabelText('Top Domains Only').should('be.visible');
+      cy.findByLabelText('Top Domains Only')
+        .should('be.visible')
+        .should('be.checked');
 
       cy.get('table').within(() => {
         cy.findByText('Recipient Domain').should('be.visible');

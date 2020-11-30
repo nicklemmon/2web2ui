@@ -29,7 +29,8 @@ if (IS_HIBANA_ENABLED) {
 
       // Default selected metrics
       cy.withinMainContent(() => {
-        cy.findAllByText('Targeted').should('have.length', 2);
+        cy.findAllByText('Sent').should('have.length', 2);
+        cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);
         cy.findAllByText('Accepted').should('have.length', 2);
         cy.findAllByText('Bounces').should('have.length', 2);
       });
@@ -42,7 +43,8 @@ if (IS_HIBANA_ENABLED) {
     it('renders the initial page based on query params', () => {
       cy.visit(`${PAGE_URL}&filters=Recipient Domain%3Atest.com`);
       cy.withinMainContent(() => {
-        cy.findAllByText('Targeted').should('have.length', 2);
+        cy.findAllByText('Sent').should('have.length', 2);
+        cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);
         cy.findAllByText('Accepted').should('have.length', 2);
         cy.findAllByText('Bounces').should('have.length', 2);
       });
@@ -59,7 +61,8 @@ if (IS_HIBANA_ENABLED) {
       cy.findByRole('button', { name: 'Add Metrics' }).click();
 
       cy.withinDrawer(() => {
-        cy.findByLabelText('Targeted').uncheck({ force: true });
+        cy.findByLabelText('Sent').uncheck({ force: true });
+        cy.findByLabelText('Unique Confirmed Opens').uncheck({ force: true });
         cy.findByLabelText('Accepted').uncheck({ force: true });
         cy.findByLabelText('Bounces').uncheck({ force: true });
 
@@ -138,8 +141,8 @@ if (IS_HIBANA_ENABLED) {
       }
 
       cy.findByDataId('report-options').within(() => {
-        verifyMetricTagDismiss('Targeted');
-        verifyMetricTagDismiss('Accepted');
+        verifyMetricTagDismiss('Sent');
+        verifyMetricTagDismiss('Unique Confirmed Opens');
       });
     });
 

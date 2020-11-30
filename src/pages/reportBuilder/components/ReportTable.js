@@ -1,15 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import cx from 'classnames';
 
-import { _getTableDataReportBuilder as _getTableData } from 'src/actions/summaryChart';
-import { hasSubaccounts } from 'src/selectors/subaccounts';
+import { _getTableDataReportBuilder } from 'src/actions/summaryChart';
+import { hasSubaccounts as hasSubaccountsSelector } from 'src/selectors/subaccounts';
 
 import { TableCollection, Unit, PanelLoading } from 'src/components';
 import GroupByOption from './GroupByOption';
 import { Empty } from 'src/components';
 import { Panel, Table, Box } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
+import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import AddFilterLink from './AddFilterLink';
 
 import styles from './ReportTable.module.scss';
@@ -22,25 +23,23 @@ const tableWrapper = props => {
   );
 };
 
-export const ReportTable = props => {
+export const ReportTable = () => {
+  const dispatch = useDispatch();
   const {
-    _getTableData,
-    hasSubaccounts,
-    metrics,
-    tableData = [],
-    tableLoading,
-    subaccounts,
-  } = props;
-
-  //TODO RB CLEANUP: Change value. Default has to be 'aggregate' for now due to sharing reducer with non-hibana summary report
-  const groupBy = props.groupBy === 'aggregate' ? 'placeholder' : props.groupBy;
+    selectors: { selectSummaryMetricsProcessed: metrics },
+    state: reportOptions,
+  } = useReportBuilderContext();
+  const hasSubaccounts = useSelector(hasSubaccountsSelector);
+  const subaccounts = useSelector(state => state.subaccounts.list);
+  const { groupBy, tableData = [], tableLoading } = useSelector(state => state.summaryChart);
+  const group = GROUP_CONFIG[groupBy];
 
   const getColumnHeaders = () => {
     const primaryCol = {
       key: 'group-by',
-      label: GROUP_CONFIG[groupBy].label,
+      label: group.label,
       className: cx(styles.HeaderCell, styles.FirstColumnHeader),
-      sortKey: GROUP_CONFIG[groupBy].keyName,
+      sortKey: group.keyName,
     };
 
     const metricCols = metrics.map(({ label, key }) => ({
@@ -69,35 +68,28 @@ export const ReportTable = props => {
     return { type: 'Subaccount', value, id: subaccountId };
   };
 
-  const getRowData = () => {
-    const group = GROUP_CONFIG[groupBy];
+  const getRowData = row => {
+    const filterKey = row[group.keyName];
+    const newFilter =
+      group.label === 'Subaccount'
+        ? getSubaccountFilter(filterKey)
+        : { type: group.label, value: filterKey };
 
-    return row => {
-      const filterKey = row[group.keyName];
-      const newFilter =
-        group.label === 'Subaccount'
-          ? getSubaccountFilter(filterKey)
-          : { type: group.label, value: filterKey };
+    const primaryCol = <AddFilterLink newFilter={newFilter} />;
+    const metricCols = metrics.map(({ key, unit }) => (
+      <Box textAlign="right" key={key}>
+        <Unit value={row[key]} unit={unit} />
+      </Box>
+    ));
 
-      const primaryCol = <AddFilterLink newFilter={newFilter} />;
-      const metricCols = metrics.map(({ key, unit }) => (
-        <Box textAlign="right" key={key}>
-          <Unit value={row[key]} unit={unit} />
-        </Box>
-      ));
-
-      return [primaryCol, ...metricCols];
-    };
-  };
-
-  const getDefaultSortColumn = () => {
-    return metrics[0].key;
+    return [primaryCol, ...metricCols];
   };
 
   const renderTable = () => {
-    if (groupBy === 'placeholder') {
+    if (!group || metrics.length === 0) {
       return null;
     }
+
     if (tableLoading) {
       return <PanelLoading minHeight="250px" />;
     }
@@ -110,16 +102,15 @@ export const ReportTable = props => {
       );
     }
 
-    const rowKeyName = GROUP_CONFIG[groupBy].keyName;
     return (
       <TableCollection
-        rowKeyName={rowKeyName}
+        rowKeyName={group.keyName}
         columns={getColumnHeaders()}
-        getRowData={getRowData()}
+        getRowData={getRowData}
         pagination
         defaultPerPage={10}
         rows={tableData}
-        defaultSortColumn={getDefaultSortColumn()}
+        defaultSortColumn={metrics[0].key}
         defaultSortDirection="desc"
         wrapperComponent={tableWrapper}
       />
@@ -131,10 +122,23 @@ export const ReportTable = props => {
       <Panel marginBottom="-1px">
         <Panel.Section>
           <GroupByOption
-            _getTableData={_getTableData}
+            disabled={tableLoading || metrics.length === 0}
             groupBy={groupBy}
             hasSubaccounts={hasSubaccounts}
-            tableLoading={tableLoading}
+            onChange={value => {
+              dispatch(
+                _getTableDataReportBuilder({
+                  groupBy: value,
+                  metrics,
+                  reportOptions: {
+                    ...reportOptions,
+                    filters: Boolean(reportOptions.filters.length)
+                      ? reportOptions.filters
+                      : undefined,
+                  },
+                }),
+              );
+            }}
           />
         </Panel.Section>
       </Panel>
@@ -143,10 +147,4 @@ export const ReportTable = props => {
   );
 };
 
-const mapStateToProps = state => ({
-  subaccounts: state.subaccounts.list,
-  hasSubaccounts: hasSubaccounts(state),
-  ...state.summaryChart,
-});
-
-export default connect(mapStateToProps, { _getTableData })(ReportTable);
+export default ReportTable;

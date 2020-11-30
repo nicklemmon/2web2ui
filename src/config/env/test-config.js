@@ -21,7 +21,7 @@ const testConfig = {
       cookie: {
         name: 'test',
         options: {
-          path: '/',
+          secure: false,
         },
       },
     },
@@ -29,7 +29,8 @@ const testConfig = {
       cookie: {
         name: 'website_test',
         options: {
-          path: '/',
+          domain: '.sparkpost.test',
+          secure: false,
         },
       },
     },

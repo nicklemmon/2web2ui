@@ -3,38 +3,25 @@ import styles from './ReportTable.module.scss';
 import useUniqueId from 'src/hooks/useUniqueId';
 import { Box, Grid, Checkbox, Select } from 'src/components/matchbox';
 import { GROUP_CONFIG } from '../constants/tableConfig';
-import { useReportBuilderContext } from '../context/ReportBuilderContext';
 
 export default function GroupByOption(props) {
-  const { groupBy, hasSubaccounts, tableLoading, _getTableData } = props;
-  const { state: reportOptions } = useReportBuilderContext();
+  const { disabled, groupBy, hasSubaccounts, onChange } = props;
   const selectId = useUniqueId('break-down-by');
   const [topDomainsOnly, setTopDomainsOnly] = useState(true);
 
-  const handleGroupChange = e => {
-    if (e.target.value !== 'placeholder') {
-      _getTableData({
-        groupBy: e.target.value,
-        reportOptions: {
-          ...reportOptions,
-          filters: Boolean(reportOptions.filters.length) ? reportOptions.filters : undefined,
-        },
-      });
+  const handleGroupChange = event => {
+    if (event.target.value === 'placeholder') {
+      return; // do nothing
     }
+
+    onChange(event.target.value);
   };
 
   const handleDomainsCheckboxChange = () => {
-    const newTopDomainsOnly = !topDomainsOnly;
-    setTopDomainsOnly(newTopDomainsOnly);
-    const groupBy = newTopDomainsOnly ? 'watched-domain' : 'domain';
+    const nextState = !topDomainsOnly;
 
-    _getTableData({
-      groupBy,
-      reportOptions: {
-        ...reportOptions,
-        filters: Boolean(reportOptions.filters.length) ? reportOptions.filters : undefined,
-      },
-    });
+    setTopDomainsOnly(nextState);
+    onChange(nextState ? 'watched-domain' : 'domain');
   };
 
   const getSelectOptions = () => {
@@ -67,7 +54,7 @@ export default function GroupByOption(props) {
           label="Top Domains Only"
           checked={topDomainsOnly}
           onChange={handleDomainsCheckboxChange}
-          disabled={tableLoading}
+          disabled={disabled}
         />
       </Box>
     );
@@ -80,8 +67,8 @@ export default function GroupByOption(props) {
           label="Break Down By"
           id={selectId}
           options={getSelectOptions()}
-          value={groupBy}
-          disabled={tableLoading}
+          value={GROUP_CONFIG[groupBy] ? groupBy : 'placeholder'}
+          disabled={disabled}
           onChange={handleGroupChange}
           placeholder="Select Resource"
           placeholderValue="placeholder"
