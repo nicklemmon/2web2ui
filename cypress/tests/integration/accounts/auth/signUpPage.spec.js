@@ -4,7 +4,6 @@ describe('The sign up page', () => {
       method: 'POST',
       url: 'https://www.google.com/recaptcha/**/*',
       fixture: 'recaptcha/200.post.json',
-      fixtureAlias: 'recaptchaPost',
     });
   });
 

@@ -224,24 +224,25 @@ describe('The recipient validation list progress page', () => {
     });
 
     it('it renders a "Validation Error" and an alert with "Validation Limit Exceeded" if the batch status on the list page is "usage_limit_exceeded"', () => {
-      cy.server();
       cy.stubRequest({
         url: '/api/v1/billing',
         fixture: 'billing/200.get.json',
+        requestAlias: 'getBilling',
       });
       cy.stubRequest({
         url: '/api/v1/billing/subscription',
         fixture: 'billing/subscription/200.get.json',
-        fixtureAlias: 'subscriptionPremierGet',
+        requestAlias: 'getSubscription',
       });
-      cy.fixture('recipient-validation/list/200.get.usage-limit-exceeded.json').as('RVFixture');
-      cy.route({
+      cy.stubRequest({
         url: '/api/v1/recipient-validation/job/fake-list',
-        response: '@RVFixture',
-      }).as('getValidation');
+        fixture: 'recipient-validation/list/200.get.usage-limit-exceeded.json',
+        requestAlias: 'getValidation',
+      });
 
       cy.visit('/recipient-validation/list/fake-list');
 
+      cy.wait(['@getBilling', '@getSubscription']);
       cy.wait('@getValidation');
 
       cy.findByText('Validation Error').should('be.visible');

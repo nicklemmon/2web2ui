@@ -1,29 +1,25 @@
 describe('The billing plan page', () => {
   beforeEach(() => {
-    // todo, this user should be joining not logging-in
     cy.stubAuth();
     cy.stubRequest({
       url: '/api/v1/account/countries?filter=billing',
       fixture: 'account/countries/200.get.billing-filter.json',
-      requestAlias: 'getCountries',
+      requestAlias: 'countriesGet',
     });
     cy.stubRequest({
       url: '/api/v1/billing/bundles**',
       fixture: 'billing/bundles/200.get.json',
-      fixtureAlias: 'bundlesGet',
       requestAlias: 'bundlesGet',
     });
-
     cy.stubRequest({
       url: '/api/v1/billing/plans',
       fixture: 'billing/plans/200.get.json',
-      fixtureAlias: 'billingPlansGet',
       requestAlias: 'billingPlansGet',
     });
 
     cy.login({ isStubbed: true });
     cy.visit('/onboarding/plan');
-    cy.wait(['@getCountries', '@bundlesGet', '@billingPlansGet']);
+    cy.wait(['@countriesGet', '@bundlesGet', '@billingPlansGet']);
   });
 
   it('renders with a relevant page title', () => {
