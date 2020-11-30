@@ -156,7 +156,7 @@ export function ReportOptions(props) {
       </Drawer>
 
       <Panel.Section p="0">
-        <Expandable title="Metrics" variant="borderless">
+        <Expandable defaultOpen title="Metrics" variant="borderless">
           <Stack>
             <Inline>
               <ActiveMetrics metrics={processedMetrics} removeMetric={handleRemoveMetric} />
@@ -175,7 +175,7 @@ export function ReportOptions(props) {
       </Panel.Section>
 
       <Panel.Section p="0">
-        <Expandable title="Filters" variant="borderless">
+        <Expandable defaultOpen title="Filters" variant="borderless">
           <Stack>
             {Boolean(reportOptions.filters.length) && (
               <ActiveFilters
@@ -200,7 +200,7 @@ export function ReportOptions(props) {
 
       {isCompareByEnabled && (
         <Panel.Section p="0">
-          <Expandable title="Comparisons" variant="borderless">
+          <Expandable defaultOpen title="Comparisons" variant="borderless">
             <Stack>
               {Boolean(reportOptions.comparisons.length) && (
                 <ActiveComparisons
