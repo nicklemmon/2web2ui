@@ -34,6 +34,9 @@ const OnboardingPicture = styled(Picture.Image)`
 
 export default function DashboardPageV2() {
   const {
+    canViewUsage,
+    canManageSendingDomains,
+    canManageApiKeys,
     getAccount,
     listAlerts,
     getUsage,
@@ -51,9 +54,9 @@ export default function DashboardPageV2() {
   useEffect(() => {
     getAccount();
     listAlerts();
-    getUsage();
-    listSendingDomains();
-    listApiKeys();
+    if (canViewUsage) getUsage();
+    if (canManageSendingDomains) listSendingDomains();
+    if (canManageApiKeys) listApiKeys();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -93,7 +96,7 @@ export default function DashboardPageV2() {
                   </Panel.Section>
                 </Dashboard.Panel>
               )}
-              {onboarding === 'fallback' && (
+              {onboarding === 'analyticsReportPromo' && (
                 <Dashboard.Panel>
                   <Columns>
                     <Column>
@@ -206,11 +209,10 @@ export default function DashboardPageV2() {
                             <Abbreviation title="Application Programming Interface">
                               API&nbsp;
                             </Abbreviation>
-                            <TranslatableText>key in order to start sending via</TranslatableText>
-                            <Abbreviation title="Application Programming Interface">
-                              &nbsp;API&nbsp;
-                            </Abbreviation>
-                            <TranslatableText>or</TranslatableText>
+                            <TranslatableText>
+                              key in order to start sending via API
+                            </TranslatableText>
+                            <TranslatableText>&nbsp;or</TranslatableText>
                             <Abbreviation title="Simple Mail Transfer Protocol">
                               &nbsp;SMTP.
                             </Abbreviation>

@@ -86,7 +86,9 @@ function mapStateToProps(state) {
   return {
     verifySendingLink,
     onboarding,
+    canViewUsage,
     canManageSendingDomains,
+    canManageApiKeys,
     isAnAdmin,
     isDev,
     currentUser: state.currentUser,
