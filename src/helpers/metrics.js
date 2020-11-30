@@ -14,7 +14,6 @@ const {
   chartColors = [],
 } = config;
 const indexedPrecisions = _.keyBy(precisionMap, 'value');
-
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 
 export function getQueryFromOptions({
@@ -50,7 +49,7 @@ export function getQueryFromOptions({
   return options;
 }
 
-// TODO: Replace original once original theme removed.
+// TODO: Replace original once OG theme is removed
 export function getQueryFromOptionsV2({
   from,
   to,
@@ -60,6 +59,13 @@ export function getQueryFromOptionsV2({
   filters = [],
   match = '',
   limit,
+  domains,
+  campaigns,
+  templates,
+  sending_ips,
+  ip_pools,
+  subaccounts,
+  sending_domains,
 }) {
   from = moment(from);
   to = moment(to);
@@ -73,6 +79,13 @@ export function getQueryFromOptionsV2({
     delimiter,
     timezone,
     precision,
+    domains,
+    campaigns,
+    templates,
+    sending_ips,
+    ip_pools,
+    subaccounts,
+    sending_domains,
   };
   const dehydratedFilters = dehydrateFilters(filters);
 
@@ -296,8 +309,17 @@ export function getValidDateRange({
   throw new Error('Invalid date range selected');
 }
 
+/**
+ * Retrieve metrics configuration information based on the passed in key
+ * @param {string} metricKey relevant key based on available metrics
+ */
+export function getMetricFromKey(metricKey) {
+  return METRICS_LIST.find(metric => metric.key === metricKey);
+}
+
 export function _getMetricsFromKeys(keys = [], isHibanaEnabled) {
   const metricsColors = isHibanaEnabled ? HIBANA_METRICS_COLORS : chartColors;
+
   return keys.map((metric, i) => {
     const found = METRICS_LIST.find(M => M.key === metric || M.key === metric.key);
 
