@@ -21,7 +21,7 @@ describe('CancellationPanel', () => {
     expect(subject()).toMatchSnapshot();
   });
 
-  it("renders a Confirmation Modal if the pendo guide doesn't load", () => {
+  it("renders a Confirmation Modal if guide doesn't load", () => {
     const wrapper = subject();
     wrapper.find('Button').simulate('click');
     expect(wrapper.find('ConfirmationModal').prop('open')).toBe(true);

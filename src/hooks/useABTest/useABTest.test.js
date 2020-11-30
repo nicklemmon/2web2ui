@@ -13,7 +13,7 @@ const VariantB = () => <h1>b</h1>;
 const VariantC = () => <h1>c</h1>;
 
 describe('useABTest', () => {
-  const MockComponent = ({ testName, variants, uid, onVariantLoad }) => {
+  const MockComponent = ({ testName, variants, uid, onVariantLoad = () => {} }) => {
     const Variant = useABTest({ testName, variants, uid, onVariantLoad });
     return <Variant />;
   };
@@ -48,21 +48,10 @@ describe('useABTest', () => {
     expect(queryByText(container2, 'b')).toBeInTheDocument();
   });
 
-  it('logs to pendo by default', () => {
-    window.pendo = {};
-    window.pendo.track = jest.fn();
-    hash.mockImplementation(() => '0');
-    subject('Test 1', [VariantA, VariantB, VariantC], '123');
-    expect(window.pendo.track).toBeCalledWith('Test 1 | VariantA');
-  });
-
-  it('calls onVariantLoad instead of pendo track when passed', () => {
-    window.pendo = {};
-    window.pendo.track = jest.fn();
+  it('calls onVariantLoad', () => {
     hash.mockImplementation(() => '0');
     const onVariantLoad = jest.fn();
     subject('Test 1', [VariantA, VariantB, VariantC], '123', onVariantLoad);
-    expect(window.pendo.track).not.toBeCalledWith('Test 1 | VariantA');
     expect(onVariantLoad).toBeCalledWith({
       uid: '123',
       testName: 'Test 1',
