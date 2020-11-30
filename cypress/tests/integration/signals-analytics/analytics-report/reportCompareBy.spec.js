@@ -90,6 +90,12 @@ if (IS_HIBANA_ENABLED) {
       });
       cy.wait(['@getDeliverability', '@getTimeSeries']);
 
+      cy.findByDataId('active-comparison-filters').within(() => {
+        cy.findByText('Subaccount').should('be.visible');
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+      });
+
       openCompareByModal();
 
       cy.findByLabelText(TYPE_LABEL).should('have.value', 'subaccounts');
