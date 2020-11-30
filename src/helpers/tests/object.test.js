@@ -1,4 +1,4 @@
-import { rekey, toCollection, getKeyByValue } from '../object';
+import { rekey, toCollection } from '../object';
 
 describe('object', () => {
   describe('rekey', () => {
@@ -10,13 +10,13 @@ describe('object', () => {
       const obj = {
         a: { label: 'A' },
         b: { label: 'B' },
-        c: { label: 'C' },
+        c: { label: 'C' }
       };
 
       expect(rekey(obj, 'label')).toEqual({
         A: { key: 'a', label: 'A' },
         B: { key: 'b', label: 'B' },
-        C: { key: 'c', label: 'C' },
+        C: { key: 'c', label: 'C' }
       });
     });
   });
@@ -29,29 +29,13 @@ describe('object', () => {
     it('returns collection', () => {
       const obj = {
         one: { label: 'One' },
-        two: { label: 'Two' },
+        two: { label: 'Two' }
       };
 
       expect(toCollection(obj)).toEqual([
         { key: 'one', label: 'One' },
-        { key: 'two', label: 'Two' },
+        { key: 'two', label: 'Two' }
       ]);
-    });
-  });
-
-  describe('getKeyByValue', () => {
-    it('returns the key according to the passed in object and value', () => {
-      const myObject = {
-        hello: 'friend',
-        you: 'are',
-        number: 1,
-        orNumber: 1,
-      };
-
-      expect(getKeyByValue(myObject, 'friend')).toBe('hello');
-      expect(getKeyByValue(myObject, 'are')).toBe('you');
-      expect(getKeyByValue(myObject, 1)).toBe('number');
-      expect(getKeyByValue(myObject, 1)).not.toBe('orNumber');
     });
   });
 });
