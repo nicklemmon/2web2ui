@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { Code, ChatBubble, LightbulbOutline } from '@sparkpost/matchbox-icons';
+import styled from 'styled-components';
+import _ from 'lodash';
+import { Code, ChatBubble, LightbulbOutline, ShowChart } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
 import ConfigurationWebp from '@sparkpost/matchbox-media/images/Configuration.webp';
@@ -19,13 +21,14 @@ import {
 } from 'src/components/matchbox';
 import { Bold, Heading, TranslatableText } from 'src/components/text';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
+import { ChartGroups } from 'src/pages/reportBuilder/components/Charts';
+import { usePinnedReport } from 'src/hooks';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
-import styled from 'styled-components';
 
-const OnboardingPicture = styled(Picture.Image)`
+const OnboardingImg = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
@@ -57,6 +60,8 @@ export default function DashboardPageV2() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { pinnedReport } = usePinnedReport(onboarding);
+
   if (pending) return <Loading />;
 
   return (
@@ -76,155 +81,19 @@ export default function DashboardPageV2() {
         <Layout>
           <Layout.Section>
             <Stack>
-              {onboarding !== 'analyticsReportPromo' && onboarding !== undefined && (
+              {onboarding === 'analytics' && (
                 <Dashboard.Panel>
-                  {onboarding === 'addSending' && (
-                    <Columns>
-                      <Column>
-                        <Panel.Section>
-                          <Panel.Headline>Get Started!</Panel.Headline>
-                          <Stack>
-                            <Text>
-                              <TranslatableText>At least one&nbsp;</TranslatableText>
-                              <Bold>verified sending domain&nbsp;</Bold>
-                              <TranslatableText>
-                                is required in order to start or enable analytics.
-                              </TranslatableText>
-                            </Text>
-                            <div>
-                              <PageLink variant="primary" to="/domains/list/sending" as={Button}>
-                                Add Sending Domain
-                              </PageLink>
-                            </div>
-                          </Stack>
-                        </Panel.Section>
-                      </Column>
-                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                        <Box height="100%">
-                          <Picture role="presentation">
-                            <source srcset={SendingMailWebp} type="image/webp" />
-                            <OnboardingPicture alt="" src={SendingMail} seeThrough />
-                          </Picture>
-                        </Box>
-                      </Box>
-                    </Columns>
-                  )}
-
-                  {onboarding === 'verifySending' && (
-                    <Columns>
-                      <Column>
-                        <Panel.Section>
-                          <Panel.Headline>Get Started!</Panel.Headline>
-                          <Stack>
-                            <Text>
-                              <TranslatableText>
-                                Once a sending domain has been added, it needs to be
-                              </TranslatableText>
-                              <Bold>&nbsp;verified.&nbsp;</Bold>
-                              <TranslatableText>
-                                Follow the instructions on the domain details page to configure your
-                              </TranslatableText>
-                              <TranslatableText>&nbsp;DNS settings.</TranslatableText>
-                            </Text>
-                            <div>
-                              <PageLink variant="primary" to={verifySendingLink} as={Button}>
-                                Verify Sending Domain
-                              </PageLink>
-                            </div>
-                          </Stack>
-                        </Panel.Section>
-                      </Column>
-                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                        <Box height="100%">
-                          <Picture role="presentation">
-                            <source srcset={SendingMailWebp} type="image/webp" />
-                            <OnboardingPicture alt="" src={SendingMail} seeThrough />
-                          </Picture>
-                        </Box>
-                      </Box>
-                    </Columns>
-                  )}
-
-                  {onboarding === 'createApiKey' && (
-                    <Columns>
-                      <Column>
-                        <Panel.Section>
-                          <Panel.Headline>Start Sending!</Panel.Headline>
-                          <Stack>
-                            <Text>
-                              <TranslatableText>Create an&nbsp;</TranslatableText>
-                              <Abbreviation title="Application Programming Interface">
-                                API&nbsp;
-                              </Abbreviation>
-                              <TranslatableText>
-                                key in order to start sending via API
-                              </TranslatableText>
-                              <TranslatableText>&nbsp;or</TranslatableText>
-                              <Abbreviation title="Simple Mail Transfer Protocol">
-                                &nbsp;SMTP.
-                              </Abbreviation>
-                            </Text>
-                            <div>
-                              <PageLink variant="primary" to="/account/api-keys/create" as={Button}>
-                                Create API Key
-                              </PageLink>
-                            </div>
-                          </Stack>
-                        </Panel.Section>
-                      </Column>
-                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                        <Box height="100%">
-                          <Picture role="presentation">
-                            <source srcset={ConfigurationWebp} type="image/webp" />
-                            <OnboardingPicture alt="" src={Configuration} seeThrough />
-                          </Picture>
-                        </Box>
-                      </Box>
-                    </Columns>
-                  )}
-
-                  {onboarding === 'startSending' && (
-                    <Columns>
-                      <Column>
-                        <Panel.Section>
-                          <Panel.Headline>Start Sending!</Panel.Headline>
-                          <Stack>
-                            <Text>
-                              <TranslatableText>
-                                Follow the Getting Started documentation to set up sending via&nbsp;
-                              </TranslatableText>
-                              <Abbreviation title="Application Programming Interface">
-                                API&nbsp;
-                              </Abbreviation>
-                              <TranslatableText>or</TranslatableText>
-                              <Abbreviation title="Simple Mail Transfer Protocol">
-                                &nbsp;SMTP.
-                              </Abbreviation>
-                            </Text>
-                            <div>
-                              <ExternalLink
-                                variant="primary"
-                                size="default"
-                                showIcon={false}
-                                to={LINKS.ONBOARDING_SENDING_EMAIL}
-                                as={Button}
-                              >
-                                Getting Started Documentation
-                              </ExternalLink>
-                            </div>
-                          </Stack>
-                        </Panel.Section>
-                      </Column>
-                      <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                        <Box height="100%">
-                          <Picture role="presentation">
-                            <source srcset={ConfigurationWebp} type="image/webp" />
-                            <OnboardingPicture alt="" src={Configuration} seeThrough />
-                          </Picture>
-                        </Box>
-                      </Box>
-                    </Columns>
-                  )}
+                  <Panel.Header>
+                    <Panel.Headline>{pinnedReport.name}</Panel.Headline>
+                    <Panel.Action>
+                      <PageLink to={pinnedReport.linkToReportBuilder}>
+                        <TranslatableText>Analyze Report</TranslatableText> <ShowChart size={25} />
+                      </PageLink>
+                    </Panel.Action>
+                  </Panel.Header>
+                  <Panel.Section>
+                    <ChartGroups reportOptions={pinnedReport.options} />
+                  </Panel.Section>
                 </Dashboard.Panel>
               )}
               {onboarding === 'analyticsReportPromo' && (
@@ -246,16 +115,163 @@ export default function DashboardPageV2() {
                       </Panel.Section>
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={ConfigurationWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={Configuration} seeThrough />
-                        </Picture>
-                      </Box>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={Configuration} seeThrough />
+                      </Dashboard.OnboardingPicture>
                     </Box>
                   </Columns>
                 </Dashboard.Panel>
               )}
+
+              {onboarding === 'addSending' && (
+                <Dashboard.Panel>
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>Get Started!</Panel.Headline>
+                        <Stack>
+                          <Text>
+                            <TranslatableText>At least one&nbsp;</TranslatableText>
+                            <Bold>verified sending domain&nbsp;</Bold>
+                            <TranslatableText>
+                              is required in order to start or enable analytics.
+                            </TranslatableText>
+                          </Text>
+                          <div>
+                            <PageLink variant="primary" to="/domains/list/sending" as={Button}>
+                              Add Sending Domain
+                            </PageLink>
+                          </div>
+                        </Stack>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={SendingMailWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={SendingMail} seeThrough />
+                      </Dashboard.OnboardingPicture>
+                    </Box>
+                  </Columns>
+                </Dashboard.Panel>
+              )}
+
+              {onboarding === 'verifySending' && (
+                <Dashboard.Panel>
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>Get Started!</Panel.Headline>
+                        <Stack>
+                          <Text>
+                            <TranslatableText>
+                              Once a sending domain has been added, it needs to be
+                            </TranslatableText>
+                            <Bold>&nbsp;verified.&nbsp;</Bold>
+                            <TranslatableText>
+                              Follow the instructions on the domain details page to configure your
+                            </TranslatableText>
+                            <TranslatableText>&nbsp;DNS settings.</TranslatableText>
+                          </Text>
+                          <div>
+                            <PageLink variant="primary" to={verifySendingLink} as={Button}>
+                              Verify Sending Domain
+                            </PageLink>
+                          </div>
+                        </Stack>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={SendingMailWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={SendingMail} seeThrough />
+                      </Dashboard.OnboardingPicture>
+                    </Box>
+                  </Columns>
+                </Dashboard.Panel>
+              )}
+
+              {onboarding === 'createApiKey' && (
+                <Dashboard.Panel>
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>Start Sending!</Panel.Headline>
+                        <Stack>
+                          <Text>
+                            <TranslatableText>Create an&nbsp;</TranslatableText>
+                            <Abbreviation title="Application Programming Interface">
+                              API&nbsp;
+                            </Abbreviation>
+                            <TranslatableText>
+                              key in order to start sending via API
+                            </TranslatableText>
+                            <TranslatableText>&nbsp;or</TranslatableText>
+                            <Abbreviation title="Simple Mail Transfer Protocol">
+                              &nbsp;SMTP.
+                            </Abbreviation>
+                          </Text>
+                          <div>
+                            <PageLink variant="primary" to="/account/api-keys/create" as={Button}>
+                              Create API Key
+                            </PageLink>
+                          </div>
+                        </Stack>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={Configuration} seeThrough />
+                      </Dashboard.OnboardingPicture>
+                    </Box>
+                  </Columns>
+                </Dashboard.Panel>
+              )}
+
+              {onboarding === 'startSending' && (
+                <Dashboard.Panel>
+                  <Columns>
+                    <Column>
+                      <Panel.Section>
+                        <Panel.Headline>Start Sending!</Panel.Headline>
+                        <Stack>
+                          <Text>
+                            <TranslatableText>
+                              Follow the Getting Started documentation to set up sending via&nbsp;
+                            </TranslatableText>
+                            <Abbreviation title="Application Programming Interface">
+                              API&nbsp;
+                            </Abbreviation>
+                            <TranslatableText>or</TranslatableText>
+                            <Abbreviation title="Simple Mail Transfer Protocol">
+                              &nbsp;SMTP.
+                            </Abbreviation>
+                          </Text>
+                          <div>
+                            <ExternalLink
+                              variant="primary"
+                              size="default"
+                              showIcon={false}
+                              to={LINKS.ONBOARDING_SENDING_EMAIL}
+                              as={Button}
+                            >
+                              Getting Started Documentation
+                            </ExternalLink>
+                          </div>
+                        </Stack>
+                      </Panel.Section>
+                    </Column>
+                    <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={Configuration} seeThrough />
+                      </Dashboard.OnboardingPicture>
+                    </Box>
+                  </Columns>
+                </Dashboard.Panel>
+              )}
+
               <div data-id="dashboard-helpful-shortcuts">
                 <Dashboard.Panel>
                   <Panel.Section>

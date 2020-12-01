@@ -18,6 +18,11 @@ const StyledValue = styled.div`
 const Definition = ({ children, dark }) => {
   const id = useUniqueId('definition');
 
+  // eslint-disable-next-line
+  console.warn(
+    'Definition is deprecated for use in features that render in Hibana only. For newer features, use the Matchbox LabelValue component: https://design.sparkpost.com/components/labelvalue/',
+  );
+
   return React.Children.map(children, child => {
     if (child.type === Label) {
       return React.cloneElement(child, { id, dark });

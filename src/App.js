@@ -6,7 +6,6 @@ import VisualWebsiteOptimizer from './components/vwo/VisualWebsiteOptimizer';
 import Segment from './components/segment/Segment';
 import Support from 'src/components/support/Support';
 import GoogleTagManager from 'src/components/googleTagManager/GoogleTagManager';
-import Pendo from 'src/components/pendo/Pendo';
 import Layout from 'src/components/layout/Layout';
 import AppRoutes from 'src/components/appRoutes';
 import GlobalBanner from 'src/context/GlobalBanner';
@@ -22,7 +21,6 @@ const App = ({ RouterComponent = BrowserRouter }) => (
         {config.siftScience && <SiftScience config={config.siftScience} />}
         <BoomerangBanner />
         {config.gtmId && <GoogleTagManager id={config.gtmId} />}
-        <Pendo />
         <VisualWebsiteOptimizer />
         <Segment />
         <AuthenticationGate />

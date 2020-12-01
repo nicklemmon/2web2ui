@@ -42,6 +42,15 @@ jest.mock('src/components/hibana/HibanaStyleHandler', () => undefined); // TODO:
 
 Object.defineProperty(global.navigator, 'userAgent', { value: 'node.js', configurable: true });
 Object.defineProperty(global.navigator, 'language', { value: 'en-US', configurable: true });
+// Mocks window `matchMedia` method used by:
+// https://design.sparkpost.com/components/hooks#usebreakpoint
+Object.defineProperty(global.window, 'matchMedia', {
+  value: () => ({
+    matches: true,
+    addListener: jest.fn,
+    removeListener: jest.fn,
+  }),
+});
 Object.defineProperty(global.window, 'scrollTo', { value: jest.fn(), configurable: true });
 Object.defineProperty(global.window.location, 'assign', { value: jest.fn(), configurable: true });
 

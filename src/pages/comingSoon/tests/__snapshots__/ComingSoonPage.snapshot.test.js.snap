@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<EmptyState
+<EmptyState.LEGACY
   image={[Function]}
   title="We are not quite finished in here."
 >
   <p>
-    We won't bother putting up blinking construction stripes but you get the idea. 
+    We won't bother putting up blinking construction stripes but you get the idea.
     <span
       aria-label="smile"
       role="img"
@@ -14,5 +14,5 @@ exports[`renders correctly 1`] = `
       😃
     </span>
   </p>
-</EmptyState>
+</EmptyState.LEGACY>
 `;

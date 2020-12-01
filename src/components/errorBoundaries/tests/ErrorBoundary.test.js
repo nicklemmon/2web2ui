@@ -45,22 +45,22 @@ describe('Component: ErrorBoundary', () => {
   it('renders custom cta label when passed', () => {
     wrapper.setProps({ ctaLabel: 'To Safety' });
     wrapper.setState({ hasError: true });
-    expect(wrapper.find('EmptyState').prop('primaryAction').content).toEqual('To Safety');
+    expect(wrapper.find(EmptyState.LEGACY).prop('primaryAction').content).toEqual('To Safety');
   });
 
   it('uses custom action when passed', () => {
     const mockFn = jest.fn();
     wrapper.setProps({ ctaLabel: 'Reload Page', onCtaClick: mockFn });
     wrapper.setState({ hasError: true });
-    expect(wrapper.find(EmptyState).prop('primaryAction').content).toEqual('Reload Page');
-    expect(wrapper.find(EmptyState).prop('primaryAction').onClick).toBe(mockFn);
+    expect(wrapper.find(EmptyState.LEGACY).prop('primaryAction').content).toEqual('Reload Page');
+    expect(wrapper.find(EmptyState.LEGACY).prop('primaryAction').onClick).toBe(mockFn);
   });
 
   it('redirects to default landing page if custom action not passed', () => {
     window.location.replace = jest.fn();
     wrapper.setState({ hasError: true });
     wrapper
-      .find(EmptyState)
+      .find(EmptyState.LEGACY)
       .prop('primaryAction')
       .onClick();
     expect(window.location.replace).toHaveBeenCalledWith(DEFAULT_REDIRECT_ROUTE);

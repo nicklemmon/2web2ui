@@ -52,7 +52,6 @@ module.exports = (on, config) => {
     '*google-analytics.com',
     '*googletagmanager.com',
     '*.storage.googleapis.com',
-    '*pendo.io',
     '*siftscience.com',
     '*sparkpost.com',
     '*sparkpost.test',

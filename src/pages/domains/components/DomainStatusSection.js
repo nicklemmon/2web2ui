@@ -13,22 +13,7 @@ import { ToggleBlock, Subaccount } from 'src/components';
 import { EXTERNAL_LINKS } from '../constants';
 import { ConfirmationModal } from 'src/components/modals';
 import _ from 'lodash';
-import { Definition } from 'src/components/text';
-import { Box } from 'src/components/matchbox';
-
-//Remove the usage of this component once matchbox LabelValue is available
-function LabelValue({ label, children }) {
-  return (
-    <Definition>
-      <Definition.Label>
-        <Box>{label}</Box>
-      </Definition.Label>
-      <Definition.Value>
-        <Box>{children}</Box>
-      </Definition.Value>
-    </Definition>
-  );
-}
+import { LabelValue } from 'src/components/matchbox';
 
 export default function DomainStatusSection({ domain, id, isTracking }) {
   const { closeModal, isModalOpen, openModal } = useModal();
@@ -108,13 +93,17 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
             <Panel.Section>
               <Columns space="100">
                 <Column>
-                  <LabelValue label="Domain" orientation="vertical">
-                    {id}
+                  <LabelValue orientation="vertical">
+                    <LabelValue.Label>Domain</LabelValue.Label>
+                    <LabelValue.Value>{id}</LabelValue.Value>
                   </LabelValue>
                 </Column>
                 <Column>
-                  <LabelValue label="Status" orientation="vertical">
-                    <TrackingDomainStatusCell row={domain} />
+                  <LabelValue orientation="vertical">
+                    <LabelValue.Label>Status</LabelValue.Label>
+                    <LabelValue.Value>
+                      <TrackingDomainStatusCell row={domain} />
+                    </LabelValue.Value>
                   </LabelValue>
                 </Column>
               </Columns>
@@ -122,8 +111,11 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
 
             {subaccountId && (
               <Panel.Section>
-                <LabelValue label="Subaccount Assignment" orientation="vertical">
-                  <Subaccount id={subaccountId} name={subaccountName} />
+                <LabelValue orientation="vertical">
+                  <LabelValue.Label>Subaccount Assignment</LabelValue.Label>
+                  <LabelValue.Value>
+                    <Subaccount id={subaccountId} name={subaccountName} />
+                  </LabelValue.Value>
                 </LabelValue>
               </Panel.Section>
             )}
@@ -216,23 +208,30 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
           <Panel.Section>
             <Columns space="100">
               <Column>
-                <LabelValue label="Domain" orientation="vertical">
-                  {domain.dkim?.signing_domain}
+                <LabelValue orientation="vertical">
+                  <LabelValue.Label>Domain</LabelValue.Label>
+                  <LabelValue.Value>{domain.dkim?.signing_domain}</LabelValue.Value>
                 </LabelValue>
               </Column>
               <Column>
-                <LabelValue label="Status" orientation="vertical">
-                  <StatusCell domain={domain} />
+                <LabelValue orientation="vertical">
+                  <LabelValue.Label>Status</LabelValue.Label>
+                  <LabelValue.Value>
+                    <StatusCell domain={domain} />
+                  </LabelValue.Value>
                 </LabelValue>
               </Column>
               {domain.creation_time ? (
                 <Column>
-                  <LabelValue label="Date Added" orientation="vertical">
-                    {new Date(domain.creation_time).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
+                  <LabelValue orientation="vertical">
+                    <LabelValue.Label>Date Added</LabelValue.Label>
+                    <LabelValue.Value>
+                      {new Date(domain.creation_time).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      })}
+                    </LabelValue.Value>
                   </LabelValue>
                 </Column>
               ) : (
@@ -244,8 +243,11 @@ export default function DomainStatusSection({ domain, id, isTracking }) {
             <>
               {subaccountId ? (
                 <Panel.Section>
-                  <LabelValue label="Subaccount Assignment" orientation="vertical">
-                    <Subaccount id={subaccountId} name={subaccountName} />
+                  <LabelValue orientation="vertical">
+                    <LabelValue.Label>Subaccount Assignment</LabelValue.Label>
+                    <LabelValue.Value>
+                      <Subaccount id={subaccountId} name={subaccountName} />
+                    </LabelValue.Value>
                   </LabelValue>
                 </Panel.Section>
               ) : (

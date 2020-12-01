@@ -1,14 +1,8 @@
 import { useMemo, useEffect } from 'react';
 import { hash } from './hash';
 
-const logToPendo = ({ testName, variantName }) => {
-  if (window.pendo) {
-    window.pendo.track(`${testName} | ${variantName}`);
-  }
-};
-
 function useABTest(options = {}) {
-  const { testName, variants = [], onVariantLoad = logToPendo, uid } = options;
+  const { testName, variants = [], onVariantLoad, uid } = options;
 
   if (!testName) {
     throw new Error('useABTest requires a string testName');

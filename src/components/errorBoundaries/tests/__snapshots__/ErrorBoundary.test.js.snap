@@ -7,15 +7,8 @@ exports[`Component: ErrorBoundary renders (children) correctly without error 1`]
 `;
 
 exports[`Component: ErrorBoundary renders correctly with error 1`] = `
-<div
-  style={
-    Object {
-      "margin": "0 auto",
-      "maxWidth": 1080,
-    }
-  }
->
-  <EmptyState
+<styled.div>
+  <EmptyState.LEGACY
     image={[Function]}
     primaryAction={
       Object {
@@ -28,6 +21,6 @@ exports[`Component: ErrorBoundary renders correctly with error 1`] = `
     <p>
       We're having some technical issues. Our engineers have been notified and are working on getting this fixed.
     </p>
-  </EmptyState>
-</div>
+  </EmptyState.LEGACY>
+</styled.div>
 `;

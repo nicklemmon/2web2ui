@@ -25,9 +25,6 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   dismissBanner: () => updateUserUIOptions({ isHibanaBannerVisible: false }),
   setIsHibanaEnabled: bool => {
-    if (window.pendo && window.pendo.track) {
-      window.pendo.track(`Hibana Toggle - ${Boolean(bool) ? 'On' : 'Off'}`);
-    }
     if (bool) {
       segmentTrack(SEGMENT_EVENTS.HIBANA_TOGGLED_ON);
     } else {

@@ -2,7 +2,7 @@ import React from 'react';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import styled from 'styled-components';
 import { ChevronRight } from '@sparkpost/matchbox-icons';
-import { Box, Column, Page, Panel, Stack, Text } from 'src/components/matchbox';
+import { Box, Column, Page, Panel, Picture, Stack, Text } from 'src/components/matchbox';
 import { PageLink } from 'src/components/links';
 import { Heading } from 'src/components/text';
 
@@ -65,13 +65,23 @@ function Shortcut({ children, to }) {
   );
 }
 
+function OnboardingPicture({ children }) {
+  return (
+    <Box height="100%" padding="600">
+      <Picture role="presentation">{children}</Picture>
+    </Box>
+  );
+}
+
 DashboardHeading.displayName = 'Dashboard.Heading';
 DashboardPanel.displayName = 'Dashboard.Panel';
+OnboardingPicture.displayName = 'Dashboard.OnboardingPicture';
 Tip.displayName = 'Dashboard.Tip';
 Shortcut.displayName = 'Dashboard.Shortcut';
 
 Dashboard.Heading = DashboardHeading;
 Dashboard.Panel = DashboardPanel;
+Dashboard.OnboardingPicture = OnboardingPicture;
 Dashboard.Tip = Tip;
 Dashboard.Shortcut = Shortcut;
 
