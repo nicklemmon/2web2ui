@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import _ from 'lodash';
 import { Code, ChatBubble, LightbulbOutline, ShowChart } from '@sparkpost/matchbox-icons';
 import SendingMailWebp from '@sparkpost/matchbox-media/images/Sending-Mail.webp';
 import SendingMail from '@sparkpost/matchbox-media/images/Sending-Mail@medium.jpg';
@@ -19,16 +21,14 @@ import {
 } from 'src/components/matchbox';
 import { Bold, Heading, TranslatableText } from 'src/components/text';
 import { ExternalLink, PageLink, SupportTicketLink } from 'src/components/links';
+import { ChartGroups } from 'src/pages/reportBuilder/components/Charts';
+import { usePinnedReport } from 'src/hooks';
 import useDashboardContext from './hooks/useDashboardContext';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import { LINKS } from 'src/constants';
-import styled from 'styled-components';
-import { ChartGroups } from 'src/pages/reportBuilder/components/Charts';
-import { usePinnedReport } from 'src/hooks';
-import _ from 'lodash';
 
-const OnboardingPicture = styled(Picture.Image)`
+const OnboardingImg = styled(Picture.Image)`
   vertical-align: bottom;
 `;
 
@@ -115,12 +115,10 @@ export default function DashboardPageV2() {
                       </Panel.Section>
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={ConfigurationWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={Configuration} seeThrough />
-                        </Picture>
-                      </Box>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={Configuration} seeThrough />
+                      </Dashboard.OnboardingPicture>
                     </Box>
                   </Columns>
                 </Dashboard.Panel>
@@ -149,12 +147,10 @@ export default function DashboardPageV2() {
                       </Panel.Section>
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={SendingMailWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={SendingMail} seeThrough />
-                        </Picture>
-                      </Box>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={SendingMailWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={SendingMail} seeThrough />
+                      </Dashboard.OnboardingPicture>
                     </Box>
                   </Columns>
                 </Dashboard.Panel>
@@ -186,12 +182,10 @@ export default function DashboardPageV2() {
                       </Panel.Section>
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={SendingMailWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={SendingMail} seeThrough />
-                        </Picture>
-                      </Box>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={SendingMailWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={SendingMail} seeThrough />
+                      </Dashboard.OnboardingPicture>
                     </Box>
                   </Columns>
                 </Dashboard.Panel>
@@ -226,12 +220,10 @@ export default function DashboardPageV2() {
                       </Panel.Section>
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={ConfigurationWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={Configuration} seeThrough />
-                        </Picture>
-                      </Box>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={Configuration} seeThrough />
+                      </Dashboard.OnboardingPicture>
                     </Box>
                   </Columns>
                 </Dashboard.Panel>
@@ -271,12 +263,10 @@ export default function DashboardPageV2() {
                       </Panel.Section>
                     </Column>
                     <Box as={Column} display={['none', 'none', 'block']} width={[0, 0, 0.5]}>
-                      <Box height="100%">
-                        <Picture role="presentation">
-                          <source srcset={ConfigurationWebp} type="image/webp" />
-                          <OnboardingPicture alt="" src={Configuration} seeThrough />
-                        </Picture>
-                      </Box>
+                      <Dashboard.OnboardingPicture>
+                        <source srcset={ConfigurationWebp} type="image/webp" />
+                        <OnboardingImg alt="" src={Configuration} seeThrough />
+                      </Dashboard.OnboardingPicture>
                     </Box>
                   </Columns>
                 </Dashboard.Panel>

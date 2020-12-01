@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableCollection } from 'src/components';
 import { getScheduledReports } from 'src/actions/reports';
-import { Box, Button, Modal, Table, Tag } from 'src/components/matchbox';
+import { Box, Button, LabelValue, Modal, Table, Tag } from 'src/components/matchbox';
 import { Loading } from 'src/components/loading';
 import { PageLink } from 'src/components/links';
-import { Definition } from 'src/components/text';
 
 const FilterBoxWrapper = props => <Box>{props}</Box>;
 
@@ -43,8 +42,10 @@ export function ScheduledReportsModal(props) {
     <Modal open={open} onClose={onClose} showCloseButton maxWidth="1300">
       <Modal.Header>Schedules For Reports</Modal.Header>
       <Modal.Content>
-        <Definition.Label>Report</Definition.Label>
-        <Definition.Value>{report.name}</Definition.Value>
+        <LabelValue>
+          <LabelValue.Label>Report</LabelValue.Label>
+          <LabelValue.Value>{report.name}</LabelValue.Value>
+        </LabelValue>
       </Modal.Content>
       <Modal.Content p="0">
         {getScheduledReportsStatus === 'loading' ? (

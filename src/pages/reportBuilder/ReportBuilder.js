@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { tokens } from '@sparkpost/design-tokens-hibana';
 import { Error } from '@sparkpost/matchbox-icons';
 import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
 import { Empty, Tabs, Loading, Unit, LegendCircle } from 'src/components';
-import { Box, Button, Grid, Inline, Page, Panel, Tooltip } from 'src/components/matchbox';
-import { Definition } from 'src/components/text';
+import {
+  Box,
+  Button,
+  Grid,
+  LabelValue,
+  Inline,
+  Page,
+  Panel,
+  Tooltip,
+} from 'src/components/matchbox';
 import { ReportOptions, ReportTable, SaveReportModal } from './components';
 import Charts from './components/Charts';
 import {
@@ -31,14 +38,14 @@ import { useLocation } from 'react-router-dom';
 
 const MetricDefinition = ({ label, children }) => {
   return (
-    <Definition>
-      <Definition.Label>
-        <Box color={tokens.color_gray_600}>{label}</Box>
-      </Definition.Label>
-      <Definition.Value>
-        <Box color={tokens.color_white}>{children}</Box>
-      </Definition.Value>
-    </Definition>
+    <LabelValue>
+      <LabelValue.Label>
+        <Box color="gray.600">{label}</Box>
+      </LabelValue.Label>
+      <LabelValue.Value>
+        <Box color="white">{children}</Box>
+      </LabelValue.Value>
+    </LabelValue>
   );
 };
 
@@ -209,7 +216,7 @@ export function ReportBuilder({
               <Tabs defaultTabIndex={0} forceRender tabs={tabs}>
                 <Tabs.Item>
                   <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
-                  <Box padding="400" backgroundColor={tokens.color_gray_1000}>
+                  <Box padding="400" backgroundColor="gray.1000">
                     <Grid>
                       <Grid.Column sm={3}>
                         <Box id="date">

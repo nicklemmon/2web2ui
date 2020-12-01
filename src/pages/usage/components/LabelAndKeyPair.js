@@ -1,11 +1,15 @@
 import React from 'react';
-import { Definition } from 'src/components/text';
+import { Box, LabelValue } from 'src/components/matchbox';
 
 export default function LabelAndKeyPair({ label, value }) {
   return (
-    <Definition dark>
-      <Definition.Label>{label}</Definition.Label>
-      <Definition.Value>{value}</Definition.Value>
-    </Definition>
+    <LabelValue dark>
+      <LabelValue.Label>
+        <Box color="gray.600">{label}</Box>
+      </LabelValue.Label>
+      <LabelValue.Value>
+        <Box color="white">{value}</Box>
+      </LabelValue.Value>
+    </LabelValue>
   );
 }

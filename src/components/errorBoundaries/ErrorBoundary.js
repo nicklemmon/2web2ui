@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { EmptyState } from 'src/components/matchbox';
 import { Generic } from 'src/components/images';
 import ErrorTracker from 'src/helpers/errorTracker';
 import { DEFAULT_REDIRECT_ROUTE } from '../../constants';
+
+const ErrorContainer = styled.div`
+  margin: 0 auto;
+  max-width: 1080px;
+`;
 
 export default class ErrorBoundary extends Component {
   state = {
@@ -29,8 +35,8 @@ export default class ErrorBoundary extends Component {
 
     if (this.state.hasError) {
       return (
-        <div style={{ margin: '0 auto', maxWidth: 1080 }}>
-          <EmptyState
+        <ErrorContainer>
+          <EmptyState.LEGACY
             title="Sorry, something went wrong"
             image={Generic}
             primaryAction={primaryAction}
@@ -39,8 +45,8 @@ export default class ErrorBoundary extends Component {
               We're having some technical issues. Our engineers have been notified and are working
               on getting this fixed.
             </p>
-          </EmptyState>
-        </div>
+          </EmptyState.LEGACY>
+        </ErrorContainer>
       );
     }
 

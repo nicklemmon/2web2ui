@@ -6,13 +6,14 @@ import {
   Box,
   Button,
   Inline,
+  LabelValue,
   Layout,
   Panel,
   Radio,
   Select,
   TextField,
 } from 'src/components/matchbox';
-import { Definition, Uppercase } from 'src/components/text';
+import { Uppercase } from 'src/components/text';
 import { getLocalTimezone } from 'src/helpers/date';
 import { ButtonWrapper, RadioButtonGroup } from 'src/components';
 import { ComboBoxTypeaheadWrapper } from 'src/components/reactHookFormWrapper';
@@ -133,16 +134,16 @@ export const ScheduledReportForm = ({ report, handleSubmit: parentHandleSubmit }
             <Panel.Section>
               <Inline space="800">
                 <div>
-                  <Definition>
-                    <Definition.Label>Report</Definition.Label>
-                    <Definition.Value>{report.name}</Definition.Value>
-                  </Definition>
+                  <LabelValue>
+                    <LabelValue.Label>Report</LabelValue.Label>
+                    <LabelValue.Value>{report.name}</LabelValue.Value>
+                  </LabelValue>
                 </div>
                 <div>
-                  <Definition>
-                    <Definition.Label> From Address</Definition.Label>
-                    <Definition.Value>reports@sparkpost.com</Definition.Value>
-                  </Definition>
+                  <LabelValue>
+                    <LabelValue.Label>From Address</LabelValue.Label>
+                    <LabelValue.Value>reports@sparkpost.com</LabelValue.Value>
+                  </LabelValue>
                 </div>
               </Inline>
             </Panel.Section>
