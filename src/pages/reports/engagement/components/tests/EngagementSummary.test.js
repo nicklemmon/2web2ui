@@ -18,7 +18,8 @@ cases(
   },
   {
     'renders loading panel': { loading: true },
-    'returns null': { loading: false },
+    'renders loading panel when filters are not ready': { loading: false, filters: {} },
+    'returns null': { loading: false, filters: { relativeRange: 'hour' } },
     'renders metric summary': {
       clicks: 123,
       filters: { relativeRange: 'hour' },

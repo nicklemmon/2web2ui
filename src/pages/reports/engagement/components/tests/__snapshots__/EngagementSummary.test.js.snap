@@ -7,6 +7,13 @@ exports[`EngagementSummary renders loading panel 1`] = `
 />
 `;
 
+exports[`EngagementSummary renders loading panel when filters are not ready 1`] = `
+<PanelLoading
+  accent={false}
+  minHeight="115px"
+/>
+`;
+
 exports[`EngagementSummary renders metric summary 1`] = `
 <Panel.LEGACY
   className="EngagementSummary"

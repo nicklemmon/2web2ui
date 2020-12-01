@@ -21,7 +21,8 @@ export function EngagementSummary({
 }) {
   const styles = useHibanaOverride(OGStyles, hibanaStyles);
 
-  if (loading) {
+  // hack, on initial load it takes at least one render before filters are loaded
+  if (loading || !filters.relativeRange) {
     return <PanelLoading minHeight="115px" />;
   }
 
