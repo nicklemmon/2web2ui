@@ -18,7 +18,7 @@ export default function CompareByAggregatedMetrics({ date }) {
   const { comparisons } = state;
 
   return (
-    <Box padding="400" backgroundColor="gray.1000">
+    <Box padding="400" backgroundColor="gray.1000" data-id="compare-by-aggregated-metrics">
       <Columns>
         <Column width={1 / 5}>
           <Definition dark>
