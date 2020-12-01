@@ -5,7 +5,7 @@ import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
 } from 'src/helpers/metrics';
-import { Loading, Unit } from 'src/components';
+import { Unit } from 'src/components';
 import { Definition } from 'src/components/text';
 import Divider from 'src/components/divider';
 import { Box, Column, Columns, Inline, Stack } from 'src/components/matchbox';
@@ -70,9 +70,7 @@ function ComparisonRow({ comparison, hasDivider }) {
     refetchOnWindowFocus: false,
   });
 
-  if (status === 'loading') return <Loading />;
-
-  if (status === 'error') return null;
+  if (status === 'loading' || status === 'error') return null;
 
   const aggregatedMetricsObj = data[0] || {};
   const aggregatedMetricsKeys = Object.keys(aggregatedMetricsObj);
