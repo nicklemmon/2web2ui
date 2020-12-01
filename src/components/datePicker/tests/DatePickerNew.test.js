@@ -64,7 +64,7 @@ describe('Component: DatePicker', () => {
     //From will be 12:00 due to recommended day precision rounding
     expect(screen.getByLabelText('Date Picker')).toHaveAttribute(
       'value',
-      'Feb 8th 2019 12:00am – Feb 15th 2019 7:00am',
+      'Feb 8th 2019 7:00am – Feb 15th 2019 7:00am',
     );
   });
 
