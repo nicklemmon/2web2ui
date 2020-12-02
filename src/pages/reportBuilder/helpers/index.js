@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { FILTER_KEY_MAP } from 'src/helpers/metrics';
+import { FILTER_KEY_MAP } from 'src/constants';
 
 /**
  * Returns the relevant object/key pair within the FILTER_KEY_MAP object based on the passed in value

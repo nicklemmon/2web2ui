@@ -7,8 +7,8 @@ import {
   getMetricsFromKeys,
   getPrecision as getRawPrecision,
   getRollupPrecision,
-  FILTER_KEY_MAP,
 } from 'src/helpers/metrics';
+import { FILTER_KEY_MAP } from 'src/constants';
 import { getLocalTimezone } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import config from 'src/config';

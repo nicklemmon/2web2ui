@@ -3,7 +3,7 @@ import qs from 'qs';
 import queryString from 'query-string'; //TODO: Deprecate
 import { getRelativeDates, relativeDateOptions } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
-import { FILTER_KEY_MAP } from './metrics';
+import { FILTER_KEY_MAP } from 'src/constants';
 
 export function dedupeFilters(filters) {
   return _.uniqBy(filters, stringifyTypeaheadfilter);

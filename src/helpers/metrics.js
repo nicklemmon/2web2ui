@@ -2,7 +2,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import { list as METRICS_LIST } from 'src/config/metrics';
 import config from 'src/config';
-import { HIBANA_METRICS_COLORS } from 'src/constants/index';
+import { HIBANA_METRICS_COLORS, FILTER_KEY_MAP } from 'src/constants';
 import { getRelativeDates } from 'src/helpers/date';
 import { dehydrateFilters } from 'src/pages/reportBuilder/helpers';
 import { safeDivide, safeRate } from './math';
@@ -14,15 +14,6 @@ const {
   chartColors = [],
 } = config;
 const indexedPrecisions = _.keyBy(precisionMap, 'value');
-export const FILTER_KEY_MAP = {
-  'Recipient Domain': 'domains',
-  Campaign: 'campaigns',
-  Template: 'templates',
-  'Sending IP': 'sending_ips',
-  'IP Pool': 'ip_pools',
-  Subaccount: 'subaccounts',
-  'Sending Domain': 'sending_domains',
-};
 
 const DELIMITERS = ',;:+~`!@#$%^*()-={}[]"\'<>?./|\\'.split('');
 

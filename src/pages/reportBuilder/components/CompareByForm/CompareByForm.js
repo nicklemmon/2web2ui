@@ -9,7 +9,7 @@ import {
   Select,
   Stack,
 } from 'src/components/matchbox';
-import { FILTER_KEY_MAP } from 'src/helpers/metrics';
+import { FILTER_KEY_MAP } from 'src/constants';
 import { Add, Close } from '@sparkpost/matchbox-icons';
 import { TranslatableText, Comparison } from 'src/components/text';
 import {

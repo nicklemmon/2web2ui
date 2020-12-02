@@ -10,8 +10,8 @@ import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
   transformData,
-  FILTER_KEY_MAP,
 } from 'src/helpers/metrics';
+import { FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { Heading } from 'src/components/text';
 import { Loading } from 'src/components';
