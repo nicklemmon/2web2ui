@@ -36,7 +36,7 @@ export default function ScheduledReportEditPage() {
     getScheduledReportStatus,
     report,
     loading,
-    scheduledReport,
+    scheduledReport = {},
   } = useSelector(state => state.reports);
   const dispatch = useDispatch();
   const { closeModal, openModal, isModalOpen } = useModal();
@@ -90,34 +90,34 @@ export default function ScheduledReportEditPage() {
 
   return (
     <>
-    <Page title="Schedule Report">
-      {/*See comments in component on why a wrapper is needed*/}
-      <ScheduledEditFormWrapper
-        defaultValues={defaultValues}
-        disabled={isPendingUpdate}
-        onSubmit={onSubmit}
-        report={report}
-        users={users}
-      />
-      <Layout>
-        <Layout.Section annotated>
-          <Layout.SectionTitle>Delete Scheduled Report</Layout.SectionTitle>
-        </Layout.Section>
-        <Layout.Section>
-          <Panel accent="red">
-            <Panel.Section>
-              Make sure you absolutely want to delete this item before proceeding. This action
-              cannot be undone.
-            </Panel.Section>
-            <Panel.Section>
-              <Button variant="destructive" onClick={openModal}>
-                Delete Item
-              </Button>
-            </Panel.Section>
-          </Panel>
-        </Layout.Section>
-      </Layout>
-    </Page>
+      <Page title="Schedule Report">
+        {/*See comments in component on why a wrapper is needed*/}
+        <ScheduledEditFormWrapper
+          defaultValues={defaultValues}
+          disabled={isPendingUpdate}
+          onSubmit={onSubmit}
+          report={report}
+          users={users}
+        />
+        <Layout>
+          <Layout.Section annotated>
+            <Layout.SectionTitle>Delete Scheduled Report</Layout.SectionTitle>
+          </Layout.Section>
+          <Layout.Section>
+            <Panel accent="red">
+              <Panel.Section>
+                Make sure you absolutely want to delete this item before proceeding. This action
+                cannot be undone.
+              </Panel.Section>
+              <Panel.Section>
+                <Button variant="destructive" onClick={openModal}>
+                  Delete Item
+                </Button>
+              </Panel.Section>
+            </Panel>
+          </Layout.Section>
+        </Layout>
+      </Page>
       <DeleteModal
         title="Are you sure you want to Delete Scheduled Report"
         open={isModalOpen}

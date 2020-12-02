@@ -1,11 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import ScheduledReportsModal from '../ScheduledReportsModal';
 import TestApp from 'src/__testHelpers__/TestApp';
-import { getScheduledReports } from 'src/actions/reports';
+import { deleteScheduledReport, getScheduledReports } from 'src/actions/reports';
 jest.mock('src/actions/reports');
 const defaultStore = {
   reports: {
+    deleteSchedulePending: false,
     getScheduledReportsStatus: 'idle',
     scheduledReports: [
       {
@@ -18,7 +19,8 @@ const defaultStore = {
 };
 
 describe('Scheduled Reports Modal', () => {
-  getScheduledReports.mockImplementation(() => jest.fn());
+  getScheduledReports.mockImplementation(() => jest.fn(() => Promise.resolve()));
+  deleteScheduledReport.mockImplementation(() => jest.fn(() => Promise.resolve()));
   const mockClose = jest.fn();
   const subject = (props, store = defaultStore) => {
     const defaultProps = {
@@ -70,5 +72,14 @@ describe('Scheduled Reports Modal', () => {
   it('closes the modal if an error has occurred', () => {
     subject({}, { reports: { getScheduledReportsStatus: 'error' } });
     expect(mockClose).toHaveBeenCalled();
+  });
+
+  it('handles delete properly', () => {
+    subject();
+    fireEvent.click(screen.getByRole('button', { name: 'Open Menu' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    expect(screen.queryByText('Are you sure you want to Delete Scheduled Report')).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    expect(deleteScheduledReport).toHaveBeenCalledWith('123', '12345');
   });
 });
