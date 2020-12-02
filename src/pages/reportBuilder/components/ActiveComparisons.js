@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Inline, Text, Tag } from 'src/components/matchbox';
-
+import { Comparison } from 'src/components/text';
 export default function ActiveComparisons({ comparisons, handleFilterRemove }) {
   return (
     <Box data-id="active-comparison-filters" marginTop="100">
@@ -15,7 +15,16 @@ export default function ActiveComparisons({ comparisons, handleFilterRemove }) {
               }
             : undefined;
 
-          return <Tag onRemove={onRemoveFn}>{compareFilter.value}</Tag>;
+          return (
+            <Inline>
+              <Tag onRemove={onRemoveFn}>{compareFilter.value}</Tag>
+              {index < comparisons.length - 1 && (
+                <Box>
+                  <Comparison>AND</Comparison>
+                </Box>
+              )}
+            </Inline>
+          );
         })}
       </Inline>
     </Box>

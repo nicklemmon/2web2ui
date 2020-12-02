@@ -158,9 +158,12 @@ export function ReportOptions(props) {
       <Panel.Section p="0">
         <Expandable defaultOpen title="Metrics" variant="borderless">
           <Stack>
-            <Inline>
-              <ActiveMetrics metrics={processedMetrics} removeMetric={handleRemoveMetric} />
-            </Inline>
+            {Boolean(reportOptions.metrics.length) && (
+              <Inline>
+                <ActiveMetrics metrics={processedMetrics} removeMetric={handleRemoveMetric} />
+              </Inline>
+            )}
+
             <Box>
               <Button
                 {...getActivatorProps()}
