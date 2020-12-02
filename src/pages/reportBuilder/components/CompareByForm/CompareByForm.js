@@ -9,7 +9,7 @@ import {
   Select,
   Stack,
 } from 'src/components/matchbox';
-import { FILTER_KEY_MAP } from 'src/helpers/metrics';
+import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { Add, Close } from '@sparkpost/matchbox-icons';
 import { TranslatableText, Comparison } from 'src/components/text';
 import {
@@ -89,7 +89,7 @@ function CompareByForm({
       return initialState;
     }
 
-    return { filterType: FILTER_KEY_MAP[comparisons[0].type], filters: comparisons };
+    return { filterType: REPORT_BUILDER_FILTER_KEY_MAP[comparisons[0].type], filters: comparisons };
   };
   const [state, dispatch] = useReducer(reducer, getInitialState(comparisons));
   const { filters, filterType, error } = state;

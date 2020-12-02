@@ -243,4 +243,14 @@ export const HIBANA_METRICS_COLORS = [
   tokens.color_gray_1000,
 ];
 
+export const REPORT_BUILDER_FILTER_KEY_MAP = {
+  'Recipient Domain': 'domains',
+  Campaign: 'campaigns',
+  Template: 'templates',
+  'Sending IP': 'sending_ips',
+  'IP Pool': 'ip_pools',
+  Subaccount: 'subaccounts',
+  'Sending Domain': 'sending_domains',
+};
+
 export { ROLES, SUBACCOUNT_ROLES, ROLE_LABELS } from './users';

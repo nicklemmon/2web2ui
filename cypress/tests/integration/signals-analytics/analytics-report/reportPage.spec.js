@@ -244,7 +244,7 @@ if (IS_HIBANA_ENABLED) {
 
       // No tags render when no filters are applied
       getFilterTags().should('not.be.visible');
-      cy.findByRole('heading', { name: 'Filters' }).should('not.be.visible');
+      cy.findByRole('heading', { name: 'Filters' }).should('be.visible');
       cy.findByRole('button', { name: 'Add Filters' }).click();
 
       // Verify the filters form state was reset as well

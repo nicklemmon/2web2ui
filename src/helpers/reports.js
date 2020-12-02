@@ -3,7 +3,7 @@ import qs from 'qs';
 import queryString from 'query-string'; //TODO: Deprecate
 import { getRelativeDates, relativeDateOptions } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
-import { FILTER_KEY_MAP } from './metrics';
+import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 
 export function dedupeFilters(filters) {
   return _.uniqBy(filters, stringifyTypeaheadfilter);
@@ -169,7 +169,7 @@ export function parseSearchNew(search) {
 
 export function mapFiltersToComparators(filters) {
   const mappedFilters = filters.reduce((acc, { value, type, id }) => {
-    const filterKey = FILTER_KEY_MAP[type];
+    const filterKey = REPORT_BUILDER_FILTER_KEY_MAP[type];
     acc[filterKey] = acc[filterKey] || { eq: [] };
     acc[filterKey].eq.push(filterKey === 'subaccounts' ? id : value);
     return acc;

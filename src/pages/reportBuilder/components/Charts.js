@@ -10,8 +10,8 @@ import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
   transformData,
-  FILTER_KEY_MAP,
 } from 'src/helpers/metrics';
+import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { Heading } from 'src/components/text';
 import { Loading } from 'src/components';
@@ -48,7 +48,7 @@ export function ChartGroups(props) {
   return (
     <>
       {comparisons.map((compareFilter, index) => {
-        const filterType = FILTER_KEY_MAP[compareFilter.type];
+        const filterType = REPORT_BUILDER_FILTER_KEY_MAP[compareFilter.type];
 
         // Appends each compared filter as a new filter for individual requests
         const comparedFilters = [

@@ -10,6 +10,7 @@ export default function ActiveFilters({ filters, handleFilterRemove }) {
 
   // TODO: Once `Inline` supports the `data-id` prop, extra <div> elements with `data-id` will no longer needed.
   // Matchbox issue: https://github.com/SparkPost/matchbox/issues/661
+
   return (
     <div data-id="active-filter-tags">
       <Inline space="200">
