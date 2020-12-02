@@ -204,11 +204,11 @@ if (IS_HIBANA_ENABLED) {
   });
 }
 
-const openCompareByModal = () => {
+function openCompareByModal() {
   cy.findByRole('button', { name: 'Add Comparison' }).click();
-};
+}
 
-const fillOutForm = () => {
+function fillOutForm() {
   cy.withinDrawer(() => {
     cy.findByLabelText(TYPE_LABEL).select('Subaccount');
     cy.findAllByLabelText('Subaccount')
@@ -225,9 +225,9 @@ const fillOutForm = () => {
       .should('be.visible')
       .click();
   });
-};
+}
 
-const addOneMoreField = () => {
+function addOneMoreField() {
   cy.findByRole('button', { name: 'Add Subaccount' }).click();
   cy.findAllByLabelText('Subaccount')
     .eq(2)
@@ -235,4 +235,4 @@ const addOneMoreField = () => {
   cy.findByText('Fake Subaccount 2 (ID 102)')
     .should('be.visible')
     .click();
-};
+}
