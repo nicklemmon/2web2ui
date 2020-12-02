@@ -107,6 +107,58 @@ if (IS_HIBANA_ENABLED) {
         .should('have.value', 'Fake Subaccount 3 (ID 103)');
     });
 
+    it('clicking remove on tags properly remove comparison filters', () => {
+      openCompareByModal();
+      fillOutForm();
+      addOneMoreField();
+      cy.withinDrawer(() => {
+        cy.findByRole('button', { name: 'Compare' }).click();
+      });
+
+      cy.findByDataId('active-comparison-filters').within(() => {
+        cy.findByText('Subaccount').should('be.visible');
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+        cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+        cy.findAllByRole('button', { name: 'Remove' })
+          .eq(0)
+          .click();
+        cy.findByText('Fake Subaccount 2 (ID 102)').should('be.visible');
+        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+      });
+
+      //Comparison added to filters after this point if last one
+      cy.findByDataId('report-options').within(() => {
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('not.be.visible');
+        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+      });
+    });
+
+    it('appends to filters if 2nd to last comparison removed', () => {
+      openCompareByModal();
+      fillOutForm();
+      cy.withinDrawer(() => {
+        cy.findByRole('button', { name: 'Compare' }).click();
+      });
+
+      cy.findByDataId('active-comparison-filters').within(() => {
+        cy.findByText('Subaccount').should('be.visible');
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
+        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+        cy.findAllByRole('button', { name: 'Remove' })
+          .eq(0)
+          .click();
+      });
+
+      cy.findByDataId('active-comparison-filters').should('not.exist');
+
+      //Comparison added to filters after this point if last one
+      cy.findByDataId('report-options').within(() => {
+        cy.findByText('Fake Subaccount 1 (ID 101)').should('not.be.visible');
+        cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
+      });
+    });
+
     it('Properly submits the form and renders multiple charts', () => {
       openCompareByModal();
       fillOutForm();
@@ -173,4 +225,14 @@ const fillOutForm = () => {
       .should('be.visible')
       .click();
   });
+};
+
+const addOneMoreField = () => {
+  cy.findByRole('button', { name: 'Add Subaccount' }).click();
+  cy.findAllByLabelText('Subaccount')
+    .eq(2)
+    .type('Fake Subaccount');
+  cy.findByText('Fake Subaccount 2 (ID 102)')
+    .should('be.visible')
+    .click();
 };
