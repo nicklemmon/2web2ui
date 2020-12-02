@@ -8,7 +8,7 @@ import {
   getPrecision as getRawPrecision,
   getRollupPrecision,
 } from 'src/helpers/metrics';
-import { FILTER_KEY_MAP } from 'src/constants';
+import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { getLocalTimezone } from 'src/helpers/date';
 import { stringifyTypeaheadfilter } from 'src/helpers/string';
 import config from 'src/config';
@@ -32,7 +32,9 @@ const reducer = (state, action) => {
         ...state,
         filters: [
           ...state.filters,
-          { AND: { [FILTER_KEY_MAP[action.payload.type]]: { eq: [action.payload] } } },
+          {
+            AND: { [REPORT_BUILDER_FILTER_KEY_MAP[action.payload.type]]: { eq: [action.payload] } },
+          },
         ],
       };
     }
@@ -111,7 +113,9 @@ const reducer = (state, action) => {
         return { ...state, comparisons };
       }
       const lastFilter = comparisons[0];
-      const filters = [{ AND: { [FILTER_KEY_MAP[lastFilter.type]]: { eq: [lastFilter] } } }];
+      const filters = [
+        { AND: { [REPORT_BUILDER_FILTER_KEY_MAP[lastFilter.type]]: { eq: [lastFilter] } } },
+      ];
 
       return { ...state, comparisons: [], filters: [...state.filters, ...filters] };
     }

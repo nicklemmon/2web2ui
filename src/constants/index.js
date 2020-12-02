@@ -243,7 +243,7 @@ export const HIBANA_METRICS_COLORS = [
   tokens.color_gray_1000,
 ];
 
-export const FILTER_KEY_MAP = {
+export const REPORT_BUILDER_FILTER_KEY_MAP = {
   'Recipient Domain': 'domains',
   Campaign: 'campaigns',
   Template: 'templates',

@@ -1,13 +1,15 @@
 import _ from 'lodash';
-import { FILTER_KEY_MAP } from 'src/constants';
+import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 
 /**
- * Returns the relevant object/key pair within the FILTER_KEY_MAP object based on the passed in value
+ * Returns the relevant object/key pair within the REPORT_BUILDER_FILTER_KEY_MAP object based on the passed in value
  *
- * @param {string} value - value within the key/value pair of the FILTER_KEY_MAP object
+ * @param {string} value - value within the key/value pair of the REPORT_BUILDER_FILTER_KEY_MAP object
  */
 export function getFilterType(value) {
-  return Object.keys(FILTER_KEY_MAP).find(key => FILTER_KEY_MAP[key] === value);
+  return Object.keys(REPORT_BUILDER_FILTER_KEY_MAP).find(
+    key => REPORT_BUILDER_FILTER_KEY_MAP[key] === value,
+  );
 }
 
 /**
@@ -110,7 +112,9 @@ export function getGroupingFields(iterableGroupings) {
           ...filter,
 
           // Grabbing the label by the key value
-          label: Object.keys(FILTER_KEY_MAP).find(key => FILTER_KEY_MAP[key] === filter.type),
+          label: Object.keys(REPORT_BUILDER_FILTER_KEY_MAP).find(
+            key => REPORT_BUILDER_FILTER_KEY_MAP[key] === filter.type,
+          ),
 
           // The form comparison field does not render without a type selected,
           hasCompareBySelect: !!filter.type,
@@ -186,7 +190,9 @@ export function getActiveFilterTagGroups(iterableGroupings) {
           values: filter.values,
 
           // Grabbing the label by the key value
-          label: Object.keys(FILTER_KEY_MAP).find(key => FILTER_KEY_MAP[key] === filter.type),
+          label: Object.keys(REPORT_BUILDER_FILTER_KEY_MAP).find(
+            key => REPORT_BUILDER_FILTER_KEY_MAP[key] === filter.type,
+          ),
 
           compareBy: getCompareByText(filter.compareBy),
 
