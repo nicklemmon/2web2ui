@@ -4,8 +4,10 @@ import * as formatting from '../units';
 describe('Formatting helpers', () => {
   describe('isNumber', () => {
     it('knows a number when it sees it', () => expect(formatting.isNumber(2.71)).toBeTruthy());
-    it('knows a number string when it sees it', () => expect(formatting.isNumber('2.71')).toBeTruthy());
-    it('handles Infinity better than humans', () => expect(formatting.isNumber(Infinity)).toBeTruthy());
+    it('knows a number string when it sees it', () =>
+      expect(formatting.isNumber('2.71')).toBeTruthy());
+    it('handles Infinity better than humans', () =>
+      expect(formatting.isNumber(Infinity)).toBeTruthy());
   });
 
   describe('coalesce', () => {
@@ -91,29 +93,64 @@ describe('Formatting helpers', () => {
     });
 
     it('should put a % on the end', () => expect(formatting.formatPercent(27.4)).toMatch(/%$/));
-    it('should round percentages nicely', () => expect(formatting.formatPercent(27.436)).toEqual('27.44%'));
-    it('should be nice about small percentages', () => expect(formatting.formatPercent(0.001)).toMatch(/<\s+0.01%$/));
-    it('should be nice about large percentages', () => expect(formatting.formatPercent(101)).toEqual('> 100%'));
+    it('should round percentages nicely', () =>
+      expect(formatting.formatPercent(27.436)).toEqual('27.44%'));
+    it('should be nice about small percentages', () =>
+      expect(formatting.formatPercent(0.001)).toMatch(/<\s+0.01%$/));
+    it('should be nice about large percentages', () =>
+      expect(formatting.formatPercent(101)).toEqual('> 100%'));
   });
 
-  cases('formatPrecisePercent', ({ formatted, value }) => {
-    expect(formatting.formatPrecisePercent(value)).toEqual(formatted);
-  }, {
-    'with zero': {
-      formatted: '0%',
-      value: 0
+  cases(
+    'formatPrecisePercent',
+    ({ formatted, value }) => {
+      expect(formatting.formatPrecisePercent(value)).toEqual(formatted);
     },
-    'with whole number': {
-      formatted: '12%',
-      value: 12
+    {
+      'with zero': {
+        formatted: '0%',
+        value: 0,
+      },
+      'with whole number': {
+        formatted: '12%',
+        value: 12,
+      },
+      'with short decimal': {
+        formatted: '0.01%',
+        value: 0.01,
+      },
+      'with long decimal': {
+        formatted: '0.0001%',
+        value: 0.00005,
+      },
     },
-    'with short decimal': {
-      formatted: '0.01%',
-      value: 0.01
-    },
-    'with long decimal': {
-      formatted: '0.0001%',
-      value: 0.00005
-    }
+  );
+
+  describe('formatMinuteString', () => {
+    it('should leave non-numbers alone', () => {
+      const iceCream = 'vanilla';
+      expect(formatting.formatMinuteString(iceCream)).toBe(iceCream);
+    });
+    it('should format correctly', () => {
+      expect(formatting.formatMinuteString(9)).toMatch('09');
+      expect(formatting.formatMinuteString('9')).toMatch('09');
+      expect(formatting.formatMinuteString(20)).toMatch('20');
+      expect(formatting.formatMinuteString('20')).toMatch('20');
+    });
+  });
+
+  describe('formatHourString', () => {
+    it('should leave non-numbers alone', () => {
+      const iceCream = 'vanilla';
+      expect(formatting.formatHourString(iceCream)).toBe(iceCream);
+    });
+    it('should format correctly', () => {
+      expect(formatting.formatHourString(9)).toMatch('9');
+      expect(formatting.formatHourString('9')).toMatch('9');
+      expect(formatting.formatHourString(20)).toMatch('8');
+      expect(formatting.formatHourString('20')).toMatch('8');
+      expect(formatting.formatHourString('0')).toMatch('12');
+      expect(formatting.formatHourString('24')).toMatch('12');
+    });
   });
 });

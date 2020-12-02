@@ -9,7 +9,7 @@ export default function ComboboxTypeaheadWrapper(props) {
   };
   useEffect(() => {
     if (value !== componentValue) {
-      setValue(name, componentValue, { shouldValidate: true });
+      setValue(name, componentValue, { shouldValidate: true, shouldDirty: true });
     }
   }, [name, componentValue, value, setValue]);
 

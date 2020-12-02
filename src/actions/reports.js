@@ -72,3 +72,24 @@ export function getScheduledReports(reportId) {
     },
   });
 }
+
+export function getScheduledReport(reportId, scheduleId) {
+  return sparkpostApiRequest({
+    type: 'GET_SCHEDULED_REPORT',
+    meta: {
+      method: 'GET',
+      url: `/v1/reports/${reportId}/schedules/${scheduleId}`,
+    },
+  });
+}
+
+export function updateScheduledReport({ reportId, scheduleId, data }) {
+  return sparkpostApiRequest({
+    type: 'UPDATE_SCHEDULED_REPORT',
+    meta: {
+      method: 'PUT',
+      url: `/v1/reports/${reportId}/schedules/${scheduleId}`,
+      data,
+    },
+  });
+}

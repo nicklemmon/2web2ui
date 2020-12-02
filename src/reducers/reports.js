@@ -60,6 +60,20 @@ export default (state = initialState, { type, payload }) => {
     case 'GET_SCHEDULED_REPORTS_FAIL':
       return { ...state, getScheduledReportsStatus: 'error' };
 
+    case 'GET_SCHEDULED_REPORT_PENDING':
+      return { ...state, scheduledReport: {}, getScheduledReportStatus: 'loading' };
+    case 'GET_SCHEDULED_REPORT_SUCCESS':
+      return { ...state, scheduledReport: payload, getScheduledReportStatus: 'success' };
+    case 'GET_SCHEDULED_REPORT_FAIL':
+      return { ...state, getScheduledReportStatus: 'error' };
+
+    case 'UPDATE_SCHEDULED_REPORT_PENDING':
+      return { ...state, updateScheduledReportStatus: 'loading' };
+    case 'UPDATE_SCHEDULED_REPORT_SUCCESS':
+      return { ...state, updateScheduledReportStatus: 'success' };
+    case 'UPDATE_SCHEDULED_REPORT_FAIL':
+      return { ...state, updateScheduledReportStatus: 'error' };
+
     default:
       return state;
   }

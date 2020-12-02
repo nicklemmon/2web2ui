@@ -1,0 +1,21 @@
+{
+  "results":
+    {
+      "name": "My Scheduled Report",
+      "report_id": "6d183f8b-8ea9-45e2-91de-235c30704bf9",
+      "schedule_id": "854c22f4-ad01-43f9-8ef9-5c5cdba0a6ae",
+      "subject": "This is a subject line",
+      "recipients": ["mockuser"],
+      "schedule": {
+        "hour": "0",
+        "month": "*",
+        "day_of_month": "?",
+        "minute": "0",
+        "day_of_week": "fri"
+      },
+      "created": "2020-11-09T14:04:24.080Z",
+      "modified": "2020-11-09T14:04:26.085Z",
+      "schedule_type": "weekly",
+      "timezone": "America/New_York"
+    }
+}

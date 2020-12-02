@@ -129,3 +129,19 @@ export const formatPrecisePercent = value => {
 };
 
 export const formatCurrency = value => `$${value.toFixed(2)}`;
+
+export const formatMinuteString = value => {
+  const minute = parseInt(value);
+  if (!isNumber(minute) || minute > 60) {
+    return value;
+  }
+  return minute < 10 ? '0' + minute : minute.toString(); //prepends 0 so it's 12:09 vs 12:9
+};
+
+export const formatHourString = value => {
+  const hour = parseInt(value);
+  if (!isNumber(hour)) {
+    return value;
+  }
+  return (hour % 12 || 12).toString(); //0 is falsy so it resolves to 12.
+};

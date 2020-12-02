@@ -130,6 +130,13 @@ const hibanaReportsRoutes = [
     layout: App,
     title: 'Schedule Report',
   },
+  {
+    path: '/signals/schedule/:reportId/:scheduleId',
+    component: reportBuilder.ScheduledReportEditPage,
+    condition: isAccountUiOptionSet('allow_scheduled_reports'),
+    layout: App,
+    title: 'Edit Scheduled Report',
+  },
 ];
 
 const signalsRoutes = [
