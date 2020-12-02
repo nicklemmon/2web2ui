@@ -16,7 +16,7 @@ export default function ActiveComparisons({ comparisons, handleFilterRemove }) {
             : undefined;
 
           return (
-            <Inline>
+            <Inline key={`comparison_${index}`}>
               <Tag onRemove={onRemoveFn}>{compareFilter.value}</Tag>
               {index < comparisons.length - 1 && (
                 <Box>

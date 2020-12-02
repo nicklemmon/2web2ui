@@ -156,7 +156,12 @@ export function ReportOptions(props) {
       </Drawer>
 
       <Panel.Section p="0">
-        <Expandable defaultOpen title="Metrics" variant="borderless">
+        <Expandable
+          id="report-options-metrics-expandable"
+          defaultOpen
+          title="Metrics"
+          variant="borderless"
+        >
           <Stack>
             {Boolean(reportOptions.metrics.length) && (
               <Inline>
@@ -178,7 +183,12 @@ export function ReportOptions(props) {
       </Panel.Section>
 
       <Panel.Section p="0">
-        <Expandable defaultOpen title="Filters" variant="borderless">
+        <Expandable
+          id="report-options-filters-expandable"
+          defaultOpen
+          title="Filters"
+          variant="borderless"
+        >
           <Stack>
             {Boolean(reportOptions.filters.length) && (
               <ActiveFilters
@@ -203,7 +213,12 @@ export function ReportOptions(props) {
 
       {isCompareByEnabled && (
         <Panel.Section p="0">
-          <Expandable defaultOpen title="Comparisons" variant="borderless">
+          <Expandable
+            id="report-options-comparisons-expandable"
+            defaultOpen
+            title="Comparisons"
+            variant="borderless"
+          >
             <Stack>
               {Boolean(reportOptions.comparisons.length) && (
                 <ActiveComparisons
