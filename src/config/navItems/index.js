@@ -75,6 +75,10 @@ const hibanaSignalsAnalytics = {
       to: '/signals/analytics',
     },
     {
+      label: 'Audience',
+      to: '/signals/audience',
+    },
+    {
       label: 'Health Score',
       to: '/signals/health-score',
     },

@@ -1,4 +1,5 @@
 import { reportBuilder, reports, signals } from 'src/pages';
+import Audience from 'src/pages/audience/Audience';
 import App from 'src/components/layout/App';
 import { hasGrants } from 'src/helpers/conditions';
 import { hasAccountOptionEnabled, isAccountUiOptionSet } from 'src/helpers/conditions/account';
@@ -155,6 +156,16 @@ const signalsRoutes = [
     title: 'Message History | Events',
     supportDocSearch: 'event',
     category: 'Events',
+  },
+  {
+    path: '/signals/audience',
+    component: Audience,
+    // condition: hasGrants('signals/manage'),
+    layout: App,
+    title: 'Audience | Signals Analytics',
+    supportDocSearch: 'signals',
+    category: 'Signals Analytics',
+    subcategory: 'Audience',
   },
   {
     path: '/signals/health-score',
