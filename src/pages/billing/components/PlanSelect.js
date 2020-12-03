@@ -88,7 +88,6 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
     [bundles],
   );
   const { isShowing, toggle } = useModal(false);
-  // console.log(`publicBundlesByTier`, publicBundlesByTier);
 
   const planList = _.map(
     PLAN_TIERS,
@@ -97,36 +96,39 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
         <Panel.LEGACY.Section key={`tier_section_${key}`}>
           <div className={styles.tierLabel}>{label}</div>
           <div className={styles.tierPlans}>
-            {publicBundlesByTier[key].map(bundle => {
-              const { messaging, bundle: bundleCode } = bundle;
-              const isCurrentPlan = currentPlan.code === bundleCode;
+            {/* eslint-disable-next-line */}
+            {_.orderBy(publicBundlesByTier[key], [bundle => bundle.bundle.toLowerCase()]).map(
+              bundle => {
+                const { messaging, bundle: bundleCode } = bundle;
+                const isCurrentPlan = currentPlan.code === bundleCode;
 
-              return (
-                <div
-                  className={cx(styles.PlanRow, isCurrentPlan && styles.SelectedPlan)}
-                  key={`plan_row_${bundleCode}`}
-                >
-                  <div>
-                    {isCurrentPlan && <Check className={styles.CheckIcon} />}
-                    <PlanPrice showOverage showIp showCsm plan={messaging} />
-                  </div>
-                  <Stack>
+                return (
+                  <div
+                    className={cx(styles.PlanRow, isCurrentPlan && styles.SelectedPlan)}
+                    key={`plan_row_${bundleCode}`}
+                  >
                     <div>
-                      <Button
-                        className={styles.selectButton}
-                        disabled={isCurrentPlan}
-                        onClick={() => onSelect(bundleCode)}
-                        data-id={`select-plan-${bundleCode}`}
-                        size="small"
-                        variant="monochrome-secondary"
-                      >
-                        Select
-                      </Button>
+                      {isCurrentPlan && <Check className={styles.CheckIcon} />}
+                      <PlanPrice showOverage showIp showCsm plan={messaging} />
                     </div>
-                  </Stack>
-                </div>
-              );
-            })}
+                    <Stack>
+                      <div>
+                        <Button
+                          className={styles.selectButton}
+                          disabled={isCurrentPlan}
+                          onClick={() => onSelect(bundleCode)}
+                          data-id={`select-plan-${bundleCode}`}
+                          size="small"
+                          variant="monochrome-secondary"
+                        >
+                          Select
+                        </Button>
+                      </div>
+                    </Stack>
+                  </div>
+                );
+              },
+            )}
           </div>
         </Panel.LEGACY.Section>
       ),
