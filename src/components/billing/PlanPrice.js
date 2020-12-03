@@ -3,7 +3,7 @@ import { Eco } from '@sparkpost/matchbox-icons';
 import _ from 'lodash';
 import { formatCurrency } from 'src/helpers/units';
 import cx from 'classnames';
-import { Box, Stack, Tag, Text } from 'src/components/matchbox';
+import { Box, Stack, Tag, Text, Tooltip } from 'src/components/matchbox';
 import { Bold, TranslatableText } from 'src/components/text';
 
 const PlanPrice = ({
@@ -69,14 +69,17 @@ const PlanPrice = ({
       </Stack>
 
       {isGreen ? (
-        <div>
+        <Tooltip
+          id={`tooltip-${planCode}`}
+          content="Automatically purchase carbon offsets for every email sent."
+        >
           <Tag color="green">
             <div>
               <Box as={Eco} marginTop="-5px" />
-              <TranslatableText>&nbsp;Carbon offsets</TranslatableText>
+              <TranslatableText>&nbsp;Green</TranslatableText>
             </div>
           </Tag>
-        </div>
+        </Tooltip>
       ) : null}
 
       {displayCsm && <span>Customer Success Manager included.</span>}
