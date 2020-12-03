@@ -1,6 +1,6 @@
 export const data = [
   {
-    date: '2020-12-01',
+    date: new Date('2020-12-01'),
     delivery_1_day: 17370527,
     delivery_7_day: 21470989,
     delivery_30_day: 22985555,
@@ -15,7 +15,7 @@ export const data = [
     open_30_day: 17344925,
   },
   {
-    date: '2020-11-30',
+    date: new Date('2020-11-30'),
     delivery_1_day: 19830610,
     delivery_7_day: 21950987,
     delivery_30_day: 22984220,
@@ -30,7 +30,7 @@ export const data = [
     open_30_day: 17344925,
   },
   {
-    date: '2020-11-29',
+    date: new Date('2020-11-29'),
     delivery_1_day: 17990575,
     delivery_7_day: 21883007,
     delivery_30_day: 22941579,
@@ -45,7 +45,7 @@ export const data = [
     open_30_day: 17320630,
   },
   {
-    date: '2020-11-28',
+    date: new Date('2020-11-28'),
     delivery_1_day: 6482822,
     delivery_7_day: 21805830,
     delivery_30_day: 22856769,
@@ -60,7 +60,7 @@ export const data = [
     open_30_day: 17390662,
   },
   {
-    date: '2020-11-27',
+    date: new Date('2020-11-27'),
     delivery_1_day: 19400868,
     delivery_7_day: 21805830,
     delivery_30_day: 22856769,
@@ -75,7 +75,7 @@ export const data = [
     open_30_day: 17402899,
   },
   {
-    date: '2020-11-26',
+    date: new Date('2020-11-26'),
     delivery_1_day: 16639717,
     delivery_7_day: 21883007,
     delivery_30_day: 22867336,
@@ -90,7 +90,7 @@ export const data = [
     open_30_day: 17270736,
   },
   {
-    date: '2020-11-25',
+    date: new Date('2020-11-25'),
     delivery_1_day: 19483497,
     delivery_7_day: 21863662,
     delivery_30_day: 22825126,
@@ -105,7 +105,7 @@ export const data = [
     open_30_day: 17071056,
   },
   {
-    date: '2020-11-24',
+    date: new Date('2020-11-24'),
     delivery_1_day: 17868615,
     delivery_7_day: 21980250,
     delivery_30_day: 22825126,
@@ -120,7 +120,7 @@ export const data = [
     open_30_day: 17035779,
   },
   {
-    date: '2020-11-23',
+    date: new Date('2020-11-23'),
     delivery_1_day: 19757340,
     delivery_7_day: 21719654,
     delivery_30_day: 22663027,
@@ -135,7 +135,7 @@ export const data = [
     open_30_day: 16887464,
   },
   {
-    date: '2020-11-22',
+    date: new Date('2020-11-22'),
     delivery_1_day: 18144009,
     delivery_7_day: 21873179,
     delivery_30_day: 22663027,
@@ -150,7 +150,7 @@ export const data = [
     open_30_day: 16854377,
   },
   {
-    date: '2020-11-21',
+    date: new Date('2020-11-21'),
     delivery_1_day: 7307436,
     delivery_7_day: 21873179,
     delivery_30_day: 22683814,
@@ -165,7 +165,7 @@ export const data = [
     open_30_day: 16757307,
   },
   {
-    date: '2020-11-20',
+    date: new Date('2020-11-20'),
     delivery_1_day: 20093431,
     delivery_7_day: 21970335,
     delivery_30_day: 22683814,
@@ -180,7 +180,7 @@ export const data = [
     open_30_day: 16689458,
   },
   {
-    date: '2020-11-19',
+    date: new Date('2020-11-19'),
     delivery_1_day: 17096964,
     delivery_7_day: 21989869,
     delivery_30_day: 22746403,
@@ -195,7 +195,7 @@ export const data = [
     open_30_day: 16686642,
   },
   {
-    date: '2020-11-18',
+    date: new Date('2020-11-18'),
     delivery_1_day: 19396588,
     delivery_7_day: 21785272,
     delivery_30_day: 22518581,

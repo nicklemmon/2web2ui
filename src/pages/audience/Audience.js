@@ -1,7 +1,7 @@
 import React from 'react';
 import { data } from './data';
-import { Page, Panel, Box, Stack } from '@sparkpost/matchbox-hibana';
-import { useFilters, Filters } from './Filters';
+import { Page, Panel, Text, Stack } from '@sparkpost/matchbox-hibana';
+import { useFilters, Filters, getFriendlyFilterLabel } from './Filters';
 import Area from './Area';
 
 function Audience() {
@@ -14,6 +14,7 @@ function Audience() {
         <Panel>
           {filters.graphType === 'stacked_area' && (
             <Panel.Section>
+              <Text color="gray.700">{getFriendlyFilterLabel(filters)}</Text>
               <Area data={data} filters={filters} />
             </Panel.Section>
           )}

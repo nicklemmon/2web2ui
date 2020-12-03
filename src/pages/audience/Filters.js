@@ -1,6 +1,19 @@
 import React from 'react';
 import { Panel, Box, Inline, ListBox } from '@sparkpost/matchbox-hibana';
 
+export function getFriendlyFilterLabel(filters) {
+  switch (filters.precision) {
+    case '1':
+      return 'Daily Active Users';
+    case '7':
+      return 'Weekly Active Users';
+    case '30':
+      return 'Monthly Active Users';
+    default:
+      return '';
+  }
+}
+
 export function useFilters() {
   const [precision, setPrecision] = React.useState('7');
   const [dimension, setDimension] = React.useState('engagement');
