@@ -68,7 +68,7 @@ const PlanPrice = ({
       {isGreen ? (
         <Box color="green.700">
           <Box as={Eco} marginTop="-5px" />
-          <TranslatableText>&nbsp;Automatic carbon emission offsets</TranslatableText>
+          <TranslatableText>&nbsp;Net negative carbon emissions</TranslatableText>
         </Box>
       ) : null}
 
