@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, Component } from 'react';
 import { useDispatch } from 'react-redux';
+import Editor from '@monaco-editor/react';
 import { ContentCopy, Eco } from '@sparkpost/matchbox-icons';
 import copy from 'copy-to-clipboard';
 import { LabelledValue, ButtonWrapper } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Box, Button, CodeBlock, Panel, Modal, Stack } from 'src/components/matchbox';
+import { Box, Button, Panel, Modal, Stack } from 'src/components/matchbox';
 import { ButtonLink } from 'src/components/links';
 import { Bold, Heading, TranslatableText } from 'src/components/text';
 import { showAlert } from 'src/actions/globalAlert';
@@ -28,6 +29,7 @@ import totalRVCost from 'src/helpers/recipientValidation';
 import _ from 'lodash';
 import { formatDateTime } from 'src/helpers/date';
 import { Text } from 'src/components/matchbox';
+
 const PAYMENT_MODAL = 'payment';
 const CONTACT_MODAL = 'contact';
 const IP_MODAL = 'ip';
@@ -208,6 +210,8 @@ export default class BillingSummary extends Component {
   }
 }
 
+// monaco.config({ minimap: { enabled: false } });
+
 function CarbonOffsetModal({ onClose }) {
   const codeSnippet = `<table>
   <tr>
@@ -219,16 +223,23 @@ function CarbonOffsetModal({ onClose }) {
     </td>
   </tr>
 </table>`;
+  const [isEditorReady, setIsEditorReady] = useState(false);
+  const valueGetter = useRef();
   const dispatch = useDispatch();
 
+  function handleEditorDidMount(_valueGetter) {
+    setIsEditorReady(true);
+    valueGetter.current = _valueGetter;
+  }
+
   function handleCopy() {
-    copy();
+    copy(valueGetter.current());
     dispatch(showAlert({ type: 'success', message: 'HTML snippet copied' }));
     onClose();
   }
 
   function createMarkup() {
-    return { __html: codeSnippet };
+    return { __html: valueGetter.current() };
   }
 
   return (
@@ -240,15 +251,30 @@ function CarbonOffsetModal({ onClose }) {
             your content and show off your altruistic side:
           </p>
 
-          <CodeBlock dark code={codeSnippet} />
+          <Box
+            as={Editor}
+            paddingTop="25px"
+            backgroundColor="#202124"
+            height="250px"
+            language="html"
+            value={codeSnippet}
+            theme="dark"
+            fontSize="18px"
+            options={{
+              minimap: {
+                enabled: false,
+              },
+            }}
+            editorDidMount={handleEditorDidMount}
+          />
 
           <Box backgroundColor="gray.200" padding="400">
             <Stack space="300">
               <Heading as="h4" looksLike="h5">
-                HTML Preview
+                Default Message Preview
               </Heading>
 
-              <Box dangerouslySetInnerHTML={createMarkup()} />
+              {isEditorReady ? <Box dangerouslySetInnerHTML={createMarkup()} /> : null}
             </Stack>
           </Box>
         </Stack>
@@ -256,9 +282,9 @@ function CarbonOffsetModal({ onClose }) {
 
       <Panel.LEGACY.Section>
         <ButtonWrapper>
-          <Button variant="primary" onClick={handleCopy}>
+          <Button variant="primary" onClick={handleCopy} disabled={!isEditorReady}>
             <Box as="span" mr="200">
-              Copy Snippet
+              Copy HTML
             </Box>
             <Button.Icon as={ContentCopy} />
           </Button>
