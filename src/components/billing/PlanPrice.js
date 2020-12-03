@@ -71,17 +71,19 @@ const PlanPrice = ({
       </Stack>
 
       {isGreen ? (
-        <Tooltip
-          id={`tooltip-${planCode}`}
-          content="Automatically purchase carbon offsets for every email sent."
-        >
-          <Tag color="green">
-            <div>
-              <Box as={Eco} marginTop="-5px" />
-              <TranslatableText>&nbsp;Green</TranslatableText>
-            </div>
-          </Tag>
-        </Tooltip>
+        <div>
+          <Tooltip
+            id={`tooltip-${planCode}`}
+            content="Carbon offsets purchased for every email sent."
+          >
+            <Tag color="green">
+              <div>
+                <Box as={Eco} marginTop="-5px" />
+                <TranslatableText>&nbsp;Green</TranslatableText>
+              </div>
+            </Tag>
+          </Tooltip>
+        </div>
       ) : null}
 
       {displayCsm && <span>Customer Success Manager included.</span>}
