@@ -5,7 +5,7 @@ import { ContentCopy, Eco } from '@sparkpost/matchbox-icons';
 import copy from 'copy-to-clipboard';
 import { LabelledValue, ButtonWrapper } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Box, Button, Panel, Modal, Stack } from 'src/components/matchbox';
+import { Box, Button, Panel, Modal, Stack, Text } from 'src/components/matchbox';
 import { ButtonLink } from 'src/components/links';
 import { Bold, Heading, TranslatableText } from 'src/components/text';
 import { showAlert } from 'src/actions/globalAlert';
@@ -28,7 +28,6 @@ import { formatFullNumber } from 'src/helpers/units';
 import totalRVCost from 'src/helpers/recipientValidation';
 import _ from 'lodash';
 import { formatDateTime } from 'src/helpers/date';
-import { Text } from 'src/components/matchbox';
 
 const PAYMENT_MODAL = 'payment';
 const CONTACT_MODAL = 'contact';
@@ -255,12 +254,12 @@ function CarbonOffsetModal({ onClose }) {
             as={Editor}
             paddingTop="25px"
             backgroundColor="#202124"
-            height="250px"
+            height="300px"
             language="html"
             value={codeSnippet}
             theme="dark"
-            fontSize="18px"
             options={{
+              fontSize: '15px',
               minimap: {
                 enabled: false,
               },
