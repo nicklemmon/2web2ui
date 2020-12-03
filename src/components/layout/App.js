@@ -8,7 +8,6 @@ import withContext from 'src/context/withContext';
 import { useHibana } from 'src/context/HibanaContext';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import ScrollToTop from './components/ScrollToTop';
-import FeedbackButton from './components/FeedbackButton';
 import OGStyles from './Layout.module.scss';
 import hibanaStyles from './LayoutHibana.module.scss';
 
@@ -28,11 +27,7 @@ export const App = ({ children, bannerOpen }) => {
           id="main-content"
           className={cx(styles.content, bannerOpen && styles.bannerOpen)}
         >
-          <div className={styles.container}>
-            {children}
-
-            <FeedbackButton />
-          </div>
+          <div className={styles.container}>{children}</div>
         </main>
 
         {isHibanaEnabled && <Footer />}
