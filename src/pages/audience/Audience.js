@@ -3,6 +3,7 @@ import { data } from './data';
 import { Page, Panel, Text, Stack } from '@sparkpost/matchbox-hibana';
 import { useFilters, Filters, getFriendlyFilterLabel } from './Filters';
 import Area from './Area';
+import BigNumbers from './BigNumbers';
 
 function Audience() {
   const [filters, filterHandlers] = useFilters();
@@ -20,6 +21,7 @@ function Audience() {
           )}
           {filters.graphType === 'bar' && <Panel.Section>bar</Panel.Section>}
         </Panel>
+        <BigNumbers data={data} filters={filters} />
       </Stack>
     </Page>
   );

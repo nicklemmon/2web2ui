@@ -6,7 +6,6 @@ import { getFriendlyFilterLabel } from './Filters';
 function Tooltip(props) {
   const { data } = props;
   const friendlyLabel = getFriendlyFilterLabel(data);
-  console.log(data, friendlyLabel);
 
   return (
     <Box bg="gray.900" p="200" color="white" borderRadius="200" boxShadow="200" width="200px">

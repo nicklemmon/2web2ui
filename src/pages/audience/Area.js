@@ -6,6 +6,7 @@ import { scaleTime, scaleLinear, scaleBand } from '@visx/scale';
 import { max, extent, bisector } from 'd3-array';
 import { curveMonotoneX } from '@visx/curve';
 import { AxisLeft, AxisBottom } from '@visx/axis';
+import { GridRows } from '@visx/grid';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { withParentSize } from '@visx/responsive';
 import { useTooltip, Tooltip } from '@visx/tooltip';
@@ -83,6 +84,12 @@ function Area(props) {
     <>
       <svg width={width} height={height}>
         <Group left={horizontalMargin} top={20}>
+          <GridRows
+            scale={yScaleDelivery}
+            width={width}
+            stroke={tokens.color_gray_400}
+            numTicks={6}
+          />
           <AreaClosed
             data={data}
             x={d => xScale(x(d))}
@@ -90,7 +97,7 @@ function Area(props) {
             yScale={yScaleDelivery}
             strokeWidth={1}
             stroke="#c5ced6"
-            fill="rgba(235, 240, 245, 0.9)" // gray 200
+            fill="rgba(235, 240, 245, 0.6)" // gray 200
             curve={curveMonotoneX}
           />
           <AreaClosed
@@ -100,7 +107,7 @@ function Area(props) {
             yScale={yScaleDelivery}
             strokeWidth={1}
             stroke="#78b6ff"
-            fill="rgba(171, 210, 255, 0.9)" // blue 400
+            fill="rgba(171, 210, 255, 0.6)" // blue 400
             curve={curveMonotoneX}
           />
           {data.map(d => {
