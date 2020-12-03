@@ -31,11 +31,11 @@ function BigNumbers(props) {
   const deliveredStart = data[0][`delivery_${filters.precision}_day`];
 
   const rate = (value / delivered) * 100;
-  const valueDelta = ((value - valueStart) / valueStart) * 100;
+  const valueDelta = ((valueStart - value) / value) * 100;
 
   const rateStart = (valueStart / deliveredStart) * 100;
-  const rateDelta = ((rate - rateStart) / rateStart) * 100;
-  const deliveredDelta = ((delivered - deliveredStart) / deliveredStart) * 100;
+  const rateDelta = ((rateStart - rate) / rate) * 100;
+  const deliveredDelta = ((deliveredStart - delivered) / delivered) * 100;
 
   const ValueIcon = getIcon(valueDelta);
   const RateIcon = getIcon(rateDelta);

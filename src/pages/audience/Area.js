@@ -19,7 +19,7 @@ const StyledBar = styled(Bar)`
 `;
 
 const height = 350;
-const verticalMargin = 90;
+const verticalMargin = 60;
 const horizontalMargin = 60;
 
 function Area(props) {
@@ -175,9 +175,6 @@ function Area(props) {
         <Tooltip
           // set this to random so it correctly updates with parent bounds
           key={Math.random()}
-          // top={tooltipTop}
-          // left={tooltipLeft}
-          // unstyled={true}
           style={{ top: tooltipTop, left: tooltipLeft, pointerEvents: 'none' }}
         >
           <Box position="absolute" top={tooltipTop} left={tooltipLeft}>
