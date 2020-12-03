@@ -65,6 +65,7 @@ export class EnableTfaForm extends React.Component {
         handleInputChange={this.handleInputChange}
         onEnable={this.onEnable}
         onSubmitPhoneNumber={this.onSubmitPhoneNumber}
+        handlePhoneNumberChange={this.handlePhoneNumberChange}
       />
     );
   }
