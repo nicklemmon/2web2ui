@@ -12,7 +12,6 @@ const PlanPrice = ({
   showIp = false,
   showCsm = false,
   selectedPromo = {},
-  isGreen = false,
   className,
 }) => {
   if (_.isEmpty(plan)) {
@@ -41,6 +40,8 @@ const PlanPrice = ({
   }
 
   const hasDiscount = discountAmount !== plan.price;
+  const { plan: planCode } = plan;
+  const isGreen = planCode.includes('green');
 
   return (
     <Stack className={cx('notranslate', className)} space="100">

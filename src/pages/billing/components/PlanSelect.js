@@ -88,6 +88,7 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
     [bundles],
   );
   const { isShowing, toggle } = useModal(false);
+  // console.log(`publicBundlesByTier`, publicBundlesByTier);
 
   const planList = _.map(
     PLAN_TIERS,
@@ -98,8 +99,7 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
           <div className={styles.tierPlans}>
             {publicBundlesByTier[key].map(bundle => {
               const { messaging, bundle: bundleCode } = bundle;
-              const { green } = bundle;
-              const isCurrentPlan = currentPlan.code === bundleCode && currentPlan?.green === green;
+              const isCurrentPlan = currentPlan.code === bundleCode;
 
               return (
                 <div
@@ -108,7 +108,7 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
                 >
                   <div>
                     {isCurrentPlan && <Check className={styles.CheckIcon} />}
-                    <PlanPrice showOverage showIp showCsm plan={messaging} isGreen={green} />
+                    <PlanPrice showOverage showIp showCsm plan={messaging} />
                   </div>
                   <Stack>
                     <div>
