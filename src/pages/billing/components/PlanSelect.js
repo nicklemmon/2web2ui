@@ -95,9 +95,10 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
         <Panel.LEGACY.Section key={`tier_section_${key}`}>
           <Stack space="200">
             <div className={styles.tierLabel}>{label}</div>
+
             <div className={styles.tierPlans}>
               {/* eslint-disable-next-line */}
-              {_.orderBy(publicBundlesByTier[key], [bundle => bundle.bundle.toLowerCase()]).map(
+              {_.orderBy(publicBundlesByTier[key], [bundle => bundle.messaging.volume]).map(
                 (bundle, bundleIndex) => {
                   const { messaging, bundle: bundleCode } = bundle;
                   const isCurrentPlan = currentPlan.code === bundleCode;
