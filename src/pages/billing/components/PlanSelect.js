@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { Check, ViewModule } from '@sparkpost/matchbox-icons';
-import { Button, Panel, Stack } from 'src/components/matchbox';
+import { Box, Button, Panel, Stack } from 'src/components/matchbox';
 import { PLAN_TIERS } from 'src/constants';
 import PlanPrice from 'src/components/billing/PlanPrice';
 import FeatureComparisonModal from './FeatureComparisonModal';
-import cx from 'classnames';
 import _ from 'lodash';
 import useHibanaOverride from 'src/hooks/useHibanaOverride';
 import OGStyles from './PlanSelect.module.scss';
@@ -94,24 +93,39 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
     (label, key) =>
       publicBundlesByTier[key] && (
         <Panel.LEGACY.Section key={`tier_section_${key}`}>
-          <div className={styles.tierLabel}>{label}</div>
-          <div className={styles.tierPlans}>
-            {/* eslint-disable-next-line */}
-            {_.orderBy(publicBundlesByTier[key], [bundle => bundle.bundle.toLowerCase()]).map(
-              bundle => {
-                const { messaging, bundle: bundleCode } = bundle;
-                const isCurrentPlan = currentPlan.code === bundleCode;
+          <Stack space="200">
+            <div className={styles.tierLabel}>{label}</div>
+            <div className={styles.tierPlans}>
+              {/* eslint-disable-next-line */}
+              {_.orderBy(publicBundlesByTier[key], [bundle => bundle.bundle.toLowerCase()]).map(
+                (bundle, bundleIndex) => {
+                  const { messaging, bundle: bundleCode } = bundle;
+                  const isCurrentPlan = currentPlan.code === bundleCode;
+                  const isGreen = bundleCode.includes('green');
+                  const hasTopBorder = !isGreen && bundleIndex > 0;
 
-                return (
-                  <div
-                    className={cx(styles.PlanRow, isCurrentPlan && styles.SelectedPlan)}
-                    key={`plan_row_${bundleCode}`}
-                  >
-                    <div>
-                      {isCurrentPlan && <Check className={styles.CheckIcon} />}
-                      <PlanPrice showOverage showIp showCsm plan={messaging} />
-                    </div>
-                    <Stack>
+                  return (
+                    <Box
+                      key={`plan_row_${bundleCode}`}
+                      padding="400"
+                      display="flex"
+                      justifyContent="space-between"
+                      borderTop={hasTopBorder ? '400' : null}
+                    >
+                      <Box>
+                        {isCurrentPlan && (
+                          <Box as={Check} color="blue.600" className={styles.CheckIcon} />
+                        )}
+
+                        <PlanPrice
+                          showOverage
+                          showIp
+                          showCsm
+                          isCurrentPlan={isCurrentPlan}
+                          plan={messaging}
+                        />
+                      </Box>
+
                       <div>
                         <Button
                           className={styles.selectButton}
@@ -124,12 +138,12 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
                           Select
                         </Button>
                       </div>
-                    </Stack>
-                  </div>
-                );
-              },
-            )}
-          </div>
+                    </Box>
+                  );
+                },
+              )}
+            </div>
+          </Stack>
         </Panel.LEGACY.Section>
       ),
   );

@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { LabelledValue } from 'src/components';
+import { useDispatch } from 'react-redux';
+import { ContentCopy, Eco } from '@sparkpost/matchbox-icons';
+import copy from 'copy-to-clipboard';
+import { LabelledValue, ButtonWrapper } from 'src/components';
 import { PageLink } from 'src/components/links';
-import { Box, Panel, Modal } from 'src/components/matchbox';
+import { Box, Button, CodeBlock, Panel, Modal, Stack } from 'src/components/matchbox';
 import { ButtonLink } from 'src/components/links';
+import { Bold, Heading, TranslatableText } from 'src/components/text';
+import { showAlert } from 'src/actions/globalAlert';
 import { OGOnlyWrapper } from 'src/components/hibana';
 import {
   PremiumBanner,
@@ -27,6 +32,7 @@ const PAYMENT_MODAL = 'payment';
 const CONTACT_MODAL = 'contact';
 const IP_MODAL = 'ip';
 const RV_MODAL = 'recipient_validation';
+const CARBON_OFFSET_MODAL = 'carbon_offset';
 
 export default class BillingSummary extends Component {
   state = {
@@ -39,6 +45,7 @@ export default class BillingSummary extends Component {
 
   handlePaymentModal = () => this.handleModal(PAYMENT_MODAL);
   handleContactModal = () => this.handleModal(CONTACT_MODAL);
+  handleCarbonModal = () => this.handleModal(CARBON_OFFSET_MODAL);
   handleIpModal = () => this.handleModal(IP_MODAL);
   handleRvModal = () => this.handleModal(RV_MODAL, true);
 
@@ -138,6 +145,10 @@ export default class BillingSummary extends Component {
       });
     }
 
+    // TODO: Replace with data from the API
+    const moneySpentOnCarbonOffsets = 22;
+    const poundsOfCarbonOffset = (moneySpentOnCarbonOffsets / 11) * 2204.62;
+
     return (
       <div>
         <PendingPlanBanner account={account} subscription={billingSubscription} />
@@ -150,6 +161,23 @@ export default class BillingSummary extends Component {
           </Panel.LEGACY.Section>
           {this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
+
+          <Panel.LEGACY.Section
+            actions={[
+              { content: 'Get HTML Snippet', color: 'orange', onClick: this.handleCarbonModal },
+            ]}
+          >
+            <LabelledValue
+              label={
+                <>
+                  Carbon Offsets <Box as={Eco} marginTop="-3px" color="green.700" />
+                </>
+              }
+            >
+              <Bold>{poundsOfCarbonOffset}</Bold>
+              <TranslatableText>&nbsp;pounds of carbon offset each month</TranslatableText>
+            </LabelledValue>
+          </Panel.LEGACY.Section>
         </Panel.LEGACY>
 
         {canUpdateBillingInfo && this.renderSummary()}
@@ -163,6 +191,7 @@ export default class BillingSummary extends Component {
           {show === PAYMENT_MODAL && <UpdatePaymentForm onCancel={this.handleModal} />}
           {show === CONTACT_MODAL && <UpdateContactForm onCancel={this.handleModal} />}
           {show === IP_MODAL && <AddIps onClose={this.handleModal} />}
+          {show === CARBON_OFFSET_MODAL && <CarbonOffsetModal onClose={this.handleModal} />}
         </Modal.LEGACY>
         <OGOnlyWrapper as={Modal.LEGACY} open={show === RV_MODAL} onClose={this.handleModal}>
           <Box
@@ -177,4 +206,68 @@ export default class BillingSummary extends Component {
       </div>
     );
   }
+}
+
+function CarbonOffsetModal({ onClose }) {
+  const codeSnippet = `<table>
+  <tr>
+    <td style="width:16px">
+      <img src="https://nicklemmon.com/leaf.png" alt="" role="presentation" height="auto" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;margin-top:-7px" />
+    </td>
+    <td align="left" style="font-size:0px;word-break:break-word;">
+      <span style="font-family:sans-serif;font-size:15px;line-height:1;text-align:left;color:#55555B;">Carbon emissions from this email were automatically offset. Learn more at <a href="https://environment.sparkpost.com" title="Opens in a new tab" target="_blank">SparkPost.com</a></span>
+    </td>
+  </tr>
+</table>`;
+  const dispatch = useDispatch();
+
+  function handleCopy() {
+    copy();
+    dispatch(showAlert({ type: 'success', message: 'HTML snippet copied' }));
+    onClose();
+  }
+
+  function createMarkup() {
+    return { __html: codeSnippet };
+  }
+
+  return (
+    <Panel.LEGACY title="Carbon Offset HTML Snippet">
+      <Panel.LEGACY.Section>
+        <Stack>
+          <p>
+            Let your customers know you are doing good in the world - incorporate this snippet in to
+            your content and show off your altruistic side:
+          </p>
+
+          <CodeBlock dark code={codeSnippet} />
+
+          <Box backgroundColor="gray.200" padding="400">
+            <Stack space="300">
+              <Heading as="h4" looksLike="h5">
+                HTML Preview
+              </Heading>
+
+              <Box dangerouslySetInnerHTML={createMarkup()} />
+            </Stack>
+          </Box>
+        </Stack>
+      </Panel.LEGACY.Section>
+
+      <Panel.LEGACY.Section>
+        <ButtonWrapper>
+          <Button variant="primary" onClick={handleCopy}>
+            <Box as="span" mr="200">
+              Copy Snippet
+            </Box>
+            <Button.Icon as={ContentCopy} />
+          </Button>
+
+          <Button variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+        </ButtonWrapper>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
+  );
 }

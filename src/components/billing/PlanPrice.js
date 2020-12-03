@@ -12,6 +12,7 @@ const PlanPrice = ({
   showIp = false,
   showCsm = false,
   selectedPromo = {},
+  isCurrentPlan,
   className,
 }) => {
   if (_.isEmpty(plan)) {
@@ -44,12 +45,13 @@ const PlanPrice = ({
   const isGreen = planCode.includes('green');
 
   return (
-    <Stack className={cx('notranslate', className)} space="400">
+    <Stack className={cx('notranslate', className)} space="200">
       <Stack space="100">
-        <Box>
-          <Text as="span" fontWeight="400">
-            {plan.volume.toLocaleString()}
-          </Text>
+        <Box
+          fontWeight={isCurrentPlan ? 'semibold' : 'normal'}
+          color={isCurrentPlan ? 'blue.700' : 'gray.900'}
+        >
+          <Text as="span">{plan.volume.toLocaleString()}</Text>
           <span> emails/month </span>
           {plan.price > 0 ? (
             <span>

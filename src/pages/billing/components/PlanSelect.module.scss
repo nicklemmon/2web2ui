@@ -10,13 +10,6 @@
   }
 }
 
-.tierPlans {
-  & > *:not(:last-child) {
-    border-bottom: 1px solid color(gray, 8);
-  }
-  margin: 0;
-}
-
 .tierLabel {
   font-weight: 500;
 }
