@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Check, ViewModule } from '@sparkpost/matchbox-icons';
-import { Button, Panel } from 'src/components/matchbox';
+import { Button, Panel, Stack } from 'src/components/matchbox';
 import { PLAN_TIERS } from 'src/constants';
 import PlanPrice from 'src/components/billing/PlanPrice';
 import FeatureComparisonModal from './FeatureComparisonModal';
@@ -25,12 +25,12 @@ export const useModal = () => {
 
 export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }) {
   const styles = useHibanaOverride(OGStyles, HibanaStyles);
-
   const { messaging: plan, tier } = bundle;
   const { price } = plan;
-
   const { isShowing, toggle } = useModal(false);
   const { selectedPromo } = promoCodeObj;
+  const planTier = PLAN_TIERS[tier];
+
   return (
     <Panel.LEGACY
       title="Your New Plan"
@@ -49,7 +49,7 @@ export function SelectedPlan({ bundle, onChange, promoCodeObj, handlePromoCode }
       <FeatureComparisonModal open={isShowing} handleClose={toggle} />
       <Panel.LEGACY.Section>
         <div className={styles.SelectedPlan}>
-          <div className={styles.tierLabel}>{PLAN_TIERS[tier]}</div>
+          <div className={styles.tierLabel}>{planTier}</div>
           <div className={styles.PlanRow}>
             <div>
               <PlanPrice showOverage showIp showCsm plan={plan} selectedPromo={selectedPromo} />
@@ -88,6 +88,7 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
     [bundles],
   );
   const { isShowing, toggle } = useModal(false);
+
   const planList = _.map(
     PLAN_TIERS,
     (label, key) =>
@@ -97,7 +98,9 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
           <div className={styles.tierPlans}>
             {publicBundlesByTier[key].map(bundle => {
               const { messaging, bundle: bundleCode } = bundle;
-              const isCurrentPlan = currentPlan.code === bundleCode;
+              const { green } = bundle;
+              const isCurrentPlan = currentPlan.code === bundleCode && currentPlan?.green === green;
+
               return (
                 <div
                   className={cx(styles.PlanRow, isCurrentPlan && styles.SelectedPlan)}
@@ -105,20 +108,22 @@ export default function PlanSelectSection({ bundles, currentPlan, onSelect }) {
                 >
                   <div>
                     {isCurrentPlan && <Check className={styles.CheckIcon} />}
-                    <PlanPrice showOverage showIp showCsm plan={messaging} />
+                    <PlanPrice showOverage showIp showCsm plan={messaging} isGreen={green} />
                   </div>
-                  <div>
-                    <Button
-                      className={styles.selectButton}
-                      disabled={isCurrentPlan}
-                      onClick={() => onSelect(bundleCode)}
-                      data-id={`select-plan-${bundleCode}`}
-                      size="small"
-                      variant="monochrome-secondary"
-                    >
-                      Select
-                    </Button>
-                  </div>
+                  <Stack>
+                    <div>
+                      <Button
+                        className={styles.selectButton}
+                        disabled={isCurrentPlan}
+                        onClick={() => onSelect(bundleCode)}
+                        data-id={`select-plan-${bundleCode}`}
+                        size="small"
+                        variant="monochrome-secondary"
+                      >
+                        Select
+                      </Button>
+                    </div>
+                  </Stack>
                 </div>
               );
             })}

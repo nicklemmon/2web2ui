@@ -188,8 +188,10 @@ export const ChangePlanForm = ({
                   clearPromoCode: clearPromoCode,
                 }}
               />
+
               <FeatureChangeContextProvider selectedBundle={selectedBundle}>
                 <FeatureChangeSection />
+
                 {!isDowngradeToFree && (
                   <CardSection
                     account={account}

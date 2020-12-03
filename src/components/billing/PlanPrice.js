@@ -1,9 +1,10 @@
 import React from 'react';
+import { Eco } from '@sparkpost/matchbox-icons';
 import _ from 'lodash';
 import { formatCurrency } from 'src/helpers/units';
 import cx from 'classnames';
 import { Box, Stack, Text } from 'src/components/matchbox';
-import { Bold } from 'src/components/text';
+import { Bold, TranslatableText } from 'src/components/text';
 
 const PlanPrice = ({
   plan,
@@ -11,6 +12,7 @@ const PlanPrice = ({
   showIp = false,
   showCsm = false,
   selectedPromo = {},
+  isGreen = false,
   className,
 }) => {
   if (_.isEmpty(plan)) {
@@ -62,6 +64,13 @@ const PlanPrice = ({
         {showOverage && overage}
         {showIp && ip}
       </Text>
+
+      {isGreen ? (
+        <Box color="green.700">
+          <Box as={Eco} marginTop="-5px" />
+          <TranslatableText>&nbsp;Automatic carbon emission offsets</TranslatableText>
+        </Box>
+      ) : null}
 
       {displayCsm && <span>Customer Success Manager included.</span>}
     </Stack>
