@@ -3,7 +3,7 @@ import { Eco } from '@sparkpost/matchbox-icons';
 import _ from 'lodash';
 import { formatCurrency } from 'src/helpers/units';
 import cx from 'classnames';
-import { Box, Stack, Text } from 'src/components/matchbox';
+import { Box, Stack, Tag, Text } from 'src/components/matchbox';
 import { Bold, TranslatableText } from 'src/components/text';
 
 const PlanPrice = ({
@@ -44,33 +44,39 @@ const PlanPrice = ({
   const isGreen = planCode.includes('green');
 
   return (
-    <Stack className={cx('notranslate', className)} space="100">
-      <Box>
-        <Text as="span" fontWeight="400">
-          {plan.volume.toLocaleString()}
-        </Text>
-        <span> emails/month </span>
-        {plan.price > 0 ? (
-          <span>
-            {' at '}
-            {hasDiscount && <s>${plan.price}</s>}
-            <Bold>{hasDiscount ? formatCurrency(discountAmount) : `$${plan.price}`}</Bold>/mo
-          </span>
-        ) : (
-          <span> FREE </span>
-        )}
-      </Box>
+    <Stack className={cx('notranslate', className)} space="400">
+      <Stack space="100">
+        <Box>
+          <Text as="span" fontWeight="400">
+            {plan.volume.toLocaleString()}
+          </Text>
+          <span> emails/month </span>
+          {plan.price > 0 ? (
+            <span>
+              {' at '}
+              {hasDiscount && <s>${plan.price}</s>}
+              <Bold>{hasDiscount ? formatCurrency(discountAmount) : `$${plan.price}`}</Bold>/mo
+            </span>
+          ) : (
+            <span> FREE </span>
+          )}
+        </Box>
 
-      <Text color="gray.700">
-        {showOverage && overage}
-        {showIp && ip}
-      </Text>
+        <Text color="gray.700">
+          {showOverage && overage}
+          {showIp && ip}
+        </Text>
+      </Stack>
 
       {isGreen ? (
-        <Box color="green.700">
-          <Box as={Eco} marginTop="-5px" />
-          <TranslatableText>&nbsp;Net negative carbon emissions</TranslatableText>
-        </Box>
+        <div>
+          <Tag color="green">
+            <div>
+              <Box as={Eco} marginTop="-5px" />
+              <TranslatableText>&nbsp;Carbon offsets</TranslatableText>
+            </div>
+          </Tag>
+        </div>
       ) : null}
 
       {displayCsm && <span>Customer Success Manager included.</span>}
