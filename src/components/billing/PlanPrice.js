@@ -2,10 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import { formatCurrency } from 'src/helpers/units';
 import cx from 'classnames';
-import { Text } from 'src/components/matchbox';
-import useHibanaOverride from 'src/hooks/useHibanaOverride';
-import OGStyles from './PlanPrice.module.scss';
-import HibanaStyles from './PlanPriceHibana.module.scss';
+import { Box, Stack, Text } from 'src/components/matchbox';
+import { Bold } from 'src/components/text';
 
 const PlanPrice = ({
   plan,
@@ -15,7 +13,6 @@ const PlanPrice = ({
   selectedPromo = {},
   className,
 }) => {
-  const styles = useHibanaOverride(OGStyles, HibanaStyles);
   if (_.isEmpty(plan)) {
     return null;
   }
@@ -44,32 +41,30 @@ const PlanPrice = ({
   const hasDiscount = discountAmount !== plan.price;
 
   return (
-    <span className={cx('notranslate', className)}>
-      <span className={styles.MainLabel}>
-        <strong>
-          <Text as="span" fontWeight="400">
-            {plan.volume.toLocaleString()}
-          </Text>
-        </strong>
+    <Stack className={cx('notranslate', className)} space="100">
+      <Box>
+        <Text as="span" fontWeight="400">
+          {plan.volume.toLocaleString()}
+        </Text>
         <span> emails/month </span>
         {plan.price > 0 ? (
           <span>
             {' at '}
-            {hasDiscount && <s className={styles.DiscountedLabel}>${plan.price}</s>}
-            <strong>{hasDiscount ? formatCurrency(discountAmount) : `$${plan.price}`}</strong>/mo
+            {hasDiscount && <s>${plan.price}</s>}
+            <Bold>{hasDiscount ? formatCurrency(discountAmount) : `$${plan.price}`}</Bold>/mo
           </span>
         ) : (
           <span> FREE </span>
         )}
-      </span>
-      <span className={styles.SupportLabel}>
+      </Box>
+
+      <Text color="gray.700">
         {showOverage && overage}
         {showIp && ip}
-      </span>
-      {displayCsm && (
-        <span className={styles.SupportLabel}>Customer Success Manager included.</span>
-      )}
-    </span>
+      </Text>
+
+      {displayCsm && <span>Customer Success Manager included.</span>}
+    </Stack>
   );
 };
 
