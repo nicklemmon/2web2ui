@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import ButtonWrapper from 'src/components/buttonWrapper';
 import { Button, Grid, Panel, Stack, TextField } from 'src/components/matchbox';
 import { Loading } from 'src/components/loading/Loading';
-import { getTfaSecret, toggleTfa } from 'src/actions/tfa';
+import { getTfaSecret, toggleTfa, setPhoneNumber } from 'src/actions/tfa';
 import { showAlert } from 'src/actions/globalAlert';
 import EnableTfaFormPropTypes from './EnableTfaForm.propTypes';
 import { usernameSelector } from 'src/selectors/currentUser';
@@ -22,6 +22,7 @@ const QRIcon = styled.div`
 
 export class EnableTfaForm extends React.Component {
   state = {
+    phoneNumber: '',
     code: '',
   };
 
@@ -42,9 +43,18 @@ export class EnableTfaForm extends React.Component {
     this.setState({ code: target.value });
   };
 
+  handlePhoneNumberChange = ({ target }) => {
+    this.setState({ phoneNumber: target.value });
+  };
+
   onEnable = () => {
     const { toggleTfa } = this.props;
     return toggleTfa({ enabled: true, code: this.state.code });
+  };
+
+  onSubmitPhoneNumber = () => {
+    const { setPhoneNumber } = this.props;
+    return setPhoneNumber({ phoneNumber: this.state.phoneNumber });
   };
 
   renderForm() {
@@ -54,6 +64,7 @@ export class EnableTfaForm extends React.Component {
         code={this.state.code}
         handleInputChange={this.handleInputChange}
         onEnable={this.onEnable}
+        onSubmitPhoneNumber={this.onSubmitPhoneNumber}
       />
     );
   }
@@ -66,9 +77,14 @@ export class EnableTfaForm extends React.Component {
 export const RenderedForm = props => {
   const {
     code,
+    phoneNumber,
     handleInputChange,
+    handlePhoneNumberChange,
     onClose,
     onEnable,
+    onSubmitPhoneNumber,
+    updatePhoneNumberPending,
+    updatePhoneNumberError,
     secret,
     togglePending,
     toggleError,
@@ -117,10 +133,42 @@ export const RenderedForm = props => {
           <Grid>
             <Grid.Column xs={12} md={7}>
               <Stack>
-                <h6>Step 2: Enter a 2FA code</h6>
+                <h6>Step 2: Enter a phone number (Optional)</h6>
+                <p>Enter a phone number if you choose to recieve 2FA codes via SMS.</p>
+                <TextField
+                  id="tfa-setup-phone-number"
+                  required={true}
+                  data-lpignore={true}
+                  label="Phone number"
+                  error={
+                    updatePhoneNumberError
+                      ? 'Problem adding you phone number, please try again'
+                      : ''
+                  }
+                  placeholder="Enter your phone number (optional)"
+                  onChange={handlePhoneNumberChange}
+                  value={phoneNumber}
+                />
+                <ButtonWrapper>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    disabled={updatePhoneNumberPending}
+                    onClick={onSubmitPhoneNumber}
+                  >
+                    {updatePhoneNumberPending ? 'Updating' : 'Add Phone Number'}
+                  </Button>
+                </ButtonWrapper>
+              </Stack>
+            </Grid.Column>
+          </Grid>
+          <Grid>
+            <Grid.Column xs={12} md={7}>
+              <Stack>
+                <h6>Step 3: Enter a 2FA code</h6>
                 <p>
-                  Generate a code from your newly-activated 2FA app to confirm that you're all set
-                  up.
+                  Generate a code from your newly-activated 2FA app (or enter one we sent to your
+                  phone number) to confirm that you're all set up.
                 </p>
                 <TextField
                   id="tfa-setup-passcode"
@@ -164,6 +212,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getTfaSecret,
+  setPhoneNumber,
   toggleTfa,
   showAlert,
 })(EnableTfaForm);

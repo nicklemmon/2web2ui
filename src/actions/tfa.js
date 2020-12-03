@@ -9,56 +9,62 @@ export function getTfaStatusBeforeLoggedIn({ username, token }) {
     method: 'GET',
     url: `/v1/users/${username}/two-factor`,
     headers: {
-      Authorization: token
-    }
+      Authorization: token,
+    },
   });
 }
 
 export function getTfaStatus() {
   return (dispatch, getState) => {
     const { currentUser } = getState();
-    return dispatch(sparkpostApiRequest({
-      type: 'GET_TFA_STATUS',
-      meta: {
-        method: 'GET',
-        url: `/v1/users/${currentUser.username}/two-factor`
-      }
-    }));
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'GET_TFA_STATUS',
+        meta: {
+          method: 'GET',
+          url: `/v1/users/${currentUser.username}/two-factor`,
+        },
+      }),
+    );
   };
 }
 
 export function getTfaBackupStatus() {
   return (dispatch, getState) => {
     const { currentUser } = getState();
-    return dispatch(sparkpostApiRequest({
-      type: 'GET_TFA_BACKUP_STATUS',
-      meta: {
-        method: 'GET',
-        url: `/v1/users/${currentUser.username}/two-factor/backup`
-      }
-    }));
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'GET_TFA_BACKUP_STATUS',
+        meta: {
+          method: 'GET',
+          url: `/v1/users/${currentUser.username}/two-factor/backup`,
+        },
+      }),
+    );
   };
 }
 
 export function generateBackupCodes(password) {
   return (dispatch, getState) => {
     const { currentUser } = getState();
-    return dispatch(sparkpostApiRequest({
-      type: 'TFA_GENERATE_BACKUP_CODES',
-      meta: {
-        method: 'POST',
-        url: `/v1/users/${currentUser.username}/two-factor/backup`,
-        data: {
-          password
-        }
-      }
-    }));
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'TFA_GENERATE_BACKUP_CODES',
+        meta: {
+          method: 'POST',
+          url: `/v1/users/${currentUser.username}/two-factor/backup`,
+          data: {
+            password,
+          },
+        },
+      }),
+    );
   };
 }
 
 export function clearBackupCodes() {
   return {
-    type: 'TFA_CLEAR_BACKUP_CODES'
+    type: 'TFA_CLEAR_BACKUP_CODES',
   };
 }
 
@@ -67,19 +73,21 @@ export function getTfaSecret() {
     const state = getState();
     const username = usernameSelector(state);
     const authToken = authTokenSelector(state);
-    return dispatch(sparkpostApiRequest({
-      type: 'GET_TFA_SECRET',
-      meta: {
-        method: 'PUT',
-        url: `/v1/users/${username}/two-factor`,
-        headers: {
-          Authorization: authToken
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'GET_TFA_SECRET',
+        meta: {
+          method: 'PUT',
+          url: `/v1/users/${username}/two-factor`,
+          headers: {
+            Authorization: authToken,
+          },
+          data: {
+            enabled: true,
+          },
         },
-        data: {
-          enabled: true
-        }
-      }
-    }));
+      }),
+    );
   };
 }
 
@@ -96,59 +104,96 @@ export function toggleTfa(data) {
     const state = getState();
     const username = usernameSelector(state);
     const authToken = authTokenSelector(state);
-    return dispatch(sparkpostApiRequest({
-      type: 'TFA_TOGGLE',
-      meta: {
-        method: 'PUT',
-        url: `/v1/users/${username}/two-factor`,
-        headers: {
-          Authorization: authToken
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'TFA_TOGGLE',
+        meta: {
+          method: 'PUT',
+          url: `/v1/users/${username}/two-factor`,
+          headers: {
+            Authorization: authToken,
+          },
+          showErrorAlert: false,
+          data,
         },
-        showErrorAlert: false,
-        data
-      }
-    })).catch(() => {
+      }),
+    ).catch(() => {
+      // swallow error, handled in reducer
+    });
+  };
+}
+
+/**
+ * updates tfa phone number
+ *
+ * @param {*} data - request data
+ * @param {String} data.phoneNumber - the phone number
+ */
+export function setPhoneNumber(data) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const username = usernameSelector(state);
+    const authToken = authTokenSelector(state);
+    return dispatch(
+      sparkpostApiRequest({
+        type: 'UPDATE_TFA_PHONE_NUMBER',
+        meta: {
+          method: 'PUT',
+          url: `/v1/users/${username}`,
+          headers: {
+            Authorization: authToken,
+          },
+          showErrorAlert: false,
+          data: {
+            tfa_phone_number: data.phoneNumber,
+          },
+        },
+      }),
+    ).catch(() => {
       // swallow error, handled in reducer
     });
   };
 }
 
 export function verifyAndLogin({ authData, code }) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({ type: 'TFA_VERIFICATION_PENDING' });
 
     return sparkpostRequest({
       method: 'POST',
       url: `/v1/users/${authData.username}/two-factor`,
       headers: {
-        Authorization: authData.token
+        Authorization: authData.token,
       },
       data: {
-        code
-      }})
+        code,
+      },
+    })
       .then(() => {
-        dispatch(login({
-          authData: {
-            access_token: authData.token,
-            username: authData.username,
-            refresh_token: authData.refreshToken
-          },
-          saveCookie: true
-        }));
+        dispatch(
+          login({
+            authData: {
+              access_token: authData.token,
+              username: authData.username,
+              refresh_token: authData.refreshToken,
+            },
+            saveCookie: true,
+          }),
+        );
 
         dispatch({ type: 'TFA_VERIFICATION_SUCCESS' });
       })
-      .catch((err) => {
-        const { response = {}} = err;
-        const { data = {}} = response;
+      .catch(err => {
+        const { response = {} } = err;
+        const { data = {} } = response;
         const { error_description: errorDescription } = data;
 
         // TODO: handle a timeout error better
         dispatch({
           type: 'TFA_VERIFICATION_FAIL',
           payload: {
-            errorDescription
-          }
+            errorDescription,
+          },
         });
 
         throw err;

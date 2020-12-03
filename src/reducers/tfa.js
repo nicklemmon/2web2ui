@@ -4,7 +4,7 @@ function extractAuthFromAction(state, action) {
   const {
     access_token: token,
     username = state.username,
-    refresh_token: refreshToken
+    refresh_token: refreshToken,
   } = action.payload;
   return { token, username, refreshToken };
 }
@@ -15,7 +15,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...extractAuthFromAction(state, action),
-        enabled: true
+        enabled: true,
       };
     }
 
@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...extractAuthFromAction(state, action),
-        required: true
+        required: true,
       };
     }
 
@@ -40,11 +40,9 @@ export default (state = initialState, action) => {
       return { ...state, tfaPending: false, errorDescription };
     }
 
-
     case 'GET_TFA_STATUS_SUCCESS': {
       return { ...state, enabled: action.payload.enabled };
     }
-
 
     case 'GET_TFA_SECRET_PENDING': {
       return { ...state, secretError: null };
@@ -58,7 +56,6 @@ export default (state = initialState, action) => {
       return { ...state, secret: action.payload.secret };
     }
 
-
     case 'TFA_TOGGLE_PENDING': {
       return { ...state, togglePending: true, toggleError: null };
     }
@@ -69,6 +66,15 @@ export default (state = initialState, action) => {
       return { ...state, enabled: action.payload.enabled, togglePending: false };
     }
 
+    case 'UPDATE_TFA_PHONE_NUMBER_PENDING': {
+      return { ...state, updatePhoneNumberPending: true, updatePhoneNumberError: null };
+    }
+    case 'UPDATE_TFA_PHONE_NUMBER_FAIL': {
+      return { ...state, updatePhoneNumberError: action.payload, updatePhoneNumberPending: false };
+    }
+    case 'UPDATE_TFA_PHONE_NUMBER_SUCCESS': {
+      return { ...state, updatePhoneNumberPending: false };
+    }
 
     default: {
       return state;
