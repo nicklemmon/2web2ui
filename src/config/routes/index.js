@@ -487,7 +487,7 @@ const appRoutes = [
   },
   {
     path: '/account/billing/plan',
-    component: billing.ChangePlanPage,
+    component: billing.ChangePlanPageV2,
     condition: all(
       hasGrants('account/manage'),
       not(isEnterprise),
