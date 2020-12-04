@@ -98,7 +98,7 @@ export const ChangePlanForm = ({
   }, [applyPromoCode, promo, selectedBundle, verifyPromoCode]);
 
   const onSubmit = values => {
-    const newCode = selectedBundleCode;
+    const newCode = '250K-premier-0519';
     const { selectedPromo } = promoCodeObj;
     const billingId = _.get(selectedBundle, 'messaging.billing_id');
     const isADowngrade = _.get(currentPlan, 'price') > _.get(selectedBundle, 'messaging.price');
@@ -116,7 +116,10 @@ export const ChangePlanForm = ({
 
     if (isDowngradeToFree) {
       return updateSubscription({ bundle: selectedBundleCode }).then(() => {
-        history.push('/account/billing');
+        history.push({
+          pathname: '/account/billing',
+          search: '?green_plan=true',
+        });
         showAlert({ type: 'success', message: 'Subscription Updated' });
       });
     }
@@ -142,7 +145,12 @@ export const ChangePlanForm = ({
         }
       })
       .then(() => clearPromoCode()) //TODO: Consolidate state of promocode between redux form and hook on PromoCodeNew
-      .then(() => history.push('/account/billing'))
+      .then(() =>
+        history.push({
+          pathname: '/account/billing',
+          search: '?green_plan=true',
+        }),
+      )
       .then(() => {
         getSubscription().then(result => {
           let eventType = SEGMENT_EVENTS.ACCOUNT_UPGRADED;

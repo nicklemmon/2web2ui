@@ -1,10 +1,29 @@
 import React from 'react';
+import qs from 'qs';
+import { useLocation } from 'react-router-dom';
 import { Eco } from '@sparkpost/matchbox-icons';
 import { Heading, TranslatableText } from 'src/components/text';
 import { Tooltip, Tag, Box, Stack } from 'src/components/matchbox';
 import { formatDate } from 'src/helpers/date';
 import styles from './PlanSummary.module.scss';
+
+// eslint-disable-next-line
+const FAKE_GREEN_SUBSCRIPTION = {
+  code: '100K-premier-0519-green',
+  name: '100K Premier',
+  overage: 0.85,
+  period: 'month',
+  plan_volume: 100000,
+  recurring_charge: 76.35,
+  type: 'default',
+  self_serve: true,
+  plan_volume_per_period: 100000,
+};
+
 const PlanSummary = ({ plan, pendingCancellation = {} }) => {
+  const { search } = useLocation();
+  const { green_plan } = qs.parse(search.slice(1));
+  const currentPlan = green_plan ? FAKE_GREEN_SUBSCRIPTION : plan;
   const {
     code,
     period,
@@ -12,7 +31,7 @@ const PlanSummary = ({ plan, pendingCancellation = {} }) => {
     plan_volume_per_period: planVolumePerPeriod,
     overage,
     recurring_charge: recurringCharge,
-  } = plan;
+  } = currentPlan;
   const isGreen = code.includes('green');
   const cost =
     recurringCharge === 0

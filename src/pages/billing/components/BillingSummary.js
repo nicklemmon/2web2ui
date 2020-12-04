@@ -1,11 +1,24 @@
 import React, { useState, useRef, Component } from 'react';
+import qs from 'qs';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Editor from '@monaco-editor/react';
 import { ContentCopy, Eco } from '@sparkpost/matchbox-icons';
 import copy from 'copy-to-clipboard';
 import { LabelledValue, ButtonWrapper } from 'src/components';
-import { PageLink } from 'src/components/links';
-import { Box, Button, Panel, Modal, Stack, Text } from 'src/components/matchbox';
+import { ExternalLink, PageLink } from 'src/components/links';
+import {
+  Box,
+  Button,
+  Columns,
+  Column,
+  Expandable,
+  LabelValue,
+  Panel,
+  Modal,
+  Stack,
+  Text,
+} from 'src/components/matchbox';
 import { ButtonLink } from 'src/components/links';
 import { Bold, Heading, TranslatableText } from 'src/components/text';
 import { showAlert } from 'src/actions/globalAlert';
@@ -33,7 +46,61 @@ const PAYMENT_MODAL = 'payment';
 const CONTACT_MODAL = 'contact';
 const IP_MODAL = 'ip';
 const RV_MODAL = 'recipient_validation';
-const CARBON_OFFSET_MODAL = 'carbon_offset';
+const CARBON_OFFSET_DETAILS_MODAL = 'carbon_offset_deatils_modal';
+const CARBON_OFFSET_HTML_MODAL = 'carbon_offset_html_modal';
+
+const CLOVERLY_API_RES = {
+  slug: '20201203-31027b7d0e60c3e0666c6129d4c2600f',
+  environment: 'sandbox',
+  state: 'purchased',
+  renewable_energy_certificate: {
+    slug: 'soma-iii-wind-farm-12-months-starting-01-2016-8311f6',
+    name: 'Soma III Wind Farm - 12 months starting 01/2020',
+    city: 'Soma',
+    province: 'Manisa',
+    country: 'Turkey',
+    renewable_type: 'wind',
+    total_capacity: '100 megawatts',
+    latlng: {
+      x: 39.18,
+      y: 27.6,
+    },
+    technical_details:
+      'The mountainous terrain of Turkey\'s Manisa Province lends itself perfectly to wind power. In general, the higher the altitude, the stronger and more reliable the wind. The town of Soma, 45 miles east of the Aegean Sea in northwestern Turkey, sits at an elevation of 528 feet, with higher peaks around it. Wind turbines stand atop many of those peaks. The Soma Wind Farm, built in four (so far) phases, encompasses 181 turbines with a total capacity of 288 megawatts.\r\n\r\nSoma III (50 turbines, 100 MW) came online in 2015. Turkey currently gets 34% of its electricity from plants powered by imported fuels. Its potential wind resources are among the best in Eurasia, so wind power has become an important part of its plan for energy independence. Soma III generates about 280 megawatt-hours of power each year. That avoids the emission of about 167,000 metric tons (184,086 US tons) of carbon dioxide equivalents that would have come from generating that amount of power by conventional means.\r\n\r\nThe emission credits representing that avoided carbon impact are called verified emission reductions. Each VER represents the avoidance of 1 metric ton (2,205 pounds) of carbon dioxide emissions.\r\n\r\nCloverly buys offsets that meet accepted standards for being real, measurable, verifiable, permanent, and additional. "Additional" means that the carbon savings would not have happened without the offset project and that the project would not have happened unless it got certified to sell carbon offsets. Gold Standard oversees verification of the Soma III Wind Farm. You can find verification documents at https://impact.sustain-cert.com/public_projects/571.\r\n\r\nProjects can produce many offsets during a year. So a project may appear more than once in the Cloverly portfolio. You can tell the year of the offset by the date in the web address for each project: "12-months-starting-[month]-[year]." For a list of all the projects in our portfolio and an interactive map, see https://cloverly.com/offset-map. Learn more about Cloverly at https://cloverly.com.',
+    deprecated:
+      'Use the offsets attribute. The renewable_energy_certificate attribute will be removed in the next version.',
+  },
+  micro_rec_count: 740000,
+  micro_units: 740000,
+  offset: {
+    slug: 'soma-iii-wind-farm-12-months-starting-01-2016-8311f6',
+    name: 'Soma III Wind Farm - 12 months starting 01/2016',
+    pretty_name: 'Soma III Wind Farm',
+    city: 'Soma',
+    province: 'Manisa',
+    country: 'Turkey',
+    offset_type: 'Wind',
+    offset_type_slug: 'wind',
+    total_capacity: '100 megawatts',
+    latlng: {
+      x: 39.18,
+      y: 27.6,
+    },
+    technical_details:
+      'The mountainous terrain of Turkey\'s Manisa Province lends itself perfectly to wind power. In general, the higher the altitude, the stronger and more reliable the wind. The town of Soma, 45 miles east of the Aegean Sea in northwestern Turkey, sits at an elevation of 528 feet, with higher peaks around it. Wind turbines stand atop many of those peaks. The Soma Wind Farm, built in four (so far) phases, encompasses 181 turbines with a total capacity of 288 megawatts.\r\n\r\nSoma III (50 turbines, 100 MW) came online in 2015. Turkey currently gets 34% of its electricity from plants powered by imported fuels. Its potential wind resources are among the best in Eurasia, so wind power has become an important part of its plan for energy independence. Soma III generates about 280 megawatt-hours of power each year. That avoids the emission of about 167,000 metric tons (184,086 US tons) of carbon dioxide equivalents that would have come from generating that amount of power by conventional means.\r\n\r\nThe emission credits representing that avoided carbon impact are called verified emission reductions. Each VER represents the avoidance of 1 metric ton (2,205 pounds) of carbon dioxide emissions.\r\n\r\nCloverly buys offsets that meet accepted standards for being real, measurable, verifiable, permanent, and additional. "Additional" means that the carbon savings would not have happened without the offset project and that the project would not have happened unless it got certified to sell carbon offsets. Gold Standard oversees verification of the Soma III Wind Farm. You can find verification documents at https://impact.sustain-cert.com/public_projects/571.\r\n\r\nProjects can produce many offsets during a year. So a project may appear more than once in the Cloverly portfolio. You can tell the year of the offset by the date in the web address for each project: "12-months-starting-[month]-[year]." For a list of all the projects in our portfolio and an interactive map, see https://cloverly.com/offset-map. Learn more about Cloverly at https://cloverly.com.',
+    available_carbon_in_kg: 785200.349,
+    pretty_url:
+      'https://dashboard.cloverly.com/offsets/soma-iii-wind-farm-12-months-starting-01-2016-8311f6',
+  },
+  total_cost_in_usd_cents: 173,
+  estimated_at: '2020-12-03T21:41:04.443Z',
+  purchased_at: '2020-12-03T21:42:05.481Z',
+  equivalent_carbon_in_kg: 740.0,
+  electricity_in_kwh: 0.0,
+  rec_cost_in_usd_cents: 148,
+  transaction_cost_in_usd_cents: 25,
+  pretty_url: 'https://dashboard.cloverly.com/receipt/20201203-31027b7d0e60c3e0666c6129d4c2600f',
+};
 
 export default class BillingSummary extends Component {
   state = {
@@ -46,7 +113,8 @@ export default class BillingSummary extends Component {
 
   handlePaymentModal = () => this.handleModal(PAYMENT_MODAL);
   handleContactModal = () => this.handleModal(CONTACT_MODAL);
-  handleCarbonModal = () => this.handleModal(CARBON_OFFSET_MODAL);
+  handleCarbonHtmlModal = () => this.handleModal(CARBON_OFFSET_HTML_MODAL);
+  handleCarbonDetailsModal = () => this.handleModal(CARBON_OFFSET_DETAILS_MODAL);
   handleIpModal = () => this.handleModal(IP_MODAL);
   handleRvModal = () => this.handleModal(RV_MODAL, true);
 
@@ -146,10 +214,6 @@ export default class BillingSummary extends Component {
       });
     }
 
-    // TODO: Replace with data from the API
-    const moneySpentOnCarbonOffsets = 22;
-    const poundsOfCarbonOffset = (moneySpentOnCarbonOffsets / 11) * 2204.62;
-
     return (
       <div>
         <PendingPlanBanner account={account} subscription={billingSubscription} />
@@ -160,25 +224,15 @@ export default class BillingSummary extends Component {
               <PlanSummary plan={account.subscription} pendingCancellation={pending_cancellation} />
             </LabelledValue>
           </Panel.LEGACY.Section>
+
           {this.renderDedicatedIpSummarySection(isTransitioningToSelfServe)}
+
           {rvUsage && this.renderRecipientValidationSection({ rvUsage })}
 
-          <Panel.LEGACY.Section
-            actions={[
-              { content: 'Get HTML Snippet', color: 'orange', onClick: this.handleCarbonModal },
-            ]}
-          >
-            <LabelledValue
-              label={
-                <>
-                  Carbon Offsets <Box as={Eco} marginTop="-3px" color="green.700" />
-                </>
-              }
-            >
-              <Bold>{poundsOfCarbonOffset}</Bold>
-              <TranslatableText>&nbsp;pounds of carbon offset each month</TranslatableText>
-            </LabelledValue>
-          </Panel.LEGACY.Section>
+          <CarbonSection
+            handleCarbonDetailsModal={this.handleCarbonDetailsModal}
+            handleCarbonHtmlModal={this.handleCarbonHtmlModal}
+          />
         </Panel.LEGACY>
 
         {canUpdateBillingInfo && this.renderSummary()}
@@ -192,7 +246,12 @@ export default class BillingSummary extends Component {
           {show === PAYMENT_MODAL && <UpdatePaymentForm onCancel={this.handleModal} />}
           {show === CONTACT_MODAL && <UpdateContactForm onCancel={this.handleModal} />}
           {show === IP_MODAL && <AddIps onClose={this.handleModal} />}
-          {show === CARBON_OFFSET_MODAL && <CarbonOffsetModal onClose={this.handleModal} />}
+          {show === CARBON_OFFSET_HTML_MODAL && (
+            <CarbonOffsetHtmlSnippetModal onClose={this.handleModal} />
+          )}
+          {show === CARBON_OFFSET_DETAILS_MODAL && (
+            <CarbonOffsetDetailsModal onClose={this.handleModal} />
+          )}
         </Modal.LEGACY>
         <OGOnlyWrapper as={Modal.LEGACY} open={show === RV_MODAL} onClose={this.handleModal}>
           <Box
@@ -209,9 +268,83 @@ export default class BillingSummary extends Component {
   }
 }
 
-// monaco.config({ minimap: { enabled: false } });
+function CarbonSection({ handleCarbonDetailsModal, handleCarbonHtmlModal }) {
+  const { search } = useLocation();
+  const { green_plan } = qs.parse(search.slice(1));
+  const moneySpentOnCarbonOffsets = 22;
+  const poundsOfCarbonOffset = (moneySpentOnCarbonOffsets / 11) * 2204.62;
 
-function CarbonOffsetModal({ onClose }) {
+  if (!green_plan) return null;
+
+  return (
+    <Panel.LEGACY.Section
+      actions={[
+        { content: 'View Details', color: 'orange', onClick: handleCarbonDetailsModal },
+        { content: 'Get HTML Snippet', color: 'orange', onClick: handleCarbonHtmlModal },
+      ]}
+    >
+      <LabelledValue
+        label={
+          <>
+            Carbon Offsets <Box as={Eco} marginTop="-3px" color="green.700" />
+          </>
+        }
+      >
+        <Bold>{poundsOfCarbonOffset}</Bold>
+        <TranslatableText>&nbsp;pounds of carbon offset each month</TranslatableText>
+      </LabelledValue>
+    </Panel.LEGACY.Section>
+  );
+}
+
+function CarbonOffsetDetailsModal({ onClose }) {
+  return (
+    <Panel.LEGACY title="Carbon Offset Details">
+      <Panel.LEGACY.Section>
+        <Stack>
+          <p>
+            When purchasing carbon offsets, a certificate is provided via our partner provider,
+            Cloverly, with additional detail regarding your carbon offset purchase.
+          </p>
+
+          <Expandable
+            title={CLOVERLY_API_RES.offset.pretty_name}
+            subtitle="Learn more about your purchased Carbon offset"
+            id="carbon-offset-details"
+          >
+            <Text color="gray.700">{CLOVERLY_API_RES.offset.technical_details}</Text>
+          </Expandable>
+
+          <Columns>
+            <Column>
+              <LabelValue>
+                <LabelValue.Label>Offset Type</LabelValue.Label>
+                <LabelValue.Value>{CLOVERLY_API_RES.offset.offset_type}</LabelValue.Value>
+              </LabelValue>
+            </Column>
+
+            <Column>
+              <LabelValue>
+                <LabelValue.Label>Site Energy Capacity</LabelValue.Label>
+                <LabelValue.Value>{CLOVERLY_API_RES.offset.total_capacity}</LabelValue.Value>
+              </LabelValue>
+            </Column>
+          </Columns>
+
+          <ExternalLink to={CLOVERLY_API_RES.pretty_url}>View Cloverly Dashboard</ExternalLink>
+        </Stack>
+      </Panel.LEGACY.Section>
+
+      <Panel.LEGACY.Section>
+        <Button variant="secondary" onClick={onClose}>
+          Close
+        </Button>
+      </Panel.LEGACY.Section>
+    </Panel.LEGACY>
+  );
+}
+
+function CarbonOffsetHtmlSnippetModal({ onClose }) {
   const codeSnippet = `<table>
   <tr>
     <td style="width:16px">

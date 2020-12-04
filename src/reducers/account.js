@@ -9,6 +9,32 @@ export const initialState = {
   usageLoading: false,
 };
 
+// eslint-disable-next-line
+const FAKE_SUBSCRIPTION = {
+  code: '250K-premier-0519',
+  name: '250K Premier',
+  overage: 0.85,
+  period: 'month',
+  plan_volume: 100000,
+  recurring_charge: 76.35,
+  type: 'default',
+  self_serve: true,
+  plan_volume_per_period: 100000,
+};
+
+// eslint-disable-next-line
+const FAKE_GREEN_SUBSCRIPTION = {
+  code: '250K-premier-0519-green',
+  name: '250K Premier',
+  overage: 0.85,
+  period: 'month',
+  plan_volume: 100000,
+  recurring_charge: 76.35,
+  type: 'default',
+  self_serve: true,
+  plan_volume_per_period: 100000,
+};
+
 export default (state = initialState, { type, meta, payload }) => {
   switch (type) {
     case 'FETCH_ACCOUNT_PENDING': {
@@ -17,7 +43,11 @@ export default (state = initialState, { type, meta, payload }) => {
     }
 
     case 'FETCH_ACCOUNT_SUCCESS': {
-      return { ...state, loading: false, ...payload };
+      return {
+        ...state,
+        loading: false,
+        ...payload,
+      };
     }
 
     case 'FETCH_ACCOUNT_FAIL':
