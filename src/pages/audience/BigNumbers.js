@@ -3,6 +3,9 @@ import { Panel, Box } from '@sparkpost/matchbox-hibana';
 import { getFriendlyFilterLabel } from './Filters';
 import { tokens } from '@sparkpost/design-tokens-hibana';
 import { NorthEast, SouthEast } from '@sparkpost/matchbox-icons';
+import { mean } from 'd3-array';
+import { constant } from 'lodash';
+
 
 function getColor(n) {
   if (n < 0) {
@@ -24,32 +27,52 @@ function BigNumbers(props) {
   const label = getFriendlyFilterLabel(filters);
   const key = `${filters.dimension}_${filters.precision}_day`;
 
+
+  const maxDate = Math.max.apply(Math, data.map(function(o) { return o.date; }))
+  const minDate = Math.min.apply(Math, data.map(function(o) { return o.date; }))
+
+  const latestDay = data.find(e => e.date === maxDate);
+  const earliestDay = data.find(e => e.date === minDate);
+ 
+  const value = latestDay[key];
+  const valueStart = earliestDay[key];
+
+  const delivered = latestDay[`delivery_${filters.precision}_day`];
+  const deliveredStart = earliestDay[`delivery_${filters.precision}_day`];
+
   // Active user metrics
-  const value = data[data.length - 1][key];
-  const valueStart = data[0][key];
-  const delivered = data[data.length - 1][`delivery_${filters.precision}_day`];
-  const deliveredStart = data[0][`delivery_${filters.precision}_day`];
-
+  // const value = data[data.length - 1][key];
+  // const valueStart = data[0][key];
+  // const delivered = data[data.length - 1][`delivery_${filters.precision}_day`];
+  // const deliveredStart = data[0][`delivery_${filters.precision}_day`];
+  
+  // Fist Box
+  const valueDelta = ((value - valueStart) / valueStart) * 100;
+  
+  
   const rate = (value / delivered) * 100;
-  const valueDelta = ((valueStart - value) / value) * 100;
-
   const rateStart = (valueStart / deliveredStart) * 100;
-  const rateDelta = ((rateStart - rate) / rate) * 100;
+  
+  const rateDelta = (rate - rateStart);
+
   const deliveredDelta = ((deliveredStart - delivered) / delivered) * 100;
+
+  const valKeyAcc = d => d[key];
+  const average = mean(data, valKeyAcc).toPrecision(value.length);
 
   const ValueIcon = getIcon(valueDelta);
   const RateIcon = getIcon(rateDelta);
   const DeliveredIcon = getIcon(deliveredDelta);
 
   return (
-    <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gridGap="400">
-      <Panel gridColumn="1/2">
+    <Box display="grid" gridTemplateColumns="repeat(4, 1fr)" gridGap="400">
+      <Panel gridColumn="1/4">
         <Panel.Section>
           <Box mb="500" color="gray.700">
-            {label}
+            Latest {label}
           </Box>
           <Box mb="500" fontSize="700" fontWeight="medium">
-            {value?.toLocaleString()}
+            {Number(value)?.toLocaleString()}
           </Box>
           <Box fontSize="500" color={getColor(valueDelta)}>
             <ValueIcon size="14px" style={{ marginTop: '-3px' }} /> {valueDelta.toFixed(1)} %
@@ -57,7 +80,21 @@ function BigNumbers(props) {
         </Panel.Section>
       </Panel>
 
-      <Panel gridColumn="2/3">
+      <Panel gridColumn="2/4">
+        <Panel.Section>
+          <Box mb="500" color="gray.700">
+            Average {label} 
+          </Box>
+          <Box mb="500" fontSize="700" fontWeight="medium">
+            {Number(average).toLocaleString()}
+          </Box>
+          <Box fontSize="500" >
+            Last {data.length} days
+          </Box>
+        </Panel.Section>
+      </Panel>
+
+      <Panel gridColumn="3/4">
         <Panel.Section>
           <Box mb="500" color="gray.700">
             {label} %
@@ -71,13 +108,13 @@ function BigNumbers(props) {
         </Panel.Section>
       </Panel>
 
-      <Panel gridColumn="2/3">
+      <Panel gridColumn="4/4">
         <Panel.Section>
           <Box mb="500" color="gray.700">
-            Delivered
+            Latest Total Audience
           </Box>
           <Box mb="500" fontSize="700" fontWeight="medium">
-            {delivered.toLocaleString()}
+            {Number(delivered).toLocaleString()}
           </Box>
           <Box fontSize="500" color={tokens.color_gray_700}>
             <DeliveredIcon size="14px" style={{ marginTop: '-3px' }} /> {deliveredDelta.toFixed(1)}{' '}

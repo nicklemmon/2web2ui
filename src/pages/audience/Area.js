@@ -32,10 +32,10 @@ function Area(props) {
   const yMax = height - verticalMargin;
 
   // Accessors
-  const x = d => new Date(d.date);
+  const x = d => new Date(d.date * 1000);
   const y = d => d[`${dimension}_${precision}_day`];
-  const yDelivery = d => d[`delivery_${precision}_day`];
-  const bisectDate = bisector(d => new Date(d.date)).right;
+  const yDelivery = d => Number(d[`delivery_${precision}_day`]);
+  const bisectDate = bisector(d => new Date(d.date * 1000)).right;
 
   // Scales
   const xScale = scaleTime({
@@ -54,6 +54,7 @@ function Area(props) {
     domain: [0, max(data, yDelivery)],
     nice: true,
   });
+
 
   // Tooltip config
   const {

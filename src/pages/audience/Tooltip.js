@@ -15,14 +15,14 @@ function Tooltip(props) {
           <Box fontSize="200" color="gray.400">
             Delivered
           </Box>
-          <Box fontSize="300">{data.delivery.toLocaleString()}</Box>
+          <Box fontSize="300">{Number(data.delivery).toLocaleString()}</Box>
         </Box>
         <Box borderLeft="3px solid #78b6ff" pl="300">
           <Box fontSize="200" color="gray.400">
             {friendlyLabel}
           </Box>
           <Box fontSize="300">
-            {((data.value / data.delivery) * 100).toFixed(1)}% – {data.value.toLocaleString()}
+            {((data.value / data.delivery) * 100).toFixed(1)}% – {Number(data.value).toLocaleString()}
           </Box>
         </Box>
       </Stack>

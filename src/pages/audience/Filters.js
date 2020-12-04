@@ -4,11 +4,11 @@ import { Panel, Box, Inline, ListBox } from '@sparkpost/matchbox-hibana';
 export function getFriendlyFilterLabel(filters) {
   switch (filters.precision) {
     case '1':
-      return 'Daily Active Users';
+      return 'Daily Engaged Users';
     case '7':
-      return 'Weekly Active Users';
+      return 'Weekly Engaged Users';
     case '30':
-      return 'Monthly Active Users';
+      return 'Monthly Engaged Users';
     default:
       return '';
   }
@@ -51,18 +51,18 @@ export function Filters(props) {
       <Panel.Section>
         <Box display="flex" justifyContent="space-between">
           <Inline>
-            <Box width="150px">
+            {/* <Box width="150px">
               <ListBox defaultValue="weeks">
                 <ListBox.Option value="weeks">Last 14 days</ListBox.Option>
                 <ListBox.Option value="month">Last 30 days</ListBox.Option>
                 <ListBox.Option value="3_months">Last 90 days</ListBox.Option>
               </ListBox>
-            </Box>
+            </Box> */}
             <Box width="100px">
               <ListBox value={props.values.precision} onChange={props.handlers.handlePrecision}>
-                <ListBox.Option value="1">DAU</ListBox.Option>
-                <ListBox.Option value="7">WAU</ListBox.Option>
-                <ListBox.Option value="30">MAU</ListBox.Option>
+                <ListBox.Option value="1">Daily</ListBox.Option>
+                <ListBox.Option value="7">Weekly</ListBox.Option>
+                <ListBox.Option value="30">Monthly</ListBox.Option>
               </ListBox>
             </Box>
             <Box width="180px">
@@ -74,12 +74,12 @@ export function Filters(props) {
             </Box>
           </Inline>
 
-          <Box width="200px">
+          {/* <Box width="200px">
             <ListBox value={props.values.graphType} onChange={props.handlers.handleGraphType}>
               <ListBox.Option value="stacked_area">Stacked Area</ListBox.Option>
               <ListBox.Option value="bar">Bar</ListBox.Option>
             </ListBox>
-          </Box>
+          </Box> */}
         </Box>
       </Panel.Section>
     </Panel>

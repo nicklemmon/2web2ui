@@ -32,11 +32,11 @@ function Collapsed(props) {
   const yMax = height - verticalMargin;
 
   // Accessors
-  const x = d => new Date(d.date);
+  const x = d => new Date(d.date * 1000);
   const yD = d => d[`${dimension}_1_day`];
   const yW = d => d[`${dimension}_7_day`];
   const yM = d => d[`${dimension}_30_day`];
-  const bisectDate = bisector(d => new Date(d.date)).right;
+  const bisectDate = bisector(d => new Date(d.date * 1000)).right;
 
   // Scales
   const xScale = scaleTime({

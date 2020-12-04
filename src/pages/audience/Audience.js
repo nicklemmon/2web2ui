@@ -5,9 +5,35 @@ import { useFilters, Filters, getFriendlyFilterLabel } from './Filters';
 import Area from './Area';
 import Collapsed from './Collapsed';
 import BigNumbers from './BigNumbers';
+import { useSparkPostQuery } from 'src/hooks';
+import { getAudience } from 'src/helpers/api';
 
 function Audience() {
   const [filters, filterHandlers] = useFilters();
+  const { data: audience } = useSparkPostQuery(getAudience);
+  
+
+  if ( audience === undefined) {
+    return (
+      <Page title="Audience">
+      <Stack>
+        <Filters values={filters} handlers={filterHandlers} />
+        <Panel>
+          <Panel.Section>
+            <Text color="gray.700">{getFriendlyFilterLabel(filters)}</Text>
+          </Panel.Section>
+        </Panel>
+        <Panel>
+          <Panel.Section>
+            <Text color="gray.700">Collapsed</Text>
+          </Panel.Section>
+        </Panel>
+      </Stack>
+    </Page>
+    )
+  }
+
+  audience.reverse();
 
   return (
     <Page title="Audience">
@@ -16,14 +42,14 @@ function Audience() {
         <Panel>
           <Panel.Section>
             <Text color="gray.700">{getFriendlyFilterLabel(filters)}</Text>
-            <Area data={data} filters={filters} />
+            <Area data={audience} filters={filters} />
           </Panel.Section>
         </Panel>
-        <BigNumbers data={data} filters={filters} />
+        <BigNumbers data={audience} filters={filters} />
         <Panel>
           <Panel.Section>
-            <Text color="gray.700">Collapsed</Text>
-            <Collapsed data={data} filters={filters} />
+            <Text color="gray.700">Segment Breakdown</Text>
+            <Collapsed data={audience} filters={filters} />
           </Panel.Section>
         </Panel>
       </Stack>
