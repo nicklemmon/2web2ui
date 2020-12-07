@@ -23,6 +23,7 @@ const ReportOptionsContext = createContext({});
 const initialState = {
   filters: [],
   comparisons: [],
+  inboxRate: false,
 };
 
 const reducer = (state, action) => {

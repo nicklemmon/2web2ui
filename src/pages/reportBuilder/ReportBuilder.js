@@ -6,6 +6,7 @@ import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
 import { Empty, Tabs, Loading, Unit, LegendCircle } from 'src/components';
+import { ExternalLink } from 'src/components/links';
 import {
   Box,
   Button,
@@ -35,6 +36,24 @@ import { useReportBuilderContext } from './context/ReportBuilderContext';
 import { PRESET_REPORT_CONFIGS } from './constants/presetReport';
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import { useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import _ from 'lodash';
+
+const getOtherData = (_key, from, to) => {
+  const formatDate = date =>
+    moment(date)
+      .utc()
+      .format('YYYYMMDDHH0000');
+  const formattedFrom = formatDate(from);
+  const formattedTo = formatDate(to);
+  return fetch(
+    `http://v4-api.qa3.emailanalyst.com/v4/inbox/deliverability/total/boxbe.com?qd=between%3A${formattedFrom}%2C${formattedTo}&Authorization=c16b05b132524b5ba7a6310a239f2305`,
+  )
+    .then(res => res.json())
+    .then(data => {
+      return data.result;
+    });
+};
 
 const MetricDefinition = ({ label, children }) => {
   return (
@@ -68,6 +87,11 @@ export function ReportBuilder({
   const { refreshReportOptions } = actions;
   const processedMetrics = selectors.selectSummaryMetricsProcessed;
   const summarySearchOptions = selectors.selectSummaryChartSearchOptions || {};
+  const { from, to } = summarySearchOptions;
+  // Other time series
+  const { data: inboxRateValue } = useQuery(['getInboxTotal', from, to], getOtherData, {
+    enabled: reportOptions.isReady,
+  });
   const isEmpty = useMemo(() => {
     return !Boolean(reportOptions.metrics && reportOptions.metrics.length);
   }, [reportOptions.metrics]);
@@ -166,12 +190,22 @@ export function ReportBuilder({
     setShowTable(true);
   }, [tabs]);
 
-  const { to, from } = summarySearchOptions;
   const dateValue = `${moment(from).format('MMM Do')} - ${moment(to).format('MMM Do, YYYY')}`;
 
   if (!reportOptions.isReady) {
     return <Loading />;
   }
+
+  const formatDate = date =>
+    moment(date)
+      .utc()
+      .format('YYYY-MM-DD');
+  const formattedTo = formatDate(to);
+  const formattedFrom = formatDate(from);
+  const domains = reportOptions.filters[0]?.['AND'].sending_domains?.eq?.map(({ value }) => value);
+  const analystLink = `https://app.emailanalyst.com/bin/#/inbox/dashboard?${
+    domains ? `domains=${domains.join(',')}` : ''
+  }&startDate=${formattedFrom}&endDate=${formattedTo}`;
 
   return (
     <Page
@@ -217,34 +251,72 @@ export function ReportBuilder({
                 <Tabs.Item>
                   <Charts {...chart} metrics={processedMetrics} to={to} yScale="linear" />
                   <Box padding="400" backgroundColor="gray.1000">
-                    <Grid>
-                      <Grid.Column sm={3}>
-                        <Box id="date">
-                          <MetricDefinition label="Date">
-                            <Unit value={dateValue} />
-                          </MetricDefinition>
-                        </Box>
-                      </Grid.Column>
-                      <Grid.Column sm={9}>
-                        <Inline space="600">
-                          {chart.aggregateData.map(({ key, label, value, unit }) => {
-                            const stroke = processedMetrics.find(({ key: newKey }) => {
-                              return newKey === key;
-                            })?.stroke;
-                            return (
-                              <Box marginRight="600" key={key}>
-                                <MetricDefinition label={label}>
+                    <Box mb="500">
+                      <Grid>
+                        <Grid.Column sm={3}>
+                          <Box id="date">
+                            <MetricDefinition label="Date">
+                              <Unit value={dateValue} />
+                            </MetricDefinition>
+                          </Box>
+                        </Grid.Column>
+                        <Grid.Column sm={9}>
+                          <Inline space="600">
+                            {chart.aggregateData.map(({ key, label, value, unit }) => {
+                              const stroke = processedMetrics.find(({ key: newKey }) => {
+                                return newKey === key;
+                              })?.stroke;
+                              return (
+                                <Box marginRight="600" key={key}>
+                                  <MetricDefinition label={label}>
+                                    <Box display="flex" alignItems="center">
+                                      {stroke && <LegendCircle marginRight="200" color={stroke} />}
+                                      <Unit value={value} unit={unit} />
+                                    </Box>
+                                  </MetricDefinition>
+                                </Box>
+                              );
+                            })}
+                            {reportOptions.inboxRate && (
+                              <Box marginRight="600">
+                                <MetricDefinition label={'Inbox Rate'}>
                                   <Box display="flex" alignItems="center">
-                                    {stroke && <LegendCircle marginRight="200" color={stroke} />}
-                                    <Unit value={value} unit={unit} />
+                                    <LegendCircle marginRight="200" color="#fa6423" />
+                                    <Unit value={inboxRateValue * 100} unit={'percent'} />
                                   </Box>
                                 </MetricDefinition>
                               </Box>
-                            );
-                          })}
-                        </Inline>
-                      </Grid.Column>
-                    </Grid>
+                            )}
+                          </Inline>
+                        </Grid.Column>
+                      </Grid>
+                    </Box>
+                    <Box maxWidth="1000">
+                      <LabelValue>
+                        <LabelValue.Label>
+                          <Box color="gray.600">Recommendations</Box>
+                        </LabelValue.Label>
+                        <LabelValue.Value>
+                          <Box font-weight="600" fontSize="" color="white">
+                            Inbox Insights
+                          </Box>
+                          <Box mb="200" fontSize="100" color="white">
+                            Dive deeper into your deliverability metrics to optimize your sending.
+                          </Box>
+                          <Box>
+                            <ExternalLink
+                              as={Button}
+                              to={analystLink}
+                              variant="dark-mode"
+                              size="small"
+                              showIcon={false}
+                            >
+                              Inbox Tracker
+                            </ExternalLink>
+                          </Box>
+                        </LabelValue.Value>
+                      </LabelValue>
+                    </Box>
                   </Box>
                 </Tabs.Item>
                 {hasBounceTab && (

@@ -21,6 +21,7 @@ export default function MetricsDrawer(props) {
   }, [props.selectedMetrics]);
 
   const [selectedMetrics, setSelectedMetrics] = useState(getStateFromProps());
+  const [inboxRate, setInboxRate] = useState(false);
 
   useEffect(() => {
     const newSelectedMetrics = getStateFromProps();
@@ -34,7 +35,7 @@ export default function MetricsDrawer(props) {
   };
 
   const handleApply = () => {
-    props.handleSubmit({ metrics: getSelectedMetrics() });
+    props.handleSubmit({ metrics: getSelectedMetrics(), inboxRate });
   };
 
   const getSelectedMetrics = () => _.keys(selectedMetrics).filter(key => !!selectedMetrics[key]);
@@ -84,6 +85,23 @@ export default function MetricsDrawer(props) {
     <>
       <Box margin="400" paddingBottom="100px">
         {renderMetricsCategories()}
+        <div>
+          <Box fontWeight="semibold" marginTop="600" marginBottom="400" paddingLeft="100">
+            Deliverability
+          </Box>
+          <Inline space="100">
+            <div>
+              <Box marginRight="300" width="200px" paddingLeft="100">
+                <Checkbox
+                  id="id-checkbox-inbox-rate"
+                  onChange={() => setInboxRate(!inboxRate)}
+                  checked={inboxRate}
+                  label="Inbox Rate"
+                />
+              </Box>
+            </div>
+          </Inline>
+        </div>
       </Box>
       <DrawerFooter margin="400">
         <Box display="flex">
@@ -92,9 +110,7 @@ export default function MetricsDrawer(props) {
               width="100%"
               onClick={handleApply}
               variant="primary"
-              disabled={
-                getSelectedMetrics().length < 1 || isSelectedMetricsSameAsCurrentlyAppliedMetrics
-              }
+              disabled={getSelectedMetrics().length < 1}
             >
               Apply Metrics
             </Button>

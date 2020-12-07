@@ -15,11 +15,29 @@ import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { Heading } from 'src/components/text';
 import { Loading } from 'src/components';
+import { useQuery } from 'react-query';
+import moment from 'moment';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
   return _.uniq(metrics.map(({ unit = DEFAULT_UNIT }) => unit));
 }
+
+const getOtherData = (_key, from, to) => {
+  const formatDate = date =>
+    moment(date)
+      .utc()
+      .format('YYYYMMDDHH0000');
+  const formattedFrom = formatDate(from);
+  const formattedTo = formatDate(to);
+  return fetch(
+    `http://v4-api.qa3.emailanalyst.com/v4/inbox/deliverability/hourly/boxbe.com?qd=between%3A${formattedFrom}%2C${formattedTo}&Authorization=c16b05b132524b5ba7a6310a239f2305`,
+  )
+    .then(res => res.json())
+    .then(data => {
+      return data.result;
+    });
+};
 
 export default function ChartContainer() {
   const { state: reportOptions } = useReportBuilderContext();
@@ -90,7 +108,27 @@ export function Charts(props) {
   const formattedOptions = useMemo(() => {
     return getQueryFromOptions({ ...reportOptions, metrics: formattedMetrics });
   }, [reportOptions, formattedMetrics]);
-  const { precision, to } = formattedOptions;
+  const { precision, to, from } = formattedOptions;
+
+  // Other time series
+  const { data: otherData, loading: inboxTrackerStatus } = useQuery(
+    ['getOtherData', from, to],
+    getOtherData,
+    {
+      enabled: reportOptions.isReady,
+    },
+  );
+
+  const otherFormattedMetrics = [
+    ...formattedMetrics,
+    reportOptions.inboxRate && {
+      key: 'inbox_rate',
+      label: 'Inbox Rate',
+      name: 'inbox_rate',
+      stroke: '#fa6423',
+      unit: 'percent',
+    },
+  ];
 
   // API request
   const { data: rawChartData, status: chartStatus } = useSparkPostQuery(
@@ -102,16 +140,27 @@ export function Charts(props) {
     },
   );
 
+  const otherRawData = useMemo(() => {
+    if (!rawChartData || !otherData) return [];
+
+    const inboxData = otherData?.hourToInbox || {};
+    return rawChartData.map(data => {
+      const dateKey = new Date(data.ts).toISOString();
+      return { ...data, inbox_rate: inboxData[dateKey] ? inboxData[dateKey] * 100 : 0 };
+    });
+  }, [rawChartData, otherData]);
+
   const chartData = useMemo(() => {
-    return transformData(rawChartData, formattedMetrics);
-  }, [rawChartData, formattedMetrics]);
+    return transformData(otherRawData, otherFormattedMetrics);
+  }, [otherRawData, otherFormattedMetrics]);
 
   const formatters = getLineChartFormatters(precision, to);
   //Separates the metrics into their appropriate charts
-  const charts = getUniqueUnits(formattedMetrics).map(unit => ({
-    metrics: formattedMetrics.filter(metric => metric.unit === unit),
+  const charts = getUniqueUnits(otherFormattedMetrics).map(unit => ({
+    metrics: otherFormattedMetrics.filter(metric => metric.unit === unit),
     ...METRICS_UNIT_CONFIG[unit],
   }));
+
   let height = 150;
 
   switch (charts.length * (comparisons.length || 1)) {
@@ -125,7 +174,7 @@ export function Charts(props) {
       break;
   }
 
-  if (chartStatus === 'loading' || chartStatus === 'idle') {
+  if (chartStatus === 'loading' || chartStatus === 'idle' || inboxTrackerStatus === 'loading') {
     return <Loading minHeight="200px" />;
   }
 

@@ -22,7 +22,7 @@ function orderDesc(a, b) {
 }
 
 const CustomTooltip = ({ showTooltip, payload, label, labelFormatter, formatter }) => {
-  if (!showTooltip) {
+  if (!showTooltip || !payload) {
     return null;
   }
   return (
