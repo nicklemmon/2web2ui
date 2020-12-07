@@ -7,17 +7,8 @@ import { refreshReportBuilder } from 'src/actions/summaryChart';
 import { getSubscription } from 'src/actions/billing';
 import { list as getSubaccountsList } from 'src/actions/subaccounts';
 import { getReports } from 'src/actions/reports';
-import { Empty, Tabs, Loading, Unit, LegendCircle } from 'src/components';
-import {
-  Box,
-  Button,
-  Grid,
-  LabelValue,
-  Inline,
-  Page,
-  Panel,
-  Tooltip,
-} from 'src/components/matchbox';
+import { Empty, Tabs, Loading } from 'src/components';
+import { Box, Button, Page, Panel, Tooltip } from 'src/components/matchbox';
 import {
   bounceTabMetrics,
   rejectionTabMetrics,
@@ -27,6 +18,7 @@ import {
 import { parseSearchNew as parseSearch } from 'src/helpers/reports';
 import {
   Charts,
+  AggregatedMetrics,
   CompareByAggregatedMetrics,
   ReportOptions,
   ReportTable,
@@ -213,46 +205,7 @@ export function ReportBuilder({
                   {hasActiveComparisons ? (
                     <CompareByAggregatedMetrics date={dateValue} />
                   ) : (
-                    <Box padding="400" backgroundColor="gray.1000">
-                      <Grid>
-                        <Grid.Column sm={3}>
-                          <LabelValue dark>
-                            <LabelValue.Label>Date</LabelValue.Label>
-
-                            <LabelValue.Value>
-                              <Unit value={dateValue} />
-                            </LabelValue.Value>
-                          </LabelValue>
-                        </Grid.Column>
-
-                        <Grid.Column sm={9}>
-                          <Inline space="600">
-                            {chart.aggregateData.map(({ key, label, value, unit }) => {
-                              const stroke = processedMetrics.find(({ key: newKey }) => {
-                                return newKey === key;
-                              })?.stroke;
-
-                              return (
-                                <Box marginRight="600" key={key}>
-                                  <LabelValue dark>
-                                    <LabelValue.Label>{label}</LabelValue.Label>
-
-                                    <LabelValue.Value>
-                                      <Box display="flex" alignItems="center">
-                                        {stroke && (
-                                          <LegendCircle marginRight="200" color={stroke} />
-                                        )}
-                                        <Unit value={value} unit={unit} />
-                                      </Box>
-                                    </LabelValue.Value>
-                                  </LabelValue>
-                                </Box>
-                              );
-                            })}
-                          </Inline>
-                        </Grid.Column>
-                      </Grid>
-                    </Box>
+                    <AggregatedMetrics date={dateValue} />
                   )}
                 </Tabs.Item>
 
