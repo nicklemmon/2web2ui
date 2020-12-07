@@ -13,7 +13,7 @@ jobs:
       - name: Security Badger
         uses: nicklemmon/security-badger@v0.0.12-alpha
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GRAPHQL_ACCESS_TOKEN }}
           GITHUB_REPO: ${{ github.repository }}
           SLACK_WEBHOOK_URL: ${{ secrets.SECURITY_BADGER_SLACK_WEBHOOK_URL }}
         with:
