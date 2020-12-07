@@ -4,7 +4,7 @@ import {
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
 } from 'src/helpers/metrics';
-import { Unit } from 'src/components';
+import { LegendCircle, Unit } from 'src/components';
 import Divider from 'src/components/divider';
 import { Box, Column, Columns, Inline, LabelValue, Stack } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
@@ -78,19 +78,26 @@ function ComparisonRow({ comparison, hasDivider }) {
       <Inline>
         <LabelValue dark>
           <LabelValue.Label>{comparison.type}</LabelValue.Label>
+
           <LabelValue.Value>{comparison.value}</LabelValue.Value>
         </LabelValue>
 
         {hasMetrics
           ? formattedMetrics.map((metric, metricIndex) => {
-              const { label, key } = metric;
+              const { label, key, stroke, unit } = metric;
               const value = aggregatedMetricsObj[key];
 
               return (
-                <Stack key={`aggregated-metric-${metricIndex}`}>
+                <Stack key={`aggregated-metric-${key}-${metricIndex}`}>
                   <LabelValue dark>
                     <LabelValue.Label>{label}</LabelValue.Label>
-                    <LabelValue.Value>{value}</LabelValue.Value>
+
+                    <LabelValue.Value>
+                      <Box display="flex" alignItems="center">
+                        {stroke ? <LegendCircle marginRight="200" color={stroke} /> : null}
+                        <Unit value={value} unit={unit} />
+                      </Box>
+                    </LabelValue.Value>
                   </LabelValue>
                 </Stack>
               );
