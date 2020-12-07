@@ -2,9 +2,9 @@ name: Security Badger
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   # Run every Monday at 2 PM EST (6:00 PM UTC)
-  #   - cron: '0 18 * * 1'
+  schedule:
+    # Run every Monday at 2 PM EST (6:00 PM UTC)
+    - cron: '0 18 * * 1'
 
 jobs:
   security-vulnerabilities-reminder:
