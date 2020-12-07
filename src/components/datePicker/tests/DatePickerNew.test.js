@@ -61,7 +61,6 @@ describe('Component: DatePicker', () => {
     screen.getByText('Last 7 Days').click();
     screen.getByRole('button', { name: 'Apply' }).click();
     expect(screen.queryByText('Last 7 Days')).not.toBeVisible();
-    //From will be 12:00 due to recommended day precision rounding
     expect(screen.getByLabelText('Date Picker')).toHaveAttribute(
       'value',
       'Feb 8th 2019 7:00am – Feb 15th 2019 7:00am',
