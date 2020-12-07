@@ -59,13 +59,6 @@ export function getQueryFromOptionsV2({
   filters = [],
   match = '',
   limit,
-  domains,
-  campaigns,
-  templates,
-  sending_ips,
-  ip_pools,
-  subaccounts,
-  sending_domains,
 }) {
   from = moment(from);
   to = moment(to);
@@ -79,13 +72,6 @@ export function getQueryFromOptionsV2({
     delimiter,
     timezone,
     precision,
-    domains,
-    campaigns,
-    templates,
-    sending_ips,
-    ip_pools,
-    subaccounts,
-    sending_domains,
   };
   const dehydratedFilters = dehydrateFilters(filters);
 

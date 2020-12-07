@@ -30,7 +30,7 @@ export default function AggregatedMetrics({ date }) {
               })?.stroke;
 
               return (
-                <Box marginRight="600" key={key}>
+                <Box key={`aggregated-metric-${key}`}>
                   <LabelValue dark>
                     <LabelValue.Label>{label}</LabelValue.Label>
 

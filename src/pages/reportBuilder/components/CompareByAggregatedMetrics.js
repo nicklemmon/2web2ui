@@ -60,11 +60,13 @@ function ComparisonRow({ comparison, hasDivider }) {
     return getQueryFromOptions({
       ...reportOptions,
       metrics: formattedMetrics,
-      [comparisonObj.value]:
-        comparisonObj.value === 'subaccounts' ? comparison.id : comparison.value, // Subaccount formatting means different data must be passed to the request
     });
-  }, [reportOptions, formattedMetrics, comparisonObj, comparison]);
-  const { data, status } = useSparkPostQuery(() => getDeliverabilityMetrics(formattedOptions), {
+  }, [reportOptions, formattedMetrics]);
+  const requestOptions = {
+    ...formattedOptions,
+    [comparisonObj.value]: comparisonObj.value === 'subaccounts' ? comparison.id : comparison.value, // Subaccount formatting means different data must be passed to the request
+  };
+  const { data, status } = useSparkPostQuery(() => getDeliverabilityMetrics(requestOptions), {
     refetchOnWindowFocus: false,
   });
 
@@ -82,7 +84,7 @@ function ComparisonRow({ comparison, hasDivider }) {
 
   return (
     <Stack>
-      <Inline>
+      <Inline space="600">
         <LabelValue dark>
           <LabelValue.Label>{comparison.type}</LabelValue.Label>
 
