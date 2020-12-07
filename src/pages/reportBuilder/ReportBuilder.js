@@ -217,14 +217,10 @@ export function ReportBuilder({
                       <Grid>
                         <Grid.Column sm={3}>
                           <LabelValue dark>
-                            <LabelValue.Label>
-                              <Box color="gray.600">Date</Box>
-                            </LabelValue.Label>
+                            <LabelValue.Label>Date</LabelValue.Label>
 
                             <LabelValue.Value>
-                              <Box color="white">
-                                <Unit value={dateValue} />
-                              </Box>
+                              <Unit value={dateValue} />
                             </LabelValue.Value>
                           </LabelValue>
                         </Grid.Column>
@@ -239,12 +235,10 @@ export function ReportBuilder({
                               return (
                                 <Box marginRight="600" key={key}>
                                   <LabelValue dark>
-                                    <LabelValue.Label>
-                                      <Box color="gray.600">{label}</Box>
-                                    </LabelValue.Label>
+                                    <LabelValue.Label>{label}</LabelValue.Label>
 
                                     <LabelValue.Value>
-                                      <Box display="flex" alignItems="center" color="white">
+                                      <Box display="flex" alignItems="center">
                                         {stroke && (
                                           <LegendCircle marginRight="200" color={stroke} />
                                         )}

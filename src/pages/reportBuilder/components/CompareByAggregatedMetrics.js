@@ -5,9 +5,8 @@ import {
   getQueryFromOptionsV2 as getQueryFromOptions,
 } from 'src/helpers/metrics';
 import { Unit } from 'src/components';
-import { Definition } from 'src/components/text';
 import Divider from 'src/components/divider';
-import { Box, Column, Columns, Inline, Stack } from 'src/components/matchbox';
+import { Box, Column, Columns, Inline, LabelValue, Stack } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { FILTER_TYPES } from '../constants';
@@ -20,13 +19,13 @@ export default function CompareByAggregatedMetrics({ date }) {
     <Box padding="400" backgroundColor="gray.1000" data-id="compare-by-aggregated-metrics">
       <Columns>
         <Column width={1 / 5}>
-          <Definition dark>
-            <Definition.Label>Date</Definition.Label>
+          <LabelValue dark>
+            <LabelValue.Label>Date</LabelValue.Label>
 
-            <Definition.Value>
+            <LabelValue.Value>
               <Unit value={date} />
-            </Definition.Value>
-          </Definition>
+            </LabelValue.Value>
+          </LabelValue>
         </Column>
 
         <Column>
@@ -77,10 +76,10 @@ function ComparisonRow({ comparison, hasDivider }) {
   return (
     <Stack>
       <Inline>
-        <Definition dark>
-          <Definition.Label>{comparison.type}</Definition.Label>
-          <Definition.Value>{comparison.value}</Definition.Value>
-        </Definition>
+        <LabelValue dark>
+          <LabelValue.Label>{comparison.type}</LabelValue.Label>
+          <LabelValue.Value>{comparison.value}</LabelValue.Value>
+        </LabelValue>
 
         {hasMetrics
           ? formattedMetrics.map((metric, metricIndex) => {
@@ -89,10 +88,10 @@ function ComparisonRow({ comparison, hasDivider }) {
 
               return (
                 <Stack key={`aggregated-metric-${metricIndex}`}>
-                  <Definition dark>
-                    <Definition.Label>{label}</Definition.Label>
-                    <Definition.Value>{value}</Definition.Value>
-                  </Definition>
+                  <LabelValue dark>
+                    <LabelValue.Label>{label}</LabelValue.Label>
+                    <LabelValue.Value>{value}</LabelValue.Value>
+                  </LabelValue>
                 </Stack>
               );
             })
