@@ -1,0 +1,19 @@
+name: Security Badger
+
+on:
+  schedule:
+    # Run every Monday at 2 PM EST (6:00 PM UTC)
+    - cron: '0 18 * * 1'
+
+jobs:
+  security-vulnerabilities-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Security Badger
+        uses: nicklemmon/security-badger@v0.0.8-alpha
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SECURITY_BADGER_SLACK_WEBHOOK_URL }}
+        with:
+          slackChannel: '#front-end-guild'
