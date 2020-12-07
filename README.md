@@ -1,4 +1,4 @@
-# SparkPost App - Arbitrary Change
+# SparkPost App
 
 [![CircleCI](https://circleci.com/gh/SparkPost/2web2ui.svg?style=svg&circle-token=38db9634ea082cf65313e581edf7daea0a61906c)](https://app.circleci.com/pipelines/github/SparkPost/2web2ui)
 [![codecov](https://codecov.io/gh/SparkPost/2web2ui/branch/master/graph/badge.svg)](https://codecov.io/gh/SparkPost/2web2ui)
