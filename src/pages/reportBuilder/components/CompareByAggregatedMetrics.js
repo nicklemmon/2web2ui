@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { getDeliverabilityMetrics } from 'src/helpers/api';
 import {
-  getMetricFromKey,
   getMetricsFromKeys,
   getQueryFromOptionsV2 as getQueryFromOptions,
 } from 'src/helpers/metrics';
@@ -73,8 +72,7 @@ function ComparisonRow({ comparison, hasDivider }) {
   if (status === 'loading' || status === 'error') return null;
 
   const aggregatedMetricsObj = data[0] || {};
-  const aggregatedMetricsKeys = Object.keys(aggregatedMetricsObj);
-  const hasMetrics = Boolean(aggregatedMetricsKeys.length);
+  const hasMetrics = Boolean(formattedMetrics.length);
 
   return (
     <Stack>
@@ -85,12 +83,12 @@ function ComparisonRow({ comparison, hasDivider }) {
         </Definition>
 
         {hasMetrics
-          ? aggregatedMetricsKeys.map((metricKey, metricKeyIndex) => {
-              const { label } = getMetricFromKey(metricKey);
-              const value = aggregatedMetricsObj[metricKey];
+          ? formattedMetrics.map((metric, metricIndex) => {
+              const { label, key } = metric;
+              const value = aggregatedMetricsObj[key];
 
               return (
-                <Stack key={`metric-${metricKeyIndex}`}>
+                <Stack key={`aggregated-metric-${metricIndex}`}>
                   <Definition dark>
                     <Definition.Label>{label}</Definition.Label>
                     <Definition.Value>{value}</Definition.Value>
