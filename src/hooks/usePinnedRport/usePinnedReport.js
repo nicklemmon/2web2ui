@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRelativeDates, getLocalTimezone } from 'src/helpers/date';
 import { parseSearchNew } from 'src/helpers/reports';
 import { hydrateFilters } from 'src/pages/reportBuilder/helpers';
-import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants/presetReport';
+import { PRESET_REPORT_CONFIGS } from 'src/pages/reportBuilder/constants';
 import _ from 'lodash';
 import qs from 'qs';
 import { list as listSubaccounts } from 'src/actions/subaccounts';

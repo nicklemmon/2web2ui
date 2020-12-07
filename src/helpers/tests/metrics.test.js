@@ -507,4 +507,17 @@ describe('metrics helpers', () => {
       );
     });
   });
+
+  describe('getMetricFromKey', () => {
+    it('should return the relevant metric label based on the unformatted metric key', () => {
+      expect(typeof metricsHelpers.getMetricFromKey('count_targeted')).toBe('object');
+      expect(typeof metricsHelpers.getMetricFromKey('count_delivered_first')).toBe('object');
+      expect(typeof metricsHelpers.getMetricFromKey('spam_complaint_rate')).toBe('object');
+      expect(typeof metricsHelpers.getMetricFromKey('count_rendered')).toBe('object');
+    });
+
+    it('should return undefined if no metric is found', () => {
+      expect(metricsHelpers.getMetricFromKey('this_is_phony')).toBeUndefined();
+    });
+  });
 });
