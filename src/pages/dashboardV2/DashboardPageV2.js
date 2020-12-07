@@ -31,6 +31,7 @@ import { useModal } from 'src/hooks';
 import AggregateMetricsSection from '../../components/reportBuilder/AggregateMetricsSection';
 import moment from 'moment';
 import { getMetricsFromKeys } from 'src/helpers/metrics';
+import PinnedReportFiltersModal from './components/PinnedReportFiltersModal';
 const OnboardingImg = styled(Picture.Image)`
   vertical-align: bottom;
 `;
@@ -66,7 +67,7 @@ export default function DashboardPageV2() {
     getReports();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const { closeModal, openModal, isModalOpen } = useModal();
+  const { closeModal, openModal, isModalOpen, meta: { name } = {} } = useModal();
 
   const { pinnedReport } = usePinnedReport(onboarding);
 
@@ -82,12 +83,19 @@ export default function DashboardPageV2() {
         <Heading as="h1">Dashboard</Heading>
       </ScreenReaderOnly>
 
-      {isModalOpen && (
+      {isModalOpen && name === 'Change Report' && (
         <ReportsListModal
           onDashboard={true}
           open={isModalOpen}
           onClose={closeModal}
           reports={allReports}
+        />
+      )}
+      {isModalOpen && name === 'Filters' && (
+        <PinnedReportFiltersModal
+          open={isModalOpen}
+          onClose={closeModal}
+          pinnedReport={pinnedReport}
         />
       )}
 
@@ -111,7 +119,7 @@ export default function DashboardPageV2() {
                         <TranslatableText>Analyze Report</TranslatableText> <ShowChart size={25} />
                       </PageLink>
                     </Panel.Action>
-                    <Panel.Action onClick={openModal}>
+                    <Panel.Action onClick={() => openModal({ name: 'Change Report' })}>
                       <TranslatableText>Change Report</TranslatableText> <Sync size={25} />
                     </Panel.Action>
                   </Panel.Header>
@@ -125,6 +133,8 @@ export default function DashboardPageV2() {
                       ...pinnedReport.options,
                       filters: pinnedReport?.options?.filters,
                     }}
+                    handleClickFiltersButton={() => openModal({ name: 'Filters' })}
+                    showFiltersButton={pinnedReport?.options?.filters.length > 0}
                   />
                 </Dashboard.Panel>
               )}
