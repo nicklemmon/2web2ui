@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import _ from 'lodash';
 import { getLineChartFormatters } from 'src/helpers/chart';
-import LineChart from './LineChart';
+import LineChart from 'src/components/charts/LineChart';
 import METRICS_UNIT_CONFIG from 'src/config/metrics-units';
 import { Box, Stack, Panel } from 'src/components/matchbox';
 import { useSparkPostQuery } from 'src/hooks';
@@ -15,6 +15,7 @@ import { REPORT_BUILDER_FILTER_KEY_MAP } from 'src/constants';
 import { useReportBuilderContext } from '../context/ReportBuilderContext';
 import { Heading } from 'src/components/text';
 import { Loading } from 'src/components';
+import CustomTooltip from './Tooltip';
 const DEFAULT_UNIT = 'number';
 
 function getUniqueUnits(metrics) {
@@ -150,6 +151,7 @@ export function Charts(props) {
             yLabel={chart.label}
             tooltipValueFormatter={chart.yAxisFormatter}
             showXAxis={index === charts.length - 1}
+            tooltip={CustomTooltip}
           />
         </Box>
       ))}
