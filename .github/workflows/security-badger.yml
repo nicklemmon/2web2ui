@@ -14,7 +14,7 @@ jobs:
         uses: nicklemmon/security-badger@v0.0.11-alpha
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REPO: ${{ github.repository }}
           SLACK_WEBHOOK_URL: ${{ secrets.SECURITY_BADGER_SLACK_WEBHOOK_URL }}
         with:
           slackChannel: '#front-end-guild'
