@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Security Badger
-        uses: nicklemmon/security-badger@v0.0.11-alpha
+        uses: nicklemmon/security-badger@v0.0.12-alpha
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPO: ${{ github.repository }}
