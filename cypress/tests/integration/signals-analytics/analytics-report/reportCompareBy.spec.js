@@ -176,13 +176,13 @@ if (IS_HIBANA_ENABLED) {
         cy.findByText('Fake Subaccount 1 (ID 101)').should('be.visible');
         cy.findByText('Fake Subaccount 3 (ID 103)').should('be.visible');
         cy.findAllByText('Sent').should('have.length', 2);
-        cy.findAllByText('325000').should('have.length', 2);
+        cy.findAllByText('325K').should('have.length', 2);
         cy.findAllByText('Unique Confirmed Opens').should('have.length', 2);
-        cy.findAllByText('250000').should('have.length', 2);
+        cy.findAllByText('250K').should('have.length', 2);
         cy.findAllByText('Accepted').should('have.length', 2);
-        cy.findAllByText('200000').should('have.length', 2);
+        cy.findAllByText('200K').should('have.length', 2);
         cy.findAllByText('Unique Clicks').should('have.length', 2);
-        cy.findAllByText('150000').should('have.length', 2);
+        cy.findAllByText('150K').should('have.length', 2);
       });
     });
 

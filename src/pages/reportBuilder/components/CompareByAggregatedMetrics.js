@@ -71,6 +71,13 @@ function ComparisonRow({ comparison, hasDivider }) {
   if (status === 'loading' || status === 'error') return null;
 
   const aggregatedMetricsObj = data[0] || {};
+  const aggregatedMetricsKeys = Object.keys(aggregatedMetricsObj);
+  const aggregatedMetrics = getMetricsFromKeys(aggregatedMetricsKeys, true).map(metric => {
+    return {
+      value: aggregatedMetricsObj[metric.key],
+      ...metric,
+    };
+  });
   const hasMetrics = Boolean(formattedMetrics.length);
 
   return (
@@ -83,9 +90,8 @@ function ComparisonRow({ comparison, hasDivider }) {
         </LabelValue>
 
         {hasMetrics
-          ? formattedMetrics.map((metric, metricIndex) => {
-              const { label, key, stroke, unit } = metric;
-              const value = aggregatedMetricsObj[key];
+          ? aggregatedMetrics.map((metric, metricIndex) => {
+              const { label, key, stroke, unit, value } = metric;
 
               return (
                 <Stack key={`aggregated-metric-${key}-${metricIndex}`}>
